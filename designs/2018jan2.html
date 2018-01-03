@@ -20,6 +20,17 @@ Based on example at https://getbootstrap.com/docs/3.3/getting-started/
         <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
+
+        <link href="http://veg.github.io/phylotree.js/phylotree.css" rel="stylesheet">
+        <style>
+            .bootstrap {
+            #    font-size: 12pt;
+            }
+            .node { 
+                font-size: 11pt; 
+            }
+        </style>
+
     </head>
     <body>
         <nav class="navbar navbar-default">
@@ -30,25 +41,27 @@ Based on example at https://getbootstrap.com/docs/3.3/getting-started/
             </div>
         </nav>
 
-        <form id="study-metadata" class="form-horizontal panel panel-info">
-            <div class="panel-heading">Study metadata</div>
-            <div class="form-group panel-body">
-                <label for="title" class="col-md-1 control-label">Title</label>
-                <div class="col-md-11 input-group">
-                    <input type="text" class="form-control" id="title" placeholder="Enter study title" value="Fisher et al, 2007">
-                </div>
+        <form id="study-metadata" class="form-horizontal"> 
+            <div class="panel panel-info">
+                <div class="panel-heading">Study metadata</div>
+                <div class="form-group panel-body">
+                    <label for="title" class="col-md-1 control-label">Title</label>
+                    <div class="col-md-11 input-group">
+                        <input type="text" class="form-control" id="title" placeholder="Enter study title" value="Fisher et al, 2007">
+                    </div>
 
-                <label for="citation" class="col-md-1 control-label">Citation</label>
-                <div class="col-md-11 input-group">
-                    <input type="text" class="form-control" id="citation" placeholder="Enter citation" value="Fisher KM, Wall DP, Yip KL, Mishler BD (2007) The Bryologist 110(1):46-73">
-                </div>
+                    <label for="citation" class="col-md-1 control-label">Citation</label>
+                    <div class="col-md-11 input-group">
+                        <input type="text" class="form-control" id="citation" placeholder="Enter citation" value="Fisher KM, Wall DP, Yip KL, Mishler BD (2007) The Bryologist 110(1):46-73">
+                    </div>
 
-                <label for="doi" class="col-md-1 control-label">DOI</label>
-                <div class="col-md-11 input-group">
-                    <span class="input-group-addon">https://dx.doi.org/</span>
-                    <input type="text" class="form-control" id="title" placeholder="Enter DOI" value="10.1639/0007-2745(2007)110[46:POTCWA]2.0.CO;2">
-                </div>
+                    <label for="doi" class="col-md-1 control-label">DOI</label>
+                    <div class="col-md-11 input-group">
+                        <span class="input-group-addon">https://dx.doi.org/</span>
+                        <input type="text" class="form-control" id="title" placeholder="Enter DOI" value="10.1639/0007-2745(2007)110[46:POTCWA]2.0.CO;2">
+                    </div>
 
+                </div>
             </div>
         </form>
 
@@ -56,7 +69,7 @@ Based on example at https://getbootstrap.com/docs/3.3/getting-started/
             <div class="panel panel-info">
                 <div class="panel-heading">Phylogenies</div>
                 <div class="panel-body">
-
+                    <svg id="phylogeny_1"></svg>
                 </div>
             </div>
         </div>
@@ -68,12 +81,12 @@ Based on example at https://getbootstrap.com/docs/3.3/getting-started/
                     <form id="phyloref" class="form-horizontal">
                         <label for="label" class="control-label col-md-4">Label</label>
                         <div class="input-group col-md-8">
-                            <input type="text" class="form-control" id="label" placeholder="Phyloreference label" value="Calymperes">
+                            <input type="text" class="form-control" id="label" placeholder="Phyloreference label" value="Calymperaceae">
                         </div>
 
                         <label for="definition" class="control-label col-md-4">Definition</label>
                         <div class="input-group col-md-8">
-                            <textarea class="form-control" id="definition" placeholder="Phylogenetic clade definition" value="Calymperes">nomen cladi conversum, Calymperaceae ____ Hal., Synop. Musc. Frond. 1. (1849)
+                            <textarea class="form-control" id="definition" placeholder="Phylogenetic clade definition">nomen cladi conversum, Calymperaceae ____ Hal., Synop. Musc. Frond. 1. (1849)
 Stem-based definition:
 internal specifier: Type: Syrrhopodon gardneri (Hook.) Schw____, Sp. Musc. Frond. Suppl. 2(1): 110, tab. 131, figs. ____ (1824)
 internal specifier: Type: Leucophanes octoblepharoides Brid., Bryol. Univ. 1: 763. (1826)
@@ -103,7 +116,8 @@ Included terminal clades: gardneri, japonicus
                     </form>
                 </div>
                 <ul class="list-group">
-                    <li class="list-group-item active list-group-item-info">Calymperes</li>
+                    <li class="list-group-item list-group-item-info active">Calymperaceae</li>
+                    <li class="list-group-item list-group-item-info">Calymperes</li>
                     <li class="list-group-item list-group-item-info">Syrrhopodon</li>
                     <li class="list-group-item list-group-item-info">Mitthyridium</li>
                     <li class="list-group-item list-group-item-info">Trachymitrium</li>
@@ -120,5 +134,64 @@ Included terminal clades: gardneri, japonicus
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
         <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="http://d3js.org/d3.v3.min.js"></script>
+        <script src="http://veg.github.io/phylotree.js/phylotree.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js" charset="utf-8"></script>
+
+        <script>
+            var newick = "((((((((((('Arthrocormus schimperi',('Exostratum blumii 243','Exostratum blumii 245')expected_Exostratum),('Exodictyon incrassatum',(('Leucophanes seychellarum',('Leucophanes octoblepharoides','Leucophanes albescens'),'Leucophanes glaucum'),'Syrrhopodon confertus')expected_Leucophanes))expected_Albifolium,'Syrrhopodon muelleri'),'Syrrhopodon perarmatus'),(('Syrrhopodon ciliatus',('Syrrhopodon albovaginatus 446','Syrrhopodon albovaginatus 162')),((('Syrrhopodon tortillis','Syrrhopodon leprieurii'),'Syrrhopodon prolifer'),('Syrrhopodon parasiticus','Syrrhopodon trachyphyllus',('Syrrhopodon banksii','Syrrhopodon involutus')expected_Leucophanella)))expected_Trachymitrium),('Syrrhopodon armatus','Syrrhopodon fimbriatulus')),((((('Mitthyridium obtusifolium','Mitthyridium constrictum'),'Mitthyridium fasciculatum'),('Mitthyridium undulatum','Mitthyridium jungquilianum'))Mitthyridium_as_per_paper,'Syrrhopodon mahensis')expected_Mitthyridium,('Syrrhopodon tristichus',('Syrrhopodon croceus','Syrrhopodon apertus','Syrrhopodon fissipapillatus'))))expected_Syrrhopodon,(('Syrrhopodon incompletus',((((('Calymperes palisotii 159','Calymperes palisotii 180'),'Calymperes motleyi'),('Calymperes erosum','Calymperes robinsonii')),(('Calymperes tenerum','Calymperes subintegrum',('Calymperes tuatomuense','Calymperes pseudopodianum'),'Calymperes hispidium'),'Calymperes moluccense')),((('Calymperes tahitense 320','Calymperes tahitense 115'),'Calymperes lonchophyllum'),(('Calymperes afzelii 179','Calymperes afzelii 165'),'Calymperes graffeanum')))),'Syrrhopodon mauritianus')expected_Calymperes),'Syrrhopodon japonicus'),'Syrrhopodon gardneri')expected_Calymperaceae,('Octoblepharum Moorea 445','Octoblepharum albidum')expected_Octoblepharum);";
+
+            var nodeStyler = function(element, data) {
+                if("internal_label" in data && data.internal_label == 'Calymperaceae') {
+                    var label = element.selectAll(".internal_label");
+                    if(label.empty()) {
+                        element.append("text").classed("internal_label", true)
+                            .text(data.internal_label)
+                            .attr("dx", ".4em")
+                            .attr("dy", ".3em")
+                            .attr("text-anchor", "start")
+                            .attr("alignment-baseline", "middle");
+                    }
+                } else {
+                    element.style('fill', function() {
+                    if(data.name == 'Syrrhopodon gardneri' || data.name == 'Leucophanes octoblepharoides')
+                        return "rgb(0, 255, 0)";
+                    if(data.name == 'Octoblepharum albidum')
+                        return "rgb(255, 0, 0)";
+                    return "rgb(0, 0, 0)";
+                });
+                }
+            }
+
+            tree = d3.layout.phylotree()
+                .svg(d3.select("#phylogeny_1"))
+                .options({
+                    //"selectable": false,
+                    //"collapsible": false,
+                    //"transitions": false
+                })
+                .style_nodes(nodeStyler)
+            ;
+
+            tree(d3.layout.newick_parser(newick));
+            _.each(tree.get_nodes(), function(node) {
+                if(node.children && node.name.startsWith("expected_")) {
+                    node.internal_label = node.name.substring(9);
+                    // console.log(node.internal_label)
+                }
+            });
+
+            tree.spacing_x(20).spacing_y(50);
+
+            tree.placenodes().layout();
+
+            /*
+            $(function() {
+                tree.update_layout();
+            });
+            */
+        </script>
+
+
     </body>
 </html>
