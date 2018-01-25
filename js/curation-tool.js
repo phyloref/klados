@@ -1,7 +1,10 @@
 /*
  * Curation Tool Javascript File
  * Copyright (c) The Phyloreferencing Project, 2018
- */ 
+ */
+
+// Global variables
+var testcase = null;
 
 /**
  * Load a local JSON file using FileReader
@@ -40,9 +43,11 @@ function load_json_from_local(file_input, on_load) {
     fr.onload = function(e) {
         try {
             lines = e.target.result;
-            on_load(JSON.parse(lines));
+            testcase = JSON.parse(lines);
+            on_load(testcase);
         } catch(err) {
             alert("Error occurred while loading file: " + err);
+            testcase = null;
         }
     };
     fr.readAsText(file);

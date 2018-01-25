@@ -2,74 +2,173 @@
 <html lang="en">
 
 <!--
-    Phyloreferencing Curation Tool
-    Copyright (c) The Phyloreferencing Project, 2018.
+		Phyloreferencing Curation Tool
+		Copyright (c) The Phyloreferencing Project, 2018.
 
-    Skeleton based on https://www.taniarascia.com/basic-html5-file/
+		Skeleton based on https://www.taniarascia.com/basic-html5-file/
 -->
 
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <meta name="viewport" content="width=device-width, initial-size=1">
+	<meta charset="utf-8">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, initial-size=1">
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <title>Phyloref Curation Tool, version 0.1</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<title>Phyloref Curation Tool, version 0.1</title>
 
-    <link rel="stylesheet" href="css/main.css">
-    <!--
-        <link rel="icon" href="images/favicon.png">
-    -->
+	<link rel="stylesheet" href="css/main.css">
+	<!--
+			<link rel="icon" href="images/favicon.png">
+	-->
 
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
+	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+	<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+	<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+	<![endif]-->
 </head>
 
 <body>
-    <nav class="navbar navbar-default">
-        <div class="container">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="index.html">Curation Tool</a>
-            </div>
-        </div>
-    </nav>
+	<nav class="navbar navbar-default">
+		<div class="container">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="index.html">Curation Tool</a>
+			</div>
+		</div>
+	</nav>
 
-    <div class="col-md-12">
-        <h1>Curation Tool, version 0.1</h1> 
+	<div class="col-md-12 panel">
+		<div class="btn-group btn-group-justified" role="group" aria-label="Options to load or save testcase">
+			<label class="btn btn-primary btn-group" for="file_input">
+				<input id="file_input" type="file" style="display:none;"
+					onchange="load_json_from_local($('#file_input'), function(result) { $('#test_content').val(JSON.stringify(result, null, 4)); })"
+				>
+				Read from local JSON file
+			</label>
+			<!-- Add option to load JSON from the curation workflow
+			If we publish them to the web, we'll actually be able to
+			AJAX them, because they're on the same site!
 
-        <p>This version of the Curation Tool can load a JSON file containing a
-        Phyloreferencing test case from your local drive and visualize it.
-        To start, download one of the example test cases below and then click
-        on the "Load Phyloreferencing test case as JSON" button below.
-        </p>
+			<ul>
+				<li><a href="https://github.com/phyloref/curation-workflow/blob/master/testcases/Fisher%20et%20al%2C%202007/paper.json">Fisher <em>et al</em>, 2007</a></li>
+				<li><a href="https://github.com/phyloref/curation-workflow/blob/master/testcases/Hillis%20and%20Wilcox%2C%202005/paper.json">Hillis and Wilcox, 2005</a></li>
+			</ul>
+			-->
+			<div class="btn-group" role="group">
+				<button id="export_as_json" type="button" class="btn btn-success"
+					onclick="$('#view_as_json').toggle(300)"
+				>Export as JSON</button>
+			</div>
+		</div>
+	</div>
 
-        <p><strong>Step 1.</strong> Choose an existing test case file.</p>
-        <ul>
-            <li><a href="https://github.com/phyloref/curation-workflow/blob/master/testcases/Fisher%20et%20al%2C%202007/paper.json">Fisher <em>et al</em>, 2007</a></li>
-            <li><a href="https://github.com/phyloref/curation-workflow/blob/master/testcases/Hillis%20and%20Wilcox%2C%202005/paper.json">Hillis and Wilcox, 2005</a></li>
-        </ul>
+	<div id="view_as_json" class="col-md-12" hidden>
+		<div class="panel panel-success collapsible">
+			<div class="panel-heading">Test case as JSON</div>
+			<div class="panel-body">
+				<textarea id="test_content" cols="80" rows="10">{}</textarea>
+			</div>
+		</div>
+	</div>
 
-        <p><strong>Step 2.</strong> Load it into this application.</p>
-        <form action="javascript:void(0);">
-            <input type="file" id="file_local_json">
-            <button 
-                onclick="load_json_from_local($('#file_local_json'), function(result) { $('#test_content').val(JSON.stringify(result)); })"
-            >Load Phyloreferencing test case as JSON</button>
+	<form id="study-metadata" class="form-horizontal col-md-12">
+		<div class="panel panel-info">
+			<div class="panel-heading">Study metadata</div>
+			<div class="form-group panel-body">
+				<label for="title" class="col-md-1 control-label">Title</label>
+				<div class="col-md-10 input-group">
+					<input id="title" type="text" class="form-control" placeholder="Enter study title">
+				</div>
 
-        </form>
-    
-        <br>
-        <textarea id="test_content" cols="80" rows="21"></textarea>
-    </div>
+				<label for="citation" class="col-md-1 control-label">Citation</label>
+				<div class="col-md-10 input-group">
+					<input id="citation" type="text" class="form-control" placeholder="Enter citation">
+				</div>
 
+				<label for="doi" class="col-md-1 control-label">DOI</label>
+				<div class="col-md-10 input-group">
+					<span class="input-group-addon">https://dx.doi.org/</span>
+					<input type="text" class="form-control" id="title" placeholder="Enter DOI">
+				</div>
 
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="./js/curation-tool.js"></script>
+			</div>
+		</div>
+	</form>
+
+	<div class="col-md-8">
+		<div class="panel panel-info">
+			<div class="panel-heading">Phylogenies</div>
+			<div class="panel-body">
+				<svg id="phylogeny_1"></svg>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-4">
+		<div class="panel panel-info">
+			<div class="panel-heading">Phyloreferences</div>
+			<div class="panel-body">
+				<form id="phyloref" class="form-horizontal">
+					<label for="label" class="control-label col-md-4">Label</label>
+					<div class="input-group col-md-8">
+						<input type="text" class="form-control" id="label" placeholder="Phyloreference label" value="Calymperaceae">
+					</div>
+
+					<label for="definition" class="control-label col-md-4">Definition</label>
+					<div class="input-group col-md-8">
+						<textarea class="form-control" id="definition" placeholder="Phylogenetic clade definition">nomen cladi conversum, Calymperaceae ____ Hal., Synop. Musc. Frond. 1. (1849)
+	Stem-based definition:
+	internal specifier: Type: Syrrhopodon gardneri (Hook.) Schw____, Sp. Musc. Frond. Suppl. 2(1): 110, tab. 131, figs. ____ (1824)
+	internal specifier: Type: Leucophanes octoblepharoides Brid., Bryol. Univ. 1: 763. (1826)
+	external specifier: Type: Octoblepharum albidum Hedw., Sp. Musc. 50. (1801)
+	Important synapomorphies: cancellinae, central strand absent from stem
+	Included terminal clades: gardneri, japonicus
+						</textarea>
+					</div>
+
+					<label for="internal_specifiers" class="control-label col-md-4">Internal specifiers</label>
+					<div class="input-group col-md-8">
+						<select id="internal_specifiers" class="form-control col-md-8" multiple>
+							<option value="syrrhopodon_gardneri"><em>Syrrhopodon gardneri</em></option>
+							<option value="leucophanes_octoblepharoides"><em>Leucophanes octoblepharoides</em></option>
+							<option value="add_more">(Add more)</option>
+						</select>
+					</div>
+
+					<label for="external_specifiers" class="control-label col-md-4">External specifiers</label>
+					<div class="input-group col-md-8">
+						<select id="external_specifiers" class="form-control col-md-8" multiple>
+							<option value="octoblepharum_albidum"><em>Octoblepharum albidum</em></option>
+							<option value="add_more">(Add more)</option>
+						</select>
+					</div>
+
+				</form>
+			</div>
+			<ul class="list-group">
+				<li class="list-group-item list-group-item-info active">Calymperaceae</li>
+				<li class="list-group-item list-group-item-info">Calymperes</li>
+				<li class="list-group-item list-group-item-info">Syrrhopodon</li>
+				<li class="list-group-item list-group-item-info">Mitthyridium</li>
+				<li class="list-group-item list-group-item-info">Trachymitrium</li>
+				<li class="list-group-item list-group-item-info">Leucophanella</li>
+				<li class="list-group-item list-group-item-info">Albifolium</li>
+				<li class="list-group-item list-group-item-info">Arthrocormus</li>
+				<li class="list-group-item list-group-item-info">Exostratum</li>
+				<li class="list-group-item list-group-item-info">Exodictyon</li>
+				<li class="list-group-item list-group-item-info">Leucophanes</li>
+			</ul>
+		</div>
+	</div>
+
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	<script
+		src="http://code.jquery.com/jquery-3.3.1.min.js"
+		integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+		crossorigin="anonymous"
+	></script>
+	<script src="./js/curation-tool.js"></script>
 </body>
 
 </html>

@@ -1,0 +1,15 @@
+
+/* Make the font bigger. */
+.bootstrap {
+    font-size: 100%;
+}
+
+/* But make nodes slightly smaller */
+.node {
+    font-size: 90%;
+}
+
+/* jumbotron should be centered */
+.jumbotron {
+    /* text-align: center; */
+}
