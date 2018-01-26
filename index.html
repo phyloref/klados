@@ -38,127 +38,138 @@
 		</div>
 	</nav>
 
-	<div class="col-md-12 panel">
-		<div class="btn-group btn-group-justified" role="group" aria-label="Options to load or save testcase">
-			<label class="btn btn-primary btn-group" for="file_input">
-				<input id="file_input" type="file" style="display:none;"
-					onchange="load_json_from_local($('#file_input'), function(result) { $('#test_content').val(JSON.stringify(result, null, 4)); })"
-				>
-				Read from local JSON file
-			</label>
-			<!-- Add option to load JSON from the curation workflow
-			If we publish them to the web, we'll actually be able to
-			AJAX them, because they're on the same site!
+	<div id="app">
+		<div class="col-md-12 panel">
+			<div class="btn-group btn-group-justified" role="group" aria-label="Options to load or save testcase">
+				<label class="btn btn-primary btn-group" for="file_input">
+					<input id="file_input" type="file" style="display:none;"
+						onchange="load_json_from_local($('#file_input'))"
+					>
+					Read from local JSON file
+				</label>
+				<!-- Add option to load JSON from the curation workflow
+				If we publish them to the web, we'll actually be able to
+				AJAX them, because they're on the same site!
 
-			<ul>
-				<li><a href="https://github.com/phyloref/curation-workflow/blob/master/testcases/Fisher%20et%20al%2C%202007/paper.json">Fisher <em>et al</em>, 2007</a></li>
-				<li><a href="https://github.com/phyloref/curation-workflow/blob/master/testcases/Hillis%20and%20Wilcox%2C%202005/paper.json">Hillis and Wilcox, 2005</a></li>
-			</ul>
-			-->
-			<div class="btn-group" role="group">
-				<button id="export_as_json" type="button" class="btn btn-success"
-					onclick="$('#view_as_json').toggle(300)"
-				>Export as JSON</button>
-			</div>
-		</div>
-	</div>
-
-	<div id="view_as_json" class="col-md-12" hidden>
-		<div class="panel panel-success collapsible">
-			<div class="panel-heading">Test case as JSON</div>
-			<div class="panel-body">
-				<textarea id="test_content" cols="80" rows="10">{}</textarea>
-			</div>
-		</div>
-	</div>
-
-	<form id="study-metadata" class="form-horizontal col-md-12">
-		<div class="panel panel-info">
-			<div class="panel-heading">Study metadata</div>
-			<div class="form-group panel-body">
-				<label for="title" class="col-md-1 control-label">Title</label>
-				<div class="col-md-10 input-group">
-					<input id="title" type="text" class="form-control" placeholder="Enter study title">
+				<ul>
+					<li><a href="https://github.com/phyloref/curation-workflow/blob/master/testcases/Fisher%20et%20al%2C%202007/paper.json">Fisher <em>et al</em>, 2007</a></li>
+					<li><a href="https://github.com/phyloref/curation-workflow/blob/master/testcases/Hillis%20and%20Wilcox%2C%202005/paper.json">Hillis and Wilcox, 2005</a></li>
+				</ul>
+				-->
+				<div class="btn-group" role="group">
+					<button id="export_as_json" type="button" class="btn btn-success"
+						onclick="$('#view_as_json').toggle(300)"
+					>Export as JSON</button>
 				</div>
-
-				<label for="citation" class="col-md-1 control-label">Citation</label>
-				<div class="col-md-10 input-group">
-					<input id="citation" type="text" class="form-control" placeholder="Enter citation">
-				</div>
-
-				<label for="doi" class="col-md-1 control-label">DOI</label>
-				<div class="col-md-10 input-group">
-					<span class="input-group-addon">https://dx.doi.org/</span>
-					<input type="text" class="form-control" id="title" placeholder="Enter DOI">
-				</div>
-
 			</div>
 		</div>
-	</form>
 
-	<div class="col-md-8">
-		<div class="panel panel-info">
-			<div class="panel-heading">Phylogenies</div>
-			<div class="panel-body">
-				<svg id="phylogeny_1"></svg>
+		<div id="testcase_modified" v-if="modified" class="col-md-12">
+			<div class="panel panel-warning collapsible">
+				<div class="panel-heading">The testcase has been modified!</div>
+				<div class="panel-body">
+					<p>Please take care.</p>
+				</div>
 			</div>
 		</div>
-	</div>
 
-	<div class="col-md-4">
-		<div class="panel panel-info">
-			<div class="panel-heading">Phyloreferences</div>
-			<div class="panel-body">
-				<form id="phyloref" class="form-horizontal">
-					<label for="label" class="control-label col-md-4">Label</label>
-					<div class="input-group col-md-8">
-						<input type="text" class="form-control" id="label" placeholder="Phyloreference label" value="Calymperaceae">
-					</div>
-
-					<label for="definition" class="control-label col-md-4">Definition</label>
-					<div class="input-group col-md-8">
-						<textarea class="form-control" id="definition" placeholder="Phylogenetic clade definition">nomen cladi conversum, Calymperaceae ____ Hal., Synop. Musc. Frond. 1. (1849)
-	Stem-based definition:
-	internal specifier: Type: Syrrhopodon gardneri (Hook.) Schw____, Sp. Musc. Frond. Suppl. 2(1): 110, tab. 131, figs. ____ (1824)
-	internal specifier: Type: Leucophanes octoblepharoides Brid., Bryol. Univ. 1: 763. (1826)
-	external specifier: Type: Octoblepharum albidum Hedw., Sp. Musc. 50. (1801)
-	Important synapomorphies: cancellinae, central strand absent from stem
-	Included terminal clades: gardneri, japonicus
-						</textarea>
-					</div>
-
-					<label for="internal_specifiers" class="control-label col-md-4">Internal specifiers</label>
-					<div class="input-group col-md-8">
-						<select id="internal_specifiers" class="form-control col-md-8" multiple>
-							<option value="syrrhopodon_gardneri"><em>Syrrhopodon gardneri</em></option>
-							<option value="leucophanes_octoblepharoides"><em>Leucophanes octoblepharoides</em></option>
-							<option value="add_more">(Add more)</option>
-						</select>
-					</div>
-
-					<label for="external_specifiers" class="control-label col-md-4">External specifiers</label>
-					<div class="input-group col-md-8">
-						<select id="external_specifiers" class="form-control col-md-8" multiple>
-							<option value="octoblepharum_albidum"><em>Octoblepharum albidum</em></option>
-							<option value="add_more">(Add more)</option>
-						</select>
-					</div>
-
-				</form>
+		<div id="view_as_json" class="col-md-12" hidden>
+			<div class="panel panel-success">
+				<div class="panel-heading">Test case as JSON</div>
+				<div class="panel-body">
+					<textarea id="test_content" cols="80" rows="10" v-model="testcase_as_json"></textarea>
+				</div>
 			</div>
-			<ul class="list-group">
-				<li class="list-group-item list-group-item-info active">Calymperaceae</li>
-				<li class="list-group-item list-group-item-info">Calymperes</li>
-				<li class="list-group-item list-group-item-info">Syrrhopodon</li>
-				<li class="list-group-item list-group-item-info">Mitthyridium</li>
-				<li class="list-group-item list-group-item-info">Trachymitrium</li>
-				<li class="list-group-item list-group-item-info">Leucophanella</li>
-				<li class="list-group-item list-group-item-info">Albifolium</li>
-				<li class="list-group-item list-group-item-info">Arthrocormus</li>
-				<li class="list-group-item list-group-item-info">Exostratum</li>
-				<li class="list-group-item list-group-item-info">Exodictyon</li>
-				<li class="list-group-item list-group-item-info">Leucophanes</li>
-			</ul>
+		</div>
+
+		<form id="study-metadata" class="form-horizontal col-md-12">
+			<div class="panel panel-info">
+				<div class="panel-heading">Study metadata</div>
+				<div class="form-group panel-body">
+					<label for="title" class="col-md-1 control-label">Title</label>
+					<div class="col-md-10 input-group">
+						<input id="title" type="text" class="form-control" v-model.trim="testcase.label" v-on:input="modified = true" placeholder="Enter study title">
+					</div>
+
+					<label for="citation" class="col-md-1 control-label">Citation</label>
+					<div class="col-md-10 input-group">
+						<input id="citation" type="text" class="form-control" v-model.trim="testcase.citation" v-on:input="modified = true" placeholder="Enter citation">
+					</div>
+
+					<label for="doi" class="col-md-1 control-label">DOI</label>
+					<div class="col-md-10 input-group">
+						<span class="input-group-addon">https://dx.doi.org/</span>
+						<input type="text" class="form-control" id="title" placeholder="Enter DOI">
+					</div>
+
+				</div>
+			</div>
+		</form>
+
+		<div class="col-md-8">
+			<div class="panel panel-info">
+				<div class="panel-heading">Phylogenies</div>
+				<div class="panel-body">
+					<svg id="phylogeny_1"></svg>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-md-4">
+			<div class="panel panel-info">
+				<div class="panel-heading">Phyloreferences</div>
+				<div class="panel-body">
+					<form id="phyloref" class="form-horizontal">
+						<label for="label" class="control-label col-md-4">Label</label>
+						<div class="input-group col-md-8">
+							<input type="text" class="form-control" id="label" placeholder="Phyloreference label" value="Calymperaceae">
+						</div>
+
+						<label for="definition" class="control-label col-md-4">Definition</label>
+						<div class="input-group col-md-8">
+							<textarea class="form-control" id="definition" placeholder="Phylogenetic clade definition">nomen cladi conversum, Calymperaceae ____ Hal., Synop. Musc. Frond. 1. (1849)
+		Stem-based definition:
+		internal specifier: Type: Syrrhopodon gardneri (Hook.) Schw____, Sp. Musc. Frond. Suppl. 2(1): 110, tab. 131, figs. ____ (1824)
+		internal specifier: Type: Leucophanes octoblepharoides Brid., Bryol. Univ. 1: 763. (1826)
+		external specifier: Type: Octoblepharum albidum Hedw., Sp. Musc. 50. (1801)
+		Important synapomorphies: cancellinae, central strand absent from stem
+		Included terminal clades: gardneri, japonicus
+							</textarea>
+						</div>
+
+						<label for="internal_specifiers" class="control-label col-md-4">Internal specifiers</label>
+						<div class="input-group col-md-8">
+							<select id="internal_specifiers" class="form-control col-md-8" multiple>
+								<option value="syrrhopodon_gardneri"><em>Syrrhopodon gardneri</em></option>
+								<option value="leucophanes_octoblepharoides"><em>Leucophanes octoblepharoides</em></option>
+								<option value="add_more">(Add more)</option>
+							</select>
+						</div>
+
+						<label for="external_specifiers" class="control-label col-md-4">External specifiers</label>
+						<div class="input-group col-md-8">
+							<select id="external_specifiers" class="form-control col-md-8" multiple>
+								<option value="octoblepharum_albidum"><em>Octoblepharum albidum</em></option>
+								<option value="add_more">(Add more)</option>
+							</select>
+						</div>
+
+					</form>
+				</div>
+				<ul class="list-group">
+					<li class="list-group-item list-group-item-info active">Calymperaceae</li>
+					<li class="list-group-item list-group-item-info">Calymperes</li>
+					<li class="list-group-item list-group-item-info">Syrrhopodon</li>
+					<li class="list-group-item list-group-item-info">Mitthyridium</li>
+					<li class="list-group-item list-group-item-info">Trachymitrium</li>
+					<li class="list-group-item list-group-item-info">Leucophanella</li>
+					<li class="list-group-item list-group-item-info">Albifolium</li>
+					<li class="list-group-item list-group-item-info">Arthrocormus</li>
+					<li class="list-group-item list-group-item-info">Exostratum</li>
+					<li class="list-group-item list-group-item-info">Exodictyon</li>
+					<li class="list-group-item list-group-item-info">Leucophanes</li>
+				</ul>
+			</div>
 		</div>
 	</div>
 
@@ -167,6 +178,9 @@
 		src="http://code.jquery.com/jquery-3.3.1.min.js"
 		integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
 		crossorigin="anonymous"
+	></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/vue@2.5.13/dist/vue.js"
 	></script>
 	<script src="./js/curation-tool.js"></script>
 </body>

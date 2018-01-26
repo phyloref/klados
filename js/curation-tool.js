@@ -4,7 +4,24 @@
  */
 
 // Global variables
-var testcase = null;
+var vm = new Vue({
+    el: '#app',
+    data: {
+        modified: false,
+        testcase: {}
+    },
+    computed: {
+        testcase_as_json: {
+            // Get or set the testcase as JSON text.
+            get: function() {
+                return JSON.stringify(this.testcase, null, 4);
+            },
+            set: function(jsonText) {
+                this.testcase = JSON.parse(jsonText);
+            }
+        }
+    }
+});
 
 /**
  * Load a local JSON file using FileReader
@@ -38,16 +55,16 @@ function load_json_from_local(file_input, on_load) {
         return;
     }
 
+    vm.testcase = {};
+
     file = file_input.prop('files')[0];
     fr = new FileReader();
     fr.onload = function(e) {
         try {
             lines = e.target.result;
-            testcase = JSON.parse(lines);
-            on_load(testcase);
+            vm.testcase_as_json = lines;
         } catch(err) {
             alert("Error occurred while loading file: " + err);
-            testcase = null;
         }
     };
     fr.readAsText(file);
