@@ -81,13 +81,28 @@ var vm = new Vue({
 });
 
 /**
+ * Load a JSON from a URL. This either needs to be a JSONP request or
+ * on the same domain as this website.
+ */
+function load_json_from_url(url) {
+    if(typeof window.FileReader !== 'function') {
+        alert("The FileReader API is not supported on this browser.");
+        on_load(false);
+        return;
+    }
+
+    // Load from URL
+    $.getJSON(url, function(data) {
+        vm.testcase = data;
+    });
+}
+
+/**
  * Load a local JSON file using FileReader
  *
  * Initially based on https://stackoverflow.com/a/21446426/27310
- *
- * @return The JSON content as a JSON object.
  */
-function load_json_from_local(file_input, on_load) {
+function load_json_from_local(file_input) {
     if(typeof window.FileReader !== 'function') {
         alert("The FileReader API is not supported on this browser.");
         on_load(false);

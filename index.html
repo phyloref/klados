@@ -41,21 +41,24 @@
 	<div id="app">
 		<div class="col-md-12 panel">
 			<div class="btn-group btn-group-justified" role="group" aria-label="Options to load or save testcase">
-				<label class="btn btn-primary btn-group" for="file_input">
+				<div class="btn-group" role="group">
+					<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Load an example <span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu">
+					  	<li><a href="#" onclick="load_json_from_url('examples/fisher_et_al_2007.json')">Fisher <em>et al</em>, 2007</a></li>
+						<li><a href="#" onclick="load_json_from_url('examples/hillis_and_wilcox_2005.json')">Hillis and Wilcox, 2005</a></li>
+					  	<!-- <li role="separator" class="divider"></li> -->
+					</ul>
+				</div>
+
+				<label class="btn btn-info btn-group" for="file_input" role="group">
 					<input id="file_input" type="file" style="display:none;"
 						onchange="load_json_from_local($('#file_input'))"
 					>
 					Read from local JSON file
 				</label>
-				<!-- Add option to load JSON from the curation workflow
-				If we publish them to the web, we'll actually be able to
-				AJAX them, because they're on the same site!
 
-				<ul>
-					<li><a href="https://github.com/phyloref/curation-workflow/blob/master/testcases/Fisher%20et%20al%2C%202007/paper.json">Fisher <em>et al</em>, 2007</a></li>
-					<li><a href="https://github.com/phyloref/curation-workflow/blob/master/testcases/Hillis%20and%20Wilcox%2C%202005/paper.json">Hillis and Wilcox, 2005</a></li>
-				</ul>
-				-->
 				<div class="btn-group" role="group">
 					<button id="export_as_json" type="button" class="btn btn-success"
 						onclick="$('#view_as_json').toggle(300)"
@@ -192,6 +195,11 @@
 	<script
 		src="http://code.jquery.com/jquery-3.3.1.min.js"
 		integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+		crossorigin="anonymous"
+	></script>
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+		integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
 		crossorigin="anonymous"
 	></script>
 	<script
