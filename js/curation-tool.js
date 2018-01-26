@@ -3,12 +3,22 @@
  * Copyright (c) The Phyloreferencing Project, 2018
  */
 
+// How to identify DOIs.
+const DOI_REGEX = /^https?:\/\/(?:dx\.)?doi\.org\/(.+?)[\#\/]?$/i;
+const DOI_PREFIX = "https://dx.doi.org/";
+
 // Global variables
 var vm = new Vue({
     el: '#app',
     data: {
         modified: false,
-        testcase: {}
+        testcase: {
+            '@id': "",
+            'doi': "",
+            'url': "",
+            'citation': ""
+        },
+        DOI_PREFIX: DOI_PREFIX
     },
     computed: {
         testcase_as_json: {
@@ -19,6 +29,53 @@ var vm = new Vue({
             set: function(jsonText) {
                 this.testcase = JSON.parse(jsonText);
             }
+        },
+        doi_without_prefix: {
+            // Extract the DOI from the '@id' or 'url'.
+            get: function() {
+                // Is there a DOI? If so, use that.
+                if(this.testcase.hasOwnProperty('doi') && this.testcase.doi != "") {
+                    return this.testcase.doi;
+                }
+
+                // Might be in '@id' or in 'url'!
+                var possibilities = [];
+                if(this.testcase.hasOwnProperty('@id')) {
+                    possibilities.push(this.testcase['@id']);
+                }
+
+                if(this.testcase.hasOwnProperty('url')) {
+                    possibilities.push(this.testcase.url);
+                }
+
+                // Look for possible matches.
+                for(possibility of possibilities) {
+                    matches = DOI_REGEX.exec(possibility);
+
+                    if(matches) {
+                        this.testcase.doi = matches[1];
+                        return matches[1];
+                    }
+                }
+
+                // Didn't find anything?
+                return null;
+            },
+            set: function(newDOI) {
+                // Definitely set the DOI
+                this.testcase.doi = newDOI;
+
+                // Definitely set the URI
+                this.testcase['@id'] = DOI_PREFIX + newDOI + "#";
+
+                if(this.testcase.url == "" || DOI_REGEX.test(this.testcase.url)) {
+                //|| this.testcase.url.startsWith(DOI_PREFIX)) {
+                    this.testcase.url = DOI_PREFIX + newDOI;
+                }
+            }
+        },
+        doi_as_url: function() {
+            return DOI_PREFIX + this.testcase.doi;
         }
     }
 });
@@ -62,7 +119,18 @@ function load_json_from_local(file_input, on_load) {
     fr.onload = function(e) {
         try {
             lines = e.target.result;
-            vm.testcase_as_json = lines;
+            testcase = JSON.parse(lines);
+
+            // The DOI-to-ID/URL system doesn't work unless some variables
+            // are set.
+            if(!testcase.hasOwnProperty('@id'))
+                testcase['@id'] = "";
+            if(!testcase.hasOwnProperty('doi'))
+                testcase['doi'] = "";
+            if(!testcase.hasOwnProperty('url'))
+                testcase['url'] = "";
+
+            vm.testcase = testcase;
         } catch(err) {
             alert("Error occurred while loading file: " + err);
         }
