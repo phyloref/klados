@@ -11,14 +11,23 @@ const DOI_PREFIX = "https://dx.doi.org/";
 var vm = new Vue({
     el: '#app',
     data: {
+        // Data model: a testcase and flag indicating whether it has been
+        // modified.
         modified: false,
         testcase: {
             '@id': "",
             'doi': "",
             'url': "",
-            'citation': ""
+            'citation': "",
+            'phylogenies': [{}],
+            'phylorefs': []
         },
-        DOI_PREFIX: DOI_PREFIX
+
+        // Constants
+        DOI_PREFIX: DOI_PREFIX,
+
+        // Variables containing UI renders
+        selected_phyloref: null
     },
     computed: {
         testcase_as_json: {
@@ -76,6 +85,16 @@ var vm = new Vue({
         },
         doi_as_url: function() {
             return DOI_PREFIX + this.testcase.doi;
+        }
+    },
+    methods: {
+        create_empty_phyloref: function(count) {
+            return {
+                label: "Phyloreference " + count,
+                cladeDefinition: "",
+                internalSpecifiers: [],
+                externalSpecifiers: []
+            }
         }
     }
 });

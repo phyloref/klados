@@ -124,28 +124,62 @@
 			</div>
 		</form>
 
-		<div class="col-md-8">
-			<div class="panel panel-info">
-				<div class="panel-heading">Phylogenies</div>
-				<div class="panel-body">
-					<svg id="phylogeny_1"></svg>
+		<div class="col-md-12 panel">
+			<div class="btn-group btn-group-justified" role="group" aria-label="Options to navigate phylogenies">
+				<div class="btn-group" role="group">
+					<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						{{ testcase.phylogenies.length }} phylogenies <span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu">
+						<template v-for="(phylogeny, phylogeny_index) of testcase.phylogenies">
+						  	<li><a :href="'#phylogeny_' + phylogeny_index">Phylogeny {{phylogeny_index + 1}}</a></li>
+						</template>
+						<li><a href="javascript:void(0)" onclick="vm.testcase.phylogenies.push({})">Add phylogeny</a></li>
+					</ul>
+				</div>
+
+				<div class="btn-group" role="group">
+					<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						{{ testcase.phylorefs.length }} phyloreferences <span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu">
+						<template v-for="(phyloref, phyloref_index) of testcase.phylorefs">
+						  	<li><a :href="'#phyloref_' + phyloref_index">Phyloreference {{phyloref_index + 1}}</a></li>
+						</template>
+						<li><a href="javascript:void(0)" @click="testcase.phylorefs.push(create_empty_phyloref(testcase.phylorefs.length + 1))">Add phyloreferences</a></li>
+					</ul>
 				</div>
 			</div>
 		</div>
 
-		<div class="col-md-4">
+		<div class="col-md-8">
+			<div :id="'phylogeny_' + phylogeny_index" class="panel panel-info" v-for="(phylogeny, phylogeny_index) of testcase.phylogenies">
+				<div class="panel-heading">Phylogeny {{phylogeny_index + 1}}</div>
+				<div class="panel-body">
+					<svg :id="'phylogeny_' + phylogeny_index + '_svg'"></svg>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-md-4 panel float-md-right">
 			<div class="panel panel-info">
 				<div class="panel-heading">Phyloreferences</div>
-				<div class="panel-body">
+				<div id="selected_phyloref" v-if="selected_phyloref" class="panel-body">
 					<form id="phyloref" class="form-horizontal">
 						<label for="label" class="control-label col-md-4">Label</label>
 						<div class="input-group col-md-8">
-							<input type="text" class="form-control" id="label" placeholder="Phyloreference label" value="Calymperaceae">
+							<input id="label" v-model="selected_phyloref.label" type="text" class="form-control"  placeholder="Phyloreference label">
 						</div>
 
 						<label for="definition" class="control-label col-md-4">Definition</label>
 						<div class="input-group col-md-8">
-							<textarea class="form-control" id="definition" placeholder="Phylogenetic clade definition">nomen cladi conversum, Calymperaceae ____ Hal., Synop. Musc. Frond. 1. (1849)
+							<textarea
+								id="definition"
+								v-model="selected_phyloref.cladeDefinition"
+								class="form-control"
+								rows="8"
+								placeholder="Phylogenetic clade definition"
+								>nomen cladi conversum, Calymperaceae ____ Hal., Synop. Musc. Frond. 1. (1849)
 		Stem-based definition:
 		internal specifier: Type: Syrrhopodon gardneri (Hook.) Schw____, Sp. Musc. Frond. Suppl. 2(1): 110, tab. 131, figs. ____ (1824)
 		internal specifier: Type: Leucophanes octoblepharoides Brid., Bryol. Univ. 1: 763. (1826)
@@ -174,21 +208,20 @@
 
 					</form>
 				</div>
-				<ul class="list-group">
-					<li class="list-group-item list-group-item-info active">Calymperaceae</li>
-					<li class="list-group-item list-group-item-info">Calymperes</li>
-					<li class="list-group-item list-group-item-info">Syrrhopodon</li>
-					<li class="list-group-item list-group-item-info">Mitthyridium</li>
-					<li class="list-group-item list-group-item-info">Trachymitrium</li>
-					<li class="list-group-item list-group-item-info">Leucophanella</li>
-					<li class="list-group-item list-group-item-info">Albifolium</li>
-					<li class="list-group-item list-group-item-info">Arthrocormus</li>
-					<li class="list-group-item list-group-item-info">Exostratum</li>
-					<li class="list-group-item list-group-item-info">Exodictyon</li>
-					<li class="list-group-item list-group-item-info">Leucophanes</li>
-				</ul>
+
+				<div class="list-group">
+					<a 	href="#selected_phyloref"
+						class="list-group-item"
+						v-for="(phyloref, phyloref_index) of testcase.phylorefs"
+						:class="{active: selected_phyloref === phyloref}"
+						@click="selected_phyloref = phyloref"
+					>{{phyloref.hasOwnProperty('label') ? phyloref.label : 'Phyloreference ' + (phyloref_index + 1)}}</a>
+				</div>
 			</div>
 		</div>
+
+
+
 	</div>
 
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
