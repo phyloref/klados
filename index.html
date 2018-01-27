@@ -134,7 +134,7 @@
 						<template v-for="(phylogeny, phylogeny_index) of testcase.phylogenies">
 						  	<li><a :href="'#phylogeny_' + phylogeny_index">Phylogeny {{phylogeny_index + 1}}</a></li>
 						</template>
-						<li><a href="javascript:void(0)" onclick="vm.testcase.phylogenies.push({})">Add phylogeny</a></li>
+						<li><a href="javascript:void(0)" onclick="vm.testcase.phylogenies.push({})"><strong>Add phylogeny</strong></a></li>
 					</ul>
 				</div>
 
@@ -144,9 +144,11 @@
 					</button>
 					<ul class="dropdown-menu">
 						<template v-for="(phyloref, phyloref_index) of testcase.phylorefs">
-						  	<li><a :href="'#phyloref_' + phyloref_index">Phyloreference {{phyloref_index + 1}}</a></li>
+						  	<li :class="{active: selected_phyloref === phyloref}">
+								<a href="javascript:void(0)" @click="selected_phyloref = phyloref">{{get_phyloref_label(phyloref)}}</a>
+							</li>
 						</template>
-						<li><a href="javascript:void(0)" @click="testcase.phylorefs.push(create_empty_phyloref(testcase.phylorefs.length + 1))">Add phyloreferences</a></li>
+						<li><a href="javascript:void(0)" @click="testcase.phylorefs.push(create_empty_phyloref(testcase.phylorefs.length + 1))"><strong>Add phyloreference</strong></a></li>
 					</ul>
 				</div>
 			</div>
@@ -163,8 +165,8 @@
 
 		<div class="col-md-4 panel float-md-right">
 			<div class="panel panel-info">
-				<div class="panel-heading">Phyloreferences</div>
-				<div id="selected_phyloref" v-if="selected_phyloref" class="panel-body">
+				<div id="selected_phyloref" class="panel-heading">Phyloreferences</div>
+				<div v-if="selected_phyloref" class="panel-body">
 					<form id="phyloref" class="form-horizontal">
 						<label for="label" class="control-label col-md-4">Label</label>
 						<div class="input-group col-md-8">
@@ -216,6 +218,7 @@
 						:class="{active: selected_phyloref === phyloref}"
 						@click="selected_phyloref = phyloref"
 					>{{phyloref.hasOwnProperty('label') ? phyloref.label : 'Phyloreference ' + (phyloref_index + 1)}}</a>
+					<a class="list-group-item" href="javascript: void(0)" @click="testcase.phylorefs.push(create_empty_phyloref(testcase.phylorefs.length + 1))"><strong>Add phyloreference</strong></a>
 				</div>
 			</div>
 		</div>

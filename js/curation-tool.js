@@ -95,6 +95,18 @@ var vm = new Vue({
                 internalSpecifiers: [],
                 externalSpecifiers: []
             }
+        },
+        get_phyloref_label: function(phyloref) {
+            phyloref_index = this.testcase.phylorefs.indexOf(phyloref);
+            potential_label = "Phyloreference " + (phyloref_index + 1);
+
+            if(phyloref.hasOwnProperty('label')) potential_label = phyloref.label;
+            if(phyloref.hasOwnProperty('title')) potential_label = phyloref.title;
+
+            if(potential_label.length > 54)
+                return potential_label.substr(0, 50) + " ...";
+
+            return potential_label;
         }
     }
 });
