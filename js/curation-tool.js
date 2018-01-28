@@ -27,6 +27,7 @@ var vm = new Vue({
         DOI_PREFIX: DOI_PREFIX,
 
         // Variables containing UI renders
+        selected_phylogeny: null,
         selected_phyloref: null
     },
     computed: {
@@ -107,6 +108,19 @@ var vm = new Vue({
                 return potential_label.substr(0, 50) + " ...";
 
             return potential_label;
+        },
+        get_phylogeny_as_newick: function(node_expr, phylogeny) {
+            newick = "()";
+
+            console.log("get_phylogeny_as_newick(" + node_expr + ", " + phylogeny + ")");
+
+            if(phylogeny.hasOwnProperty('newick')) newick = phylogeny.newick;
+
+            // While we're here ...
+            render_tree(node_expr, newick);
+
+            // And return.
+            return newick;
         }
     }
 });
@@ -182,4 +196,68 @@ function load_json_from_local(file_input) {
         }
     };
     fr.readAsText(file);
+}
+
+/**
+ * Given a Newick string, try to render it as a tree using Phylotree.
+ *
+ * 'node' should be an SVG node.
+ */
+function render_tree(node_expr, newick) {
+    console.log("render_tree(" + node_expr + ", " + newick + ")");
+
+    var nodeStyler = function(element, data) {
+        if("internal_label" in data && data.internal_label == 'Calymperaceae') {
+            var label = element.selectAll(".internal_label");
+            if(label.empty()) {
+                element.append("text").classed("internal_label", true)
+                    .text(data.internal_label)
+                    .attr("dx", ".4em")
+                    .attr("dy", ".3em")
+                    .attr("text-anchor", "start")
+                    .attr("alignment-baseline", "middle");
+            }
+        } else {
+            element.style('fill', function() {
+            if(data.name == 'Syrrhopodon gardneri' || data.name == 'Leucophanes octoblepharoides')
+                return "rgb(0, 255, 0)";
+            if(data.name == 'Octoblepharum albidum')
+                return "rgb(255, 0, 0)";
+            return "rgb(0, 0, 0)";
+        });
+        }
+    }
+
+    tree = d3.layout.phylotree()
+        .svg(d3.select(node_expr))
+        .options({
+            //"selectable": false,
+            //"collapsible": false,
+            //"transitions": false
+        })
+        .style_nodes(nodeStyler)
+    ;
+
+    try {
+        tree(d3.layout.newick_parser(newick));
+        _.each(tree.get_nodes(), function(node) {
+            if(node.children && node.name.startsWith("expected_")) {
+                node.internal_label = node.name.substring(9);
+                // console.log(node.internal_label)
+            }
+        });
+
+        tree.spacing_x(20).spacing_y(50);
+
+        // tree.placenodes().layout();
+        tree.update();
+    } catch(e) {
+        console.log("Unable to render tree: " + e);
+    }
+
+    /*
+    $(function() {
+        tree.update_layout();
+    });
+    */
 }
