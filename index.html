@@ -14,6 +14,7 @@
 	<meta name="viewport" content="width=device-width, initial-size=1">
 
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.cs">
 	<title>Phyloref Curation Tool, version 0.1</title>
 
 	<link rel="stylesheet" href="css/main.css">
@@ -176,6 +177,29 @@
 			</div>
 		</div>
 
+		<!-- Specifier modal: displays the allows editing of the current specifier -->
+		<div id="specifierModal" class="modal fade">
+			<div class="modal-dialog" style="margin-top: 20%">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title">Editing specifier: {{get_specifier_label(selected_specifier)}}</h4>
+					</div>
+					<div class="modal-body form-group">
+						<form id="specifier" class="form-horizontal" v-if="selected_specifier">
+							<label for="label" class="control-label col-md-4">Label</label>
+							<div class="input-group col-md-8">
+								<input id="label" v-model="selected_specifier.label" type="text" class="form-control"  placeholder="Specifier label">
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+
 		<div class="col-md-4 panel float-md-right">
 			<div class="panel panel-info">
 				<div id="selected_phyloref" class="panel-heading">Phyloreferences</div>
@@ -194,30 +218,32 @@
 								class="form-control"
 								rows="8"
 								placeholder="Phylogenetic clade definition"
-								>nomen cladi conversum, Calymperaceae ____ Hal., Synop. Musc. Frond. 1. (1849)
-		Stem-based definition:
-		internal specifier: Type: Syrrhopodon gardneri (Hook.) Schw____, Sp. Musc. Frond. Suppl. 2(1): 110, tab. 131, figs. ____ (1824)
-		internal specifier: Type: Leucophanes octoblepharoides Brid., Bryol. Univ. 1: 763. (1826)
-		external specifier: Type: Octoblepharum albidum Hedw., Sp. Musc. 50. (1801)
-		Important synapomorphies: cancellinae, central strand absent from stem
-		Included terminal clades: gardneri, japonicus
-							</textarea>
+								></textarea>
 						</div>
 
 						<label for="internal_specifiers" class="control-label col-md-4">Internal specifiers</label>
 						<div class="input-group col-md-8">
-							<select id="internal_specifiers" class="form-control col-md-8" multiple>
-								<option value="syrrhopodon_gardneri"><em>Syrrhopodon gardneri</em></option>
-								<option value="leucophanes_octoblepharoides"><em>Leucophanes octoblepharoides</em></option>
-								<option value="add_more">(Add more)</option>
+							<select id="internalSpecifiers" class="form-control col-md-8" multiple>
+								<option
+									v-for="(specifier, specifier_index) of selected_phyloref.internalSpecifiers"
+									@click="selected_specifier = specifier"
+									ondblclick="$('#specifierModal').modal()"
+									>{{get_specifier_label(specifier)}}</option>
+								<option ondblclick="new_specifier = vm.create_empty_specifier(vm.selected_phyloref.internalSpecifiers.length + 1); vm.selected_phyloref.internalSpecifiers.push(new_specifier); vm.selected_specifier = new_specifier; $('#specifierModal').modal();"
+									>(Add more)</option>
 							</select>
 						</div>
 
 						<label for="external_specifiers" class="control-label col-md-4">External specifiers</label>
 						<div class="input-group col-md-8">
 							<select id="external_specifiers" class="form-control col-md-8" multiple>
-								<option value="octoblepharum_albidum"><em>Octoblepharum albidum</em></option>
-								<option value="add_more">(Add more)</option>
+								<option
+									v-for="(specifier, specifier_index) of selected_phyloref.externalSpecifiers"
+									@click="selected_specifier = specifier"
+									ondblclick="$('#specifierModal').modal()"
+									>{{get_specifier_label(specifier)}}</option>
+								<option ondblclick="new_specifier = vm.create_empty_specifier(vm.selected_phyloref.externalSpecifiers.length + 1); vm.selected_phyloref.externalSpecifiers.push(new_specifier); vm.selected_specifier = new_specifier; $('#specifierModal').modal();"
+									>(Add more)</option>
 							</select>
 						</div>
 
@@ -239,9 +265,12 @@
 
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 	<script
-		src="http://code.jquery.com/jquery-3.3.1.min.js"
+		src="https://code.jquery.com/jquery-3.3.1.min.js"
 		integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
 		crossorigin="anonymous"
+	></script>
+	<script
+		src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"
 	></script>
 	<script
 		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
@@ -251,6 +280,15 @@
 	<script
 		src="https://cdn.jsdelivr.net/npm/vue@2.5.13/dist/vue.js"
 	></script>
+
+	<!-- Make the modal dialogs draggable. -->
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('.modal-dialog').draggable({
+				handle: '.modal-header'
+			});
+		});
+	</script>
 
 	<!-- Phylotree -->
 	<script src="http://d3js.org/d3.v3.min.js"></script>

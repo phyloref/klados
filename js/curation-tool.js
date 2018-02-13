@@ -28,7 +28,8 @@ var vm = new Vue({
 
         // Variables containing UI renders
         selected_phylogeny: null,
-        selected_phyloref: null
+        selected_phyloref: null,
+        selected_specifier: null
     },
     computed: {
         testcase_as_json: {
@@ -96,6 +97,41 @@ var vm = new Vue({
                 internalSpecifiers: [],
                 externalSpecifiers: []
             }
+        },
+        create_empty_specifier: function(count) {
+            return {}
+        },
+        get_specifier_label: function(specifier) {
+            // Is this specifier even non-null?
+            if(specifier == null) return "(null)";
+
+            // Maybe there is a label or description right there?
+            if('label' in specifier) return specifier.label;
+            if('description' in specifier) return specifier.description;
+
+            // Look at the individual taxonomic units.
+            labels = [];
+            if('references_taxonomic_units' in specifier) {
+                for(tu of specifier.references_taxonomic_units) {
+                    // A label or description for the TU?
+                    if('label' in tu) { labels.push(tu.label); continue; }
+                    if('description' in tu) { labels.push(tu.label); continue; }
+
+                    // Any scientific names?
+                    if('scientific_names' in tu) {
+                        for(scname of tu.scientific_names) {
+                            if('scientific_name' in scname) { labels.push(scname.scientific_name); break; }
+                            if('binomial_name' in scname) { labels.push(scname.binomial_name); break; }
+                        }
+                    }
+
+                    // TODO any specimens?
+                }
+            }
+            if(labels.length > 0) return labels.join(', ');
+
+            // No idea!
+            return "Unnamed specifier";
         },
         get_phyloref_label: function(phyloref) {
             phyloref_index = this.testcase.phylorefs.indexOf(phyloref);
@@ -172,7 +208,13 @@ function load_json_from_local(file_input) {
         return;
     }
 
+    // Reset data model
     vm.testcase = {};
+
+    // Reset specifier
+    vm.selected_phyloref = null;
+    vm.selected_phylogeny = null;
+    vm.selected_specifier = null;
 
     file = file_input.prop('files')[0];
     fr = new FileReader();
