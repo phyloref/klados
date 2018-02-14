@@ -179,26 +179,44 @@
 
 		<!-- Specifier modal: displays the allows editing of the current specifier -->
 		<div id="specifier-modal" class="modal fade">
-			<div class="modal-dialog" style="margin-top: 20%">
-				<div class="modal-content">
+			<div class="modal-dialog form-horizontal" style="margin-top: 20%">
+				<div class="modal-content" v-if="selected_specifier">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 						<h4 class="modal-title">Editing specifier: {{get_specifier_label(selected_specifier)}}</h4>
 					</div>
 					<div class="modal-body form-group">
-						<form id="specifier" class="form-horizontal" v-if="selected_specifier">
-							<label for="label" class="control-label col-md-4">Label</label>
-							<div class="input-group col-md-8">
-								<input id="label" v-model="selected_specifier.label" type="text" class="form-control"  placeholder="Specifier label">
-							</div>
-						</form>
+						<div class="col-md-12">
+							<form id="specifier" class="form-horizontal" v-if="selected_specifier">
+								<label for="specifier-label" class="control-label col-md-3">Label</label>
+								<div class="input-group col-md-9">
+									<input id="specifier-label" v-model="selected_specifier.label" type="text" class="form-control" placeholder="Specifier label">
+								</div>
+
+								<div id="specifier-tunits-panel" class="panel panel-info" style="margin-top: 1em">
+									<div class="panel-heading">Taxonomic Units</div>
+									<div class="list-group">
+										<a 	class="list-group-item"
+											v-if="selected_specifier.hasOwnProperty('references_taxonomic_units')"
+											v-for="(tunit, tunit_index) of selected_specifier.references_taxonomic_units"
+											:class="{active: selected_tunit === tunit}"
+											@click="selected_tunit = tunit"
+										>{{get_taxonomic_unit_label(tunit)}}</a>
+										<a 	class="list-group-item"
+											href="javascript: void(0)"
+											onclick="if(!vm.selected_specifier.hasOwnProperty('references_taxonomic_units')) vm.selected_specifier.references_taxonomic_units = []; vm.selected_specifier.references_taxonomic_units.push(vm.create_empty_taxonomic_unit(vm.selected_specifier.references_taxonomic_units.length + 1))"
+											><strong>Add taxonomic unit</strong></a>
+									</div>
+								</div>
+							</form>
+						</div>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 					</div>
-				</div><!-- /.modal-content -->
-			</div><!-- /.modal-dialog -->
-		</div><!-- /.modal -->
+				</div>
+			</div>
+		</div>
 
 		<div class="col-md-4 panel float-md-right">
 			<div class="panel panel-info">
@@ -227,7 +245,7 @@
 								<option
 									v-for="(specifier, specifier_index) of selected_phyloref.internalSpecifiers"
 									@click="selected_specifier = specifier"
-									ondblclick="$('#specifierModal').modal()"
+									ondblclick="$('#specifier-modal').modal()"
 									>{{get_specifier_label(specifier)}}</option>
 								<option ondblclick="new_specifier = vm.create_empty_specifier(vm.selected_phyloref.internalSpecifiers.length + 1); vm.selected_phyloref.internalSpecifiers.push(new_specifier); vm.selected_specifier = new_specifier; $('#specifier-modal').modal();"
 									>(Add more)</option>
@@ -240,7 +258,7 @@
 								<option
 									v-for="(specifier, specifier_index) of selected_phyloref.externalSpecifiers"
 									@click="selected_specifier = specifier"
-									ondblclick="$('#specifierModal').modal()"
+									ondblclick="$('#specifier-modal').modal()"
 									>{{get_specifier_label(specifier)}}</option>
 								<option ondblclick="new_specifier = vm.create_empty_specifier(vm.selected_phyloref.externalSpecifiers.length + 1); vm.selected_phyloref.externalSpecifiers.push(new_specifier); vm.selected_specifier = new_specifier; $('#specifier-modal').modal();"
 									>(Add more)</option>

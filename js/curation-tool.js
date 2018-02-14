@@ -27,9 +27,14 @@ var vm = new Vue({
         DOI_PREFIX: DOI_PREFIX,
 
         // Variables containing UI renders
+
+        // Global
         selected_phylogeny: null,
         selected_phyloref: null,
-        selected_specifier: null
+        selected_specifier: null,
+
+        // Specific to the specifier modal
+        selected_tunit: null
     },
     computed: {
         testcase_as_json: {
@@ -99,7 +104,13 @@ var vm = new Vue({
             }
         },
         create_empty_specifier: function(count) {
-            return {}
+            return {};
+        },
+        create_empty_taxonomic_unit: function(count) {
+            return {};
+        },
+        get_taxonomic_unit_label: function(tunit) {
+            return "(unnamed taxonomic unit)";
         },
         get_specifier_label: function(specifier) {
             // Is this specifier even non-null?
