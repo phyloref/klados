@@ -55,16 +55,16 @@
 					</ul>
 				</div>
 
-				<label class="btn btn-info btn-group" for="file_input" role="group">
-					<input id="file_input" type="file" style="display:none;"
-						onchange="load_json_from_local($('#file_input'))"
+				<label class="btn btn-info btn-group" for="file-input" role="group">
+					<input id="file-input" type="file" style="display:none;"
+						onchange="load_json_from_local($('#file-input'))"
 					>
 					Read from local JSON file
 				</label>
 
 				<div class="btn-group" role="group">
-					<button id="export_as_json" type="button" class="btn btn-success"
-						onclick="$('#view_as_json').toggle(300)"
+					<button id="export-as-json" type="button" class="btn btn-success"
+						onclick="$('#view-as-json').toggle(300)"
 					>Export as JSON</button>
 				</div>
 			</div>
@@ -79,11 +79,11 @@
 			</div>
 		</div>
 
-		<div id="view_as_json" class="col-md-12" hidden>
+		<div id="view-as-json" class="col-md-12" hidden>
 			<div class="panel panel-success">
 				<div class="panel-heading">Test case as JSON</div>
 				<div class="panel-body">
-					<textarea id="test_content" cols="80" rows="10" v-model="testcase_as_json"></textarea>
+					<textarea id="test-content" cols="80" rows="10" v-model="testcase_as_json"></textarea>
 				</div>
 			</div>
 		</div>
@@ -92,9 +92,9 @@
 			<div class="panel panel-info">
 				<div class="panel-heading">Study metadata</div>
 				<div class="form-group panel-body">
-					<label for="testcase_id" class="col-md-1 control-label">Testcase URI</label>
+					<label for="testcase-id" class="col-md-1 control-label">Testcase URI</label>
 					<div class="col-md-10 input-group">
-						<input id="testcase_id" type="url" class="form-control" v-model.trim="testcase['@id']" v-on:input="modified = true" placeholder="Enter URI that identifies this testcase">
+						<input id="testcase-id" type="url" class="form-control" v-model.trim="testcase['@id']" v-on:input="modified = true" placeholder="Enter URI that identifies this testcase">
 					</div>
 
 					<label for="title" class="col-md-1 control-label">Title</label>
@@ -135,7 +135,7 @@
 					</button>
 					<ul class="dropdown-menu">
 						<template v-for="(phylogeny, phylogeny_index) of testcase.phylogenies">
-						  	<li><a :href="'#phylogeny_' + phylogeny_index">Phylogeny {{phylogeny_index + 1}}</a></li>
+						  	<li><a :href="'#phylogeny-' + phylogeny_index">Phylogeny {{phylogeny_index + 1}}</a></li>
 						</template>
 						<li><a href="javascript:void(0)" onclick="vm.testcase.phylogenies.push({})"><strong>Add phylogeny</strong></a></li>
 					</ul>
@@ -158,10 +158,10 @@
 		</div>
 
 		<div class="col-md-8">
-			<div :id="'phylogeny_' + phylogeny_index" class="panel panel-info" v-for="(phylogeny, phylogeny_index) of testcase.phylogenies">
+			<div :id="'phylogeny-' + phylogeny_index" class="panel panel-info" v-for="(phylogeny, phylogeny_index) of testcase.phylogenies">
 				<div class="panel-heading">Phylogeny {{phylogeny_index + 1}}</div>
 				<div class="panel-body">
-					<svg :id="'phylogeny_svg_' + phylogeny_index" :alt="get_phylogeny_as_newick('#phylogeny_svg_' + phylogeny_index, phylogeny)"></svg>
+					<svg :id="'phylogeny-svg-' + phylogeny_index" :alt="get_phylogeny_as_newick('#phylogeny-svg-' + phylogeny_index, phylogeny)"></svg>
 				</div>
 				<div class="panel-footer">
 					<textarea
@@ -169,16 +169,16 @@
 						v-if="selected_phylogeny === phylogeny"
 						placeholder="Enter Newick string for phylogeny here"
 						v-model.lazy="phylogeny.newick"
-						>{{get_phylogeny_as_newick('#phylogeny_svg_' + phylogeny_index, phylogeny)}}</textarea>
+						>{{get_phylogeny_as_newick('#phylogeny-svg-' + phylogeny_index, phylogeny)}}</textarea>
 					<div class="btn-group btn-group-justified" role="group" aria-label="Actions for phylogeny">
-						<a :href="'#phylogeny_' + phylogeny_index" @click="selected_phylogeny = (selected_phylogeny == phylogeny ? null : phylogeny)" class="btn btn-default">Edit as Newick</a>
+						<a :href="'#phylogeny-' + phylogeny_index" @click="selected_phylogeny = (selected_phylogeny == phylogeny ? null : phylogeny)" class="btn btn-default">Edit as Newick</a>
 					</div>
 				</div>
 			</div>
 		</div>
 
 		<!-- Specifier modal: displays the allows editing of the current specifier -->
-		<div id="specifierModal" class="modal fade">
+		<div id="specifier-modal" class="modal fade">
 			<div class="modal-dialog" style="margin-top: 20%">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -202,7 +202,7 @@
 
 		<div class="col-md-4 panel float-md-right">
 			<div class="panel panel-info">
-				<div id="selected_phyloref" class="panel-heading">Phyloreferences</div>
+				<div id="selected-phyloref" class="panel-heading">Phyloreferences</div>
 				<div v-if="selected_phyloref" class="panel-body">
 					<form id="phyloref" class="form-horizontal">
 						<label for="label" class="control-label col-md-4">Label</label>
@@ -221,15 +221,15 @@
 								></textarea>
 						</div>
 
-						<label for="internal_specifiers" class="control-label col-md-4">Internal specifiers</label>
+						<label for="internal-specifiers" class="control-label col-md-4">Internal specifiers</label>
 						<div class="input-group col-md-8">
-							<select id="internalSpecifiers" class="form-control col-md-8" multiple>
+							<select id="internal-specifiers" class="form-control col-md-8" multiple>
 								<option
 									v-for="(specifier, specifier_index) of selected_phyloref.internalSpecifiers"
 									@click="selected_specifier = specifier"
 									ondblclick="$('#specifierModal').modal()"
 									>{{get_specifier_label(specifier)}}</option>
-								<option ondblclick="new_specifier = vm.create_empty_specifier(vm.selected_phyloref.internalSpecifiers.length + 1); vm.selected_phyloref.internalSpecifiers.push(new_specifier); vm.selected_specifier = new_specifier; $('#specifierModal').modal();"
+								<option ondblclick="new_specifier = vm.create_empty_specifier(vm.selected_phyloref.internalSpecifiers.length + 1); vm.selected_phyloref.internalSpecifiers.push(new_specifier); vm.selected_specifier = new_specifier; $('#specifier-modal').modal();"
 									>(Add more)</option>
 							</select>
 						</div>
@@ -242,7 +242,7 @@
 									@click="selected_specifier = specifier"
 									ondblclick="$('#specifierModal').modal()"
 									>{{get_specifier_label(specifier)}}</option>
-								<option ondblclick="new_specifier = vm.create_empty_specifier(vm.selected_phyloref.externalSpecifiers.length + 1); vm.selected_phyloref.externalSpecifiers.push(new_specifier); vm.selected_specifier = new_specifier; $('#specifierModal').modal();"
+								<option ondblclick="new_specifier = vm.create_empty_specifier(vm.selected_phyloref.externalSpecifiers.length + 1); vm.selected_phyloref.externalSpecifiers.push(new_specifier); vm.selected_specifier = new_specifier; $('#specifier-modal').modal();"
 									>(Add more)</option>
 							</select>
 						</div>
@@ -251,7 +251,7 @@
 				</div>
 
 				<div class="list-group">
-					<a 	href="#selected_phyloref"
+					<a 	href="#selected-phyloref"
 						class="list-group-item"
 						v-for="(phyloref, phyloref_index) of testcase.phylorefs"
 						:class="{active: selected_phyloref === phyloref}"
