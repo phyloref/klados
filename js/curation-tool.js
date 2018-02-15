@@ -95,6 +95,43 @@ var vm = new Vue({
         }
     },
     methods: {
+        get_specifiers: function(phyloref) {
+            specifiers = [];
+
+            if(phyloref.hasOwnProperty('internalSpecifiers'))
+                specifiers = phyloref.internalSpecifiers;
+            if(phyloref.hasOwnProperty('externalSpecifiers'))
+                specifiers = specifiers.concat(phyloref.externalSpecifiers);
+
+            return specifiers;
+        },
+        get_specifier_type: function(phyloref, specifier) {
+            if(phyloref.hasOwnProperty('internalSpecifiers') && phyloref.internalSpecifiers.includes(specifier)) return "Internal";
+            if(phyloref.hasOwnProperty('externalSpecifiers') && phyloref.externalSpecifiers.includes(specifier)) return "External";
+            return "Specifier";
+        },
+        set_specifier_type: function(phyloref, specifier, specifier_type) {
+            if(!phyloref.hasOwnProperty('internalSpecifiers')) phyloref.internalSpecifiers = [];
+            if(!phyloref.hasOwnProperty('externalSpecifiers')) phyloref.externalSpecifiers = [];
+
+            if(specifier_type == 'Internal') {
+                index = phyloref.externalSpecifiers.indexOf(specifier);
+                if(index != -1)
+                    phyloref.externalSpecifiers.splice(index, 1);
+
+                if(!phyloref.internalSpecifiers.includes(specifier))
+                    phyloref.internalSpecifiers.unshift(specifier);
+            } else if(specifier_type == 'External') {
+                index = phyloref.internalSpecifiers.indexOf(specifier);
+                if(index != -1)
+                    phyloref.internalSpecifiers.splice(index, 1);
+
+                if(!phyloref.externalSpecifiers.includes(specifier))
+                    phyloref.externalSpecifiers.unshift(specifier);
+            } else {
+                // Neither internal nor external? Ignore.
+            }
+        },
         create_empty_phyloref: function(count) {
             return {
                 label: "Phyloreference " + count,

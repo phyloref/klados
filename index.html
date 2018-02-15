@@ -277,6 +277,61 @@
 								></textarea>
 						</div>
 
+						<div class="panel panel-info" style="margin-top: 1em">
+							<div class="panel-heading">Specifiers</div>
+							<div class="panel-body">
+								<div class="input-group"
+									v-if="selected_phyloref"
+									v-for="(specifier, specifier_index) of get_specifiers(selected_phyloref)"
+									@id="'specifier_' + specifier_index"
+								>
+									<div class="input-group-btn">
+										<button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+											<span class="glyphicon glyphicon-asterisk"></span>
+										</button>
+										<ul class="dropdown-menu dropdown-menu-left">
+											<li>No identical matches found.</li>
+											<li>No fuzzy matches found.</li>
+										</ul>
+										<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+											> {{get_specifier_type(selected_phyloref, specifier)}} <span class="caret"></span></button>
+										<ul class="dropdown-menu dropdown-menu-left">
+											<li :class="{active: get_specifier_type(selected_phyloref, specifier) == 'Internal'}"
+												><a :href="'#specifier_' + specifier_index"
+													@click="set_specifier_type(selected_phyloref, specifier, 'Internal')"
+												>Internal specifier</a></li>
+											<li :class="{active: get_specifier_type(selected_phyloref, specifier) == 'External'}"
+												><a :href="'#specifier_' + specifier_index"
+													@click="set_specifier_type(selected_phyloref, specifier, 'External')"
+												>External specifier</a></li>
+										</ul>
+									</div>
+									<input type="text" class="form-control" disabled v-bind:value="get_specifier_label(specifier)">
+									<div class="input-group-btn">
+										<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+											><span class="glyphicon glyphicon-edit"></span></button>
+										<ul class="dropdown-menu dropdown-menu-right">
+											<li :class="{active: get_specifier_type(selected_phyloref, specifier) == 'Internal'}"
+												><a :href="'#specifier_' + specifier_index"
+													@click="set_specifier_type(selected_phyloref, specifier, 'Internal')"
+												>Internal specifier</a></li>
+											<li :class="{active: get_specifier_type(selected_phyloref, specifier) == 'External'}"
+												><a :href="'#specifier_' + specifier_index"
+													@click="set_specifier_type(selected_phyloref, specifier, 'External')"
+												>External specifier</a></li>
+										</ul>
+									</div>
+								</div>
+							</div>
+							<div class="panel-footer">
+								<button
+									type="button"
+									class="btn btn-default"
+									onclick="if(!vm.selected_phyloref.hasOwnProperty('externalSpecifiers')) vm.selected_phyloref.externalSpecifiers = []; vm.selected_phyloref.externalSpecifiers.push({});"
+								>Add new specifier</button>
+							</div>
+						</div>
+
 						<label for="internal-specifiers" class="control-label col-md-4">Internal specifiers</label>
 						<div class="input-group col-md-8">
 							<select id="internal-specifiers" class="form-control col-md-8" multiple>
