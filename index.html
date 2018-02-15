@@ -33,6 +33,7 @@
 </head>
 
 <body>
+	<!-- Navigation bar at the top of the page -->
 	<nav class="navbar navbar-default">
 		<div class="container">
 			<div class="navbar-header">
@@ -43,6 +44,8 @@
 
 	<div id="app">
 		<div class="col-md-12 panel">
+
+			<!-- Menu for loading and exporting files -->
 			<div class="btn-group btn-group-justified" role="group" aria-label="Options to load or save testcase">
 				<div class="btn-group" role="group">
 					<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -70,6 +73,7 @@
 			</div>
 		</div>
 
+		<!-- Modification warning -->
 		<div id="testcase_modified" v-if="modified" class="col-md-12">
 			<div class="panel panel-warning collapsible">
 				<div class="panel-heading">The testcase has been modified!</div>
@@ -79,6 +83,7 @@
 			</div>
 		</div>
 
+		<!-- Displays the test case as a JSON document -->
 		<div id="view-as-json" class="col-md-12" hidden>
 			<div class="panel panel-success">
 				<div class="panel-heading">Test case as JSON</div>
@@ -88,6 +93,7 @@
 			</div>
 		</div>
 
+		<!-- Metadata for the entire study -->
 		<form id="study-metadata" class="form-horizontal col-md-12">
 			<div class="panel panel-info">
 				<div class="panel-heading">Study metadata</div>
@@ -127,6 +133,7 @@
 			</div>
 		</form>
 
+		<!-- Dropdown menus for navigating phylogenies and phyloreferences -->
 		<div class="col-md-12 panel">
 			<div class="btn-group btn-group-justified" role="group" aria-label="Options to navigate phylogenies">
 				<div class="btn-group" role="group">
@@ -157,6 +164,7 @@
 			</div>
 		</div>
 
+		<!-- Phylogeny display and Newick editing -->
 		<div class="col-md-8">
 			<div :id="'phylogeny-' + phylogeny_index" class="panel panel-info" v-for="(phylogeny, phylogeny_index) of testcase.phylogenies">
 				<div class="panel-heading">Phylogeny {{phylogeny_index + 1}}</div>
@@ -195,6 +203,35 @@
 
 								<div id="specifier-tunits-panel" class="panel panel-info" style="margin-top: 1em">
 									<div class="panel-heading">Taxonomic Units</div>
+									<div class="panel-body">
+										<div class="row">
+											<input name="tunit_type" type="radio" class="col-md-1">
+											<label for="specifier-label" class="control-label col-md-2">Exact match</label>
+											<div class="input-group col-md-9">
+												<span class="input-group-addon">http://</span>
+												<input id="specifier-label" v-model="selected_specifier.label" type="text" class="form-control" placeholder="Specifier label">
+											</div>
+										</div>
+
+										<div class="row">
+											<label for="specifier-label" class="control-label col-md-2">
+												<input name="tunit_type" type="radio">Scientific name</input>
+											</label>
+											<div class="input-group col-md-9">
+												<span class="input-group-addon">http://</span>
+												<input id="specifier-label" v-model="selected_specifier.label" type="text" class="form-control" placeholder="Specifier label">
+											</div>
+										</div>
+
+										<div class="row">
+											<input name="tunit_type" type="radio" class="col-md-1">
+											<label for="specifier-label" class="control-label col-md-2">Specimen identifier</label>
+											<div class="input-group col-md-9">
+												<span class="input-group-addon">http://</span>
+												<input id="specifier-label" v-model="selected_specifier.label" type="text" class="form-control" placeholder="Specifier label">
+											</div>
+										</div>
+									</div>
 									<div class="list-group">
 										<a 	class="list-group-item"
 											v-if="selected_specifier.hasOwnProperty('references_taxonomic_units')"
@@ -218,6 +255,7 @@
 			</div>
 		</div>
 
+		<!-- Phyloreference sidebar -->
 		<div class="col-md-4 panel float-md-right">
 			<div class="panel panel-info">
 				<div id="selected-phyloref" class="panel-heading">Phyloreferences</div>
@@ -280,6 +318,8 @@
 			</div>
 		</div>
 	</div>
+
+	<!-- End of page UI -->
 
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 	<script
