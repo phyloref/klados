@@ -34,7 +34,12 @@ var vm = new Vue({
         selected_specifier: null,
 
         // Specific to the specifier modal
-        selected_tunit: null
+        selected_tunit: null,
+
+        // Specific to the specifier dropdown and
+        // a hack to get around Bootstrap not allowing
+        specifier_dropdown_target: 'none',
+        specifier_delete_mode: false
     },
     computed: {
         testcase_as_json: {
@@ -96,13 +101,11 @@ var vm = new Vue({
     },
     methods: {
         get_specifiers: function(phyloref) {
-            specifiers = [];
+            if(!phyloref.hasOwnProperty('internalSpecifiers')) phyloref.internalSpecifiers = [];
+            if(!phyloref.hasOwnProperty('externalSpecifiers')) phyloref.externalSpecifiers = [];
 
-            if(phyloref.hasOwnProperty('internalSpecifiers'))
-                specifiers = phyloref.internalSpecifiers;
-            if(phyloref.hasOwnProperty('externalSpecifiers'))
-                specifiers = specifiers.concat(phyloref.externalSpecifiers);
-
+            specifiers = phyloref.internalSpecifiers;
+            specifiers = specifiers.concat(phyloref.externalSpecifiers);
             return specifiers;
         },
         get_specifier_type: function(phyloref, specifier) {
@@ -210,6 +213,38 @@ var vm = new Vue({
 });
 
 /**
+ * Resets UI and updates it to reflect a new JSON document.
+ *
+ * Most other functions call this function to process the JSON before
+ * the UI starts working.
+ */
+function load_json_from_json(testcase) {
+    try {
+        // The DOI-to-ID/URL system doesn't work unless some variables
+        // are set.
+        if(!testcase.hasOwnProperty('@id'))
+            testcase['@id'] = "";
+        if(!testcase.hasOwnProperty('doi'))
+            testcase['doi'] = "";
+        if(!testcase.hasOwnProperty('url'))
+            testcase['url'] = "";
+
+        // Specifiers act weird unless every phyloreference has both
+        // internalSpecifiers and externalSpecifiers set, even if they
+        // are blank.
+        if(!testcase.hasOwnProperty('phylorefs')) testcase.phylorefs = [];
+        for(phyloref of testcase.phylorefs) {
+            if(!phyloref.hasOwnProperty('internalSpecifiers')) phyloref.internalSpecifiers = [];
+            if(!phyloref.hasOwnProperty('externalSpecifiers')) phyloref.externalSpecifiers = [];
+        }
+
+        vm.testcase = testcase;
+    } catch(err) {
+        alert("Error occurred while reading input JSON: " + err);
+    }
+}
+
+/**
  * Load a JSON from a URL. This either needs to be a JSONP request or
  * on the same domain as this website.
  */
@@ -222,7 +257,7 @@ function load_json_from_url(url) {
 
     // Load from URL
     $.getJSON(url, function(data) {
-        vm.testcase = data;
+        load_json_from_json(data);
     });
 }
 
@@ -259,7 +294,7 @@ function load_json_from_local(file_input) {
     // Reset data model
     vm.testcase = {};
 
-    // Reset specifier
+    // Reset UI
     vm.selected_phyloref = null;
     vm.selected_phylogeny = null;
     vm.selected_specifier = null;
@@ -267,23 +302,9 @@ function load_json_from_local(file_input) {
     file = file_input.prop('files')[0];
     fr = new FileReader();
     fr.onload = function(e) {
-        try {
-            lines = e.target.result;
-            testcase = JSON.parse(lines);
-
-            // The DOI-to-ID/URL system doesn't work unless some variables
-            // are set.
-            if(!testcase.hasOwnProperty('@id'))
-                testcase['@id'] = "";
-            if(!testcase.hasOwnProperty('doi'))
-                testcase['doi'] = "";
-            if(!testcase.hasOwnProperty('url'))
-                testcase['url'] = "";
-
-            vm.testcase = testcase;
-        } catch(err) {
-            alert("Error occurred while loading file: " + err);
-        }
+        lines = e.target.result;
+        testcase = JSON.parse(lines);
+        load_json_from_json(testcase);
     };
     fr.readAsText(file);
 }

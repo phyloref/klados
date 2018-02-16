@@ -165,7 +165,7 @@
 		</div>
 
 		<!-- Phylogeny display and Newick editing -->
-		<div class="col-md-8">
+		<div class="col-md-7">
 			<div :id="'phylogeny-' + phylogeny_index" class="panel panel-info" v-for="(phylogeny, phylogeny_index) of testcase.phylogenies">
 				<div class="panel-heading">Phylogeny {{phylogeny_index + 1}}</div>
 				<div class="panel-body">
@@ -256,7 +256,7 @@
 		</div>
 
 		<!-- Phyloreference sidebar -->
-		<div class="col-md-4 panel float-md-right">
+		<div class="col-md-5 panel float-md-right">
 			<div class="panel panel-info">
 				<div id="selected-phyloref" class="panel-heading">Phyloreferences</div>
 				<div v-if="selected_phyloref" class="panel-body">
@@ -286,16 +286,20 @@
 									@id="'specifier_' + specifier_index"
 								>
 									<div class="input-group-btn">
-										<button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										<button v-if="specifier_delete_mode" type="button"
+											class="btn btn-danger"
+											><span class="glyphicon glyphicon-remove"></span></button>
+										<button
+											@click="specifier_dropdown_target = 'match_result'"
+											type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 											<span class="glyphicon glyphicon-asterisk"></span>
 										</button>
-										<ul class="dropdown-menu dropdown-menu-left">
-											<li>No identical matches found.</li>
-											<li>No fuzzy matches found.</li>
-										</ul>
-										<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+										<button
+											@click="specifier_dropdown_target = 'specifier_type'"
+											type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
 											> {{get_specifier_type(selected_phyloref, specifier)}} <span class="caret"></span></button>
-										<ul class="dropdown-menu dropdown-menu-left">
+										<ul v-if="specifier_dropdown_target == 'specifier_type'" class="dropdown-menu dropdown-menu-left">
+											<li class="dropdown-header">Specifier type</li>
 											<li :class="{active: get_specifier_type(selected_phyloref, specifier) == 'Internal'}"
 												><a :href="'#specifier_' + specifier_index"
 													@click="set_specifier_type(selected_phyloref, specifier, 'Internal')"
@@ -304,13 +308,32 @@
 												><a :href="'#specifier_' + specifier_index"
 													@click="set_specifier_type(selected_phyloref, specifier, 'External')"
 												>External specifier</a></li>
+										</ul>
+										<ul v-if="specifier_dropdown_target == 'match_result'" class="dropdown-menu dropdown-menu-left">
+											<li class="dropdown-header">Match result</li>
+											<li><a style="color: red" href="#">&#x2715; No nodes matched scientific name '<em>Rana pretiosa</em> Baird and Girard 1853'</a></li>
+											<li><a style="color: red" href="#">&#x2715; No nodes matched binomial name '<em>Rana pretiosa</em>'</a></li>
+											<li class="dropdown-header">Possible fixes</li>
+											<li><a href="#">&#x2192; Fuzzy match with 'Rana pretiosa'</a></li>
+											<li><a href="#">&#x2192; Manually match with ...</a></li>
 										</ul>
 									</div>
-									<input type="text" class="form-control" disabled v-bind:value="get_specifier_label(specifier)">
+									<input type="text" class="form-control" v-bind:value="get_specifier_label(specifier)">
 									<div class="input-group-btn">
-										<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-											><span class="glyphicon glyphicon-edit"></span></button>
+
+										<button type="button"
+											class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+											><span class="glyphicon glyphicon-edit"></span> <span class="caret"></span></button>
 										<ul class="dropdown-menu dropdown-menu-right">
+											<li class="dropdown-header">Scientific name</li>
+											<li class="active"><a href="#">Treat as scientific name: <em>Rana pretiosa</em> Baird and Girard 1853</a></li>
+											<li><a href="#">Treat as binomial name: <em>Rana pretiosa</em></a></li>
+											<li class="dropdown-header">Specimen identifier</li>
+											<li><a href="#">Treat as specimen identifier: <tt>Rana pretiosa Bair...</tt></a></li>
+											<li class="dropdown-header">Advanced</li>
+											<li><a href="#">Edit taxonomic units directly</a></li>
+
+											<!--
 											<li :class="{active: get_specifier_type(selected_phyloref, specifier) == 'Internal'}"
 												><a :href="'#specifier_' + specifier_index"
 													@click="set_specifier_type(selected_phyloref, specifier, 'Internal')"
@@ -319,6 +342,7 @@
 												><a :href="'#specifier_' + specifier_index"
 													@click="set_specifier_type(selected_phyloref, specifier, 'External')"
 												>External specifier</a></li>
+											-->
 										</ul>
 									</div>
 								</div>
@@ -329,9 +353,16 @@
 									class="btn btn-default"
 									onclick="if(!vm.selected_phyloref.hasOwnProperty('externalSpecifiers')) vm.selected_phyloref.externalSpecifiers = []; vm.selected_phyloref.externalSpecifiers.push({});"
 								>Add new specifier</button>
+								<button
+									type="button"
+									class="btn btn-default"
+									@click="specifier_delete_mode = !specifier_delete_mode"
+								>Delete some specifiers</button>
 							</div>
 						</div>
 
+						<!-- Old-timey select lists of Specifiers. TBD. -->
+						<!--
 						<label for="internal-specifiers" class="control-label col-md-4">Internal specifiers</label>
 						<div class="input-group col-md-8">
 							<select id="internal-specifiers" class="form-control col-md-8" multiple>
@@ -357,7 +388,7 @@
 									>(Add more)</option>
 							</select>
 						</div>
-
+						-->
 					</form>
 				</div>
 
