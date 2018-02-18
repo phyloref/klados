@@ -100,6 +100,11 @@ var vm = new Vue({
         }
     },
     methods: {
+        create_or_append: function(dict, key, value) {
+            if(!(key in dict)) dict[key] = [];
+            dict[key].push(value);
+            return dict;
+        },
         get_specifiers: function(phyloref) {
             if(!phyloref.hasOwnProperty('internalSpecifiers')) phyloref.internalSpecifiers = [];
             if(!phyloref.hasOwnProperty('externalSpecifiers')) phyloref.externalSpecifiers = [];
