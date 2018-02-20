@@ -100,8 +100,55 @@ var vm = new Vue({
         }
     },
     methods: {
+        open_url: function(url) {
+            if(url === null) return;
+            if(url == "") return;
+
+            // Show it!
+            window.open(url);
+        },
+        get_prop: function(d, k, def) {
+            if(k in d) return d[k];
+            return def;
+        },
+        start_specifier_modal: function(specifier) {
+            // Display the specifier modal. We need to prepare the specifier
+            // in order for the modal to work correctly.
+            if(specifier === null) return;
+
+            // We need externalReferences, scientificNames and includesSpecimens.
+            /*
+            if('references_taxonomic_units' in specifier) {
+                console.log(specifier);
+                for(tunit of specifier.references_taxonomic_units) {
+                    console.log(tunit);
+                    if(!('externalReferences' in tunit)) tunit.externalReferences = [];
+                    if(!('scientificNames' in tunit)) tunit.scientificNames = [];
+                    if(!('includesSpecimens' in tunit)) tunit.includesSpecimens = [];
+                }
+            }
+            */
+
+            // Set up specifier.
+            vm.selected_tunit = null;
+
+            // Go go modal!
+            $('.modal-dialog').draggable({
+				handle: '.modal-header'
+			});
+            $('#specifier-modal').modal();
+        },
+        close_specifier_modal: function(specifier) {
+            // Close the specifier modal. This is a good chance to clean up all
+            // the mess we created above!
+            if(specifier === null) return;
+
+            // Stop stop modal!
+            // Actually, we've set up a data-dismiss to do that, so we don't
+            // need to close anything here.
+        },
         create_or_append: function(dict, key, value) {
-            if(!(key in dict)) dict[key] = [];
+            if(!(key in dict)) Vue.set(dict, key, []);
             dict[key].push(value);
             return dict;
         },
@@ -303,6 +350,7 @@ function load_json_from_local(file_input) {
     vm.selected_phyloref = null;
     vm.selected_phylogeny = null;
     vm.selected_specifier = null;
+    vm.selected_tunit = null;
 
     file = file_input.prop('files')[0];
     fr = new FileReader();

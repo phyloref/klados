@@ -186,7 +186,7 @@
 		</div>
 
 		<!-- Specifier modal: displays the allows editing of the current specifier -->
-		<div id="specifier-modal" class="modal fade">
+		<div id="specifier-modal" class="modal fade" v-if="selected_specifier">
 			<div class="modal-dialog form-horizontal" style="margin-top: 20%">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -195,7 +195,7 @@
 					</div>
 					<div class="modal-body form-group">
 						<div class="col-md-12">
-							<form id="specifier" class="form-vertical" v-if="selected_specifier">
+							<form id="specifier" class="form-vertical">
 								<p>
 									Specifiers reference a number of taxonomic units. You will usually only need to reference a
 									single taxonomic specifier, but this interface allows you to examine all taxonomic units that
@@ -204,33 +204,57 @@
 
 								<div id="specifier-tunits-panel" class="panel panel-info" style="margin-top: 1em">
 									<div class="panel-heading">Taxonomic Units</div>
-									<div class="panel-body" v-if="selected_tunit === null">
+									<div class="panel-body" v-if="!selected_tunit">
 										<p><em>Select a taxonomic unit or create a new one.</em></p>
 									</div>
-									<div class="panel-body" v-if="selected_tunit !== null">
+									<div class="panel-body" v-if="selected_tunit">
+
 										<label for="external-references">External references</label>
 										<ul id="external-references">
 											<li
-												v-if="'externalReferences' in selected_tunit"
+												v-if="selected_tunit.hasOwnProperty('externalReferences')"
 												v-for="(external_ref, external_ref_index) of selected_tunit.externalReferences"
-											><input type="url" v-bind="external_ref"></li>
+												><input class="form-control" :value="external_ref">
+												<button class="btn btn-default" @click="open_url(external_ref)">Go to URL</button>
+											</li>
 											<li><a
-												href="#external-references"
-												@click="create_or_append(selected_tunit, 'externalReferences', {})"
-												><em>Add a new external reference</em></a></li>
+													href="#specifier-modal"
+													onclick="if(!('externalReferences' in vm.selected_tunit)) Vue.set(vm.selected_tunit, 'externalReferences', []); vm.selected_tunit.externalReferences.push('http://example.org/');"
+													><em>Add a new external reference</em></a>
+											</li>
 										</ul>
 
 										<label for="scientific-names">Scientific names</label>
 										<ul id="scientific-names">
-											<li><a href="#scientific-names"><em>Add a new scientific name</em></a></li>
+											<template
+												v-if="selected_tunit.hasOwnProperty('scientific_names')"
+												v-for="(scname, scname_index) of selected_tunit.scientific_names">
+												<li><input v-model:lazy="scname.scientific_name" style="margin: auto"></li>
+												<ul>
+													<li>Verbatim name: {{scname.scientific_name}}</li>
+													<li>Binomial name: {{scname.binomial_name}}</li>
+													<li>Genus: {{scname.genus}}</li>
+													<li>Specific epithet: {{scname.specificEpithet}}</li>
+												</ul>
+											</template>
+											<li><a href="#specifier-modal" @click="create_or_append(selected_tunit, 'scientific_names', {'scientific_name': ''})"><em>Add a new scientific name</em></a></li>
 										</ul>
 
 										<label for="specimens">Specimens</label>
 										<ul id="specimens">
-											<li><a href="#specimens"><em>Add a new specimen</em></a></li>
+											<li
+												v-if="selected_tunit.hasOwnProperty('includesSpecimens')"
+												v-for="(specimen, specimen_index) of selected_tunit.includesSpecimens"
+												>Catalog Number: <input class="form-control" :value="specimen.catalogNumber" style="margin:auto">
+											</li>
+											<li><a
+													href="#specifier-modal"
+													@click="create_or_append(selected_tunit, 'includesSpecimens', {'catalogNumber': ''})"
+													><em>Add a new specimen</em></a>
+											</li>
 										</ul>
 									</div>
-									<div class="list-group">
+									<div class="list-group" >
 										<a 	class="list-group-item"
 											v-if="selected_specifier.hasOwnProperty('references_taxonomic_units')"
 											v-for="(tunit, tunit_index) of selected_specifier.references_taxonomic_units"
@@ -247,7 +271,7 @@
 						</div>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-default" data-dismiss="modal" @click="close_specifier_modal(selected_specifier)">Close</button>
 					</div>
 				</div>
 			</div>
@@ -322,7 +346,7 @@
 										<button type="button"
 											class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
 											@click="selected_specifier = specifier"
-											ondblclick="$('#specifier-modal').modal()"
+											@dblclick="start_specifier_modal(selected_specifier)"
 											><span class="glyphicon glyphicon-edit"></span> <span class="caret"></span></button>
 										<ul class="dropdown-menu dropdown-menu-right">
 											<li class="dropdown-header">Scientific name</li>
@@ -331,8 +355,7 @@
 											<li class="dropdown-header">Specimen identifier</li>
 											<li><a href="#">Treat as specimen identifier: <tt>Rana pretiosa Bair...</tt></a></li>
 											<li class="dropdown-header">Advanced</li>
-											<li><a href="#selected-phyloref"
-												onclick="$('#specifier-modal').modal()"
+											<li><a href="#selected-phyloref" @click="start_specifier_modal(selected_specifier)"
 													>Edit taxonomic units directly</a></li>
 
 											<!--
@@ -427,15 +450,6 @@
 	<script
 		src="https://cdn.jsdelivr.net/npm/vue@2.5.13/dist/vue.js"
 	></script>
-
-	<!-- Make the modal dialogs draggable. -->
-	<script type="text/javascript">
-		$(document).ready(function() {
-			$('.modal-dialog').draggable({
-				handle: '.modal-header'
-			});
-		});
-	</script>
 
 	<!-- Phylotree -->
 	<script src="http://d3js.org/d3.v3.min.js"></script>
