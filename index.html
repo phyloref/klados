@@ -186,9 +186,9 @@
 		</div>
 
 		<!-- Specifier modal: displays the allows editing of the current specifier -->
-		<div id="specifier-modal" class="modal fade" v-if="selected_specifier">
+		<div id="specifier-modal" class="modal fade">
 			<div class="modal-dialog modal-lg form-horizontal">
-				<div class="modal-content">
+				<div class="modal-content" v-if="selected_specifier">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 						<h4 class="modal-title">Editing specifier: {{get_specifier_label(selected_specifier)}}</h4>
@@ -226,7 +226,7 @@
 														<div class="input-group-btn">
 															<button type="button"
 																class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-																><span class="glyphicon glyphicon-edit"></span> <span class="caret"></span></button>
+																><span class="glyphicon glyphicon-search"></span> <span class="caret"></span></button>
 															<ul class="dropdown-menu dropdown-menu-right">
 																<li class="dropdown-header">Components of the scientific name</li>
 																<li><a href="#" onclick="return false"><em>Entered scientific name:</em> {{scname.scientific_name}}</a></li>
@@ -295,7 +295,7 @@
 														<div class="input-group-btn">
 															<button type="button"
 																class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-																><span class="glyphicon glyphicon-edit"></span> <span class="caret"></span></button>
+																><span class="glyphicon glyphicon-search"></span> <span class="caret"></span></button>
 															<ul class="dropdown-menu dropdown-menu-right">
 																<li class="dropdown-header">Specimen components</li>
 																<li><a href="#" onclick="return false">Occurrence ID: {{specimen.occurrenceID}}</a></li>
@@ -321,6 +321,7 @@
 											v-for="(tunit, tunit_index) of selected_specifier.references_taxonomic_units"
 											:class="{active: selected_tunit === tunit}"
 											@click="selected_tunit = tunit"
+											:title="get_taxonomic_unit_label(tunit)"
 										>{{get_taxonomic_unit_label(tunit)}}</a>
 										<a 	class="list-group-item"
 											href="javascript: void(0)"
@@ -367,7 +368,7 @@
 								<div class="input-group"
 									v-if="selected_phyloref"
 									v-for="(specifier, specifier_index) of get_specifiers(selected_phyloref)"
-									@id="'specifier_' + specifier_index"
+									:id="'specifier_' + specifier_index"
 								>
 									<div class="input-group-btn">
 										<button v-if="specifier_delete_mode" type="button"
@@ -403,35 +404,12 @@
 											<li><a href="#">&#x2192; Manually match with ...</a></li>
 										</ul>
 									</div>
-									<input type="text" class="form-control" v-bind:value="get_specifier_label(specifier)">
+									<input type="text" disabled class="form-control" :value="get_specifier_label(specifier)" :title="get_specifier_label(specifier)">
 									<div class="input-group-btn">
-
 										<button type="button"
-											class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-											@click="selected_specifier = specifier"
-											@dblclick="start_specifier_modal(selected_specifier)"
-											><span class="glyphicon glyphicon-edit"></span> <span class="caret"></span></button>
-										<ul class="dropdown-menu dropdown-menu-right">
-											<li class="dropdown-header">Scientific name</li>
-											<li class="active"><a href="#">Treat as scientific name: <em>Rana pretiosa</em> Baird and Girard 1853</a></li>
-											<li><a href="#">Treat as binomial name: <em>Rana pretiosa</em></a></li>
-											<li class="dropdown-header">Specimen identifier</li>
-											<li><a href="#">Treat as specimen identifier: <tt>Rana pretiosa Bair...</tt></a></li>
-											<li class="dropdown-header">Advanced</li>
-											<li><a href="#selected-phyloref" @click="start_specifier_modal(selected_specifier)"
-													>Edit taxonomic units directly</a></li>
-
-											<!--
-											<li :class="{active: get_specifier_type(selected_phyloref, specifier) == 'Internal'}"
-												><a :href="'#specifier_' + specifier_index"
-													@click="set_specifier_type(selected_phyloref, specifier, 'Internal')"
-												>Internal specifier</a></li>
-											<li :class="{active: get_specifier_type(selected_phyloref, specifier) == 'External'}"
-												><a :href="'#specifier_' + specifier_index"
-													@click="set_specifier_type(selected_phyloref, specifier, 'External')"
-												>External specifier</a></li>
-											-->
-										</ul>
+											class="btn btn-primary"
+											@click="start_specifier_modal(specifier)"
+											><span class="glyphicon glyphicon-edit"></span></button>
 									</div>
 								</div>
 							</div>

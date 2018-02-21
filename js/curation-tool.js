@@ -115,6 +115,7 @@ var vm = new Vue({
             // Display the specifier modal. We need to prepare the specifier
             // in order for the modal to work correctly.
             if(specifier === null) return;
+            vm.selected_specifier = specifier;
 
             // We need externalReferences, scientificNames and includesSpecimens.
             /*
@@ -222,8 +223,37 @@ var vm = new Vue({
         create_empty_taxonomic_unit: function(count) {
             return {};
         },
-        get_taxonomic_unit_label: function(tunit) {
-            return "(unnamed taxonomic unit)";
+        get_taxonomic_unit_label: function(tu) {
+            labels = [];
+
+            // A label or description for the TU?
+            if('label' in tu) return tu.label;
+            if('description' in tu) return tu.description;
+
+            // Any scientific names?
+            if('scientific_names' in tu) {
+                for(scname of tu.scientific_names) {
+                    if('scientific_name' in scname) labels.push(scname.scientific_name);
+                }
+            }
+
+            // Any specimens?
+            if('includesSpecimens' in tu) {
+                for(specimen of tu.includesSpecimens) {
+                    if('occurrenceID' in specimen) labels.push("Specimen " + specimen.occurrenceID);
+                }
+            }
+
+            // Any external references?
+            if('externalReferences' in tu) {
+                for(external_ref of tu.externalReferences) {
+                    labels.push("<" + external_ref + ">");
+                }
+            }
+
+            if(labels.length == 0) return "Unnamed taxonomic unit";
+
+            return labels.join(', ');
         },
         get_specifier_label: function(specifier) {
             // Is this specifier even non-null?
@@ -234,25 +264,10 @@ var vm = new Vue({
             if('description' in specifier) return specifier.description;
 
             // Look at the individual taxonomic units.
-            labels = [];
             if('references_taxonomic_units' in specifier) {
-                for(tu of specifier.references_taxonomic_units) {
-                    // A label or description for the TU?
-                    if('label' in tu) { labels.push(tu.label); continue; }
-                    if('description' in tu) { labels.push(tu.label); continue; }
-
-                    // Any scientific names?
-                    if('scientific_names' in tu) {
-                        for(scname of tu.scientific_names) {
-                            if('scientific_name' in scname) { labels.push(scname.scientific_name); break; }
-                            if('binomial_name' in scname) { labels.push(scname.binomial_name); break; }
-                        }
-                    }
-
-                    // TODO any specimens?
-                }
+                var labels = specifier.references_taxonomic_units.map(function(tu) { return vm.get_taxonomic_unit_label(tu); });
+                if(labels.length > 0) return labels.join('; ');
             }
-            if(labels.length > 0) return labels.join(', ');
 
             // No idea!
             return "Unnamed specifier";
@@ -289,8 +304,6 @@ var vm = new Vue({
             return scname.scientific_name.split(/\s+/);
         },
         get_binomial_name: function(scname) {
-            if(!scname.hasOwnProperty('binomial_name')) return scname.binomial_name;
-
             genus = this.get_genus_name(scname);
             specificEpithet = this.get_specific_epithet_name(scname);
 
@@ -298,15 +311,11 @@ var vm = new Vue({
             return null;
         },
         get_genus_name: function(scname) {
-            if(!scname.hasOwnProperty('genus')) return scname.genus;
-
             comps = this.get_scname_components(scname);
             if(comps.length >= 1) return comps[0];
             return null;
         },
         get_specific_epithet_name: function(scname) {
-            if(!scname.hasOwnProperty('specificEpithet')) return scname.specificEpithet;
-
             comps = this.get_scname_components(scname);
             if(comps.length >= 2) return comps[1];
             return null;
@@ -320,12 +329,12 @@ var vm = new Vue({
         get_institution_code: function(specimen) {
             comps = this.get_specimen_components(specimen);
             if(comps.length == 1) return null;
+            if(comps.length == 2) return comps[0];
             if(comps.length >= 3) return comps[0];
             return null;
         },
         get_collection_code: function(specimen) {
             comps = this.get_specimen_components(specimen);
-            if(comps.length == 2) return comps[0];
             if(comps.length >= 3) return comps[1];
             return null;
         },
