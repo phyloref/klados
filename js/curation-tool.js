@@ -129,8 +129,18 @@ var vm = new Vue({
             }
             */
 
-            // Set up specifier.
+            // Automatically select the first tunit.
             vm.selected_tunit = null;
+            if(specifier.hasOwnProperty('references_taxonomic_units') && specifier.references_taxonomic_units.length > 0) {
+                vm.selected_tunit = specifier.references_taxonomic_units[0];
+            } else {
+                // Specifier doesn't represent any taxonomic unit, but it's
+                // bad UX to just display a blank screen. So let's create a
+                // blank taxonomic unit to work with.
+                var new_tunit = this.create_empty_taxonomic_unit();
+                specifier.references_taxonomic_units = [new_tunit];
+                vm.selected_tunit = new_tunit;
+            }
 
             // Go go modal!
             $('.modal-dialog').draggable({
@@ -151,6 +161,17 @@ var vm = new Vue({
             if(!(key in dict)) Vue.set(dict, key, []);
             dict[key].push(value);
             return dict;
+        },
+        delete_specifier: function(phyloref, specifier) {
+            if(phyloref.hasOwnProperty('internalSpecifiers')) {
+                var index = phyloref.internalSpecifiers.indexOf(specifier);
+                if(index != -1) phyloref.internalSpecifiers.splice(index, 1);
+            }
+
+            if(phyloref.hasOwnProperty('externalSpecifiers')) {
+                var index = phyloref.externalSpecifiers.indexOf(specifier);
+                if(index != -1) phyloref.externalSpecifiers.splice(index, 1);
+            }
         },
         get_specifiers: function(phyloref) {
             if(!phyloref.hasOwnProperty('internalSpecifiers')) phyloref.internalSpecifiers = [];
@@ -260,6 +281,60 @@ var vm = new Vue({
 
             // And return.
             return newick;
+        },
+
+        // Methods for parsing scientific name.
+        get_scname_components: function(scname) {
+            if(!scname.hasOwnProperty('scientific_name')) return [];
+            return scname.scientific_name.split(/\s+/);
+        },
+        get_binomial_name: function(scname) {
+            if(!scname.hasOwnProperty('binomial_name')) return scname.binomial_name;
+
+            genus = this.get_genus_name(scname);
+            specificEpithet = this.get_specific_epithet_name(scname);
+
+            if(genus != null && specificEpithet != null) return genus + " " + specificEpithet;
+            return null;
+        },
+        get_genus_name: function(scname) {
+            if(!scname.hasOwnProperty('genus')) return scname.genus;
+
+            comps = this.get_scname_components(scname);
+            if(comps.length >= 1) return comps[0];
+            return null;
+        },
+        get_specific_epithet_name: function(scname) {
+            if(!scname.hasOwnProperty('specificEpithet')) return scname.specificEpithet;
+
+            comps = this.get_scname_components(scname);
+            if(comps.length >= 2) return comps[1];
+            return null;
+        },
+
+        // Methods for parsing specimen identifiers.
+        get_specimen_components: function(specimen) {
+            if(!specimen.hasOwnProperty('occurrenceID')) return [];
+            return specimen.occurrenceID.split(/\s*:\s*/);
+        },
+        get_institution_code: function(specimen) {
+            comps = this.get_specimen_components(specimen);
+            if(comps.length == 1) return null;
+            if(comps.length >= 3) return comps[0];
+            return null;
+        },
+        get_collection_code: function(specimen) {
+            comps = this.get_specimen_components(specimen);
+            if(comps.length == 2) return comps[0];
+            if(comps.length >= 3) return comps[1];
+            return null;
+        },
+        get_catalog_number: function(specimen) {
+            comps = this.get_specimen_components(specimen);
+            if(comps.length == 1) return comps[0];
+            if(comps.length == 2) return comps[1];
+            if(comps.length >= 3) return comps[2];
+            return null;
         }
     }
 });

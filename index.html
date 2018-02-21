@@ -187,7 +187,7 @@
 
 		<!-- Specifier modal: displays the allows editing of the current specifier -->
 		<div id="specifier-modal" class="modal fade" v-if="selected_specifier">
-			<div class="modal-dialog form-horizontal" style="margin-top: 20%">
+			<div class="modal-dialog modal-lg form-horizontal">
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -195,13 +195,13 @@
 					</div>
 					<div class="modal-body form-group">
 						<div class="col-md-12">
-							<form id="specifier" class="form-vertical">
-								<p>
-									Specifiers reference a number of taxonomic units. You will usually only need to reference a
-									single taxonomic specifier, but this interface allows you to examine all taxonomic units that
-									this specifier references.
-								</p>
+							<p>
+								Specifiers reference a number of taxonomic units. You will usually only need to reference a
+								single taxonomic specifier, but this interface allows you to examine all taxonomic units that
+								this specifier references.
+							</p>
 
+							<form id="specifier">
 								<div id="specifier-tunits-panel" class="panel panel-info" style="margin-top: 1em">
 									<div class="panel-heading">Taxonomic Units</div>
 									<div class="panel-body" v-if="!selected_tunit">
@@ -209,52 +209,113 @@
 									</div>
 									<div class="panel-body" v-if="selected_tunit">
 
-										<label for="external-references">External references</label>
-										<ul id="external-references">
-											<li
-												v-if="selected_tunit.hasOwnProperty('externalReferences')"
-												v-for="(external_ref, external_ref_index) of selected_tunit.externalReferences"
-												><input class="form-control" :value="external_ref">
-												<button class="btn btn-default" @click="open_url(external_ref)">Go to URL</button>
-											</li>
-											<li><a
-													href="#specifier-modal"
-													onclick="if(!('externalReferences' in vm.selected_tunit)) Vue.set(vm.selected_tunit, 'externalReferences', []); vm.selected_tunit.externalReferences.push('http://example.org/');"
-													><em>Add a new external reference</em></a>
-											</li>
-										</ul>
+										<div class="col-md-12">
+											<div class="panel panel-default">
+												<div class="panel-heading">Scientific names</div>
+												<div class="panel-body">
+													<span v-if="!selected_tunit.hasOwnProperty('scientific_names') || selected_tunit.scientific_names.length == 0">
+														<em>No scientific names provided.</em>
+													</span>
+													<div class="input-group"
+														v-if="selected_tunit.hasOwnProperty('scientific_names')"
+														v-for="(scname, scname_index) of selected_tunit.scientific_names">
+														<span class="input-group-btn">
+															<button class="btn btn-danger" @click="selected_tunit.scientific_names.splice(scname_index, 1)"><span class="glyphicon glyphicon-remove"></span></button>
+														</span>
+														<input type="text" class="form-control" v-model:lazy="scname.scientific_name">
+														<div class="input-group-btn">
+															<button type="button"
+																class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+																><span class="glyphicon glyphicon-edit"></span> <span class="caret"></span></button>
+															<ul class="dropdown-menu dropdown-menu-right">
+																<li class="dropdown-header">Components of the scientific name</li>
+																<li><a href="#" onclick="return false"><em>Entered scientific name:</em> {{scname.scientific_name}}</a></li>
+																<li><a href="#" onclick="return false"><em>Binomial name:</em> {{get_binomial_name(scname)}}</a></li>
+																<li><a href="#" onclick="return false"><em>Genus:</em> {{get_genus_name(scname)}}</a></li>
+																<li><a href="#" onclick="return false"><em>Specific epithet:</em> {{get_specific_epithet_name(scname)}}</a></li>
+															</ul>
+														</div>
+													</div>
+												</div>
+												<div class="panel-footer">
+													<button class="btn btn-default"
+														@click="create_or_append(selected_tunit, 'scientific_names', {'scientific_name': ''})"
+														>Add a new scientific name</button>
+												</div>
+											</div>
+										</div>
 
-										<label for="scientific-names">Scientific names</label>
-										<ul id="scientific-names">
-											<template
-												v-if="selected_tunit.hasOwnProperty('scientific_names')"
-												v-for="(scname, scname_index) of selected_tunit.scientific_names">
-												<li><input v-model:lazy="scname.scientific_name" style="margin: auto"></li>
-												<ul>
-													<li>Verbatim name: {{scname.scientific_name}}</li>
-													<li>Binomial name: {{scname.binomial_name}}</li>
-													<li>Genus: {{scname.genus}}</li>
-													<li>Specific epithet: {{scname.specificEpithet}}</li>
-												</ul>
-											</template>
-											<li><a href="#specifier-modal" @click="create_or_append(selected_tunit, 'scientific_names', {'scientific_name': ''})"><em>Add a new scientific name</em></a></li>
-										</ul>
+										<div class="col-md-6">
+											<div class="panel panel-default">
+												<div class="panel-heading">External references</div>
+												<div class="panel-body">
+													<span v-if="!selected_tunit.hasOwnProperty('externalReferences') || selected_tunit.externalReferences.length == 0">
+														<em>No external references provided.</em>
+													</span>
 
-										<label for="specimens">Specimens</label>
-										<ul id="specimens">
-											<li
-												v-if="selected_tunit.hasOwnProperty('includesSpecimens')"
-												v-for="(specimen, specimen_index) of selected_tunit.includesSpecimens"
-												>Catalog Number: <input class="form-control" :value="specimen.catalogNumber" style="margin:auto">
-											</li>
-											<li><a
-													href="#specifier-modal"
-													@click="create_or_append(selected_tunit, 'includesSpecimens', {'catalogNumber': ''})"
-													><em>Add a new specimen</em></a>
-											</li>
-										</ul>
+													<div class="input-group"
+														v-if="selected_tunit.hasOwnProperty('externalReferences')"
+														v-for="(external_ref, external_ref_index) of selected_tunit.externalReferences">
+														<div class="input-group-btn">
+															<button class="btn btn-danger" @click="selected_tunit.externalReferences.splice(external_ref_index, 1)"
+																><span class="glyphicon glyphicon-remove"></span></button>
+														</div>
+														<input type="url" class="form-control" v-model:lazy="selected_tunit.externalReferences[external_ref_index]">
+														<div class="input-group-btn">
+															<button class="btn btn-primary" @click="open_url(external_ref)">Go to URL</button>
+														</div>
+													</div>
+
+												</div>
+												<div class="panel-footer">
+													<button
+														class="btn btn-default"
+														style="width: 100%"
+														href="#specifier-modal"
+														onclick="if(!('externalReferences' in vm.selected_tunit)) Vue.set(vm.selected_tunit, 'externalReferences', []); vm.selected_tunit.externalReferences.push('http://example.org/');"
+														>Add a new external reference</button>
+												</div>
+											</div>
+										</div>
+
+										<div class="col-md-6">
+											<div class="panel panel-default">
+												<div class="panel-heading">Specimens</div>
+												<div class="panel-body">
+													<span v-if="!selected_tunit.hasOwnProperty('includesSpecimens') || selected_tunit.includesSpecimens.length == 0">
+														<em>No specimens provided.</em>
+													</span>
+													<div class="input-group"
+														v-if="selected_tunit.hasOwnProperty('includesSpecimens')"
+														v-for="(specimen, specimen_index) of selected_tunit.includesSpecimens">
+														<span class="input-group-btn">
+															<button class="btn btn-danger" @click="selected_tunit.includesSpecimens.splice(scname_index, 1)"><span class="glyphicon glyphicon-remove"></span></button>
+														</span>
+														<input type="text" class="form-control" v-model:lazy="specimen.occurrenceID">
+														<div class="input-group-btn">
+															<button type="button"
+																class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+																><span class="glyphicon glyphicon-edit"></span> <span class="caret"></span></button>
+															<ul class="dropdown-menu dropdown-menu-right">
+																<li class="dropdown-header">Specimen components</li>
+																<li><a href="#" onclick="return false">Occurrence ID: {{specimen.occurrenceID}}</a></li>
+																<li><a href="#" onclick="return false">Institution Code: {{get_institution_code(specimen)}}</a></li>
+																<li><a href="#" onclick="return false">Collection Code: {{get_collection_code(specimen)}}</a></li>
+																<li><a href="#" onclick="return false">Catalog Number: {{get_catalog_number(specimen)}}</a></li>
+															</ul>
+														</div>
+													</div>
+												</div>
+												<div class="panel-footer">
+													<button class="btn btn-default"
+														@click="create_or_append(selected_tunit, 'includesSpecimens', {'occurrenceID': ''})"
+														>Add a new specimen</button>
+												</div>
+											</div>
+										</div>
 									</div>
-									<div class="list-group" >
+
+									<div class="list-group">
 										<a 	class="list-group-item"
 											v-if="selected_specifier.hasOwnProperty('references_taxonomic_units')"
 											v-for="(tunit, tunit_index) of selected_specifier.references_taxonomic_units"
@@ -266,6 +327,7 @@
 											onclick="if(!vm.selected_specifier.hasOwnProperty('references_taxonomic_units')) vm.selected_specifier.references_taxonomic_units = []; vm.selected_specifier.references_taxonomic_units.push(vm.create_empty_taxonomic_unit(vm.selected_specifier.references_taxonomic_units.length + 1))"
 											><strong>Add new taxonomic unit</strong></a>
 									</div>
+
 								</div>
 							</form>
 						</div>
@@ -310,6 +372,7 @@
 									<div class="input-group-btn">
 										<button v-if="specifier_delete_mode" type="button"
 											class="btn btn-danger"
+											@click="delete_specifier(selected_phyloref, specifier)"
 											><span class="glyphicon glyphicon-remove"></span></button>
 										<button
 											@click="specifier_dropdown_target = 'match_result'"
