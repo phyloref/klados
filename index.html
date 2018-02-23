@@ -213,23 +213,23 @@
 											<div class="panel panel-default">
 												<div class="panel-heading">Scientific names</div>
 												<div class="panel-body">
-													<span v-if="!selected_tunit.hasOwnProperty('scientific_names') || selected_tunit.scientific_names.length == 0">
+													<span v-if="!selected_tunit.hasOwnProperty('scientificNames') || selected_tunit.scientificNames.length == 0">
 														<em>No scientific names provided.</em>
 													</span>
 													<div class="input-group"
-														v-if="selected_tunit.hasOwnProperty('scientific_names')"
-														v-for="(scname, scname_index) of selected_tunit.scientific_names">
+														v-if="selected_tunit.hasOwnProperty('scientificNames')"
+														v-for="(scname, scname_index) of selected_tunit.scientificNames">
 														<span class="input-group-btn">
-															<button class="btn btn-danger" @click="selected_tunit.scientific_names.splice(scname_index, 1)"><span class="glyphicon glyphicon-remove"></span></button>
+															<button class="btn btn-danger" @click="selected_tunit.scientificNames.splice(scname_index, 1)"><span class="glyphicon glyphicon-remove"></span></button>
 														</span>
-														<input type="text" class="form-control" v-model:lazy="scname.scientific_name">
+														<input type="text" class="form-control" v-model:lazy="scname.scientificName">
 														<div class="input-group-btn">
 															<button type="button"
 																class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
 																><span class="glyphicon glyphicon-search"></span> <span class="caret"></span></button>
 															<ul class="dropdown-menu dropdown-menu-right">
 																<li class="dropdown-header">Components of the scientific name</li>
-																<li><a href="#" onclick="return false"><em>Entered scientific name:</em> {{scname.scientific_name}}</a></li>
+																<li><a href="#" onclick="return false"><em>Entered scientific name:</em> {{scname.scientificName}}</a></li>
 																<li><a href="#" onclick="return false"><em>Binomial name:</em> {{get_binomial_name(scname)}}</a></li>
 																<li><a href="#" onclick="return false"><em>Genus:</em> {{get_genus_name(scname)}}</a></li>
 																<li><a href="#" onclick="return false"><em>Specific epithet:</em> {{get_specific_epithet_name(scname)}}</a></li>
@@ -239,7 +239,7 @@
 												</div>
 												<div class="panel-footer">
 													<button class="btn btn-default"
-														@click="create_or_append(selected_tunit, 'scientific_names', {'scientific_name': ''})"
+														@click="create_or_append(selected_tunit, 'scientificNames', {'scientificName': ''})"
 														>Add a new scientific name</button>
 												</div>
 											</div>
@@ -317,15 +317,15 @@
 
 									<div class="list-group">
 										<a 	class="list-group-item"
-											v-if="selected_specifier.hasOwnProperty('references_taxonomic_units')"
-											v-for="(tunit, tunit_index) of selected_specifier.references_taxonomic_units"
+											v-if="selected_specifier.hasOwnProperty('referencesTaxonomicUnits')"
+											v-for="(tunit, tunit_index) of selected_specifier.referencesTaxonomicUnits"
 											:class="{active: selected_tunit === tunit}"
 											@click="selected_tunit = tunit"
 											:title="get_taxonomic_unit_label(tunit)"
 										>{{get_taxonomic_unit_label(tunit)}}</a>
 										<a 	class="list-group-item"
 											href="javascript: void(0)"
-											onclick="if(!vm.selected_specifier.hasOwnProperty('references_taxonomic_units')) vm.selected_specifier.references_taxonomic_units = []; vm.selected_specifier.references_taxonomic_units.push(vm.create_empty_taxonomic_unit(vm.selected_specifier.references_taxonomic_units.length + 1))"
+											onclick="if(!vm.selected_specifier.hasOwnProperty('referencesTaxonomicUnits')) vm.selected_specifier.referencesTaxonomicUnits = []; vm.selected_specifier.referencesTaxonomicUnits.push(vm.create_empty_taxonomic_unit(vm.selected_specifier.referencesTaxonomicUnits.length + 1))"
 											><strong>Add new taxonomic unit</strong></a>
 									</div>
 

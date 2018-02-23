@@ -5,7 +5,7 @@
 	"@type": "testcase:TestSuiteFromPublication",
 
 	"curator": "Gaurav Vaidya <gaurav@ggvaidya.com>",
-	"comments": "None.",
+	"comments": " - The Laurasiarana expected node is not found in the TreeBase tree, so I've placed it where I think it should go.",
 
 	"citation": "Hillis DM and Wilcox TP (2005) Molecular Phylogenetics and Evolution 34(2):299-314",
 	"url": "https://doi.org/10.1016/j.ympev.2004.10.007",
@@ -14,12 +14,12 @@
 	"phylogenies": [{
 		"filename": "T4419.nexml"
 	}, {
-		"newick": "(((('Rana luteiventris MVZ225749','Rana luteiventris MVZ191016'),'Rana boylii'),('Rana muscosa',('Rana cascadae','Rana aurora')))expected_Amerana,'Rana temporaria',(((('Rana septentrionales',((('Rana heckscheri',('Rana catesbiana X12841','Rana catesbiana DMH84R2')),('Rana clamitans','Rana okaloosae')),'Rana grylio')),'Rana virgatipes')expected_Aquarana,('Rana sylvatica DMH84R43','Rana sylvatica')),((((('Rana pustulosa','Rana tarahumarae'),('Rana psilonota','Rana zweifelii'))expected_Zweifelia,'Rana sierramadrensis')expected_Torrentirana,((('Rana palustris',('Rana areolata',('Rana capito','Rana sevosa')))expected_Nenirana,((((('Rana magnaocularis','Rana sp7 KU 194492'),('Rana sp8 KU 195346',('Rana onca','Rana yavapaiensis'))),(('Rana sp6 LACM 146810',('Rana sp5 LACM 146764','Rana sp4 AMNH A 124167')),('Rana taylori',('Rana macroglossa','Rana macroglossa b')))),'Rana forreri'),(('Rana spectabilis',('Rana sp3 KU 194559','Rana omiltemana')),(((('Rana tlaloci','Rana neovolcanica'),'Rana berlandieri'),'Rana blairi'),('Rana sphenocephela utricularia','Rana sphenocephela'))))Scurrilirana),(((('Rana chiricahuensis KU 194419',('Rana subaquavocalis','Rana chiricahuensis KU 194442')),'Rana sp2 KU 204420'),('Rana dunni','Rana montezumae'))expected_Lacusirana,('Rana pipiens JSF1119','Rana pipiens Y10945'))expected_Stertirana)expected_Pantherana),(('Rana maculata',('Rana warszewitshii','Rana vibicaria')expected_Trypheropsis)expected_Levirana,(('Rana bwana',('Rana sp1 QCAZ13219',('Rana palmipes KU204425','Rana palmipes AMNHA118801'))),('Rana vaillanti','Rana juliani'))expected_Lithobates)expected_Ranula)expected_Sierrana)expected_Novirana);",
+		"newick": "(((('Rana luteiventris MVZ225749','Rana luteiventris MVZ191016'),'Rana boylii'),('Rana muscosa',('Rana cascadae','Rana aurora')))expected_Amerana,'Rana temporaria',(((('Rana septentrionales',((('Rana heckscheri',('Rana catesbiana X12841','Rana catesbiana DMH84R2')),('Rana clamitans','Rana okaloosae')),'Rana grylio')),'Rana virgatipes')expected_Aquarana,('Rana sylvatica DMH84R43','Rana sylvatica')),((((('Rana pustulosa','Rana tarahumarae'),('Rana psilonota','Rana zweifelii'))expected_Zweifelia,'Rana sierramadrensis')expected_Torrentirana,((('Rana palustris',('Rana areolata',('Rana capito','Rana sevosa')))expected_Nenirana,((((('Rana magnaocularis','Rana sp7 KU 194492'),('Rana sp8 KU 195346',('Rana onca','Rana yavapaiensis'))),(('Rana sp6 LACM 146810',('Rana sp5 LACM 146764','Rana sp4 AMNH A 124167')),('Rana taylori',('Rana macroglossa','Rana macroglossa b')))),'Rana forreri'),(('Rana spectabilis',('Rana sp3 KU 194559','Rana omiltemana')),(((('Rana tlaloci','Rana neovolcanica'),'Rana berlandieri'),'Rana blairi'),('Rana sphenocephela utricularia','Rana sphenocephela'))))expected_Scurrilirana),(((('Rana chiricahuensis KU 194419',('Rana subaquavocalis','Rana chiricahuensis KU 194442')),'Rana sp2 KU 204420'),('Rana dunni','Rana montezumae'))expected_Lacusirana,('Rana pipiens JSF1119','Rana pipiens Y10945'))expected_Stertirana)expected_Pantherana),(('Rana maculata',('Rana warszewitshii','Rana vibicaria')expected_Trypheropsis)expected_Levirana,(('Rana bwana',('Rana sp1 QCAZ13219',('Rana palmipes KU204425','Rana palmipes AMNHA118801'))),('Rana vaillanti','Rana juliani'))expected_Lithobates)expected_Ranula)expected_Sierrana)expected_Novirana)expected_Laurasiarana;",
 		"ot:dataDeposit": "https://treebase.org/treebase-web/search/study/taxa.html?id=1269&treeid=4419",
 
-		"additional_node_properties": {
+		"additionalNodeProperties": {
 			"Rana areolata": {
-				"additional_labels": ["Rana aurora"],
+				"additionalLabels": ["Rana areolata"],
 				"hasBasisOfRecord": {
 				    "locatedAt": {
 				        "verbatimLocality": "KU 204370: USA: Kansas: Lyon: just S of Hartsford"
@@ -31,7 +31,7 @@
 				}
 			},
 			"Rana aurora": {
-				"additional_labels": ["Rana aurora"],
+				"additionalLabels": ["Rana aurora"],
 				"hasBasisOfRecord": {
 				    "locatedAt": {
 				        "verbatimLocality": "MVZ 188960: USA: California: Del Norte: Kings Valley Rd., 2.4 mi N Hwy. 199"
@@ -43,7 +43,7 @@
 				}
 			},
 			"Rana berlandieri": {
-				"additional_labels": ["Rana berlandieri"],
+				"additionalLabels": ["Rana berlandieri"],
 				"hasBasisOfRecord": {
 				    "locatedAt": {
 				        "verbatimLocality": "JSF 1136: USA: TX: Hays: San Marcos"
@@ -55,7 +55,7 @@
 				}
 			},
 			"Rana blairi": {
-				"additional_labels": ["Rana blairi"],
+				"additionalLabels": ["Rana blairi"],
 				"hasBasisOfRecord": {
 				    "locatedAt": {
 				        "verbatimLocality": "JSF 830: USA: Kansas: Douglas: Lawrence"
@@ -67,7 +67,7 @@
 				}
 			},
 			"Rana boylii": {
-				"additional_labels": ["Rana boylii"],
+				"additionalLabels": ["Rana boylii"],
 				"hasBasisOfRecord": {
 				    "locatedAt": {
 				        "verbatimLocality": "MVZ 148929: USA: California: Lake: along Butts Creek, 0.4 mi NW Napa County line"
@@ -79,7 +79,7 @@
 				}
 			},
 			"Rana bwana": {
-				"additional_labels": ["Rana bwana"],
+				"additionalLabels": ["Rana bwana"],
 				"hasBasisOfRecord": {
 				    "locatedAt": {
 				        "verbatimLocality": "QCAZ 13964: Ecuador: Prov. Loja: Río Alamor near Zapotillo"
@@ -91,7 +91,7 @@
 				}
 			},
 			"Rana capito": {
-				"additional_labels": ["Rana capito"],
+				"additionalLabels": ["Rana capito"],
 				"hasBasisOfRecord": {
 				    "locatedAt": {
 				        "verbatimLocality": "TNHC 60195: USA: Florida: Marion: Archibold Biological Station"
@@ -103,7 +103,7 @@
 				}
 			},
 			"Rana cascadae": {
-				"additional_labels": ["Rana cascadae"],
+				"additionalLabels": ["Rana cascadae"],
 				"hasBasisOfRecord": {
 				    "locatedAt": {
 				        "verbatimLocality": "MVZ 148946: USA: California: Shasta: Dersch Meadows"
@@ -115,7 +115,7 @@
 				}
 			},
 			"Rana catesbiana X12841": {
-				"additional_labels": ["Rana catesbeiana"],
+				"additionalLabels": ["Rana catesbeiana"],
 				"hasBasisOfRecord": {
 				    "locatedAt": {
 				        "verbatimLocality": "GenBank sequence; locality unknown"
@@ -125,7 +125,7 @@
 				}
 			},
 			"Rana catesbiana DMH84R2": {
-				"additional_labels": ["Rana catesbeiana"],
+				"additionalLabels": ["Rana catesbeiana"],
 				"hasBasisOfRecord": {
 				    "locatedAt": {
 				        "verbatimLocality": "DMH 84-R2: USA: Kansas: Douglas: Lawrence"
@@ -137,7 +137,7 @@
 				}
 			},
 			"Rana chiricahuensis KU 194442": {
-				"additional_labels": ["Rana chiricahuensis"],
+				"additionalLabels": ["Rana chiricahuensis"],
 				"hasBasisOfRecord": {
 				    "locatedAt": {
 				        "verbatimLocality": "KU 194442: Mexico: Durango: Río Chico at Mexico Hwy. 40"
@@ -149,7 +149,7 @@
 				}
 			}, 
 			"Rana chiricahuensis KU 194419": {
-				"additional_labels": ["Rana chiricahuensis"],
+				"additionalLabels": ["Rana chiricahuensis"],
 				"hasBasisOfRecord": {
 				    "locatedAt": {
 				        "verbatimLocality": "KU 194419: USA: Arizona: Apache: Apache National Forest: Three Forks"
@@ -161,7 +161,7 @@
 				}
 			},
 			"Rana clamitans": {
-				"additional_labels": ["Rana clamitans"],
+				"additionalLabels": ["Rana clamitans"],
 				"hasBasisOfRecord": {
 				    "locatedAt": {
 				        "verbatimLocality": "JSF 1118: USA: Missouri: Montgomery: 3 km W Danville"
@@ -173,7 +173,7 @@
 				}
 			},
 			"Rana dunni": {
-				"additional_labels": ["Rana dunni"],
+				"additionalLabels": ["Rana dunni"],
 				"hasBasisOfRecord": {
 				    "locatedAt": {
 				        "verbatimLocality": "KU 194527: Mexico: Michoacan: Tintzuntzan, Lago Patzcuaro"
@@ -185,7 +185,7 @@
 				}
 			},
 			"Rana forreri": {
-				"additional_labels": ["Rana forreri"],
+				"additionalLabels": ["Rana forreri"],
 				"hasBasisOfRecord": {
 				    "locatedAt": {
 				        "verbatimLocality": "KU 194581: Mexico: Sinaloa: 37.9 km S Escuinapa"
@@ -197,7 +197,7 @@
 				}
 			},
 			"Rana grylio": {
-				"additional_labels": ["Rana grylio"],
+				"additionalLabels": ["Rana grylio"],
 				"hasBasisOfRecord": {
 				    "locatedAt": {
 				        "verbatimLocality": "MVZ 175945: USA: Florida: Leon: Tall Timbers Research Station, Lake Iamonia"
@@ -209,7 +209,7 @@
 				}
 			},
 			"Rana heckscheri": {
-				"additional_labels": ["Rana heckscheri"],
+				"additionalLabels": ["Rana heckscheri"],
 				"hasBasisOfRecord": {
 				    "locatedAt": {
 				        "verbatimLocality": "MVZ 164908: USA: Florida: Gadsen-Leon: Overflow creek of Ochlocknee River at Hwy. S-12"
@@ -221,7 +221,7 @@
 				}
 			},
 			"Rana juliani": {
-				"additional_labels": ["Rana juliani"],
+				"additionalLabels": ["Rana juliani"],
 				"hasBasisOfRecord": {
 				    "locatedAt": {
 				        "verbatimLocality": "TNHC 60324: Belize: Cayo District: Little Vaqueros Creek"
@@ -233,7 +233,7 @@
 				}
 			},
 			"Rana luteiventris MVZ225749": {
-				"additional_labels": ["Rana luteiventris"],
+				"additionalLabels": ["Rana luteiventris"],
 				"hasBasisOfRecord": {
 				    "locatedAt": {
 				        "verbatimLocality": "MVZ 225749: USA: Washington: Pend Oreille: Colville Natl. Forest; Flowery Trail Road, 6.1 mi E 49 Degrees Ski area"
@@ -245,7 +245,7 @@
 				}
 			},
 			"Rana luteiventris MVZ191016": {
-				"additional_labels": ["Rana luteiventris"],
+				"additionalLabels": ["Rana luteiventris"],
 				"hasBasisOfRecord": {
 				    "locatedAt": {
 				        "verbatimLocality": "MVZ 191016: USA: Montana: Lincoln: Dry Creek at Hwy. 56"
@@ -257,7 +257,7 @@
 				}
 			},
 			"Rana macroglossa": {
-				"additional_labels": ["Rana macroglossa"],
+				"additionalLabels": ["Rana macroglossa"],
 				"hasBasisOfRecord": {
 				    "locatedAt": {
 				        "verbatimLocality": "KU 195138: Mexico: Chiapas: 7.7 km SE San Cristobal de las Casas"
@@ -270,7 +270,7 @@
 			},
 			"Rana macroglossa b": {
 				"comment": "I'm assuming this is 'b', because it's listed second in the table, but there's no clear evidence one way or the other.",
-				"additional_labels": ["Rana macroglossa"],
+				"additionalLabels": ["Rana macroglossa"],
 				"hasBasisOfRecord": {
 				    "locatedAt": {
 				        "verbatimLocality": "UTA A-17185: Guatemala: Sololá: Panajachel, Lake Atitlan"
@@ -282,7 +282,7 @@
 				}
 			},
 			"Rana maculata": {
-				"additional_labels": ["Rana maculata"],
+				"additionalLabels": ["Rana maculata"],
 				"hasBasisOfRecord": {
 				    "locatedAt": {
 				        "verbatimLocality": "KU 195258: Mexico: Oaxaca: Colonia Rodulfo Figueroa, 19 km NW Rizo de Oro"
@@ -294,7 +294,7 @@
 				}
 			},
 			"Rana magnaocularis": {
-				"additional_labels": ["Rana magnaocularis"],
+				"additionalLabels": ["Rana magnaocularis"],
 				"hasBasisOfRecord": {
 				    "locatedAt": {
 				        "verbatimLocality": "KU 194592: Mexico: Sonora: Arroyo Hondo, 15.2 km N Nuri"
@@ -306,7 +306,7 @@
 				}
 			},
 			"Rana montezumae": {
-				"additional_labels": ["Rana montezumae"],
+				"additionalLabels": ["Rana montezumae"],
 				"hasBasisOfRecord": {
 				    "locatedAt": {
 				        "verbatimLocality": "KU 195251: Mexico: Morelos: Lagunas Zempoala"
@@ -318,7 +318,7 @@
 				}
 			},
 			"Rana muscosa": {
-				"additional_labels": ["Rana muscosa"],
+				"additionalLabels": ["Rana muscosa"],
 				"hasBasisOfRecord": {
 				    "locatedAt": {
 				        "verbatimLocality": "MVZ 149006: USA: California: Mono: Meadows below Levitt Lake, W side Sonora Pass"
@@ -330,7 +330,7 @@
 				}
 			},
 			"Rana neovolcanica": {
-				"additional_labels": ["Rana neovolcanica"],
+				"additionalLabels": ["Rana neovolcanica"],
 				"hasBasisOfRecord": {
 				    "locatedAt": {
 				        "verbatimLocality": "KU 194536: Mexico: Michoacan: Zurumbueno"
@@ -342,7 +342,7 @@
 				}
 			},
 			"Rana okaloosae": {
-				"additional_labels": ["Rana okaloosae"],
+				"additionalLabels": ["Rana okaloosae"],
 				"hasBasisOfRecord": {
 				    "locatedAt": {
 				        "verbatimLocality": "toe clip (released): USA:Florida: Santa Rosa: 5 km E Harold, Garnier Creek (collected by Paul Moler)"
@@ -352,7 +352,7 @@
 				}
 			},
 			"Rana omiltemana": {
-				"additional_labels": ["Rana omiltemana"],
+				"additionalLabels": ["Rana omiltemana"],
 				"hasBasisOfRecord": {
 				    "locatedAt": {
 				        "verbatimLocality": "KU 195179: Mexico: Guerrero: Agua de Obispo"
@@ -364,7 +364,7 @@
 				}
 			},
 			"Rana onca": {
-				"additional_labels": ["Rana onca"],
+				"additionalLabels": ["Rana onca"],
 				"hasBasisOfRecord": {
 				    "locatedAt": {
 				        "verbatimLocality": "LVT 3542: USA: Nevada: Clark: Blue Point Spring, Lake Mead"
@@ -376,7 +376,7 @@
 				}
 			},
 			"Rana palmipes AMNHA118801": {
-				"additional_labels": ["Rana palmipes"],
+				"additionalLabels": ["Rana palmipes"],
 				"hasBasisOfRecord": {
 				    "locatedAt": {
 				        "verbatimLocality": "AMNH A-118801: Venezuela: Prov. Amazonas: Neblina Base Camp on Río Mawarinuma"
@@ -388,7 +388,7 @@
 				}
 			},
 			"Rana palmipes KU204425": {
-				"additional_labels": ["Rana palmipes"],
+				"additionalLabels": ["Rana palmipes"],
 				"hasBasisOfRecord": {
 				    "locatedAt": {
 				        "verbatimLocality": "KU 202896: Ecuador: Prov. Napo: Misahuallí"
@@ -400,7 +400,7 @@
 				}
 			},
 			"Rana palustris": {
-				"additional_labels": ["Rana palustris"],
+				"additionalLabels": ["Rana palustris"],
 				"hasBasisOfRecord": {
 				    "locatedAt": {
 				        "verbatimLocality": "KU 204425: USA: Indiana: Washington: Cave Creek near Campbellsburg"
@@ -412,7 +412,7 @@
 				}
 			},
 			"Rana pipiens Y10945": {
-				"additional_labels": ["Rana pipiens"],
+				"additionalLabels": ["Rana pipiens"],
 				"hasBasisOfRecord": {
 				    "locatedAt": {
 				        "verbatimLocality": "GenBank sequence; locality unknown"
@@ -422,7 +422,7 @@
 				}
 			},
 			"Rana pipiens JSF1119": {
-				"additional_labels": ["Rana pipiens"],
+				"additionalLabels": ["Rana pipiens"],
 				"hasBasisOfRecord": {
 				    "locatedAt": {
 				        "verbatimLocality": "JSF 1119: USA: Ohio: Ottawa: Little Portage State Park"
@@ -434,7 +434,7 @@
 				}
 			},
 			"Rana psilonota": {
-				"additional_labels": ["Rana psilonota"],
+				"additionalLabels": ["Rana psilonota"],
 				"hasBasisOfRecord": {
 				    "locatedAt": {
 				        "verbatimLocality": "KU 195119: Mexico: Jalisco: 2.4 km NW Tapalpa"
@@ -446,7 +446,7 @@
 				}
 			},
 			"Rana pustulosa": {
-				"additional_labels": ["Rana pustulosa"],
+				"additionalLabels": ["Rana pustulosa"],
 				"hasBasisOfRecord": {
 				    "locatedAt": {
 				        "verbatimLocality": "KU 200776: Mexico: Sinaloa: 2.1 km NE Santa Lucia"
@@ -458,7 +458,7 @@
 				}
 			},
 			"Rana septentrionales": {
-				"additional_labels": ["Rana septentrionalis"],
+				"additionalLabels": ["Rana septentrionalis"],
 				"hasBasisOfRecord": {
 				    "locatedAt": {
 				        "verbatimLocality": "TNHC tissue collection: Canada: Ontario: Grey"
@@ -469,7 +469,7 @@
 				}
 			},
 			"Rana sevosa": {
-				"additional_labels": ["Rana sevosa"],
+				"additionalLabels": ["Rana sevosa"],
 				"hasBasisOfRecord": {
 				    "locatedAt": {
 				        "verbatimLocality": "TNHC 60194: USA: Mississippi: Harrison"
@@ -481,7 +481,7 @@
 				}
 			},
 			"Rana sierramadrensis": {
-				"additional_labels": ["Rana sierramadrensis"],
+				"additionalLabels": ["Rana sierramadrensis"],
 				"hasBasisOfRecord": {
 				    "locatedAt": {
 				        "verbatimLocality": "KU 195181: Mexico: Guerrero: Agua de Obispo, 24.2 mi S Chilpancingo"
@@ -493,7 +493,7 @@
 				}
 			},
 			"Rana spectabilis": {
-				"additional_labels": ["Rana spectabilis"],
+				"additionalLabels": ["Rana spectabilis"],
 				"hasBasisOfRecord": {
 				    "locatedAt": {
 				        "verbatimLocality": "KU 195186: Mexico: Hidalgo: La Estanzuela (holotype)"
@@ -507,7 +507,7 @@
 				}
 			},
 			"Rana sphenocephela": {
-				"additional_labels": ["Rana sphenocephala"],
+				"additionalLabels": ["Rana sphenocephala"],
 				"hasBasisOfRecord": {
 				    "locatedAt": {
 				        "verbatimLocality": "JSF 845: USA: Kansas: Cherokee"
@@ -519,7 +519,7 @@
 				}
 			},
 			"Rana sphenocephela utricularia": {
-				"additional_labels": ["Rana sphenocephala utricularia"],
+				"additionalLabels": ["Rana sphenocephala utricularia"],
 				"hasBasisOfRecord": {
 				    "locatedAt": {
 				        "verbatimLocality": "USC 7448: USA: Florida: Loop Road, Big Cypress National Preserve"
@@ -531,7 +531,7 @@
 				}
 			},
 			"Rana subaquavocalis": {
-				"additional_labels": ["Rana subaquavocalis"],
+				"additionalLabels": ["Rana subaquavocalis"],
 				"hasBasisOfRecord": {
 				    "locatedAt": {
 				        "verbatimLocality": "James Platz Collection (specimens destroyed, DNA in TNHC tissue collection): USA: Arizona: Cochise: Ramsey Canyon"
@@ -542,7 +542,7 @@
 				}
 			},
 			"Rana sylvatica": {
-				"additional_labels": ["Rana sylvatica"],
+				"additionalLabels": ["Rana sylvatica"],
 				"hasBasisOfRecord": {
 				    "locatedAt": {
 				        "verbatimLocality": "MVZ 137426: USA: New York: Tompkins; Connecticut Hill, ca. 10 mi SW Ithaca"
@@ -554,7 +554,7 @@
 				}
 			},
 			"Rana sylvatica DMH84R43": {
-				"additional_labels": ["Rana sylvatica"],
+				"additionalLabels": ["Rana sylvatica"],
 				"hasBasisOfRecord": {
 				    "locatedAt": {
 				        "verbatimLocality": "DMH 84-R43: USA: Missouri: St. Louis: Tyson Environmental Study Area"
@@ -566,7 +566,7 @@
 				}
 			},
 			"Rana tarahumarae": {
-				"additional_labels": ["Rana tarahumarae"],
+				"additionalLabels": ["Rana tarahumarae"],
 				"hasBasisOfRecord": {
 				    "locatedAt": {
 				        "verbatimLocality": "KU 194596: Mexico: Sonora: 14.4 km E Yecora"
@@ -578,7 +578,7 @@
 				}
 			},
 			"Rana taylori": {
-				"additional_labels": ["Rana taylori"],
+				"additionalLabels": ["Rana taylori"],
 				"hasBasisOfRecord": {
 				    "locatedAt": {
 				        "verbatimLocality": "TCWC 55963: Nicaragua: Zelaya: 2.5 mi NW Rama"
@@ -590,7 +590,7 @@
 				}
 			},
 			"Rana temporaria": {
-				"additional_labels": ["Rana temporaria"],
+				"additionalLabels": ["Rana temporaria"],
 				"hasBasisOfRecord": {
 				    "locatedAt": {
 				        "verbatimLocality": "DMH 84-R1: Switzerland: Valais Canton: 1.8 km NNE Grand St. Bernard Pass"
@@ -602,7 +602,7 @@
 				}
 			},
 			"Rana tlaloci": {
-				"additional_labels": ["Rana tlaloci"],
+				"additionalLabels": ["Rana tlaloci"],
 				"hasBasisOfRecord": {
 				    "locatedAt": {
 				        "verbatimLocality": "KU 194436: Mexico: Distrito Federal: Xochimilco (paratype)"
@@ -614,7 +614,7 @@
 				}
 			},
 			"Rana vaillanti": {
-				"additional_labels": ["Rana vaillanti"],
+				"additionalLabels": ["Rana vaillanti"],
 				"hasBasisOfRecord": {
 				    "locatedAt": {
 				        "verbatimLocality": "KU 195299: Mexico: Oaxaca: 5.6 mi NE Tapanatepec"
@@ -626,7 +626,7 @@
 				}
 			},
 			"Rana vibicaria": {
-				"additional_labels": ["Rana vibicaria"],
+				"additionalLabels": ["Rana vibicaria"],
 				"hasBasisOfRecord": {
 				    "locatedAt": {
 				        "verbatimLocality": "MVZ 149033: Costa Rica: Prov. San José: El Empalme"
@@ -638,7 +638,7 @@
 				}
 			},
 			"Rana virgatipes": {
-				"additional_labels": ["Rana virgatipes"],
+				"additionalLabels": ["Rana virgatipes"],
 				"hasBasisOfRecord": {
 				    "locatedAt": {
 				        "verbatimLocality": "MVZ 175944: USA: Louisiana: De Soto Parish; Frierson"
@@ -650,7 +650,7 @@
 				}
 			},
 			"Rana warszewitshii": {
-				"additional_labels": ["Rana warszewitschii"],
+				"additionalLabels": ["Rana warszewitschii"],
 				"hasBasisOfRecord": {
 				    "locatedAt": {
 				        "verbatimLocality": "JSF 1127: Panama"
@@ -662,7 +662,7 @@
 				}
 			},
 			"Rana yavapaiensis": {
-				"additional_labels": ["Rana yavapaiensis"],
+				"additionalLabels": ["Rana yavapaiensis"],
 				"hasBasisOfRecord": {
 				    "locatedAt": {
 				        "verbatimLocality": "KU 194423: USA: Arizona: Greenlee: Apache National Forest at Juan Miller Crossing"
@@ -674,7 +674,7 @@
 				}
 			},
 			"Rana zweifelii": {
-				"additional_labels": ["Rana zweifeli"],
+				"additionalLabels": ["Rana zweifeli"],
 				"hasBasisOfRecord": {
 				    "locatedAt": {
 				        "verbatimLocality": "KU 195310: Mexico: Oaxaca: 1.6 mi S Cuyotepej"
@@ -686,7 +686,7 @@
 				}
 			},
 			"Rana sp1 QCAZ13219": {
-				"additional_labels": ["Rana sp1"],
+				"additionalLabels": ["Rana sp1"],
 				"hasBasisOfRecord": {
 				    "locatedAt": {
 				        "verbatimLocality": "QCAZ 13219: Ecuador: Prov. Esmeraldas: 5 km W Durango"
@@ -698,7 +698,7 @@
 				}
 			},
 			"Rana sp2 KU 204420": {
-				"additional_labels": ["Rana sp2"],
+				"additionalLabels": ["Rana sp2"],
 				"hasBasisOfRecord": {
 				    "locatedAt": {
 				        "verbatimLocality": "KU 204420: Mexico: San Luis Potosí: Rodeo"
@@ -710,7 +710,7 @@
 				}
 			},
 			"Rana sp3 KU 194559": {
-				"additional_labels": ["Rana sp3"],
+				"additionalLabels": ["Rana sp3"],
 				"hasBasisOfRecord": {
 				    "locatedAt": {
 				        "verbatimLocality": "KU 194559: Mexico: Michoacan: 11.4 km E junction Mexico Hwy. 51 and 15"
@@ -722,7 +722,7 @@
 				}
 			},
 			"Rana sp4 AMNH A 124167": {
-				"additional_labels": ["Rana sp4"],
+				"additionalLabels": ["Rana sp4"],
 				"hasBasisOfRecord": {
 				    "locatedAt": {
 				        "verbatimLocality": "AMNH A-124167: Panama: Chiriquí: 9 km SSE El Volcán"
@@ -734,7 +734,7 @@
 				}
 			},
 			"Rana sp5 LACM 146764": {
-				"additional_labels": ["Rana sp5"],
+				"additionalLabels": ["Rana sp5"],
 				"hasBasisOfRecord": {
 				    "locatedAt": {
 				        "verbatimLocality": "LACM 146764: Costa Rica: Heredia: Monte de la Cruz"
@@ -746,7 +746,7 @@
 				}
 			},
 			"Rana sp6 LACM 146810": {
-				"additional_labels": ["Rana sp6"],
+				"additionalLabels": ["Rana sp6"],
 				"hasBasisOfRecord": {
 				    "locatedAt": {
 				        "verbatimLocality": "LACM 146810: Costa Rica: Puntarenas: near mouth of Rio Barranca, 10 km E Puntarenas"
@@ -758,7 +758,7 @@
 				}
 			},
 			"Rana sp7 KU 194492": {
-				"additional_labels": ["Rana sp7"],
+				"additionalLabels": ["Rana sp7"],
 				"hasBasisOfRecord": {
 				    "locatedAt": {
 				        "verbatimLocality": "KU 194492: Mexico: Jalisco: Contla"
@@ -770,7 +770,7 @@
 				}
 			},
 			"Rana sp8 KU 195346": {
-				"additional_labels": ["Rana sp8"],
+				"additionalLabels": ["Rana sp8"],
 				"hasBasisOfRecord": {
 				    "locatedAt": {
 				        "verbatimLocality": "KU 195346: Mexico: Puebla: Río Atoyac at Mexico Hwy. 190"
@@ -789,17 +789,17 @@
 			"label": "Laurasiarana",
 			"cladeDefinition": "Laurasiarana, new clade name. Definition: The clade stemming from the most recent common ancestor of Rana temporaria Linne 1758 and Rana aurora Baird and Girard 1852.",
 			"internalSpecifiers": [{
-				"references_taxonomic_units": [{
-					"scientific_names": [{
-						"scientific_name": "Rana temporaria Linne 1758",
-						"binomial_name": "Rana temporaria"
+				"referencesTaxonomicUnits": [{
+					"scientificNames": [{
+						"scientificName": "Rana temporaria Linne 1758",
+						"binomialName": "Rana temporaria"
 					}]
 				}]
 			}, {
-				"references_taxonomic_units": [{
-					"scientific_names": [{
-						"scientific_name": "Rana aurora Baird and Girard 1852",
-						"binomial_name": "Rana aurora"
+				"referencesTaxonomicUnits": [{
+					"scientificNames": [{
+						"scientificName": "Rana aurora Baird and Girard 1852",
+						"binomialName": "Rana aurora"
 					}]
 				}]
 			}]
@@ -809,42 +809,43 @@
 			"cladeDefinition": "Amerana Dubois 1992 (converted clade name). Definition: The clade stemming from the most recent common ancestor of Rana aurora Baird and Girard 1852, Rana boylii Baird 1854, Rana cascadae Slater 1939, Rana muscosa Camp 1917, and Rana pretiosa Baird and Girard 1853.",
 			"internalSpecifiers": [
 				{
-					"references_taxonomic_units": [{
-						"scientific_names": [{
-							"scientific_name": "Rana aurora Baird and Girard 1852",
-							"binomial_name": "Rana aurora"
+					"referencesTaxonomicUnits": [{
+						"scientificNames": [{
+							"scientificName": "Rana aurora Baird and Girard 1852",
+							"binomialName": "Rana aurora"
 						}]
 					}]
 				},
 				{
-					"references_taxonomic_units": [{
-						"scientific_names": [{
-							"scientific_name": "Rana boylii Baird 1854",
-							"binomial_name": "Rana boylii"
+					"referencesTaxonomicUnits": [{
+						"scientificNames": [{
+							"scientificName": "Rana boylii Baird 1854",
+							"binomialName": "Rana boylii"
 						}]
 					}]
 				},
 				{
-					"references_taxonomic_units": [{
-						"scientific_names": [{
-							"scientific_name": "Rana cascadae Slater 1939",
-							"binomial_name": "Rana cascadae"
+					"referencesTaxonomicUnits": [{
+						"scientificNames": [{
+							"scientificName": "Rana cascadae Slater 1939",
+							"binomialName": "Rana cascadae"
 						}]
 					}]
 				},
 				{
-					"references_taxonomic_units": [{
-						"scientific_names": [{
-							"scientific_name": "Rana muscosa Camp 1917",
-							"binomial_name": "Rana muscosa"
+					"referencesTaxonomicUnits": [{
+						"scientificNames": [{
+							"scientificName": "Rana muscosa Camp 1917",
+							"binomialName": "Rana muscosa"
 						}]
 					}]
 				},
 				{
-					"references_taxonomic_units": [{
-						"scientific_names": [{
-							"scientific_name": "Rana pretiosa Baird and Girard 1853",
-							"binomial_name": "Rana pretiosa"
+					"specifierWillNotMatch": "*Rana pretiosa* not present in this phylogeny",
+					"referencesTaxonomicUnits": [{
+						"scientificNames": [{
+							"scientificName": "Rana pretiosa Baird and Girard 1853",
+							"binomialName": "Rana pretiosa"
 						}]
 					}]
 				}
@@ -855,18 +856,18 @@
 			"cladeDefinition": "Novirana, new clade name. Definition: The clade stemming from the most recent common ancestor of Rana catesbeiana Shaw 1802 and Rana pipiens Schreber 1782.",
 			"internalSpecifiers": [
 				{
-					"references_taxonomic_units": [{
-						"scientific_names": [{
-							"scientific_name": "Rana catesbeiana Shaw 1802",
-							"binomial_name": "Rana catesbeiana"
+					"referencesTaxonomicUnits": [{
+						"scientificNames": [{
+							"scientificName": "Rana catesbeiana Shaw 1802",
+							"binomialName": "Rana catesbeiana"
 						}]
 					}]
 				},
 				{
-					"references_taxonomic_units": [{
-						"scientific_names": [{
-							"scientific_name": "Rana pipiens Schreber 1782",
-							"binomial_name": "Rana pipiens"
+					"referencesTaxonomicUnits": [{
+						"scientificNames": [{
+							"scientificName": "Rana pipiens Schreber 1782",
+							"binomialName": "Rana pipiens"
 						}]
 					}]
 				}
@@ -876,52 +877,52 @@
 			"label": "Aquarana",
 			"cladeDefinition": "Aquarana Dubois 1992 (converted clade name). Definition: The clade stemming from the most recent common ancestor of Rana catesbeiana Shaw 1802, Rana clamitans Latreille 1802, Rana grylio Stejneger 1901, Rana heckscheri Wright 1924, Rana okaloosae Moler 1985, Rana septentrionalis Baird 1854, and Rana virgatipes Cope1891. The species used in the definition are those species that were included by Dubois within this group.",
 			"internalSpecifiers": [{
-				"references_taxonomic_units": [{
-					"scientific_names": [{
-						"scientific_name": "Rana catesbeiana Shaw 1802",
-						"binomial_name": "Rana catesbeiana"
+				"referencesTaxonomicUnits": [{
+					"scientificNames": [{
+						"scientificName": "Rana catesbeiana Shaw 1802",
+						"binomialName": "Rana catesbeiana"
 					}]
 				}]
 			}, {
-				"references_taxonomic_units": [{
-					"scientific_names": [{
-						"scientific_name": "Rana clamitans Latreille 1802",
-						"binomial_name": "Rana clamitans"
+				"referencesTaxonomicUnits": [{
+					"scientificNames": [{
+						"scientificName": "Rana clamitans Latreille 1802",
+						"binomialName": "Rana clamitans"
 					}]
 				}]
 			}, {
-				"references_taxonomic_units": [{
-					"scientific_names": [{
-						"scientific_name": "Rana grylio Stejneger 1901",
-						"binomial_name": "Rana grylio"
+				"referencesTaxonomicUnits": [{
+					"scientificNames": [{
+						"scientificName": "Rana grylio Stejneger 1901",
+						"binomialName": "Rana grylio"
 					}]
 				}]
 			}, {
-				"references_taxonomic_units": [{
-					"scientific_names": [{
-						"scientific_name": "Rana heckscheri Wright 1924",
-						"binomial_name": "Rana heckscheri"
+				"referencesTaxonomicUnits": [{
+					"scientificNames": [{
+						"scientificName": "Rana heckscheri Wright 1924",
+						"binomialName": "Rana heckscheri"
 					}]
 				}]
 			}, {
-				"references_taxonomic_units": [{
-					"scientific_names": [{
-						"scientific_name": "Rana okaloosae Moler 1985",
-						"binomial_name": "Rana okaloosae"
+				"referencesTaxonomicUnits": [{
+					"scientificNames": [{
+						"scientificName": "Rana okaloosae Moler 1985",
+						"binomialName": "Rana okaloosae"
 					}]
 				}]
 			}, {
-				"references_taxonomic_units": [{
-					"scientific_names": [{
-						"scientific_name": "Rana septentrionalis Baird 1854",
-						"binomial_name": "Rana septentrionalis"
+				"referencesTaxonomicUnits": [{
+					"scientificNames": [{
+						"scientificName": "Rana septentrionalis Baird 1854",
+						"binomialName": "Rana septentrionalis"
 					}]
 				}]
 			}, {
-				"references_taxonomic_units": [{
-					"scientific_names": [{
-						"scientific_name": "Rana virgatipes Cope1891",
-						"binomial_name": "Rana virgatipes"
+				"referencesTaxonomicUnits": [{
+					"scientificNames": [{
+						"scientificName": "Rana virgatipes Cope1891",
+						"binomialName": "Rana virgatipes"
 					}]
 				}]
 			}]
@@ -930,24 +931,24 @@
 			"label": "Sierrana",
 			"cladeDefinition": "Sierrana Dubois 1992 (converted clade name). Definition: The clade stemming from the most recent common ancestor of Rana julianiHillis and de Sá, 1988, Rana maculata Brocchi 1877, and Rana sierramadrensis Taylor 1939.",
 			"internalSpecifiers": [{
-				"references_taxonomic_units": [{
-					"scientific_names": [{
-						"scientific_name": "Rana juliani Hillis and de Sá, 1988",
-						"binomial_name": "Rana juliani"
+				"referencesTaxonomicUnits": [{
+					"scientificNames": [{
+						"scientificName": "Rana juliani Hillis and de Sá, 1988",
+						"binomialName": "Rana juliani"
 					}]
 				}]
 			}, {
-				"references_taxonomic_units": [{
-					"scientific_names": [{
-						"scientific_name": "Rana maculata Brocchi 1877",
-						"binomial_name": "Rana maculata"
+				"referencesTaxonomicUnits": [{
+					"scientificNames": [{
+						"scientificName": "Rana maculata Brocchi 1877",
+						"binomialName": "Rana maculata"
 					}]
 				}]
 			}, {
-				"references_taxonomic_units": [{
-					"scientific_names": [{
-						"scientific_name": "Rana sierramadrensis Taylor 1939",
-						"binomial_name": "Rana sierramadrensis"
+				"referencesTaxonomicUnits": [{
+					"scientificNames": [{
+						"scientificName": "Rana sierramadrensis Taylor 1939",
+						"binomialName": "Rana sierramadrensis"
 					}]
 				}]
 			}]
@@ -956,17 +957,17 @@
 			"label": "Ranula",
 			"cladeDefinition": "Ranula Peters 1859 (converted clade name). Definition: The clade stemming from the most recent common ancestor of Rana palmipes Spix 1824 and Rana warszewitschii (Schmidt) 1857.",
 			"internalSpecifiers": [{
-				"references_taxonomic_units": [{
-					"scientific_names": [{
-						"scientific_name": "Rana palmipes Spix 1824",
-						"binomial_name": "Rana palmipes"
+				"referencesTaxonomicUnits": [{
+					"scientificNames": [{
+						"scientificName": "Rana palmipes Spix 1824",
+						"binomialName": "Rana palmipes"
 					}]
 				}]
 			}, {
-				"references_taxonomic_units": [{
-					"scientific_names": [{
-						"scientific_name": "Rana warszewitschii (Schmidt) 1857",
-						"binomial_name": "Rana warszewitschii"
+				"referencesTaxonomicUnits": [{
+					"scientificNames": [{
+						"scientificName": "Rana warszewitschii (Schmidt) 1857",
+						"binomialName": "Rana warszewitschii"
 					}]
 				}]
 			}]
@@ -975,17 +976,17 @@
 			"label": "Levirana",
 			"cladeDefinition": "Levirana Cope 1894 (converted clade name). Definition: The clade stemming from the most recent common ancestor of Rana maculata Brocchi 1877 and Rana vibicaria (Cope) 1894.",
 			"internalSpecifiers": [{
-				"references_taxonomic_units": [{
-					"scientific_names": [{
-						"scientific_name": "Rana maculata Brocchi 1877",
-						"binomial_name": "Rana maculata"
+				"referencesTaxonomicUnits": [{
+					"scientificNames": [{
+						"scientificName": "Rana maculata Brocchi 1877",
+						"binomialName": "Rana maculata"
 					}]
 				}]
 			}, {
-				"references_taxonomic_units": [{
-					"scientific_names": [{
-						"scientific_name": "Rana vibicaria (Cope) 1894",
-						"binomial_name": "Rana vibicaria"
+				"referencesTaxonomicUnits": [{
+					"scientificNames": [{
+						"scientificName": "Rana vibicaria (Cope) 1894",
+						"binomialName": "Rana vibicaria"
 					}]
 				}]
 			}]
@@ -994,17 +995,17 @@
 			"label": "Trypheropsis",
 			"cladeDefinition": "Trypheropsis Cope 1868 (converted clade name). Definition: The clade stemming from the most recent common ancestor of Rana warszewitschii (Schmidt) 1857 and Rana vibicaria (Cope) 1894.",
 			"internalSpecifiers": [{
-				"references_taxonomic_units": [{
-					"scientific_names": [{
-						"scientific_name": "Rana warszewitschii (Schmidt) 1857",
-						"binomial_name": "Rana warszewitschii"
+				"referencesTaxonomicUnits": [{
+					"scientificNames": [{
+						"scientificName": "Rana warszewitschii (Schmidt) 1857",
+						"binomialName": "Rana warszewitschii"
 					}]
 				}]
 			}, {
-				"references_taxonomic_units": [{
-					"scientific_names": [{
-						"scientific_name": "Rana vibicaria (Cope) 1894",
-						"binomial_name": "Rana vibicaria"
+				"referencesTaxonomicUnits": [{
+					"scientificNames": [{
+						"scientificName": "Rana vibicaria (Cope) 1894",
+						"binomialName": "Rana vibicaria"
 					}]
 				}]
 			}]
@@ -1012,67 +1013,67 @@
 			"label": "Lithobates",
 			"cladeDefinition": "Lithobates Fitzinger 1843 (converted clade name). Definition: The clade stemming from the most recent common ancestor of Rana palmipes Spix 1824, Rana vaillanti Brocchi 1877, Rana bwanaHillis and de Sá 1988, and Rana julianiHillis and de Sá 1988.",
 			"internalSpecifiers": [{
-				"references_taxonomic_units": [{
-					"scientific_names": [{
-						"scientific_name": "Rana palmipes Spix 1824",
-						"binomial_name": "Rana palmipes"
+				"referencesTaxonomicUnits": [{
+					"scientificNames": [{
+						"scientificName": "Rana palmipes Spix 1824",
+						"binomialName": "Rana palmipes"
 					}]
 				}]
 			}, {
-				"references_taxonomic_units": [{
-					"scientific_names": [{
-						"scientific_name": "Rana vaillanti Brocchi 1877",
-						"binomial_name": "Rana vaillanti"
+				"referencesTaxonomicUnits": [{
+					"scientificNames": [{
+						"scientificName": "Rana vaillanti Brocchi 1877",
+						"binomialName": "Rana vaillanti"
 					}]
 				}]
 			}, {
-				"references_taxonomic_units": [{
-					"scientific_names": [{
-						"scientific_name": "Rana bwana Hillis and de Sá 1988",
-						"binomial_name": "Rana bwana"
+				"referencesTaxonomicUnits": [{
+					"scientificNames": [{
+						"scientificName": "Rana bwana Hillis and de Sá 1988",
+						"binomialName": "Rana bwana"
 					}]
 				}]
 			}, {
-				"references_taxonomic_units": [{
-					"scientific_names": [{
-						"scientific_name": "Rana juliani Hillis and de Sá 1988",
-						"binomial_name": "Rana juliani"
+				"referencesTaxonomicUnits": [{
+					"scientificNames": [{
+						"scientificName": "Rana juliani Hillis and de Sá 1988",
+						"binomialName": "Rana juliani"
 					}]
 				}]
 			}]
 		}, {
 			"label": "Torrentirana",
-				"scientific_name": "Torrentirana, new clade name. Definition: The clade stemming from the most recent common ancestor of Rana tarahumarae Boulenger 1917 and Rana sierramadrensis Taylor 1939",
+				"scientificName": "Torrentirana, new clade name. Definition: The clade stemming from the most recent common ancestor of Rana tarahumarae Boulenger 1917 and Rana sierramadrensis Taylor 1939",
 				"internalSpecifiers": [{
-					"references_taxonomic_units": [{
-						"scientific_names": [{
-							"scientific_name": "Rana tarahumarae Boulenger 1917",
-							"binomial_name": "Rana tarahumarae"
+					"referencesTaxonomicUnits": [{
+						"scientificNames": [{
+							"scientificName": "Rana tarahumarae Boulenger 1917",
+							"binomialName": "Rana tarahumarae"
 						}]
 					}]
 				}, {
-					"references_taxonomic_units": [{
-						"scientific_names": [{
-							"scientific_name": "Rana sierramadrensis Taylor 1939",
-							"binomial_name": "Rana sierramadrensis"
+					"referencesTaxonomicUnits": [{
+						"scientificNames": [{
+							"scientificName": "Rana sierramadrensis Taylor 1939",
+							"binomialName": "Rana sierramadrensis"
 						}]
 					}]
 				}]
 		}, {
 			"label": "Zweifelia",
-				"scientific_name": "Zweifelia Dubois 1992 (converted clade name). Definition: The clade stemming from the most recent common ancestor of Rana tarahumarae Boulenger 1917 and Rana zweifeli Hillis, Frost and Webb 1984.",
+				"scientificName": "Zweifelia Dubois 1992 (converted clade name). Definition: The clade stemming from the most recent common ancestor of Rana tarahumarae Boulenger 1917 and Rana zweifeli Hillis, Frost and Webb 1984.",
 				"internalSpecifiers": [{
-					"references_taxonomic_units": [{
-						"scientific_names": [{
-							"scientific_name": "Rana tarahumarae Boulenger 1917",
-							"binomial_name": "Rana tarahumarae"
+					"referencesTaxonomicUnits": [{
+						"scientificNames": [{
+							"scientificName": "Rana tarahumarae Boulenger 1917",
+							"binomialName": "Rana tarahumarae"
 						}]
 					}]
 				}, {
-					"references_taxonomic_units": [{
-						"scientific_names": [{
-							"scientific_name": "Rana zweifeli Hillis, Frost and Webb 1984",
-							"binomial_name": "Rana zweifeli"
+					"referencesTaxonomicUnits": [{
+						"scientificNames": [{
+							"scientificName": "Rana zweifeli Hillis, Frost and Webb 1984",
+							"binomialName": "Rana zweifeli"
 						}]
 					}]
 				}]
@@ -1080,31 +1081,31 @@
 			"label": "Pantherana",
 			"cladeDefinition": "Pantherana Dubois 1992 (converted clade name). Definition: The clade stemming from the most recent common ancestor of Rana pipiens Schreber 1782, Rana montezumae Baird 1854, Rana palustris LeConte 1825, and Rana berlandieri Baird 1854.",
 			"internalSpecifiers": [{
-				"references_taxonomic_units": [{
-					"scientific_names": [{
-						"scientific_name": "Rana pipiens Schreber 1782",
-						"binomial_name": "Rana pipiens"
+				"referencesTaxonomicUnits": [{
+					"scientificNames": [{
+						"scientificName": "Rana pipiens Schreber 1782",
+						"binomialName": "Rana pipiens"
 					}]
 				}]
 			}, {
-				"references_taxonomic_units": [{
-					"scientific_names": [{
-						"scientific_name": "Rana montezumae Baird 1854",
-						"binomial_name": "Rana montezumae"
+				"referencesTaxonomicUnits": [{
+					"scientificNames": [{
+						"scientificName": "Rana montezumae Baird 1854",
+						"binomialName": "Rana montezumae"
 					}]
 				}]
 			}, {
-				"references_taxonomic_units": [{
-					"scientific_names": [{
-						"scientific_name": "Rana palustris LeConte 1825",
-						"binomial_name": "Rana palustris"
+				"referencesTaxonomicUnits": [{
+					"scientificNames": [{
+						"scientificName": "Rana palustris LeConte 1825",
+						"binomialName": "Rana palustris"
 					}]
 				}]
 			}, {
-				"references_taxonomic_units": [{
-					"scientific_names": [{
-						"scientific_name": "Rana berlandieri Baird 1854",
-						"binomial_name": "Rana berlandieri"
+				"referencesTaxonomicUnits": [{
+					"scientificNames": [{
+						"scientificName": "Rana berlandieri Baird 1854",
+						"binomialName": "Rana berlandieri"
 					}]
 				}]
 			}]
@@ -1112,17 +1113,17 @@
 			"label": "Stertirana",
 			"cladeDefinition": "Stertirana, new clade name. Definition: The clade stemming from the most recent common ancestor of Rana pipiens Schreber 1782 and Rana montezumae Baird 1854. Etymology: From the Latin words sterto, meaning ``snore,'' and rana, meaning ``frog,'' in reference to the snore-like element of the advertisement call of the frogs in this group. Content: Includes R. pipiens and the species in Lacusirana (see below). Type species: Rana montezumae Baird 1854.",
 			"internalSpecifiers": [{
-				"references_taxonomic_units": [{
-					"scientific_names": [{
-						"scientific_name": "Rana pipiens Schreber 1782",
-						"binomial_name": "Rana pipiens"
+				"referencesTaxonomicUnits": [{
+					"scientificNames": [{
+						"scientificName": "Rana pipiens Schreber 1782",
+						"binomialName": "Rana pipiens"
 					}]
 				}]
 			}, {
-				"references_taxonomic_units": [{
-					"scientific_names": [{
-						"scientific_name": "Rana montezumae Baird 1854",
-						"binomial_name": "Rana montezumae"
+				"referencesTaxonomicUnits": [{
+					"scientificNames": [{
+						"scientificName": "Rana montezumae Baird 1854",
+						"binomialName": "Rana montezumae"
 					}]
 				}]
 			}]
@@ -1130,24 +1131,25 @@
 			"label": "Lacusirana",
 			"cladeDefinition": "Lacusirana, new clade name. Definition: The clade stemming from the most recent common ancestor of Rana montezumae Baird 1854, R. megapoda Taylor 1942, and Rana chiricahuensis Platz and Mecham 1979. Etymology: From the Latin words lacus, meaning ``lake,'' and rana, meaning ``frog,'' in reference to the habitat of most of the species in this group. Content: In addition to the species named in the definition, this clade contains Rana dunni Zweifel 1957, Rana megapoda Taylor 1942, Rana subaquavocalis Platz 1993, Rana lemosespinaliSmith and Chiszar 2003, and a least one undescribed species from the Mexican Plateau (species 2 in Figs. 1, 2). In addition, we place Rana fisheri Stejneger 1893 in this clade based on morphological similarity. Type species: R. megapoda Taylor 1942.",
 			"internalSpecifiers": [{
-				"references_taxonomic_units": [{
-					"scientific_names": [{
-						"scientific_name": "Rana montezumae Baird 1854",
-						"binomial_name": "Rana montezumae"
+				"referencesTaxonomicUnits": [{
+					"scientificNames": [{
+						"scientificName": "Rana montezumae Baird 1854",
+						"binomialName": "Rana montezumae"
 					}]
 				}]
 			}, {
-				"references_taxonomic_units": [{
-					"scientific_names": [{
-						"scientific_name": "Rana megapoda Taylor 1942",
-						"binomial_name": "Rana megapoda"
+				"specifierWillNotMatch": "*Rana megapoda* not present in the current phylogeny",
+				"referencesTaxonomicUnits": [{
+					"scientificNames": [{
+						"scientificName": "Rana megapoda Taylor 1942",
+						"binomialName": "Rana megapoda"
 					}]
 				}]
 			}, {
-				"references_taxonomic_units": [{
-					"scientific_names": [{
-						"scientific_name": "Rana chiricahuensis Platz and Mecham 1979",
-						"binomial_name": "Rana chiricahuensis"
+				"referencesTaxonomicUnits": [{
+					"scientificNames": [{
+						"scientificName": "Rana chiricahuensis Platz and Mecham 1979",
+						"binomialName": "Rana chiricahuensis"
 					}]
 				}]
 			}]
@@ -1155,17 +1157,17 @@
 			"label": "Nenirana",
 			"cladeDefinition": "Nenirana, new clade name. Definition: The clade stemming from the most recent common ancestor of Rana areolata Baird and Girard 1852 and Rana palustris Le Conte 1825. Etymology: From the Latin words nenia, meaning ``a funeral song,'' and rana, meaning ``frog,'' in reference to the low, mournful advertisement call of the species in this clade. Content: In addition to the species specified in the definition, this clade includes Rana capito LeConte 1855 and Rana sevosa Goin and Netting 1940. Hillis et al. (1983) informally termed this clade the R. areolata group. Type species: Rana areolata Baird and Girard 1852.",
 			"internalSpecifiers": [{
-				"references_taxonomic_units": [{
-					"scientific_names": [{
-						"scientific_name": "Rana areolata Baird and Girard 1852",
-						"binomial_name": "Rana areolata"
+				"referencesTaxonomicUnits": [{
+					"scientificNames": [{
+						"scientificName": "Rana areolata Baird and Girard 1852",
+						"binomialName": "Rana areolata"
 					}]
 				}]
 			}, {
-				"references_taxonomic_units": [{
-					"scientific_names": [{
-						"scientific_name": "Rana palustris Le Conte 1825",
-						"binomial_name": "Rana palustris"
+				"referencesTaxonomicUnits": [{
+					"scientificNames": [{
+						"scientificName": "Rana palustris Le Conte 1825",
+						"binomialName": "Rana palustris"
 					}]
 				}]
 			}]
@@ -1174,52 +1176,52 @@
 			"cladeDefinition": "Scurrilirana, new clade name. Definition: The clade stemming from the most recent common ancestor of Rana berlandieri Baird 1854, Rana sphenocephala Cope 1886, Rana forreri Boulenger 1883, R. spectabilisHillis and Frost 1985, Rana omiltemana Gunther 1900, Rana taylori Smith 1959, and Rana magnaocularis Frost and Bagnara 1976. Etymology: From the Latin words scurrilis, meaning ``jesting,'' and rana, meaning ``frog,'' in reference to the advertisement calls of most of the species in this clade, which sound like chuckling laughter. Content: In addition to the species specified in the definition, this clade includes Rana blairi Mecham, Littlejohn, Oldham, Brown, and Brown 1973, Rana chichicuahutlaCuellar et al., 1996, Rana macroglossa Brocchi 1877, Rana miadis Barbour and Loveridge 1929, Rana neovolcanicaHillis and Frost, 1985, Rana onca Cope in Yarrow 1875, Rana tlalociHillis and Frost, 1985, Rana yavapaiensis Platz and Frost 1984, and several undescribed species (species 3–8) in Mexico and Central America. Hillis et al. (1983) informally termed this clade the beta division of the R. pipiens complex. Type species: Rana berlandieri Baird 1854.",
 			"internalSpecifiers": [
 				{
-					"references_taxonomic_units": [{
-						"scientific_names": [{
-							"scientific_name": "Rana berlandieri Baird 1854",
-							"binomial_name": "Rana berlandieri"
+					"referencesTaxonomicUnits": [{
+						"scientificNames": [{
+							"scientificName": "Rana berlandieri Baird 1854",
+							"binomialName": "Rana berlandieri"
 						}]
 					}]
 				}, {
-					"references_taxonomic_units": [{
-						"scientific_names": [{
-							"scientific_name": "Rana sphenocephala Cope 1886",
-							"binomial_name": "Rana sphenocephala"
+					"referencesTaxonomicUnits": [{
+						"scientificNames": [{
+							"scientificName": "Rana sphenocephala Cope 1886",
+							"binomialName": "Rana sphenocephala"
 						}]
 					}]
 				}, {
-					"references_taxonomic_units": [{
-						"scientific_names": [{
-							"scientific_name": "Rana forreri Boulenger 1883",
-							"binomial_name": "Rana forreri"
+					"referencesTaxonomicUnits": [{
+						"scientificNames": [{
+							"scientificName": "Rana forreri Boulenger 1883",
+							"binomialName": "Rana forreri"
 						}]
 					}]
 				}, {
-					"references_taxonomic_units": [{
-						"scientific_names": [{
-							"scientific_name": "Rana spectabilis Hillis and Frost 1985",
-							"binomial_name": "Rana spectabilis"
+					"referencesTaxonomicUnits": [{
+						"scientificNames": [{
+							"scientificName": "Rana spectabilis Hillis and Frost 1985",
+							"binomialName": "Rana spectabilis"
 						}]
 					}]
 				}, {
-					"references_taxonomic_units": [{
-						"scientific_names": [{
-							"scientific_name": "Rana omiltemana Gunther 1900",
-							"binomial_name": "Rana omiltemana"
+					"referencesTaxonomicUnits": [{
+						"scientificNames": [{
+							"scientificName": "Rana omiltemana Gunther 1900",
+							"binomialName": "Rana omiltemana"
 						}]
 					}]
 				}, {
-					"references_taxonomic_units": [{
-						"scientific_names": [{
-							"scientific_name": "Rana taylori Smith 1959",
-							"binomial_name": "Rana taylori"
+					"referencesTaxonomicUnits": [{
+						"scientificNames": [{
+							"scientificName": "Rana taylori Smith 1959",
+							"binomialName": "Rana taylori"
 						}]
 					}]
 				}, {
-					"references_taxonomic_units": [{
-						"scientific_names": [{
-							"scientific_name": "Rana magnaocularis Frost and Bagnara 1976",
-							"binomial_name": "Rana magnaocularis"
+					"referencesTaxonomicUnits": [{
+						"scientificNames": [{
+							"scientificName": "Rana magnaocularis Frost and Bagnara 1976",
+							"binomialName": "Rana magnaocularis"
 						}]
 					}]
 				}

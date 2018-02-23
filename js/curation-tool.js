@@ -119,9 +119,9 @@ var vm = new Vue({
 
             // We need externalReferences, scientificNames and includesSpecimens.
             /*
-            if('references_taxonomic_units' in specifier) {
+            if('referencesTaxonomicUnits' in specifier) {
                 console.log(specifier);
-                for(tunit of specifier.references_taxonomic_units) {
+                for(tunit of specifier.referencesTaxonomicUnits) {
                     console.log(tunit);
                     if(!('externalReferences' in tunit)) tunit.externalReferences = [];
                     if(!('scientificNames' in tunit)) tunit.scientificNames = [];
@@ -132,14 +132,14 @@ var vm = new Vue({
 
             // Automatically select the first tunit.
             vm.selected_tunit = null;
-            if(specifier.hasOwnProperty('references_taxonomic_units') && specifier.references_taxonomic_units.length > 0) {
-                vm.selected_tunit = specifier.references_taxonomic_units[0];
+            if(specifier.hasOwnProperty('referencesTaxonomicUnits') && specifier.referencesTaxonomicUnits.length > 0) {
+                vm.selected_tunit = specifier.referencesTaxonomicUnits[0];
             } else {
                 // Specifier doesn't represent any taxonomic unit, but it's
                 // bad UX to just display a blank screen. So let's create a
                 // blank taxonomic unit to work with.
                 var new_tunit = this.create_empty_taxonomic_unit();
-                specifier.references_taxonomic_units = [new_tunit];
+                specifier.referencesTaxonomicUnits = [new_tunit];
                 vm.selected_tunit = new_tunit;
             }
 
@@ -231,9 +231,9 @@ var vm = new Vue({
             if('description' in tu) return tu.description;
 
             // Any scientific names?
-            if('scientific_names' in tu) {
-                for(scname of tu.scientific_names) {
-                    if('scientific_name' in scname) labels.push(scname.scientific_name);
+            if('scientificNames' in tu) {
+                for(scname of tu.scientificNames) {
+                    if('scientificName' in scname) labels.push(scname.scientificName);
                 }
             }
 
@@ -264,8 +264,8 @@ var vm = new Vue({
             if('description' in specifier) return specifier.description;
 
             // Look at the individual taxonomic units.
-            if('references_taxonomic_units' in specifier) {
-                var labels = specifier.references_taxonomic_units.map(function(tu) { return vm.get_taxonomic_unit_label(tu); });
+            if('referencesTaxonomicUnits' in specifier) {
+                var labels = specifier.referencesTaxonomicUnits.map(function(tu) { return vm.get_taxonomic_unit_label(tu); });
                 if(labels.length > 0) return labels.join('; ');
             }
 
@@ -300,8 +300,8 @@ var vm = new Vue({
 
         // Methods for parsing scientific name.
         get_scname_components: function(scname) {
-            if(!scname.hasOwnProperty('scientific_name')) return [];
-            return scname.scientific_name.split(/\s+/);
+            if(!scname.hasOwnProperty('scientificName')) return [];
+            return scname.scientificName.split(/\s+/);
         },
         get_binomial_name: function(scname) {
             genus = this.get_genus_name(scname);
