@@ -454,28 +454,6 @@ function load_json_from_local(file_input) {
 function render_tree(node_expr, newick) {
     console.log("render_tree(" + node_expr + ", " + newick + ")");
 
-    var nodeStyler = function(element, data) {
-        if("internal_label" in data && data.internal_label == 'Calymperaceae') {
-            var label = element.selectAll(".internal_label");
-            if(label.empty()) {
-                element.append("text").classed("internal_label", true)
-                    .text(data.internal_label)
-                    .attr("dx", ".4em")
-                    .attr("dy", ".3em")
-                    .attr("text-anchor", "start")
-                    .attr("alignment-baseline", "middle");
-            }
-        } else {
-            element.style('fill', function() {
-            if(data.name == 'Syrrhopodon gardneri' || data.name == 'Leucophanes octoblepharoides')
-                return "rgb(0, 255, 0)";
-            if(data.name == 'Octoblepharum albidum')
-                return "rgb(255, 0, 0)";
-            return "rgb(0, 0, 0)";
-        });
-        }
-    }
-
     tree = d3.layout.phylotree()
         .svg(d3.select(node_expr))
         .options({
@@ -483,7 +461,6 @@ function render_tree(node_expr, newick) {
             //"collapsible": false,
             //"transitions": false
         })
-        .style_nodes(nodeStyler)
     ;
 
     try {
