@@ -397,11 +397,7 @@
 										</ul>
 										<ul v-if="specifier_dropdown_target == 'match_result'" class="dropdown-menu dropdown-menu-left">
 											<li class="dropdown-header">Match result</li>
-											<li><a style="color: red" href="#">&#x2715; No nodes matched scientific name '<em>Rana pretiosa</em> Baird and Girard 1853'</a></li>
-											<li><a style="color: red" href="#">&#x2715; No nodes matched binomial name '<em>Rana pretiosa</em>'</a></li>
-											<li class="dropdown-header">Possible fixes</li>
-											<li><a href="#">&#x2192; Fuzzy match with 'Rana pretiosa'</a></li>
-											<li><a href="#">&#x2192; Manually match with ...</a></li>
+											<li><a href="#" onclick="return false;"><em>Matching not implemented.</em></a></li>
 										</ul>
 									</div>
 									<input type="text" disabled class="form-control" :value="get_specifier_label(specifier)" :title="get_specifier_label(specifier)">
@@ -461,7 +457,7 @@
 
 				<div class="list-group">
 					<a 	href="#selected-phyloref"
-						class="list-group-item list-group-item-warning"
+						class="list-group-item"
 						v-for="(phyloref, phyloref_index) of testcase.phylorefs"
 						:class="{active: selected_phyloref === phyloref}"
 						@click="selected_phyloref = phyloref"
