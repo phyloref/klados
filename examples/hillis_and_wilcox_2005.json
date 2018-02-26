@@ -147,7 +147,7 @@
 				    "GenBankID": "AY779225",
 				    "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779225"
 				}
-			}, 
+			},
 			"Rana chiricahuensis KU 194419": {
 				"additional_labels": ["Rana chiricahuensis"],
 				"hasBasisOfRecord": {
@@ -416,7 +416,7 @@
 				"hasBasisOfRecord": {
 				    "locatedAt": {
 				        "verbatimLocality": "GenBank sequence; locality unknown"
-				    },				
+				    },
 				    "GenBankID": "GBX12841",
 				    "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/GBX12841"
 				}
@@ -1042,40 +1042,40 @@
 			}]
 		}, {
 			"label": "Torrentirana",
-				"scientific_name": "Torrentirana, new clade name. Definition: The clade stemming from the most recent common ancestor of Rana tarahumarae Boulenger 1917 and Rana sierramadrensis Taylor 1939",
-				"internalSpecifiers": [{
-					"references_taxonomic_units": [{
-						"scientific_names": [{
-							"scientific_name": "Rana tarahumarae Boulenger 1917",
-							"binomial_name": "Rana tarahumarae"
-						}]
-					}]
-				}, {
-					"references_taxonomic_units": [{
-						"scientific_names": [{
-							"scientific_name": "Rana sierramadrensis Taylor 1939",
-							"binomial_name": "Rana sierramadrensis"
-						}]
+			"cladeDefinition": "Torrentirana, new clade name. Definition: The clade stemming from the most recent common ancestor of Rana tarahumarae Boulenger 1917 and Rana sierramadrensis Taylor 1939",
+			"internalSpecifiers": [{
+				"references_taxonomic_units": [{
+					"scientific_names": [{
+						"scientific_name": "Rana tarahumarae Boulenger 1917",
+						"binomial_name": "Rana tarahumarae"
 					}]
 				}]
+			}, {
+				"references_taxonomic_units": [{
+					"scientific_names": [{
+						"scientific_name": "Rana sierramadrensis Taylor 1939",
+						"binomial_name": "Rana sierramadrensis"
+					}]
+				}]
+			}]
 		}, {
 			"label": "Zweifelia",
-				"scientific_name": "Zweifelia Dubois 1992 (converted clade name). Definition: The clade stemming from the most recent common ancestor of Rana tarahumarae Boulenger 1917 and Rana zweifeli Hillis, Frost and Webb 1984.",
-				"internalSpecifiers": [{
-					"references_taxonomic_units": [{
-						"scientific_names": [{
-							"scientific_name": "Rana tarahumarae Boulenger 1917",
-							"binomial_name": "Rana tarahumarae"
-						}]
-					}]
-				}, {
-					"references_taxonomic_units": [{
-						"scientific_names": [{
-							"scientific_name": "Rana zweifeli Hillis, Frost and Webb 1984",
-							"binomial_name": "Rana zweifeli"
-						}]
+			"cladeDefinition": "Zweifelia Dubois 1992 (converted clade name). Definition: The clade stemming from the most recent common ancestor of Rana tarahumarae Boulenger 1917 and Rana zweifeli Hillis, Frost and Webb 1984.",
+			"internalSpecifiers": [{
+				"references_taxonomic_units": [{
+					"scientific_names": [{
+						"scientific_name": "Rana tarahumarae Boulenger 1917",
+						"binomial_name": "Rana tarahumarae"
 					}]
 				}]
+			}, {
+				"references_taxonomic_units": [{
+					"scientific_names": [{
+						"scientific_name": "Rana zweifeli Hillis, Frost and Webb 1984",
+						"binomial_name": "Rana zweifeli"
+					}]
+				}]
+			}]
 		}, {
 			"label": "Pantherana",
 			"cladeDefinition": "Pantherana Dubois 1992 (converted clade name). Definition: The clade stemming from the most recent common ancestor of Rana pipiens Schreber 1782, Rana montezumae Baird 1854, Rana palustris LeConte 1825, and Rana berlandieri Baird 1854.",
