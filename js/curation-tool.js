@@ -375,6 +375,12 @@ function load_json_from_json(testcase) {
         }
 
         vm.testcase = testcase;
+
+        // Reset UI
+        vm.selected_phyloref = null;
+        vm.selected_phylogeny = null;
+        vm.selected_specifier = null;
+        vm.selected_tunit = null;
     } catch(err) {
         alert("Error occurred while reading input JSON: " + err);
     }
@@ -429,12 +435,6 @@ function load_json_from_local(file_input) {
 
     // Reset data model
     vm.testcase = {};
-
-    // Reset UI
-    vm.selected_phyloref = null;
-    vm.selected_phylogeny = null;
-    vm.selected_specifier = null;
-    vm.selected_tunit = null;
 
     file = file_input.prop('files')[0];
     fr = new FileReader();
