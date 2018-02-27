@@ -11,10 +11,15 @@ const DOI_PREFIX = "https://dx.doi.org/";
 var vm = new Vue({
     el: '#app',
     data: {
-        // Data model: a testcase and flag indicating whether it has been
-        // modified.
-        modified: false,
         testcase: {
+            '@id': "",
+            'doi': "",
+            'url': "",
+            'citation': "",
+            'phylogenies': [{}],
+            'phylorefs': []
+        },
+        testcase_as_loaded: {
             '@id': "",
             'doi': "",
             'url': "",
@@ -42,6 +47,15 @@ var vm = new Vue({
         specifier_delete_mode: false
     },
     computed: {
+        modified: function() {
+            // Return true if the testcase has been modified.
+
+            // We can't make the comparison.
+            if(this.testcase_as_loaded == null) return false;
+
+            // Make a deep comparison.
+            return !_.isEqual(this.testcase, this.testcase_as_loaded);
+        },
         testcase_as_json: {
             // Get or set the testcase as JSON text.
             get: function() {
@@ -59,40 +73,12 @@ var vm = new Vue({
                     return this.testcase.doi;
                 }
 
-                // Might be in '@id' or in 'url'!
-                var possibilities = [];
-                if(this.testcase.hasOwnProperty('@id')) {
-                    possibilities.push(this.testcase['@id']);
-                }
-
-                if(this.testcase.hasOwnProperty('url')) {
-                    possibilities.push(this.testcase.url);
-                }
-
-                // Look for possible matches.
-                for(possibility of possibilities) {
-                    matches = DOI_REGEX.exec(possibility);
-
-                    if(matches) {
-                        this.testcase.doi = matches[1];
-                        return matches[1];
-                    }
-                }
-
                 // Didn't find anything?
-                return null;
+                return identify_doi(this.testcase);
             },
             set: function(newDOI) {
                 // Definitely set the DOI
                 this.testcase.doi = newDOI;
-
-                // Definitely set the URI
-                this.testcase['@id'] = DOI_PREFIX + newDOI + "#";
-
-                if(this.testcase.url == "" || DOI_REGEX.test(this.testcase.url)) {
-                //|| this.testcase.url.startsWith(DOI_PREFIX)) {
-                    this.testcase.url = DOI_PREFIX + newDOI;
-                }
             }
         },
         doi_as_url: function() {
@@ -110,6 +96,15 @@ var vm = new Vue({
         get_prop: function(d, k, def) {
             if(k in d) return d[k];
             return def;
+        },
+        close_current_study: function() {
+            // Close the current study. If it has been modified,
+            // warn the user before allowing the study to be saved.
+            if(this.modified) {
+                return confirm("This study has been modified! Are you sure you want to close it?");
+            } else {
+                return true;
+            }
         },
         start_specifier_modal: function(specifier) {
             // Display the specifier modal. We need to prepare the specifier
@@ -150,13 +145,8 @@ var vm = new Vue({
             $('#specifier-modal').modal();
         },
         close_specifier_modal: function(specifier) {
-            // Close the specifier modal. This is a good chance to clean up all
-            // the mess we created above!
-            if(specifier === null) return;
-
-            // Stop stop modal!
-            // Actually, we've set up a data-dismiss to do that, so we don't
-            // need to close anything here.
+            // Close the specifier modal. We've set up a data-dismiss to do
+            // that, so we don't need to close anything here.
         },
         create_or_append: function(dict, key, value) {
             if(!(key in dict)) Vue.set(dict, key, []);
@@ -348,6 +338,30 @@ var vm = new Vue({
     }
 });
 
+function identify_doi(testcase) {
+    // Look for DOIs in '@id' or in 'url'!
+    var possibilities = [];
+    if(testcase.hasOwnProperty('@id')) {
+        possibilities.push(testcase['@id']);
+    }
+
+    if(testcase.hasOwnProperty('url')) {
+        possibilities.push(testcase.url);
+    }
+
+    // Look for possible matches.
+    for(possibility of possibilities) {
+        matches = DOI_REGEX.exec(possibility);
+
+        if(matches) {
+            testcase.doi = matches[1];
+            return matches[1];
+        }
+    }
+
+    return null;
+}
+
 /**
  * Resets UI and updates it to reflect a new JSON document.
  *
@@ -355,16 +369,9 @@ var vm = new Vue({
  * the UI starts working.
  */
 function load_json_from_json(testcase) {
-    try {
-        // The DOI-to-ID/URL system doesn't work unless some variables
-        // are set.
-        if(!testcase.hasOwnProperty('@id'))
-            testcase['@id'] = "";
-        if(!testcase.hasOwnProperty('doi'))
-            testcase['doi'] = "";
-        if(!testcase.hasOwnProperty('url'))
-            testcase['url'] = "";
+    if(!vm.close_current_study()) return;
 
+    try {
         // Specifiers act weird unless every phyloreference has both
         // internalSpecifiers and externalSpecifiers set, even if they
         // are blank.
@@ -374,6 +381,12 @@ function load_json_from_json(testcase) {
             if(!phyloref.hasOwnProperty('externalSpecifiers')) phyloref.externalSpecifiers = [];
         }
 
+        // Set up DOI if not present.
+        if(!testcase.hasOwnProperty('doi') || testcase.doi == "") {
+            testcase.doi = identify_doi(testcase);
+        }
+
+        vm.testcase_as_loaded = jQuery.extend(true, {}, testcase);
         vm.testcase = testcase;
 
         // Reset UI
@@ -391,13 +404,6 @@ function load_json_from_json(testcase) {
  * on the same domain as this website.
  */
 function load_json_from_url(url) {
-    if(typeof window.FileReader !== 'function') {
-        alert("The FileReader API is not supported on this browser.");
-        on_load(false);
-        return;
-    }
-
-    // Load from URL
     $.getJSON(url, function(data) {
         load_json_from_json(data);
     });
@@ -432,9 +438,6 @@ function load_json_from_local(file_input) {
         on_load(false);
         return;
     }
-
-    // Reset data model
-    vm.testcase = {};
 
     file = file_input.prop('files')[0];
     fr = new FileReader();
