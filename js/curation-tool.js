@@ -3,14 +3,18 @@
  * Copyright (c) The Phyloreferencing Project, 2018
  */
 
-// How to identify DOIs.
-const DOI_REGEX = /^https?:\/\/(?:dx\.)?doi\.org\/(.+?)[\#\/]?$/i;
-const DOI_PREFIX = "https://dx.doi.org/";
-
-// Global variables
+// GLOBAL VARIABLES
+// Set up the Vue object which contains the entire model.
 var vm = new Vue({
+    // The element to install Vue onto.
     el: '#app',
+
+    // The data, consisting of the model and UI elements.
     data: {
+        // Constants: used during rendering.
+        DOI_PREFIX: "https://dx.doi.org/",
+
+        // The key data model.
         testcase: {
             '@id': "",
             'doi': "",
@@ -19,6 +23,9 @@ var vm = new Vue({
             'phylogenies': [{}],
             'phylorefs': []
         },
+
+        // A copy of the data model, used to test when the data model has been
+        // modified.
         testcase_as_loaded: {
             '@id': "",
             'doi': "",
@@ -28,29 +35,23 @@ var vm = new Vue({
             'phylorefs': []
         },
 
-        // Constants
-        DOI_PREFIX: DOI_PREFIX,
-
-        // Variables containing UI renders
-
-        // Global
+        // UI elements.
         selected_phylogeny: null,
         selected_phyloref: null,
         selected_specifier: null,
-
-        // Specific to the specifier modal
         selected_tunit: null,
 
-        // Specific to the specifier dropdown and
-        // a hack to get around Bootstrap not allowing
-        specifier_dropdown_target: 'none',
-        specifier_delete_mode: false
+        // Display the delete buttons on the specifiers.
+        specifier_delete_mode: false,
+
+        // Display one of the two dropdown menus for the specifiers.
+        specifier_dropdown_target: 'none'
     },
+
+    // Computed values inside the data model.
     computed: {
         modified: function() {
             // Return true if the testcase has been modified.
-
-            // We can't make the comparison.
             if(this.testcase_as_loaded == null) return false;
 
             // Make a deep comparison.
@@ -73,33 +74,47 @@ var vm = new Vue({
                     return this.testcase.doi;
                 }
 
-                // Didn't find anything?
+                // If not, look for a DOI among the '@id' and the 'url'.
                 return identify_doi(this.testcase);
             },
             set: function(newDOI) {
-                // Definitely set the DOI
+                // Set the DOI.
                 this.testcase.doi = newDOI;
             }
         },
         doi_as_url: function() {
-            return DOI_PREFIX + this.testcase.doi;
+            // We compute this from testcase.doi, which should always be without
+            // the prefix.
+            return this.DOI_PREFIX + this.testcase.doi;
         }
     },
+
+    // Methods for carrying out various tasks.
     methods: {
+        // Helper methods.
         open_url: function(url) {
+            // Open the specified URL.
             if(url === null) return;
             if(url == "") return;
 
-            // Show it!
             window.open(url);
         },
-        get_prop: function(d, k, def) {
-            if(k in d) return d[k];
-            return def;
+        create_or_append: function(dict, key, value) {
+            // A common case is where we need to append to an array for a key
+            // in a dictionary, but we don't know if the key exists or not.
+            // Furthermore, in order for Vue to track the new array, it needs
+            // to be set using Vue.set. This method takes care of all of this.
+
+            if(!(key in dict)) Vue.set(dict, key, []);
+            dict[key].push(value);
+            return dict;
         },
+
+        // User interface helper methods.
         close_current_study: function() {
             // Close the current study. If it has been modified,
-            // warn the user before allowing the study to be saved.
+            // warn the user before closing in order to allow changes to be
+            // saved.
             if(this.modified) {
                 return confirm("This study has been modified! Are you sure you want to close it?");
             } else {
@@ -112,22 +127,10 @@ var vm = new Vue({
             if(specifier === null) return;
             vm.selected_specifier = specifier;
 
-            // We need externalReferences, scientificNames and includesSpecimens.
-            /*
-            if('references_taxonomic_units' in specifier) {
-                console.log(specifier);
-                for(tunit of specifier.references_taxonomic_units) {
-                    console.log(tunit);
-                    if(!('externalReferences' in tunit)) tunit.externalReferences = [];
-                    if(!('scientificNames' in tunit)) tunit.scientificNames = [];
-                    if(!('includesSpecimens' in tunit)) tunit.includesSpecimens = [];
-                }
-            }
-            */
-
             // Automatically select the first tunit.
             vm.selected_tunit = null;
             if(specifier.hasOwnProperty('references_taxonomic_units') && specifier.references_taxonomic_units.length > 0) {
+                // We have a first tunit, so select it!
                 vm.selected_tunit = specifier.references_taxonomic_units[0];
             } else {
                 // Specifier doesn't represent any taxonomic unit, but it's
@@ -138,33 +141,24 @@ var vm = new Vue({
                 vm.selected_tunit = new_tunit;
             }
 
-            // Go go modal!
+            // Make the modal draggable and display it.
             $('.modal-dialog').draggable({
 				handle: '.modal-header'
 			});
             $('#specifier-modal').modal();
         },
         close_specifier_modal: function(specifier) {
-            // Close the specifier modal. We've set up a data-dismiss to do
-            // that, so we don't need to close anything here.
-        },
-        create_or_append: function(dict, key, value) {
-            if(!(key in dict)) Vue.set(dict, key, []);
-            dict[key].push(value);
-            return dict;
-        },
-        delete_specifier: function(phyloref, specifier) {
-            if(phyloref.hasOwnProperty('internalSpecifiers')) {
-                var index = phyloref.internalSpecifiers.indexOf(specifier);
-                if(index != -1) phyloref.internalSpecifiers.splice(index, 1);
-            }
+            // Close the specifier modal.
 
-            if(phyloref.hasOwnProperty('externalSpecifiers')) {
-                var index = phyloref.externalSpecifiers.indexOf(specifier);
-                if(index != -1) phyloref.externalSpecifiers.splice(index, 1);
-            }
+            // We've set up a data-dismiss to do that, so we don't need to do
+            // anything here, but the function is here in case we need it later.
         },
+
+        // Methods for listing and modifying specifiers.
         get_specifiers: function(phyloref) {
+            // Combine the internal and external specifiers into a single list,
+            // with internal specifiers before external specifiers.
+
             if(!phyloref.hasOwnProperty('internalSpecifiers')) phyloref.internalSpecifiers = [];
             if(!phyloref.hasOwnProperty('externalSpecifiers')) phyloref.externalSpecifiers = [];
 
@@ -173,11 +167,18 @@ var vm = new Vue({
             return specifiers;
         },
         get_specifier_type: function(phyloref, specifier) {
+            // For a given specifier, return a string indicating whether it is
+            // an 'Internal' or 'External' specifier.
+
             if(phyloref.hasOwnProperty('internalSpecifiers') && phyloref.internalSpecifiers.includes(specifier)) return "Internal";
             if(phyloref.hasOwnProperty('externalSpecifiers') && phyloref.externalSpecifiers.includes(specifier)) return "External";
             return "Specifier";
         },
         set_specifier_type: function(phyloref, specifier, specifier_type) {
+            // Change the type of a given specifier. To do this, we first need
+            // to determine if it was originally an internal or external
+            // specifier, then move it into the other list.
+
             if(!phyloref.hasOwnProperty('internalSpecifiers')) phyloref.internalSpecifiers = [];
             if(!phyloref.hasOwnProperty('externalSpecifiers')) phyloref.externalSpecifiers = [];
 
@@ -199,21 +200,28 @@ var vm = new Vue({
                 // Neither internal nor external? Ignore.
             }
         },
-        create_empty_phyloref: function(count) {
-            return {
-                label: "Phyloreference " + count,
-                cladeDefinition: "",
-                internalSpecifiers: [],
-                externalSpecifiers: []
+        delete_specifier: function(phyloref, specifier) {
+            // Since the user interface combines specifiers into a single list,
+            // it doesn't remember if the specifier to be deleted is internal
+            // or external. We delete the intended specifier from both arrays.
+
+            if(phyloref.hasOwnProperty('internalSpecifiers')) {
+                var index = phyloref.internalSpecifiers.indexOf(specifier);
+                if(index != -1) phyloref.internalSpecifiers.splice(index, 1);
+            }
+
+            if(phyloref.hasOwnProperty('externalSpecifiers')) {
+                var index = phyloref.externalSpecifiers.indexOf(specifier);
+                if(index != -1) phyloref.externalSpecifiers.splice(index, 1);
             }
         },
-        create_empty_specifier: function(count) {
-            return {};
-        },
-        create_empty_taxonomic_unit: function(count) {
-            return {};
-        },
+
+        // Methods for building human-readable labels for model elements.
         get_taxonomic_unit_label: function(tu) {
+            // Try to determine the label of a taxonomic unit. This checks the
+            // 'label' and 'description' properties, and then tries to create a
+            // descriptive label by combining the scientific names, specimens
+            // and external references of the taxonomic unit.
             labels = [];
 
             // A label or description for the TU?
@@ -246,6 +254,10 @@ var vm = new Vue({
             return labels.join(', ');
         },
         get_specifier_label: function(specifier) {
+            // Try to determine the label of a specifier. This checks the
+            // 'label' and 'description' properties, and then tries to create a
+            // descriptive label by using the list of referenced taxonomic units.
+
             // Is this specifier even non-null?
             if(specifier == null) return "(null)";
 
@@ -263,6 +275,10 @@ var vm = new Vue({
             return "Unnamed specifier";
         },
         get_phyloref_label: function(phyloref) {
+            // Try to determine what the label of a particular phyloreference is,
+            // or default to 'Phyloreference <count>'. This checks the 'label' and
+            // 'title' properties, and truncates them to 50 characters.
+
             phyloref_index = this.testcase.phylorefs.indexOf(phyloref);
             potential_label = "Phyloreference " + (phyloref_index + 1);
 
@@ -275,48 +291,101 @@ var vm = new Vue({
             return potential_label;
         },
         get_phylogeny_as_newick: function(node_expr, phylogeny) {
+            // Returns the phylogeny as a Newick string. Since this method is
+            // called frequently in rendering the "Edit as Newick" textareas,
+            // we hijack it to redraw the phylogenies, which results in an
+            // annoying flickering effect whenever the model changes but ensures
+            // that the drawn phylogeny is in sync with the model.
+
+            // If no Newick tree is available, default to '()'.
             newick = "()";
-
-            console.log("get_phylogeny_as_newick(" + node_expr + ", " + phylogeny + ")");
-
             if(phylogeny.hasOwnProperty('newick')) newick = phylogeny.newick;
 
-            // While we're here ...
+            // Redraw the phylogeny.
             render_tree(node_expr, newick);
 
-            // And return.
+            // Return the Newick string that was rendered.
             return newick;
+        },
+
+        // Methods for creating new, empty data model elements.
+        create_empty_phyloref: function(count) {
+            // Create an empty phyloreference. We label it, but leave other
+            // fields blank.
+
+            return {
+                label: "Phyloreference " + count,
+                cladeDefinition: "",
+                internalSpecifiers: [],
+                externalSpecifiers: []
+            }
+        },
+        create_empty_specifier: function(count) {
+            // Create an empty specifier. No fields are required, so we
+            // create a blank object and return that.
+
+            return {};
+        },
+        create_empty_taxonomic_unit: function(count) {
+            // Create an empty taxonomic unit. No fields are required, so
+            // we create a blank object and return that.
+
+            return {};
         },
 
         // Methods for parsing scientific name.
         get_scname_components: function(scname) {
+            // Return the components of a scientific name by splitting its
+            // scientificName field using spaces.
+
             if(!scname.hasOwnProperty('scientific_name')) return [];
             return scname.scientific_name.split(/\s+/);
         },
+        get_genus_name: function(scname) {
+            // Guess the genus name of a scientific name by using its first component.
+
+            comps = this.get_scname_components(scname);
+            if(comps.length >= 1) return comps[0];
+            return null;
+        },
+        get_specific_epithet_name: function(scname) {
+            // Get the specific epithet name of a scientific name by using its
+            // second component.
+
+            comps = this.get_scname_components(scname);
+            if(comps.length >= 2) return comps[1];
+            return null;
+        },
         get_binomial_name: function(scname) {
+            // Get the binomial name of a scientific name by combining its
+            // first and second components.
+
             genus = this.get_genus_name(scname);
             specificEpithet = this.get_specific_epithet_name(scname);
 
             if(genus != null && specificEpithet != null) return genus + " " + specificEpithet;
             return null;
         },
-        get_genus_name: function(scname) {
-            comps = this.get_scname_components(scname);
-            if(comps.length >= 1) return comps[0];
-            return null;
-        },
-        get_specific_epithet_name: function(scname) {
-            comps = this.get_scname_components(scname);
-            if(comps.length >= 2) return comps[1];
-            return null;
-        },
 
         // Methods for parsing specimen identifiers.
         get_specimen_components: function(specimen) {
+            // Split the occurrence ID into components by splitting them at
+            // colons. The two expected formats are:
+            //  - 'urn:catalog:[institutionCode]:[collectionCode]:[catalogNumber]'
+            //      (in which case, we ignore the first two "components" here)
+            //  - '[institutionCode]:[collectionCode]:[catalogNumber]'
             if(!specimen.hasOwnProperty('occurrenceID')) return [];
-            return specimen.occurrenceID.split(/\s*:\s*/);
+            var occurID = specimen.occurrenceID;
+            if(occurID.startsWith('urn:catalog:')) {
+                occurID = occurID.substr(12);
+            }
+            return occurID.split(/\s*:\s*/);
         },
         get_institution_code: function(specimen) {
+            // Extract an institution code from the occurrence ID. If only
+            // two components are provided, we assume they are the institution
+            // code and the catalog number.
+
             comps = this.get_specimen_components(specimen);
             if(comps.length == 1) return null;
             if(comps.length == 2) return comps[0];
@@ -324,11 +393,20 @@ var vm = new Vue({
             return null;
         },
         get_collection_code: function(specimen) {
+            // Extract a collection code from the occurrence ID. If only
+            // two components are provided, we assume they are the institution
+            // code and the catalog number, and so no collection code is extracted.
+
             comps = this.get_specimen_components(specimen);
             if(comps.length >= 3) return comps[1];
             return null;
         },
         get_catalog_number: function(specimen) {
+            // Extract a catalog number from the occurrence ID. If only one
+            // component is provided, we assume that it is the catalog number.
+            // If only two components are provided, we assume they are the
+            // institution code and the catalog number.
+
             comps = this.get_specimen_components(specimen);
             if(comps.length == 1) return comps[0];
             if(comps.length == 2) return comps[1];
@@ -338,15 +416,31 @@ var vm = new Vue({
     }
 });
 
+/**
+ * identify_doi(testcase)
+ *
+ * DOIs should be entered into their own 'doi' field. This method looks through
+ * all possible places where a DOI might be entered -- including the study @id
+ * and the 'url' field -- and attempts to extract a DOI using the regular
+ * expression DOI_REGEX.
+ *
+ * @return The best guess DOI or null.
+ */
 function identify_doi(testcase) {
-    // Look for DOIs in '@id' or in 'url'!
+    const DOI_REGEX = /^https?:\/\/(?:dx\.)?doi\.org\/(.+?)[\#\/]?$/i;
+
     var possibilities = [];
+
+    if(testcase.hasOwnProperty('doi')) {
+        possibilities.push(testcase['doi']);
+    }
+
     if(testcase.hasOwnProperty('@id')) {
         possibilities.push(testcase['@id']);
     }
 
     if(testcase.hasOwnProperty('url')) {
-        possibilities.push(testcase.url);
+        possibilities.push(testcase['url']);
     }
 
     // Look for possible matches.
@@ -363,12 +457,11 @@ function identify_doi(testcase) {
 }
 
 /**
- * Resets UI and updates it to reflect a new JSON document.
+ * display_testcase(testcase)
  *
- * Most other functions call this function to process the JSON before
- * the UI starts working.
+ * Updates the user interface to reflect the new JSON document provided in 'testcase'.
  */
-function load_json_from_json(testcase) {
+function display_testcase(testcase) {
     if(!vm.close_current_study()) return;
 
     try {
@@ -381,61 +474,66 @@ function load_json_from_json(testcase) {
             if(!phyloref.hasOwnProperty('externalSpecifiers')) phyloref.externalSpecifiers = [];
         }
 
-        // Set up DOI if not present.
+        // Check for DOI in other fields if not provided explicitly.
         if(!testcase.hasOwnProperty('doi') || testcase.doi == "") {
             testcase.doi = identify_doi(testcase);
         }
 
+        // Deep-copy the testcase into a 'testcase_as_loaded' variable in our
+        // model. We deep-compare vm.testcase with vm.testcase_as_loaded to
+        // determine if the loaded model has been modified.
         vm.testcase_as_loaded = jQuery.extend(true, {}, testcase);
         vm.testcase = testcase;
 
-        // Reset UI
+        // Reset all UI selections.
         vm.selected_phyloref = null;
         vm.selected_phylogeny = null;
         vm.selected_specifier = null;
         vm.selected_tunit = null;
     } catch(err) {
-        alert("Error occurred while reading input JSON: " + err);
+        console.log("Error occurred while displaying new testcase: " + err);
     }
 }
 
 /**
- * Load a JSON from a URL. This either needs to be a JSONP request or
+ * load_json_from_url(url)
+ *
+ * Load a JSON from the provided URL. This either needs to be a JSONP request or
  * on the same domain as this website.
  */
 function load_json_from_url(url) {
     $.getJSON(url, function(data) {
-        load_json_from_json(data);
+        display_testcase(data);
     });
 }
 
 /**
- * Load a local JSON file using FileReader
+ * load_json_from_local(file_input)
  *
- * Initially based on https://stackoverflow.com/a/21446426/27310
+ * Load a JSON file from the local file system using FileReader. file_input
+ * needs to be an HTML element representing an <input type="file"> in which
+ * the user has selected the local file they wish to load.
+ *
+ * This code is based on https://stackoverflow.com/a/21446426/27310
  */
 function load_json_from_local(file_input) {
     if(typeof window.FileReader !== 'function') {
         alert("The FileReader API is not supported on this browser.");
-        on_load(false);
         return;
     }
 
     if(!file_input) {
         alert("Programmer error: No file input element specified.");
-        on_load(false);
         return;
     }
 
     if(!file_input.prop('files')) {
         alert("File input element found, but files property missing: try another browser?");
-        on_load(false);
         return;
     }
 
     if(!file_input.prop('files')[0]) {
         alert("Please select a file before attempting to load it.");
-        on_load(false);
         return;
     }
 
@@ -444,50 +542,65 @@ function load_json_from_local(file_input) {
     fr.onload = function(e) {
         lines = e.target.result;
         testcase = JSON.parse(lines);
-        load_json_from_json(testcase);
+        display_testcase(testcase);
     };
     fr.readAsText(file);
 }
 
 /**
- * Given a Newick string, try to render it as a tree using Phylotree.
+ * render_tree(node_expr, newick) {
+ * Given a Newick string in 'newick', try to render it as a tree using Phylotree.
  *
- * 'node' should be an SVG node.
+ * 'node_expr' should be a node expression for an SVG element (e.g. '#svg').
  */
 function render_tree(node_expr, newick) {
-    console.log("render_tree(" + node_expr + ", " + newick + ")");
+    // Which phylogeny is currently selected?
+    var selected_phyloref = null;
+    if(vm != null) selected_phyloref = vm.selected_phyloref;
 
-    var nodeStyler = function(element, data) {
-        if("internal_label" in data && data.internal_label == 'Calymperaceae') {
+    console.log("render_tree(" + node_expr + ", " + newick + ") on selected phyloref " + selected_phyloref);
+
+    // The node styler provides information on styling nodes within the
+    // phylogeny.
+    var nodeStyler = function (element, data) {
+        console.log(data);
+        if(data.hasOwnProperty('internal_label')) {
+            // If the node has an internal label (see below), we display it
+            // next to the node by creating a new 'text' element.
+
+            // Make sure we don't already have an internal label node on this SVG node!
             var label = element.selectAll(".internal_label");
             if(label.empty()) {
-                element.append("text").classed("internal_label", true)
+                var text_label = element.append("text");
+
+                // TODO: Once we're happy with how these elements look,
+                // we should move all this complexity into CSS classes.
+                text_label.classed("internal_label", true)
                     .text(data.internal_label)
                     .attr("dx", ".4em")
                     .attr("dy", ".3em")
+                    .style("font-style", "italic")
                     .attr("text-anchor", "start")
                     .attr("alignment-baseline", "middle");
+
+                // If the internal label has the same label as the currently
+                // selected phyloreference, make it bolder and turn it blue.
+                if(
+                    selected_phyloref != null &&
+                    selected_phyloref.hasOwnProperty('label') &&
+                    selected_phyloref.label == data.internal_label
+                ) {
+                    text_label.style('fill', 'blue')
+                        .style('font-weight', 'bolder');
+                }
             }
-        } else {
-            element.style('fill', function() {
-            if(data.name == 'Syrrhopodon gardneri' || data.name == 'Leucophanes octoblepharoides')
-                return "rgb(0, 255, 0)";
-            if(data.name == 'Octoblepharum albidum')
-                return "rgb(255, 0, 0)";
-            return "rgb(0, 0, 0)";
-        });
         }
     }
 
     tree = d3.layout.phylotree()
         .svg(d3.select(node_expr))
-        .options({
-            //"selectable": false,
-            //"collapsible": false,
-            //"transitions": false
-        })
-        .style_nodes(nodeStyler)
-    ;
+        .options({})
+        .style_nodes(nodeStyler);
 
     try {
         tree(d3.layout.newick_parser(newick));
@@ -499,16 +612,8 @@ function render_tree(node_expr, newick) {
         });
 
         tree.spacing_x(20).spacing_y(50);
-
-        // tree.placenodes().layout();
         tree.update();
     } catch(e) {
         console.log("Unable to render tree: " + e);
     }
-
-    /*
-    $(function() {
-        tree.update_layout();
-    });
-    */
 }
