@@ -488,6 +488,13 @@ function display_testcase(testcase) {
         vm.selected_phylogeny = null;
         vm.selected_specifier = null;
         vm.selected_tunit = null;
+
+        phylogeny_index = 0;
+        for(phylogeny in vm.testcase.phylogenies) {
+            console.log("render_on_load: " + get_phylogeny_as_newick('#phylogeny-svg-' + phylogeny_index, phylogeny));
+            phylogeny_index++;
+        }
+
     } catch(err) {
         console.log("Error occurred while displaying new testcase: " + err);
     }
@@ -561,7 +568,6 @@ function render_tree(node_expr, newick) {
     // The node styler provides information on styling nodes within the
     // phylogeny.
     var nodeStyler = function (element, data) {
-        console.log(data);
         if(data.hasOwnProperty('internal_label')) {
             // If the node has an internal label (see below), we display it
             // next to the node by creating a new 'text' element.
@@ -595,24 +601,22 @@ function render_tree(node_expr, newick) {
         }
     }
 
-    tree = d3.layout.phylotree()
+    var tree = d3.layout.phylotree()
         .svg(d3.select(node_expr))
         .options({})
-        .style_nodes(nodeStyler)
-        .spacing_x(20).spacing_y(50);
+        .style_nodes(nodeStyler);
+    tree(d3.layout.newick_parser(newick));
 
-    try {
-        tree(d3.layout.newick_parser(newick));
-        _.each(tree.get_nodes(), function(node) {
-            if(node.children && node.name.startsWith("expected_")) {
-                node.internal_label = node.name.substring(9);
-                // console.log(node.internal_label)
-            }
-        });
+    _.each(tree.get_nodes(), function(node) {
+        if(node.children && node.name.startsWith("expected_")) {
+            node.internal_label = node.name.substring(9);
+            // console.log(node.internal_label)
+        }
+    });
 
-        // tree.layout();
-        tree.placenodes().update();
-    } catch(e) {
-        console.log("Unable to render tree: " + e);
-    }
+    tree
+        .spacing_x(20).spacing_y(50)
+        .placenodes()
+        .update()
+    ;
 }
