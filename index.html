@@ -13,14 +13,17 @@
 	<meta http-equiv="x-ua-compatible" content="ie=edge">
 	<meta name="viewport" content="width=device-width, initial-size=1">
 
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-	<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 	<title>Phyloref Curation Tool, version 0.1</title>
 
-	<link rel="stylesheet" href="css/main.css">
 	<!--
 			<link rel="icon" href="images/favicon.png">
 	-->
+
+	<!-- Load stylesheets and IE8 support -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<link rel="stylesheet" href="http://veg.github.io/phylotree.js/phylotree.css">
+	<link rel="stylesheet" href="css/main.css">
 
 	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -28,8 +31,6 @@
 	<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 	<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 	<![endif]-->
-
-	<link href="http://veg.github.io/phylotree.js/phylotree.css" rel="stylesheet">
 </head>
 
 <body @unload="close_current_study()">
@@ -42,6 +43,7 @@
 		</div>
 	</nav>
 
+	<!-- Vue.js will execute on this element and children -->
 	<div id="app">
 		<div class="col-md-12 panel">
 
@@ -52,23 +54,18 @@
 						Load an example <span class="caret"></span>
 					</button>
 					<ul class="dropdown-menu">
-					  	<li><a href="#" onclick="load_json_from_url('examples/fisher_et_al_2007.json')">Fisher <em>et al</em>, 2007</a></li>
-						<li><a href="#" onclick="load_json_from_url('examples/hillis_and_wilcox_2005.json')">Hillis and Wilcox, 2005</a></li>
-					  	<!-- <li role="separator" class="divider"></li> -->
+							<li><a href="#" onclick="load_json_from_url('examples/fisher_et_al_2007.json')">Fisher <em>et al</em>, 2007</a></li>
+							<li><a href="#" onclick="load_json_from_url('examples/hillis_and_wilcox_2005.json')">Hillis and Wilcox, 2005</a></li>
 					</ul>
 				</div>
 
 				<label class="btn btn-info btn-group" for="file-input" role="group">
-					<input id="file-input" type="file" style="display:none;"
-						onchange="load_json_from_local($('#file-input'))"
-					>
+					<input id="file-input" type="file" style="display:none;" onchange="load_json_from_local($('#file-input'))">
 					Read from local JSON file
 				</label>
 
 				<div class="btn-group" role="group">
-					<button id="export-as-json" type="button" class="btn btn-success"
-						onclick="$('#view-as-json').toggle(300)"
-					>Export as JSON</button>
+					<button id="export-as-json" type="button" class="btn btn-success" onclick="$('#view-as-json').toggle(300)">Export as JSON</button>
 				</div>
 			</div>
 		</div>
@@ -126,6 +123,8 @@
 		<!-- Dropdown menus for navigating phylogenies and phyloreferences -->
 		<div class="col-md-12 panel">
 			<div class="btn-group btn-group-justified" role="group" aria-label="Options to navigate phylogenies">
+
+				<!-- List of phylogenies -->
 				<div class="btn-group" role="group">
 					<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 						{{ testcase.phylogenies.length }} phylogenies <span class="caret"></span>
@@ -138,6 +137,7 @@
 					</ul>
 				</div>
 
+				<!-- List of phyloreferences -->
 				<div class="btn-group" role="group">
 					<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 						{{ testcase.phylorefs.length }} phyloreferences <span class="caret"></span>
@@ -175,7 +175,7 @@
 			</div>
 		</div>
 
-		<!-- Specifier modal: displays the allows editing of the current specifier -->
+		<!-- Specifier modal: allows editing of the current specifier -->
 		<div id="specifier-modal" class="modal fade">
 			<div class="modal-dialog modal-lg form-horizontal">
 				<div class="modal-content" v-if="selected_specifier">
@@ -192,6 +192,8 @@
 							</p>
 
 							<form id="specifier">
+
+								<!-- List of taxonomic units -->
 								<div id="specifier-tunits-panel" class="panel panel-info" style="margin-top: 1em">
 									<div class="panel-heading">Taxonomic Units</div>
 									<div class="panel-body" v-if="!selected_tunit">
@@ -199,6 +201,7 @@
 									</div>
 									<div class="panel-body" v-if="selected_tunit">
 
+										<!-- Panel listing scientific names in this taxonomic unit -->
 										<div class="col-md-12">
 											<div class="panel panel-default">
 												<div class="panel-heading">Scientific names</div>
@@ -235,6 +238,7 @@
 											</div>
 										</div>
 
+										<!-- Panel listing external references in this taxonomic unit -->
 										<div class="col-md-6">
 											<div class="panel panel-default">
 												<div class="panel-heading">External references</div>
@@ -268,6 +272,7 @@
 											</div>
 										</div>
 
+										<!-- Panel listing specimens in this taxonomic unit -->
 										<div class="col-md-6">
 											<div class="panel panel-default">
 												<div class="panel-heading">Specimens</div>
@@ -305,6 +310,7 @@
 										</div>
 									</div>
 
+									<!-- List of taxonomic units, including the option to add new taxonomic units -->
 									<div class="list-group">
 										<a 	class="list-group-item"
 											v-if="selected_specifier.hasOwnProperty('referencesTaxonomicUnits')"
@@ -330,7 +336,7 @@
 			</div>
 		</div>
 
-		<!-- Phyloreference sidebar -->
+		<!-- Phyloreference sidebar: displays phyloreferences and specifiers -->
 		<div class="col-md-5 panel float-md-right">
 			<div class="panel panel-info">
 				<div id="selected-phyloref" class="panel-heading">Phyloreferences</div>
@@ -341,7 +347,7 @@
 							<input id="label" v-model="selected_phyloref.label" type="text" class="form-control"  placeholder="Phyloreference label">
 						</div>
 
-						<label for="definition" class="control-label col-md-4">Definition</label>
+						<label for="definition" class="control-label col-md-4">Clade definition</label>
 						<div class="input-group col-md-8">
 							<textarea
 								id="definition"
@@ -352,6 +358,7 @@
 								></textarea>
 						</div>
 
+						<!-- List of specifiers associated with this phyloreference -->
 						<div class="panel panel-info" style="margin-top: 1em">
 							<div class="panel-heading">Specifiers</div>
 							<div class="panel-body">
@@ -360,16 +367,27 @@
 									v-for="(specifier, specifier_index) of get_specifiers(selected_phyloref)"
 									:id="'specifier_' + specifier_index"
 								>
+									<!-- Before specifier label -->
 									<div class="input-group-btn">
+										<!-- Delete button -->
 										<button v-if="specifier_delete_mode" type="button"
 											class="btn btn-danger"
 											@click="delete_specifier(selected_phyloref, specifier)"
-											><span class="glyphicon glyphicon-remove"></span></button>
+											><span class="glyphicon glyphicon-remove"></span>
+										</button>
+
+										<!-- Match results with dropdown -->
 										<button
 											@click="specifier_dropdown_target = 'match_result'"
 											type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 											<span class="glyphicon glyphicon-asterisk"></span>
 										</button>
+										<ul v-if="specifier_dropdown_target == 'match_result'" class="dropdown-menu dropdown-menu-left">
+											<li class="dropdown-header">Match result</li>
+											<li><a href="#" onclick="return false;"><em>Matching not implemented.</em></a></li>
+										</ul>
+
+										<!-- Specifier type with dropdown: internal or external specifier -->
 										<button
 											@click="specifier_dropdown_target = 'specifier_type'"
 											type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
@@ -385,12 +403,12 @@
 													@click="set_specifier_type(selected_phyloref, specifier, 'External')"
 												>External specifier</a></li>
 										</ul>
-										<ul v-if="specifier_dropdown_target == 'match_result'" class="dropdown-menu dropdown-menu-left">
-											<li class="dropdown-header">Match result</li>
-											<li><a href="#" onclick="return false;"><em>Matching not implemented.</em></a></li>
-										</ul>
 									</div>
+
+									<!-- Specifier label -->
 									<input type="text" disabled class="form-control" :value="get_specifier_label(specifier)" :title="get_specifier_label(specifier)">
+
+									<!-- After specifier label: edit button -->
 									<div class="input-group-btn">
 										<button type="button"
 											class="btn btn-primary"
@@ -399,6 +417,8 @@
 									</div>
 								</div>
 							</div>
+
+							<!-- Add or delete specifiers -->
 							<div class="panel-footer">
 								<button
 									type="button"
@@ -412,39 +432,10 @@
 								>Delete some specifiers</button>
 							</div>
 						</div>
-
-						<!-- Old-timey select lists of Specifiers. TBD. -->
-						<!--
-						<label for="internal-specifiers" class="control-label col-md-4">Internal specifiers</label>
-						<div class="input-group col-md-8">
-							<select id="internal-specifiers" class="form-control col-md-8" multiple>
-								<option
-									v-for="(specifier, specifier_index) of selected_phyloref.internalSpecifiers"
-									@click="selected_specifier = specifier"
-									ondblclick="$('#specifier-modal').modal()"
-									>{{get_specifier_label(specifier)}}</option>
-								<option ondblclick="new_specifier = vm.create_empty_specifier(vm.selected_phyloref.internalSpecifiers.length + 1); vm.selected_phyloref.internalSpecifiers.push(new_specifier); vm.selected_specifier = new_specifier; $('#specifier-modal').modal();"
-									>(Add more)</option>
-							</select>
-						</div>
-
-						<label for="external_specifiers" class="control-label col-md-4">External specifiers</label>
-						<div class="input-group col-md-8">
-							<select id="external_specifiers" class="form-control col-md-8" multiple>
-								<option
-									v-for="(specifier, specifier_index) of selected_phyloref.externalSpecifiers"
-									@click="selected_specifier = specifier"
-									ondblclick="$('#specifier-modal').modal()"
-									>{{get_specifier_label(specifier)}}</option>
-								<option ondblclick="new_specifier = vm.create_empty_specifier(vm.selected_phyloref.externalSpecifiers.length + 1); vm.selected_phyloref.externalSpecifiers.push(new_specifier); vm.selected_specifier = new_specifier; $('#specifier-modal').modal();"
-									>(Add more)</option>
-							</select>
-						</div>
-						-->
 					</form>
 				</div>
 
-
+				<!-- List of phyloreferences -->
 				<div class="list-group">
 					<a 	href="#selected-phyloref"
 						class="list-group-item"
