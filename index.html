@@ -32,7 +32,7 @@
 	<link href="http://veg.github.io/phylotree.js/phylotree.css" rel="stylesheet">
 </head>
 
-<body>
+<body @unload="close_current_study()">
 	<!-- Navigation bar at the top of the page -->
 	<nav class="navbar navbar-default">
 		<div class="container">
@@ -73,16 +73,6 @@
 			</div>
 		</div>
 
-		<!-- Modification warning -->
-		<div id="testcase-modified" v-if="modified" class="col-md-12">
-			<div class="panel panel-warning collapsible">
-				<div class="panel-heading">The testcase has been modified!</div>
-				<div class="panel-body">
-					<p>Please take care.</p>
-				</div>
-			</div>
-		</div>
-
 		<!-- Displays the test case as a JSON document -->
 		<div id="view-as-json" class="col-md-12" hidden>
 			<div class="panel panel-success">
@@ -100,22 +90,22 @@
 				<div class="form-group panel-body">
 					<label for="testcase-id" class="col-md-1 control-label">Testcase URI</label>
 					<div class="col-md-10 input-group">
-						<input id="testcase-id" type="url" class="form-control" v-model.trim="testcase['@id']" v-on:input="modified = true" placeholder="Enter URI that identifies this testcase">
+						<input id="testcase-id" type="url" class="form-control" v-model.trim="testcase['@id']" placeholder="Enter URI that identifies this testcase">
 					</div>
 
 					<label for="title" class="col-md-1 control-label">Title</label>
 					<div class="col-md-10 input-group">
-						<input id="title" type="text" class="form-control" v-model.trim="testcase.title" v-on:input="modified = true" placeholder="Enter study title">
+						<input id="title" type="text" class="form-control" v-model.trim="testcase.title" placeholder="Enter study title">
 					</div>
 
 					<label for="citation" class="col-md-1 control-label">Citation</label>
 					<div class="col-md-10 input-group">
-						<input id="citation" type="text" class="form-control" v-model.trim="testcase.citation" v-on:input="modified = true" placeholder="Enter citation">
+						<input id="citation" type="text" class="form-control" v-model.trim="testcase.citation" placeholder="Enter citation">
 					</div>
 
 					<label for="url" class="col-md-1 control-label">URL</label>
 					<div class="col-md-10 input-group">
-						<input id="url" type="url" class="form-control" v-model.trim="testcase['url']" v-on:input="modified = true" placeholder="Enter URI/URL">
+						<input id="url" type="url" class="form-control" v-model.trim="testcase['url']" placeholder="Enter URI/URL">
 						<span class="input-group-btn">
         					<button class="btn btn-default" type="button" onclick="window.open(vm.testcase.url, '_blank')">Open in new window</button>
       					</span>
@@ -124,7 +114,7 @@
 					<label for="doi" class="col-md-1 control-label">DOI</label>
 					<div class="col-md-10 input-group">
 						<span class="input-group-addon">{{DOI_PREFIX}}</span>
-						<input id="title" type="text" class="form-control" v-model.trim="doi_without_prefix" v-on:input="modified = true" placeholder="Enter DOI">
+						<input id="title" type="text" class="form-control" v-model.trim="doi_without_prefix" placeholder="Enter DOI">
 						<span class="input-group-btn">
 							<button class="btn btn-default" type="button" onclick="window.open(vm.doi_as_url, '_blank')">Open in new window</button>
       					</span>
