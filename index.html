@@ -22,7 +22,7 @@
     <!-- Load stylesheets and IE8 support -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <link rel="stylesheet" href="http://veg.github.io/phylotree.js/phylotree.css">
+    <link rel="stylesheet" href="https://veg.github.io/phylotree.js/phylotree.css">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -110,7 +110,7 @@
                     <label for="doi" class="col-md-1 control-label">DOI</label>
                     <div class="col-md-10 input-group">
                         <span class="input-group-addon">{{DOI_PREFIX}}</span>
-                        <input id="title" type="text" class="form-control" v-model.trim="doi_without_prefix" placeholder="Enter DOI">
+                        <input id="doi" type="text" class="form-control" v-model.trim="doi_without_prefix" placeholder="Enter DOI">
                         <span class="input-group-btn">
                             <button class="btn btn-default" type="button" onclick="window.open(vm.doi_as_url, '_blank')">Open in new window</button>
                     </span>
@@ -153,7 +153,7 @@
             </div>
         </div>
 
-        <!-- Phylogeny display and Newick editing -->
+        <!-- Phylogeny display: visualize phylogeny using Phylotree.js and allow its Newick strings to be edited -->
         <div class="col-md-7">
             <div :id="'phylogeny-' + phylogeny_index" class="panel panel-info" v-for="(phylogeny, phylogeny_index) of testcase.phylogenies">
                 <div class="panel-heading">Phylogeny {{phylogeny_index + 1}}</div>
@@ -174,14 +174,18 @@
             </div>
         </div>
 
-        <!-- Specifier modal: allows editing of the current specifier -->
+        <!-- Specifier modal: dialog box to allow editing the current specifier -->
         <div id="specifier-modal" class="modal fade">
             <div class="modal-dialog modal-lg form-horizontal">
                 <div class="modal-content" v-if="selected_specifier">
+
+                    <!-- Header of specifier editor modal dialog box -->
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         <h4 class="modal-title">Editing specifier: {{get_specifier_label(selected_specifier)}}</h4>
                     </div>
+
+                    <!-- Body of specifier editor modal dialog box -->
                     <div class="modal-body form-group">
                         <div class="col-md-12">
                             <p>
@@ -328,6 +332,8 @@
                             </form>
                         </div>
                     </div>
+
+                    <!-- Footer of the specifier editor modal dialog box -->
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal" @click="close_specifier_modal(selected_specifier)">Close</button>
                     </div>
@@ -341,11 +347,14 @@
                 <div id="selected-phyloref" class="panel-heading">Phyloreferences</div>
                 <div v-if="selected_phyloref" class="panel-body">
                     <form id="phyloref" class="form-horizontal">
+
+                        <!-- Phyloreference label -->
                         <label for="label" class="control-label col-md-4">Label</label>
                         <div class="input-group col-md-8">
                             <input id="label" v-model="selected_phyloref.label" type="text" class="form-control"  placeholder="Phyloreference label">
                         </div>
 
+                        <!-- Phyloreference clade definition -->
                         <label for="definition" class="control-label col-md-4">Clade definition</label>
                         <div class="input-group col-md-8">
                             <textarea
@@ -366,16 +375,16 @@
                                     v-for="(specifier, specifier_index) of get_specifiers(selected_phyloref)"
                                     :id="'specifier_' + specifier_index"
                                 >
-                                    <!-- Before specifier label -->
+                                    <!-- Buttons before specifier label -->
                                     <div class="input-group-btn">
-                                        <!-- Delete button -->
+                                        <!-- Delete button: initially hidden, made visible by clicking the "Delete some specifiers" button -->
                                         <button v-if="specifier_delete_mode" type="button"
                                             class="btn btn-danger"
                                             @click="delete_specifier(selected_phyloref, specifier)"
                                             ><span class="glyphicon glyphicon-remove"></span>
                                         </button>
 
-                                        <!-- Match results with dropdown -->
+                                        <!-- Match results with dropdown menu: currently not implemented -->
                                         <button
                                             @click="specifier_dropdown_target = 'match_result'"
                                             type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -386,7 +395,7 @@
                                             <li><a href="#" onclick="return false;"><em>Matching not implemented.</em></a></li>
                                         </ul>
 
-                                        <!-- Specifier type with dropdown: internal or external specifier -->
+                                        <!-- Specifier type with dropdown menu: internal or external specifier -->
                                         <button
                                             @click="specifier_dropdown_target = 'specifier_type'"
                                             type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
@@ -407,7 +416,7 @@
                                     <!-- Specifier label -->
                                     <input type="text" disabled class="form-control" :value="get_specifier_label(specifier)" :title="get_specifier_label(specifier)">
 
-                                    <!-- After specifier label: edit button -->
+                                    <!-- Buttons after specifier label: edit button -->
                                     <div class="input-group-btn">
                                         <button type="button" class="btn btn-primary"
                                             @click="start_specifier_modal(specifier)"
