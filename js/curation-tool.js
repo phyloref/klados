@@ -36,10 +36,10 @@ var vm = new Vue({
         },
 
         // UI elements.
-        selected_phylogeny: null,
-        selected_phyloref: null,
-        selected_specifier: null,
-        selected_tunit: null,
+        selected_phylogeny: undefined,
+        selected_phyloref: undefined,
+        selected_specifier: undefined,
+        selected_tunit: undefined,
 
         // Display the delete buttons on the specifiers.
         specifier_delete_mode: false,
@@ -52,7 +52,7 @@ var vm = new Vue({
     computed: {
         modified: function() {
             // Return true if the testcase has been modified.
-            if(this.testcase_as_loaded == null) return false;
+            if(this.testcase_as_loaded === undefined) return false;
 
             // Make a deep comparison.
             return !_.isEqual(this.testcase, this.testcase_as_loaded);
@@ -60,7 +60,8 @@ var vm = new Vue({
         testcase_as_json: {
             // Get or set the testcase as JSON text.
             get: function() {
-                return JSON.stringify(this.testcase, null, 4);
+                // Pretty print JSON with 4 spaces at the start of each line.
+                return JSON.stringify(this.testcase, undefined, 4);
             },
             set: function(jsonText) {
                 this.testcase = JSON.parse(jsonText);
@@ -94,7 +95,7 @@ var vm = new Vue({
         // Helper methods.
         open_url: function(url) {
             // Open the specified URL.
-            if(url === null) return;
+            if(url === undefined || url === null) return;
             if(url == "") return;
 
             window.open(url);
@@ -124,7 +125,7 @@ var vm = new Vue({
         start_specifier_modal: function(specifier) {
             // Display the specifier modal. We need to prepare the specifier
             // in order for the modal to work correctly.
-            if(specifier === null) return;
+            if(specifier === undefined || specifier === null) return;
             vm.selected_specifier = specifier;
 
             if(specifier.hasOwnProperty('references_taxonomic_units') && specifier.references_taxonomic_units.length > 0) {
@@ -257,7 +258,8 @@ var vm = new Vue({
             // descriptive label by using the list of referenced taxonomic units.
 
             // Is this specifier even non-null?
-            if(specifier == null) return "(null)";
+            if(specifier === undefined) return "(undefined)";
+            if(specifier === null) return "(null)";
 
             // Maybe there is a label or description right there?
             if('label' in specifier) return specifier.label;
@@ -344,7 +346,7 @@ var vm = new Vue({
 
             comps = this.get_scname_components(scname);
             if(comps.length >= 1) return comps[0];
-            return null;
+            return undefined;
         },
         get_specific_epithet_name: function(scname) {
             // Get the specific epithet name of a scientific name by using its
@@ -352,7 +354,7 @@ var vm = new Vue({
 
             comps = this.get_scname_components(scname);
             if(comps.length >= 2) return comps[1];
-            return null;
+            return undefined;
         },
         get_binomial_name: function(scname) {
             // Get the binomial name of a scientific name by combining its
@@ -361,8 +363,8 @@ var vm = new Vue({
             genus = this.get_genus_name(scname);
             specificEpithet = this.get_specific_epithet_name(scname);
 
-            if(genus != null && specificEpithet != null) return genus + " " + specificEpithet;
-            return null;
+            if(genus != undefined && specificEpithet != undefined) return genus + " " + specificEpithet;
+            return undefined;
         },
 
         // Methods for parsing specimen identifiers.
@@ -385,10 +387,10 @@ var vm = new Vue({
             // code and the catalog number.
 
             comps = this.get_specimen_components(specimen);
-            if(comps.length == 1) return null;
+            if(comps.length == 1) return undefined;
             if(comps.length == 2) return comps[0];
             if(comps.length >= 3) return comps[0];
-            return null;
+            return undefined;
         },
         get_collection_code: function(specimen) {
             // Extract a collection code from the occurrence ID. If only
@@ -397,7 +399,7 @@ var vm = new Vue({
 
             comps = this.get_specimen_components(specimen);
             if(comps.length >= 3) return comps[1];
-            return null;
+            return undefined;
         },
         get_catalog_number: function(specimen) {
             // Extract a catalog number from the occurrence ID. If only one
@@ -409,7 +411,7 @@ var vm = new Vue({
             if(comps.length == 1) return comps[0];
             if(comps.length == 2) return comps[1];
             if(comps.length >= 3) return comps[2];
-            return null;
+            return undefined;
         }
     }
 });
@@ -422,7 +424,7 @@ var vm = new Vue({
  * and the 'url' field -- and attempts to extract a DOI using the regular
  * expression DOI_REGEX.
  *
- * @return The best guess DOI or null.
+ * @return The best guess DOI or undefined.
  */
 function identify_doi(testcase) {
     const DOI_REGEX = /^https?:\/\/(?:dx\.)?doi\.org\/(.+?)[\#\/]?$/i;
@@ -451,7 +453,7 @@ function identify_doi(testcase) {
         }
     }
 
-    return null;
+    return undefined;
 }
 
 /**
@@ -484,10 +486,10 @@ function display_testcase(testcase) {
         vm.testcase = testcase;
 
         // Reset all UI selections.
-        vm.selected_phyloref = null;
-        vm.selected_phylogeny = null;
-        vm.selected_specifier = null;
-        vm.selected_tunit = null;
+        vm.selected_phyloref = undefined;
+        vm.selected_phylogeny = undefined;
+        vm.selected_specifier = undefined;
+        vm.selected_tunit = undefined;
 
         phylogeny_index = 0;
         for(phylogeny in vm.testcase.phylogenies) {
@@ -560,8 +562,8 @@ function load_json_from_local(file_input) {
  */
 function render_tree(node_expr, newick) {
     // Which phylogeny is currently selected?
-    var selected_phyloref = null;
-    if(vm != null) selected_phyloref = vm.selected_phyloref;
+    var selected_phyloref = undefined;
+    if(vm !== undefined) selected_phyloref = vm.selected_phyloref;
 
     console.log("render_tree(" + node_expr + ", " + newick + ") on selected phyloref " + selected_phyloref);
 
@@ -590,7 +592,7 @@ function render_tree(node_expr, newick) {
                 // If the internal label has the same label as the currently
                 // selected phyloreference, make it bolder and turn it blue.
                 if(
-                    selected_phyloref != null &&
+                    selected_phyloref !== undefined &&
                     selected_phyloref.hasOwnProperty('label') &&
                     selected_phyloref.label == data.internal_label
                 ) {

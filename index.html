@@ -168,7 +168,7 @@
                         v-model.lazy="phylogeny.newick"
                         >{{get_phylogeny_as_newick('#phylogeny-svg-' + phylogeny_index, phylogeny)}}</textarea>
                     <div class="btn-group btn-group-justified" role="group" aria-label="Actions for phylogeny">
-                        <a :href="'#phylogeny-' + phylogeny_index" @click="selected_phylogeny = (selected_phylogeny == phylogeny ? null : phylogeny)" class="btn btn-default">Edit as Newick</a>
+                        <a :href="'#phylogeny-' + phylogeny_index" @click="selected_phylogeny = (selected_phylogeny == phylogeny ? undefined : phylogeny)" class="btn btn-default">Edit as Newick</a>
                     </div>
                 </div>
             </div>
