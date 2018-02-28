@@ -200,7 +200,7 @@ var vm = new Vue({
             }
         },
         delete_specifier: function(phyloref, specifier) {
-            // Since the user interface combines specifiers into a single list,
+            // Since the user interface combines specifiers into a si**ngle list,
             // it doesn't remember if the specifier to be deleted is internal
             // or external. We delete the intended specifier from both arrays.
 
@@ -605,7 +605,9 @@ function render_tree(node_expr, newick) {
 
     var tree = d3.layout.phylotree()
         .svg(d3.select(node_expr))
-        .options({})
+        .options({
+            "transitions": false
+        })
         .style_nodes(nodeStyler);
     tree(d3.layout.newick_parser(newick));
 
