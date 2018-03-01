@@ -14,7 +14,7 @@ var vm = new Vue({
         // Constants: used during rendering.
         DOI_PREFIX: "https://dx.doi.org/",
 
-        // The key data model.
+        // The main data model.
         testcase: {
             '@id': "",
             'doi': "",
@@ -93,12 +93,12 @@ var vm = new Vue({
     // Methods for carrying out various tasks.
     methods: {
         // Helper methods.
-        open_url: function(url) {
+        open_url: function(url, target='_blank') {
             // Open the specified URL.
             if(url === undefined || url === null) return;
             if(url == "") return;
 
-            window.open(url);
+            window.open(url, target);
         },
         create_or_append: function(dict, key, value) {
             // A common case is where we need to append to an array for a key
@@ -116,6 +116,7 @@ var vm = new Vue({
             // Close the current study. If it has been modified,
             // warn the user before closing in order to allow changes to be
             // saved.
+
             if(this.modified) {
                 return confirm("This study has been modified! Are you sure you want to close it?");
             } else {
@@ -125,12 +126,13 @@ var vm = new Vue({
         start_specifier_modal: function(specifier) {
             // Display the specifier modal. We need to prepare the specifier
             // in order for the modal to work correctly.
+
             if(specifier === undefined || specifier === null) return;
             vm.selected_specifier = specifier;
 
-            if(specifier.hasOwnProperty('references_taxonomic_units') && specifier.references_taxonomic_units.length > 0) {
+            if(specifier.hasOwnProperty('referencesTaxonomicUnits') && specifier.referencesTaxonomicUnits.length > 0) {
                 // We have a first tunit, so select it!
-                vm.selected_tunit = specifier.references_taxonomic_units[0];
+                vm.selected_tunit = specifier.referencesTaxonomicUnits[0];
             } else {
                 // Specifier doesn't represent any taxonomic unit, but it's
                 // bad UX to just display a blank screen. So let's create a
@@ -293,9 +295,7 @@ var vm = new Vue({
         get_phylogeny_as_newick: function(node_expr, phylogeny) {
             // Returns the phylogeny as a Newick string. Since this method is
             // called frequently in rendering the "Edit as Newick" textareas,
-            // we hijack it to redraw the phylogenies, which results in an
-            // annoying flickering effect whenever the model changes but ensures
-            // that the drawn phylogeny is in sync with the model.
+            // we hijack it to redraw the phylogenies.
 
             // If no Newick tree is available, default to '()'.
             newick = "()";
@@ -374,6 +374,7 @@ var vm = new Vue({
             //  - 'urn:catalog:[institutionCode]:[collectionCode]:[catalogNumber]'
             //      (in which case, we ignore the first two "components" here)
             //  - '[institutionCode]:[collectionCode]:[catalogNumber]'
+
             if(!specimen.hasOwnProperty('occurrenceID')) return [];
             var occurID = specimen.occurrenceID;
             if(occurID.startsWith('urn:catalog:')) {
@@ -491,12 +492,6 @@ function display_testcase(testcase) {
         vm.selected_specifier = undefined;
         vm.selected_tunit = undefined;
 
-        phylogeny_index = 0;
-        for(phylogeny in vm.testcase.phylogenies) {
-            console.log("render_on_load: " + get_phylogeny_as_newick('#phylogeny-svg-' + phylogeny_index, phylogeny));
-            phylogeny_index++;
-        }
-
     } catch(err) {
         console.log("Error occurred while displaying new testcase: " + err);
     }
@@ -602,6 +597,19 @@ function render_tree(node_expr, newick) {
             }
         }
     }
+
+    // Using Phylotree is a four step process:
+    //  1. You use d3.layout.phyloref() to create a tree object, which you
+    //     can configure with options, selecting the SVG node to draw in,
+    //     and so on.
+    //  2. You then call the tree object with a parsed Newick tree to update
+    //     its nodes.
+    //  3. At this point, you can go through the nodes and modify them if
+    //     you need to.
+    //  4. Finally, you call tree.placenodes().update() to calculate node
+    //     locations and move the actual nodes to the correct locations on
+    //     the SVG element in which you are drawing the tree.
+    //
 
     var tree = d3.layout.phylotree()
         .svg(d3.select(node_expr))
