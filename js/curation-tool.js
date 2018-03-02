@@ -619,11 +619,24 @@ function render_tree(node_expr, newick) {
         .style_nodes(nodeStyler);
     tree(d3.layout.newick_parser(newick));
 
-    _.each(tree.get_nodes(), function(node) {
+    tree.get_nodes().forEach(function(node) {
+        // Extract internal nodes
         if(node.children && node.name.startsWith("expected_")) {
             node.internal_label = node.name.substring(9);
             // console.log(node.internal_label)
         }
+
+        // Add a custom menu to nodes.
+        d3.layout.phylotree.add_custom_menu(
+            node,
+            function(node) { return "Node mdenu"; },
+            function() {
+                console.log("Clicked: " + node);
+            },
+            d3.layout.phylotree.is_leafnode
+                // Condition when to display the menu
+                // Takes 'node' as an argument
+        );
     });
 
     tree
