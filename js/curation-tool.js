@@ -38,14 +38,27 @@ var vm = new Vue({
         // UI elements.
         selected_phylogeny: undefined,
         selected_phyloref: undefined,
-        selected_specifier: undefined,
+        selected_tunit_list: undefined,
         selected_tunit: undefined,
+
+        // Taxonomic unit editor modal tweaks
+        tunit_editor_target_label: "(unlabeled)",
 
         // Display the delete buttons on the specifiers.
         specifier_delete_mode: false,
 
         // Display one of the two dropdown menus for the specifiers.
         specifier_dropdown_target: 'none'
+    },
+
+    // Filters to be used in the template.
+    filters: {
+        capitalize: function(value) {
+            // Capitalize the input value.
+            if(!value) return '';
+            value = value.toString();
+            return value.charAt(0).toUpperCase() + value.slice(1);
+        }
     },
 
     // Computed values inside the data model.
@@ -123,33 +136,56 @@ var vm = new Vue({
                 return true;
             }
         },
-        start_specifier_modal: function(specifier) {
-            // Display the specifier modal. We need to prepare the specifier
-            // in order for the modal to work correctly.
+        start_tunit_editor_modal: function(type, tunit_list_container) {
+            // What kind of tunit list container is this? Do we have a list to edit?
+            if(tunit_list_container === null || tunit_list_container === undefined) {
+                throw "Tunit editor modal started with undefined or null taxonomic unit list container";
+            }
 
-            if(specifier === undefined || specifier === null) return;
-            vm.selected_specifier = specifier;
+            // Find the list of taxonomic units to
+            if(type == 'specifier') {
+                this.tunit_editor_target_label = 'specifier ' + this.get_specifier_label(tunit_list_container);
 
-            if(specifier.hasOwnProperty('referencesTaxonomicUnits') && specifier.referencesTaxonomicUnits.length > 0) {
+                // Specifiers store their tunit list in referencesTaxonomicUnits.
+                if(!tunit_list_container.hasOwnProperty('referencesTaxonomicUnits'))
+                    Vue.set(tunit_list_container, 'referencesTaxonomicUnits', []);
+
+                this.selected_tunit_list = tunit_list_container.referencesTaxonomicUnits;
+            } else if (type == 'node') {
+                this.tunit_editor_target_label = 'node: ' + (JSON.stringify(tunit_list_container));
+
+                // Nodes store their tunit list in representsTaxonomicUnits.
+                if(!tunit_list_container.hasOwnProperty('representsTaxonomicUnits'))
+                    Vue.set(tunit_list_container, 'representsTaxonomicUnits', []);
+
+                this.selected_tunit_list = tunit_list_container.representsTaxonomicUnits;
+
+            } else {
+                throw "Tunit editor modal started with invalid type: " + type + ".";
+            }
+
+            // If we don't have a first tunit, create an empty, blank one
+            // so we don't have to display an empty website.
+            if(this.selected_tunit_list.length > 0) {
                 // We have a first tunit, so select it!
-                vm.selected_tunit = specifier.referencesTaxonomicUnits[0];
+                this.selected_tunit = this.selected_tunit_list[0];
             } else {
                 // Specifier doesn't represent any taxonomic unit, but it's
                 // bad UX to just display a blank screen. So let's create a
                 // blank taxonomic unit to work with.
                 var new_tunit = this.create_empty_taxonomic_unit();
-                specifier.referencesTaxonomicUnits = [new_tunit];
-                vm.selected_tunit = new_tunit;
+                this.selected_tunit_list.push(new_tunit);
+                this.selected_tunit = new_tunit;
             }
 
             // Make the modal draggable and display it.
             $('.modal-dialog').draggable({
                 handle: '.modal-header'
             });
-            $('#specifier-modal').modal();
+            $('#tunit-editor-modal').modal();
         },
-        close_specifier_modal: function(specifier) {
-            // Close the specifier modal.
+        close_tunit_editor_modal: function() {
+            // Close the taxonomic unit editor modal.
 
             // We've set up a data-dismiss to do that, so we don't need to do
             // anything here, but the function is here in case we need it later.
@@ -625,18 +661,6 @@ function render_tree(node_expr, newick) {
             node.internal_label = node.name.substring(9);
             // console.log(node.internal_label)
         }
-
-        // Add a custom menu to nodes.
-        d3.layout.phylotree.add_custom_menu(
-            node,
-            function(node) { return "Node mdenu"; },
-            function() {
-                console.log("Clicked: " + node);
-            },
-            d3.layout.phylotree.is_leafnode
-                // Condition when to display the menu
-                // Takes 'node' as an argument
-        );
     });
 
     tree
