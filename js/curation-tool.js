@@ -41,7 +41,11 @@ var vm = new Vue({
         selected_tunit_list: undefined,
         selected_tunit: undefined,
 
-        // Taxonomic unit editor modal tweaks
+        // Phylogeny view modes
+        phylogeny_newick_mode_for: undefined,
+        phylogeny_annotations_mode_for: undefined,
+
+        // Taxonomic unit editor modal elements
         tunit_editor_target_label: "(unlabeled)",
 
         // Display the delete buttons on the specifiers.
