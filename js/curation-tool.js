@@ -476,7 +476,7 @@ var vm = new Vue({
             var parsed = d3.layout.newick_parser(newick);
             if(parsed.hasOwnProperty('json')) {
                 var add_node_and_children_to_node_labels = function(node) {
-                    console.log("Recursing into: " + JSON.stringify(node));
+                    // console.log("Recursing into: " + JSON.stringify(node));
 
                     if(node.hasOwnProperty('name') && node.name != '')
                         node_labels.add(node.name);
@@ -490,6 +490,13 @@ var vm = new Vue({
 
                 // Recurse away!
                 add_node_and_children_to_node_labels(parsed.json);
+            }
+
+            // Names from additionalNodeProperties
+            if(phylogeny.hasOwnProperty('additionalNodeProperties')) {
+                for(key of Object.keys(phylogeny.additionalNodeProperties)) {
+                    node_labels.add(key);
+                }
             }
 
             return Array.from(node_labels);
