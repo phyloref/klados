@@ -167,14 +167,12 @@
                         </p>
 
                         <table class="table table-bordered table-hover table-striped table-fixed-height" style="width: 100%">
-                            <thead>
+                            <tbody>
                                 <tr>
                                     <th>Label</th>
                                     <th>Property</th>
                                     <th>Value</th>
                                 </tr>
-                            </thead>
-                            <tbody>
                                 <tr
                                     v-if="get_node_labels_for_phylogeny(phylogeny).length > 0"
                                     v-for="(node_label, node_label_index) of get_node_labels_for_phylogeny(phylogeny)"
