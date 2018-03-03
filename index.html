@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="https://veg.github.io/phylotree.js/phylotree.css">
+    <link rel="stylesheet" href="./css/main.css">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -165,29 +166,29 @@
                         and click the "Change label" option.
                         </p>
 
-                        <table class="sortable" style="width: 100%">
+                        <table class="table table-bordered table-hover table-striped table-fixed-height" style="width: 100%">
                             <thead>
                                 <tr>
                                     <th>Label</th>
-                                    <th class="sorttable_nosort">Annotation property</th>
-                                    <th class="sorttable_nosort">Annotation value</th>
+                                    <th>Property</th>
+                                    <th>Value</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>Rana areolata</td>
+                                <tr
+                                    v-if="get_node_labels_for_phylogeny(phylogeny).length > 0"
+                                    v-for="(node_label, node_label_index) of get_node_labels_for_phylogeny(phylogeny)"
+                                >
+                                    <td>{{node_label}}</td>
                                     <td><input style="width: 100%" value="additionalLabels">
                                     Any additional labels for this node.
                                     </td>
                                     <td><input style="width: 100%" value="Rana areolata"></td>
                                 </tr>
-                                <tr>
-                                    <td>Rana areolata</td>
-                                    <td><input value="hasBasisOfRecord.locatedAt.verbatimLocality">
-                                    Unknown term.
-                                    </td>
-                                    <td><input value="KU 204370: USA: Kansas: Lyon: just S of Hartsford"></td>
-                                </tr>
+
+                                <template v-if="get_node_labels_for_phylogeny(phylogeny).length == 0">
+                                    <tr><td style="text-align: center"><em>No labeled nodes in this phylogeny.</em></td></tr>
+                                </template>
                             </tbody>
                         </table>
                     </div>
@@ -512,9 +513,6 @@
     <script src="http://d3js.org/d3.v3.min.js"></script>
     <script src="http://veg.github.io/phylotree.js/phylotree.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js" charset="utf-8"></script>
-
-    <!-- Sortable tables -->
-    <script src="js/sorttable.js"></script>
 
     <!-- Our source code -->
     <script src="./js/curation-tool.js"></script>

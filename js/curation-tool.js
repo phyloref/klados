@@ -36,7 +36,6 @@ var vm = new Vue({
         },
 
         // UI elements.
-        selected_phylogeny: undefined,
         selected_phyloref: undefined,
         selected_tunit_list: undefined,
         selected_tunit: undefined,
@@ -453,6 +452,47 @@ var vm = new Vue({
             if(comps.length == 2) return comps[1];
             if(comps.length >= 3) return comps[2];
             return undefined;
+        },
+
+        // Methods for manipulating nodes in phylogenies.
+        get_node_labels_for_phylogeny: function(phylogeny) {
+            // Return an iterator to all the node labels in a phylogeny. These
+            // node labels come from two sources:
+            //  1. We look for node names in the Newick string.
+            //  2. We look for node names in the additionalNodeProperties.
+            //
+            // This means that we can pick up both (1) nodes in the Newick
+            // string without any additional properties, and (2) nodes with
+            // additional node properties which are not present.
+
+            var node_labels = new Set();
+
+            // Names from the Newick string.
+            var newick = phylogeny.newick;
+            if(newick == null)
+                newick = '()';
+            console.log("get_node_labels_for_phylogeny(" + newick + ")");
+
+            var parsed = d3.layout.newick_parser(newick);
+            if(parsed.hasOwnProperty('json')) {
+                var add_node_and_children_to_node_labels = function(node) {
+                    console.log("Recursing into: " + JSON.stringify(node));
+
+                    if(node.hasOwnProperty('name') && node.name != '')
+                        node_labels.add(node.name);
+
+                    if(node.hasOwnProperty('children')) {
+                        for(child of node.children) {
+                            add_node_and_children_to_node_labels(child);
+                        }
+                    }
+                };
+
+                // Recurse away!
+                add_node_and_children_to_node_labels(parsed.json);
+            }
+
+            return Array.from(node_labels);
         }
     }
 });
@@ -528,7 +568,6 @@ function display_testcase(testcase) {
 
         // Reset all UI selections.
         vm.selected_phyloref = undefined;
-        vm.selected_phylogeny = undefined;
         vm.selected_specifier = undefined;
         vm.selected_tunit = undefined;
 
