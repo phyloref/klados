@@ -541,9 +541,131 @@ var vm = new Vue({
             }
 
             return tunits;
+        },
+
+        // Taxonomic unit matching!
+        get_all_node_labels_matched_by_specifier: function(specifier) {
+            let node_labels_with_prefix = [];
+
+            let prefix = "phylogeny_";
+            let prefix_count = 0;
+            for(let phylogeny of this.testcase.phylogenies) {
+                for(let node_label of this.get_node_labels_matched_by_specifier(specifier, phylogeny)) {
+                    node_labels_with_prefix.push(prefix + prefix_count + ":" + node_label);
+                }
+                prefix_count++;
+            }
+
+            return node_labels_with_prefix;
+        },
+
+        get_node_labels_matched_by_specifier: function(specifier, phylogeny) {
+            let local_vm = this;
+
+            return local_vm.get_node_labels_in_phylogeny(phylogeny).filter(function(node_label) {
+                return local_vm.does_specifier_match_node(specifier, phylogeny, node_label);
+            });
+        },
+
+        does_specifier_match_node: function(specifier, phylogeny, node_label) {
+            // Tests whether a specifier matches a node.
+            if(!specifier.hasOwnProperty('referencesTaxonomicUnits'))
+                return false;
+
+            let specifier_tunits = specifier.referencesTaxonomicUnits;
+            let node_tunits = this.get_tunits_for_node_label_in_phylogeny(phylogeny, node_label);
+
+            for(let tunit1 of specifier_tunits) {
+                for(let tunit2 of node_tunits) {
+                    if(
+                        do_tunits_match_by_binomial_name(tunit1, tunit2) ||
+                        do_tunits_match_by_external_references(tunit1, tunit2) ||
+                        do_tunits_match_by_specimen_identifier(tunit1, tunit2)
+                    ) return true;
+                }
+            }
+
+            return false;
         }
     }
 });
+
+// TODO document the following
+
+function do_tunits_match_by_external_references(tunit1, tunit2) {
+    if(tunit1 === undefined || tunit2 === undefined) return false;
+    if(tunit1.hasOwnProperty('externalReferences') && tunit2.hasOwnProperty('externalReferences')) {
+        // Each external reference is a URL as a string.
+        for(let extref1 of tunit1.externalReferences) {
+            for(let extref2 of tunit2.externalReferences) {
+                if(extref1.trim() != '' && extref1.toLowerCase().trim() === extref2.toLowerCase().trim())
+                    return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+function do_tunits_match_by_binomial_name(tunit1, tunit2) {
+    if(tunit1 === undefined || tunit2 === undefined) return false;
+    if(tunit1.hasOwnProperty('scientificNames') && tunit2.hasOwnProperty('scientificNames')) {
+        // Each external reference is a URL as a string.
+        for(let scname1 of tunit1.scientificNames) {
+            for(let scname2 of tunit2.scientificNames) {
+                // For now, we only match by binomial name.
+                if(scname1.hasOwnProperty('binomialName') && scname2.hasOwnProperty('binomialName')) {
+                    if(scname1.binomialName.trim() != '' && scname1.binomialName.toLowerCase().trim() === scname2.binomialName.toLowerCase().trim())
+                        return true;
+                }
+            }
+        }
+    }
+
+    return false;
+}
+
+function do_tunits_match_by_specimen_identifier(tunit1, tunit2) {
+    if(tunit1 === undefined || tunit2 === undefined) return false;
+    if(tunit1.hasOwnProperty('includesSpecimens') && tunit2.hasOwnProperty('includesSpecimens')) {
+        // Each external reference is a URL as a string.
+        for(let specimen1 of tunit1.includesSpecimens) {
+            for(let specimen2 of tunit2.includesSpecimens) {
+                if(get_specimen_identifier(specimen1) !== undefined && get_specimen_identifier(specimen2) !== undefined && get_specimen_identifier(specimen1) === get_specimen_identifier(specimen2))
+                    return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+function get_specimen_identifier(specimen) {
+    if(specimen === undefined) return undefined;
+
+    // Does it have an occurrenceID?
+    if(specimen.hasOwnProperty('occurrenceID') && specimen.occurrenceID.trim() != '') return specimen.occurrenceID.trim();
+
+    // Does it have a catalogNumber? We might need an institutionCode and a collectionCode as well.
+    if(specimen.hasOwnProperty('catalogNumber')) {
+        if(specimen.hasOwnProperty('institutionCode')) {
+            if(specimen.hasOwnProperty('collectionCode')) {
+                return "urn:catalog:" + specimen.institutionCode.trim() + ":" + specimen.collectionCode.trim() + ":" + specimen.catalogNumber.trim();
+            } else {
+                return "urn:catalog:" + specimen.institutionCode.trim() + ":" + specimen.catalogNumber.trim();
+            }
+        } else {
+            if(specimen.hasOwnProperty('collectionCode')) {
+                return "urn:catalog::" + specimen.collectionCode.trim() + ":" + specimen.catalogNumber.trim();
+            } else {
+                return "urn:catalog:::" + specimen.catalogNumber.trim();
+            }
+        }
+    }
+
+    // None of our specimen identifier schemes worked.
+    return undefined;
+}
 
 /**
  * get_tunits_from_node_label(node_label)
@@ -712,13 +834,10 @@ function load_json_from_local(file_input) {
  */
  // TODO: Why do we need both newick and phylogeny? Document this.
 function render_tree(node_expr, phylogeny, newick) {
-    // Which phylogeny is currently selected?
-    var selected_phyloref = undefined;
-
     // No point trying to render anything without a Vue model.
     if(vm === undefined) return;
 
-    console.log("render_tree(" + node_expr + ", " + phylogeny + ", " + newick + ") on selected phyloref " + selected_phyloref);
+    console.log("render_tree(" + node_expr + ", " + phylogeny + ", " + newick + ") on selected phyloref " + vm.selected_phyloref);
 
     // The node styler provides information on styling nodes within the
     // phylogeny.
@@ -745,9 +864,9 @@ function render_tree(node_expr, phylogeny, newick) {
                 // If the internal label has the same label as the currently
                 // selected phyloreference, make it bolder and turn it blue.
                 if(
-                    selected_phyloref !== undefined &&
-                    selected_phyloref.hasOwnProperty('label') &&
-                    selected_phyloref.label == data.internal_label
+                    vm.selected_phyloref !== undefined &&
+                    vm.selected_phyloref.hasOwnProperty('label') &&
+                    vm.selected_phyloref.label == data.internal_label
                 ) {
                     text_label.style('fill', 'blue')
                         .style('font-weight', 'bolder');
@@ -762,6 +881,27 @@ function render_tree(node_expr, phylogeny, newick) {
             if(tunits.length == 0) {
                 element.style('fill', 'red')
                     .style('font-style', 'italic');
+            } else if(vm.selected_phyloref !== undefined) {
+                // If there's a selected phyloref, we should highlight
+                // specifiers:
+                //  - internal specifier in green
+                //  - external specifier in red
+                if(vm.selected_phyloref.hasOwnProperty('internalSpecifiers')) {
+                    for(let specifier of vm.selected_phyloref.internalSpecifiers) {
+                        if(vm.does_specifier_match_node(specifier, phylogeny, data.name)) {
+                            element.style('fill', 'green')
+                                .style('font-weight', 'bolder');
+                        }
+                    }
+                }
+                if(vm.selected_phyloref.hasOwnProperty('externalSpecifiers')) {
+                    for(let specifier of vm.selected_phyloref.externalSpecifiers) {
+                        if(vm.does_specifier_match_node(specifier, phylogeny, data.name)) {
+                            element.style('fill', 'red')
+                                .style('font-weight', 'bolder');
+                        }
+                    }
+                }
             }
         }
     }

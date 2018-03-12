@@ -428,15 +428,21 @@
                                             ><span class="glyphicon glyphicon-remove"></span>
                                         </button>
 
-                                        <!-- Match results with dropdown menu: currently not implemented -->
+                                        <!-- Match results with dropdown menu -->
+
                                         <button
                                             @click="specifier_dropdown_target = 'match_result'"
-                                            type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <span class="glyphicon glyphicon-asterisk"></span>
+                                            type="button" class="btn dropdown-toggle" :class="{ 'btn-warning': get_all_node_labels_matched_by_specifier(specifier).length == 0, 'btn-success': get_all_node_labels_matched_by_specifier(specifier).length > 0}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <span class="glyphicon" :class="{ 'glyphicon-asterisk': get_all_node_labels_matched_by_specifier(specifier).length == 0, 'glyphicon-ok': get_all_node_labels_matched_by_specifier(specifier).length > 0}"></span>
                                         </button>
                                         <ul v-if="specifier_dropdown_target == 'match_result'" class="dropdown-menu dropdown-menu-left">
                                             <li class="dropdown-header">Match result</li>
-                                            <li><a href="#" onclick="return false;"><em>Matching not implemented.</em></a></li>
+                                            <li v-if="get_all_node_labels_matched_by_specifier(specifier).length == 0">
+                                                <a href="#" onclick="return false;"><em>No matches</em></a>
+                                            </li>
+                                            <li v-for="(node_label, node_label_index) of get_all_node_labels_matched_by_specifier(specifier)">
+                                                <a href="#" onclick="return false;">{{node_label}}<a>
+                                            </li>
                                         </ul>
 
                                         <!-- Specifier type with dropdown menu: internal or external specifier -->
