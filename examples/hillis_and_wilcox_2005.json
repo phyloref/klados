@@ -1045,17 +1045,17 @@
             "label": "Torrentirana",
             "cladeDefinition": "Torrentirana, new clade name. Definition: The clade stemming from the most recent common ancestor of Rana tarahumarae Boulenger 1917 and Rana sierramadrensis Taylor 1939",
             "internalSpecifiers": [{
-                "references_taxonomic_units": [{
-                    "scientific_names": [{
-                        "scientific_name": "Rana tarahumarae Boulenger 1917",
-                        "binomial_name": "Rana tarahumarae"
+                "referencesTaxonomicUnits": [{
+                    "scientificNames": [{
+                        "scientificName": "Rana tarahumarae Boulenger 1917",
+                        "binomialName": "Rana tarahumarae"
                     }]
                 }]
             }, {
-                "references_taxonomic_units": [{
-                    "scientific_names": [{
-                        "scientific_name": "Rana sierramadrensis Taylor 1939",
-                        "binomial_name": "Rana sierramadrensis"
+                "referencesTaxonomicUnits": [{
+                    "scientificNames": [{
+                        "scientificName": "Rana sierramadrensis Taylor 1939",
+                        "binomialName": "Rana sierramadrensis"
                     }]
                 }]
             }]
@@ -1063,17 +1063,17 @@
             "label": "Zweifelia",
             "cladeDefinition": "Zweifelia Dubois 1992 (converted clade name). Definition: The clade stemming from the most recent common ancestor of Rana tarahumarae Boulenger 1917 and Rana zweifeli Hillis, Frost and Webb 1984.",
             "internalSpecifiers": [{
-                "references_taxonomic_units": [{
-                    "scientific_names": [{
-                        "scientific_name": "Rana tarahumarae Boulenger 1917",
-                        "binomial_name": "Rana tarahumarae"
+                "referencesTaxonomicUnits": [{
+                    "scientificNames": [{
+                        "scientificName": "Rana tarahumarae Boulenger 1917",
+                        "binomialName": "Rana tarahumarae"
                     }]
                 }]
             }, {
-                "references_taxonomic_units": [{
-                    "scientific_names": [{
-                        "scientific_name": "Rana zweifeli Hillis, Frost and Webb 1984",
-                        "binomial_name": "Rana zweifeli"
+                "referencesTaxonomicUnits": [{
+                    "scientificNames": [{
+                        "scientificName": "Rana zweifeli Hillis, Frost and Webb 1984",
+                        "binomialName": "Rana zweifeli"
                     }]
                 }]
             }]
