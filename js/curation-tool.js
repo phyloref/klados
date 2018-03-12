@@ -609,17 +609,32 @@ function do_tunits_match_by_external_references(tunit1, tunit2) {
     return false;
 }
 
+function do_scnames_match(scname1, scname2) {
+    // Step 1. Try matching by binomial name.
+    // Maybe there is an explicit binomialName we can use.
+    if(scname1.hasOwnProperty('binomialName') && scname2.hasOwnProperty('binomialName')) {
+        if(scname1.binomialName.trim() !== '' && scname1.binomialName.toLowerCase().trim() === scname2.binomialName.toLowerCase().trim())
+            return true;
+    }
+
+    // Otherwise, try to extract the binomial name from the scientificName.
+    let binomial1 = vm.get_binomial_name(scname1);
+    let binomial2 = vm.get_binomial_name(scname2);
+
+    if(binomial1 !== undefined && binomial2 !== undefined && binomial1.trim() !== '' && binomial1.trim() === binomial2.trim())
+        return true;
+
+    return false;
+}
+
 function do_tunits_match_by_binomial_name(tunit1, tunit2) {
     if(tunit1 === undefined || tunit2 === undefined) return false;
     if(tunit1.hasOwnProperty('scientificNames') && tunit2.hasOwnProperty('scientificNames')) {
         // Each external reference is a URL as a string.
         for(let scname1 of tunit1.scientificNames) {
             for(let scname2 of tunit2.scientificNames) {
-                // For now, we only match by binomial name.
-                if(scname1.hasOwnProperty('binomialName') && scname2.hasOwnProperty('binomialName')) {
-                    if(scname1.binomialName.trim() != '' && scname1.binomialName.toLowerCase().trim() === scname2.binomialName.toLowerCase().trim())
-                        return true;
-                }
+                if(do_scnames_match(scname1, scname2))
+                    return true;
             }
         }
     }
