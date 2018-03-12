@@ -141,6 +141,7 @@ var vm = new Vue({
         },
         start_tunit_editor_modal: function(type, tunit_list_container) {
             // What kind of tunit list container is this? Do we have a list to edit?
+            // TODO: add a 'label' so that we don't need to try to guess it.
             if(tunit_list_container === null || tunit_list_container === undefined) {
                 throw "Tunit editor modal started with undefined or null taxonomic unit list container";
             }
@@ -157,7 +158,6 @@ var vm = new Vue({
             } else if (type == 'node') {
                 this.tunit_editor_target_label = 'node: ' + (JSON.stringify(tunit_list_container));
 
-                // Nodes store their tunit list in representsTaxonomicUnits.
                 if(!tunit_list_container.hasOwnProperty('representsTaxonomicUnits'))
                     Vue.set(tunit_list_container, 'representsTaxonomicUnits', []);
 
@@ -341,7 +341,7 @@ var vm = new Vue({
             if(phylogeny.hasOwnProperty('newick')) newick = phylogeny.newick;
 
             // Redraw the phylogeny.
-            render_tree(node_expr, newick);
+            render_tree(node_expr, phylogeny, newick);
 
             // Return the Newick string that was rendered.
             return newick;
@@ -455,7 +455,7 @@ var vm = new Vue({
         },
 
         // Methods for manipulating nodes in phylogenies.
-        get_node_labels_for_phylogeny: function(phylogeny) {
+        get_node_labels_in_phylogeny: function(phylogeny) {
             // Return an iterator to all the node labels in a phylogeny. These
             // node labels come from two sources:
             //  1. We look for node names in the Newick string.
@@ -471,7 +471,7 @@ var vm = new Vue({
             var newick = phylogeny.newick;
             if(newick == null)
                 newick = '()';
-            console.log("get_node_labels_for_phylogeny(" + newick + ")");
+            console.log("get_node_labels_in_phylogeny(" + newick + ")");
 
             var parsed = d3.layout.newick_parser(newick);
             if(parsed.hasOwnProperty('json')) {
@@ -500,9 +500,76 @@ var vm = new Vue({
             }
 
             return Array.from(node_labels);
+        },
+
+        // Return a list of taxonomic units for a node label.
+        get_tunits_for_node_label_in_phylogeny: function(phylogeny, node_label) {
+            // Look up additional node properties.
+            var additionalNodeProperties = {};
+            if(
+                phylogeny.hasOwnProperty('additionalNodeProperties') &&
+                phylogeny.additionalNodeProperties.hasOwnProperty(node_label)
+            ) {
+                additionalNodeProperties = phylogeny.additionalNodeProperties[node_label];
+            }
+
+            // There are three sources of taxonomic units:
+            //  1.  We can try to extract scientific names from the node label.
+            //  2.  If there are additional node labels in additionalNodeProperties,
+            //      we can try to extract names from any of them.
+            //  3.  We can look for taxonomic units in the representsTaxonomicUnits.
+            //
+            // Note that in this scheme, we can't prevent misidentifications
+            // from the label -- so if the label is creating an incorrect
+            // taxonomic unit, you will need to rename the label.
+
+            let labels = new Set(node_label);
+            if(additionalNodeProperties.hasOwnProperty('additionalLabels')) {
+                for(var label of additionalNodeProperties.additionalLabels) {
+                    labels.add(label);
+                }
+            }
+
+            let tunits = [];
+            labels.forEach(function(label) {
+                for(let tunit of extract_tunits_from_node_label(label)) {
+                    tunits.push(tunit);
+                }
+            });
+            if(additionalNodeProperties.hasOwnProperty('representsTaxonomicUnits')) {
+                tunits = tunits.concat(additionalNodeProperties.representsTaxonomicUnits);
+            }
+
+            return tunits;
         }
     }
 });
+
+/**
+ * get_tunits_from_node_label(node_label)
+ *
+ * Given a node label, attempt to parse it as a scientific name.
+ * Returns a list of taxonomic units.
+ */
+function extract_tunits_from_node_label(node_label) {
+    if(node_label === undefined || node_label === null) return [];
+
+    // Check if the label starts with a binomial name.
+    var results = /^([A-Z][a-z]+) ([a-z\-]+)\b/.exec(node_label);
+    if(results !== null) {
+        return [{
+            'scientificNames': [{
+                'scientificName': node_label,
+                'binomialName': results[1] + ' ' + results[2],
+                'genus': results[1],
+                'specificEpithet': results[2]
+            }]
+        }];
+    }
+
+    // It may be a scientific name, but we don't know how to parse it as such.
+    return [];
+}
 
 /**
  * identify_doi(testcase)
@@ -636,17 +703,22 @@ function load_json_from_local(file_input) {
 }
 
 /**
- * render_tree(node_expr, newick) {
+ * render_tree(node_expr, phylogeny, newick) {
  * Given a Newick string in 'newick', try to render it as a tree using Phylotree.
  *
  * 'node_expr' should be a node expression for an SVG element (e.g. '#svg').
+ * 'phylogeny' is the phylogeny JSON object.
+ * 'newick' is the Newick string to render.
  */
-function render_tree(node_expr, newick) {
+ // TODO: Why do we need both newick and phylogeny? Document this.
+function render_tree(node_expr, phylogeny, newick) {
     // Which phylogeny is currently selected?
     var selected_phyloref = undefined;
-    if(vm !== undefined) selected_phyloref = vm.selected_phyloref;
 
-    console.log("render_tree(" + node_expr + ", " + newick + ") on selected phyloref " + selected_phyloref);
+    // No point trying to render anything without a Vue model.
+    if(vm === undefined) return;
+
+    console.log("render_tree(" + node_expr + ", " + phylogeny + ", " + newick + ") on selected phyloref " + selected_phyloref);
 
     // The node styler provides information on styling nodes within the
     // phylogeny.
@@ -682,6 +754,16 @@ function render_tree(node_expr, newick) {
                 }
             }
         }
+
+        if(data.name !== undefined && data.children === undefined) {
+            // Labeled leaf node! Look for taxonomic units.
+            var tunits = vm.get_tunits_for_node_label_in_phylogeny(phylogeny, data.name);
+
+            if(tunits.length == 0) {
+                element.style('fill', 'red')
+                    .style('font-style', 'italic');
+            }
+        }
     }
 
     // Using Phylotree is a four step process:
@@ -706,10 +788,56 @@ function render_tree(node_expr, newick) {
     tree(d3.layout.newick_parser(newick));
 
     tree.get_nodes().forEach(function(node) {
-        // Extract internal nodes
-        if(node.children && node.name.startsWith("expected_")) {
-            node.internal_label = node.name.substring(9);
-            // console.log(node.internal_label)
+        // Only relevant for labeled nodes.
+        if(node.hasOwnProperty('name')) {
+            // Extract internal nodes
+            if(node.children && node.name.startsWith("expected_")) {
+                node.internal_label = node.name.substring(9);
+                // console.log(node.internal_label)
+            }
+
+            // Add custom menu.
+            var tunits = vm.get_tunits_for_node_label_in_phylogeny(phylogeny, node.name);
+            for(var tunit of tunits) {
+                d3.layout.phylotree.add_custom_menu(
+                    node,
+                    function(node) {
+                        console.log("Displaying label for: ", tunit);
+                        return "Taxonomic unit: " + vm.get_taxonomic_unit_label(tunit);
+                    },
+                    function() {
+                        // console.log("Edit taxonomic units activated with: ", node);
+
+                        if(!phylogeny.hasOwnProperty('representsTaxonomicUnits'))
+                            Vue.set(phylogeny, 'representsTaxonomicUnits', {});
+                        if(!phylogeny.representsTaxonomicUnits.hasOwnProperty(node.name))
+                            Vue.set(phylogeny.representsTaxonomicUnits, node.name, vm.get_tunits_for_node_label_in_phylogeny(phylogeny, node.name));
+
+                        // console.log("Setting selected tunit list to: ", phylogeny.representsTaxonomicUnits[node.name]);
+
+                        vm.start_tunit_editor_modal('node', phylogeny.representsTaxonomicUnits[node.name]);
+                    }
+                );
+            }
+
+            d3.layout.phylotree.add_custom_menu(
+                node,
+                function(node) { return "Edit taxonomic units"; },
+                function() {
+                    // console.log("Edit taxonomic units activated with: ", node);
+
+                    if(!phylogeny.hasOwnProperty('additionalNodeProperties'))
+                        Vue.set(phylogeny, 'additionalNodeProperties', {});
+                    if(!phylogeny.additionalNodeProperties.hasOwnProperty(node.name))
+                        Vue.set(phylogeny.additionalNodeProperties, node.name, {
+                            'representsTaxonomicUnits': vm.get_tunits_for_node_label_in_phylogeny(phylogeny, node.name)
+                        });
+
+                    // console.log("Setting selected tunit list to: ", phylogeny.representsTaxonomicUnits[node.name]);
+
+                    vm.start_tunit_editor_modal('node', phylogeny.additionalNodeProperties[node.name]);
+                }
+            );
         }
     });
 

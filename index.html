@@ -174,8 +174,8 @@
                                     <th>Value</th>
                                 </tr>
                                 <template
-                                    v-if="get_node_labels_for_phylogeny(phylogeny).length > 0"
-                                    v-for="(node_label, node_label_index) of get_node_labels_for_phylogeny(phylogeny)"
+                                    v-if="get_node_labels_in_phylogeny(phylogeny).length > 0"
+                                    v-for="(node_label, node_label_index) of get_node_labels_in_phylogeny(phylogeny)"
                                 >
                                     <template
                                         v-if="phylogeny.hasOwnProperty('additionalNodeProperties') && phylogeny.additionalNodeProperties.hasOwnProperty(node_label)"
@@ -195,13 +195,13 @@
                                     </template>
                                 </template>
 
-                                <template v-if="get_node_labels_for_phylogeny(phylogeny).length == 0">
+                                <template v-if="get_node_labels_in_phylogeny(phylogeny).length == 0">
                                     <tr><td style="text-align: center"><em>No labeled nodes in this phylogeny.</em></td></tr>
                                 </template>
                             </tbody>
                         </table>
 
-                        <p>This table contains {{get_node_labels_for_phylogeny(phylogeny).length}} nodes.</p>
+                        <p>This table contains {{get_node_labels_in_phylogeny(phylogeny).length}} nodes.</p>
                     </div>
                 </div>
                 <div class="panel-footer">
@@ -222,7 +222,7 @@
         <!-- Taxonomic unit editing modal: dialog box to allow editing lists of taxonomic units -->
         <div id="tunit-editor-modal" class="modal fade">
             <div class="modal-dialog modal-lg form-horizontal">
-                <div class="modal-content" v-if="selected_tunit_list">
+                <div class="modal-content" v-if="selected_tunit_list !== undefined">
 
                     <!-- Header of tunit editor modal dialog box -->
                     <div class="modal-header">
