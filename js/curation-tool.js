@@ -523,7 +523,9 @@ var vm = new Vue({
             // from the label -- so if the label is creating an incorrect
             // taxonomic unit, you will need to rename the label.
 
-            let labels = new Set(node_label);
+            // TODO: delete additional labels and replace with proper taxonomic units.
+            let labels = new Set();
+            labels.add(node_label);
             if(additionalNodeProperties.hasOwnProperty('additionalLabels')) {
                 for(var label of additionalNodeProperties.additionalLabels) {
                     labels.add(label);
@@ -946,16 +948,20 @@ function render_tree(node_expr, phylogeny, newick) {
                         return "Taxonomic unit: " + vm.get_taxonomic_unit_label(tunit);
                     },
                     function() {
+                        // TODO: deduplicate this code with the one below.
                         // console.log("Edit taxonomic units activated with: ", node);
 
-                        if(!phylogeny.hasOwnProperty('representsTaxonomicUnits'))
-                            Vue.set(phylogeny, 'representsTaxonomicUnits', {});
-                        if(!phylogeny.representsTaxonomicUnits.hasOwnProperty(node.name))
-                            Vue.set(phylogeny.representsTaxonomicUnits, node.name, vm.get_tunits_for_node_label_in_phylogeny(phylogeny, node.name));
+                        if(!phylogeny.hasOwnProperty('additionalNodeProperties'))
+                            Vue.set(phylogeny, 'additionalNodeProperties', {});
+                        if(!phylogeny.additionalNodeProperties.hasOwnProperty(node.name))
+                            Vue.set(phylogeny.additionalNodeProperties, node.name, {
+                                'representsTaxonomicUnits': vm.get_tunits_for_node_label_in_phylogeny(phylogeny, node.name)
+                            });
+
 
                         // console.log("Setting selected tunit list to: ", phylogeny.representsTaxonomicUnits[node.name]);
 
-                        vm.start_tunit_editor_modal('node', phylogeny.representsTaxonomicUnits[node.name]);
+                        vm.start_tunit_editor_modal('node', phylogeny.additionalNodeProperties[node.name]);
                     }
                 );
             }
