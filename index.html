@@ -220,24 +220,21 @@
         <!-- Taxonomic unit editing modal: dialog box to allow editing lists of taxonomic units -->
         <div id="tunit-editor-modal" class="modal fade">
             <div class="modal-dialog modal-lg form-horizontal">
-                <div class="modal-content" v-if="selected_tunit_list !== undefined">
+                <div class="modal-content" v-if="selected_tunit_list_container !== undefined">
 
                     <!-- Header of tunit editor modal dialog box -->
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title">Editing {{tunit_editor_target_label}}</h4>
+                        <h4 class="modal-title">Editing {{selected_tunit_list_container.type}} {{selected_tunit_list_container.label}}</h4>
                     </div>
 
                     <!-- Body of specifier editor modal dialog box -->
-                    <div class="modal-body form-group">
-                        <div class="col-md-12">
-                            <p>
-                                Each taxonomic unit can have any number of scientific names, external
-                                references and specimens. We recommend using a single taxonomic unit
-                                for each type of identifier.
-                            </p>
-
+                    <div class="modal-body col-md-12">
                             <form id="tunit-editor-form">
+                                <div v-if="selected_tunit_list_container.type == 'specifier'">
+                                    <label for="verbatim-specifier" class="control-label">Verbatim specifier</label>
+                                    <input id="verbatim-specifier" type="text" class="form-control" v-model.trim="selected_tunit_list_container.container['verbatimSpecifier']" placeholder="Enter the verbatim description of this specifier">
+                                </div>
 
                                 <!-- List of taxonomic units -->
                                 <div id="tunits-panel" class="panel panel-info" style="margin-top: 1em">
@@ -246,6 +243,11 @@
                                         <p><em>Select a taxonomic unit or create a new one.</em></p>
                                     </div>
                                     <div class="panel-body" v-if="selected_tunit">
+                                        <p>
+                                            Each taxonomic unit can have any number of scientific names, external
+                                            references and specimens. We recommend using a single taxonomic unit
+                                            for each type of identifier.
+                                        </p>
 
                                         <!-- Panel listing scientific names in this taxonomic unit -->
                                         <div class="col-md-12">
@@ -359,20 +361,19 @@
                                     <!-- List of taxonomic units, including the option to add new taxonomic units -->
                                     <div class="list-group">
                                         <a class="list-group-item"
-                                            v-for="(tunit, tunit_index) of selected_tunit_list"
+                                            v-for="(tunit, tunit_index) of selected_tunit_list_container.list"
                                             :class="{active: selected_tunit === tunit}"
                                             @click="selected_tunit = tunit"
                                             :title="get_taxonomic_unit_label(tunit)"
                                         >{{get_taxonomic_unit_label(tunit)}}</a>
                                         <a class="list-group-item"
                                             href="javascript: void(0)"
-                                            onclick="vm.selected_tunit_list.push(vm.create_empty_taxonomic_unit(vm.selected_tunit_list.length + 1))"
+                                            onclick="vm.selected_tunit_list_container.list.push(vm.create_empty_taxonomic_unit(vm.selected_tunit_list_container.list.length + 1))"
                                             ><strong>Add new taxonomic unit</strong></a>
                                     </div>
 
                                 </div>
                             </form>
-                        </div>
                     </div>
 
                     <!-- Footer of the specifier editor modal dialog box -->
