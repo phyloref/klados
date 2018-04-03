@@ -532,29 +532,14 @@ var vm = new Vue({
                 additionalNodeProperties = phylogeny.additionalNodeProperties[node_label];
             }
 
-            // There are three sources of taxonomic units:
-            //  1.  There might be explicit taxonomic units in the
-            //      representsTaxonomicUnits property. If so, these override all
-            //      others.
+            // If there are explicit taxonomic units in the
+            // representsTaxonomicUnits property, we need to use those.
             if(additionalNodeProperties.hasOwnProperty('representsTaxonomicUnits')) {
                 return additionalNodeProperties.representsTaxonomicUnits;
             }
 
-            // If that doesn't work, we can try two other possibilities:
-            //  2.  We can try to extract scientific names from the node label.
-            //  3.  If there are additional node labels in additionalNodeProperties,
-            //      we can try to extract names from any of them.
-
-            // Collect any additional labels that have been specified for this node.
-            let labels = new Set();
-            labels.add();
-            if(additionalNodeProperties.hasOwnProperty('additionalLabels')) {
-                for(var label of additionalNodeProperties.additionalLabels) {
-                    labels.add(label.trim());
-                }
-            }
-
-            // Extract as many taxonomic units as possible from the node labels.
+            // If that doesn't work, we can try to extract scientific names from
+            // the node label.
             let tunits = [];
             for(let tunit of extract_tunits_from_node_label(node_label.trim())) {
                 tunits.push(tunit);
