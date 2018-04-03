@@ -441,8 +441,20 @@
                                 id="definition"
                                 v-model="selected_phyloref.cladeDefinition"
                                 class="form-control"
-                                rows="8"
+                                rows="6"
                                 placeholder="Phylogenetic clade definition"
+                                ></textarea>
+                        </div>
+
+                        <!-- Phyloreference curator comments -->
+                        <label for="curator-comments" class="control-label col-md-4">Curator comments</label>
+                        <div class="input-group col-md-8">
+                            <textarea
+                                id="curator-comments"
+                                v-model="selected_phyloref['curatorComments']"
+                                class="form-control"
+                                rows="2"
+                                placeholder="Curator notes relating to this phyloreference"
                                 ></textarea>
                         </div>
 
