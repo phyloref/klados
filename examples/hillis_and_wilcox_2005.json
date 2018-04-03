@@ -5,7 +5,7 @@
     "@type": "testcase:TestSuiteFromPublication",
 
     "curator": "Gaurav Vaidya <gaurav@ggvaidya.com>",
-    "comments": " - The Laurasiarana expected node is not found in the TreeBase tree, so I've placed it where I think it should go.",
+    "comments": "None.",
 
     "citation": "Hillis DM and Wilcox TP (2005) Molecular Phylogenetics and Evolution 34(2):299-314",
     "url": "https://doi.org/10.1016/j.ympev.2004.10.007",
@@ -810,7 +810,9 @@
         {
             "label": "Laurasiarana",
             "cladeDefinition": "Laurasiarana, new clade name. Definition: The clade stemming from the most recent common ancestor of Rana temporaria Linne 1758 and Rana aurora Baird and Girard 1852.",
+            "curatorComments": "The Laurasiarana expected node is not found in the TreeBase tree, so I've placed it where I think it should go.",
             "internalSpecifiers": [{
+                "verbatimSpecifier": "Rana temporaria Linne 1758",
                 "referencesTaxonomicUnits": [{
                     "scientificNames": [{
                         "scientificName": "Rana temporaria Linne 1758",
@@ -818,6 +820,7 @@
                     }]
                 }]
             }, {
+                "verbatimSpecifier": "Rana aurora Baird and Girard 1852",
                 "referencesTaxonomicUnits": [{
                     "scientificNames": [{
                         "scientificName": "Rana aurora Baird and Girard 1852",
