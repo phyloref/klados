@@ -4,6 +4,18 @@
  */
 
 // GLOBAL VARIABLES
+// List of example files to provide in the "Examples" dropdown.
+var example_phyx_urls = [
+    {
+        url: "examples/fisher_et_al_2007.json",
+        title: "Fisher et al, 2007"
+    },
+    {
+        url: "examples/hillis_and_wilcox_2005.json",
+        title: "Hillis and Wilcox, 2005"
+    }
+];
+
 // Set up the Vue object which contains the entire model.
 var vm = new Vue({
     // The element to install Vue onto.
@@ -51,7 +63,10 @@ var vm = new Vue({
         phylogeny_description_being_edited: undefined,
 
         // Display one of the two dropdown menus for the specifiers.
-        specifier_dropdown_target: 'none'
+        specifier_dropdown_target: 'none',
+
+        // Example PHYX URLs to display
+        example_phyx_urls: example_phyx_urls
     },
 
     // Filters to be used in the template.
