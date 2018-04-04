@@ -356,7 +356,7 @@ var vm = new Vue({
             if(phylotree === undefined)
                 return "()";
 
-            return phylotree.get_newick(function(n) { return n; });
+            return get_newick_string_from_phylotree(phylotree);
         },
 
         // Methods for creating new, empty data model elements.
@@ -898,6 +898,29 @@ function load_json_from_local(file_input) {
 }
 
 /**
+ * get_newick_string_from_phylotree(phylotree)
+ *
+ * Given a Phylotree object, convert it into a Newick string.
+ */
+function get_newick_string_from_phylotree(phylotree) {
+    // Phylotree needs to know how to annotate nodes. Currently, we only
+    // annotate internal labels, which means we eliminate support values
+    // or branch lengths (stored by Phylotree in 'boostrap_values' and
+    // 'attribute' respectively, according to the Github wiki page
+    // https://github.com/veg/phylotree.js/wiki/Core#node).
+
+    return phylotree.get_newick(function(node) {
+        // Don't annotate terminal nodes.
+        if(!node.children) return;
+
+        // For internal nodes, annotate with their names.
+        return node['name'];
+    }) + ";";
+    // ^ tree.get_newick() doesn't add the final semicolon, so we do
+    //   that here.
+ }
+
+/**
  * render_tree(node_expr, phylogeny) {
  * Given a phylogeny, try to render it as a tree using Phylotree.
  *
@@ -1034,19 +1057,9 @@ function render_tree(node_expr, phylogeny) {
 
                 // This should have updated the Phylotree model. To update the
                 // Vue and force a redraw, we now need to update phylogeny.newick.
-                let new_newick = tree.get_newick(function(node) {
-                    // Don't annotate terminal nodes.
-                    if(!node.children) return;
-
-                    // For internal nodes, annotate with their names.
-                    return node['name'];
-                });
+                let new_newick = get_newick_string_from_phylotree(tree);
                 console.log("Newick string updated to: ", new_newick);
-
-                // tree.get_newick() doesn't add the final semicolon, so we do
-                // that here. Changing phylogeny.newick should update the model
-                // and trigger a redraw.
-                phylogeny.newick = new_newick + ";";
+                phylogeny.newick = new_newick;
             }
         );
 
