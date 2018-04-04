@@ -127,6 +127,23 @@ var vm = new Vue({
             return dict;
         },
 
+        // Data model management methods.
+        load_phyx_from_url: function(url) {
+            // Change the current PHYX to that in the provided URL.
+            // Will ask the user to confirm before replacing it.
+
+            $.getJSON(url, function(data) {
+                display_testcase(data);
+            }).fail(function(error) {
+                console.log("Could not load PHYX file '", url, "': ", error);
+                if(error.status == 200) {
+                    alert("Could not load PHYX file '" + url + "': file malformed, see console for details.");
+                } else {
+                    alert("Could not load PHYX file '" + url + "': server error " + error.status + " " + error.statusText);
+                }
+            });
+        },
+
         // User interface helper methods.
         close_current_study: function() {
             // Close the current study. If it has been modified,
@@ -843,18 +860,6 @@ function display_testcase(testcase) {
     } catch(err) {
         console.log("Error occurred while displaying new testcase: " + err);
     }
-}
-
-/**
- * load_json_from_url(url)
- *
- * Load a JSON from the provided URL. This either needs to be a JSONP request or
- * on the same domain as this website.
- */
-function load_json_from_url(url) {
-    $.getJSON(url, function(data) {
-        display_testcase(data);
-    });
 }
 
 /**
