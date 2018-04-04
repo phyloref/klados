@@ -4,6 +4,18 @@
  */
 
 // GLOBAL VARIABLES
+// List of example files to provide in the "Examples" dropdown.
+var example_phyx_urls = [
+    {
+        url: "examples/fisher_et_al_2007.json",
+        title: "Fisher et al, 2007"
+    },
+    {
+        url: "examples/hillis_and_wilcox_2005.json",
+        title: "Hillis and Wilcox, 2005"
+    }
+];
+
 // Set up the Vue object which contains the entire model.
 var vm = new Vue({
     // The element to install Vue onto.
@@ -51,7 +63,10 @@ var vm = new Vue({
         phylogeny_description_being_edited: undefined,
 
         // Display one of the two dropdown menus for the specifiers.
-        specifier_dropdown_target: 'none'
+        specifier_dropdown_target: 'none',
+
+        // Example PHYX URLs to display
+        example_phyx_urls: example_phyx_urls
     },
 
     // Filters to be used in the template.
@@ -125,6 +140,16 @@ var vm = new Vue({
             if(!(key in dict)) Vue.set(dict, key, []);
             dict[key].push(value);
             return dict;
+        },
+
+        // Data model management methods.
+        load_phyx_from_url: function(url) {
+            // Change the current PHYX to that in the provided URL.
+            // Will ask the user to confirm before replacing it.
+
+            $.getJSON(url, function(data) {
+                display_testcase(data);
+            });
         },
 
         // User interface helper methods.
@@ -851,18 +876,6 @@ function display_testcase(testcase) {
     } catch(err) {
         console.log("Error occurred while displaying new testcase: " + err);
     }
-}
-
-/**
- * load_json_from_url(url)
- *
- * Load a JSON from the provided URL. This either needs to be a JSONP request or
- * on the same domain as this website.
- */
-function load_json_from_url(url) {
-    $.getJSON(url, function(data) {
-        display_testcase(data);
-    });
 }
 
 /**
