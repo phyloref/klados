@@ -13,6 +13,10 @@ var example_phyx_urls = [
     {
         url: "examples/hillis_and_wilcox_2005.json",
         title: "Hillis and Wilcox, 2005"
+    },
+    {
+        url: "examples/bryant_1996.json",
+        title: "Bryant, 1996"
     }
 ];
 
