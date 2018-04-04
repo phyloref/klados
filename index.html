@@ -160,7 +160,24 @@
             <div :id="'phylogeny-' + phylogeny_index" class="panel panel-info" v-for="(phylogeny, phylogeny_index) of testcase.phylogenies">
                 <div class="panel-heading">
                     <a href="#" class="close glyphicon glyphicon-remove" onclick="if(window.confirm('Are you sure you want to delete this phylogeny?')) vm.testcase.phylogenies.splice(vm.phylogeny_index, 1)"></a>
-                    Phylogeny {{phylogeny_index + 1}}
+                    <template v-if="phylogeny_description_being_edited !== phylogeny">
+                        <span role="button" @click="phylogeny_description_being_edited = phylogeny" title="Click to edit">
+                            <template v-if="phylogeny.hasOwnProperty('description')">
+                                {{phylogeny['description']}}
+                            </template>
+                            <template v-else>
+                                Phylogeny {{phylogeny_index + 1}}
+                            </template>
+                        </span>
+                    </template>
+                    <template v-else>
+                        <div class="input-group">
+                            <input v-model.lazy="phylogeny['description']" type="text" class="form-control" placeholder="Enter a description for this phylogeny, including links">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button"  @click="phylogeny_description_being_edited = undefined">Done editing</button>
+                            </span>
+                        </div>
+                    </template>
                 </div>
                 <div class="panel-body">
                     <svg v-if="phylogeny_annotations_mode_for !== phylogeny" :id="'phylogeny-svg-' + phylogeny_index" :alt="get_phylogeny_as_newick('#phylogeny-svg-' + phylogeny_index, phylogeny)"></svg>
