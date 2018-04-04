@@ -62,6 +62,9 @@ var vm = new Vue({
         // Display the delete buttons on the specifiers.
         specifier_delete_mode: false,
 
+        // Which phylogeny label is currently being edited?
+        phylogeny_description_being_edited: undefined,
+
         // Display one of the two dropdown menus for the specifiers.
         specifier_dropdown_target: 'none',
 
