@@ -918,9 +918,9 @@ function render_tree(node_expr, phylogeny) {
     // The node styler provides information on styling nodes within the
     // phylogeny.
     var nodeStyler = function (element, data) {
-        if(data.hasOwnProperty('internal_label')) {
-            // If the node has an internal label (see below), we display it
-            // next to the node by creating a new 'text' element.
+        if(data.hasOwnProperty('name') && data.children) {
+            // If the node has a label and has children (i.e. is an internal node),
+            // we display it next to the node by creating a new 'text' element.
 
             // Make sure we don't already have an internal label node on this SVG node!
             var label = element.selectAll(".internal_label");
@@ -930,7 +930,7 @@ function render_tree(node_expr, phylogeny) {
                 // TODO: Once we're happy with how these elements look,
                 // we should move all this complexity into CSS classes.
                 text_label.classed("internal_label", true)
-                    .text(data.internal_label)
+                    .text(data.name)
                     .attr("dx", ".4em")
                     .attr("dy", ".3em")
                     .style("font-style", "italic")
@@ -942,7 +942,7 @@ function render_tree(node_expr, phylogeny) {
                 if(
                     vm.selected_phyloref !== undefined &&
                     vm.selected_phyloref.hasOwnProperty('label') &&
-                    vm.selected_phyloref.label == data.internal_label
+                    vm.selected_phyloref.label == data.name
                 ) {
                     text_label.style('fill', 'blue')
                         .style('font-weight', 'bolder');
@@ -1004,15 +1004,56 @@ function render_tree(node_expr, phylogeny) {
     tree(d3.layout.newick_parser(newick));
 
     tree.get_nodes().forEach(function(node) {
-        // Only relevant for labeled nodes.
-        if(node.hasOwnProperty('name')) {
-            // Extract internal nodes
-            if(node.children && node.name.startsWith("expected_")) {
-                node.internal_label = node.name.substring(9);
-                // console.log(node.internal_label)
-            }
+        // All nodes (including named nodes) can be renamed.
+        // Renaming a node will cause the phylogeny.newick property to
+        // be changed, which should cause Vue.js to cause the tree to be
+        // re-rendered.
+        let label = node['name'];
+        let is_node_labeled = (label !== undefined && label.trim() != '');
 
-            // Add custom menu.
+        d3.layout.phylotree.add_custom_menu(
+            node,
+            function(node) { return "Edit label: " + (is_node_labeled ? label : "none"); },
+            function() {
+                // Ask the user for a new label.
+                let result = window.prompt(
+                    "Please choose a new label for " +
+                        (is_node_labeled ? "the node labeled '" + label + "'" : "the selected unlabeled node"),
+                    (is_node_labeled ? label : "")
+                );
+
+                // If the user clicked cancel, don't do anything.
+                if(result === null) return;
+
+                // If the user entered a blank label, remove any label from this node.
+                if(result.trim() == '') {
+                    delete node['name'];
+                } else {
+                    node['name'] = result;
+                }
+
+                // This should have updated the Phylotree model. To update the
+                // Vue and force a redraw, we now need to update phylogeny.newick.
+                let new_newick = tree.get_newick(function(node) {
+                    // Don't annotate terminal nodes.
+                    if(!node.children) return;
+
+                    // For internal nodes, annotate with their names.
+                    return node['name'];
+                });
+                console.log("Newick string updated to: ", new_newick);
+
+                // tree.get_newick() doesn't add the final semicolon, so we do
+                // that here. Changing phylogeny.newick should update the model
+                // and trigger a redraw.
+                phylogeny.newick = new_newick + ";";
+            }
+        );
+
+        // Only relevant for labeled nodes.
+        if(is_node_labeled) {
+            // Add custom menu items: display all taxonomic units and provide
+            // a menu item to edit them.
             var tunits = vm.get_tunits_for_node_label_in_phylogeny(phylogeny, node.name);
             for(var tunit of tunits) {
                 if(node.name !== "") {
