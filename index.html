@@ -157,7 +157,10 @@
         <!-- Phylogeny display: visualize phylogeny using Phylotree.js and allow its Newick strings to be edited -->
         <div class="col-md-7">
             <div :id="'phylogeny-' + phylogeny_index" class="panel panel-info" v-for="(phylogeny, phylogeny_index) of testcase.phylogenies">
-                <div class="panel-heading">Phylogeny {{phylogeny_index + 1}}</div>
+                <div class="panel-heading">
+                    <a href="#" class="close glyphicon glyphicon-remove" onclick="if(window.confirm('Are you sure you want to delete this phylogeny?')) vm.testcase.phylogenies.splice(vm.phylogeny_index, 1)"></a>
+                    Phylogeny {{phylogeny_index + 1}}
+                </div>
                 <div class="panel-body">
                     <svg v-if="phylogeny_annotations_mode_for !== phylogeny" :id="'phylogeny-svg-' + phylogeny_index" :alt="get_phylogeny_as_newick('#phylogeny-svg-' + phylogeny_index, phylogeny)"></svg>
                     <div v-if="phylogeny_annotations_mode_for === phylogeny">
