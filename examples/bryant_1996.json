@@ -6,7 +6,42 @@
     "phylogenies": [
         {
             "newick": "(Creodonta,('\"Miacidae\"',('\"Viverravidae\"',(Feloidea,(Canidae,(Mustelidae,(Procyonidae,(Ailurus,(Pinnipedia,(Ursidae,Amphicyonidae)Ursoidea)Ursidae)))Arctoidea)Caniformia)Carnivora))Carnivoramorpha)root;",
-            "description": "Figure 1(a) from the paper"
+            "description": "Figure 1(a) from the paper",
+            "additionalNodeProperties": {
+                "Arctoidea": {
+                    "representsTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Arctoidea"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "Feloidea": {
+                    "representsTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Feloidea"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "Canidae": {
+                    "representsTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Canidae"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
         },
         {
             "newick": "(Creodonta,(feloids,(Canidae,(Amphicyonidae,((Ursidae,Ailuropoda)Ursidae,(Ailurus,Pinnipedia,Procyonidae,Mustelidae)Mustelida)Arctomorpha)Arctoidea)Caniformia)Carnivora)root;",
@@ -21,6 +56,48 @@
             "description": "Figure 1(d) from the paper"
         }
     ],
-    "phylorefs": [],
+    "phylorefs": [
+        {
+            "label": "Carnivora",
+            "cladeDefinition": "most  recent  common  ancestor  of Feloidea,  all  species referred  to Canidae by Wilson  and  Reeder  (1993), and  Arctoidea  and  all  of  its descendants  (node-based definition)",
+            "internalSpecifiers": [
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Arctoidea"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Canidae"
+                                }
+                            ]
+                        }
+                    ],
+                    "verbatimSpecifier": "all species referred to Canidae by Wilson and Reeder (1993)"
+                },
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Feloidea"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "externalSpecifiers": []
+        }
+    ],
     "title": "Explicitness, Stability, and Universality in the Phylogenetic Definition and Usage of Taxon Names: A Case Study of the Phylogenetic Taxonomy of the Carnivora (Mammalia)"
 }
