@@ -5,7 +5,20 @@
     "citation": "Bryant HN (1996) Explicitness, Stability, and Universality in the Phylogenetic Definition and Usage of Taxon Names: A Case Study of the Phylogenetic Taxonomy of the Carnivora (Mammalia). Syst Bio 45(2):174–189",
     "phylogenies": [
         {
-            "newick": "(Creodonta, (Miacidae, (Viverravidae, (Feloidea, (Canidae, (Mustelidae, (Procyonidae, (Ailurus, (Pinnipedia, (Ursidae, Amphicyonidae))))))))))"
+            "newick": "(Creodonta,('\"Miacidae\"',('\"Viverravidae\"',(Feloidea,(Canidae,(Mustelidae,(Procyonidae,(Ailurus,(Pinnipedia,(Ursidae,Amphicyonidae)Ursoidea)Ursidae)))Arctoidea)Caniformia)Carnivora))Carnivoramorpha)root;",
+            "description": "Figure 1(a) from the paper"
+        },
+        {
+            "newick": "(Creodonta,(feloids,(Canidae,(Amphicyonidae,((Ursidae,Ailuropoda)Ursidae,(Ailurus,Pinnipedia,Procyonidae,Mustelidae)Mustelida)Arctomorpha)Arctoidea)Caniformia)Carnivora)root;",
+            "description": "Figure 1(b) from the paper"
+        },
+        {
+            "newick": "(Creodonta,('\"Miacidae\"',('\"Viverravidae\"',(Feloidea,(Canidae,(Mustelidae,(Procyonidae,(Ailurus,(Pinnipedia,(Ursidae,Amphicyonidae)))))Mustelida)Caniformia)))Carnivora)root;",
+            "description": "Figure 1(c) from the paper"
+        },
+        {
+            "newick": "(Creodonta,(feloids,(Canidae,(Amphicyonidae,((Ursidae,Ailuropoda),(Ailurus,Pinnipedia,Procyonidae,Mustelidae)))Arctoidea)Caniformia)Carnivora)root;",
+            "description": "Figure 1(d) from the paper"
         }
     ],
     "phylorefs": [],
