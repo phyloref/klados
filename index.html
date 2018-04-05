@@ -132,7 +132,14 @@
                     </button>
                     <ul class="dropdown-menu">
                         <template v-for="(phylogeny, phylogeny_index) of testcase.phylogenies">
-                            <li><a :href="'#phylogeny-' + phylogeny_index">Phylogeny {{phylogeny_index + 1}}</a></li>
+                            <li><a :href="'#phylogeny-' + phylogeny_index">
+                                <template v-if="phylogeny.hasOwnProperty('description')">
+                                    {{phylogeny['description']}}
+                                </template>
+                                <template v-else>
+                                    Phylogeny {{phylogeny_index + 1}}
+                                </template>
+                            </a></li>
                         </template>
                         <li><a href="#phylogeny-footer" @click="testcase.phylogenies.push({})"><strong>Add phylogeny</strong></a></li>
                     </ul>
