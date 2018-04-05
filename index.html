@@ -531,6 +531,16 @@
                     </form>
                 </div>
 
+                <div class="panel-footer" v-if="selected_phyloref !== undefined && testcase.phylorefs.indexOf(selected_phyloref) != -1">
+                    <div class="btn-group btn-group-justified" role="group" aria-label="Actions for the entire phyloreference">
+                        <a
+                            href="#selected-phyloref"
+                            class="btn btn-danger"
+                            onclick="if(window.confirm('Are you sure you want to delete this phyloreference?')) { vm.testcase.phylorefs.splice(vm.testcase.phylorefs.indexOf(vm.selected_phyloref), 1); vm.selected_phyloref = undefined; }"
+                            >Delete phyloreference</a>
+                    </div>
+                </div>
+
                 <!-- List of phyloreferences -->
                 <div class="list-group">
                     <a href="#selected-phyloref"
