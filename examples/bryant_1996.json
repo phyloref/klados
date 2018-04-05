@@ -3,7 +3,11 @@
     "doi": "10.1093/sysbio/45.2.174",
     "url": "",
     "citation": "Bryant HN (1996) Explicitness, Stability, and Universality in the Phylogenetic Definition and Usage of Taxon Names: A Case Study of the Phylogenetic Taxonomy of the Carnivora (Mammalia). Syst Bio 45(2):174–189",
-    "phylogenies": [],
+    "phylogenies": [
+        {
+            "newick": "(Creodonta, (Miacidae, (Viverravidae, (Feloidea, (Canidae, (Mustelidae, (Procyonidae, (Ailurus, (Pinnipedia, (Ursidae, Amphicyonidae))))))))))"
+        }
+    ],
     "phylorefs": [],
     "title": "Explicitness, Stability, and Universality in the Phylogenetic Definition and Usage of Taxon Names: A Case Study of the Phylogenetic Taxonomy of the Carnivora (Mammalia)"
 }

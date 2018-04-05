@@ -180,48 +180,59 @@
                     </template>
                 </div>
                 <div class="panel-body">
-                    <svg v-if="phylogeny_annotations_mode_for !== phylogeny" :id="'phylogeny-svg-' + phylogeny_index" :alt="get_phylogeny_as_newick('#phylogeny-svg-' + phylogeny_index, phylogeny)"></svg>
-                    <div v-if="phylogeny_annotations_mode_for === phylogeny">
-                        <p>This table displays all labeled nodes in this phylogeny and all known annotations
-                        applied to any of those nodes. A feature to change node labels is currently in development.
-                        </p>
+                    <template v-if="errors_parsing_phylogenies.hasOwnProperty(phylogeny) && errors_parsing_phylogenies[phylogeny].length > 0">
+                        <p>The following errors occurred while parsing this phylogeny:</p>
 
-                        <table class="table table-bordered table-hover table-striped table-fixed-height" style="width: 100%">
-                            <tbody>
-                                <tr>
-                                    <th>Label</th>
-                                    <th>Property</th>
-                                    <th>Value</th>
-                                </tr>
-                                <template v-if="get_node_labels_in_phylogeny(phylogeny).length == 0">
-                                    <tr><td style="text-align: center"><em>No labeled nodes in this phylogeny.</em></td></tr>
-                                </template>
-                                <template
-                                    v-else
-                                    v-for="(node_label, node_label_index) of get_node_labels_in_phylogeny(phylogeny)"
-                                >
+                        <ul>
+                            <li v-for="err of errors_parsing_phylogenies[phylogeny]">{{err}}</li>
+                        </ul>
+
+                        <p>Please edit the Newick corresponding to this phylogeny by clicking the "Edit as Newick" button below.</p>
+                    </template>
+                    <template v-else>
+                        <svg v-if="phylogeny_annotations_mode_for !== phylogeny" :id="'phylogeny-svg-' + phylogeny_index" :alt="get_phylogeny_as_newick('#phylogeny-svg-' + phylogeny_index, phylogeny)"></svg>
+                        <div v-if="phylogeny_annotations_mode_for === phylogeny">
+                            <p>This table displays all labeled nodes in this phylogeny and all known annotations
+                            applied to any of those nodes. A feature to change node labels is currently in development.
+                            </p>
+
+                            <table class="table table-bordered table-hover table-striped table-fixed-height" style="width: 100%">
+                                <tbody>
+                                    <tr>
+                                        <th>Label</th>
+                                        <th>Property</th>
+                                        <th>Value</th>
+                                    </tr>
+                                    <template v-if="get_node_labels_in_phylogeny(phylogeny).length == 0">
+                                        <tr><td style="text-align: center"><em>No labeled nodes in this phylogeny.</em></td></tr>
+                                    </template>
                                     <template
-                                        v-if="phylogeny.hasOwnProperty('additionalNodeProperties') && phylogeny.additionalNodeProperties.hasOwnProperty(node_label)"
+                                        v-else
+                                        v-for="(node_label, node_label_index) of get_node_labels_in_phylogeny(phylogeny)"
                                     >
-                                        <tr v-for="prop_name of Object.keys(phylogeny.additionalNodeProperties[node_label])">
-                                            <td>{{node_label}}</td>
-                                            <td>{{prop_name}}</td>
-                                            <td><textarea readonly rows="4" style="width: 100%">{{JSON.stringify(phylogeny.additionalNodeProperties[node_label][prop_name])}}</textarea></td>
-                                        </tr>
-                                    </template>
+                                        <template
+                                            v-if="phylogeny.hasOwnProperty('additionalNodeProperties') && phylogeny.additionalNodeProperties.hasOwnProperty(node_label)"
+                                        >
+                                            <tr v-for="prop_name of Object.keys(phylogeny.additionalNodeProperties[node_label])">
+                                                <td>{{node_label}}</td>
+                                                <td>{{prop_name}}</td>
+                                                <td><textarea readonly rows="4" style="width: 100%">{{JSON.stringify(phylogeny.additionalNodeProperties[node_label][prop_name])}}</textarea></td>
+                                            </tr>
+                                        </template>
 
-                                    <template v-else>
-                                        <tr>
-                                            <td>{{node_label}}</td>
-                                            <td colspan="2"><em>No node properties.</em></td>
-                                        </tr>
+                                        <template v-else>
+                                            <tr>
+                                                <td>{{node_label}}</td>
+                                                <td colspan="2"><em>No node properties.</em></td>
+                                            </tr>
+                                        </template>
                                     </template>
-                                </template>
-                            </tbody>
-                        </table>
+                                </tbody>
+                            </table>
 
-                        <p>This table contains {{get_node_labels_in_phylogeny(phylogeny).length}} nodes.</p>
-                    </div>
+                            <p>This table contains {{get_node_labels_in_phylogeny(phylogeny).length}} nodes.</p>
+                        </div>
+                    </template>
                 </div>
                 <div class="panel-footer">
                     <textarea

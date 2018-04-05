@@ -70,7 +70,10 @@ var vm = new Vue({
         specifier_dropdown_target: 'none',
 
         // Example PHYX URLs to display
-        example_phyx_urls: example_phyx_urls
+        example_phyx_urls: example_phyx_urls,
+
+        // Which phylogenies had errors in processing?
+        errors_parsing_phylogenies: {}
     },
 
     // Filters to be used in the template.
@@ -1049,7 +1052,26 @@ function render_tree(node_expr, phylogeny) {
             "transitions": false
         })
         .style_nodes(nodeStyler);
-    tree(d3.layout.newick_parser(newick));
+
+    vm.errors_parsing_phylogenies[phylogeny] = [];
+    try {
+        tree(d3.layout.newick_parser(newick));
+    } catch(e) {
+        console.log("Error occurred while reading phylogeny: ", e);
+
+        // TODO: try to diagnose why the Newick string could not be parsed.
+
+        // If we can't figure out any specific type of error, maybe it's a
+        // TypeError with the message "node is undefined", which is currently
+        // how Phylotree.js indicates "the Newick string is malformed".
+        if(e instanceof TypeError && e.message == 'node is undefined') {
+            vm.errors_parsing_phylogenies[phylogeny].push("The Newick string is malformed.");
+        } else {
+            vm.errors_parsing_phylogenies[phylogeny].push("Unknown error: " + JSON.stringify(e));
+        }
+
+        return undefined;
+    }
 
     tree.get_nodes().forEach(function(node) {
         // All nodes (including named nodes) can be renamed.
