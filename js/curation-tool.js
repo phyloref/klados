@@ -571,17 +571,17 @@ var vm = new Vue({
         get_node_labels_matched_by_specifier: function(specifier, phylogeny) {
             // Return a list of node labels matched by a given specifier on
             // a given phylogeny.
-            // Wrapper for does_specifier_match_node() on every node label in
+            // Wrapper for test_whether_specifier_match_node() on every node label in
             // a given phylogeny.
 
             let local_vm = this;
 
             return local_vm.get_node_labels_in_phylogeny(phylogeny).filter(function(node_label) {
-                return local_vm.does_specifier_match_node(specifier, phylogeny, node_label);
+                return local_vm.test_whether_specifier_match_node(specifier, phylogeny, node_label);
             });
         },
 
-        does_specifier_match_node: function(specifier, phylogeny, node_label) {
+        test_whether_specifier_match_node: function(specifier, phylogeny, node_label) {
             // Tests whether a specifier matches a node in a phylogeny.
 
             // Does the specifier have any taxonomic units? If not, we can't
@@ -599,9 +599,9 @@ var vm = new Vue({
             for(let tunit1 of specifier_tunits) {
                 for(let tunit2 of node_tunits) {
                     if(
-                        do_tunits_match_by_binomial_name(tunit1, tunit2) ||
-                        do_tunits_match_by_external_references(tunit1, tunit2) ||
-                        do_tunits_match_by_specimen_identifier(tunit1, tunit2)
+                        test_whether_tunits_match_by_binomial_name(tunit1, tunit2) ||
+                        test_whether_tunits_match_by_external_references(tunit1, tunit2) ||
+                        test_whether_tunits_match_by_specimen_identifier(tunit1, tunit2)
                     ) return true;
                 }
             }
@@ -617,11 +617,11 @@ var vm = new Vue({
 // methods in that class.
 
 /**
- * do_tunits_match_by_external_references(tunit1, tunit2)
+ * test_whether_tunits_match_by_external_references(tunit1, tunit2)
  *
  * Test whether two Tunits have matching external references.
  */
-function do_tunits_match_by_external_references(tunit1, tunit2) {
+function test_whether_tunits_match_by_external_references(tunit1, tunit2) {
     if(tunit1 === undefined || tunit2 === undefined) return false;
     if(tunit1.hasOwnProperty('externalReferences') && tunit2.hasOwnProperty('externalReferences')) {
         // Each external reference is a URL as a string. We will lowercase it,
@@ -638,11 +638,11 @@ function do_tunits_match_by_external_references(tunit1, tunit2) {
 }
 
 /**
- * do_scnames_match_by_binomial_name(scname1, scname2)
+ * test_whether_scnames_match_by_binomial_name(scname1, scname2)
  *
  * Test whether two scientific names match on the basis of their binomial names.
  */
-function do_scnames_match_by_binomial_name(scname1, scname2) {
+function test_whether_scnames_match_by_binomial_name(scname1, scname2) {
     // Step 1. Try matching by explicit binomial name, if one is available.
     if(scname1.hasOwnProperty('binomialName') && scname2.hasOwnProperty('binomialName')) {
         if(scname1.binomialName.trim() !== '' && scname1.binomialName.toLowerCase().trim() === scname2.binomialName.toLowerCase().trim())
@@ -661,11 +661,11 @@ function do_scnames_match_by_binomial_name(scname1, scname2) {
 }
 
 /**
- * do_tunits_match_by_binomial_name(tunit1, tunit2)
+ * test_whether_tunits_match_by_binomial_name(tunit1, tunit2)
  *
  * Test whether two Tunits match on the basis of their binomial names.
  */
-function do_tunits_match_by_binomial_name(tunit1, tunit2) {
+function test_whether_tunits_match_by_binomial_name(tunit1, tunit2) {
     //
 
     if(tunit1 === undefined || tunit2 === undefined) return false;
@@ -673,7 +673,7 @@ function do_tunits_match_by_binomial_name(tunit1, tunit2) {
         // Each external reference is a URL as a string.
         for(let scname1 of tunit1.scientificNames) {
             for(let scname2 of tunit2.scientificNames) {
-                if(do_scnames_match_by_binomial_name(scname1, scname2))
+                if(test_whether_scnames_match_by_binomial_name(scname1, scname2))
                     return true;
             }
         }
@@ -683,11 +683,11 @@ function do_tunits_match_by_binomial_name(tunit1, tunit2) {
 }
 
 /**
- * do_tunits_match_by_specimen_identifier(tunit1, tunit2)
+ * test_whether_tunits_match_by_specimen_identifier(tunit1, tunit2)
  *
  * Test whether two Tunits match on the basis of their specimen identifiers.
  */
-function do_tunits_match_by_specimen_identifier(tunit1, tunit2) {
+function test_whether_tunits_match_by_specimen_identifier(tunit1, tunit2) {
     if(tunit1 === undefined || tunit2 === undefined) return false;
     if(tunit1.hasOwnProperty('includesSpecimens') && tunit2.hasOwnProperty('includesSpecimens')) {
         // Convert specimen identifiers (if present) into a standard format and compare those.
@@ -964,7 +964,7 @@ function render_tree(node_expr, phylogeny) {
                 //  - external specifier in red
                 if(vm.selected_phyloref.hasOwnProperty('internalSpecifiers')) {
                     for(let specifier of vm.selected_phyloref.internalSpecifiers) {
-                        if(vm.does_specifier_match_node(specifier, phylogeny, data.name)) {
+                        if(vm.test_whether_specifier_match_node(specifier, phylogeny, data.name)) {
                             element.style('fill', 'green')
                                 .style('font-weight', 'bolder');
                         }
@@ -972,7 +972,7 @@ function render_tree(node_expr, phylogeny) {
                 }
                 if(vm.selected_phyloref.hasOwnProperty('externalSpecifiers')) {
                     for(let specifier of vm.selected_phyloref.externalSpecifiers) {
-                        if(vm.does_specifier_match_node(specifier, phylogeny, data.name)) {
+                        if(vm.test_whether_specifier_match_node(specifier, phylogeny, data.name)) {
                             element.style('fill', 'red')
                                 .style('font-weight', 'bolder');
                         }
