@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="https://veg.github.io/phylotree.js/phylotree.css">
+    <link rel="stylesheet" href="./css/main.css">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -158,46 +159,88 @@
             <div :id="'phylogeny-' + phylogeny_index" class="panel panel-info" v-for="(phylogeny, phylogeny_index) of testcase.phylogenies">
                 <div class="panel-heading">Phylogeny {{phylogeny_index + 1}}</div>
                 <div class="panel-body">
-                    <svg :id="'phylogeny-svg-' + phylogeny_index" :alt="get_phylogeny_as_newick('#phylogeny-svg-' + phylogeny_index, phylogeny)"></svg>
+                    <svg v-if="phylogeny_annotations_mode_for !== phylogeny" :id="'phylogeny-svg-' + phylogeny_index" :alt="get_phylogeny_as_newick('#phylogeny-svg-' + phylogeny_index, phylogeny)"></svg>
+                    <div v-if="phylogeny_annotations_mode_for === phylogeny">
+                        <p>This table displays all labeled nodes in this phylogeny and all known annotations
+                        applied to any of those nodes. A feature to change node labels is currently in development.
+                        </p>
+
+                        <table class="table table-bordered table-hover table-striped table-fixed-height" style="width: 100%">
+                            <tbody>
+                                <tr>
+                                    <th>Label</th>
+                                    <th>Property</th>
+                                    <th>Value</th>
+                                </tr>
+                                <template v-if="get_node_labels_in_phylogeny(phylogeny).length == 0">
+                                    <tr><td style="text-align: center"><em>No labeled nodes in this phylogeny.</em></td></tr>
+                                </template>
+                                <template
+                                    v-else
+                                    v-for="(node_label, node_label_index) of get_node_labels_in_phylogeny(phylogeny)"
+                                >
+                                    <template
+                                        v-if="phylogeny.hasOwnProperty('additionalNodeProperties') && phylogeny.additionalNodeProperties.hasOwnProperty(node_label)"
+                                    >
+                                        <tr v-for="prop_name of Object.keys(phylogeny.additionalNodeProperties[node_label])">
+                                            <td>{{node_label}}</td>
+                                            <td>{{prop_name}}</td>
+                                            <td><textarea readonly rows="4" style="width: 100%">{{JSON.stringify(phylogeny.additionalNodeProperties[node_label][prop_name])}}</textarea></td>
+                                        </tr>
+                                    </template>
+
+                                    <template v-else>
+                                        <tr>
+                                            <td>{{node_label}}</td>
+                                            <td colspan="2"><em>No node properties.</em></td>
+                                        </tr>
+                                    </template>
+                                </template>
+                            </tbody>
+                        </table>
+
+                        <p>This table contains {{get_node_labels_in_phylogeny(phylogeny).length}} nodes.</p>
+                    </div>
                 </div>
                 <div class="panel-footer">
                     <textarea
                         class="col-md-12"
-                        v-if="selected_phylogeny === phylogeny"
+                        v-if="phylogeny_newick_mode_for === phylogeny"
                         placeholder="Enter Newick string for phylogeny here"
                         v-model.lazy="phylogeny.newick"
                         >{{get_phylogeny_as_newick('#phylogeny-svg-' + phylogeny_index, phylogeny)}}</textarea>
                     <div class="btn-group btn-group-justified" role="group" aria-label="Actions for phylogeny">
-                        <a :href="'#phylogeny-' + phylogeny_index" @click="selected_phylogeny = (selected_phylogeny == phylogeny ? undefined : phylogeny)" class="btn btn-default">Edit as Newick</a>
+                        <a :href="'#phylogeny-' + phylogeny_index" @click="phylogeny_newick_mode_for = (phylogeny_newick_mode_for === undefined ? phylogeny : undefined)" class="btn btn-default">Edit as Newick</a>
+                        <a :href="'#phylogeny-' + phylogeny_index" @click="phylogeny_annotations_mode_for = (phylogeny_annotations_mode_for === phylogeny ? undefined : phylogeny)" class="btn btn-default">Edit annotations</a>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Specifier modal: dialog box to allow editing the current specifier -->
-        <div id="specifier-modal" class="modal fade">
+        <!-- Taxonomic unit editing modal: dialog box to allow editing lists of taxonomic units -->
+        <div id="tunit-editor-modal" class="modal fade">
             <div class="modal-dialog modal-lg form-horizontal">
-                <div class="modal-content" v-if="selected_specifier">
+                <div class="modal-content" v-if="selected_tunit_list !== undefined">
 
-                    <!-- Header of specifier editor modal dialog box -->
+                    <!-- Header of tunit editor modal dialog box -->
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title">Editing specifier: {{get_specifier_label(selected_specifier)}}</h4>
+                        <h4 class="modal-title">Editing {{tunit_editor_target_label}}</h4>
                     </div>
 
                     <!-- Body of specifier editor modal dialog box -->
                     <div class="modal-body form-group">
                         <div class="col-md-12">
                             <p>
-                                Specifiers reference a number of taxonomic units. You will usually only need to reference a
-                                single taxonomic specifier, but this interface allows you to examine all taxonomic units that
-                                this specifier references.
+                                Each taxonomic unit can have any number of scientific names, external
+                                references and specimens. We recommend using a single taxonomic unit
+                                for each type of identifier.
                             </p>
 
-                            <form id="specifier">
+                            <form id="tunit-editor-form">
 
                                 <!-- List of taxonomic units -->
-                                <div id="specifier-tunits-panel" class="panel panel-info" style="margin-top: 1em">
+                                <div id="tunits-panel" class="panel panel-info" style="margin-top: 1em">
                                     <div class="panel-heading">Taxonomic Units</div>
                                     <div class="panel-body" v-if="!selected_tunit">
                                         <p><em>Select a taxonomic unit or create a new one.</em></p>
@@ -316,15 +359,14 @@
                                     <!-- List of taxonomic units, including the option to add new taxonomic units -->
                                     <div class="list-group">
                                         <a class="list-group-item"
-                                            v-if="selected_specifier.hasOwnProperty('referencesTaxonomicUnits')"
-                                            v-for="(tunit, tunit_index) of selected_specifier.referencesTaxonomicUnits"
+                                            v-for="(tunit, tunit_index) of selected_tunit_list"
                                             :class="{active: selected_tunit === tunit}"
                                             @click="selected_tunit = tunit"
                                             :title="get_taxonomic_unit_label(tunit)"
                                         >{{get_taxonomic_unit_label(tunit)}}</a>
                                         <a class="list-group-item"
                                             href="javascript: void(0)"
-                                            onclick="if(!vm.selected_specifier.hasOwnProperty('referencesTaxonomicUnits')) vm.selected_specifier.referencesTaxonomicUnits = []; vm.selected_specifier.referencesTaxonomicUnits.push(vm.create_empty_taxonomic_unit(vm.selected_specifier.referencesTaxonomicUnits.length + 1))"
+                                            onclick="vm.selected_tunit_list.push(vm.create_empty_taxonomic_unit(vm.selected_tunit_list.length + 1))"
                                             ><strong>Add new taxonomic unit</strong></a>
                                     </div>
 
@@ -335,7 +377,7 @@
 
                     <!-- Footer of the specifier editor modal dialog box -->
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal" @click="close_specifier_modal(selected_specifier)">Close</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" @click="close_tunit_editor_modal()">Close</button>
                     </div>
                 </div>
             </div>
@@ -384,15 +426,32 @@
                                             ><span class="glyphicon glyphicon-remove"></span>
                                         </button>
 
-                                        <!-- Match results with dropdown menu: currently not implemented -->
+                                        <!-- Match results with dropdown menu -->
+
                                         <button
                                             @click="specifier_dropdown_target = 'match_result'"
-                                            type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <span class="glyphicon glyphicon-asterisk"></span>
+                                            type="button" class="btn dropdown-toggle" :class="{ 'btn-warning': get_all_node_labels_matched_by_specifier(specifier).length == 0, 'btn-success': get_all_node_labels_matched_by_specifier(specifier).length > 0}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <span class="glyphicon" :class="{ 'glyphicon-asterisk': get_all_node_labels_matched_by_specifier(specifier).length == 0, 'glyphicon-ok': get_all_node_labels_matched_by_specifier(specifier).length > 0}"></span>
                                         </button>
                                         <ul v-if="specifier_dropdown_target == 'match_result'" class="dropdown-menu dropdown-menu-left">
                                             <li class="dropdown-header">Match result</li>
-                                            <li><a href="#" onclick="return false;"><em>Matching not implemented.</em></a></li>
+                                            <li v-if="get_all_node_labels_matched_by_specifier(specifier).length == 0">
+                                                <a href="#" onclick="return false;"><em>No matches</em></a>
+                                            </li>
+                                            <li v-for="(node_label, node_label_index) of get_all_node_labels_matched_by_specifier(specifier)">
+                                                <a href="#" onclick="return false;">{{node_label}}<a>
+                                            </li>
+                                        </ul>
+                                        <ul v-if="specifier_dropdown_target == 'specifier_type'" class="dropdown-menu dropdown-menu-left">
+                                            <li class="dropdown-header">Specifier type</li>
+                                            <li :class="{active: get_specifier_type(selected_phyloref, specifier) == 'Internal'}">
+                                                <a href="#" onclick="return false;"
+                                                    @click="set_specifier_type(selected_phyloref, specifier, 'Internal')"
+                                                >Internal specifier</a></li>
+                                            <li :class="{active: get_specifier_type(selected_phyloref, specifier) == 'External'}">
+                                                <a href="#" onclick="return false;"
+                                                    @click="set_specifier_type(selected_phyloref, specifier, 'External')"
+                                                >External specifier</a></li>
                                         </ul>
 
                                         <!-- Specifier type with dropdown menu: internal or external specifier -->
@@ -400,17 +459,7 @@
                                             @click="specifier_dropdown_target = 'specifier_type'"
                                             type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                                             > {{get_specifier_type(selected_phyloref, specifier)}} <span class="caret"></span></button>
-                                        <ul v-if="specifier_dropdown_target == 'specifier_type'" class="dropdown-menu dropdown-menu-left">
-                                            <li class="dropdown-header">Specifier type</li>
-                                            <li :class="{active: get_specifier_type(selected_phyloref, specifier) == 'Internal'}">
-                                                <a :href="'#specifier_' + specifier_index"
-                                                    @click="set_specifier_type(selected_phyloref, specifier, 'Internal')"
-                                                >Internal specifier</a></li>
-                                            <li :class="{active: get_specifier_type(selected_phyloref, specifier) == 'External'}">
-                                                <a :href="'#specifier_' + specifier_index"
-                                                    @click="set_specifier_type(selected_phyloref, specifier, 'External')"
-                                                >External specifier</a></li>
-                                        </ul>
+
                                     </div>
 
                                     <!-- Specifier label -->
@@ -419,7 +468,7 @@
                                     <!-- Buttons after specifier label: edit button -->
                                     <div class="input-group-btn">
                                         <button type="button" class="btn btn-primary"
-                                            @click="start_specifier_modal(specifier)"
+                                            @click="start_tunit_editor_modal('specifier', get_specifier_label(specifier), specifier)"
                                             ><span class="glyphicon glyphicon-edit"></span></button>
                                     </div>
                                 </div>

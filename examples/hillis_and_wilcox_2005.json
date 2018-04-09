@@ -19,7 +19,6 @@
 
         "additionalNodeProperties": {
             "Rana areolata": {
-                "additionalLabels": ["Rana areolata"],
                 "hasBasisOfRecord": {
                     "locatedAt": {
                         "verbatimLocality": "KU 204370: USA: Kansas: Lyon: just S of Hartsford"
@@ -31,7 +30,6 @@
                 }
             },
             "Rana aurora": {
-                "additionalLabels": ["Rana aurora"],
                 "hasBasisOfRecord": {
                     "locatedAt": {
                         "verbatimLocality": "MVZ 188960: USA: California: Del Norte: Kings Valley Rd., 2.4 mi N Hwy. 199"
@@ -43,7 +41,6 @@
                 }
             },
             "Rana berlandieri": {
-                "additionalLabels": ["Rana berlandieri"],
                 "hasBasisOfRecord": {
                     "locatedAt": {
                         "verbatimLocality": "JSF 1136: USA: TX: Hays: San Marcos"
@@ -55,7 +52,6 @@
                 }
             },
             "Rana blairi": {
-                "additionalLabels": ["Rana blairi"],
                 "hasBasisOfRecord": {
                     "locatedAt": {
                         "verbatimLocality": "JSF 830: USA: Kansas: Douglas: Lawrence"
@@ -67,7 +63,6 @@
                 }
             },
             "Rana boylii": {
-                "additionalLabels": ["Rana boylii"],
                 "hasBasisOfRecord": {
                     "locatedAt": {
                         "verbatimLocality": "MVZ 148929: USA: California: Lake: along Butts Creek, 0.4 mi NW Napa County line"
@@ -79,7 +74,6 @@
                 }
             },
             "Rana bwana": {
-                "additionalLabels": ["Rana bwana"],
                 "hasBasisOfRecord": {
                     "locatedAt": {
                         "verbatimLocality": "QCAZ 13964: Ecuador: Prov. Loja: Río Alamor near Zapotillo"
@@ -91,7 +85,6 @@
                 }
             },
             "Rana capito": {
-                "additionalLabels": ["Rana capito"],
                 "hasBasisOfRecord": {
                     "locatedAt": {
                         "verbatimLocality": "TNHC 60195: USA: Florida: Marion: Archibold Biological Station"
@@ -103,7 +96,6 @@
                 }
             },
             "Rana cascadae": {
-                "additionalLabels": ["Rana cascadae"],
                 "hasBasisOfRecord": {
                     "locatedAt": {
                         "verbatimLocality": "MVZ 148946: USA: California: Shasta: Dersch Meadows"
@@ -115,17 +107,20 @@
                 }
             },
             "Rana catesbiana X12841": {
-                "additionalLabels": ["Rana catesbeiana"],
                 "hasBasisOfRecord": {
                     "locatedAt": {
                         "verbatimLocality": "GenBank sequence; locality unknown"
                     },
                     "GenBankID": "GB X12841",
                     "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/GB X12841"
-                }
+                },
+                "representsTaxonomicUnits": [{
+                    "scientificNames": [{
+                        "binomialName": "Rana catesbeiana"
+                    }]
+                }]
             },
             "Rana catesbiana DMH84R2": {
-                "additionalLabels": ["Rana catesbeiana"],
                 "hasBasisOfRecord": {
                     "locatedAt": {
                         "verbatimLocality": "DMH 84-R2: USA: Kansas: Douglas: Lawrence"
@@ -134,10 +129,14 @@
                     "catalogNumber": "84-R2",
                     "GenBankID": "AY779206",
                     "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779206"
-                }
+                },
+                "representsTaxonomicUnits": [{
+                    "scientificNames": [{
+                        "binomialName": "Rana catesbeiana"
+                    }]
+                }]
             },
             "Rana chiricahuensis KU 194442": {
-                "additionalLabels": ["Rana chiricahuensis"],
                 "hasBasisOfRecord": {
                     "locatedAt": {
                         "verbatimLocality": "KU 194442: Mexico: Durango: Río Chico at Mexico Hwy. 40"
@@ -146,10 +145,14 @@
                     "catalogNumber": "194442",
                     "GenBankID": "AY779225",
                     "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779225"
-                }
+                },
+                "representsTaxonomicUnits": [{
+                    "scientificNames": [{
+                        "binomialName": "Rana chiricahuensis"
+                    }]
+                }]
             },
             "Rana chiricahuensis KU 194419": {
-                "additionalLabels": ["Rana chiricahuensis"],
                 "hasBasisOfRecord": {
                     "locatedAt": {
                         "verbatimLocality": "KU 194419: USA: Arizona: Apache: Apache National Forest: Three Forks"
@@ -158,10 +161,14 @@
                     "catalogNumber": "194419",
                     "GenBankID": "AY779226",
                     "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779226"
-                }
+                },
+                "representsTaxonomicUnits": [{
+                    "scientificNames": [{
+                        "binomialName": "Rana chiricahuensis"
+                    }]
+                }]
             },
             "Rana clamitans": {
-                "additionalLabels": ["Rana clamitans"],
                 "hasBasisOfRecord": {
                     "locatedAt": {
                         "verbatimLocality": "JSF 1118: USA: Missouri: Montgomery: 3 km W Danville"
@@ -173,7 +180,6 @@
                 }
             },
             "Rana dunni": {
-                "additionalLabels": ["Rana dunni"],
                 "hasBasisOfRecord": {
                     "locatedAt": {
                         "verbatimLocality": "KU 194527: Mexico: Michoacan: Tintzuntzan, Lago Patzcuaro"
@@ -185,7 +191,6 @@
                 }
             },
             "Rana forreri": {
-                "additionalLabels": ["Rana forreri"],
                 "hasBasisOfRecord": {
                     "locatedAt": {
                         "verbatimLocality": "KU 194581: Mexico: Sinaloa: 37.9 km S Escuinapa"
@@ -197,7 +202,6 @@
                 }
             },
             "Rana grylio": {
-                "additionalLabels": ["Rana grylio"],
                 "hasBasisOfRecord": {
                     "locatedAt": {
                         "verbatimLocality": "MVZ 175945: USA: Florida: Leon: Tall Timbers Research Station, Lake Iamonia"
@@ -209,7 +213,6 @@
                 }
             },
             "Rana heckscheri": {
-                "additionalLabels": ["Rana heckscheri"],
                 "hasBasisOfRecord": {
                     "locatedAt": {
                         "verbatimLocality": "MVZ 164908: USA: Florida: Gadsen-Leon: Overflow creek of Ochlocknee River at Hwy. S-12"
@@ -221,7 +224,6 @@
                 }
             },
             "Rana juliani": {
-                "additionalLabels": ["Rana juliani"],
                 "hasBasisOfRecord": {
                     "locatedAt": {
                         "verbatimLocality": "TNHC 60324: Belize: Cayo District: Little Vaqueros Creek"
@@ -233,7 +235,6 @@
                 }
             },
             "Rana luteiventris MVZ225749": {
-                "additionalLabels": ["Rana luteiventris"],
                 "hasBasisOfRecord": {
                     "locatedAt": {
                         "verbatimLocality": "MVZ 225749: USA: Washington: Pend Oreille: Colville Natl. Forest; Flowery Trail Road, 6.1 mi E 49 Degrees Ski area"
@@ -242,10 +243,14 @@
                     "catalogNumber": "225749",
                     "GenBankID": "AY779193",
                     "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779193"
-                }
+                },
+                "representsTaxonomicUnits": [{
+                    "scientificNames": [{
+                        "binomialName": "Rana luteiventris"
+                    }]
+                }]
             },
             "Rana luteiventris MVZ191016": {
-                "additionalLabels": ["Rana luteiventris"],
                 "hasBasisOfRecord": {
                     "locatedAt": {
                         "verbatimLocality": "MVZ 191016: USA: Montana: Lincoln: Dry Creek at Hwy. 56"
@@ -254,10 +259,14 @@
                     "catalogNumber": "191016",
                     "GenBankID": "AY779194",
                     "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779194"
-                }
+                },
+                "representsTaxonomicUnits": [{
+                    "scientificNames": [{
+                        "binomialName": "Rana luteiventris"
+                    }]
+                }]
             },
             "Rana macroglossa": {
-                "additionalLabels": ["Rana macroglossa"],
                 "hasBasisOfRecord": {
                     "locatedAt": {
                         "verbatimLocality": "KU 195138: Mexico: Chiapas: 7.7 km SE San Cristobal de las Casas"
@@ -270,7 +279,6 @@
             },
             "Rana macroglossa b": {
                 "comment": "I'm assuming this is 'b', because it's listed second in the table, but there's no clear evidence one way or the other.",
-                "additionalLabels": ["Rana macroglossa"],
                 "hasBasisOfRecord": {
                     "locatedAt": {
                         "verbatimLocality": "UTA A-17185: Guatemala: Sololá: Panajachel, Lake Atitlan"
@@ -279,10 +287,14 @@
                     "catalogNumber": "A-17185",
                     "GenBankID": "AY779243",
                     "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779243"
-                }
+                },
+                "representsTaxonomicUnits": [{
+                    "scientificNames": [{
+                        "binomialName": "Rana macroglossa"
+                    }]
+                }]
             },
             "Rana maculata": {
-                "additionalLabels": ["Rana maculata"],
                 "hasBasisOfRecord": {
                     "locatedAt": {
                         "verbatimLocality": "KU 195258: Mexico: Oaxaca: Colonia Rodulfo Figueroa, 19 km NW Rizo de Oro"
@@ -294,7 +306,6 @@
                 }
             },
             "Rana magnaocularis": {
-                "additionalLabels": ["Rana magnaocularis"],
                 "hasBasisOfRecord": {
                     "locatedAt": {
                         "verbatimLocality": "KU 194592: Mexico: Sonora: Arroyo Hondo, 15.2 km N Nuri"
@@ -306,7 +317,6 @@
                 }
             },
             "Rana montezumae": {
-                "additionalLabels": ["Rana montezumae"],
                 "hasBasisOfRecord": {
                     "locatedAt": {
                         "verbatimLocality": "KU 195251: Mexico: Morelos: Lagunas Zempoala"
@@ -318,7 +328,6 @@
                 }
             },
             "Rana muscosa": {
-                "additionalLabels": ["Rana muscosa"],
                 "hasBasisOfRecord": {
                     "locatedAt": {
                         "verbatimLocality": "MVZ 149006: USA: California: Mono: Meadows below Levitt Lake, W side Sonora Pass"
@@ -330,7 +339,6 @@
                 }
             },
             "Rana neovolcanica": {
-                "additionalLabels": ["Rana neovolcanica"],
                 "hasBasisOfRecord": {
                     "locatedAt": {
                         "verbatimLocality": "KU 194536: Mexico: Michoacan: Zurumbueno"
@@ -342,7 +350,6 @@
                 }
             },
             "Rana okaloosae": {
-                "additionalLabels": ["Rana okaloosae"],
                 "hasBasisOfRecord": {
                     "locatedAt": {
                         "verbatimLocality": "toe clip (released): USA:Florida: Santa Rosa: 5 km E Harold, Garnier Creek (collected by Paul Moler)"
@@ -352,7 +359,6 @@
                 }
             },
             "Rana omiltemana": {
-                "additionalLabels": ["Rana omiltemana"],
                 "hasBasisOfRecord": {
                     "locatedAt": {
                         "verbatimLocality": "KU 195179: Mexico: Guerrero: Agua de Obispo"
@@ -364,7 +370,6 @@
                 }
             },
             "Rana onca": {
-                "additionalLabels": ["Rana onca"],
                 "hasBasisOfRecord": {
                     "locatedAt": {
                         "verbatimLocality": "LVT 3542: USA: Nevada: Clark: Blue Point Spring, Lake Mead"
@@ -376,7 +381,6 @@
                 }
             },
             "Rana palmipes AMNHA118801": {
-                "additionalLabels": ["Rana palmipes"],
                 "hasBasisOfRecord": {
                     "locatedAt": {
                         "verbatimLocality": "AMNH A-118801: Venezuela: Prov. Amazonas: Neblina Base Camp on Río Mawarinuma"
@@ -385,10 +389,14 @@
                     "catalogNumber": "A-118801",
                     "GenBankID": "AY779210",
                     "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779210"
-                }
+                },
+                "representsTaxonomicUnits": [{
+                    "scientificNames": [{
+                        "binomialName": "Rana palmipes"
+                    }]
+                }]
             },
             "Rana palmipes KU204425": {
-                "additionalLabels": ["Rana palmipes"],
                 "hasBasisOfRecord": {
                     "locatedAt": {
                         "verbatimLocality": "KU 202896: Ecuador: Prov. Napo: Misahuallí"
@@ -397,10 +405,14 @@
                     "catalogNumber": "202896",
                     "GenBankID": "AY779211",
                     "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779211"
-                }
+                },
+                "representsTaxonomicUnits": [{
+                    "scientificNames": [{
+                        "binomialName": "Rana palmipes"
+                    }]
+                }]
             },
             "Rana palustris": {
-                "additionalLabels": ["Rana palustris"],
                 "hasBasisOfRecord": {
                     "locatedAt": {
                         "verbatimLocality": "KU 204425: USA: Indiana: Washington: Cave Creek near Campbellsburg"
@@ -412,17 +424,20 @@
                 }
             },
             "Rana pipiens Y10945": {
-                "additionalLabels": ["Rana pipiens"],
                 "hasBasisOfRecord": {
                     "locatedAt": {
                         "verbatimLocality": "GenBank sequence; locality unknown"
                     },
                     "GenBankID": "GBX12841",
                     "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/GBX12841"
-                }
+                },
+                "representsTaxonomicUnits": [{
+                    "scientificNames": [{
+                        "binomialName": "Rana pipiens"
+                    }]
+                }]
             },
             "Rana pipiens JSF1119": {
-                "additionalLabels": ["Rana pipiens"],
                 "hasBasisOfRecord": {
                     "locatedAt": {
                         "verbatimLocality": "JSF 1119: USA: Ohio: Ottawa: Little Portage State Park"
@@ -431,10 +446,14 @@
                     "catalogNumber": "1119",
                     "GenBankID": "AY779221",
                     "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779221"
-                }
+                },
+                "representsTaxonomicUnits": [{
+                    "scientificNames": [{
+                        "binomialName": "Rana pipiens"
+                    }]
+                }]
             },
             "Rana psilonota": {
-                "additionalLabels": ["Rana psilonota"],
                 "hasBasisOfRecord": {
                     "locatedAt": {
                         "verbatimLocality": "KU 195119: Mexico: Jalisco: 2.4 km NW Tapalpa"
@@ -446,7 +465,6 @@
                 }
             },
             "Rana pustulosa": {
-                "additionalLabels": ["Rana pustulosa"],
                 "hasBasisOfRecord": {
                     "locatedAt": {
                         "verbatimLocality": "KU 200776: Mexico: Sinaloa: 2.1 km NE Santa Lucia"
@@ -458,7 +476,6 @@
                 }
             },
             "Rana septentrionales": {
-                "additionalLabels": ["Rana septentrionalis"],
                 "hasBasisOfRecord": {
                     "locatedAt": {
                         "verbatimLocality": "TNHC tissue collection: Canada: Ontario: Grey"
@@ -466,10 +483,14 @@
                     "ownerInstitutionCode": "TNHC tissue collection",
                     "GenBankID": "AY779200",
                     "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779200"
-                }
+                },
+                "representsTaxonomicUnits": [{
+                    "scientificNames": [{
+                        "binomialName": "Rana septentrionalis"
+                    }]
+                }]
             },
             "Rana sevosa": {
-                "additionalLabels": ["Rana sevosa"],
                 "hasBasisOfRecord": {
                     "locatedAt": {
                         "verbatimLocality": "TNHC 60194: USA: Mississippi: Harrison"
@@ -481,7 +502,6 @@
                 }
             },
             "Rana sierramadrensis": {
-                "additionalLabels": ["Rana sierramadrensis"],
                 "hasBasisOfRecord": {
                     "locatedAt": {
                         "verbatimLocality": "KU 195181: Mexico: Guerrero: Agua de Obispo, 24.2 mi S Chilpancingo"
@@ -493,7 +513,6 @@
                 }
             },
             "Rana spectabilis": {
-                "additionalLabels": ["Rana spectabilis"],
                 "hasBasisOfRecord": {
                     "locatedAt": {
                         "verbatimLocality": "KU 195186: Mexico: Hidalgo: La Estanzuela (holotype)"
@@ -507,7 +526,6 @@
                 }
             },
             "Rana sphenocephela": {
-                "additionalLabels": ["Rana sphenocephala"],
                 "hasBasisOfRecord": {
                     "locatedAt": {
                         "verbatimLocality": "JSF 845: USA: Kansas: Cherokee"
@@ -516,10 +534,14 @@
                     "catalogNumber": "845",
                     "GenBankID": "AY779251",
                     "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779251"
-                }
+                },
+                "representsTaxonomicUnits": [{
+                    "scientificNames": [{
+                        "binomialName": "Rana sphenocephala"
+                    }]
+                }]
             },
             "Rana sphenocephela utricularia": {
-                "additionalLabels": ["Rana sphenocephala utricularia"],
                 "hasBasisOfRecord": {
                     "locatedAt": {
                         "verbatimLocality": "USC 7448: USA: Florida: Loop Road, Big Cypress National Preserve"
@@ -528,10 +550,15 @@
                     "catalogNumber": "7448",
                     "GenBankID": "AY779252",
                     "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779252"
-                }
+                },
+                "representsTaxonomicUnits": [{
+                    "scientificNames": [{
+                        "scientificName": "Rana sphenocephala utricularia",
+                        "binomialName": "Rana sphenocephala"
+                    }]
+                }]
             },
             "Rana subaquavocalis": {
-                "additionalLabels": ["Rana subaquavocalis"],
                 "hasBasisOfRecord": {
                     "locatedAt": {
                         "verbatimLocality": "James Platz Collection (specimens destroyed, DNA in TNHC tissue collection): USA: Arizona: Cochise: Ramsey Canyon"
@@ -542,7 +569,6 @@
                 }
             },
             "Rana sylvatica": {
-                "additionalLabels": ["Rana sylvatica"],
                 "hasBasisOfRecord": {
                     "locatedAt": {
                         "verbatimLocality": "MVZ 137426: USA: New York: Tompkins; Connecticut Hill, ca. 10 mi SW Ithaca"
@@ -554,7 +580,6 @@
                 }
             },
             "Rana sylvatica DMH84R43": {
-                "additionalLabels": ["Rana sylvatica"],
                 "hasBasisOfRecord": {
                     "locatedAt": {
                         "verbatimLocality": "DMH 84-R43: USA: Missouri: St. Louis: Tyson Environmental Study Area"
@@ -563,10 +588,14 @@
                     "catalogNumber": "84-R43",
                     "GenBankID": "AY779199",
                     "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779199"
-                }
+                },
+                "representsTaxonomicUnits": [{
+                    "scientificNames": [{
+                        "binomialName": "Rana sylvatica"
+                    }]
+                }]
             },
             "Rana tarahumarae": {
-                "additionalLabels": ["Rana tarahumarae"],
                 "hasBasisOfRecord": {
                     "locatedAt": {
                         "verbatimLocality": "KU 194596: Mexico: Sonora: 14.4 km E Yecora"
@@ -578,7 +607,6 @@
                 }
             },
             "Rana taylori": {
-                "additionalLabels": ["Rana taylori"],
                 "hasBasisOfRecord": {
                     "locatedAt": {
                         "verbatimLocality": "TCWC 55963: Nicaragua: Zelaya: 2.5 mi NW Rama"
@@ -590,7 +618,6 @@
                 }
             },
             "Rana temporaria": {
-                "additionalLabels": ["Rana temporaria"],
                 "hasBasisOfRecord": {
                     "locatedAt": {
                         "verbatimLocality": "DMH 84-R1: Switzerland: Valais Canton: 1.8 km NNE Grand St. Bernard Pass"
@@ -602,7 +629,6 @@
                 }
             },
             "Rana tlaloci": {
-                "additionalLabels": ["Rana tlaloci"],
                 "hasBasisOfRecord": {
                     "locatedAt": {
                         "verbatimLocality": "KU 194436: Mexico: Distrito Federal: Xochimilco (paratype)"
@@ -614,7 +640,6 @@
                 }
             },
             "Rana vaillanti": {
-                "additionalLabels": ["Rana vaillanti"],
                 "hasBasisOfRecord": {
                     "locatedAt": {
                         "verbatimLocality": "KU 195299: Mexico: Oaxaca: 5.6 mi NE Tapanatepec"
@@ -626,7 +651,6 @@
                 }
             },
             "Rana vibicaria": {
-                "additionalLabels": ["Rana vibicaria"],
                 "hasBasisOfRecord": {
                     "locatedAt": {
                         "verbatimLocality": "MVZ 149033: Costa Rica: Prov. San José: El Empalme"
@@ -638,7 +662,6 @@
                 }
             },
             "Rana virgatipes": {
-                "additionalLabels": ["Rana virgatipes"],
                 "hasBasisOfRecord": {
                     "locatedAt": {
                         "verbatimLocality": "MVZ 175944: USA: Louisiana: De Soto Parish; Frierson"
@@ -650,7 +673,6 @@
                 }
             },
             "Rana warszewitshii": {
-                "additionalLabels": ["Rana warszewitschii"],
                 "hasBasisOfRecord": {
                     "locatedAt": {
                         "verbatimLocality": "JSF 1127: Panama"
@@ -659,10 +681,14 @@
                     "catalogNumber": "1127",
                     "GenBankID": "AY779209",
                     "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779209"
-                }
+                },
+                "representsTaxonomicUnits": [{
+                    "scientificNames": [{
+                        "binomialName": "Rana warszewitschii"
+                    }]
+                }]
             },
             "Rana yavapaiensis": {
-                "additionalLabels": ["Rana yavapaiensis"],
                 "hasBasisOfRecord": {
                     "locatedAt": {
                         "verbatimLocality": "KU 194423: USA: Arizona: Greenlee: Apache National Forest at Juan Miller Crossing"
@@ -674,7 +700,6 @@
                 }
             },
             "Rana zweifelii": {
-                "additionalLabels": ["Rana zweifeli"],
                 "hasBasisOfRecord": {
                     "locatedAt": {
                         "verbatimLocality": "KU 195310: Mexico: Oaxaca: 1.6 mi S Cuyotepej"
@@ -683,10 +708,14 @@
                     "catalogNumber": "195310",
                     "GenBankID": "AY779219",
                     "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779219"
-                }
+                },
+                "representsTaxonomicUnits": [{
+                    "scientificNames": [{
+                        "binomialName": "Rana zweifeli"
+                    }]
+                }]
             },
             "Rana sp1 QCAZ13219": {
-                "additionalLabels": ["Rana sp1"],
                 "hasBasisOfRecord": {
                     "locatedAt": {
                         "verbatimLocality": "QCAZ 13219: Ecuador: Prov. Esmeraldas: 5 km W Durango"
@@ -698,7 +727,6 @@
                 }
             },
             "Rana sp2 KU 204420": {
-                "additionalLabels": ["Rana sp2"],
                 "hasBasisOfRecord": {
                     "locatedAt": {
                         "verbatimLocality": "KU 204420: Mexico: San Luis Potosí: Rodeo"
@@ -710,7 +738,6 @@
                 }
             },
             "Rana sp3 KU 194559": {
-                "additionalLabels": ["Rana sp3"],
                 "hasBasisOfRecord": {
                     "locatedAt": {
                         "verbatimLocality": "KU 194559: Mexico: Michoacan: 11.4 km E junction Mexico Hwy. 51 and 15"
@@ -722,7 +749,6 @@
                 }
             },
             "Rana sp4 AMNH A 124167": {
-                "additionalLabels": ["Rana sp4"],
                 "hasBasisOfRecord": {
                     "locatedAt": {
                         "verbatimLocality": "AMNH A-124167: Panama: Chiriquí: 9 km SSE El Volcán"
@@ -734,7 +760,6 @@
                 }
             },
             "Rana sp5 LACM 146764": {
-                "additionalLabels": ["Rana sp5"],
                 "hasBasisOfRecord": {
                     "locatedAt": {
                         "verbatimLocality": "LACM 146764: Costa Rica: Heredia: Monte de la Cruz"
@@ -746,7 +771,6 @@
                 }
             },
             "Rana sp6 LACM 146810": {
-                "additionalLabels": ["Rana sp6"],
                 "hasBasisOfRecord": {
                     "locatedAt": {
                         "verbatimLocality": "LACM 146810: Costa Rica: Puntarenas: near mouth of Rio Barranca, 10 km E Puntarenas"
@@ -758,7 +782,6 @@
                 }
             },
             "Rana sp7 KU 194492": {
-                "additionalLabels": ["Rana sp7"],
                 "hasBasisOfRecord": {
                     "locatedAt": {
                         "verbatimLocality": "KU 194492: Mexico: Jalisco: Contla"
@@ -770,7 +793,6 @@
                 }
             },
             "Rana sp8 KU 195346": {
-                "additionalLabels": ["Rana sp8"],
                 "hasBasisOfRecord": {
                     "locatedAt": {
                         "verbatimLocality": "KU 195346: Mexico: Puebla: Río Atoyac at Mexico Hwy. 190"
@@ -1045,17 +1067,17 @@
             "label": "Torrentirana",
             "cladeDefinition": "Torrentirana, new clade name. Definition: The clade stemming from the most recent common ancestor of Rana tarahumarae Boulenger 1917 and Rana sierramadrensis Taylor 1939",
             "internalSpecifiers": [{
-                "references_taxonomic_units": [{
-                    "scientific_names": [{
-                        "scientific_name": "Rana tarahumarae Boulenger 1917",
-                        "binomial_name": "Rana tarahumarae"
+                "referencesTaxonomicUnits": [{
+                    "scientificNames": [{
+                        "scientificName": "Rana tarahumarae Boulenger 1917",
+                        "binomialName": "Rana tarahumarae"
                     }]
                 }]
             }, {
-                "references_taxonomic_units": [{
-                    "scientific_names": [{
-                        "scientific_name": "Rana sierramadrensis Taylor 1939",
-                        "binomial_name": "Rana sierramadrensis"
+                "referencesTaxonomicUnits": [{
+                    "scientificNames": [{
+                        "scientificName": "Rana sierramadrensis Taylor 1939",
+                        "binomialName": "Rana sierramadrensis"
                     }]
                 }]
             }]
@@ -1063,17 +1085,17 @@
             "label": "Zweifelia",
             "cladeDefinition": "Zweifelia Dubois 1992 (converted clade name). Definition: The clade stemming from the most recent common ancestor of Rana tarahumarae Boulenger 1917 and Rana zweifeli Hillis, Frost and Webb 1984.",
             "internalSpecifiers": [{
-                "references_taxonomic_units": [{
-                    "scientific_names": [{
-                        "scientific_name": "Rana tarahumarae Boulenger 1917",
-                        "binomial_name": "Rana tarahumarae"
+                "referencesTaxonomicUnits": [{
+                    "scientificNames": [{
+                        "scientificName": "Rana tarahumarae Boulenger 1917",
+                        "binomialName": "Rana tarahumarae"
                     }]
                 }]
             }, {
-                "references_taxonomic_units": [{
-                    "scientific_names": [{
-                        "scientific_name": "Rana zweifeli Hillis, Frost and Webb 1984",
-                        "binomial_name": "Rana zweifeli"
+                "referencesTaxonomicUnits": [{
+                    "scientificNames": [{
+                        "scientificName": "Rana zweifeli Hillis, Frost and Webb 1984",
+                        "binomialName": "Rana zweifeli"
                     }]
                 }]
             }]

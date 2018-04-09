@@ -1,0 +1,31 @@
+/*
+ * Curation Tool CSS stylesheet
+ *
+ * Copyright (C) Phyloreferencing Project, 2018
+ */
+
+/*
+ * Create a table class for a fixed size body.
+ * Based on https://stackoverflow.com/a/23518856/27310
+ */
+.table-fixed-height {
+}
+
+.table-fixed-height thead {
+    display: block;
+    width: 100%;
+}
+
+.table-fixed-height tbody {
+    display: block;
+    width: 100%;
+    height: 15em;
+    overflow-y: scroll;
+    z-index: -1;
+}
+
+.table-fixed-height tr {
+    width: 100%;
+    display: inline-table;
+    table-layout: fixed;
+}
