@@ -591,6 +591,22 @@
 
     <!-- Our source code -->
     <script src="./js/curation-tool.js"></script>
+
+    <!-- Activate window-specific features -->
+    <script type="text/javascript"><!--
+        $(window).on('beforeunload', function (e) {
+            // If someone tries to navigate away from the window while the
+            // PHYX has been modified, ask users to confirm before leaving.
+
+            // Confirmation message to display to the user. Note that modern
+            // browsers do not display this message, but provide a generic
+            // "content has changed" dialog instead.
+            var confirmationMessage = 'This PHYX file has been modified! Are you sure you want to close the Curation Tool?';
+
+            if(vm.modified)
+                return confirmationMessage;
+        });
+    //--></script>
 </body>
 
 </html>
