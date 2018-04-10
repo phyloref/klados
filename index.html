@@ -166,7 +166,7 @@
         <div class="col-md-7">
             <div :id="'phylogeny-' + phylogeny_index" class="panel panel-info" v-for="(phylogeny, phylogeny_index) of testcase.phylogenies">
                 <div class="panel-heading">
-                    <a href="#" class="close glyphicon glyphicon-remove" onclick="if(window.confirm('Are you sure you want to delete this phylogeny?')) vm.testcase.phylogenies.splice(vm.phylogeny_index, 1)"></a>
+                    <a href="#" class="close glyphicon glyphicon-remove" @click="confirm('Are you sure you want to delete this phylogeny?', () => testcase.phylogenies.splice(phylogeny_index, 1))"></a>
                     <template v-if="phylogeny_description_being_edited !== phylogeny">
                         <span role="button" @click="phylogeny_description_being_edited = phylogeny" title="Click to edit">
                             <template v-if="phylogeny.hasOwnProperty('description')">
