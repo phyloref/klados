@@ -141,6 +141,9 @@ var vm = new Vue({
             dict[key].push(value);
             return dict;
         },
+        confirm(message, func) {
+            if(window.confirm(message)) func();
+        },
 
         // Data model management methods.
         load_phyx_from_url: function(url) {
