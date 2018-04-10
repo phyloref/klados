@@ -5,6 +5,50 @@
  */
 
 /*
+ * Classes for phylogeny SVG elements
+ */
+
+/* Phylotree nodes */
+ .node {
+     /* Phylotree's CSS sets this to 10px; we prefer larger node labels */
+     font-size: 10pt;
+ }
+
+ /* Node label for an internal specifier */
+.internal-specifier-node {
+    font-weight: bolder;
+    fill: green;
+    font-size: 12pt;
+}
+
+/* Node label for an external specifier */
+.external-specifier-node {
+    font-weight: bolder;
+    fill: magenta;
+    font-size: 12pt;
+}
+
+/* Node label for a terminal node without taxonomic units */
+.terminal-node-without-tunits {
+    fill: rgb(169, 17, 1);
+    font-style: italic;
+    font-weight: bolder;
+}
+
+/* Labels for internal nodes */
+.internal-label {
+    font-family: serif;
+    font-size: 12pt;
+    font-style: italic;
+}
+
+/* An additional class for internal nodes that are currently selected */
+.selected-internal-label {
+    font-size: 16pt;
+    fill: blue;
+}
+
+/*
  * Create a table class for a fixed size body.
  * Based on https://stackoverflow.com/a/23518856/27310
  */

@@ -934,11 +934,10 @@ function render_tree(node_expr, phylogeny) {
 
                 // TODO: Once we're happy with how these elements look,
                 // we should move all this complexity into CSS classes.
-                text_label.classed("internal_label", true)
+                text_label.classed("internal-label", true)
                     .text(data.name)
-                    .attr("dx", ".4em")
+                    .attr("dx", ".3em")
                     .attr("dy", ".3em")
-                    .style("font-style", "italic")
                     .attr("text-anchor", "start")
                     .attr("alignment-baseline", "middle");
 
@@ -949,8 +948,7 @@ function render_tree(node_expr, phylogeny) {
                     vm.selected_phyloref.hasOwnProperty('label') &&
                     vm.selected_phyloref.label == data.name
                 ) {
-                    text_label.style('fill', 'blue')
-                        .style('font-weight', 'bolder');
+                    text_label.classed("selected-internal-label", true);
                 }
             }
         }
@@ -960,8 +958,7 @@ function render_tree(node_expr, phylogeny) {
             var tunits = vm.get_tunits_for_node_label_in_phylogeny(phylogeny, data.name);
 
             if(tunits.length == 0) {
-                element.style('fill', 'red')
-                    .style('font-style', 'italic');
+                element.classed('terminal-node-without-tunits', true);
             } else if(vm.selected_phyloref !== undefined) {
                 // If there's a selected phyloref, we should highlight
                 // specifiers:
@@ -970,16 +967,14 @@ function render_tree(node_expr, phylogeny) {
                 if(vm.selected_phyloref.hasOwnProperty('internalSpecifiers')) {
                     for(let specifier of vm.selected_phyloref.internalSpecifiers) {
                         if(vm.test_whether_specifier_match_node(specifier, phylogeny, data.name)) {
-                            element.style('fill', 'green')
-                                .style('font-weight', 'bolder');
+                            element.classed('node internal-specifier-node', true);
                         }
                     }
                 }
                 if(vm.selected_phyloref.hasOwnProperty('externalSpecifiers')) {
                     for(let specifier of vm.selected_phyloref.externalSpecifiers) {
                         if(vm.test_whether_specifier_match_node(specifier, phylogeny, data.name)) {
-                            element.style('fill', 'red')
-                                .style('font-weight', 'bolder');
+                            element.classed('node external-specifier-node', true);
                         }
                     }
                 }
@@ -1117,7 +1112,8 @@ function render_tree(node_expr, phylogeny) {
     });
 
     tree
-        .spacing_x(20).spacing_y(50)
+        .spacing_x(20)
+        .spacing_y(40)
         .placenodes()
         .update()
     ;
