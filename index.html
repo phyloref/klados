@@ -140,7 +140,7 @@
                                 </template>
                             </a></li>
                         </template>
-                        <li><a href="javascript:void(0)" onclick="vm.testcase.phylogenies.push({})"><strong>Add phylogeny</strong></a></li>
+                        <li><a href="#phylogeny-footer" @click="testcase.phylogenies.push({})"><strong>Add phylogeny</strong></a></li>
                     </ul>
                 </div>
 
@@ -239,6 +239,15 @@
                     <div class="btn-group btn-group-justified" role="group" aria-label="Actions for phylogeny">
                         <a :href="'#phylogeny-' + phylogeny_index" @click="phylogeny_newick_mode_for = (phylogeny_newick_mode_for === undefined ? phylogeny : undefined)" class="btn btn-default">Edit as Newick</a>
                         <a :href="'#phylogeny-' + phylogeny_index" @click="phylogeny_annotations_mode_for = (phylogeny_annotations_mode_for === phylogeny ? undefined : phylogeny)" class="btn btn-default">Edit annotations</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- A panel for phylogeny-specifier operations -->
+            <div id="phylogeny-footer" class="panel panel-default">
+                <div class="panel-footer">
+                    <div class="btn-group btn-group-justified" role="group" aria-label="Actions for phylogenies">
+                        <a href="#phylogeny-footer" @click="testcase.phylogenies.push({})" class="btn btn-default">Add new phylogeny</a>
                     </div>
                 </div>
             </div>
