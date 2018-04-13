@@ -13,7 +13,11 @@ var example_phyx_urls = [
     {
         url: "examples/hillis_and_wilcox_2005.json",
         title: "Hillis and Wilcox, 2005"
-    }
+    },
+    {
+        url: "examples/wojciechowski_2013.json",
+        title: "Wojciechowski, 2013"
+    },
 ];
 
 // Set up the Vue object which contains the entire model.

@@ -1,0 +1,291 @@
+{
+    "@id": "",
+    "doi": "10.1016/j.sajb.2013.06.017",
+    "url": "https://www.sciencedirect.com/science/article/pii/S0254629913002962",
+    "citation": "Wojciechowski (2013) Towards a new classification of Leguminosae: Naming clades using non-Linnaean phylogenetic nomenclature",
+    "phylogenies": [
+        {
+            "newick": "(\"Vauquelinia californica\",((\"Polygala californica\",(((\"Bauhinia tomentosa\",(\"Cercis gigantea\",\"Cercis occidentalis\",\"Cercis canadensis\")),((\"Colophospermum mopane\",\"Prioria copaifera\"),((\"Hymenaea courbaril\",\"Tessmannia lescrauwaetii\"),((\"Brownea sp\".,((\"Oddoniodendron micranthum\",\"Berlinia congolensis\"),\"Brachystegia spiciformis\"),\"Cynometra mannii\"),\"Amherstia nobilis\")))),((((((\"Erythrostemon gilliesii\",(\"Caesalpinia andamanica\",\"Haematoxylum brasiletto\")),(\"Chamaecrista fasciculata\",(\"Senna candolleana\",\"Senna covesii\"))),(((\"Peltophorum dubium\",((\"Cercidium floridum\",\"Parkinsonia aculeata\"),\"Conzattia multiflora\")),\"Dinizia excelsa\"),(((((((((((\"Enterolobium cyclocarpum\",\"Enterolobium contortisiliq\"),\"Chloroleucon manganse\",(\"Inga punctata\",\"Albizia julibrissin\"),\"Samanea saman\",\"Acacia melanoxylon\"),(\"Lysiloma watsonii\",\"Havardia mexicana\")),\"Faidherbia albidea\"),(\"Calliandra californica\",\"Calliandra surinamensis\")),\"Acacia willardiana\"),\"Acacia greggii\"),\"Acacia hindsii\",(\"Parkia timoriana\",\"Microlobium foetidus\")),(\"Desmanthus cooleyi\",(\"Prosopidastrum mexicana\",\"Dichrostachys richardiana\")),(\"Leucaena retusa\",\"Neptunia monosperma\"),(\"Prosopis glandulosa\",\"Prosopis pallida\")),(((\"Adenanthera pavonina\",\"Tetrapleura tetraptera\"),\"Amblygonocarpus andongens\"),((\"Xylia africana\",\"Calpocalyx heitzii\"),\"Pseudoprosopis gilletii\"),(\"Piptadeniastrum africanum\",\"Entada abyssinica\"))),(\"Pentaclethra macroloba\",\"Pentaclethra macrophylla\")))),((\"Ceratonia siliqua\",(\"Gymnocladus chinensis\",(\"Gleditsia sinensis\",\"Gleditsia triacanthos\"))),\"Arcoa gonavensis\")),(((((((((((\"Aotus ericoides\",\"Gastrolobium punctatum\"),\"Bossiaea cordigera\",(\"Isotropis foliosa\",\"Gompholobium minus\")),\"Daviesia latifolia\"),\"Hypocalyptus coluteoides\"),((((((((((\"Erythrina cristi galli\",(((((((\"Vigna subterranea\",(\"Vigna unguiculata\",\"Vigna umbellata\")),(((\"Phaseolus coccineus\",\"Phaseolus vulgaris\"),\"Phaseolus microcarpus\"),\"Strophostyles umbellata\")),(\"Lablab purpureus\",\"Dipogon lignosus\")),((\"Macrotyloma uniflorum\",\"Dolichos trinervatus\"),\"Sphenostylis angustifolia\")),\"Wajira albescens\"),\"Cologania hintoniorum\"),(((\"Glycine max\",(\"Psoralea cinerea\",(\"Otholobium glandulosum\",(\"Psoralidium tenuiflorum\",\"Rupertia physodes\")))),\"Amphicarpaea bracteata\"),\"Pueraria montana\"))),(\"Desmodium psilocarpum\",\"Campylotropis macrocarpa\")),\"Apios americana\"),\"Platycyamus regnellii\"),((\"Galactia striata\",(((\"Piscidia piscipula\",(((\"Pongamiopsis amygdalina\",\"Millettia thonningii\",\"Neodunnia richardiana\"),((\"Paraderris elliptica\",\"Derris laxiflora\"),\"Brachypterum robusta\")),\"Lonchocarpus lanceolatus\")),(\"Tephrosia heckmanniana\",\"Mundulea sericea\")),((\"Millettia grandis\",(\"Philenoptera eriocalyx\",\"Philenoptera laxiflora\")),\"Fordia leptobotrya\"))),\"Abrus precatorius\")),\"Austrosteenisia blackii\"),\"Dalbergiella nyasae\"),\"Xeroderris stuhlmannii\"),(\"Cyamopsis senegalensis\",(\"Indigofera suffruticosa\",\"Indigofera sphaerocarpa\"))),(((((\"Lotus purshianus\",((\"Lotus japonicus\",\"Ornithopus compressus\"),\"Anthyllis vulneraria\")),\"Coronilla varia\"),((\"Sesbania vesicaria\",\"Sesbania drummondii\"),(\"Sesbania emerus\",\"Sesbania grandiflora\"))),((((((\"Coursetia glandulosa\",(\"Coursetia axillaris\",\"Coursetia insomnifolia\")),(\"Genistidium dumosum\",\"Peteria thompsonae\")),((\"Poissonia weberbaueri\",\"Poissonia heterantha\"),\"Poissonia hypoleuca\"),\"Olneya tesota\",\"Sphinctospermum constrictum\"),(\"Robinia neomexicana\",\"Robinia pseudoacacia\")),((\"Gliricidia brenningii\",\"Gliricidia maculata\",((\"Poitea glyciphylla\",\"Poitea campanilla\"),\"Poitea immarginata\")),\"Gliricidia ehrenbergii\")),(\"Lennea modesta\",\"Hebestigma cubense\"))),(((((((\"Sutherlandia frutescens\",((\"Clianthus puniceus\",\"Carmichaelia williamsii\"),\"Swainsona pterostylis\")),\"Colutea arborescens\"),(((\"Astragalus lonchocarpus\",\"Astragalus nothoxys\"),(\"Astragalus canadensis\",\"Astragalus americanus\")),(\"Oxytropis deflexa\",\"Oxytropis lambertii\"))),(\"Caragana arborescens\",((\"Onobrychis montana\",\"Hedysarum boreale\"),\"Alhagi maurorum\"))),(((((((((\"Lathyrus latifolius\",\"Lathyrus sativus\"),\"Lathyrus aphaca\"),\"Pisum sativum\"),(\"Vicia ludoviciana\",\"Vicia hirsuta\",((\"Vicia americana\",(\"Vicia faba\",\"Vicia sativa\")),\"Lens culinaris\"))),((((\"Trifolium beckwithii\",\"Trifolium nanum\"),\"Trifolium repens\"),\"Trifolium hirtum\"),\"Trifolium lupinaster\")),((((\"Trigonella kotschyi\",\"Trigonella foenum graecum\"),(\"Trigonella cretica\",(\"Melilotus alba\",\"Melilotus indica\"))),((\"Medicago lanigera\",(\"Medicago truncatula\",\"Medicago sativa\")),\"Medicago monantha\")),(\"Ononis natrix\",\"Ononis arvensis\"))),(\"Cicer pinnatifidum\",(\"Cicer canariense\",\"Cicer arietinum\"))),\"Galega orientalis\"),\"Parochetus communis\")),((\"Wisteria frutescens\",\"Wisteria sinensis\"),\"Callerya reticulata\")),(\"Glycyrrhiza lepidota\",\"Callerya atropurpurea\"))))),(\"Baphia massaiensis\",\"Baphia madagascariensis\")),((((\"Adesmia volckmanii\",\"Adesmia lanata\"),(((\"Amicia glandulosa\",\"Zornia sp\".),\"Poiretia angustifolia\"),((\"Chaetocalyx nigricans\",(\"Chaetocalyx brasiliensis\",\"Chaetocalyx scandens\")),(\"Nissolia shottii\",\"Nissolia hirsuta\")))),(((((\"Aeschynomene pfundii\",\"Kotschya ochreata\"),(\"Aeschynomene indica\",\"Aeschynomene rudis\")),\"Aeschynomene americana\"),((\"Aeschynomene purpusii\",\"Machaerium sp\"),(\"Dalbergia congestiflora\",\"Dalbergia sissoo\")),(((\"Diphysa americana\",\"Diphysa thurberii\"),\"Diphysa floribunda\"),((\"Ormocarpopsis calcicola\",\"Ormocarpopsis itremoensis\"),(\"Ormocarpum bernierianum\",\"Ormocarpum kirkii\")),\"Ormocarpum yemenense\",(\"Pictetia aculeata\",(\"Pictetia marginata\",\"Pictetia angustifolia\")))),((((((((\"Arachis pintoi\",\"Arachis major\"),(\"Stylosanthes hamata\",\"Stylosanthes capitata\")),((\"Chapmannia gracilis\",\"Chapmannia sericea\"),\"Chapmannia floridana\")),\"Fiebrigiella gracilis\"),(\"Cascaronia astragalina\",(\"Geoffroea spinosa\",\"Geoffroea decorticans\"))),(((\"Brya ebenus\",\"Cranocarpus martii\"),\"Grazielodendron riodocense\"),((Centrolobium,((((\"Inocarpus fagifer\",\"Tipuana tipu\"),\"Maraniona lavinii\"),(\"Pterocarpus indicus\",\"Pterocarpus macrocarpus\")),\"Ramorinoa girolae\")),\"Platypodium elegans\"))),\"Platymiscium stipulare\"),((\"Discolobium psoraleifolium\",\"Discolobium pulchellum\"),\"Riedeliella graciliflora\")))),(((\"Apoplanesia paniculata\",(\"Errazurizia benthami\",\"Eysenhardtia orthocarpa\")),(\"Amorpha fruticosa\",\"Parryella filifolia\")),((\"Marina parryi\",\"Dalea pulchra\"),\"Psorothamnus arborescens\"))),(\"Hymenolobium mesoamericana\",\"Andira galeottiana\")),((\"Ormosia colombiana\",\"Ormosia formosana\"),(((((\"Bowdichia virgiloides 1\",\"Bowdichia virgiloides 2\"),\"Acosmium panamense\"),(\"Diplotropis martiusii\",\"Diplotropis brasiliensis\")),((((\"Brongniartia alamosana\",\"Hovea purpurea\"),\"Cyclolobium brasiliense\"),\"Harpalyce arborescens\"),\"Poecilanthe parviflora\")),((((\"Ammodendron argenteum\",(\"Sophora davidii\",\"Sophora nuttalliana\")),((\"Baptisia australis\",\"Thermopsis rhombifolia\"),\"Piptanthus nepalensis\"),\"Maackia amurensis\"),\"Bolusanthus speciosus\"),(((\"Anarthrophyllum desideratum\",((\"Cytisus scoparius\",(\"Genista monspessulana\",\"Spartium junceum\")),((\"Lupinus argenteus\",\"Lupinus tegeticulatus\"),\"Lupinus consentii\"))),\"Crotalaria pumila\"),\"Calpurnia aurea\"))))),((\"Holocalyx balansae\",\"Uribea tamarindoides\"),((\"Luetzeburgia auriculata\",(\"Vatairea sp nov\",\"Vatairea macrocarpa\")),\"Sweetia fruticosa\")),(\"Calia secundiflora\",\"Calia arizonica\")),((((\"Cladrastis lutea\",\"Cladrastis delavayi\"),\"Styphnolobium japonicum\"),\"Pickeringia montana\"),\"Cladrastis platycarpa\")),(((\"Amburana cearensis\",\"Dussia macroprophyllata\",(((\"Myrocarpus frondosus\",\"Myrospermum sousanum\"),\"Myrospermum frutescens\"),(\"Dipteryx alata\",\"Pterodon pubescens\"))),\"Angylocalyx sp\".),((\"Ateleia herbertsmithii\",\"Cyathostegia mathewsii\"),((\"Swartzia simplex\",(\"Swartzia flaemingii\",\"Swartzia jorori\")),\"Bobgunnia madagascariensis\"))))),((\"Petalostylis labicheoides\",\"Dialium guianensis\"),\"Poeppigia procera\")))),\"Quillaja saponaria\"),\"Suriana maritima\");"
+        }
+    ],
+    "phylorefs": [
+        {
+            "label": "Pan-Papilionoideae",
+            "cladeDefinition": "Pan-Papilionoideae M. F. Wojciechowski, new clade name.\n\nDefinition: The total clade or “panclade” (i.e., crown plus stem, sensu de Queiroz, 2007) of Papilionoideae (defined below). There is no preexisting scientific established under the ICBN, or informal name, for this clade.\n\nReference phylogeny: Cardoso et al. (2012; Figs. 2, 3).\n\nComposition: Papilionoideae, and all extinct taxa that share more recent ancestry with Papilionoideae than with extant caesalpinioid and mimosoid legumes.\n\nSynonymy: None.",
+            "internalSpecifiers": [],
+            "externalSpecifiers": []
+        },
+        {
+            "label": "Papilionoideae",
+            "cladeDefinition": "Papilionoideae (L.) DC. [M. F. Wojciechowski], converted clade name.\n\nDefinition (branch-modified, node-based): The most inclusive crown clade containing Castanospermum australe A. Cunn. ex Mudie 1829 and Vicia faba L. 1753 but not Caesalpinia gilliesii (Wall. ex Hook.) D. Dietr. 1840, Gleditsia triacanthos L., or Dialium guianense (Aubl.) Sandwith 1939. Because sister group relationships are better resolved and supported than basally-branching ingroup relationships within this clade, a branch-modified node-based definition was used to maximize definitional and compositional stability (Cantino et al., 2007).\n\nComments on name. Papilionoideae (L.) DC. 1825 is a preexisting scientific name established under the rank-based ICBN and applied to the subfamily of the Leguminosae Jussieu 1789 that corresponds to this clade. Faboideae Rudd 1968 is an alternative name for this subfamily of Fabaceae Lindl. 1836 or Leguminosae, whereas the similar Papilionaceae Giseke 1792 is the appropriate name for this taxon when the subfamily is treated as a separate family from the Caesalpiniaceae R. Br. 1814 and Mimosaceae R. Br. 1814.\n\nReference phylogeny: Cardoso et al. (2012; Fig. 1). The monophyly of Papilionoideae has been demonstrated in all higher-level molecular phylogenetic analyses published to date beginning with Käss and Wink (1996) and Doyle et al. (1997), albeit sometimes without robust statistical support. Later analyses such as Wojciechowski et al. (2004;Fig. 2) and Cardoso et al. (2012; Fig. 3) have provided unequivocal, robust support for this clade.\n\nDiagnostic apomorphy: Flowers generally zygomorphic, or some actinomorphic, adaxial petal generally outside the adjacent lateral petals, sepals generally united at base.\n\nComposition: This clade, comprised of more than 478 genera and 13,800 species (Lewis et al., 2005), is cosmopolitan in distribution and includes the vast majority of agriculturally important legumes such as Pisum sativum L. (pea), Medicago sativa L. (alfalfa), Trifolium L. (clovers), Vicia L. (vetches), Lens Mill. (lentils), Lupinus L. (lupins), Glycine max (L.) Merr. (soybean), Phaseolus L. (beans), Lablab purpureus (L.) Sweet (hyacinth bean), and Arachis hypogaea L. (peanut).\n\nSynonyms/Etymology: Papilionoideae (L.) DC. 1825, Faboideae Rudd 1968, and the informal name “Papilionoids”. The name “papilionoid” most likely comes from the resemblance of the typical or characteristic flower to a butterfly (papilio, from Latin), especially when the flower is dissected into its component five petals.",
+            "internalSpecifiers": [
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Vicia faba"
+                                }
+                            ]
+                        }
+                    ],
+                    "verbatimSpecifier": "Vicia faba L. 1753"
+                },
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Castanospermum australe"
+                                }
+                            ]
+                        }
+                    ],
+                    "verbatimSpecifier": "Castanospermum australe A. Cunn. ex Mudie 1829"
+                }
+            ],
+            "externalSpecifiers": [
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Caesalpinia gilliesii"
+                                }
+                            ]
+                        }
+                    ],
+                    "verbatimSpecifier": "Caesalpinia gilliesii (Wall. ex Hook.) D. Dietr. 1840"
+                },
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Gleditsia triacanthos"
+                                }
+                            ]
+                        }
+                    ],
+                    "verbatimSpecifier": "Gleditsia triacanthos L."
+                },
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Dialium guianense"
+                                }
+                            ]
+                        }
+                    ],
+                    "verbatimSpecifier": "Dialium guianense (Aubl.) Sandwith 1939"
+                }
+            ]
+        },
+        {
+            "label": "Cladrastis",
+            "cladeDefinition": "Cladrastis clade M. F. Wojciechowski, M. Lavin and M. J. Sanderson [M. F. Wojciechowski], converted clade name.\n\nDefinition (branch-modified node-based): The most inclusive crown clade containing Cladrastis kentukea (Dum. Cours.) Rudd 1971 but not Dermatophyllum secundiflorum (Ortega) Gandhi & Reveal 2011 or Swartzia simplex Spreng. 1825. There is no preexisting scientific name for this taxon. The name “Cladrastis clade” was not explicitly defined phylogenetically (Wojciechowski et al., 2004), nor does the name meet the other requirements for establishment (under either the ICBN or ICPN). In spite of this, the name qualifies as a ‘preexisting’ name under ICPN article 6.2 b as “a name that is in use but not governed by any code”.\n\nReference phylogeny: Wojciechowski et al. (2004; Fig. 2) and Wojciechowski (2013; Fig. 2). See also Doyle et al. (1997; Fig. 1), Pennington et al. (2001; Fig. 1), Cardoso et al. (2012; Fig. 3), which present evidence for less inclusive versions of this clade.\n\nComposition: The genera Cladrastis Raf. 1824 (six spp.), Pickeringia Nuttall 1840 (monotypic), and Styphnolobium Schott 1830 (nine spp.) comprise this clade. Both Cladrastis and Styphnolobium show an interesting pattern of northern hemisphere disjunction, distributed in eastern Asia and southern North America, while Pickeringia is restricted to California and northern Baja California. Several taxa described as species of Cladrastis and Styphnolobium are known from the fossil record (Herendeen, 1992).\n\nSynonyms: Cladrastis clade (informal).",
+            "internalSpecifiers": [
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Cladrastis kentukea"
+                                }
+                            ]
+                        }
+                    ],
+                    "verbatimSpecifier": "Cladrastis kentukea (Dum. Cours.) Rudd 1971"
+                }
+            ],
+            "externalSpecifiers": [
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Dermatophyllum secundiflorum"
+                                }
+                            ]
+                        }
+                    ],
+                    "verbatimSpecifier": "Dermatophyllum secundiflorum (Ortega) Gandhi & Reveal 2011"
+                },
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Swartzia simplex"
+                                }
+                            ]
+                        }
+                    ],
+                    "verbatimSpecifier": "Swartzia simplex Spreng. 1825"
+                }
+            ]
+        },
+        {
+            "label": "Meso-Papilionoideae",
+            "cladeDefinition": "Meso-Papilionoideae L. P. de Queiroz and M. F. Wojciechowski, new clade name.\n\nDefinition (apomorphy-modified, node-based): The most inclusive crown clade exhibiting the structural rearrangement in the plastid genome (inversion of a ~ 50 kb segment in the large-single copy region with endpoints between the accD and trnK regions; Doyle et al., 1996) homologous with that found in Aldina latifolia Spruce ex Benth. 1870, Holocalyx balansae Micheli 1883, Maackia amurensis Rupr. 1856, Wisteria floribunda (Willd.) DC. 1825, and Glycine max (L.) Merr. 1917, where these taxa are extant species included in the crown clade defined by this name. There is no preexisting scientific name for this taxon. The name “50-kb Inversion clade” (Doyle et al., 1997) was not explicitly defined phylogenetically. The prefix “meso-”, meaning “middle”, is used here to refer to this taxon as a less inclusive clade (i.e., more derived or nested within) in relation to the more inclusive reference clade Papilionoideae (see Cantino et al., 2007, for usage).\n\nReference phylogeny: Cardoso et al. (2012; Figs. 4–7), see also Doyle et al. (1996) for listing of taxa shown to possess this rearrangement.\n\nDiagnostic apomorphy: This structural rearrangement – the 50-kb inversion – was initially identified by restriction fragment length polymorphism analyses of plastid DNA from a large number of legumes species (Doyle et al., 1996). Subsequently, the monophyly of this group has been corroborated by almost all cladistic analyses of variation in molecular sequence data (e.g., Doyle et al., 1997; Pennington et al., 2001; Wojciechowski et al., 2004; Cardoso et al., 2012), although strong statistical support has been lacking.\n\nComposition: This clade, marked by the inversion of a 50-kb region in the plastid genome, contains the majority of papilionoid legumes including the three main large radiations of papilionoids, the Genistoids s.l., Dalbergioids s.l., and a clade comprising the majority of Papilionoideae that includes the Baphioid and Non-Protein-Amino-Acid-Accumulating clades (Cardoso et al., 2012, this issue).\n\nSynonyms: 50-kb Inversion clade (informal).",
+            "internalSpecifiers": [],
+            "externalSpecifiers": [],
+            "curatorComments": "We don't support apomorphy-based definitions yet."
+        },
+        {
+            "label": "Vataireoid clade",
+            "cladeDefinition": "Vataireoid clade R. T. Pennington, M. Lavin, H. Ireland, B. B. Klitgaard, J. Preston, and J.-M. Hu [M. F. Wojciechowski], converted clade name.\n\nDefinition (branch-modified, node-based): The most inclusive crown clade containing Sweetia fruticosa Spreng. 1825 and Vatairea guianensis Aubl. but not Andira inermis (W. Wright) DC., Zollernia ilicifolia (Brongn.) Vogel 1837, or Aldina insignis (Benth.) Endl. 1843. There is no preexisting scientific name for this clade. The name “Vataireoid clade” was not explicitly defined phylogenetically (Pennington et al., 2001), nor does the name meet the other requirements for establishment (under either the ICBN or ICPN). In spite of this, the name qualifies as a ‘preexisting’ name under the ICPN (Art. 6.2 b) as “a name that is in use but not governed by any code”. However, Pennington et al. (2001) erroneously applied this name to a larger, more inclusive clade (i.e., including the genera Exostyles Schott 1827 and Harleyodendron R. S. Cowan 1979), while Wojciechowski et al. (2004) and Mansano et al. (2004) found support for a less inclusive clade.\n\nReference phylogeny: Cardoso et al. (2012; Fig. 4) and Cardoso et al. (2013; Fig. 1).\n\nComposition: The genera Luetzelburgia Harms 1922 (8 spp.), Sweetia Spreng. 1825 (1 sp.), Vatairea Aubl. 1775 (8 spp.), and Vataireopsis Ducke 1932 (4 spp.), distributed primarily in northern South America (French Guiana to Brazil to Bolivia; Lewis et al., 2005), comprise this clade. Species of Vatairea and Vataireopsis are important sources of woods and medicinals (Klitgaard and Lavin, 2005).",
+            "internalSpecifiers": [
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Vatairea guianensis Aubl."
+                                }
+                            ]
+                        }
+                    ],
+                    "verbatimSpecifier": "Vatairea guianensis Aubl."
+                },
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Sweetia fruticosa Spreng. 1825"
+                                }
+                            ]
+                        }
+                    ],
+                    "verbatimSpecifier": "Sweetia fruticosa Spreng. 1825"
+                }
+            ],
+            "externalSpecifiers": [
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Andira inermis (W. Wright) DC."
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Zollernia ilicifolia (Brongn.) Vogel 1837"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Aldina insignis (Benth.) Endl. 1843"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "label": "Dalbergioid",
+            "cladeDefinition": "Dalbergioid s.l. clade M. F. Wojciechowski, M. Lavin and M. J. Sanderson [M. F. Wojciechowski], converted clade name.\n\nDefinition (node-based): The least inclusive crown clade that contains Amorpha fruticosa L. 1753 and Dalbergia sissoo Roxb. ex DC. 1825. There is no preexisting scientific name for this clade. The name “Dalbergioid s.l. clade” was not explicitly defined phylogenetically (Wojciechowski et al., 2004), nor does the name meet the other requirements for establishment (under either the ICBN or ICPN). In spite of this, the name qualifies as a ‘preexisting’ name under the ICPN (Art. 6.2 b) as “a name that is in use but not governed by any code”. See also Cardoso et al. (2012).\n\nReference phylogeny: Wojciechowski et al. (2004; Fig. 3). See also McMahon and Hufford (2004; Figs. 1, 3) for Amorpheae and Lavin et al. (2001; Fig. 5) for “Dalbergioid clade”. See also Cardoso et al. (2012; Fig. 7).\n\nComposition: The Dalbergioid clade (Lavin et al., 2001), with 45 genera and ~ 1270 species of trees, shrubs, perennial and annual herbs is distributed pantropically, especially in the Neotropics and sub-Saharan Africa (Klitgaard and Lavin, 2005), and tribe Amorpheae Boriss. 1964, with eight genera and ~ 240 species, distributed from the southwestern USA and Mexico to northern Argentina, comprise this clade.\n\nSynonyms: Dalbergioid s.l. clade (informal).",
+            "internalSpecifiers": [
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Amorpha fruticosa L. 1753"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Dalbergia sissoo Roxb. ex DC. 1825"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "externalSpecifiers": []
+        },
+        {
+            "label": "Hologalegina",
+            "cladeDefinition": "Hologalegina M. F. Wojciechowski, M. J. Sanderson, K. P. Steele, and A. Liston [M. F. Wojciechowski], converted clade name.\n\nDefinition (node-based): The least inclusive clade containing Astragalus canadensis L. 1753, Robinia pseudoacacia L. 1753, Sesbania grandiflora (L.) Pers. 1807, and Vicia faba L. 1753. The name “Hologalegina” was first applied to the monophyletic group defined as consisting exclusively of the “IR-lacking clade”, the genus Sesbania Scop., and tribes Loteae DC., and Robinieae Hutch. (Wojciechowski et al., 2001, 2004). The name “Hologalegina” was not explicitly defined phylogenetically, nor does the name meet the other requirements for establishment (under either the ICBN or ICPN). In spite of this, the name qualifies as a ‘preexisting’ name under the ICPN (Art. 6.2 b) as “a name that is in use but not governed by any code”.\n\nReference phylogeny: Wojciechowski et al. (2004; Fig. 5). See also Wojciechowski et al. (2000; Figs. 1, 2).\n\nComposition: This clade, with over 4800 species, consists of the vast majority of legumes presently distributed in temperate regions of the world, includes the tribes Loteae (sensu Polhill, 1994) and Robinieae (sensu Lavin and Schrire, 2005), and the “IRLC” (Wojciechowski et al., 2000).\n\nEtymology: The name was chosen to reflect the fact that this clade contains all taxa that have been variously treated (at generic and subtribal levels) under the tribe Galegeae Dumort. 1827.\n\nSynonyms: Hologalegina (informal).",
+            "internalSpecifiers": [
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Sesbania grandiflora (L.) Pers. 1807"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Astragalus canadensis L. 1753"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Robinia pseudoacacia L. 1753"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Vicia faba L. 1753"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "externalSpecifiers": []
+        },
+        {
+            "label": "IR-lacking clade",
+            "cladeDefinition": "IR-lacking clade M. F. Wojciechowski, M. J. Sanderson, K. P. Steele, and A. Liston [M. F. Wojciechowski], converted clade name.\n\nDefinition (apomorphy-modified, node-based): The most inclusive crown clade exhibiting the structural mutation in the plastid genome (loss of one copy of the ~ 25-kb inverted repeat region) homologous with that found in Galega officinalis L. 1753, Glycyrrhiza lepidota Nuttall 1813, and Vicia faba L., where these taxa are extant species included in the crown clade defined by this name. There is no preexisting scientific name for this clade. The name “IR-Lacking Clade” or “IRLC” (Wojciechowski et al., 2000) was not explicitly defined phylogenetically nor does the name meet the other requirements for establishment (under either the ICBN or ICPN). In spite of this, the name qualifies as a ‘preexisting’ name under the ICPN (Art. 6.2 b) as “a name that is in use but not governed by any code”. The “IR-Lacking Clade” or “IRLC” corresponds to the “temperate herbaceous clade” of Sanderson and Wojciechowski (1996), and is equivalent to what might be termed “Galegeae sensu lato” (sensu Polhill, 1981a), a paraphyletic group we now know contains various other predominantly temperate, herbaceous tribes (Carmichaelieae, Cicereae, Fabeae, Hedysareae, Trifolieae) nested within it.\n\nReference phylogeny: Wojciechowski et al. (2000; Figs. 1, 2) and Wojciechowski et al. (2004; Fig. 5). See also Käss and Wink (1996; Fig. 1), Sanderson and Wojciechowski (1996; Fig. 3), Doyle et al. (1997; Fig. 1), and Pennington et al. (2001; Fig. 1) for additional supporting evidence.\n\nDiagnostic apomorphy: This clade was the first monophyletic group of legumes to be distinguished by a molecular synapomorphy, the loss of one of two copies of the 25-kb inverted repeat in the plastid genome. This structural mutation was initially identified by restriction fragment length polymorphism analysis of plastid DNA from a large number of legumes species (Lavin et al., 1990). Subsequently, the monophyly of this group has been corroborated by additional DNA fragment analysis (Liston, 1995), and supported by all cladistic analyses of variation in molecular sequence data (e.g., Sanderson and Wojciechowski, 1996; Doyle et al., 1997; Wojciechowski et al., 2004).\n\nComposition: This clade, with over 4380 species, corresponds approximately to Polhill's (1981a) “temperate herbaceous group”, comprising all members of tribes Cicereae Alef. 1859, Galegeae Dumort. 1827 (incl. Carmichaelieae; Lock and Schrire, 2005), Hedysareae DC. 1825, Trifolieae Endl. 1830, and Vicieae DC. 1825 (= Fabeae Rchb. 1832), as well as a “millettioid group” of genera (Schrire, 2005) that includes Afgekia Craib 1927, Callerya Endl. 1843, Endosamara R. Geesink 1984, Sarcodum Lour. 1790, Wisteria Nutt.1818, and possibly Antheroporum Gagnep. 1915.\n\nSynonyms: IR-Lacking clade or IRLC (informal).",
+            "internalSpecifiers": [],
+            "externalSpecifiers": [],
+            "curatorComments": "We do not yet support apomorphy-based definitions."
+        }
+    ],
+    "title": "Wojciechowski, 2013"
+}
