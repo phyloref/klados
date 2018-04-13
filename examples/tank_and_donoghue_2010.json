@@ -1,0 +1,605 @@
+{
+    "@id": "",
+    "doi": "10.1600/036364410791638306",
+    "url": "http://www.bioone.org/doi/full/10.1600/036364410791638306",
+    "citation": "Tank and Donoghue (2010) Phylogeny and Phylogenetic Nomenclature of the Campanulidae Based on an Expanded Sample of Genes and Taxa",
+    "phylogenies": [
+        {
+            "description": "Fig 2 from paper (from TreeBASE, study 10149, tree Tr6435)",
+            "newick": "((((Helwingia,Phyllonoma),Ilex),(Cardiopteris,Irvingbaileya)),(((((((Aralidium,Torricellia),((Pittosporum,((((Apium,Azorella),Mackinlaya),Myodocarpus),(Panax,Hydrocotyle))),Griselinia)),Pennantia),((((((((Patrinia,Valeriana),(Triplostegia,Dipsacus)),Morina),Dipelta),Lonicera),Diervilla),(Viburnum,Adoxa)),(Quintinia,Paracryphia))),((Desfontainia,Columellia),(Brunia,Berzelia))),(Polyosma,(Eremosyne,(Escallonia,Tribeles)))),((Pentaphragma,((((Argophyllum,Phelline),Alseuosmia),(Stylidium,Donatia)),(Menyanthes,((Boopis,Helianthus),Scaevola)))),((Campanula,Lobelia),(Roussea,Carpodetus)))));"
+        },
+        {
+            "description": "Fig 3 from paper (from TreeBASE, study 10149, tree Tr6459)",
+            "newick": "(((((((((((((Hedera,((Panax,Aralia),(((Schefflera,Tetrapanax),Polyscias),((Tetraplasandra,Pseudopanax),Cussonia),Hydrocotyle))),((((((((Coriandrum,Angelica),Apium),Daucus),Heteromorpha),(Arctopus,Sanicula)),Azorella),(Mackinlaya,Platysace)),(Myodocarpus,Delarbrea))),(Pittosporum,Sollya)),Griselinia),((Melanophylla,Torricellia),Aralidium)),Pennantia),(((((((((Scabiosa,(Dipsacus,Pterocephalodes)),Triplostegia),((((Centranthus,Valeriana),(Valerianella,Fedia)),Nardostachys),Patrinia)),(((Morina,Acanthocalyx),Cryptothladia),Zabelia)),(((Kolkwitzia,Dipelta),Abelia),Linnaea)),(Heptacodium,((Leycesteria,(Triosteum,Symphoricarpos)),Lonicera))),(Diervilla,Weigela)),(((Sinadoxa,(Tetradoxa,Adoxa)),Sambucus),Viburnum)),((Sphenostemon,Paracryphia),Quintinia))),((Columellia,Desfontainia),(Brunia,Berzelia))),(((((Escallonia,(Forgesia,Valdivia)),Eremosyne),Anopterus),Tribeles),Polyosma)),((((((Corokia,Argophyllum),Phelline),(((Alseuosmia,Wittsteinia),Crispiloba),Platyspermation)),(((((Barnadesia,((((Cichorium,Lactuca),Tragopogon),((Guizotia,Helianthus),Tagetes)),(Echinops,Gerbera))),((Moschopsis,Acicarpha),Boopis)),(Dampiera,(Goodenia,Scaevola))),((Menyanthes,Fauria),(Villarsia,Nymphoides))),((Stylidium,Forstera),Donatia))),Pentaphragma),((((Trachelium,Campanula),Cyphia),(Pseudonemacladus,(Lobelia,Dialypetalum))),((Carpodetus,(Abrophyllum,Cuttsia)),Roussea)))),((((Cardiopteris,Gonocaryum),Citronella),((Irvingbaileya,Gomphandra),Grisollea)),(Ilex,(Helwingia,Phyllonoma)))),((Atropa,Nicotiana),Coffea,Jasminum)),Spinacia);"
+        }
+    ],
+    "phylorefs": [
+        {
+            "label": "Dipsapiidae",
+            "cladeDefinition": "Dipsapiidae D. C. Tank & M. J. Donoghue, new clade name. Definition (node based) — The least inclusive clade containing Apium graveolens L. 1753 (Apiales), Paracryphia alticola Shltr. (Steenis) 1950 (Paracryphiaceae), and Dipsacus sativus (L.) Honck. 1782 (Dipsacales).\n\nThere is no preexisting scientific name for this clade. The name Dipsapiidae is given to emphasize the close relationship of the Apiales to the Dipsacales. This basic result appeared in several earlier studies, notably in Bremer et al. (2002) and in Winkworth et al. (2008b), and is strongly supported in the analyses presented here.",
+            "internalSpecifiers": [
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Dipsacus sativus"
+                                }
+                            ]
+                        }
+                    ],
+                    "verbatimSpecifier": "Dipsacus sativus (L.) Honck. 1782 (Dipsacales)"
+                },
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Paracryphia alticola"
+                                }
+                            ]
+                        }
+                    ],
+                    "verbatimSpecifier": "Paracryphia alticola Shltr. (Steenis) 1950 (Paracryphiaceae)"
+                },
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Apium graveolens"
+                                }
+                            ]
+                        }
+                    ],
+                    "verbatimSpecifier": "Apium graveolens L. 1753 (Apiales)"
+                }
+            ],
+            "externalSpecifiers": []
+        },
+        {
+            "label": "Dipsidae",
+            "cladeDefinition": "Dipsidae D. C. Tank & M. J. Donoghue, new clade name. Definition (node based) - The least inclusive clade containing Paracryphia alticola Shltr. (Steenis) 1950 (Paracryphiaceae) and Dipsacus sativus (L.) Honck. 1782 (Dipsacales).\n\nThere is no preexisting scientific name for this clade. The name Dipsidae recognizes the sister group relationship between Paracryphiaceae and Dipsacales. This result was recovered with strong statistical support by Winkworth et al. (2008b) and is strongly supported in the analyses presented here. The recognition of this clade is important for the interpretation of floral evolution and biogeography (see Winkworth 2008b).",
+            "internalSpecifiers": [
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Dipsacus sativus"
+                                }
+                            ]
+                        }
+                    ],
+                    "verbatimSpecifier": "Dipsacus sativus (L.) Honck. 1782 (Dipsacales)"
+                },
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Paracryphia alticola"
+                                }
+                            ]
+                        }
+                    ],
+                    "verbatimSpecifier": "Paracryphia alticola Shltr. (Steenis) 1950 (Paracryphiaceae)"
+                }
+            ],
+            "externalSpecifiers": []
+        },
+        {
+            "label": "Paracryphiaceae",
+            "cladeDefinition": "Paracryphiaceae Airy Shaw 1964: 265 [D. C. Tank and M. J. Donoghue], converted clade name. Definition (Branch-modified node based) — The most inclusive crown clade containing Paracryphia alticola Shltr. (Steenis) 1950 (Paracryphia) but not Dipsacus sativus (L.) Honck. 1782 (Dipsacales) or Apium graveolens L. 1753 (Apiales).\n\nThe name Paracryphiaceae has traditionally been restricted to the monotypic genus Paracryphia, but is here expanded to include the two other southeast Asian genera Sphenostemon and Quintinia. Lundberg (2001) was the first to include the three genera in a phylogenetic analysis where a relationship between the three genera was recognized, and Winkworth et al. (2008b) confirmed the close relationship between Paracryphia and Quintinia (see Stevens 2001 onwards for a discussion of possible synapomorphies). However, neither Quintinia (25 spp.) nor Sphenostemon (ten spp.) have been widely sampled in any analyses, including those presented here. Therefore, a branch-modified node based definition is used to maintain the intended scope for Paracryphiaceae in case future detailed phylogenetic studies reveal a different pattern of relationships among the three genera. For example, if a standard node based definition was used for this clade name, in the unlikely event that Sphenostemon and/or Quintinia were placed elsewhere in Campanulidae, or either genus was found to be grossly paraphyletic, this would result in the name Paracryphiaceae referring to a much larger or much smaller clade, respectively, than originally intended.",
+            "internalSpecifiers": [
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Paracryphia alticola"
+                                }
+                            ]
+                        }
+                    ],
+                    "verbatimSpecifier": "Paracryphia alticola Shltr. (Steenis) 1950 (Paracryphia)"
+                }
+            ],
+            "externalSpecifiers": [
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Dipsacus sativus"
+                                }
+                            ]
+                        }
+                    ],
+                    "verbatimSpecifier": "Dipsacus sativus (L.) Honck. 1782 (Dipsacales)"
+                },
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Apium graveolens"
+                                }
+                            ]
+                        }
+                    ],
+                    "verbatimSpecifier": "Apium graveolens L. 1753 (Apiales)"
+                }
+            ]
+        },
+        {
+            "label": "Apiales",
+            "cladeDefinition": "Apiales Nakai 1930:58. [D. C. Tank and M. J. Donoghue], converted clade name. Definition (node based) — The least inclusive clade containing Pennantia corymbosa J. R. Forst. & G. Forst. 1775 (Pennantiaceae) and Apium graveolens L. 1735 (Apiaceae).\n\nThe name Apiales was applied to this clade by APG II (2003). Apiales received strong statistical support in broad-scale phylogenetic studies of angiosperms and asterids (e.g. Olmstead et al. 2000; Soltis et al. 2000; Bremer et al. 2002). Kårehed (2002, 2003) recovered a close relationship of Pennantia and Apiales and Chandler and Plunkett (2004) confirmed the placement of Pennantia as the sister group to the remainder of Apiales. Our analyses confirm these earlier studies and provide resolution and support for relationships among the subclades of Apiales.",
+            "internalSpecifiers": [
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Apium graveolens"
+                                }
+                            ]
+                        }
+                    ],
+                    "verbatimSpecifier": "Apium graveolens L. 1735 (Apiaceae)"
+                },
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Pennantia corymbosa"
+                                }
+                            ]
+                        }
+                    ],
+                    "verbatimSpecifier": "Pennantia corymbosa J. R. Forst. & G. Forst. 1775 (Pennantiaceae)"
+                }
+            ],
+            "externalSpecifiers": []
+        },
+        {
+            "label": "Bruniales",
+            "cladeDefinition": "Bruniales Dumort. 1829: 33 [D. C. Tank and M. J. Donoghue], converted clade name. Definition (branch-modified node based) — The most inclusive crown clade containing Berzelia lanuginosa Brongn. 1826 (Bruniaceae) but not Dipsacus sativus (L.) Honck. 1782 (Dipsapiidae) or Escallonia myrtilloides L. f. 1782 (Escalloniaceae) or Helianthus annuus L. 1753 (Asterales).\n\nBruniales is intended to include the Bruniaceae and Columelliaceae. Bremer et al. (2002) recovered Bruniales, albeit weakly; this clade was subsequently recovered by Winkworth et al. (2008b) with strong support, and our results confirm this relationship. Although this clade has appeared in multiple studies, and relationships within each of the two included lineages are well-resolved and well-supported, because Lundberg (2001) placed Columelliaceae with Dipsacales, we have chosen to use a branch-modified node based definition. The name Bruniales is based on Bruniaceae, the larger of the two clades comprising Bruniales. This choice also coincides with the usage by Stevens (2001 onwards), and will alleviate confusion if the contents of the clade were to change. Thus, if Columelliaceae is determined to be more closely related to another lineage of Campanulidae than it is to Bruniaceae (e.g. within Dipsapiidae), then the name Bruniales will become synonymous with Bruniaceae.",
+            "internalSpecifiers": [
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Berzelia lanuginosa"
+                                }
+                            ]
+                        }
+                    ],
+                    "verbatimSpecifier": "Berzelia lanuginosa Brongn. 1826 (Bruniaceae)"
+                }
+            ],
+            "externalSpecifiers": [
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Dipsacus sativus"
+                                }
+                            ]
+                        }
+                    ],
+                    "verbatimSpecifier": "Dipsacus sativus (L.) Honck. 1782 (Dipsapiidae)"
+                },
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Escallonia myrtilloides"
+                                }
+                            ]
+                        }
+                    ],
+                    "verbatimSpecifier": "Escallonia myrtilloides L. f. 1782 (Escalloniaceae)"
+                },
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Helianthus annuus"
+                                }
+                            ]
+                        }
+                    ],
+                    "verbatimSpecifier": "Helianthus annuus L. 1753 (Asterales)"
+                }
+            ]
+        },
+        {
+            "label": "Escalloniaceae",
+            "cladeDefinition": "Escalloniaceae R. Br. ex Dumort 1829:35,37 [D. C. Tank and M. J. Donoghue], converted clade name. Definition (branch-modified node based) — The most inclusive crown clade containing Escallonia myrtilloides L.f. 1782 (Escallonia) but not Berzelia lanuginosa Brongn. 1826 (Bruniaceae) or Columellia oblonga Ruiz & Pav. 1798 (Columelliaceae) or Dipsacus sativus (L.) Honck. 1782 (Dipsapiidae) or Helianthus annuus L. 1753 (Asterales).\n\nThis clade brings together a group of heterogeneous taxa that have been linked in various molecular systematic studies. A relationship between Escalloniaceae and Eremosynaceae was recovered with strong support by Soltis et al. (2000). Lundberg (2001) and Winkworth et al. (2008b) also recovered this relationship and added several other lineages to this clade including, Tribeles, Anopterus, and Polyosma. Although this is a well-supported clade, relationships within Escalloniaceae are still unresolved in our analyses, and therefore, we have used a branch-modified node based definition to accommodate this uncertainty.",
+            "internalSpecifiers": [
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Escallonia myrtilloides"
+                                }
+                            ]
+                        }
+                    ],
+                    "verbatimSpecifier": "Escallonia myrtilloides L.f. 1782 (Escallonia)"
+                }
+            ],
+            "externalSpecifiers": [
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Berzelia lanuginosa"
+                                }
+                            ]
+                        }
+                    ],
+                    "verbatimSpecifier": "Berzelia lanuginosa Brongn. 1826 (Bruniaceae)"
+                },
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Columellia oblonga"
+                                }
+                            ]
+                        }
+                    ],
+                    "verbatimSpecifier": "Columellia oblonga Ruiz & Pav. 1798 (Columelliaceae)"
+                },
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Dipsacus sativus"
+                                }
+                            ]
+                        }
+                    ],
+                    "verbatimSpecifier": "Dipsacus sativus (L.) Honck. 1782 (Dipsapiidae)"
+                },
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Helianthus annuus"
+                                }
+                            ]
+                        }
+                    ],
+                    "verbatimSpecifier": "Helianthus annuus L. 1753 (Asterales)"
+                }
+            ]
+        },
+        {
+            "label": "Asterales",
+            "cladeDefinition": "Asterales Link 1829: 731 [D. C. Tank and M. J. Donoghue], converted clade name. Definition (node based) — The least inclusive clade containing Roussea simplex Sm. 1789 (Roussaceae), Campanula latifolia L. 1753 (Campanulaceae), Pentaphragma begoniifolium (Roxb.) G. Don 1834 (Pentaphragmataceae), Alseuosmia macrophylla A. Cunn. 1838 (Alseuosmiaceae), Stylidium graminifolium Sw. ex Willd. 1805 (Stylidiaceae), and Helianthus annuus L. 1753 (Asteraceae).\n\nThe name Asterales was applied to this clade by APG (1998) and APG II (2003), and has a long association with this group in traditional classifications (e.g. Cronquist 1981). Numerous studies have repeatedly recovered this clade with strong statistical support (e.g. Olmstead et al. 2000; Soltis et al. 2000; Albach et al. 2001; Bremer et al. 2002; Lundberg and Bremer 2003). Relationships among the early branching lineages of Asterales were mostly poorly resolved prior to Winkworth et al. (2008b) and the analyses presented here.",
+            "internalSpecifiers": [
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Helianthus annuus"
+                                }
+                            ]
+                        }
+                    ],
+                    "verbatimSpecifier": "Helianthus annuus L. 1753 (Asteraceae)"
+                },
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Stylidium graminifolium"
+                                }
+                            ]
+                        }
+                    ],
+                    "verbatimSpecifier": "Stylidium graminifolium Sw. ex Willd. 1805 (Stylidiaceae)"
+                },
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Alseuosmia macrophylla"
+                                }
+                            ]
+                        }
+                    ],
+                    "verbatimSpecifier": "Alseuosmia macrophylla A. Cunn. 1838 (Alseuosmiaceae)"
+                },
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Pentaphragma begoniifolium"
+                                }
+                            ]
+                        }
+                    ],
+                    "verbatimSpecifier": "Pentaphragma begoniifolium (Roxb.) G. Don 1834 (Pentaphragmataceae)"
+                },
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Campanula latifolia"
+                                }
+                            ]
+                        }
+                    ],
+                    "verbatimSpecifier": "Campanula latifolia L. 1753 (Campanulaceae)"
+                },
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Roussea simplex"
+                                }
+                            ]
+                        }
+                    ],
+                    "verbatimSpecifier": "Roussea simplex Sm. 1789 (Roussaceae)"
+                }
+            ],
+            "externalSpecifiers": []
+        },
+        {
+            "label": "Aquifoliales",
+            "cladeDefinition": "Aquifoliales Senft 1856:118 [D. C. Tank and M. J. Donoghue], converted clade name. Definition (node based) — The least inclusive clade containing Ilex crenata Thunb. 1784 (Aquifoliaceae) and Cardiopteris quinqueloba Hassk. 1855 (Cardiopteridaceae).\n\nThe name Aquifoliales was applied to this clade by APG II (2003). Aquifoliales are the strongly supported sister group to the remainder of Campanulidae and have been recovered by numerous studies (e.g. Soltis et al. 2000; Bremer et al. 2002). Winkworth et al. (2008b) did not include sampling outside of Campanulidae, so it was not until our study that a focused analysis with a broad sampling of campanulid lineages recovered this same result. This clade includes multiple genera that were once in the largely dismantled Icacinaceae in an expanded Cardiopteridaceae clade and the newly established Stemonuraceae (Kårehed 2001).",
+            "internalSpecifiers": [
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Cardiopteris quinqueloba"
+                                }
+                            ]
+                        }
+                    ],
+                    "verbatimSpecifier": "Cardiopteris quinqueloba Hassk. 1855 (Cardiopteridaceae)"
+                },
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Ilex crenata"
+                                }
+                            ]
+                        }
+                    ],
+                    "verbatimSpecifier": "Ilex crenata Thunb. 1784 (Aquifoliaceae)"
+                }
+            ],
+            "externalSpecifiers": []
+        },
+        {
+            "label": "Dipsacales",
+            "cladeDefinition": "The least inclusive clade containing Dipsacus sativus (L.) Honck. 1782 (Dipsacaceae), Linnaea borealis L. 1753 (Linnaeeae), Lonicera caprifolium L. 1753 (Caprifolieae), and Viburnum lantana L. 1753 (Adoxaceae).\n\nPhylogenetic definition from Donoghue et al. (2001); Dipsacales sensu APG II (2003)",
+            "internalSpecifiers": [
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Viburnum lantana"
+                                }
+                            ]
+                        }
+                    ],
+                    "verbatimSpecifier": "Viburnum lantana L. 1753 (Adoxaceae)"
+                },
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Lonicera caprifolium"
+                                }
+                            ]
+                        }
+                    ],
+                    "verbatimSpecifier": "Lonicera caprifolium L. 1753 (Caprifolieae)"
+                },
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Dipsacus sativus"
+                                }
+                            ]
+                        }
+                    ],
+                    "verbatimSpecifier": "Dipsacus sativus (L.) Honck. 1782 (Dipsacaceae)"
+                }
+            ],
+            "externalSpecifiers": []
+        },
+        {
+            "label": "Apiidae",
+            "cladeDefinition": "The most inclusive crown clade including Apium graveolens L. 1753 (Apiales), Helianthus annuus L. 1753 (Asterales), and Dipsacus sativus (L.) Honck. 1782 (Dipsacales), but not Ilex crenata Thunb. 1784 (Aquifoliales) or Cardiopteris quinqueloba Hassk. 1855 (Aquifoliales) or Garrya elliptica Douglas ex Lindl. 1834 (Garryidae) or Lamium purpureum L. 1753 (Lamiiidae).",
+            "internalSpecifiers": [
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Helianthus annuus"
+                                }
+                            ]
+                        }
+                    ],
+                    "verbatimSpecifier": "Helianthus annuus L. 1753 (Asterales)"
+                },
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Apium graveolens"
+                                }
+                            ]
+                        }
+                    ],
+                    "verbatimSpecifier": "Apium graveolens L. 1753 (Apiales)"
+                },
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Dipsacus sativus"
+                                }
+                            ]
+                        }
+                    ],
+                    "verbatimSpecifier": "Dipsacus sativus (L.) Honck. 1782 (Dipsacales)"
+                }
+            ],
+            "externalSpecifiers": [
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Ilex crenata"
+                                }
+                            ]
+                        }
+                    ],
+                    "verbatimSpecifier": "Ilex crenata Thunb. 1784 (Aquifoliales)"
+                },
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Cardiopteris quinqueloba"
+                                }
+                            ]
+                        }
+                    ],
+                    "verbatimSpecifier": "Cardiopteris quinqueloba Hassk. 1855 (Aquifoliales)"
+                },
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Garrya elliptica"
+                                }
+                            ]
+                        }
+                    ],
+                    "verbatimSpecifier": "Garrya elliptica Douglas ex Lindl. 1834 (Garryidae)"
+                },
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Lamium purpureum"
+                                }
+                            ]
+                        }
+                    ],
+                    "verbatimSpecifier": "Lamium purpureum L. 1753 (Lamiiidae)"
+                }
+            ]
+        },
+        {
+            "label": "Campanulidae",
+            "cladeDefinition": "The most inclusive crown clade containing Campanula latifolia L. 1753 (Asterales) but not Garrya eliptica Douglas ex Lindl. 1834 (Garryidae) or Lamium purpureum L. 1753 (Lamiidae) or Cornus mas L. 1753 (Cornales) or Erica carnea L. 1753 (Ericales).",
+            "internalSpecifiers": [
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Campanula latifolia"
+                                }
+                            ]
+                        }
+                    ],
+                    "verbatimSpecifier": "Campanula latifolia L. 1753 (Asterales)"
+                }
+            ],
+            "externalSpecifiers": [
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Garrya eliptica"
+                                }
+                            ]
+                        }
+                    ],
+                    "verbatimSpecifier": "Garrya eliptica Douglas ex Lindl. 1834 (Garryidae)"
+                },
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Lamium purpureum"
+                                }
+                            ]
+                        }
+                    ],
+                    "verbatimSpecifier": "Lamium purpureum L. 1753 (Lamiidae)"
+                },
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Cornus mas"
+                                }
+                            ]
+                        }
+                    ],
+                    "verbatimSpecifier": "Cornus mas L. 1753 (Cornales)"
+                },
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Erica carnea"
+                                }
+                            ]
+                        }
+                    ],
+                    "verbatimSpecifier": "Erica carnea L. 1753 (Ericales)"
+                }
+            ]
+        }
+    ],
+    "title": "Tank and Donoghue, 2010"
+}
