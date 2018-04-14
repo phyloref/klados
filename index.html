@@ -470,6 +470,64 @@
                                 ></textarea>
                         </div>
 
+                        <!-- Node(s) this phyloreference is expected to resolve to -->
+                        <label for="curator-comments" class="control-label col-md-3">Expected node resolution</label>
+                        <div class="input-group col-md-9">
+                            <!-- What if no phylogenies were loaded? -->
+                            <div
+                                v-if="testcase['phylogenies'].length == 0"
+                            >No phylogenies loaded.</div>
+
+                            <!-- If phylogenies were loaded, we need to display a selector for each phylogeny -->
+                            <div class="input-group" v-for="(phylogeny, phylogeny_index) of testcase['phylogenies']">
+                                <!-- Display the phylogeny where this node is expected to match -->
+                                <span class="input-group-addon" :title="phylogeny['description']">Phylogeny {{phylogeny_index + 1}}</span>
+
+                                <!-- Display the matching node(s) -->
+                                <template v-if="get_phyloref_expected_node_labels(phylogeny, selected_phyloref).length === 0">
+                                    <!-- We matched no nodes -->
+                                    <input readonly type="text" class="form-control" value="No nodes could be matched">
+                                </template>
+                                <template v-if="get_phyloref_expected_node_labels(phylogeny, selected_phyloref).length === 1">
+                                    <!-- We matched exactly one node -->
+                                    <input readonly type="text" class="form-control" :value="get_phyloref_expected_node_labels(phylogeny, selected_phyloref)[0]">
+                                </template>
+                                <template v-if="get_phyloref_expected_node_labels(phylogeny, selected_phyloref).length > 1">
+                                    <!-- We matched more than one node -->
+                                    <input readonly type="text" class="form-control" :value="get_phyloref_expected_node_labels(phylogeny, selected_phyloref).length + ' nodes matched: ' + get_phyloref_expected_node_labels(phylogeny, selected_phyloref).join(', ')">
+                                </template>
+
+                                <!-- Display a dropdown menu that allows the modified label to be changed. -->
+                                <div class="input-group-btn">
+                                    <button
+                                        type="button"
+                                        class="btn btn-primary dropdown-toggle"
+                                        data-toggle="dropdown"
+                                        aria-haspopup="true"
+                                        aria-expanded="false"
+                                        >Change <span class="caret"></span></button>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-right">
+                                        <!-- List every labeled node in this phylogeny. -->
+                                        <li class="dropdown-header">Labeled internal nodes in this phylogeny</li>
+                                        <li
+                                            v-for="node_label of get_node_labels_in_phylogeny(phylogeny, 'internal').sort()"
+                                            :class="{active: get_phyloref_expected_node_labels(phylogeny, selected_phyloref).includes(node_label)}"
+                                        >
+                                            <a href="#selected-phyloref" @click="toggle_phyloref_expected_node_label(phylogeny, selected_phyloref, node_label)">{{node_label}}</a>
+                                        </li>
+                                        <li class="dropdown-header">Labeled terminal nodes in this phylogeny</li>
+                                        <li
+                                            v-for="node_label of get_node_labels_in_phylogeny(phylogeny, 'terminal').sort()"
+                                            :class="{active: get_phyloref_expected_node_labels(phylogeny, selected_phyloref).includes(node_label)}"
+                                        >
+                                            <a href="#selected-phyloref" @click="toggle_phyloref_expected_node_label(phylogeny, selected_phyloref, node_label)">{{node_label}}</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- List of specifiers associated with this phyloreference -->
                         <div class="panel panel-info" style="margin-top: 1em">
                             <div class="panel-heading">Specifiers</div>
