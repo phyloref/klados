@@ -514,14 +514,14 @@
                                             v-for="node_label of get_node_labels_in_phylogeny(phylogeny, 'internal').sort()"
                                             :class="{active: get_phyloref_expected_node_labels(phylogeny, selected_phyloref).includes(node_label)}"
                                         >
-                                            <a href="#selected-phyloref" @click="set_phyloref_expected_node_label(phylogeny, selected_phyloref, node_label)">{{node_label}}</a>
+                                            <a href="#selected-phyloref" @click="toggle_phyloref_expected_node_label(phylogeny, selected_phyloref, node_label)">{{node_label}}</a>
                                         </li>
                                         <li class="dropdown-header">Labeled terminal nodes in this phylogeny</li>
                                         <li
                                             v-for="node_label of get_node_labels_in_phylogeny(phylogeny, 'terminal').sort()"
                                             :class="{active: get_phyloref_expected_node_labels(phylogeny, selected_phyloref).includes(node_label)}"
                                         >
-                                            <a href="#selected-phyloref" @click="set_phyloref_expected_node_label(phylogeny, selected_phyloref, node_label)">{{node_label}}</a>
+                                            <a href="#selected-phyloref" @click="toggle_phyloref_expected_node_label(phylogeny, selected_phyloref, node_label)">{{node_label}}</a>
                                         </li>
                                     </ul>
                                 </div>

@@ -426,57 +426,52 @@ var vm = new Vue({
             // Return node labels sorted alphabetically.
             return Array.from(node_labels).sort();
         },
-        set_phyloref_expected_node_label: function(phylogeny, phyloref, updated_node_label) {
-            // Change the PHYX model so that a particular phyloreference is expected to
-            // resolve to a particular node label.
+        toggle_phyloref_expected_node_label: function(phylogeny, phyloref, node_label_to_toggle) {
+            // Change the PHYX model so that the provided node label is either
+            // added to the list of nodes we expect this phyloreference to resolve
+            // to, or removed from that list.
             //
-            // In the user interface, this is a property of the phyloreference,
-            // which is the most reasonable approach for curators. However, in
-            // the data model, this is a property of the phylogeny, which is
-            // where all phyloreference resolution expectations should be.
-            // Therefore, this method will actually modify the phylogeny in
+            // In the user interface, the expected node label is a property of
+            // the phyloreference, which is the most reasonable approach for
+            // curators. However, in the data model, this is a property of the
+            // phylogeny, which is where all phyloreference resolution expectations
+            // should be. Therefore, this method will actually modify the phylogeny in
             // order to set where this phyloreference is expected to resolve.
             // See https://github.com/phyloref/curation-tool/issues/32 for more
             // information.
             //
-            // We need to do two things here:
-            //  1. Look through the expectedPhyloreferenceNamed data and remove this
-            //     phyloreference from any other nodes upon which it is expected to
-            //     resolve.
-            //  2. Update the selected node label to mark it as the one this
-            //     phyloreference is expected to resolve to.
             let phyloref_label = this.get_phyloref_label(phyloref);
+            let current_expected_node_labels = this.get_phyloref_expected_node_labels(phylogeny, phyloref);
 
-            // Step 1. Remove this phyloreference as the expected phyloreference
-            // for all nodes in this phylogeny.
-            for(node_label of this.get_node_labels_in_phylogeny(phylogeny)) {
+            if(current_expected_node_labels.includes(node_label_to_toggle)) {
+                // We need to delete this node label.
                 if(
                     phylogeny.hasOwnProperty('additionalNodeProperties') &&
-                    phylogeny.additionalNodeProperties.hasOwnProperty(node_label) &&
-                    phylogeny.additionalNodeProperties[node_label].hasOwnProperty('expectedPhyloreferenceNamed')
+                    phylogeny.additionalNodeProperties.hasOwnProperty(node_label_to_toggle) &&
+                    phylogeny.additionalNodeProperties[node_label_to_toggle].hasOwnProperty('expectedPhyloreferenceNamed')
                 ) {
-                    phylogeny.additionalNodeProperties[node_label].expectedPhyloreferenceNamed =
-                        phylogeny.additionalNodeProperties[node_label].expectedPhyloreferenceNamed.filter(
+                    // Delete this phyloreference from the provided node label.
+                    phylogeny.additionalNodeProperties[node_label_to_toggle].expectedPhyloreferenceNamed =
+                        phylogeny.additionalNodeProperties[node_label_to_toggle].expectedPhyloreferenceNamed.filter(
                             label => (phyloref_label !== label)
                         );
                 }
+            } else {
+                // We need to add this node label.
+                if(!phylogeny.hasOwnProperty('additionalNodeProperties')) phylogeny.additionalNodeProperties = {};
+                if(!phylogeny.additionalNodeProperties.hasOwnProperty(node_label_to_toggle))
+                    phylogeny.additionalNodeProperties[node_label_to_toggle] = {};
+
+                if(!phylogeny.additionalNodeProperties[node_label_to_toggle].hasOwnProperty('expectedPhyloreferenceNamed'))
+                    phylogeny.additionalNodeProperties[node_label_to_toggle].expectedPhyloreferenceNamed = [];
+
+                // We don't need to delete it from the existing list, because
+                // the previous loop should already have done that!
+                phylogeny.additionalNodeProperties[node_label_to_toggle].expectedPhyloreferenceNamed.push(phyloref_label);
             }
 
-            // Step 2. Update the selected node to mark it as the one this
-            // phyloreference is expected to resolve to.
-            if(!phylogeny.hasOwnProperty('additionalNodeProperties')) phylogeny.additionalNodeProperties = {};
-            if(!phylogeny.additionalNodeProperties.hasOwnProperty(updated_node_label))
-                phylogeny.additionalNodeProperties[updated_node_label] = {};
-
-            if(!phylogeny.additionalNodeProperties[updated_node_label].hasOwnProperty('expectedPhyloreferenceNamed'))
-                phylogeny.additionalNodeProperties[updated_node_label].expectedPhyloreferenceNamed = [];
-
-            // We don't need to delete it from the existing list, because
-            // the previous loop should already have done that!
-            phylogeny.additionalNodeProperties[updated_node_label].expectedPhyloreferenceNamed.push(phyloref_label);
-
             // Did that work?
-            console.log("Additional node properties for '" + updated_node_label + "'", phylogeny.additionalNodeProperties[updated_node_label]);
+            console.log("Additional node properties for '" + node_label_to_toggle + "'", phylogeny.additionalNodeProperties[node_label_to_toggle]);
         },
         get_phylogeny_as_newick: function(node_expr, phylogeny) {
             // Returns the phylogeny as a Newick string. Since this method is
