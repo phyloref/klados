@@ -66,17 +66,19 @@
                 </label>
 
                 <div class="btn-group" role="group">
-                    <button id="export-as-json" type="button" class="btn btn-success" onclick="$('#view-as-json').toggle(300)">Export as JSON</button>
+                    <button id="display-as-json-btn" type="button" class="btn btn-success" onclick="$('#display-as-json').toggle(300)">Display as JSON</button>
                 </div>
             </div>
         </div>
 
         <!-- Displays the test case as a JSON document -->
-        <div id="view-as-json" class="col-md-12" hidden>
+        <div id="display-as-json" class="col-md-12" hidden>
             <div class="panel panel-success">
                 <div class="panel-heading">Test case as JSON</div>
                 <div class="panel-body">
-                    <textarea id="test-content" cols="80" rows="10" v-model="testcase_as_json"></textarea>
+                    <p>The following is a representation of this PHYX in JSON. You
+                    can edit the JSON directly, or copy it elsewhere to save it.</p>
+                    <textarea id="test-content" class="form-control" cols="80" rows="10" v-model="testcase_as_json"></textarea>
                 </div>
             </div>
         </div>
@@ -92,7 +94,7 @@
                             If one is present in the PHYX file, the Curation Tool will
                             allow curators to edit it, but does not allow curators to
                             add it to a PHYX file that is missing it unless it is
-                            manually added to the PHYX file using the "Export as JSON"
+                            manually added to the PHYX file using the "Display as JSON"
                             option.
                         -->
                         <label for="testcase-id" class="col-md-1 control-label">Testcase IRI</label>
