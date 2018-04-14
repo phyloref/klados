@@ -28,7 +28,6 @@ var vm = new Vue({
 
         // The main data model.
         testcase: {
-            '@id': "",
             'doi': "",
             'url': "",
             'citation': "",
@@ -39,7 +38,6 @@ var vm = new Vue({
         // A copy of the data model, used to test when the data model has been
         // modified.
         testcase_as_loaded: {
-            '@id': "",
             'doi': "",
             'url': "",
             'citation': "",
