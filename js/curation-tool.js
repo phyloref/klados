@@ -1094,7 +1094,7 @@ function render_tree(node_expr, phylogeny) {
                 if(
                     vm.selected_phyloref !== undefined &&
                     vm.selected_phyloref.hasOwnProperty('label') &&
-                    vm.selected_phyloref.label == data.name
+                    vm.get_phyloref_expected_node_labels(phylogeny, vm.selected_phyloref).includes(data.name)
                 ) {
                     text_label.classed("selected-internal-label", true);
                 }
