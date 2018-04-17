@@ -498,6 +498,41 @@ var vm = new Vue({
             return undefined;
         },
 
+        // Methods for manipulating phyloreferences.
+        change_selected_phyloref: function(change_to) {
+            // Change the selected phyloreference in different ways.
+
+            if(Number.isInteger(change_to)) {
+                // Increase or decrease the selected phyloreference by the
+                // given number of steps.
+
+                // Do we have a selected phyloref? If not, select the first one.
+                if(this.selected_phyloref === undefined) {
+                    if(this.testcase.phylorefs.length > 0) {
+                        // Select the first phyloreference.
+                        this.selected_phyloref = this.testcase.phylorefs[0];
+                    } else {
+                        // We have no phyloreferences to select! Do nothing.
+                    }
+
+                    return;
+                }
+
+                // We have a selected phyloreference. Switch to the previous or
+                // next one, wrapping at the length.
+                let current_phyloref_index = this.testcase.phylorefs.indexOf(this.selected_phyloref);
+                let new_phyloref_index = (current_phyloref_index + change_to) % this.testcase.phylorefs.length;
+
+                // If we decrement past zero, wrap around to the length.
+                if(new_phyloref_index < 0) new_phyloref_index = (this.testcase.phylorefs.length + new_phyloref_index);
+
+                // Switch to the new selected phyloref.
+                console.log("New phyloref_index: ", new_phyloref_index);
+                this.selected_phyloref = this.testcase.phylorefs[new_phyloref_index];
+                return;
+            }
+        },
+
         // Methods for manipulating nodes in phylogenies.
         get_node_labels_in_phylogeny: function(phylogeny) {
             // Return an iterator to all the node labels in a phylogeny. These
