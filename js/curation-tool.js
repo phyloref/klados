@@ -140,7 +140,18 @@ var vm = new Vue({
             return dict;
         },
         confirm(message, func) {
+            // Confirm an action with the user, then execute it if confirmed.
             if(window.confirm(message)) func();
+        },
+        prompt_and_set_dict(message, dict, key) {
+            // Prompt the user for a string, then set it in a dict.
+            if(dict.hasOwnProperty(key)) {
+                result = window.prompt(message, dict[key]);
+            } else {
+                result = window.prompt(message);
+            }
+
+            if(result !== null) Vue.set(dict, key, result);
         },
 
         // Data model management methods.

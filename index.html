@@ -529,7 +529,7 @@
                         </div>
 
                         <!-- List of specifiers associated with this phyloreference -->
-                        <div class="panel panel-info" style="margin-top: 1em">
+                        <div id="specifiers" class="panel panel-info" style="margin-top: 1em">
                             <div class="panel-heading">Specifiers</div>
                             <div class="panel-body">
                                 <div class="input-group"
@@ -547,7 +547,6 @@
                                         </button>
 
                                         <!-- Match results with dropdown menu -->
-
                                         <button
                                             @click="specifier_dropdown_target = 'match_result'"
                                             type="button" class="btn dropdown-toggle" :class="{ 'btn-warning': get_all_node_labels_matched_by_specifier(specifier).length == 0, 'btn-success': get_all_node_labels_matched_by_specifier(specifier).length > 0}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -559,8 +558,22 @@
                                                 <a href="#" onclick="return false;"><em>No matches</em></a>
                                             </li>
                                             <li v-for="(node_label, node_label_index) of get_all_node_labels_matched_by_specifier(specifier)">
-                                                <a href="#" onclick="return false;">{{node_label}}<a>
+                                                <a href="#" onclick="return false;">{{node_label}}</a>
                                             </li>
+                                            <template v-if="get_all_node_labels_matched_by_specifier(specifier).length === 0">
+                                                <li class="dropdown-header">Specifier will not match</li>
+                                                <li><a href="#specifiers"
+                                                    @click="prompt_and_set_dict('Why couldn\'t this specifier be matched?', specifier, 'specifierWillNotMatch')"
+                                                    >
+                                                        <template v-if="specifier.hasOwnProperty('specifierWillNotMatch')">
+                                                            Reason <small>(click to edit)</small>: {{specifier.specifierWillNotMatch}}
+                                                        </template>
+                                                        <template v-else>
+                                                            <em>No reason given: click here to set one</em>
+                                                        </template>
+                                                    </a>
+                                                </li>
+                                            </template>
                                         </ul>
                                         <ul v-if="specifier_dropdown_target == 'specifier_type'" class="dropdown-menu dropdown-menu-left">
                                             <li class="dropdown-header">Specifier type</li>
