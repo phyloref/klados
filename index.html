@@ -501,8 +501,17 @@
                                                 <a href="#" onclick="return false;"><em>No matches</em></a>
                                             </li>
                                             <li v-for="(node_label, node_label_index) of get_all_node_labels_matched_by_specifier(specifier)">
-                                                <a href="#" onclick="return false;">{{node_label}}<a>
+                                                <a href="#" onclick="return false;">{{node_label}}</a>
                                             </li>
+                                            <template v-if="get_all_node_labels_matched_by_specifier(specifier).length == 0">
+                                                <li class="dropdown-header">Specifier will not match</li>
+                                                <li><a href="#"
+                                                    @click="prompt_for_dict_by_key('Why couldn\'t this specifier be matched?', specifier, 'specifierWillNotMatch'); return false;"
+                                                    >
+                                                        <template v-if="specifier.hasOwnProperty('specifierWillNotMatch')">Reason <small>(click to edit)</small>: {{specifier.specifierWillNotMatch}}</template>
+                                                        <template v-else><em>No reason given: click here to set one</em></template>
+                                                </a></li>
+                                            </template>
                                         </ul>
                                         <ul v-if="specifier_dropdown_target == 'specifier_type'" class="dropdown-menu dropdown-menu-left">
                                             <li class="dropdown-header">Specifier type</li>

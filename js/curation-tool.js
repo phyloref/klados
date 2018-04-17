@@ -28,6 +28,7 @@ var vm = new Vue({
 
         // The main data model.
         testcase: {
+            '@id': "",
             'doi': "",
             'url': "",
             'citation': "",
@@ -38,6 +39,7 @@ var vm = new Vue({
         // A copy of the data model, used to test when the data model has been
         // modified.
         testcase_as_loaded: {
+            '@id': "",
             'doi': "",
             'url': "",
             'citation': "",
@@ -47,18 +49,18 @@ var vm = new Vue({
 
         // UI elements.
         selected_phyloref: undefined,
-        selected_tunit_list_container: undefined,
+        selected_tunit_list: undefined,
         selected_tunit: undefined,
 
         // Phylogeny view modes
         phylogeny_newick_mode_for: undefined,
         phylogeny_annotations_mode_for: undefined,
 
+        // Taxonomic unit editor modal elements
+        tunit_editor_target_label: "(unlabeled)",
+
         // Display the delete buttons on the specifiers.
         specifier_delete_mode: false,
-
-        // Which phylogeny label is currently being edited?
-        phylogeny_description_being_edited: undefined,
 
         // Display one of the two dropdown menus for the specifiers.
         specifier_dropdown_target: 'none',
@@ -139,8 +141,19 @@ var vm = new Vue({
             dict[key].push(value);
             return dict;
         },
-        confirm(message, func) {
-            if(window.confirm(message)) func();
+        prompt_for_dict_by_key: function(message, dict, key) {
+            // Prompt the user for a string to store as a value in a dict.
+
+            var result;
+            if(dict.hasOwnProperty(key)) {
+                result = window.prompt(message, dict[key]);
+            } else {
+                result = window.prompt(message);
+            }
+
+            if(result !== null) {
+                Vue.set(dict, key, result);
+            }
         },
 
         // Data model management methods.
@@ -192,30 +205,22 @@ var vm = new Vue({
             if(type == 'specifier') {
                 // Specifiers store their taxonomic units in their
                 // 'referencesTaxonomicUnits' property.
+                this.tunit_editor_target_label = 'specifier ' + label;
 
                 // Specifiers store their tunit list in referencesTaxonomicUnits.
                 if(!tunit_list_container.hasOwnProperty('referencesTaxonomicUnits'))
                     Vue.set(tunit_list_container, 'referencesTaxonomicUnits', []);
 
-                this.selected_tunit_list_container = {
-                    'type': 'specifier',
-                    'label': label,
-                    'container': tunit_list_container,
-                    'list': tunit_list_container.referencesTaxonomicUnits
-                };
+                this.selected_tunit_list = tunit_list_container.referencesTaxonomicUnits;
             } else if (type == 'node') {
                 // Nodes store their taxonomic units in their
                 // 'representsTaxonomicUnits' property.
+                this.tunit_editor_target_label = 'node: ' + label;
 
                 if(!tunit_list_container.hasOwnProperty('representsTaxonomicUnits'))
                     Vue.set(tunit_list_container, 'representsTaxonomicUnits', []);
 
-                this.selected_tunit_list_container = {
-                    'type': 'node',
-                    'label': label,
-                    'container': tunit_list_container,
-                    'list': tunit_list_container.representsTaxonomicUnits
-                };
+                this.selected_tunit_list = tunit_list_container.representsTaxonomicUnits;
 
             } else {
                 throw "Tunit editor modal started with invalid type: " + type + ".";
@@ -223,15 +228,15 @@ var vm = new Vue({
 
             // If we don't have a first tunit, create an empty, blank one
             // so we don't have to display an empty website.
-            if(this.selected_tunit_list_container.list.length > 0) {
+            if(this.selected_tunit_list.length > 0) {
                 // We have a first tunit, so select it!
-                this.selected_tunit = this.selected_tunit_list_container.list[0];
+                this.selected_tunit = this.selected_tunit_list[0];
             } else {
                 // Specifier doesn't represent any taxonomic unit, but it's
                 // bad UX to just display a blank screen. So let's create a
                 // blank taxonomic unit to work with.
                 var new_tunit = this.create_empty_taxonomic_unit();
-                this.selected_tunit_list_container.list.push(new_tunit);
+                this.selected_tunit_list.push(new_tunit);
                 this.selected_tunit = new_tunit;
             }
 
