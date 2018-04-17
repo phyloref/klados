@@ -549,8 +549,10 @@
                                         <!-- Match results with dropdown menu -->
                                         <button
                                             @click="specifier_dropdown_target = 'match_result'"
-                                            type="button" class="btn dropdown-toggle" :class="{ 'btn-warning': get_all_node_labels_matched_by_specifier(specifier).length == 0, 'btn-success': get_all_node_labels_matched_by_specifier(specifier).length > 0}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <span class="glyphicon" :class="{ 'glyphicon-asterisk': get_all_node_labels_matched_by_specifier(specifier).length == 0, 'glyphicon-ok': get_all_node_labels_matched_by_specifier(specifier).length > 0}"></span>
+                                            type="button" class="btn dropdown-toggle"
+                                                :class="{ 'btn-warning': get_all_node_labels_matched_by_specifier(specifier).length == 0, 'btn-success': get_all_node_labels_matched_by_specifier(specifier).length > 0}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <span class="glyphicon"
+                                                :class="{ 'glyphicon-asterisk': get_all_node_labels_matched_by_specifier(specifier).length == 0, 'glyphicon-ok': (get_all_node_labels_matched_by_specifier(specifier).length > 0) || specifier.hasOwnProperty('specifierWillNotMatch') }"></span>
                                         </button>
                                         <ul v-if="specifier_dropdown_target == 'match_result'" class="dropdown-menu dropdown-menu-left">
                                             <li class="dropdown-header">Match result</li>
