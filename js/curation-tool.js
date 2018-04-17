@@ -390,6 +390,89 @@ var vm = new Vue({
 
             return potential_label;
         },
+        get_phyloref_expected_node_labels: function(phylogeny, phyloref) {
+            // Given a specifier, determine which node labels we expect it to
+            // resolve to. To do this, we:
+            //  1. Find all node labels that are case-sensitively identical
+            //     to the phyloreference.
+            //  2. Find all node labels that have additionalNodeProperties with
+            //     expectedPhyloreferenceNamed case-sensitively identical to
+            //     the phyloreference.
+            let phyloref_label = this.get_phyloref_label(phyloref);
+            let node_labels = new Set();
+            for(node_label of this.get_node_labels_in_phylogeny(phylogeny)) {
+                // Is this node label identical to the phyloreference name?
+                if(node_label === phyloref_label) {
+                    node_labels.add(node_label);
+                    continue;
+                }
+
+                // Does this node label have an expectedPhyloreferenceNamed that
+                // includes this phyloreference name?
+                if(
+                    phylogeny.hasOwnProperty('additionalNodeProperties') &&
+                    phylogeny.additionalNodeProperties.hasOwnProperty(node_label) &&
+                    phylogeny.additionalNodeProperties[node_label].hasOwnProperty('expectedPhyloreferenceNamed')
+                ) {
+                    let expectedPhylorefs = phylogeny.additionalNodeProperties[node_label].expectedPhyloreferenceNamed;
+
+                    if(expectedPhylorefs.includes(phyloref_label)) {
+                        node_labels.add(node_label);
+                        continue;
+                    }
+                }
+            }
+
+            // Return node labels sorted alphabetically.
+            return Array.from(node_labels).sort();
+        },
+        toggle_phyloref_expected_node_label: function(phylogeny, phyloref, node_label_to_toggle) {
+            // Change the PHYX model so that the provided node label is either
+            // added to the list of nodes we expect this phyloreference to resolve
+            // to, or removed from that list.
+            //
+            // In the user interface, the expected node label is a property of
+            // the phyloreference, which is the most reasonable approach for
+            // curators. However, in the data model, this is a property of the
+            // phylogeny, which is where all phyloreference resolution expectations
+            // should be. Therefore, this method will actually modify the phylogeny in
+            // order to set where this phyloreference is expected to resolve.
+            // See https://github.com/phyloref/curation-tool/issues/32 for more
+            // information.
+            //
+            let phyloref_label = this.get_phyloref_label(phyloref);
+            let current_expected_node_labels = this.get_phyloref_expected_node_labels(phylogeny, phyloref);
+
+            if(current_expected_node_labels.includes(node_label_to_toggle)) {
+                // We need to delete this node label.
+                if(
+                    phylogeny.hasOwnProperty('additionalNodeProperties') &&
+                    phylogeny.additionalNodeProperties.hasOwnProperty(node_label_to_toggle) &&
+                    phylogeny.additionalNodeProperties[node_label_to_toggle].hasOwnProperty('expectedPhyloreferenceNamed')
+                ) {
+                    // Delete this phyloreference from the provided node label.
+                    phylogeny.additionalNodeProperties[node_label_to_toggle].expectedPhyloreferenceNamed =
+                        phylogeny.additionalNodeProperties[node_label_to_toggle].expectedPhyloreferenceNamed.filter(
+                            label => (phyloref_label !== label)
+                        );
+                }
+            } else {
+                // We need to add this node label.
+                if(!phylogeny.hasOwnProperty('additionalNodeProperties')) phylogeny.additionalNodeProperties = {};
+                if(!phylogeny.additionalNodeProperties.hasOwnProperty(node_label_to_toggle))
+                    phylogeny.additionalNodeProperties[node_label_to_toggle] = {};
+
+                if(!phylogeny.additionalNodeProperties[node_label_to_toggle].hasOwnProperty('expectedPhyloreferenceNamed'))
+                    phylogeny.additionalNodeProperties[node_label_to_toggle].expectedPhyloreferenceNamed = [];
+
+                // We don't need to delete it from the existing list, because
+                // the previous loop should already have done that!
+                phylogeny.additionalNodeProperties[node_label_to_toggle].expectedPhyloreferenceNamed.push(phyloref_label);
+            }
+
+            // Did that work?
+            console.log("Additional node properties for '" + node_label_to_toggle + "'", phylogeny.additionalNodeProperties[node_label_to_toggle]);
+        },
         get_phylogeny_as_newick: function(node_expr, phylogeny) {
             // Returns the phylogeny as a Newick string. Since this method is
             // called frequently in rendering the "Edit as Newick" textareas,
@@ -513,15 +596,14 @@ var vm = new Vue({
         },
 
         // Methods for manipulating nodes in phylogenies.
-        get_node_labels_in_phylogeny: function(phylogeny) {
-            // Return an iterator to all the node labels in a phylogeny. These
-            // node labels come from two sources:
-            //  1. We look for node names in the Newick string.
-            //  2. We look for node names in the additionalNodeProperties.
+        get_node_labels_in_phylogeny: function(phylogeny, node_type = 'both') {
+            // Return an iterator to all the node labels in a phylogeny by
+            // looking for node names in the Newick string.
             //
-            // This means that we can pick up both (1) nodes in the Newick
-            // string without any additional properties, and (2) nodes with
-            // additional node properties which are not present.
+            // The node_type determines what type of nodes we return:
+            // - 'both': Return both internal and terminal node labels
+            // - 'internal': Return only internal node labels
+            // - 'terminal': Return only terminal node labels
 
             var node_labels = new Set();
 
@@ -529,7 +611,7 @@ var vm = new Vue({
             var newick = phylogeny.newick;
             if(newick == null)
                 newick = '()';
-            console.log("get_node_labels_in_phylogeny(" + newick + ")");
+            // console.log("get_node_labels_in_phylogeny(" + newick + ")");
 
             // Use PhyloTree's Newick parser to convert the Newick string
             // into a tree-based representation, which we can recurse through
@@ -543,8 +625,19 @@ var vm = new Vue({
                 var add_node_and_children_to_node_labels = function(node) {
                     // console.log("Recursing into: " + JSON.stringify(node));
 
-                    if(node.hasOwnProperty('name') && node.name != '')
-                        node_labels.add(node.name);
+                    if(node.hasOwnProperty('name') && node.name != '') {
+                        let node_has_children = node.hasOwnProperty('children') && node.children.length > 0;
+
+                        // Only add the node label if it is the type of node
+                        // we're interested in.
+                        if(
+                            node_type === 'both' ||
+                            (node_type === 'internal' && node_has_children) ||
+                            (node_type === 'terminal' && !node_has_children)
+                        ) {
+                            node_labels.add(node.name);
+                        }
+                    }
 
                     if(node.hasOwnProperty('children')) {
                         for(child of node.children) {
@@ -555,13 +648,6 @@ var vm = new Vue({
 
                 // Recurse away!
                 add_node_and_children_to_node_labels(parsed.json);
-            }
-
-            // Names from additionalNodeProperties
-            if(phylogeny.hasOwnProperty('additionalNodeProperties')) {
-                for(key of Object.keys(phylogeny.additionalNodeProperties)) {
-                    node_labels.add(key);
-                }
             }
 
             return Array.from(node_labels);
@@ -975,7 +1061,7 @@ function render_tree(node_expr, phylogeny) {
                 if(
                     vm.selected_phyloref !== undefined &&
                     vm.selected_phyloref.hasOwnProperty('label') &&
-                    vm.selected_phyloref.label == data.name
+                    vm.get_phyloref_expected_node_labels(phylogeny, vm.selected_phyloref).includes(data.name)
                 ) {
                     text_label.classed("selected-internal-label", true);
                 }
