@@ -719,36 +719,154 @@
         {
             "label": "Crocodylidae (alt)",
             "cladeDefinition": "Crocodylidae (Cuvier 1807).\n\nLast common ancestor of Crocodylus niloticus and Osteolaemus tetraspis and all of its descendents.",
-            "internalSpecifiers": [],
+            "internalSpecifiers": [
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Osteolaemus tetraspis"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Crocodylus niloticus"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
             "externalSpecifiers": [],
             "curatorComments": "Not illustrated on fig 1."
         },
         {
             "label": "Crocodylinae (alt)",
             "cladeDefinition": "Crocodylinae (Cuvier 1807). At present, this would be redundant with Crocodylus.\n\nCrocodylus niloticus and all crocodylians closer to it than to Osteolaemus tetraspis.",
-            "internalSpecifiers": [],
-            "externalSpecifiers": [],
+            "internalSpecifiers": [
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Crocodylus niloticus"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "externalSpecifiers": [
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Osteolaemus tetraspis"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
             "curatorComments": "Not illustrated in fig 1."
         },
         {
             "label": "Gavialidae (alt)",
             "cladeDefinition": "Gavialidae (Adams 1854). In a morphological context, Gavialidae would be redundant with Gavialis gangeticus.\n\nLast common ancestor of Gavialis gangeticus and Tomistoma schlegelii and all of its descendents.",
-            "internalSpecifiers": [],
+            "internalSpecifiers": [
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Tomistoma schlegelii"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Gavialis gangeticus"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
             "externalSpecifiers": [],
             "curatorComments": "Not illustrated in fig 1."
         },
         {
             "label": "Tomistominae (alt)",
             "cladeDefinition": "Tomistominae (Kälin 1955).\n\nTomistoma schlegelii and all crocodylians closer to it than to Gavialis gangeticus.",
-            "internalSpecifiers": [],
-            "externalSpecifiers": [],
+            "internalSpecifiers": [
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Tomistoma schlegelii"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "externalSpecifiers": [
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Gavialis gangeticus"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
             "curatorComments": "Not illustrated in fig 1."
         },
         {
             "label": "Gavialinae (alt)",
             "cladeDefinition": "Gavialinae (Nopcsa 1923).\n\nGavialis gangeticus and all crocodylians closer to it than to Tomistoma schlegelii.",
-            "internalSpecifiers": [],
-            "externalSpecifiers": [],
+            "internalSpecifiers": [
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Gavialis gangeticus"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "externalSpecifiers": [
+                {
+                    "referencesTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Tomistoma schlegelii"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
             "curatorComments": "Not illustrated in fig 1"
         }
     ],
