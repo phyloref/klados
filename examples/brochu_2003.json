@@ -21,6 +21,26 @@
                     "expectedPhyloreferenceNamed": [
                         "Tomistominae"
                     ]
+                },
+                "Alligatoridae": {
+                    "expectedPhyloreferenceNamed": [
+                        "Globidonta"
+                    ]
+                },
+                "Alligator mississippiensis": {
+                    "expectedPhyloreferenceNamed": [
+                        "Alligatorinae"
+                    ]
+                },
+                "Caiman crocodilus": {
+                    "expectedPhyloreferenceNamed": [
+                        "Caimaninae"
+                    ]
+                },
+                "Crocodylidae": {
+                    "expectedPhyloreferenceNamed": [
+                        "Crocodyloidea"
+                    ]
                 }
             }
         }
