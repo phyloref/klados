@@ -467,9 +467,9 @@ var vm = new Vue({
 
                 // First, we need to make sure we have additional node properties
                 // and expected phyloreference named for this node. If not, make them!
-                if(!phylogeny.hasOwnProperty('additionalNodeProperties')) phylogeny.additionalNodeProperties = {};
+                if(!phylogeny.hasOwnProperty('additionalNodeProperties')) Vue.set(phylogeny, 'additionalNodeProperties', {});
                 if(!phylogeny.additionalNodeProperties.hasOwnProperty(node_label_to_toggle))
-                    phylogeny.additionalNodeProperties[node_label_to_toggle] = {};
+                    Vue.set(phylogeny.additionalNodeProperties, node_label_to_toggle, {});
 
                 if(!phylogeny.additionalNodeProperties[node_label_to_toggle].hasOwnProperty('expectedPhyloreferenceNamed'))
                     phylogeny.additionalNodeProperties[node_label_to_toggle].expectedPhyloreferenceNamed = [];
