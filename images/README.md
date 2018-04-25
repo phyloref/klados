@@ -1,1 +1,1 @@
-# Folder created to store images related to the curation tool
+# Folder for storing images related to the curation tool
