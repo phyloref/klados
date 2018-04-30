@@ -74,7 +74,7 @@ var vm = new Vue({
 
     // Filters to be used in the template.
     filters: {
-        capitalize: function(value) {
+        capitalize(value) {
             // Capitalize the input value.
             if(!value) return '';
             value = value.toString();
@@ -84,7 +84,7 @@ var vm = new Vue({
 
     // Computed values inside the data model.
     computed: {
-        modified: function() {
+        modified() {
             // Return true if the testcase has been modified.
             if(this.testcaseAsLoaded === undefined) return false;
 
@@ -93,17 +93,17 @@ var vm = new Vue({
         },
         phyxAsJSON: {
             // Get or set the testcase as JSON text.
-            get: function() {
+            get() {
                 // Pretty print JSON with 4 spaces at the start of each line.
                 return JSON.stringify(this.testcase, undefined, 4);
             },
-            set: function(jsonText) {
+            set(jsonText) {
                 this.testcase = JSON.parse(jsonText);
             }
         },
         doiWithoutPrefix: {
             // Extract the DOI from the '@id' or 'url'.
-            get: function() {
+            get() {
                 // Is there a DOI? If so, use that.
                 if(this.testcase.hasOwnProperty('doi') && this.testcase.doi != "") {
                     return this.testcase.doi;
@@ -112,12 +112,12 @@ var vm = new Vue({
                 // If not, look for a DOI among the '@id' and the 'url'.
                 return identifyDOI(this.testcase);
             },
-            set: function(newDOI) {
+            set(newDOI) {
                 // Set the DOI.
                 this.testcase.doi = newDOI;
             }
         },
-        doiAsURL: function() {
+        doiAsURL() {
             // We compute this from testcase.doi, which should always be without
             // the prefix.
             return this.DOI_PREFIX + this.testcase.doi;
@@ -127,14 +127,14 @@ var vm = new Vue({
     // Methods for carrying out various tasks.
     methods: {
         // Helper methods.
-        openURL: function(url, target='_blank') {
+        openURL(url, target='_blank') {
             // Open the specified URL.
             if(url === undefined || url === null) return;
             if(url == "") return;
 
             window.open(url, target);
         },
-        createOrAppend: function(dict, key, value) {
+        createOrAppend(dict, key, value) {
             // A common case is where we need to append to an array for a key
             // in a dictionary, but we don't know if the key exists or not.
             // Furthermore, in order for Vue to track the new array, it needs
@@ -160,13 +160,11 @@ var vm = new Vue({
         },
 
         // Data model management methods.
-        loadPHYXFromURL: function(url) {
+        loadPHYXFromURL(url) {
             // Change the current PHYX to that in the provided URL.
             // Will ask the user to confirm before replacing it.
 
-            $.getJSON(url, function(data) {
-                setPHYX(data);
-            }).fail(function(error) {
+            $.getJSON(url, data => setPHYX(data)).fail((error) => {
                 console.log("Could not load PHYX file '", url, "': ", error);
                 if(error.status == 200) {
                     alert("Could not load PHYX file '" + url + "': file malformed, see console for details.");
@@ -177,7 +175,7 @@ var vm = new Vue({
         },
 
         // User interface helper methods.
-        closeCurrentStudy: function() {
+        closeCurrentStudy() {
             // Close the current study. If it has been modified,
             // warn the user before closing in order to allow changes to be
             // saved.
@@ -188,7 +186,7 @@ var vm = new Vue({
                 return true;
             }
         },
-        startTUnitEditorModal: function(type, label, tunitListContainer) {
+        startTUnitEditorModal(type, label, tunitListContainer) {
             // Start a modal dialog box that allows the taxonomic units associated
             // with either a specifier or a node to be edited.
             //  - type: must be 'specifier' or 'node'
@@ -257,7 +255,7 @@ var vm = new Vue({
             });
             $('#tunit-editor-modal').modal();
         },
-        closeTUnitEditorModal: function() {
+        closeTUnitEditorModal() {
             // Close the taxonomic unit editor modal.
 
             // We've set up a data-dismiss to do that, so we don't need to do
@@ -265,7 +263,7 @@ var vm = new Vue({
         },
 
         // Methods for listing and modifying specifiers.
-        getSpecifiers: function(phyloref) {
+        getSpecifiers(phyloref) {
             // Combine the internal and external specifiers into a single list,
             // with internal specifiers before external specifiers.
 
@@ -276,7 +274,7 @@ var vm = new Vue({
             specifiers = specifiers.concat(phyloref.externalSpecifiers);
             return specifiers;
         },
-        getSpecifierType: function(phyloref, specifier) {
+        getSpecifierType(phyloref, specifier) {
             // For a given specifier, return a string indicating whether it is
             // an 'Internal' or 'External' specifier.
 
@@ -284,7 +282,7 @@ var vm = new Vue({
             if(phyloref.hasOwnProperty('externalSpecifiers') && phyloref.externalSpecifiers.includes(specifier)) return "External";
             return "Specifier";
         },
-        setSpecifierType: function(phyloref, specifier, specifierType) {
+        setSpecifierType(phyloref, specifier, specifierType) {
             // Change the type of a given specifier. To do this, we first need
             // to determine if it was originally an internal or external
             // specifier, then move it into the other list.
@@ -310,7 +308,7 @@ var vm = new Vue({
                 // Neither internal nor external? Ignore.
             }
         },
-        deleteSpecifier: function(phyloref, specifier) {
+        deleteSpecifier(phyloref, specifier) {
             // Since the user interface combines specifiers into a si**ngle list,
             // it doesn't remember if the specifier to be deleted is internal
             // or external. We delete the intended specifier from both arrays.
@@ -327,7 +325,7 @@ var vm = new Vue({
         },
 
         // Methods for building human-readable labels for model elements.
-        getTaxonomicUnitLabel: function(tu) {
+        getTaxonomicUnitLabel(tu) {
             // Try to determine the label of a taxonomic unit. This checks the
             // 'label' and 'description' properties, and then tries to create a
             // descriptive label by combining the scientific names, specimens
@@ -369,7 +367,7 @@ var vm = new Vue({
 
             return labels.join(', ');
         },
-        getSpecifierLabel: function(specifier) {
+        getSpecifierLabel(specifier) {
             // Try to determine the label of a specifier. This checks the
             // 'label' and 'description' properties, and then tries to create a
             // descriptive label by using the list of referenced taxonomic units.
@@ -384,14 +382,14 @@ var vm = new Vue({
 
             // Look at the individual taxonomic units.
             if('referencesTaxonomicUnits' in specifier) {
-                var labels = specifier.referencesTaxonomicUnits.map(function(tu) { return vm.getTaxonomicUnitLabel(tu); });
+                var labels = specifier.referencesTaxonomicUnits.map(tu => vm.getTaxonomicUnitLabel(tu));
                 if(labels.length > 0) return labels.join('; ');
             }
 
             // No idea!
             return "Unnamed specifier";
         },
-        getPhylorefLabel: function(phyloref) {
+        getPhylorefLabel(phyloref) {
             // Try to determine what the label of a particular phyloreference is,
             // or default to 'Phyloreference <count>'. This checks the 'label' and
             // 'title' properties, and truncates them to 50 characters.
@@ -407,7 +405,7 @@ var vm = new Vue({
 
             return potentialLabel;
         },
-        getPhylorefExpectedNodeLabels: function(phylogeny, phyloref) {
+        getPhylorefExpectedNodeLabels(phylogeny, phyloref) {
             // Given a specifier, determine which node labels we expect it to
             // resolve to. To do this, we:
             //  1. Find all node labels that are case-sensitively identical
@@ -443,7 +441,7 @@ var vm = new Vue({
             // Return node labels sorted alphabetically.
             return Array.from(nodeLabels).sort();
         },
-        togglePhylorefExpectedNodeLabel: function(phylogeny, phyloref, nodeLabelToToggle) {
+        togglePhylorefExpectedNodeLabel(phylogeny, phyloref, nodeLabelToToggle) {
             // Change the PHYX model so that the provided node label is either
             // added to the list of nodes we expect this phyloreference to resolve
             // to, or removed from that list.
@@ -493,7 +491,7 @@ var vm = new Vue({
             // Did that work?
             console.log("Additional node properties for '" + nodeLabelToToggle + "'", phylogeny.additionalNodeProperties[nodeLabelToToggle]);
         },
-        getPhylogenyAsNewick: function(nodeExpr, phylogeny) {
+        getPhylogenyAsNewick(nodeExpr, phylogeny) {
             // Returns the phylogeny as a Newick string. Since this method is
             // called frequently in rendering the "Edit as Newick" textareas,
             // we hijack it to redraw the phylogenies.
@@ -509,7 +507,7 @@ var vm = new Vue({
         },
 
         // Methods for creating new, empty data model elements.
-        createEmptyPhyloref: function(count) {
+        createEmptyPhyloref(count) {
             // Create an empty phyloreference. We label it, but leave other
             // fields blank.
 
@@ -520,13 +518,13 @@ var vm = new Vue({
                 externalSpecifiers: []
             }
         },
-        createEmptySpecifier: function(count) {
+        createEmptySpecifier(count) {
             // Create an empty specifier. No fields are required, so we
             // create a blank object and return that.
 
             return {};
         },
-        createEmptyTaxonomicUnit: function(count) {
+        createEmptyTaxonomicUnit(count) {
             // Create an empty taxonomic unit. No fields are required, so
             // we create a blank object and return that.
 
@@ -534,21 +532,21 @@ var vm = new Vue({
         },
 
         // Methods for parsing scientific name.
-        getScientificNameComponents: function(scname) {
+        getScientificNameComponents(scname) {
             // Return the components of a scientific name by splitting its
             // scientificName field using spaces.
 
             if(!scname.hasOwnProperty('scientificName')) return [];
             return scname.scientificName.split(/\s+/);
         },
-        getGenus: function(scname) {
+        getGenus(scname) {
             // Guess the genus name of a scientific name by using its first component.
 
             comps = this.getScientificNameComponents(scname);
             if(comps.length >= 1) return comps[0];
             return undefined;
         },
-        getSpecificEpithet: function(scname) {
+        getSpecificEpithet(scname) {
             // Get the specific epithet name of a scientific name by using its
             // second component.
 
@@ -556,7 +554,7 @@ var vm = new Vue({
             if(comps.length >= 2) return comps[1];
             return undefined;
         },
-        getBinomialName: function(scname) {
+        getBinomialName(scname) {
             // Get the binomial name of a scientific name by combining its
             // first and second components.
 
@@ -568,7 +566,7 @@ var vm = new Vue({
         },
 
         // Methods for parsing specimen identifiers.
-        getSpecimenComponents: function(specimen) {
+        getSpecimenComponents(specimen) {
             // Split the occurrence ID into components by splitting them at
             // colons. The two expected formats are:
             //  - 'urn:catalog:[institutionCode]:[collectionCode]:[catalogNumber]'
@@ -582,7 +580,7 @@ var vm = new Vue({
             }
             return occurID.split(/\s*:\s*/);
         },
-        getInstitutionCode: function(specimen) {
+        getInstitutionCode(specimen) {
             // Extract an institution code from the occurrence ID. If only
             // two components are provided, we assume they are the institution
             // code and the catalog number.
@@ -593,7 +591,7 @@ var vm = new Vue({
             if(comps.length >= 3) return comps[0];
             return undefined;
         },
-        getCollectionCode: function(specimen) {
+        getCollectionCode(specimen) {
             // Extract a collection code from the occurrence ID. If only
             // two components are provided, we assume they are the institution
             // code and the catalog number, and so no collection code is extracted.
@@ -602,7 +600,7 @@ var vm = new Vue({
             if(comps.length >= 3) return comps[1];
             return undefined;
         },
-        getCatalogNumber: function(specimen) {
+        getCatalogNumber(specimen) {
             // Extract a catalog number from the occurrence ID. If only one
             // component is provided, we assume that it is the catalog number.
             // If only two components are provided, we assume they are the
@@ -616,7 +614,7 @@ var vm = new Vue({
         },
 
         // Methods for manipulating phyloreferences.
-        changeSelectedPhyloref: function(changeTo) {
+        changeSelectedPhyloref(changeTo) {
             // Change the selected phyloreference in different ways.
 
             if(Number.isInteger(changeTo)) {
@@ -651,7 +649,7 @@ var vm = new Vue({
         },
 
         // Methods for manipulating nodes in phylogenies.
-        getNodeLabelsInPhylogeny: function(phylogeny, nodeType) {
+        getNodeLabelsInPhylogeny(phylogeny, nodeType='both') {
             // Return an iterator to all the node labels in a phylogeny. These
             // node labels come from two sources:
             //  1. We look for node names in the Newick string.
@@ -679,7 +677,7 @@ var vm = new Vue({
             // recurse through that tree instead of re-parsing the Newick string.
             var parsed = d3.layout.newick_parser(newick);
             if(parsed.hasOwnProperty('json')) {
-                var addNodeAndChildrenToNodeLabels = function(node) {
+                function addNodeAndChildrenToNodeLabels(node) {
                     // console.log("Recursing into: " + JSON.stringify(node));
 
                     if(node.hasOwnProperty('name') && node.name != '') {
@@ -701,7 +699,7 @@ var vm = new Vue({
                             addNodeAndChildrenToNodeLabels(child);
                         }
                     }
-                };
+                }
 
                 // Recurse away!
                 addNodeAndChildrenToNodeLabels(parsed.json);
@@ -711,7 +709,7 @@ var vm = new Vue({
         },
 
         // Return a list of taxonomic units for a node label.
-        getTaxonomicUnitsForNodeLabelInPhylogeny: function(phylogeny, nodeLabel) {
+        getTaxonomicUnitsForNodeLabelInPhylogeny(phylogeny, nodeLabel) {
             // Look up additional node properties.
             var additionalNodeProperties = {};
             if(
@@ -738,7 +736,7 @@ var vm = new Vue({
         },
 
         // Taxonomic unit matching!
-        getAllNodeLabelsMatchedBySpecifier: function(specifier) {
+        getAllNodeLabelsMatchedBySpecifier(specifier) {
             // Return a list of node labels matched by a given specifier.
             // Wrapper for running getNodeLabelsMatchedBySpecifier() on
             // all currently loaded phylogenies.
@@ -757,7 +755,7 @@ var vm = new Vue({
             return nodeLabelsWithPrefix;
         },
 
-        getNodeLabelsMatchedBySpecifier: function(specifier, phylogeny) {
+        getNodeLabelsMatchedBySpecifier(specifier, phylogeny) {
             // Return a list of node labels matched by a given specifier on
             // a given phylogeny.
             // Wrapper for testWhetherSpecifierMatchesNode() on every node label in
@@ -765,12 +763,12 @@ var vm = new Vue({
 
             let localVM = this;
 
-            return localVM.getNodeLabelsInPhylogeny(phylogeny).filter(function(nodeLabel) {
-                return localVM.testWhetherSpecifierMatchesNode(specifier, phylogeny, nodeLabel);
-            });
+            return localVM.getNodeLabelsInPhylogeny(phylogeny).filter(
+                nodeLabel => localVM.testWhetherSpecifierMatchesNode(specifier, phylogeny, nodeLabel)
+            );
         },
 
-        testWhetherSpecifierMatchesNode: function(specifier, phylogeny, nodeLabel) {
+        testWhetherSpecifierMatchesNode(specifier, phylogeny, nodeLabel) {
             // Tests whether a specifier matches a node in a phylogeny.
 
             // Does the specifier have any taxonomic units? If not, we can't
@@ -1058,11 +1056,11 @@ function loadPHYXFromFileInput(fileInput) {
 
     file = fileInput.prop('files')[0];
     fr = new FileReader();
-    fr.onload = function(e) {
+    fr.onload = ((e) => {
         lines = e.target.result;
         testcase = JSON.parse(lines);
         setPHYX(testcase);
-    };
+    });
     fr.readAsText(file);
 }
 
@@ -1086,7 +1084,7 @@ function renderTree(nodeExpr, phylogeny) {
 
     // The node styler provides information on styling nodes within the
     // phylogeny.
-    var nodeStyler = function (element, data) {
+    function nodeStyler(element, data) {
         if(data.hasOwnProperty('name') && data.children) {
             // If the node has a label and has children (i.e. is an internal node),
             // we display it next to the node by creating a new 'text' element.
@@ -1168,7 +1166,7 @@ function renderTree(nodeExpr, phylogeny) {
     // representation doesn't annotate internal nodes. We add a method to allow
     // us to do that here.
     tree.get_newick_with_internal_labels = function() {
-        return this.get_newick(function(node) {
+        return this.get_newick((node) => {
             // Don't annotate terminal nodes.
             if(!node.children) return;
 
@@ -1179,7 +1177,7 @@ function renderTree(nodeExpr, phylogeny) {
         //   that here.
     };
 
-    tree.get_nodes().forEach(function(node) {
+    tree.get_nodes().forEach((node) => {
         // All nodes (including named nodes) can be renamed.
         // Renaming a node will cause the phylogeny.newick property to
         // be changed, which should cause Vue.js to cause the tree to be
@@ -1189,7 +1187,7 @@ function renderTree(nodeExpr, phylogeny) {
 
         d3.layout.phylotree.add_custom_menu(
             node,
-            function(node) { return "Edit label: " + (isNodeLabeled ? label : "none"); },
+            (node) => "Edit label: " + (isNodeLabeled ? label : "none"),
             function() {
                 // Ask the user for a new label.
                 let result = window.prompt(
@@ -1252,7 +1250,7 @@ function renderTree(nodeExpr, phylogeny) {
             if(node.name !== "") {
                 d3.layout.phylotree.add_custom_menu(
                     node,
-                    function(node) { return "Edit taxonomic units"; },
+                    (node) => "Edit taxonomic units",
                     function() {
                         // console.log("Edit taxonomic units activated with: ", node);
 
