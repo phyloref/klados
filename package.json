@@ -1,0 +1,29 @@
+{
+  "name": "curation-tool",
+  "version": "0.1.0",
+  "description": "A tool to curate phyloreferences",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "lint": "eslint \"js/**\" \"examples/**\" --ext .js,.json",
+    "pretest": "npm run lint",
+    "test": "echo \"No tests\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/phyloref/curation-tool.git"
+  },
+  "contributors": [
+    "Gaurav Vaidya <gaurav@ggvaidya.com> (http://ggvaidya.com/)"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/phyloref/curation-tool/issues"
+  },
+  "homepage": "https://github.com/phyloref/curation-tool#readme",
+  "devDependencies": {
+    "eslint": "^4.19.1",
+    "eslint-plugin-json": "^1.2.0"
+  }
+}
