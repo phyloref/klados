@@ -4,6 +4,18 @@
  */
 
 // GLOBAL VARIABLES
+// List of example files to provide in the "Examples" dropdown.
+var example_phyx_urls = [
+    {
+        url: "examples/fisher_et_al_2007.json",
+        title: "Fisher et al, 2007"
+    },
+    {
+        url: "examples/hillis_and_wilcox_2005.json",
+        title: "Hillis and Wilcox, 2005"
+    }
+];
+
 // Set up the Vue object which contains the entire model.
 var vm = new Vue({
     // The element to install Vue onto.
@@ -50,8 +62,14 @@ var vm = new Vue({
         // Display the delete buttons on the specifiers.
         specifier_delete_mode: false,
 
+        // Which phylogeny label is currently being edited?
+        phylogeny_description_being_edited: undefined,
+
         // Display one of the two dropdown menus for the specifiers.
-        specifier_dropdown_target: 'none'
+        specifier_dropdown_target: 'none',
+
+        // Example PHYX URLs to display
+        example_phyx_urls: example_phyx_urls
     },
 
     // Filters to be used in the template.
@@ -125,6 +143,26 @@ var vm = new Vue({
             if(!(key in dict)) Vue.set(dict, key, []);
             dict[key].push(value);
             return dict;
+        },
+        confirm(message, func) {
+            if(window.confirm(message)) func();
+        },
+
+        // Data model management methods.
+        load_phyx_from_url: function(url) {
+            // Change the current PHYX to that in the provided URL.
+            // Will ask the user to confirm before replacing it.
+
+            $.getJSON(url, function(data) {
+                display_testcase(data);
+            }).fail(function(error) {
+                console.log("Could not load PHYX file '", url, "': ", error);
+                if(error.status == 200) {
+                    alert("Could not load PHYX file '" + url + "': file malformed, see console for details.");
+                } else {
+                    alert("Could not load PHYX file '" + url + "': server error " + error.status + " " + error.statusText);
+                }
+            });
         },
 
         // User interface helper methods.
@@ -464,6 +502,41 @@ var vm = new Vue({
             if(comps.length == 2) return comps[1];
             if(comps.length >= 3) return comps[2];
             return undefined;
+        },
+
+        // Methods for manipulating phyloreferences.
+        change_selected_phyloref: function(change_to) {
+            // Change the selected phyloreference in different ways.
+
+            if(Number.isInteger(change_to)) {
+                // Increase or decrease the selected phyloreference by the
+                // given number of steps.
+
+                // Do we have a selected phyloref? If not, select the first one.
+                if(this.selected_phyloref === undefined) {
+                    if(this.testcase.phylorefs.length > 0) {
+                        // Select the first phyloreference.
+                        this.selected_phyloref = this.testcase.phylorefs[0];
+                    } else {
+                        // We have no phyloreferences to select! Do nothing.
+                    }
+
+                    return;
+                }
+
+                // We have a selected phyloreference. Switch to the previous or
+                // next one, wrapping at the length.
+                let current_phyloref_index = this.testcase.phylorefs.indexOf(this.selected_phyloref);
+                let new_phyloref_index = (current_phyloref_index + change_to) % this.testcase.phylorefs.length;
+
+                // If we decrement past zero, wrap around to the length.
+                if(new_phyloref_index < 0) new_phyloref_index = (this.testcase.phylorefs.length + new_phyloref_index);
+
+                // Switch to the new selected phyloref.
+                console.log("New phyloref_index: ", new_phyloref_index);
+                this.selected_phyloref = this.testcase.phylorefs[new_phyloref_index];
+                return;
+            }
         },
 
         // Methods for manipulating nodes in phylogenies.
@@ -846,18 +919,6 @@ function display_testcase(testcase) {
 }
 
 /**
- * load_json_from_url(url)
- *
- * Load a JSON from the provided URL. This either needs to be a JSONP request or
- * on the same domain as this website.
- */
-function load_json_from_url(url) {
-    $.getJSON(url, function(data) {
-        display_testcase(data);
-    });
-}
-
-/**
  * load_json_from_local(file_input)
  *
  * Load a JSON file from the local file system using FileReader. file_input
@@ -923,19 +984,15 @@ function render_tree(node_expr, phylogeny) {
             // we display it next to the node by creating a new 'text' element.
 
             // Make sure we don't already have an internal label node on this SVG node!
-            var label = element.selectAll(".internal_label");
+            var label = element.selectAll(".internal-label");
             if(label.empty()) {
                 var text_label = element.append("text");
 
-                // TODO: Once we're happy with how these elements look,
-                // we should move all this complexity into CSS classes.
-                text_label.classed("internal_label", true)
+                // Place internal label .3em to the right and below the node itself.
+                text_label.classed("internal-label", true)
                     .text(data.name)
-                    .attr("dx", ".4em")
-                    .attr("dy", ".3em")
-                    .style("font-style", "italic")
-                    .attr("text-anchor", "start")
-                    .attr("alignment-baseline", "middle");
+                    .attr("dx", ".3em")
+                    .attr("dy", ".3em");
 
                 // If the internal label has the same label as the currently
                 // selected phyloreference, make it bolder and turn it blue.
@@ -944,8 +1001,7 @@ function render_tree(node_expr, phylogeny) {
                     vm.selected_phyloref.hasOwnProperty('label') &&
                     vm.selected_phyloref.label == data.name
                 ) {
-                    text_label.style('fill', 'blue')
-                        .style('font-weight', 'bolder');
+                    text_label.classed("selected-internal-label", true);
                 }
             }
         }
@@ -955,8 +1011,7 @@ function render_tree(node_expr, phylogeny) {
             var tunits = vm.get_tunits_for_node_label_in_phylogeny(phylogeny, data.name);
 
             if(tunits.length == 0) {
-                element.style('fill', 'red')
-                    .style('font-style', 'italic');
+                element.classed('terminal-node-without-tunits', true);
             } else if(vm.selected_phyloref !== undefined) {
                 // If there's a selected phyloref, we should highlight
                 // specifiers:
@@ -965,16 +1020,14 @@ function render_tree(node_expr, phylogeny) {
                 if(vm.selected_phyloref.hasOwnProperty('internalSpecifiers')) {
                     for(let specifier of vm.selected_phyloref.internalSpecifiers) {
                         if(vm.test_whether_specifier_match_node(specifier, phylogeny, data.name)) {
-                            element.style('fill', 'green')
-                                .style('font-weight', 'bolder');
+                            element.classed('node internal-specifier-node', true);
                         }
                     }
                 }
                 if(vm.selected_phyloref.hasOwnProperty('externalSpecifiers')) {
                     for(let specifier of vm.selected_phyloref.externalSpecifiers) {
                         if(vm.test_whether_specifier_match_node(specifier, phylogeny, data.name)) {
-                            element.style('fill', 'red')
-                                .style('font-weight', 'bolder');
+                            element.classed('node external-specifier-node', true);
                         }
                     }
                 }
@@ -1112,7 +1165,8 @@ function render_tree(node_expr, phylogeny) {
     });
 
     tree
-        .spacing_x(20).spacing_y(50)
+        .spacing_x(20)
+        .spacing_y(40)
         .placenodes()
         .update()
     ;
