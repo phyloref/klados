@@ -4,6 +4,10 @@
  */
 
 // GLOBAL VARIABLES
+
+// Tell ESLint about globals imported in the HTML page.
+/* global Vue */
+
 // List of example files to provide in the "Examples" dropdown.
 const examplePHYXURLs = [
   {
@@ -21,9 +25,19 @@ const examplePHYXURLs = [
 ];
 
 // Set up the Vue object which contains the entire model.
-var vm = new Vue({
+const vm = new Vue({
   // The element to install Vue onto.
   el: '#app',
+
+  // Filters to be used in the template.
+  filters: {
+    capitalize(value) {
+      // Capitalize the input value.
+      if (!value) return '';
+      const valstr = value.toString();
+      return valstr.charAt(0).toUpperCase() + valstr.slice(1);
+    },
+  },
 
   // The data, consisting of the model and UI elements.
   data: {
@@ -69,16 +83,6 @@ var vm = new Vue({
 
     // Example PHYX URLs to display
     examplePHYXURLs,
-  },
-
-  // Filters to be used in the template.
-  filters: {
-    capitalize(value) {
-      // Capitalize the input value.
-      if (!value) return '';
-      value = value.toString();
-      return value.charAt(0).toUpperCase() + value.slice(1);
-    },
   },
 
   // Computed values inside the data model.
