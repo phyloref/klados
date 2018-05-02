@@ -40,6 +40,8 @@
     font-family: serif;
     font-size: 12pt;
     font-style: italic;
+
+    text-anchor: start; /* Display text starting at the internal node */
 }
 
 /* An additional class for internal nodes that are currently selected */

@@ -984,18 +984,15 @@ function render_tree(node_expr, phylogeny) {
             // we display it next to the node by creating a new 'text' element.
 
             // Make sure we don't already have an internal label node on this SVG node!
-            var label = element.selectAll(".internal_label");
+            var label = element.selectAll(".internal-label");
             if(label.empty()) {
                 var text_label = element.append("text");
 
-                // TODO: Once we're happy with how these elements look,
-                // we should move all this complexity into CSS classes.
+                // Place internal label .3em to the right and below the node itself.
                 text_label.classed("internal-label", true)
                     .text(data.name)
                     .attr("dx", ".3em")
-                    .attr("dy", ".3em")
-                    .attr("text-anchor", "start")
-                    .attr("alignment-baseline", "middle");
+                    .attr("dy", ".3em");
 
                 // If the internal label has the same label as the currently
                 // selected phyloreference, make it bolder and turn it blue.
