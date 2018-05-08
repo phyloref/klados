@@ -28,7 +28,6 @@ var vm = new Vue({
 
         // The main data model.
         testcase: {
-            '@id': "",
             'doi': "",
             'url': "",
             'citation': "",
@@ -39,7 +38,6 @@ var vm = new Vue({
         // A copy of the data model, used to test when the data model has been
         // modified.
         testcase_as_loaded: {
-            '@id': "",
             'doi': "",
             'url': "",
             'citation': "",
@@ -49,15 +47,12 @@ var vm = new Vue({
 
         // UI elements.
         selected_phyloref: undefined,
-        selected_tunit_list: undefined,
+        selected_tunit_list_container: undefined,
         selected_tunit: undefined,
 
         // Phylogeny view modes
         phylogeny_newick_mode_for: undefined,
         phylogeny_annotations_mode_for: undefined,
-
-        // Taxonomic unit editor modal elements
-        tunit_editor_target_label: "(unlabeled)",
 
         // Display the delete buttons on the specifiers.
         specifier_delete_mode: false,
@@ -102,14 +97,14 @@ var vm = new Vue({
             }
         },
         doi_without_prefix: {
-            // Extract the DOI from the '@id' or 'url'.
+            // Extract the DOI from the 'url'.
             get: function() {
                 // Is there a DOI? If so, use that.
                 if(this.testcase.hasOwnProperty('doi') && this.testcase.doi != "") {
                     return this.testcase.doi;
                 }
 
-                // If not, look for a DOI among the '@id' and the 'url'.
+                // If not, look for a DOI in the 'url'.
                 return identify_doi(this.testcase);
             },
             set: function(newDOI) {
@@ -145,7 +140,18 @@ var vm = new Vue({
             return dict;
         },
         confirm(message, func) {
+            // Confirm an action with the user, then execute it if confirmed.
             if(window.confirm(message)) func();
+        },
+        prompt_and_set_dict(message, dict, key) {
+            // Prompt the user for a string, then set it in a dict.
+            if(dict.hasOwnProperty(key)) {
+                result = window.prompt(message, dict[key]);
+            } else {
+                result = window.prompt(message);
+            }
+
+            if(result !== null) Vue.set(dict, key, result);
         },
 
         // Data model management methods.
@@ -197,22 +203,30 @@ var vm = new Vue({
             if(type == 'specifier') {
                 // Specifiers store their taxonomic units in their
                 // 'referencesTaxonomicUnits' property.
-                this.tunit_editor_target_label = 'specifier ' + label;
 
                 // Specifiers store their tunit list in referencesTaxonomicUnits.
                 if(!tunit_list_container.hasOwnProperty('referencesTaxonomicUnits'))
                     Vue.set(tunit_list_container, 'referencesTaxonomicUnits', []);
 
-                this.selected_tunit_list = tunit_list_container.referencesTaxonomicUnits;
+                this.selected_tunit_list_container = {
+                    'type': 'specifier',
+                    'label': label,
+                    'container': tunit_list_container,
+                    'list': tunit_list_container.referencesTaxonomicUnits
+                };
             } else if (type == 'node') {
                 // Nodes store their taxonomic units in their
                 // 'representsTaxonomicUnits' property.
-                this.tunit_editor_target_label = 'node: ' + label;
 
                 if(!tunit_list_container.hasOwnProperty('representsTaxonomicUnits'))
                     Vue.set(tunit_list_container, 'representsTaxonomicUnits', []);
 
-                this.selected_tunit_list = tunit_list_container.representsTaxonomicUnits;
+                this.selected_tunit_list_container = {
+                    'type': 'node',
+                    'label': label,
+                    'container': tunit_list_container,
+                    'list': tunit_list_container.representsTaxonomicUnits
+                };
 
             } else {
                 throw "Tunit editor modal started with invalid type: " + type + ".";
@@ -220,15 +234,15 @@ var vm = new Vue({
 
             // If we don't have a first tunit, create an empty, blank one
             // so we don't have to display an empty website.
-            if(this.selected_tunit_list.length > 0) {
+            if(this.selected_tunit_list_container.list.length > 0) {
                 // We have a first tunit, so select it!
-                this.selected_tunit = this.selected_tunit_list[0];
+                this.selected_tunit = this.selected_tunit_list_container.list[0];
             } else {
                 // Specifier doesn't represent any taxonomic unit, but it's
                 // bad UX to just display a blank screen. So let's create a
                 // blank taxonomic unit to work with.
                 var new_tunit = this.create_empty_taxonomic_unit();
-                this.selected_tunit_list.push(new_tunit);
+                this.selected_tunit_list_container.list.push(new_tunit);
                 this.selected_tunit = new_tunit;
             }
 
@@ -322,14 +336,20 @@ var vm = new Vue({
             // Any scientific names?
             if('scientificNames' in tu) {
                 for(scname of tu.scientificNames) {
-                    if('scientificName' in scname) labels.push(scname.scientificName);
+                    if('label' in scname) labels.push(scname.label);
+                    else if('scientificName' in scname) labels.push(scname.scientificName);
+                    else if('binomialName' in scname) labels.push(scname.binomialName);
+                    else labels.push("Unformatted scientific name");
                 }
             }
 
             // Any specimens?
             if('includesSpecimens' in tu) {
                 for(specimen of tu.includesSpecimens) {
-                    if('occurrenceID' in specimen) labels.push("Specimen " + specimen.occurrenceID);
+                    if('label' in specimen) labels.push("Specimen " + specimen.label);
+                    else if('occurrenceID' in specimen) labels.push("Specimen " + specimen.occurrenceID);
+                    else if('catalogNumber' in specimen) labels.push("Specimen " + specimen.catalogNumber);
+                    else labels.push("Unlabeled specimen");
                 }
             }
 
@@ -381,6 +401,92 @@ var vm = new Vue({
                 return potential_label.substr(0, 50) + " ...";
 
             return potential_label;
+        },
+        get_phyloref_expected_node_labels: function(phylogeny, phyloref) {
+            // Given a specifier, determine which node labels we expect it to
+            // resolve to. To do this, we:
+            //  1. Find all node labels that are case-sensitively identical
+            //     to the phyloreference.
+            //  2. Find all node labels that have additionalNodeProperties with
+            //     expectedPhyloreferenceNamed case-sensitively identical to
+            //     the phyloreference.
+            let phyloref_label = this.get_phyloref_label(phyloref);
+            let node_labels = new Set();
+            for(node_label of this.get_node_labels_in_phylogeny(phylogeny)) {
+                // Is this node label identical to the phyloreference name?
+                if(node_label === phyloref_label) {
+                    node_labels.add(node_label);
+                    continue;
+                }
+
+                // Does this node label have an expectedPhyloreferenceNamed that
+                // includes this phyloreference name?
+                if(
+                    phylogeny.hasOwnProperty('additionalNodeProperties') &&
+                    phylogeny.additionalNodeProperties.hasOwnProperty(node_label) &&
+                    phylogeny.additionalNodeProperties[node_label].hasOwnProperty('expectedPhyloreferenceNamed')
+                ) {
+                    let expectedPhylorefs = phylogeny.additionalNodeProperties[node_label].expectedPhyloreferenceNamed;
+
+                    if(expectedPhylorefs.includes(phyloref_label)) {
+                        node_labels.add(node_label);
+                        continue;
+                    }
+                }
+            }
+
+            // Return node labels sorted alphabetically.
+            return Array.from(node_labels).sort();
+        },
+        toggle_phyloref_expected_node_label: function(phylogeny, phyloref, node_label_to_toggle) {
+            // Change the PHYX model so that the provided node label is either
+            // added to the list of nodes we expect this phyloreference to resolve
+            // to, or removed from that list.
+            //
+            // In the user interface, the expected node label is a property of
+            // the phyloreference, which is the most reasonable approach for
+            // curators. However, in the data model, this is a property of the
+            // phylogeny, which is where all phyloreference resolution expectations
+            // should be. Therefore, this method will actually modify the phylogeny in
+            // order to set where this phyloreference is expected to resolve.
+            // See https://github.com/phyloref/curation-tool/issues/32 for more
+            // information.
+            //
+            let phyloref_label = this.get_phyloref_label(phyloref);
+            let current_expected_node_labels = this.get_phyloref_expected_node_labels(phylogeny, phyloref);
+
+            if(current_expected_node_labels.includes(node_label_to_toggle)) {
+                // We need to delete this node label.
+                if(
+                    phylogeny.hasOwnProperty('additionalNodeProperties') &&
+                    phylogeny.additionalNodeProperties.hasOwnProperty(node_label_to_toggle) &&
+                    phylogeny.additionalNodeProperties[node_label_to_toggle].hasOwnProperty('expectedPhyloreferenceNamed')
+                ) {
+                    // Delete this phyloreference from the provided node label.
+                    phylogeny.additionalNodeProperties[node_label_to_toggle].expectedPhyloreferenceNamed =
+                        phylogeny.additionalNodeProperties[node_label_to_toggle].expectedPhyloreferenceNamed.filter(
+                            label => (phyloref_label !== label)
+                        );
+                }
+            } else {
+                // We need to add this node label.
+
+                // First, we need to make sure we have additional node properties
+                // and expected phyloreference named for this node. If not, make them!
+                if(!phylogeny.hasOwnProperty('additionalNodeProperties')) Vue.set(phylogeny, 'additionalNodeProperties', {});
+                if(!phylogeny.additionalNodeProperties.hasOwnProperty(node_label_to_toggle))
+                    Vue.set(phylogeny.additionalNodeProperties, node_label_to_toggle, {});
+
+                if(!phylogeny.additionalNodeProperties[node_label_to_toggle].hasOwnProperty('expectedPhyloreferenceNamed'))
+                    phylogeny.additionalNodeProperties[node_label_to_toggle].expectedPhyloreferenceNamed = [];
+
+                // Finally, add it to the list unless it's already there!
+                if(!phylogeny.additionalNodeProperties[node_label_to_toggle].expectedPhyloreferenceNamed.includes(phyloref_label))
+                    phylogeny.additionalNodeProperties[node_label_to_toggle].expectedPhyloreferenceNamed.push(phyloref_label);
+            }
+
+            // Did that work?
+            console.log("Additional node properties for '" + node_label_to_toggle + "'", phylogeny.additionalNodeProperties[node_label_to_toggle]);
         },
         get_phylogeny_as_newick: function(node_expr, phylogeny) {
             // Returns the phylogeny as a Newick string. Since this method is
@@ -540,15 +646,14 @@ var vm = new Vue({
         },
 
         // Methods for manipulating nodes in phylogenies.
-        get_node_labels_in_phylogeny: function(phylogeny) {
-            // Return an iterator to all the node labels in a phylogeny. These
-            // node labels come from two sources:
-            //  1. We look for node names in the Newick string.
-            //  2. We look for node names in the additionalNodeProperties.
+        get_node_labels_in_phylogeny: function(phylogeny, node_type='both') {
+            // Return a list of all the node labels in a phylogeny by
+            // looking for node names in the Newick string.
             //
-            // This means that we can pick up both (1) nodes in the Newick
-            // string without any additional properties, and (2) nodes with
-            // additional node properties which are not present.
+            // node_type can be one of:
+            // - 'internal': Return node labels on internal nodes.
+            // - 'terminal': Return node labels on terminal nodes.
+            // - 'both': Return node labels on both internal and terminal nodes.
 
             var node_labels = new Set();
 
@@ -570,8 +675,19 @@ var vm = new Vue({
                 var add_node_and_children_to_node_labels = function(node) {
                     // console.log("Recursing into: " + JSON.stringify(node));
 
-                    if(node.hasOwnProperty('name') && node.name != '')
-                        node_labels.add(node.name);
+                    if(node.hasOwnProperty('name') && node.name != '') {
+                        let node_has_children = node.hasOwnProperty('children') && node.children.length > 0;
+
+                        // Only add the node label if it is on the type of node
+                        // we're interested in.
+                        if(
+                            (node_type === 'both') ||
+                            (node_type === 'internal' && node_has_children) ||
+                            (node_type === 'terminal' && !node_has_children)
+                        ) {
+                            node_labels.add(node.name);
+                        }
+                    }
 
                     if(node.hasOwnProperty('children')) {
                         for(child of node.children) {
@@ -582,13 +698,6 @@ var vm = new Vue({
 
                 // Recurse away!
                 add_node_and_children_to_node_labels(parsed.json);
-            }
-
-            // Names from additionalNodeProperties
-            if(phylogeny.hasOwnProperty('additionalNodeProperties')) {
-                for(key of Object.keys(phylogeny.additionalNodeProperties)) {
-                    node_labels.add(key);
-                }
             }
 
             return Array.from(node_labels);
@@ -843,9 +952,8 @@ function extract_tunits_from_node_label(node_label) {
  * identify_doi(testcase)
  *
  * DOIs should be entered into their own 'doi' field. This method looks through
- * all possible places where a DOI might be entered -- including the study @id
- * and the 'url' field -- and attempts to extract a DOI using the regular
- * expression DOI_REGEX.
+ * all possible places where a DOI might be entered -- including the 'url'
+ * field -- and attempts to extract a DOI using the regular expression DOI_REGEX.
  *
  * @return The best guess DOI or undefined.
  */
@@ -856,10 +964,6 @@ function identify_doi(testcase) {
 
     if(testcase.hasOwnProperty('doi')) {
         possibilities.push(testcase['doi']);
-    }
-
-    if(testcase.hasOwnProperty('@id')) {
-        possibilities.push(testcase['@id']);
     }
 
     if(testcase.hasOwnProperty('url')) {
@@ -999,7 +1103,7 @@ function render_tree(node_expr, phylogeny) {
                 if(
                     vm.selected_phyloref !== undefined &&
                     vm.selected_phyloref.hasOwnProperty('label') &&
-                    vm.selected_phyloref.label == data.name
+                    vm.get_phyloref_expected_node_labels(phylogeny, vm.selected_phyloref).includes(data.name)
                 ) {
                     text_label.classed("selected-internal-label", true);
                 }
