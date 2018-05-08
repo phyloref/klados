@@ -1,19 +1,10 @@
 {
-    "@context": "../paper-context.json",
-
-    "@id": "https://doi.org/10.1016/j.ympev.2004.10.007#",
-    "@type": "testcase:TestSuiteFromPublication",
-
-    "curator": "Gaurav Vaidya <gaurav@ggvaidya.com>",
-    "comments": "None.",
-
+    "title": "Phylogeny of the New World true frogs (Rana)",
     "citation": "Hillis DM and Wilcox TP (2005) Molecular Phylogenetics and Evolution 34(2):299-314",
     "url": "https://doi.org/10.1016/j.ympev.2004.10.007",
     "year": 2005,
 
     "phylogenies": [{
-        "filename": "T4419.nexml"
-    }, {
         "newick": "(((('Rana luteiventris MVZ225749','Rana luteiventris MVZ191016'),'Rana boylii'),('Rana muscosa',('Rana cascadae','Rana aurora')))Amerana,'Rana temporaria',(((('Rana septentrionales',((('Rana heckscheri',('Rana catesbiana X12841','Rana catesbiana DMH84R2')),('Rana clamitans','Rana okaloosae')),'Rana grylio')),'Rana virgatipes')Aquarana,('Rana sylvatica DMH84R43','Rana sylvatica')),((((('Rana pustulosa','Rana tarahumarae'),('Rana psilonota','Rana zweifelii'))Zweifelia,'Rana sierramadrensis')Torrentirana,((('Rana palustris',('Rana areolata',('Rana capito','Rana sevosa')))Nenirana,((((('Rana magnaocularis','Rana sp7 KU 194492'),('Rana sp8 KU 195346',('Rana onca','Rana yavapaiensis'))),(('Rana sp6 LACM 146810',('Rana sp5 LACM 146764','Rana sp4 AMNH A 124167')),('Rana taylori',('Rana macroglossa','Rana macroglossa b')))),'Rana forreri'),(('Rana spectabilis',('Rana sp3 KU 194559','Rana omiltemana')),(((('Rana tlaloci','Rana neovolcanica'),'Rana berlandieri'),'Rana blairi'),('Rana sphenocephela utricularia','Rana sphenocephela'))))Scurrilirana),(((('Rana chiricahuensis KU 194419',('Rana subaquavocalis','Rana chiricahuensis KU 194442')),'Rana sp2 KU 204420'),('Rana dunni','Rana montezumae'))Lacusirana,('Rana pipiens JSF1119','Rana pipiens Y10945'))Stertirana)Pantherana),(('Rana maculata',('Rana warszewitshii','Rana vibicaria')Trypheropsis)Levirana,(('Rana bwana',('Rana sp1 QCAZ13219',('Rana palmipes KU204425','Rana palmipes AMNHA118801'))),('Rana vaillanti','Rana juliani'))Lithobates)Ranula)Sierrana)Novirana)Laurasiarana;",
         "ot:dataDeposit": "https://treebase.org/treebase-web/search/study/taxa.html?id=1269&treeid=4419",
 
@@ -812,7 +803,6 @@
             "cladeDefinition": "Laurasiarana, new clade name. Definition: The clade stemming from the most recent common ancestor of Rana temporaria Linne 1758 and Rana aurora Baird and Girard 1852.",
             "curatorComments": "The Laurasiarana expected node is not found in the TreeBase tree, so I've placed it where I think it should go.",
             "internalSpecifiers": [{
-                "verbatimSpecifier": "Rana temporaria Linne 1758",
                 "referencesTaxonomicUnits": [{
                     "scientificNames": [{
                         "scientificName": "Rana temporaria Linne 1758",
@@ -820,7 +810,6 @@
                     }]
                 }]
             }, {
-                "verbatimSpecifier": "Rana aurora Baird and Girard 1852",
                 "referencesTaxonomicUnits": [{
                     "scientificNames": [{
                         "scientificName": "Rana aurora Baird and Girard 1852",
