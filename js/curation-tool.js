@@ -336,14 +336,20 @@ var vm = new Vue({
             // Any scientific names?
             if('scientificNames' in tu) {
                 for(scname of tu.scientificNames) {
-                    if('scientificName' in scname) labels.push(scname.scientificName);
+                    if('label' in scname) labels.push(scname.label);
+                    else if('scientificName' in scname) labels.push(scname.scientificName);
+                    else if('binomialName' in scname) labels.push(scname.binomialName);
+                    else labels.push("Unformatted scientific name");
                 }
             }
 
             // Any specimens?
             if('includesSpecimens' in tu) {
                 for(specimen of tu.includesSpecimens) {
-                    if('occurrenceID' in specimen) labels.push("Specimen " + specimen.occurrenceID);
+                    if('label' in specimen) labels.push("Specimen " + specimen.label);
+                    else if('occurrenceID' in specimen) labels.push("Specimen " + specimen.occurrenceID);
+                    else if('catalogNumber' in specimen) labels.push("Specimen " + specimen.catalogNumber);
+                    else labels.push("Unlabeled specimen");
                 }
             }
 
