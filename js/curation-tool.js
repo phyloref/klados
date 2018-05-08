@@ -97,14 +97,14 @@ var vm = new Vue({
             }
         },
         doi_without_prefix: {
-            // Extract the DOI from the '@id' or 'url'.
+            // Extract the DOI from the 'url'.
             get: function() {
                 // Is there a DOI? If so, use that.
                 if(this.testcase.hasOwnProperty('doi') && this.testcase.doi != "") {
                     return this.testcase.doi;
                 }
 
-                // If not, look for a DOI among the '@id' and the 'url'.
+                // If not, look for a DOI in the 'url'.
                 return identify_doi(this.testcase);
             },
             set: function(newDOI) {
@@ -946,9 +946,8 @@ function extract_tunits_from_node_label(node_label) {
  * identify_doi(testcase)
  *
  * DOIs should be entered into their own 'doi' field. This method looks through
- * all possible places where a DOI might be entered -- including the study @id
- * and the 'url' field -- and attempts to extract a DOI using the regular
- * expression DOI_REGEX.
+ * all possible places where a DOI might be entered -- including the 'url'
+ * field -- and attempts to extract a DOI using the regular expression DOI_REGEX.
  *
  * @return The best guess DOI or undefined.
  */
@@ -959,10 +958,6 @@ function identify_doi(testcase) {
 
     if(testcase.hasOwnProperty('doi')) {
         possibilities.push(testcase['doi']);
-    }
-
-    if(testcase.hasOwnProperty('@id')) {
-        possibilities.push(testcase['@id']);
     }
 
     if(testcase.hasOwnProperty('url')) {
