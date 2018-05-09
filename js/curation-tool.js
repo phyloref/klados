@@ -21,8 +21,8 @@ const examplePHYXURLs = [
     title: 'Hillis and Wilcox, 2005',
   },
   {
-      url: "examples/brochu_2003.json",
-      title: "Brochu 2003"
+    url: 'examples/brochu_2003.json',
+    title: 'Brochu 2003',
   },
 ];
 
@@ -766,7 +766,7 @@ var vm = new Vue({
         .filter(nodeLabel => localVM.testWhetherSpecifierMatchesNode(
           specifier,
           phylogeny,
-          nodeLabel
+          nodeLabel,
         ));
     },
 
@@ -965,8 +965,8 @@ function identifyDOI(testcaseToIdentify) {
     possibilities.push(testcase.doi);
   }
 
-  if(testcase.hasOwnProperty('url')) {
-    possibilities.push(testcase['url']);
+  if (testcase.hasOwnProperty('url')) {
+    possibilities.push(testcase.url);
   }
 
   // Look for possible matches.
@@ -1073,38 +1073,38 @@ function loadPHYXFromFileInput(fileInput) {
  * 'phylogeny' is a Phylogeny in the data model.
  */
 function renderTree(nodeExpr, phylogeny) {
-    // No point trying to render anything without a Vue model.
-    if(typeof vm === 'undefined') return undefined;
+  // No point trying to render anything without a Vue model.
+  if (typeof vm === 'undefined') return undefined;
 
   // Extract the Newick string to render.
   const { newick = '()' } = phylogeny;
 
-    // The node styler provides information on styling nodes within the
-    // phylogeny.
-    function nodeStyler(element, data) {
-      if(data.hasOwnProperty('name') && data.children) {
+  // The node styler provides information on styling nodes within the
+  // phylogeny.
+  function nodeStyler(element, data) {
+    if (data.hasOwnProperty('name') && data.children) {
       // If the node has a label and has children (i.e. is an internal node),
       // we display it next to the node by creating a new 'text' element.
 
       // Make sure we don't already have an internal label node on this SVG node!
-      var label = element.selectAll(".internal-label");
-      if(label.empty()) {
-        var textLabel = element.append("text");
+      const label = element.selectAll('.internal-label');
+      if (label.empty()) {
+        const textLabel = element.append('text');
 
         // Place internal label .3em to the right and below the node itself.
-        textLabel.classed("internal-label", true)
+        textLabel.classed('internal-label', true)
           .text(data.name)
-          .attr("dx", ".3em")
-          .attr("dy", ".3em");
+          .attr('dx', '.3em')
+          .attr('dy', '.3em');
 
         // If the internal label has the same label as the currently
         // selected phyloreference, make it bolder and turn it blue.
-        if(
+        if (
           vm.selectedPhyloref !== undefined &&
           vm.selectedPhyloref.hasOwnProperty('label') &&
           vm.getPhylorefExpectedNodeLabels(phylogeny, vm.selectedPhyloref).includes(data.name)
         ) {
-          textLabel.classed("selected-internal-label", true);
+          textLabel.classed('selected-internal-label', true);
         }
       }
     }
