@@ -52,13 +52,15 @@ function testWhetherTUnitsMatchByExternalReferences(tunit1, tunit2) {
   if (hasProperty(tunit1, 'externalReferences') && hasProperty(tunit2, 'externalReferences')) {
     // Each external reference is a URL as a string. We will lowercase it,
     // but do no other transformation.
-    for (const extref1 of tunit1.externalReferences) {
-      for (const extref2 of tunit2.externalReferences) {
-        if (extref1.trim() !== '' && extref1.toLowerCase().trim() === extref2.toLowerCase().trim()) {
-          return true;
-        }
-      }
-    }
+    return tunit1.externalReferences.some(extref1 =>
+      tunit2.externalReferences.some(extref2 =>
+        (
+          // Make sure that the external reference isn't blank
+          extref1.trim() !== '' &&
+
+          // And that it is identical after trimming
+          extref1.toLowerCase().trim() === extref2.toLowerCase().trim()
+        )));
   }
 
   return false;
@@ -94,11 +96,9 @@ function testWhetherTUnitsMatchByBinomialName(tunit1, tunit2) {
   if (tunit1 === undefined || tunit2 === undefined) return false;
   if (hasProperty(tunit1, 'scientificNames') && hasProperty(tunit2, 'scientificNames')) {
     // Each external reference is a URL as a string.
-    for (const scname1 of tunit1.scientificNames) {
-      for (const scname2 of tunit2.scientificNames) {
-        if (testWhetherScientificNamesMatchByBinomialName(scname1, scname2)) { return true; }
-      }
-    }
+    return tunit1.scientificNames.some(scname1 =>
+      tunit2.scientificNames
+        .some(scname2 => testWhetherScientificNamesMatchByBinomialName(scname1, scname2)));
   }
 
   return false;
@@ -144,15 +144,13 @@ function testWhetherTUnitsMatchBySpecimenIdentifier(tunit1, tunit2) {
   if (tunit1 === undefined || tunit2 === undefined) return false;
   if (hasProperty(tunit1, 'includesSpecimens') && hasProperty(tunit2, 'includesSpecimens')) {
     // Convert specimen identifiers (if present) into a standard format and compare those.
-    for (const specimen1 of tunit1.includesSpecimens) {
-      for (const specimen2 of tunit2.includesSpecimens) {
-        if (
-          getSpecimenIdentifierAsURN(specimen1) !== undefined &&
-          getSpecimenIdentifierAsURN(specimen2) !== undefined &&
-          getSpecimenIdentifierAsURN(specimen1) === getSpecimenIdentifierAsURN(specimen2)
-        ) { return true; }
-      }
-    }
+    return tunit1.includesSpecimens.some(specimen1 =>
+      tunit2.includesSpecimens.some((specimen2) => {
+        const specimenURN1 = getSpecimenIdentifierAsURN(specimen1);
+        const specimenURN2 = getSpecimenIdentifierAsURN(specimen2);
+
+        return specimenURN1 === specimenURN2;
+      }));
   }
 
   return false;
