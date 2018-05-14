@@ -105,29 +105,6 @@ function testWhetherTUnitsMatchByBinomialName(tunit1, tunit2) {
 }
 
 /**
- * testWhetherTUnitsMatchBySpecimenIdentifier(tunit1, tunit2)
- *
- * Test whether two Tunits match on the basis of their specimen identifiers.
- */
-function testWhetherTUnitsMatchBySpecimenIdentifier(tunit1, tunit2) {
-  if (tunit1 === undefined || tunit2 === undefined) return false;
-  if (hasProperty(tunit1, 'includesSpecimens') && hasProperty(tunit2, 'includesSpecimens')) {
-    // Convert specimen identifiers (if present) into a standard format and compare those.
-    for (const specimen1 of tunit1.includesSpecimens) {
-      for (const specimen2 of tunit2.includesSpecimens) {
-        if (
-          getSpecimenIdentifierAsURN(specimen1) !== undefined &&
-                    getSpecimenIdentifierAsURN(specimen2) !== undefined &&
-                    getSpecimenIdentifierAsURN(specimen1) === getSpecimenIdentifierAsURN(specimen2)
-        ) { return true; }
-      }
-    }
-  }
-
-  return false;
-}
-
-/**
  * getSpecimenIdentifierAsURN(specimen)
  *
  * Given a specimen, return a specimen identifier as a URN in the form:
@@ -156,6 +133,29 @@ function getSpecimenIdentifierAsURN(specimen) {
 
   // None of our specimen identifier schemes worked.
   return undefined;
+}
+
+/**
+ * testWhetherTUnitsMatchBySpecimenIdentifier(tunit1, tunit2)
+ *
+ * Test whether two Tunits match on the basis of their specimen identifiers.
+ */
+function testWhetherTUnitsMatchBySpecimenIdentifier(tunit1, tunit2) {
+  if (tunit1 === undefined || tunit2 === undefined) return false;
+  if (hasProperty(tunit1, 'includesSpecimens') && hasProperty(tunit2, 'includesSpecimens')) {
+    // Convert specimen identifiers (if present) into a standard format and compare those.
+    for (const specimen1 of tunit1.includesSpecimens) {
+      for (const specimen2 of tunit2.includesSpecimens) {
+        if (
+          getSpecimenIdentifierAsURN(specimen1) !== undefined &&
+          getSpecimenIdentifierAsURN(specimen2) !== undefined &&
+          getSpecimenIdentifierAsURN(specimen1) === getSpecimenIdentifierAsURN(specimen2)
+        ) { return true; }
+      }
+    }
+  }
+
+  return false;
 }
 
 /**
@@ -218,88 +218,6 @@ function identifyDOI(testcaseToIdentify) {
   }
 
   return undefined;
-}
-
-/**
- * setPHYX(testcase)
- *
- * Updates the user interface to reflect the new JSON document provided in 'testcase'.
- */
-function setPHYX(testcaseToLoad) {
-  if (!vm.closeCurrentStudy()) return;
-
-  const testcase = testcaseToLoad;
-
-  try {
-    // Specifiers act weird unless every phyloreference has both
-    // internalSpecifiers and externalSpecifiers set, even if they
-    // are blank.
-    if (!hasProperty(testcase, 'phylorefs')) testcase.phylorefs = [];
-    testcase.phylorefs.forEach((p) => {
-      const phyloref = p;
-
-      if (!hasProperty(phyloref, 'internalSpecifiers')) phyloref.internalSpecifiers = [];
-      if (!hasProperty(phyloref, 'externalSpecifiers')) phyloref.externalSpecifiers = [];
-    });
-
-    // Check for DOI in other fields if not provided explicitly.
-    if (!hasProperty(testcase, 'doi') || testcase.doi === '') {
-      testcase.doi = identifyDOI(testcase);
-    }
-
-    // Deep-copy the testcase into a 'testcaseAsLoaded' variable in our
-    // model. We deep-compare vm.testcase with vm.testcaseAsLoaded to
-    // determine if the loaded model has been modified.
-    vm.testcaseAsLoaded = jQuery.extend(true, {}, testcase);
-    vm.testcase = testcase;
-
-    // Reset all UI selections.
-    vm.selectedPhyloref = undefined;
-    vm.selectedSpecifier = undefined;
-    vm.selectedTUnit = undefined;
-  } catch (err) {
-    console.log(`Error occurred while displaying new testcase: ${err}`);
-  }
-}
-
-/**
- * loadPHYXFromFileInput(fileInput)
- *
- * Load a JSON file from the local file system using FileReader. fileInput
- * needs to be an HTML element representing an <input type="file"> in which
- * the user has selected the local file they wish to load.
- *
- * This code is based on https://stackoverflow.com/a/21446426/27310
- */
-function loadPHYXFromFileInput(fileInput) {
-  if (typeof window.FileReader !== 'function') {
-    alert('The FileReader API is not supported on this browser.');
-    return;
-  }
-
-  if (!fileInput) {
-    alert('Programmer error: No file input element specified.');
-    return;
-  }
-
-  if (!fileInput.prop('files')) {
-    alert('File input element found, but files property missing: try another browser?');
-    return;
-  }
-
-  if (!fileInput.prop('files')[0]) {
-    alert('Please select a file before attempting to load it.');
-    return;
-  }
-
-  const [file] = fileInput.prop('files');
-  const fr = new FileReader();
-  fr.onload = ((e) => {
-    const lines = e.target.result;
-    const testcase = JSON.parse(lines);
-    setPHYX(testcase);
-  });
-  fr.readAsText(file);
 }
 
 // Set up the Vue object which contains the entire model.
@@ -450,7 +368,7 @@ const vm = new Vue({
       // Change the current PHYX to that in the provided URL.
       // Will ask the user to confirm before replacing it.
 
-      $.getJSON(url, data => setPHYX(data)).fail((error) => {
+      $.getJSON(url, data => this.setPHYX(data)).fail((error) => {
         console.log("Could not load PHYX file '", url, "': ", error);
         if (error.status === 200) {
           alert(`Could not load PHYX file '${url}': file malformed, see console for details.`);
@@ -458,6 +376,85 @@ const vm = new Vue({
           alert(`Could not load PHYX file '${url}': server error ${error.status} ${error.statusText}`);
         }
       });
+    },
+
+    loadPHYXFromFileInputById(fileInputId) {
+      // loadPHYXFromFileInput(fileInput)
+      //
+      // Load a JSON file from the local file system using FileReader. fileInput
+      // needs to be an HTML element representing an <input type="file"> in which
+      // the user has selected the local file they wish to load.
+      //
+      // This code is based on https://stackoverflow.com/a/21446426/27310
+
+      if (typeof window.FileReader !== 'function') {
+        alert('The FileReader API is not supported on this browser.');
+        return;
+      }
+
+      const fileInput = $(fileInputId);
+      if (!fileInput) {
+        alert('Programmer error: No file input element specified.');
+        return;
+      }
+
+      if (!fileInput.prop('files')) {
+        alert('File input element found, but files property missing: try another browser?');
+        return;
+      }
+
+      if (!fileInput.prop('files')[0]) {
+        alert('Please select a file before attempting to load it.');
+        return;
+      }
+
+      const [file] = fileInput.prop('files');
+      const fr = new FileReader();
+      fr.onload = ((e) => {
+        const lines = e.target.result;
+        const testcase = JSON.parse(lines);
+        this.setPHYX(testcase);
+      });
+      fr.readAsText(file);
+    },
+
+    setPHYX(testcaseToLoad) {
+      // Updates the user interface to reflect the JSON document provided in 'testcase'.
+
+      if (!this.closeCurrentStudy()) return;
+
+      const testcase = testcaseToLoad;
+
+      try {
+        // Specifiers act weird unless every phyloreference has both
+        // internalSpecifiers and externalSpecifiers set, even if they
+        // are blank.
+        if (!hasProperty(testcase, 'phylorefs')) testcase.phylorefs = [];
+        testcase.phylorefs.forEach((p) => {
+          const phyloref = p;
+
+          if (!hasProperty(phyloref, 'internalSpecifiers')) phyloref.internalSpecifiers = [];
+          if (!hasProperty(phyloref, 'externalSpecifiers')) phyloref.externalSpecifiers = [];
+        });
+
+        // Check for DOI in other fields if not provided explicitly.
+        if (!hasProperty(testcase, 'doi') || testcase.doi === '') {
+          testcase.doi = identifyDOI(testcase);
+        }
+
+        // Deep-copy the testcase into a 'testcaseAsLoaded' variable in our
+        // model. We deep-compare vm.testcase with vm.testcaseAsLoaded to
+        // determine if the loaded model has been modified.
+        vm.testcaseAsLoaded = jQuery.extend(true, {}, testcase);
+        vm.testcase = testcase;
+
+        // Reset all UI selections.
+        vm.selectedPhyloref = undefined;
+        vm.selectedSpecifier = undefined;
+        vm.selectedTUnit = undefined;
+      } catch (err) {
+        console.log(`Error occurred while displaying new testcase: ${err}`);
+      }
     },
 
     // User interface helper methods.

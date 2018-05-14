@@ -61,7 +61,7 @@
                 </div>
 
                 <label class="btn btn-info btn-group" for="file-input" role="group">
-                    <input id="file-input" type="file" style="display:none;" onchange="loadPHYXFromFileInput($('#file-input'))">
+                    <input id="file-input" type="file" style="display:none;" @change="loadPHYXFromFileInputById('#file-input')">
                     Read from local JSON file
                 </label>
 
