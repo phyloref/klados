@@ -325,8 +325,8 @@ const vm = new Vue({
   methods: {
     // Helper methods.
     hasProperty(obj, propName) {
-        // Returns true if object obj has a property named propName.
-        return Object.prototype.hasOwnProperty.call(obj, propName);
+      // Returns true if object obj has a property named propName.
+      return Object.prototype.hasOwnProperty.call(obj, propName);
     },
     openURL(url, target = '_blank') {
       // Open the specified URL.
@@ -784,7 +784,7 @@ const vm = new Vue({
 
       return phylotree.get_newick_with_internal_labels();
     },
-    renderTree(nodeExpr, phylogeny) {
+    renderTree(nodeExpr, phylogenyToRender) {
       // renderTree(nodeExpr, phylogeny) {
       // Given a phylogeny, try to render it as a tree using Phylotree.
       //
@@ -793,6 +793,7 @@ const vm = new Vue({
       // - 'phylogeny' is a Phylogeny in the data model.
 
       // Extract the Newick string to render.
+      const phylogeny = phylogenyToRender;
       const { newick = '()' } = phylogeny;
 
       // Using Phylotree is a four step process:
@@ -858,17 +859,19 @@ const vm = new Vue({
               //  - internal specifier in green
               //  - external specifier in red
               if (hasProperty(this.selectedPhyloref, 'internalSpecifiers')) {
-                for (const specifier of this.selectedPhyloref.internalSpecifiers) {
-                  if (this.testWhetherSpecifierMatchesNode(specifier, phylogeny, data.name)) {
-                    element.classed('node internal-specifier-node', true);
-                  }
+                if (this.selectedPhyloref
+                  .internalSpecifiers.some(specifier =>
+                    this.testWhetherSpecifierMatchesNode(specifier, phylogeny, data.name))
+                ) {
+                  element.classed('node internal-specifier-node', true);
                 }
               }
               if (hasProperty(this.selectedPhyloref, 'externalSpecifiers')) {
-                for (const specifier of this.selectedPhyloref.externalSpecifiers) {
-                  if (this.testWhetherSpecifierMatchesNode(specifier, phylogeny, data.name)) {
-                    element.classed('node external-specifier-node', true);
-                  }
+                if (this.selectedPhyloref
+                  .externalSpecifiers.some(specifier =>
+                    this.testWhetherSpecifierMatchesNode(specifier, phylogeny, data.name))
+                ) {
+                  element.classed('node external-specifier-node', true);
                 }
               }
             }
@@ -891,11 +894,12 @@ const vm = new Vue({
         //   that here.
       };
 
-      tree.get_nodes().forEach((node) => {
+      tree.get_nodes().forEach((nodeLCV) => {
         // All nodes (including named nodes) can be renamed.
         // Renaming a node will cause the phylogeny.newick property to
         // be changed, which should cause Vue.js to cause the tree to be
         // re-rendered.
+        const node = nodeLCV;
         const label = node.name;
         const isNodeLabeled = (label !== undefined && label.trim() !== '');
 
