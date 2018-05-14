@@ -110,7 +110,7 @@ var vm = new Vue({
       // Extract the DOI from the 'url'.
       get() {
         // Is there a DOI? If so, use that.
-        if (this.testcase.hasOwnProperty('doi') && this.testcase.doi !== '') {
+        if (this.hasProperty(this.testcase, 'doi') && this.testcase.doi !== '') {
           return this.testcase.doi;
         }
 
@@ -132,6 +132,10 @@ var vm = new Vue({
   // Methods for carrying out various tasks.
   methods: {
     // Helper methods.
+    hasProperty(obj, propName) {
+        // Returns true if object obj has a property named propName.
+        return Object.prototype.hasOwnProperty.call(obj, propName);
+    },
     openURL(url, target = '_blank') {
       // Open the specified URL.
       if (url === undefined || url === null) return;
@@ -156,7 +160,7 @@ var vm = new Vue({
     promptAndSetDict(message, dict, key) {
       // Prompt the user for a string, then set it in a dict.
       let result;
-      if (dict.hasOwnProperty(key)) {
+      if (this.hasProperty(dict, key)) {
         result = window.prompt(message, dict[key]);
       } else {
         result = window.prompt(message);
@@ -213,7 +217,7 @@ var vm = new Vue({
         // 'referencesTaxonomicUnits' property.
 
         // Specifiers store their tunit list in referencesTaxonomicUnits.
-        if (!tunitListContainer.hasOwnProperty('referencesTaxonomicUnits')) { Vue.set(tunitListContainer, 'referencesTaxonomicUnits', []); }
+        if (!this.hasProperty(tunitListContainer, 'referencesTaxonomicUnits')) { Vue.set(tunitListContainer, 'referencesTaxonomicUnits', []); }
 
         this.selectedTUnitListContainer = {
           type: 'specifier',
@@ -225,7 +229,7 @@ var vm = new Vue({
         // Nodes store their taxonomic units in their
         // 'representsTaxonomicUnits' property.
 
-        if (!tunitListContainer.hasOwnProperty('representsTaxonomicUnits')) { Vue.set(tunitListContainer, 'representsTaxonomicUnits', []); }
+        if (!this.hasProperty(tunitListContainer, 'representsTaxonomicUnits')) { Vue.set(tunitListContainer, 'representsTaxonomicUnits', []); }
 
         this.selectedTUnitListContainer = {
           type: 'node',
@@ -270,8 +274,8 @@ var vm = new Vue({
       // with internal specifiers before external specifiers.
       const phyloref = phylorefWithSpecifiers;
 
-      if (!phyloref.hasOwnProperty('internalSpecifiers')) phyloref.internalSpecifiers = [];
-      if (!phyloref.hasOwnProperty('externalSpecifiers')) phyloref.externalSpecifiers = [];
+      if (!this.hasProperty(phyloref, 'internalSpecifiers')) phyloref.internalSpecifiers = [];
+      if (!this.hasProperty(phyloref, 'externalSpecifiers')) phyloref.externalSpecifiers = [];
 
       let specifiers = phyloref.internalSpecifiers;
       specifiers = specifiers.concat(phyloref.externalSpecifiers);
@@ -281,8 +285,8 @@ var vm = new Vue({
       // For a given specifier, return a string indicating whether it is
       // an 'Internal' or 'External' specifier.
 
-      if (phyloref.hasOwnProperty('internalSpecifiers') && phyloref.internalSpecifiers.includes(specifier)) return 'Internal';
-      if (phyloref.hasOwnProperty('externalSpecifiers') && phyloref.externalSpecifiers.includes(specifier)) return 'External';
+      if (this.hasProperty(phyloref, 'internalSpecifiers') && phyloref.internalSpecifiers.includes(specifier)) return 'Internal';
+      if (this.hasProperty(phyloref, 'externalSpecifiers') && phyloref.externalSpecifiers.includes(specifier)) return 'External';
       return 'Specifier';
     },
     setSpecifierType(phylorefWithSpecifiers, specifier, specifierType) {
@@ -292,8 +296,8 @@ var vm = new Vue({
 
       const phyloref = phylorefWithSpecifiers;
 
-      if (!phyloref.hasOwnProperty('internalSpecifiers')) phyloref.internalSpecifiers = [];
-      if (!phyloref.hasOwnProperty('externalSpecifiers')) phyloref.externalSpecifiers = [];
+      if (!this.hasProperty(phyloref, 'internalSpecifiers')) phyloref.internalSpecifiers = [];
+      if (!this.hasProperty(phyloref, 'externalSpecifiers')) phyloref.externalSpecifiers = [];
 
       let index;
       if (specifierType === 'Internal') {
@@ -321,12 +325,12 @@ var vm = new Vue({
       // it doesn't remember if the specifier to be deleted is internal
       // or external. We delete the intended specifier from both arrays.
 
-      if (phyloref.hasOwnProperty('internalSpecifiers')) {
+      if (this.hasProperty(phyloref, 'internalSpecifiers')) {
         const index = phyloref.internalSpecifiers.indexOf(specifier);
         if (index !== -1) phyloref.internalSpecifiers.splice(index, 1);
       }
 
-      if (phyloref.hasOwnProperty('externalSpecifiers')) {
+      if (this.hasProperty(phyloref, 'externalSpecifiers')) {
         const index = phyloref.externalSpecifiers.indexOf(specifier);
         if (index !== -1) phyloref.externalSpecifiers.splice(index, 1);
       }
@@ -363,7 +367,7 @@ var vm = new Vue({
         tu.externalReferences.forEach(externalRef => labels.push(`<${externalRef}>`));
       }
 
-      if (labels.isEmpty()) return 'Unnamed taxonomic unit';
+      if (labels.length === 0) return 'Unnamed taxonomic unit';
 
       return labels.join(', ');
     },
@@ -397,8 +401,8 @@ var vm = new Vue({
       const phylorefIndex = this.testcase.phylorefs.indexOf(phyloref);
       let potentialLabel = `Phyloreference ${phylorefIndex + 1}`;
 
-      if (phyloref.hasOwnProperty('label')) potentialLabel = phyloref.label;
-      if (phyloref.hasOwnProperty('title')) potentialLabel = phyloref.title;
+      if (this.hasProperty(phyloref, 'label')) potentialLabel = phyloref.label;
+      if (this.hasProperty(phyloref, 'title')) potentialLabel = phyloref.title;
 
       if (potentialLabel.length > 54) { return `${potentialLabel.substr(0, 50)} ...`; }
 
@@ -420,9 +424,9 @@ var vm = new Vue({
         if (nodeLabel === phylorefLabel) {
           nodeLabels.add(nodeLabel);
         } else if (
-          phylogeny.hasOwnProperty('additionalNodeProperties') &&
-          phylogeny.additionalNodeProperties.hasOwnProperty(nodeLabel) &&
-          phylogeny.additionalNodeProperties[nodeLabel].hasOwnProperty('expectedPhyloreferenceNamed')
+          this.hasProperty(phylogeny, 'additionalNodeProperties') &&
+          this.hasProperty(phylogeny.additionalNodeProperties, nodeLabel) &&
+          this.hasProperty(phylogeny.additionalNodeProperties[nodeLabel], 'expectedPhyloreferenceNamed')
         ) {
           // Does this node label have an expectedPhyloreferenceNamed that
           // includes this phyloreference name?
@@ -461,9 +465,9 @@ var vm = new Vue({
       if (currentExpectedNodeLabels.includes(nodeLabelToToggle)) {
         // We need to delete this node label.
         if (
-          phylogeny.hasOwnProperty('additionalNodeProperties') &&
-                    phylogeny.additionalNodeProperties.hasOwnProperty(nodeLabelToToggle) &&
-                    phylogeny.additionalNodeProperties[nodeLabelToToggle].hasOwnProperty('expectedPhyloreferenceNamed')
+          this.hasProperty(phylogeny, 'additionalNodeProperties') &&
+          this.hasProperty(phylogeny.additionalNodeProperties, nodeLabelToToggle) &&
+          this.hasProperty(phylogeny.additionalNodeProperties[nodeLabelToToggle], 'expectedPhyloreferenceNamed')
         ) {
           // Delete this phyloreference from the provided node label.
           phylogeny.additionalNodeProperties[nodeLabelToToggle].expectedPhyloreferenceNamed =
@@ -475,12 +479,12 @@ var vm = new Vue({
 
         // First, we need to make sure we have additional node properties
         // and expected phyloreference named for this node. If not, make them!
-        if (!phylogeny.hasOwnProperty('additionalNodeProperties')) Vue.set(phylogeny, 'additionalNodeProperties', {});
-        if (!phylogeny.additionalNodeProperties.hasOwnProperty(nodeLabelToToggle)) {
+        if (!this.hasProperty(phylogeny, 'additionalNodeProperties')) Vue.set(phylogeny, 'additionalNodeProperties', {});
+        if (!this.hasProperty(phylogeny.additionalNodeProperties, nodeLabelToToggle)) {
           Vue.set(phylogeny.additionalNodeProperties, nodeLabelToToggle, {});
         }
 
-        if (!phylogeny.additionalNodeProperties[nodeLabelToToggle].hasOwnProperty('expectedPhyloreferenceNamed')) {
+        if (!this.hasProperty(phylogeny.additionalNodeProperties[nodeLabelToToggle], 'expectedPhyloreferenceNamed')) {
           phylogeny.additionalNodeProperties[nodeLabelToToggle].expectedPhyloreferenceNamed = [];
         }
 
@@ -540,7 +544,7 @@ var vm = new Vue({
       // Return the components of a scientific name by splitting its
       // scientificName field using spaces.
 
-      if (!scname.hasOwnProperty('scientificName')) return [];
+      if (!this.hasProperty(scname, 'scientificName')) return [];
       return scname.scientificName.split(/\s+/);
     },
     getGenus(scname) {
@@ -577,7 +581,7 @@ var vm = new Vue({
       //      (in which case, we ignore the first two "components" here)
       //  - '[institutionCode]:[collectionCode]:[catalogNumber]'
 
-      if (!specimen.hasOwnProperty('occurrenceID')) return [];
+      if (!this.hasProperty(specimen, 'occurrenceID')) return [];
       let occurID = specimen.occurrenceID;
       if (occurID.startsWith('urn:catalog:')) {
         occurID = occurID.substr(12);
@@ -679,12 +683,12 @@ var vm = new Vue({
       // directly accessible, so we should replace this code to just
       // recurse through that tree instead of re-parsing the Newick string.
       const parsed = d3.layout.newick_parser(newick);
-      if (parsed.hasOwnProperty('json')) {
+      if (this.hasProperty(parsed, 'json')) {
         function addNodeAndChildrenToNodeLabels(node) {
           // console.log("Recursing into: " + JSON.stringify(node));
 
-          if (node.hasOwnProperty('name') && node.name !== '') {
-            const nodeHasChildren = node.hasOwnProperty('children') && node.children.length > 0;
+          if (this.hasProperty(node, 'name') && node.name !== '') {
+            const nodeHasChildren = this.hasProperty(node, 'children') && node.children.length > 0;
 
             // Only add the node label if it is on the type of node
             // we're interested in.
@@ -697,7 +701,7 @@ var vm = new Vue({
             }
           }
 
-          if (node.hasOwnProperty('children')) {
+          if (this.hasProperty(node, 'children')) {
             node.children.forEach(child => addNodeAndChildrenToNodeLabels(child));
           }
         }
@@ -714,15 +718,15 @@ var vm = new Vue({
       // Look up additional node properties.
       let additionalNodeProperties = {};
       if (
-        phylogeny.hasOwnProperty('additionalNodeProperties') &&
-        phylogeny.additionalNodeProperties.hasOwnProperty(nodeLabel)
+        this.hasProperty(phylogeny, 'additionalNodeProperties') &&
+        this.hasProperty(phylogeny.additionalNodeProperties, nodeLabel)
       ) {
         additionalNodeProperties = phylogeny.additionalNodeProperties[nodeLabel];
       }
 
       // If there are explicit taxonomic units in the
       // representsTaxonomicUnits property, we need to use those.
-      if (additionalNodeProperties.hasOwnProperty('representsTaxonomicUnits')) {
+      if (this.hasProperty(additionalNodeProperties, 'representsTaxonomicUnits')) {
         return additionalNodeProperties.representsTaxonomicUnits;
       }
 
@@ -775,7 +779,7 @@ var vm = new Vue({
 
       // Does the specifier have any taxonomic units? If not, we can't
       // match anything!
-      if (!specifier.hasOwnProperty('referencesTaxonomicUnits')) { return false; }
+      if (!this.hasProperty(specifier, 'referencesTaxonomicUnits')) { return false; }
 
       // Find all the taxonomic units associated with the specifier and
       // with the node.
@@ -799,6 +803,17 @@ var vm = new Vue({
   },
 });
 
+// Helper methods for this library.
+
+/**
+ * hasProperty(obj, propName)
+ *
+ * Returns true if object 'obj' has property 'propName'.
+ */
+function hasProperty(obj, propName) {
+  return Object.prototype.hasOwnProperty.call(obj, propName);
+}
+
 // The following functions test whether a pair of taxonomic units match
 // given certain properties. Eventually, we will encapsulate taxonomic units
 // into their own Javascript class; once we do, these functions will become
@@ -811,7 +826,7 @@ var vm = new Vue({
  */
 function testWhetherTUnitsMatchByExternalReferences(tunit1, tunit2) {
   if (tunit1 === undefined || tunit2 === undefined) return false;
-  if (tunit1.hasOwnProperty('externalReferences') && tunit2.hasOwnProperty('externalReferences')) {
+  if (hasProperty(tunit1, 'externalReferences') && hasProperty(tunit2, 'externalReferences')) {
     // Each external reference is a URL as a string. We will lowercase it,
     // but do no other transformation.
     for (const extref1 of tunit1.externalReferences) {
@@ -833,7 +848,7 @@ function testWhetherTUnitsMatchByExternalReferences(tunit1, tunit2) {
  */
 function testWhetherScientificNamesMatchByBinomialName(scname1, scname2) {
   // Step 1. Try matching by explicit binomial name, if one is available.
-  if (scname1.hasOwnProperty('binomialName') && scname2.hasOwnProperty('binomialName')) {
+  if (hasProperty(scname1, 'binomialName') && hasProperty(scname2, 'binomialName')) {
     if (scname1.binomialName.trim() !== '' && scname1.binomialName.toLowerCase().trim() === scname2.binomialName.toLowerCase().trim()) { return true; }
   }
 
@@ -854,7 +869,7 @@ function testWhetherScientificNamesMatchByBinomialName(scname1, scname2) {
  */
 function testWhetherTUnitsMatchByBinomialName(tunit1, tunit2) {
   if (tunit1 === undefined || tunit2 === undefined) return false;
-  if (tunit1.hasOwnProperty('scientificNames') && tunit2.hasOwnProperty('scientificNames')) {
+  if (hasProperty(tunit1, 'scientificNames') && hasProperty(tunit2, 'scientificNames')) {
     // Each external reference is a URL as a string.
     for (const scname1 of tunit1.scientificNames) {
       for (const scname2 of tunit2.scientificNames) {
@@ -873,7 +888,7 @@ function testWhetherTUnitsMatchByBinomialName(tunit1, tunit2) {
  */
 function testWhetherTUnitsMatchBySpecimenIdentifier(tunit1, tunit2) {
   if (tunit1 === undefined || tunit2 === undefined) return false;
-  if (tunit1.hasOwnProperty('includesSpecimens') && tunit2.hasOwnProperty('includesSpecimens')) {
+  if (hasProperty(tunit1, 'includesSpecimens') && hasProperty(tunit2, 'includesSpecimens')) {
     // Convert specimen identifiers (if present) into a standard format and compare those.
     for (const specimen1 of tunit1.includesSpecimens) {
       for (const specimen2 of tunit2.includesSpecimens) {
@@ -900,17 +915,17 @@ function getSpecimenIdentifierAsURN(specimen) {
   if (specimen === undefined) return undefined;
 
   // Does it have an occurrenceID?
-  if (specimen.hasOwnProperty('occurrenceID') && specimen.occurrenceID.trim() !== '') return specimen.occurrenceID.trim();
+  if (hasProperty(specimen, 'occurrenceID') && specimen.occurrenceID.trim() !== '') return specimen.occurrenceID.trim();
 
   // Does it have a catalogNumber? We might need an institutionCode and a collectionCode as well.
-  if (specimen.hasOwnProperty('catalogNumber')) {
-    if (specimen.hasOwnProperty('institutionCode')) {
-      if (specimen.hasOwnProperty('collectionCode')) {
+  if (hasProperty(specimen, 'catalogNumber')) {
+    if (hasProperty(specimen, 'institutionCode')) {
+      if (hasProperty(specimen, 'collectionCode')) {
         return `urn:catalog:${specimen.institutionCode.trim()}:${specimen.collectionCode.trim()}:${specimen.catalogNumber.trim()}`;
       }
       return `urn:catalog:${specimen.institutionCode.trim()}::${specimen.catalogNumber.trim()}`;
     }
-    if (specimen.hasOwnProperty('collectionCode')) {
+    if (hasProperty(specimen, 'collectionCode')) {
       return `urn:catalog::${specimen.collectionCode.trim()}:${specimen.catalogNumber.trim()}`;
     }
     return `urn:catalog:::${specimen.catalogNumber.trim()}`;
@@ -961,11 +976,11 @@ function identifyDOI(testcaseToIdentify) {
 
   const possibilities = [];
 
-  if (testcase.hasOwnProperty('doi')) {
+  if (hasProperty(testcase, 'doi')) {
     possibilities.push(testcase.doi);
   }
 
-  if (testcase.hasOwnProperty('url')) {
+  if (hasProperty(testcase, 'url')) {
     possibilities.push(testcase.url);
   }
 
@@ -996,16 +1011,16 @@ function setPHYX(testcaseToLoad) {
     // Specifiers act weird unless every phyloreference has both
     // internalSpecifiers and externalSpecifiers set, even if they
     // are blank.
-    if (!testcase.hasOwnProperty('phylorefs')) testcase.phylorefs = [];
+    if (!hasProperty(testcase, 'phylorefs')) testcase.phylorefs = [];
     testcase.phylorefs.forEach((p) => {
       const phyloref = p;
 
-      if (!phyloref.hasOwnProperty('internalSpecifiers')) phyloref.internalSpecifiers = [];
-      if (!phyloref.hasOwnProperty('externalSpecifiers')) phyloref.externalSpecifiers = [];
+      if (!hasProperty(phyloref, 'internalSpecifiers')) phyloref.internalSpecifiers = [];
+      if (!hasProperty(phyloref, 'externalSpecifiers')) phyloref.externalSpecifiers = [];
     });
 
     // Check for DOI in other fields if not provided explicitly.
-    if (!testcase.hasOwnProperty('doi') || testcase.doi === '') {
+    if (!hasProperty(testcase, 'doi') || testcase.doi === '') {
       testcase.doi = identifyDOI(testcase);
     }
 
@@ -1082,7 +1097,7 @@ function renderTree(nodeExpr, phylogeny) {
   // The node styler provides information on styling nodes within the
   // phylogeny.
   function nodeStyler(element, data) {
-    if (data.hasOwnProperty('name') && data.children) {
+    if (hasProperty(data, 'name') && data.children) {
       // If the node has a label and has children (i.e. is an internal node),
       // we display it next to the node by creating a new 'text' element.
 
@@ -1101,7 +1116,7 @@ function renderTree(nodeExpr, phylogeny) {
         // selected phyloreference, make it bolder and turn it blue.
         if (
           vm.selectedPhyloref !== undefined &&
-          vm.selectedPhyloref.hasOwnProperty('label') &&
+          hasProperty(vm.selectedPhyloref, 'label') &&
           vm.getPhylorefExpectedNodeLabels(phylogeny, vm.selectedPhyloref).includes(data.name)
         ) {
           textLabel.classed('selected-internal-label', true);
@@ -1120,14 +1135,14 @@ function renderTree(nodeExpr, phylogeny) {
         // specifiers:
         //  - internal specifier in green
         //  - external specifier in red
-        if (vm.selectedPhyloref.hasOwnProperty('internalSpecifiers')) {
+        if (hasProperty(vm.selectedPhyloref, 'internalSpecifiers')) {
           for (const specifier of vm.selectedPhyloref.internalSpecifiers) {
             if (vm.testWhetherSpecifierMatchesNode(specifier, phylogeny, data.name)) {
               element.classed('node internal-specifier-node', true);
             }
           }
         }
-        if (vm.selectedPhyloref.hasOwnProperty('externalSpecifiers')) {
+        if (hasProperty(vm.selectedPhyloref, 'externalSpecifiers')) {
           for (const specifier of vm.selectedPhyloref.externalSpecifiers) {
             if (vm.testWhetherSpecifierMatchesNode(specifier, phylogeny, data.name)) {
               element.classed('node external-specifier-node', true);
@@ -1225,8 +1240,8 @@ function renderTree(nodeExpr, phylogeny) {
               // TODO: deduplicate this code with the one below.
               // console.log("Edit taxonomic units activated with: ", node);
 
-              if (!phylogeny.hasOwnProperty('additionalNodeProperties')) { Vue.set(phylogeny, 'additionalNodeProperties', {}); }
-              if (!phylogeny.additionalNodeProperties.hasOwnProperty(node.name)) {
+              if (!hasProperty(phylogeny, 'additionalNodeProperties')) { Vue.set(phylogeny, 'additionalNodeProperties', {}); }
+              if (!hasProperty(phylogeny.additionalNodeProperties, node.name)) {
                 Vue.set(phylogeny.additionalNodeProperties, node.name, {
                   representsTaxonomicUnits:
                     vm.getTaxonomicUnitsForNodeLabelInPhylogeny(phylogeny, node.name),
@@ -1246,8 +1261,8 @@ function renderTree(nodeExpr, phylogeny) {
           () => {
             // console.log("Edit taxonomic units activated with: ", node);
 
-            if (!phylogeny.hasOwnProperty('additionalNodeProperties')) { Vue.set(phylogeny, 'additionalNodeProperties', {}); }
-            if (!phylogeny.additionalNodeProperties.hasOwnProperty(node.name)) {
+            if (!hasProperty(phylogeny, 'additionalNodeProperties')) { Vue.set(phylogeny, 'additionalNodeProperties', {}); }
+            if (!hasProperty(phylogeny.additionalNodeProperties, node.name)) {
               Vue.set(phylogeny.additionalNodeProperties, node.name, {
                 representsTaxonomicUnits:
                   vm.getTaxonomicUnitsForNodeLabelInPhylogeny(phylogeny, node.name),

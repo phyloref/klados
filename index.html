@@ -130,7 +130,7 @@
                     <ul class="dropdown-menu">
                         <template v-for="(phylogeny, phylogenyIndex) of testcase.phylogenies">
                             <li><a :href="'#phylogeny-' + phylogenyIndex">
-                                <template v-if="phylogeny.hasOwnProperty('description')">
+                                <template v-if="hasProperty(phylogeny, 'description')">
                                     {{phylogeny['description']}}
                                 </template>
                                 <template v-else>
@@ -166,7 +166,7 @@
                     <a href="#" class="close glyphicon glyphicon-remove" @click="confirm('Are you sure you want to delete this phylogeny?', () => testcase.phylogenies.splice(phylogenyIndex, 1))"></a>
                     <template v-if="phylogenyDescriptionBeingEdited !== phylogeny">
                         <span role="button" @click="phylogenyDescriptionBeingEdited = phylogeny" title="Click to edit">
-                            <template v-if="phylogeny.hasOwnProperty('description')">
+                            <template v-if="hasProperty(phylogeny, 'description')">
                                 {{phylogeny['description']}}
                             </template>
                             <template v-else>
@@ -205,7 +205,7 @@
                                     v-for="(nodeLabel, nodeLabelIndex) of getNodeLabelsInPhylogeny(phylogeny)"
                                 >
                                     <template
-                                        v-if="phylogeny.hasOwnProperty('additionalNodeProperties') && phylogeny.additionalNodeProperties.hasOwnProperty(nodeLabel)"
+                                        v-if="hasProperty(phylogeny, 'additionalNodeProperties') && hasProperty(phylogeny.additionalNodeProperties, nodeLabel)"
                                     >
                                         <tr v-for="propName of Object.keys(phylogeny.additionalNodeProperties[nodeLabel])">
                                             <td>{{nodeLabel}}</td>
@@ -288,11 +288,11 @@
                                             <div class="panel panel-default">
                                                 <div class="panel-heading">Scientific names</div>
                                                 <div class="panel-body">
-                                                    <span v-if="!selectedTUnit.hasOwnProperty('scientificNames') || selectedTUnit.scientificNames.length == 0">
+                                                    <span v-if="!hasProperty(selectedTUnit, 'scientificNames') || selectedTUnit.scientificNames.length == 0">
                                                         <em>No scientific names provided.</em>
                                                     </span>
                                                     <div class="input-group"
-                                                        v-if="selectedTUnit.hasOwnProperty('scientificNames')"
+                                                        v-if="hasProperty(selectedTUnit, 'scientificNames')"
                                                         v-for="(scname, scnameIndex) of selectedTUnit.scientificNames">
                                                         <span class="input-group-btn">
                                                             <button class="btn btn-danger" @click="selectedTUnit.scientificNames.splice(scnameIndex, 1)"><span class="glyphicon glyphicon-remove"></span></button>
@@ -325,12 +325,12 @@
                                             <div class="panel panel-default">
                                                 <div class="panel-heading">External references</div>
                                                 <div class="panel-body">
-                                                    <span v-if="!selectedTUnit.hasOwnProperty('externalReferences') || selectedTUnit.externalReferences.length == 0">
+                                                    <span v-if="!hasProperty(selectedTUnit, 'externalReferences') || selectedTUnit.externalReferences.length == 0">
                                                         <em>No external references provided.</em>
                                                     </span>
 
                                                     <div class="input-group"
-                                                        v-if="selectedTUnit.hasOwnProperty('externalReferences')"
+                                                        v-if="hasProperty(selectedTUnit, 'externalReferences')"
                                                         v-for="(externalRef, externalRefIndex) of selectedTUnit.externalReferences">
                                                         <div class="input-group-btn">
                                                             <button class="btn btn-danger" @click="selectedTUnit.externalReferences.splice(externalRefIndex, 1)"
@@ -359,11 +359,11 @@
                                             <div class="panel panel-default">
                                                 <div class="panel-heading">Specimens</div>
                                                 <div class="panel-body">
-                                                    <span v-if="!selectedTUnit.hasOwnProperty('includesSpecimens') || selectedTUnit.includesSpecimens.length == 0">
+                                                    <span v-if="!hasProperty(selectedTUnit, 'includesSpecimens') || selectedTUnit.includesSpecimens.length == 0">
                                                         <em>No specimens provided.</em>
                                                     </span>
                                                     <div class="input-group"
-                                                        v-if="selectedTUnit.hasOwnProperty('includesSpecimens')"
+                                                        v-if="hasProperty(selectedTUnit, 'includesSpecimens')"
                                                         v-for="(specimen, specimenIndex) of selectedTUnit.includesSpecimens">
                                                         <span class="input-group-btn">
                                                             <button class="btn btn-danger" @click="selectedTUnit.includesSpecimens.splice(scnameIndex, 1)"><span class="glyphicon glyphicon-remove"></span></button>
@@ -537,7 +537,7 @@
                                             type="button" class="btn dropdown-toggle"
                                                 :class="{ 'btn-warning': getAllNodeLabelsMatchedBySpecifier(specifier).length == 0, 'btn-success': getAllNodeLabelsMatchedBySpecifier(specifier).length > 0}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             <span class="glyphicon"
-                                                :class="{ 'glyphicon-asterisk': getAllNodeLabelsMatchedBySpecifier(specifier).length == 0, 'glyphicon-ok': (getAllNodeLabelsMatchedBySpecifier(specifier).length > 0) || specifier.hasOwnProperty('specifierWillNotMatch') }"></span>
+                                                :class="{ 'glyphicon-asterisk': getAllNodeLabelsMatchedBySpecifier(specifier).length == 0, 'glyphicon-ok': (getAllNodeLabelsMatchedBySpecifier(specifier).length > 0) || hasProperty(specifier, 'specifierWillNotMatch') }"></span>
                                         </button>
                                         <ul v-if="dropdownTargetForSpecifier == 'matchResult'" class="dropdown-menu dropdown-menu-left">
                                             <li class="dropdown-header">Match result</li>
@@ -552,7 +552,7 @@
                                                 <li><a href="#specifiers"
                                                     @click="promptAndSetDict('Why couldn\'t this specifier be matched?', specifier, 'specifierWillNotMatch')"
                                                     >
-                                                        <template v-if="specifier.hasOwnProperty('specifierWillNotMatch')">
+                                                        <template v-if="hasProperty(specifier, 'specifierWillNotMatch')">
                                                             Reason <small>(click to edit)</small>: {{specifier.specifierWillNotMatch}}
                                                         </template>
                                                         <template v-else>
@@ -599,7 +599,7 @@
                                 <button
                                     type="button"
                                     class="btn btn-default"
-                                    onclick="if(!vm.selectedPhyloref.hasOwnProperty('externalSpecifiers')) vm.selectedPhyloref.externalSpecifiers = []; vm.selectedPhyloref.externalSpecifiers.push({});"
+                                    onclick="if(!vm.hasProperty(vm.selectedPhyloref, 'externalSpecifiers')) vm.selectedPhyloref.externalSpecifiers = []; vm.selectedPhyloref.externalSpecifiers.push({});"
                                 >Add new specifier</button>
                                 <button
                                     type="button"
@@ -638,7 +638,7 @@
                         v-for="(phyloref, phylorefIndex) of testcase.phylorefs"
                         :class="{active: selectedPhyloref === phyloref}"
                         @click="selectedPhyloref = phyloref"
-                    >{{phyloref.hasOwnProperty('label') ? phyloref.label : 'Phyloreference ' + (phylorefIndex + 1)}}</a>
+                    >{{hasProperty(phyloref, 'label') ? phyloref.label : 'Phyloreference ' + (phylorefIndex + 1)}}</a>
                     <a class="list-group-item" href="javascript: void(0)" @click="testcase.phylorefs.push(createEmptyPhyloref(testcase.phylorefs.length + 1))"><strong>Add phyloreference</strong></a>
                 </div>
             </div>
