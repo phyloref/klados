@@ -26,8 +26,284 @@ const examplePHYXURLs = [
   },
 ];
 
+// Helper methods for this library.
+
+/**
+ * hasProperty(obj, propName)
+ *
+ * Returns true if object 'obj' has property 'propName'.
+ */
+function hasProperty(obj, propName) {
+  return Object.prototype.hasOwnProperty.call(obj, propName);
+}
+
+// The following functions test whether a pair of taxonomic units match
+// given certain properties. Eventually, we will encapsulate taxonomic units
+// into their own Javascript class; once we do, these functions will become
+// methods in that class.
+
+/**
+ * testWhetherTUnitsMatchByExternalReferences(tunit1, tunit2)
+ *
+ * Test whether two Tunits have matching external references.
+ */
+function testWhetherTUnitsMatchByExternalReferences(tunit1, tunit2) {
+  if (tunit1 === undefined || tunit2 === undefined) return false;
+  if (hasProperty(tunit1, 'externalReferences') && hasProperty(tunit2, 'externalReferences')) {
+    // Each external reference is a URL as a string. We will lowercase it,
+    // but do no other transformation.
+    for (const extref1 of tunit1.externalReferences) {
+      for (const extref2 of tunit2.externalReferences) {
+        if (extref1.trim() !== '' && extref1.toLowerCase().trim() === extref2.toLowerCase().trim()) {
+          return true;
+        }
+      }
+    }
+  }
+
+  return false;
+}
+
+/**
+ * testWhetherTUnitsMatchByBinomialName(scname1, scname2)
+ *
+ * Test whether two scientific names match on the basis of their binomial names.
+ */
+function testWhetherScientificNamesMatchByBinomialName(scname1, scname2) {
+  // Step 1. Try matching by explicit binomial name, if one is available.
+  if (hasProperty(scname1, 'binomialName') && hasProperty(scname2, 'binomialName')) {
+    if (scname1.binomialName.trim() !== '' && scname1.binomialName.toLowerCase().trim() === scname2.binomialName.toLowerCase().trim()) { return true; }
+  }
+
+  // Step 2. Otherwise, try to extract the binomial name from the scientificName
+  // and compare those.
+  const binomial1 = vm.getBinomialName(scname1);
+  const binomial2 = vm.getBinomialName(scname2);
+
+  if (binomial1 !== undefined && binomial2 !== undefined && binomial1.trim() !== '' && binomial1.trim() === binomial2.trim()) { return true; }
+
+  return false;
+}
+
+/**
+ * testWhetherTUnitsMatchByBinomialName(tunit1, tunit2)
+ *
+ * Test whether two Tunits match on the basis of their binomial names.
+ */
+function testWhetherTUnitsMatchByBinomialName(tunit1, tunit2) {
+  if (tunit1 === undefined || tunit2 === undefined) return false;
+  if (hasProperty(tunit1, 'scientificNames') && hasProperty(tunit2, 'scientificNames')) {
+    // Each external reference is a URL as a string.
+    for (const scname1 of tunit1.scientificNames) {
+      for (const scname2 of tunit2.scientificNames) {
+        if (testWhetherScientificNamesMatchByBinomialName(scname1, scname2)) { return true; }
+      }
+    }
+  }
+
+  return false;
+}
+
+/**
+ * testWhetherTUnitsMatchBySpecimenIdentifier(tunit1, tunit2)
+ *
+ * Test whether two Tunits match on the basis of their specimen identifiers.
+ */
+function testWhetherTUnitsMatchBySpecimenIdentifier(tunit1, tunit2) {
+  if (tunit1 === undefined || tunit2 === undefined) return false;
+  if (hasProperty(tunit1, 'includesSpecimens') && hasProperty(tunit2, 'includesSpecimens')) {
+    // Convert specimen identifiers (if present) into a standard format and compare those.
+    for (const specimen1 of tunit1.includesSpecimens) {
+      for (const specimen2 of tunit2.includesSpecimens) {
+        if (
+          getSpecimenIdentifierAsURN(specimen1) !== undefined &&
+                    getSpecimenIdentifierAsURN(specimen2) !== undefined &&
+                    getSpecimenIdentifierAsURN(specimen1) === getSpecimenIdentifierAsURN(specimen2)
+        ) { return true; }
+      }
+    }
+  }
+
+  return false;
+}
+
+/**
+ * getSpecimenIdentifierAsURN(specimen)
+ *
+ * Given a specimen, return a specimen identifier as a URN in the form:
+ *   "urn:catalog:" + institutionCode (if present) + ':' +
+ *      collectionCode (if present) + ':' + catalogNumber (if present)
+ */
+function getSpecimenIdentifierAsURN(specimen) {
+  if (specimen === undefined) return undefined;
+
+  // Does it have an occurrenceID?
+  if (hasProperty(specimen, 'occurrenceID') && specimen.occurrenceID.trim() !== '') return specimen.occurrenceID.trim();
+
+  // Does it have a catalogNumber? We might need an institutionCode and a collectionCode as well.
+  if (hasProperty(specimen, 'catalogNumber')) {
+    if (hasProperty(specimen, 'institutionCode')) {
+      if (hasProperty(specimen, 'collectionCode')) {
+        return `urn:catalog:${specimen.institutionCode.trim()}:${specimen.collectionCode.trim()}:${specimen.catalogNumber.trim()}`;
+      }
+      return `urn:catalog:${specimen.institutionCode.trim()}::${specimen.catalogNumber.trim()}`;
+    }
+    if (hasProperty(specimen, 'collectionCode')) {
+      return `urn:catalog::${specimen.collectionCode.trim()}:${specimen.catalogNumber.trim()}`;
+    }
+    return `urn:catalog:::${specimen.catalogNumber.trim()}`;
+  }
+
+  // None of our specimen identifier schemes worked.
+  return undefined;
+}
+
+/**
+ * getTaxonomicUnitsFromNodeLabel(nodeLabel)
+ *
+ * Given a node label, attempt to parse it as a scientific name.
+ * Returns a list of taxonomic units.
+ */
+function getTaxonomicUnitsFromNodeLabel(nodeLabel) {
+  if (nodeLabel === undefined || nodeLabel === null) return [];
+
+  // Check if the label starts with a binomial name.
+  const results = /^([A-Z][a-z]+) ([a-z-]+)\b/.exec(nodeLabel);
+  if (results !== null) {
+    return [{
+      scientificNames: [{
+        scientificName: nodeLabel,
+        binomialName: `${results[1]} ${results[2]}`,
+        genus: results[1],
+        specificEpithet: results[2],
+      }],
+    }];
+  }
+
+  // It may be a scientific name, but we don't know how to parse it as such.
+  return [];
+}
+
+/**
+ * identifyDOI(testcase)
+ *
+ * DOIs should be entered into their own 'doi' field. This method looks through
+ * all possible places where a DOI might be entered -- including the 'url'
+ * field -- and attempts to extract a DOI using the regular expression DOI_REGEX.
+ *
+ * @return The best guess DOI or undefined.
+ */
+function identifyDOI(testcaseToIdentify) {
+  const testcase = testcaseToIdentify;
+  const DOI_REGEX = /^https?:\/\/(?:dx\.)?doi\.org\/(.+?)[#/]?$/i;
+
+  const possibilities = [];
+
+  if (hasProperty(testcase, 'doi')) {
+    possibilities.push(testcase.doi);
+  }
+
+  if (hasProperty(testcase, 'url')) {
+    possibilities.push(testcase.url);
+  }
+
+  // Look for possible matches.
+  for (const possibility of possibilities) {
+    const matches = DOI_REGEX.exec(possibility);
+
+    if (matches) {
+      [, testcase.doi] = matches;
+      return testcase.doi;
+    }
+  }
+
+  return undefined;
+}
+
+/**
+ * setPHYX(testcase)
+ *
+ * Updates the user interface to reflect the new JSON document provided in 'testcase'.
+ */
+function setPHYX(testcaseToLoad) {
+  if (!vm.closeCurrentStudy()) return;
+
+  const testcase = testcaseToLoad;
+
+  try {
+    // Specifiers act weird unless every phyloreference has both
+    // internalSpecifiers and externalSpecifiers set, even if they
+    // are blank.
+    if (!hasProperty(testcase, 'phylorefs')) testcase.phylorefs = [];
+    testcase.phylorefs.forEach((p) => {
+      const phyloref = p;
+
+      if (!hasProperty(phyloref, 'internalSpecifiers')) phyloref.internalSpecifiers = [];
+      if (!hasProperty(phyloref, 'externalSpecifiers')) phyloref.externalSpecifiers = [];
+    });
+
+    // Check for DOI in other fields if not provided explicitly.
+    if (!hasProperty(testcase, 'doi') || testcase.doi === '') {
+      testcase.doi = identifyDOI(testcase);
+    }
+
+    // Deep-copy the testcase into a 'testcaseAsLoaded' variable in our
+    // model. We deep-compare vm.testcase with vm.testcaseAsLoaded to
+    // determine if the loaded model has been modified.
+    vm.testcaseAsLoaded = jQuery.extend(true, {}, testcase);
+    vm.testcase = testcase;
+
+    // Reset all UI selections.
+    vm.selectedPhyloref = undefined;
+    vm.selectedSpecifier = undefined;
+    vm.selectedTUnit = undefined;
+  } catch (err) {
+    console.log(`Error occurred while displaying new testcase: ${err}`);
+  }
+}
+
+/**
+ * loadPHYXFromFileInput(fileInput)
+ *
+ * Load a JSON file from the local file system using FileReader. fileInput
+ * needs to be an HTML element representing an <input type="file"> in which
+ * the user has selected the local file they wish to load.
+ *
+ * This code is based on https://stackoverflow.com/a/21446426/27310
+ */
+function loadPHYXFromFileInput(fileInput) {
+  if (typeof window.FileReader !== 'function') {
+    alert('The FileReader API is not supported on this browser.');
+    return;
+  }
+
+  if (!fileInput) {
+    alert('Programmer error: No file input element specified.');
+    return;
+  }
+
+  if (!fileInput.prop('files')) {
+    alert('File input element found, but files property missing: try another browser?');
+    return;
+  }
+
+  if (!fileInput.prop('files')[0]) {
+    alert('Please select a file before attempting to load it.');
+    return;
+  }
+
+  const [file] = fileInput.prop('files');
+  const fr = new FileReader();
+  fr.onload = ((e) => {
+    const lines = e.target.result;
+    const testcase = JSON.parse(lines);
+    setPHYX(testcase);
+  });
+  fr.readAsText(file);
+}
+
 // Set up the Vue object which contains the entire model.
-var vm = new Vue({
+const vm = new Vue({
   // The element to install Vue onto.
   el: '#app',
 
@@ -506,12 +782,213 @@ var vm = new Vue({
       // we hijack it to redraw the phylogenies.
 
       // Redraw the phylogeny.
-      const phylotree = renderTree(nodeExpr, phylogeny);
+      const phylotree = this.renderTree(nodeExpr, phylogeny);
 
       // Return the Newick string that was rendered.
       if (phylotree === undefined) { return '()'; }
 
       return phylotree.get_newick_with_internal_labels();
+    },
+    renderTree(nodeExpr, phylogeny) {
+      // renderTree(nodeExpr, phylogeny) {
+      // Given a phylogeny, try to render it as a tree using Phylotree.
+      //
+      // - 'nodeExpr' is the expression provided to d3.select(...) to indicate the
+      //   SVG node to draw the phylogeny into.
+      // - 'phylogeny' is a Phylogeny in the data model.
+
+      // Extract the Newick string to render.
+      const { newick = '()' } = phylogeny;
+
+      // Using Phylotree is a four step process:
+      //  1. You use d3.layout.phyloref() to create a tree object, which you
+      //     can configure with options, selecting the SVG node to draw in,
+      //     and so on.
+      //  2. You then call the tree object with a parsed Newick tree to update
+      //     its nodes.
+      //  3. At this point, you can go through the nodes and modify them if
+      //     you need to.
+      //  4. Finally, you call tree.placenodes().update() to calculate node
+      //     locations and move the actual nodes to the correct locations on
+      //     the SVG element in which you are drawing the tree.
+      //
+
+      const tree = d3.layout.phylotree()
+        .svg(d3.select(nodeExpr))
+        .options({
+          transitions: false,
+        })
+        .style_nodes((element, data) => {
+          // Instructions used to style nodes in Phylotree
+          // - element: The D3 element of the node being styled
+          // - data: The data associated with the node being styled
+
+          if (hasProperty(data, 'name') && data.children) {
+            // If the node has a label and has children (i.e. is an internal node),
+            // we display it next to the node by creating a new 'text' element.
+
+            // Make sure we don't already have an internal label node on this SVG node!
+            const label = element.selectAll('.internal-label');
+            if (label.empty()) {
+              const textLabel = element.append('text');
+
+              // Place internal label .3em to the right and below the node itself.
+              textLabel.classed('internal-label', true)
+                .text(data.name)
+                .attr('dx', '.3em')
+                .attr('dy', '.3em');
+
+              // If the internal label has the same label as the currently
+              // selected phyloreference, make it bolder and turn it blue.
+              if (
+                this.selectedPhyloref !== undefined &&
+                hasProperty(this.selectedPhyloref, 'label') &&
+                this.getPhylorefExpectedNodeLabels(phylogeny, this.selectedPhyloref)
+                  .includes(data.name)
+              ) {
+                textLabel.classed('selected-internal-label', true);
+              }
+            }
+          }
+
+          if (data.name !== undefined && data.children === undefined) {
+            // Labeled leaf node! Look for taxonomic units.
+            const tunits = this.getTaxonomicUnitsForNodeLabelInPhylogeny(phylogeny, data.name);
+
+            if (tunits.length === 0) {
+              element.classed('terminal-node-without-tunits', true);
+            } else if (this.selectedPhyloref !== undefined) {
+              // If there's a selected phyloref, we should highlight
+              // specifiers:
+              //  - internal specifier in green
+              //  - external specifier in red
+              if (hasProperty(this.selectedPhyloref, 'internalSpecifiers')) {
+                for (const specifier of this.selectedPhyloref.internalSpecifiers) {
+                  if (this.testWhetherSpecifierMatchesNode(specifier, phylogeny, data.name)) {
+                    element.classed('node internal-specifier-node', true);
+                  }
+                }
+              }
+              if (hasProperty(this.selectedPhyloref, 'externalSpecifiers')) {
+                for (const specifier of this.selectedPhyloref.externalSpecifiers) {
+                  if (this.testWhetherSpecifierMatchesNode(specifier, phylogeny, data.name)) {
+                    element.classed('node external-specifier-node', true);
+                  }
+                }
+              }
+            }
+          }
+        });
+      tree(d3.layout.newick_parser(newick));
+
+      // Phylotree supports reading the tree back out as Newick, but their Newick
+      // representation doesn't annotate internal nodes. We add a method to allow
+      // us to do that here.
+      tree.get_newick_with_internal_labels = function () {
+        return `${this.get_newick((node) => {
+          // Don't annotate terminal nodes.
+          if (!node.children) return undefined;
+
+          // For internal nodes, annotate with their names.
+          return node.name;
+        })};`;
+        // ^ tree.get_newick() doesn't add the final semicolon, so we do
+        //   that here.
+      };
+
+      tree.get_nodes().forEach((node) => {
+        // All nodes (including named nodes) can be renamed.
+        // Renaming a node will cause the phylogeny.newick property to
+        // be changed, which should cause Vue.js to cause the tree to be
+        // re-rendered.
+        const label = node.name;
+        const isNodeLabeled = (label !== undefined && label.trim() !== '');
+
+        d3.layout.phylotree.add_custom_menu(
+          node,
+          () => `Edit label: ${isNodeLabeled ? label : 'none'}`,
+          () => {
+            // Ask the user for a new label.
+            const result = window.prompt(
+              `Please choose a new label for ${
+                isNodeLabeled ? `the node labeled '${label}'` : 'the selected unlabeled node'}`,
+              (isNodeLabeled ? label : ''),
+            );
+
+            // If the user clicked cancel, don't do anything.
+            if (result === null) return;
+
+            // If the user entered a blank label, remove any label from this node.
+            if (result.trim() === '') {
+              delete node.name;
+            } else {
+              node.name = result;
+            }
+
+            // This should have updated the Phylotree model. To update the
+            // Vue and force a redraw, we now need to update phylogeny.newick.
+            const newNewick = tree.get_newick_with_internal_labels();
+            console.log('Newick string updated to: ', newNewick);
+            phylogeny.newick = newNewick;
+          },
+        );
+
+        // Only relevant for labeled nodes.
+        if (isNodeLabeled) {
+          // Add custom menu items: display all taxonomic units and provide
+          // a menu item to edit them.
+          const tunits = this.getTaxonomicUnitsForNodeLabelInPhylogeny(phylogeny, node.name);
+          tunits.forEach((tunit) => {
+            if (node.name !== '') {
+              d3.layout.phylotree.add_custom_menu(
+                node,
+                () => `Taxonomic unit: ${this.getTaxonomicUnitLabel(tunit)}`,
+                () => {
+                  // TODO: deduplicate this code with the one below.
+                  // console.log("Edit taxonomic units activated with: ", node);
+
+                  if (!hasProperty(phylogeny, 'additionalNodeProperties')) { Vue.set(phylogeny, 'additionalNodeProperties', {}); }
+                  if (!hasProperty(phylogeny.additionalNodeProperties, node.name)) {
+                    Vue.set(phylogeny.additionalNodeProperties, node.name, {
+                      representsTaxonomicUnits:
+                        this.getTaxonomicUnitsForNodeLabelInPhylogeny(phylogeny, node.name),
+                    });
+                  }
+
+                  this.startTUnitEditorModal('node', node.name, phylogeny.additionalNodeProperties[node.name]);
+                },
+              );
+            }
+          });
+
+          if (node.name !== '') {
+            d3.layout.phylotree.add_custom_menu(
+              node,
+              () => 'Edit taxonomic units',
+              () => {
+                // console.log("Edit taxonomic units activated with: ", node);
+
+                if (!hasProperty(phylogeny, 'additionalNodeProperties')) { Vue.set(phylogeny, 'additionalNodeProperties', {}); }
+                if (!hasProperty(phylogeny.additionalNodeProperties, node.name)) {
+                  Vue.set(phylogeny.additionalNodeProperties, node.name, {
+                    representsTaxonomicUnits:
+                      this.getTaxonomicUnitsForNodeLabelInPhylogeny(phylogeny, node.name),
+                  });
+                }
+
+                this.startTUnitEditorModal('node', node.name, phylogeny.additionalNodeProperties[node.name]);
+              },
+            );
+          }
+        }
+      });
+
+      tree
+        .spacing_x(20)
+        .spacing_y(40)
+        .placenodes()
+        .update();
+      return tree;
     },
 
     // Methods for creating new, empty data model elements.
@@ -802,484 +1279,3 @@ var vm = new Vue({
     },
   },
 });
-
-// Helper methods for this library.
-
-/**
- * hasProperty(obj, propName)
- *
- * Returns true if object 'obj' has property 'propName'.
- */
-function hasProperty(obj, propName) {
-  return Object.prototype.hasOwnProperty.call(obj, propName);
-}
-
-// The following functions test whether a pair of taxonomic units match
-// given certain properties. Eventually, we will encapsulate taxonomic units
-// into their own Javascript class; once we do, these functions will become
-// methods in that class.
-
-/**
- * testWhetherTUnitsMatchByExternalReferences(tunit1, tunit2)
- *
- * Test whether two Tunits have matching external references.
- */
-function testWhetherTUnitsMatchByExternalReferences(tunit1, tunit2) {
-  if (tunit1 === undefined || tunit2 === undefined) return false;
-  if (hasProperty(tunit1, 'externalReferences') && hasProperty(tunit2, 'externalReferences')) {
-    // Each external reference is a URL as a string. We will lowercase it,
-    // but do no other transformation.
-    for (const extref1 of tunit1.externalReferences) {
-      for (const extref2 of tunit2.externalReferences) {
-        if (extref1.trim() !== '' && extref1.toLowerCase().trim() === extref2.toLowerCase().trim()) {
-          return true;
-        }
-      }
-    }
-  }
-
-  return false;
-}
-
-/**
- * testWhetherTUnitsMatchByBinomialName(scname1, scname2)
- *
- * Test whether two scientific names match on the basis of their binomial names.
- */
-function testWhetherScientificNamesMatchByBinomialName(scname1, scname2) {
-  // Step 1. Try matching by explicit binomial name, if one is available.
-  if (hasProperty(scname1, 'binomialName') && hasProperty(scname2, 'binomialName')) {
-    if (scname1.binomialName.trim() !== '' && scname1.binomialName.toLowerCase().trim() === scname2.binomialName.toLowerCase().trim()) { return true; }
-  }
-
-  // Step 2. Otherwise, try to extract the binomial name from the scientificName
-  // and compare those.
-  const binomial1 = vm.getBinomialName(scname1);
-  const binomial2 = vm.getBinomialName(scname2);
-
-  if (binomial1 !== undefined && binomial2 !== undefined && binomial1.trim() !== '' && binomial1.trim() === binomial2.trim()) { return true; }
-
-  return false;
-}
-
-/**
- * testWhetherTUnitsMatchByBinomialName(tunit1, tunit2)
- *
- * Test whether two Tunits match on the basis of their binomial names.
- */
-function testWhetherTUnitsMatchByBinomialName(tunit1, tunit2) {
-  if (tunit1 === undefined || tunit2 === undefined) return false;
-  if (hasProperty(tunit1, 'scientificNames') && hasProperty(tunit2, 'scientificNames')) {
-    // Each external reference is a URL as a string.
-    for (const scname1 of tunit1.scientificNames) {
-      for (const scname2 of tunit2.scientificNames) {
-        if (testWhetherScientificNamesMatchByBinomialName(scname1, scname2)) { return true; }
-      }
-    }
-  }
-
-  return false;
-}
-
-/**
- * testWhetherTUnitsMatchBySpecimenIdentifier(tunit1, tunit2)
- *
- * Test whether two Tunits match on the basis of their specimen identifiers.
- */
-function testWhetherTUnitsMatchBySpecimenIdentifier(tunit1, tunit2) {
-  if (tunit1 === undefined || tunit2 === undefined) return false;
-  if (hasProperty(tunit1, 'includesSpecimens') && hasProperty(tunit2, 'includesSpecimens')) {
-    // Convert specimen identifiers (if present) into a standard format and compare those.
-    for (const specimen1 of tunit1.includesSpecimens) {
-      for (const specimen2 of tunit2.includesSpecimens) {
-        if (
-          getSpecimenIdentifierAsURN(specimen1) !== undefined &&
-                    getSpecimenIdentifierAsURN(specimen2) !== undefined &&
-                    getSpecimenIdentifierAsURN(specimen1) === getSpecimenIdentifierAsURN(specimen2)
-        ) { return true; }
-      }
-    }
-  }
-
-  return false;
-}
-
-/**
- * getSpecimenIdentifierAsURN(specimen)
- *
- * Given a specimen, return a specimen identifier as a URN in the form:
- *   "urn:catalog:" + institutionCode (if present) + ':' +
- *      collectionCode (if present) + ':' + catalogNumber (if present)
- */
-function getSpecimenIdentifierAsURN(specimen) {
-  if (specimen === undefined) return undefined;
-
-  // Does it have an occurrenceID?
-  if (hasProperty(specimen, 'occurrenceID') && specimen.occurrenceID.trim() !== '') return specimen.occurrenceID.trim();
-
-  // Does it have a catalogNumber? We might need an institutionCode and a collectionCode as well.
-  if (hasProperty(specimen, 'catalogNumber')) {
-    if (hasProperty(specimen, 'institutionCode')) {
-      if (hasProperty(specimen, 'collectionCode')) {
-        return `urn:catalog:${specimen.institutionCode.trim()}:${specimen.collectionCode.trim()}:${specimen.catalogNumber.trim()}`;
-      }
-      return `urn:catalog:${specimen.institutionCode.trim()}::${specimen.catalogNumber.trim()}`;
-    }
-    if (hasProperty(specimen, 'collectionCode')) {
-      return `urn:catalog::${specimen.collectionCode.trim()}:${specimen.catalogNumber.trim()}`;
-    }
-    return `urn:catalog:::${specimen.catalogNumber.trim()}`;
-  }
-
-  // None of our specimen identifier schemes worked.
-  return undefined;
-}
-
-/**
- * getTaxonomicUnitsFromNodeLabel(nodeLabel)
- *
- * Given a node label, attempt to parse it as a scientific name.
- * Returns a list of taxonomic units.
- */
-function getTaxonomicUnitsFromNodeLabel(nodeLabel) {
-  if (nodeLabel === undefined || nodeLabel === null) return [];
-
-  // Check if the label starts with a binomial name.
-  const results = /^([A-Z][a-z]+) ([a-z-]+)\b/.exec(nodeLabel);
-  if (results !== null) {
-    return [{
-      scientificNames: [{
-        scientificName: nodeLabel,
-        binomialName: `${results[1]} ${results[2]}`,
-        genus: results[1],
-        specificEpithet: results[2],
-      }],
-    }];
-  }
-
-  // It may be a scientific name, but we don't know how to parse it as such.
-  return [];
-}
-
-/**
- * identifyDOI(testcase)
- *
- * DOIs should be entered into their own 'doi' field. This method looks through
- * all possible places where a DOI might be entered -- including the 'url'
- * field -- and attempts to extract a DOI using the regular expression DOI_REGEX.
- *
- * @return The best guess DOI or undefined.
- */
-function identifyDOI(testcaseToIdentify) {
-  const testcase = testcaseToIdentify;
-  const DOI_REGEX = /^https?:\/\/(?:dx\.)?doi\.org\/(.+?)[#/]?$/i;
-
-  const possibilities = [];
-
-  if (hasProperty(testcase, 'doi')) {
-    possibilities.push(testcase.doi);
-  }
-
-  if (hasProperty(testcase, 'url')) {
-    possibilities.push(testcase.url);
-  }
-
-  // Look for possible matches.
-  for (const possibility of possibilities) {
-    const matches = DOI_REGEX.exec(possibility);
-
-    if (matches) {
-      [, testcase.doi] = matches;
-      return testcase.doi;
-    }
-  }
-
-  return undefined;
-}
-
-/**
- * setPHYX(testcase)
- *
- * Updates the user interface to reflect the new JSON document provided in 'testcase'.
- */
-function setPHYX(testcaseToLoad) {
-  if (!vm.closeCurrentStudy()) return;
-
-  const testcase = testcaseToLoad;
-
-  try {
-    // Specifiers act weird unless every phyloreference has both
-    // internalSpecifiers and externalSpecifiers set, even if they
-    // are blank.
-    if (!hasProperty(testcase, 'phylorefs')) testcase.phylorefs = [];
-    testcase.phylorefs.forEach((p) => {
-      const phyloref = p;
-
-      if (!hasProperty(phyloref, 'internalSpecifiers')) phyloref.internalSpecifiers = [];
-      if (!hasProperty(phyloref, 'externalSpecifiers')) phyloref.externalSpecifiers = [];
-    });
-
-    // Check for DOI in other fields if not provided explicitly.
-    if (!hasProperty(testcase, 'doi') || testcase.doi === '') {
-      testcase.doi = identifyDOI(testcase);
-    }
-
-    // Deep-copy the testcase into a 'testcaseAsLoaded' variable in our
-    // model. We deep-compare vm.testcase with vm.testcaseAsLoaded to
-    // determine if the loaded model has been modified.
-    vm.testcaseAsLoaded = jQuery.extend(true, {}, testcase);
-    vm.testcase = testcase;
-
-    // Reset all UI selections.
-    vm.selectedPhyloref = undefined;
-    vm.selectedSpecifier = undefined;
-    vm.selectedTUnit = undefined;
-  } catch (err) {
-    console.log(`Error occurred while displaying new testcase: ${err}`);
-  }
-}
-
-/**
- * loadPHYXFromFileInput(fileInput)
- *
- * Load a JSON file from the local file system using FileReader. fileInput
- * needs to be an HTML element representing an <input type="file"> in which
- * the user has selected the local file they wish to load.
- *
- * This code is based on https://stackoverflow.com/a/21446426/27310
- */
-function loadPHYXFromFileInput(fileInput) {
-  if (typeof window.FileReader !== 'function') {
-    alert('The FileReader API is not supported on this browser.');
-    return;
-  }
-
-  if (!fileInput) {
-    alert('Programmer error: No file input element specified.');
-    return;
-  }
-
-  if (!fileInput.prop('files')) {
-    alert('File input element found, but files property missing: try another browser?');
-    return;
-  }
-
-  if (!fileInput.prop('files')[0]) {
-    alert('Please select a file before attempting to load it.');
-    return;
-  }
-
-  const [file] = fileInput.prop('files');
-  const fr = new FileReader();
-  fr.onload = ((e) => {
-    const lines = e.target.result;
-    const testcase = JSON.parse(lines);
-    setPHYX(testcase);
-  });
-  fr.readAsText(file);
-}
-
-/**
- * renderTree(nodeExpr, phylogeny) {
- * Given a phylogeny, try to render it as a tree using Phylotree.
- *
- * 'nodeExpr' is the expression provided to d3.select(...) to indicate the
- *   SVG node to draw the phylogeny into.
- * 'phylogeny' is a Phylogeny in the data model.
- */
-function renderTree(nodeExpr, phylogeny) {
-  // No point trying to render anything without a Vue model.
-  if (typeof vm === 'undefined') return undefined;
-
-  // Extract the Newick string to render.
-  const { newick = '()' } = phylogeny;
-
-  // The node styler provides information on styling nodes within the
-  // phylogeny.
-  function nodeStyler(element, data) {
-    if (hasProperty(data, 'name') && data.children) {
-      // If the node has a label and has children (i.e. is an internal node),
-      // we display it next to the node by creating a new 'text' element.
-
-      // Make sure we don't already have an internal label node on this SVG node!
-      const label = element.selectAll('.internal-label');
-      if (label.empty()) {
-        const textLabel = element.append('text');
-
-        // Place internal label .3em to the right and below the node itself.
-        textLabel.classed('internal-label', true)
-          .text(data.name)
-          .attr('dx', '.3em')
-          .attr('dy', '.3em');
-
-        // If the internal label has the same label as the currently
-        // selected phyloreference, make it bolder and turn it blue.
-        if (
-          vm.selectedPhyloref !== undefined &&
-          hasProperty(vm.selectedPhyloref, 'label') &&
-          vm.getPhylorefExpectedNodeLabels(phylogeny, vm.selectedPhyloref).includes(data.name)
-        ) {
-          textLabel.classed('selected-internal-label', true);
-        }
-      }
-    }
-
-    if (data.name !== undefined && data.children === undefined) {
-      // Labeled leaf node! Look for taxonomic units.
-      const tunits = vm.getTaxonomicUnitsForNodeLabelInPhylogeny(phylogeny, data.name);
-
-      if (tunits.length === 0) {
-        element.classed('terminal-node-without-tunits', true);
-      } else if (vm.selectedPhyloref !== undefined) {
-        // If there's a selected phyloref, we should highlight
-        // specifiers:
-        //  - internal specifier in green
-        //  - external specifier in red
-        if (hasProperty(vm.selectedPhyloref, 'internalSpecifiers')) {
-          for (const specifier of vm.selectedPhyloref.internalSpecifiers) {
-            if (vm.testWhetherSpecifierMatchesNode(specifier, phylogeny, data.name)) {
-              element.classed('node internal-specifier-node', true);
-            }
-          }
-        }
-        if (hasProperty(vm.selectedPhyloref, 'externalSpecifiers')) {
-          for (const specifier of vm.selectedPhyloref.externalSpecifiers) {
-            if (vm.testWhetherSpecifierMatchesNode(specifier, phylogeny, data.name)) {
-              element.classed('node external-specifier-node', true);
-            }
-          }
-        }
-      }
-    }
-  }
-
-  // Using Phylotree is a four step process:
-  //  1. You use d3.layout.phyloref() to create a tree object, which you
-  //     can configure with options, selecting the SVG node to draw in,
-  //     and so on.
-  //  2. You then call the tree object with a parsed Newick tree to update
-  //     its nodes.
-  //  3. At this point, you can go through the nodes and modify them if
-  //     you need to.
-  //  4. Finally, you call tree.placenodes().update() to calculate node
-  //     locations and move the actual nodes to the correct locations on
-  //     the SVG element in which you are drawing the tree.
-  //
-
-  const tree = d3.layout.phylotree()
-    .svg(d3.select(nodeExpr))
-    .options({
-      transitions: false,
-    })
-    .style_nodes(nodeStyler);
-  tree(d3.layout.newick_parser(newick));
-
-  // Phylotree supports reading the tree back out as Newick, but their Newick
-  // representation doesn't annotate internal nodes. We add a method to allow
-  // us to do that here.
-  tree.get_newick_with_internal_labels = function () {
-    return `${this.get_newick((node) => {
-      // Don't annotate terminal nodes.
-      if (!node.children) return undefined;
-
-      // For internal nodes, annotate with their names.
-      return node.name;
-    })};`;
-    // ^ tree.get_newick() doesn't add the final semicolon, so we do
-    //   that here.
-  };
-
-  tree.get_nodes().forEach((node) => {
-    // All nodes (including named nodes) can be renamed.
-    // Renaming a node will cause the phylogeny.newick property to
-    // be changed, which should cause Vue.js to cause the tree to be
-    // re-rendered.
-    const label = node.name;
-    const isNodeLabeled = (label !== undefined && label.trim() !== '');
-
-    d3.layout.phylotree.add_custom_menu(
-      node,
-      () => `Edit label: ${isNodeLabeled ? label : 'none'}`,
-      () => {
-        // Ask the user for a new label.
-        const result = window.prompt(
-          `Please choose a new label for ${
-            isNodeLabeled ? `the node labeled '${label}'` : 'the selected unlabeled node'}`,
-          (isNodeLabeled ? label : ''),
-        );
-
-        // If the user clicked cancel, don't do anything.
-        if (result === null) return;
-
-        // If the user entered a blank label, remove any label from this node.
-        if (result.trim() === '') {
-          delete node.name;
-        } else {
-          node.name = result;
-        }
-
-        // This should have updated the Phylotree model. To update the
-        // Vue and force a redraw, we now need to update phylogeny.newick.
-        const newNewick = tree.get_newick_with_internal_labels();
-        console.log('Newick string updated to: ', newNewick);
-        phylogeny.newick = newNewick;
-      },
-    );
-
-    // Only relevant for labeled nodes.
-    if (isNodeLabeled) {
-      // Add custom menu items: display all taxonomic units and provide
-      // a menu item to edit them.
-      const tunits = vm.getTaxonomicUnitsForNodeLabelInPhylogeny(phylogeny, node.name);
-      tunits.forEach((tunit) => {
-        if (node.name !== '') {
-          d3.layout.phylotree.add_custom_menu(
-            node,
-            () => `Taxonomic unit: ${vm.getTaxonomicUnitLabel(tunit)}`,
-            () => {
-              // TODO: deduplicate this code with the one below.
-              // console.log("Edit taxonomic units activated with: ", node);
-
-              if (!hasProperty(phylogeny, 'additionalNodeProperties')) { Vue.set(phylogeny, 'additionalNodeProperties', {}); }
-              if (!hasProperty(phylogeny.additionalNodeProperties, node.name)) {
-                Vue.set(phylogeny.additionalNodeProperties, node.name, {
-                  representsTaxonomicUnits:
-                    vm.getTaxonomicUnitsForNodeLabelInPhylogeny(phylogeny, node.name),
-                });
-              }
-
-              vm.startTUnitEditorModal('node', node.name, phylogeny.additionalNodeProperties[node.name]);
-            },
-          );
-        }
-      });
-
-      if (node.name !== '') {
-        d3.layout.phylotree.add_custom_menu(
-          node,
-          () => 'Edit taxonomic units',
-          () => {
-            // console.log("Edit taxonomic units activated with: ", node);
-
-            if (!hasProperty(phylogeny, 'additionalNodeProperties')) { Vue.set(phylogeny, 'additionalNodeProperties', {}); }
-            if (!hasProperty(phylogeny.additionalNodeProperties, node.name)) {
-              Vue.set(phylogeny.additionalNodeProperties, node.name, {
-                representsTaxonomicUnits:
-                  vm.getTaxonomicUnitsForNodeLabelInPhylogeny(phylogeny, node.name),
-              });
-            }
-
-            vm.startTUnitEditorModal('node', node.name, phylogeny.additionalNodeProperties[node.name]);
-          },
-        );
-      }
-    }
-  });
-
-  tree
-    .spacing_x(20)
-    .spacing_y(40)
-    .placenodes()
-    .update();
-  return tree;
-}
