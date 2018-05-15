@@ -206,15 +206,19 @@ function identifyDOI(testcaseToIdentify) {
   }
 
   // Look for possible matches.
-  for (const possibility of possibilities) {
-    const matches = DOI_REGEX.exec(possibility);
+  const dois = possibilities
+    // Try to find a DOI
+    .map(possibility => DOI_REGEX.exec(possibility))
+    // Restrict to possibilities in which the regex match was successful
+    .filter(matches => matches);
 
-    if (matches) {
-      [, testcase.doi] = matches;
-      return testcase.doi;
-    }
+  if (dois.length > 0) {
+    // Retrieve the matched DOI -- it's the first group in the matched results.
+    const [[, doi]] = dois;
+    return doi;
   }
 
+  // No matches found
   return undefined;
 }
 
@@ -1151,37 +1155,39 @@ const vm = new Vue({
       const { newick = '()' } = phylogeny;
       console.log(`getNodeLabelsInPhylogeny(${newick})`);
 
-      // Use PhyloTree's Newick parser to convert the Newick string
-      // into a tree-based representation, which we can recurse through
-      // to extract all the labels.
+      // To recurse through the tree produced by Phylotree's Newick parser,
+      // we need a recursive function that adds a node's labels and all of its
+      // children's nodes into the list of node labels.
       //
       // TODO: In later versions, we will make the parsed Newick tree
       // directly accessible, so we should replace this code to just
       // recurse through that tree instead of re-parsing the Newick string.
-      const parsed = d3.layout.newick_parser(newick);
-      if (this.hasProperty(parsed, 'json')) {
-        function addNodeAndChildrenToNodeLabels(node) {
-          // console.log("Recursing into: " + JSON.stringify(node));
+      function addNodeAndChildrenToNodeLabels(node) {
+        // console.log("Recursing into: " + JSON.stringify(node));
 
-          if (this.hasProperty(node, 'name') && node.name !== '') {
-            const nodeHasChildren = this.hasProperty(node, 'children') && node.children.length > 0;
+        if (this.hasProperty(node, 'name') && node.name !== '') {
+          const nodeHasChildren = this.hasProperty(node, 'children') && node.children.length > 0;
 
-            // Only add the node label if it is on the type of node
-            // we're interested in.
-            if (
-              (nodeType === 'both') ||
-              (nodeType === 'internal' && nodeHasChildren) ||
-              (nodeType === 'terminal' && !nodeHasChildren)
-            ) {
-              nodeLabels.add(node.name);
-            }
-          }
-
-          if (this.hasProperty(node, 'children')) {
-            node.children.forEach(child => addNodeAndChildrenToNodeLabels(child));
+          // Only add the node label if it is on the type of node
+          // we're interested in.
+          if (
+            (nodeType === 'both') ||
+            (nodeType === 'internal' && nodeHasChildren) ||
+            (nodeType === 'terminal' && !nodeHasChildren)
+          ) {
+            nodeLabels.add(node.name);
           }
         }
 
+        if (this.hasProperty(node, 'children')) {
+          node.children.forEach(child => addNodeAndChildrenToNodeLabels(child));
+        }
+      }
+
+      // Parse the Newick string; if parseable, recurse through the node labels,
+      // adding them all to 'nodeLabels'.
+      const parsed = d3.layout.newick_parser(newick);
+      if (this.hasProperty(parsed, 'json')) {
         // Recurse away!
         addNodeAndChildrenToNodeLabels(parsed.json);
       }
@@ -1220,16 +1226,18 @@ const vm = new Vue({
       // Wrapper for running getNodeLabelsMatchedBySpecifier() on
       // all currently loaded phylogenies.
 
-      const nodeLabelsWithPrefix = [];
+      let nodeLabelsWithPrefix = [];
 
       const prefix = 'phylogeny_';
       let prefixCount = 0;
-      for (const phylogeny of this.testcase.phylogenies) {
-        for (const nodeLabel of this.getNodeLabelsMatchedBySpecifier(specifier, phylogeny)) {
-          nodeLabelsWithPrefix.push(`${prefix + prefixCount}:${nodeLabel}`);
-        }
-        prefixCount += 1;
-      }
+      this.testcase.phylogenies.forEach((phylogeny) => {
+        nodeLabelsWithPrefix = nodeLabelsWithPrefix
+          .concat(this.getNodeLabelsMatchedBySpecifier(specifier, phylogeny)
+            .map((nodeLabel) => {
+              prefixCount += 1;
+              return `${prefix + prefixCount}:${nodeLabel}`;
+            }));
+      });
 
       return nodeLabelsWithPrefix;
     },
@@ -1264,17 +1272,11 @@ const vm = new Vue({
 
       // Attempt pairwise matches between taxonomic units in the specifier
       // and associated with the node.
-      for (const tunit1 of specifierTUnits) {
-        for (const tunit2 of nodeTUnits) {
-          if (
-            testWhetherTUnitsMatchByBinomialName(tunit1, tunit2) ||
-            testWhetherTUnitsMatchByExternalReferences(tunit1, tunit2) ||
-            testWhetherTUnitsMatchBySpecimenIdentifier(tunit1, tunit2)
-          ) return true;
-        }
-      }
-
-      return false;
+      return specifierTUnits.some(tunit1 =>
+        nodeTUnits.some(tunit2 =>
+          testWhetherTUnitsMatchByBinomialName(tunit1, tunit2) ||
+          testWhetherTUnitsMatchByExternalReferences(tunit1, tunit2) ||
+          testWhetherTUnitsMatchBySpecimenIdentifier(tunit1, tunit2)));
     },
   },
 });
