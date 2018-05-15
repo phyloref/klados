@@ -371,12 +371,12 @@ const vm = new Vue({
       // Will ask the user to confirm before replacing it.
 
       $.getJSON(url, data => this.setPHYX(data)).fail((error) => {
-        console.log("Could not load PHYX file '", url, "': ", error);
         if (error.status === 200) {
           alert(`Could not load PHYX file '${url}': file malformed, see console for details.`);
         } else {
           alert(`Could not load PHYX file '${url}': server error ${error.status} ${error.statusText}`);
         }
+        throw new Error(`Could not load PHYX file ${url}: ${error}`);
       });
     },
 
@@ -455,7 +455,7 @@ const vm = new Vue({
         vm.selectedSpecifier = undefined;
         vm.selectedTUnit = undefined;
       } catch (err) {
-        console.log(`Error occurred while displaying new testcase: ${err}`);
+        throw new Error(`Error occurred while displaying new testcase: ${err}`);
       }
     },
 
@@ -773,7 +773,8 @@ const vm = new Vue({
       }
 
       // Did that work?
-      console.log(`Additional node properties for '${nodeLabelToToggle}'`, phylogeny.additionalNodeProperties[nodeLabelToToggle]);
+      // console.log(`Additional node properties for '${nodeLabelToToggle}'`,
+      // phylogeny.additionalNodeProperties[nodeLabelToToggle]);
     },
     getPhylogenyAsNewick(nodeExpr, phylogeny) {
       // Returns the phylogeny as a Newick string. Since this method is
@@ -886,7 +887,11 @@ const vm = new Vue({
       // Phylotree supports reading the tree back out as Newick, but their Newick
       // representation doesn't annotate internal nodes. We add a method to allow
       // us to do that here.
-      tree.get_newick_with_internal_labels = function () {
+      //
+      // This is not in camelcase in order to keep it in line with the other
+      // functions on Phylotree.
+      // eslint-disable-next-line camelcase
+      tree.get_newick_with_internal_labels = function get_newick_with_internal_labels() {
         return `${this.get_newick((node) => {
           // Don't annotate terminal nodes.
           if (!node.children) return undefined;
@@ -931,7 +936,7 @@ const vm = new Vue({
             // This should have updated the Phylotree model. To update the
             // Vue and force a redraw, we now need to update phylogeny.newick.
             const newNewick = tree.get_newick_with_internal_labels();
-            console.log('Newick string updated to: ', newNewick);
+            // console.log('Newick string updated to: ', newNewick);
             phylogeny.newick = newNewick;
           },
         );
@@ -1132,7 +1137,7 @@ const vm = new Vue({
         }
 
         // Switch to the new selected phyloref.
-        console.log('newPhylorefIndex: ', newPhylorefIndex);
+        // console.log('newPhylorefIndex: ', newPhylorefIndex);
         this.selectedPhyloref = this.testcase.phylorefs[newPhylorefIndex];
       }
     },
@@ -1153,7 +1158,7 @@ const vm = new Vue({
 
       // Names from the Newick string.
       const { newick = '()' } = phylogeny;
-      console.log(`getNodeLabelsInPhylogeny(${newick})`);
+      // console.log(`getNodeLabelsInPhylogeny(${newick})`);
 
       // To recurse through the tree produced by Phylotree's Newick parser,
       // we need a recursive function that adds a node's labels and all of its
