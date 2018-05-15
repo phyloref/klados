@@ -349,16 +349,30 @@ const vm = new Vue({
       dict[key].push(value);
       return dict;
     },
+    alert(message) {
+      // Display an error message to the user.
+      // For the Curation Tool, just using window.alert() is adequate.
+      // eslint-disable-next-line no-alert
+      window.alert(message);
+    },
     confirm(message, func) {
       // Confirm an action with the user, then execute it if confirmed.
-      if (window.confirm(message)) func();
+      // For the Curation Tool, just using window.confirm() is adequate.
+      // eslint-disable-next-line no-alert
+      const result = window.confirm(message);
+
+      if (result && func !== undefined) func();
+      return result;
     },
     promptAndSetDict(message, dict, key) {
       // Prompt the user for a string, then set it in a dict.
+      // For the Curation Tool, just using window.prompt() is adequate.
       let result;
       if (this.hasProperty(dict, key)) {
+        // eslint-disable-next-line no-alert
         result = window.prompt(message, dict[key]);
       } else {
+        // eslint-disable-next-line no-alert
         result = window.prompt(message);
       }
 
@@ -372,11 +386,11 @@ const vm = new Vue({
 
       $.getJSON(url, data => this.setPHYX(data)).fail((error) => {
         if (error.status === 200) {
-          alert(`Could not load PHYX file '${url}': file malformed, see console for details.`);
+          this.alert(`Could not load PHYX file '${url}': file malformed, see console for details.`);
         } else {
-          alert(`Could not load PHYX file '${url}': server error ${error.status} ${error.statusText}`);
+          this.alert(`Could not load PHYX file '${url}': server error ${error.status} ${error.statusText}`);
         }
-        throw new Error(`Could not load PHYX file ${url}: ${error}`);
+        // throw new Error(`Could not load PHYX file ${url}: ${error}`);
       });
     },
 
@@ -390,23 +404,23 @@ const vm = new Vue({
       // This code is based on https://stackoverflow.com/a/21446426/27310
 
       if (typeof window.FileReader !== 'function') {
-        alert('The FileReader API is not supported on this browser.');
+        this.alert('The FileReader API is not supported on this browser.');
         return;
       }
 
       const fileInput = $(fileInputId);
       if (!fileInput) {
-        alert('Programmer error: No file input element specified.');
+        this.alert('Programmer error: No file input element specified.');
         return;
       }
 
       if (!fileInput.prop('files')) {
-        alert('File input element found, but files property missing: try another browser?');
+        this.alert('File input element found, but files property missing: try another browser?');
         return;
       }
 
       if (!fileInput.prop('files')[0]) {
-        alert('Please select a file before attempting to load it.');
+        this.alert('Please select a file before attempting to load it.');
         return;
       }
 
@@ -466,7 +480,7 @@ const vm = new Vue({
       // saved.
 
       if (this.modified) {
-        return confirm('This study has been modified! Are you sure you want to close it?');
+        return this.confirm('This study has been modified! Are you sure you want to close it?');
       }
       return true;
     },
@@ -917,6 +931,8 @@ const vm = new Vue({
           () => `Edit label: ${isNodeLabeled ? label : 'none'}`,
           () => {
             // Ask the user for a new label.
+            // For the Curation Tool, just using window.prompt() is adequate.
+            // eslint-disable-next-line no-alert
             const result = window.prompt(
               `Please choose a new label for ${
                 isNodeLabeled ? `the node labeled '${label}'` : 'the selected unlabeled node'}`,
