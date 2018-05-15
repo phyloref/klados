@@ -459,15 +459,15 @@ const vm = new Vue({
         }
 
         // Deep-copy the testcase into a 'testcaseAsLoaded' variable in our
-        // model. We deep-compare vm.testcase with vm.testcaseAsLoaded to
+        // model. We deep-compare this.testcase with this.testcaseAsLoaded to
         // determine if the loaded model has been modified.
-        vm.testcaseAsLoaded = jQuery.extend(true, {}, testcase);
-        vm.testcase = testcase;
+        this.testcaseAsLoaded = jQuery.extend(true, {}, testcase);
+        this.testcase = testcase;
 
         // Reset all UI selections.
-        vm.selectedPhyloref = undefined;
-        vm.selectedSpecifier = undefined;
-        vm.selectedTUnit = undefined;
+        this.selectedPhyloref = undefined;
+        this.selectedSpecifier = undefined;
+        this.selectedTUnit = undefined;
       } catch (err) {
         throw new Error(`Error occurred while displaying new testcase: ${err}`);
       }
@@ -675,7 +675,7 @@ const vm = new Vue({
 
       // Look at the individual taxonomic units.
       if ('referencesTaxonomicUnits' in specifier) {
-        const labels = specifier.referencesTaxonomicUnits.map(tu => vm.getTaxonomicUnitLabel(tu));
+        const labels = specifier.referencesTaxonomicUnits.map(tu => this.getTaxonomicUnitLabel(tu));
         if (labels.length > 0) return labels.join('; ');
       }
 
@@ -1269,10 +1269,8 @@ const vm = new Vue({
       // Wrapper for testWhetherSpecifierMatchesNode() on every node label in
       // a given phylogeny.
 
-      const localVM = this;
-
-      return localVM.getNodeLabelsInPhylogeny(phylogeny)
-        .filter(nodeLabel => localVM.testWhetherSpecifierMatchesNode(
+      return this.getNodeLabelsInPhylogeny(phylogeny)
+        .filter(nodeLabel => this.testWhetherSpecifierMatchesNode(
           specifier,
           phylogeny,
           nodeLabel,
