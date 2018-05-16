@@ -66,6 +66,57 @@ function testWhetherTUnitsMatchByExternalReferences(tunit1, tunit2) {
   return false;
 }
 
+// Methods for parsing scientific names. Note that these functions will
+// eventually be reorganized into a separate class.
+
+/**
+ * getScientificNameComponents(scname)
+ *
+ * Return the components of a scientific name by splitting its
+ * scientificName field using spaces.
+ */
+function getScientificNameComponents(scname) {
+  if (!this.hasProperty(scname, 'scientificName')) return [];
+  return scname.scientificName.split(/\s+/);
+}
+
+/**
+ * getGenus(scname)
+ *
+ * Guess the genus name of a scientific name by using its first component.
+ */
+function getGenus(scname) {
+  const comps = getScientificNameComponents(scname);
+  if (comps.length >= 1) return comps[0];
+  return undefined;
+}
+
+/**
+ * getSpecificEpithet(scname)
+ *
+ * Get the specific epithet name of a scientific name by using its
+ * second component.
+ */
+function getSpecificEpithet(scname) {
+  const comps = getScientificNameComponents(scname);
+  if (comps.length >= 2) return comps[1];
+  return undefined;
+}
+
+/**
+ * getBinomialName(scname)
+ *
+ * Get the binomial name of a scientific name by combining its
+ * first and second components.
+ */
+function getBinomialName(scname) {
+  const genus = getGenus(scname);
+  const specificEpithet = getSpecificEpithet(scname);
+
+  if (genus !== undefined && specificEpithet !== undefined) return `${genus} ${specificEpithet}`;
+  return undefined;
+}
+
 /**
  * testWhetherTUnitsMatchByBinomialName(scname1, scname2)
  *
@@ -79,8 +130,8 @@ function testWhetherScientificNamesMatchByBinomialName(scname1, scname2) {
 
   // Step 2. Otherwise, try to extract the binomial name from the scientificName
   // and compare those.
-  const binomial1 = vm.getBinomialName(scname1);
-  const binomial2 = vm.getBinomialName(scname2);
+  const binomial1 = getBinomialName(scname1);
+  const binomial2 = getBinomialName(scname2);
 
   if (binomial1 !== undefined && binomial2 !== undefined && binomial1.trim() !== '' && binomial1.trim() === binomial2.trim()) { return true; }
 
@@ -223,6 +274,8 @@ function identifyDOI(testcaseToIdentify) {
 }
 
 // Set up the Vue object which contains the entire model.
+// This is used by Vue.js, and so should not be considered unused.
+// eslint-disable-next-line no-unused-vars
 const vm = new Vue({
   // The element to install Vue onto.
   el: '#app',
@@ -1041,37 +1094,17 @@ const vm = new Vue({
     },
 
     // Methods for parsing scientific name.
-    getScientificNameComponents(scname) {
-      // Return the components of a scientific name by splitting its
-      // scientificName field using spaces.
-
-      if (!this.hasProperty(scname, 'scientificName')) return [];
-      return scname.scientificName.split(/\s+/);
-    },
     getGenus(scname) {
-      // Guess the genus name of a scientific name by using its first component.
-
-      const comps = this.getScientificNameComponents(scname);
-      if (comps.length >= 1) return comps[0];
-      return undefined;
+      // Guess the genus name of a scientific name.
+      return getGenus(scname);
     },
     getSpecificEpithet(scname) {
-      // Get the specific epithet name of a scientific name by using its
-      // second component.
-
-      const comps = this.getScientificNameComponents(scname);
-      if (comps.length >= 2) return comps[1];
-      return undefined;
+      // Get the specific epithet name of a scientific name.
+      return getSpecificEpithet(scname);
     },
     getBinomialName(scname) {
-      // Get the binomial name of a scientific name by combining its
-      // first and second components.
-
-      const genus = this.getGenus(scname);
-      const specificEpithet = this.getSpecificEpithet(scname);
-
-      if (genus !== undefined && specificEpithet !== undefined) return `${genus} ${specificEpithet}`;
-      return undefined;
+      // Get the binomial name of a scientific name.
+      return getBinomialName(scname);
     },
 
     // Methods for parsing specimen identifiers.
