@@ -10,6 +10,11 @@
 /* global _ */ // From http://underscorejs.org/
 /* global d3 */ // From https://d3js.org/
 
+// These globals are from phyx.js. Eventually, we will replace this with
+// import/export.
+/* global ScientificNameWrapper */
+/* global TaxonomicUnitMatcher */
+
 // List of example files to provide in the "Examples" dropdown.
 const examplePHYXURLs = [
   {
@@ -41,171 +46,6 @@ function hasProperty(obj, propName) {
 // given certain properties. Eventually, we will encapsulate taxonomic units
 // into their own Javascript class; once we do, these functions will become
 // methods in that class.
-
-/**
- * testWhetherTUnitsMatchByExternalReferences(tunit1, tunit2)
- *
- * Test whether two Tunits have matching external references.
- */
-function testWhetherTUnitsMatchByExternalReferences(tunit1, tunit2) {
-  if (tunit1 === undefined || tunit2 === undefined) return false;
-  if (hasProperty(tunit1, 'externalReferences') && hasProperty(tunit2, 'externalReferences')) {
-    // Each external reference is a URL as a string. We will lowercase it,
-    // but do no other transformation.
-    return tunit1.externalReferences.some(extref1 =>
-      tunit2.externalReferences.some(extref2 =>
-        (
-          // Make sure that the external reference isn't blank
-          extref1.trim() !== '' &&
-
-          // And that it is identical after trimming
-          extref1.toLowerCase().trim() === extref2.toLowerCase().trim()
-        )));
-  }
-
-  return false;
-}
-
-// Methods for parsing scientific names. Note that these functions will
-// eventually be reorganized into a separate class.
-
-/**
- * getScientificNameComponents(scname)
- *
- * Return the components of a scientific name by splitting its
- * scientificName field using spaces.
- */
-function getScientificNameComponents(scname) {
-  if (!this.hasProperty(scname, 'scientificName')) return [];
-  return scname.scientificName.split(/\s+/);
-}
-
-/**
- * getGenus(scname)
- *
- * Guess the genus name of a scientific name by using its first component.
- */
-function getGenus(scname) {
-  const comps = getScientificNameComponents(scname);
-  if (comps.length >= 1) return comps[0];
-  return undefined;
-}
-
-/**
- * getSpecificEpithet(scname)
- *
- * Get the specific epithet name of a scientific name by using its
- * second component.
- */
-function getSpecificEpithet(scname) {
-  const comps = getScientificNameComponents(scname);
-  if (comps.length >= 2) return comps[1];
-  return undefined;
-}
-
-/**
- * getBinomialName(scname)
- *
- * Get the binomial name of a scientific name by combining its
- * first and second components.
- */
-function getBinomialName(scname) {
-  const genus = getGenus(scname);
-  const specificEpithet = getSpecificEpithet(scname);
-
-  if (genus !== undefined && specificEpithet !== undefined) return `${genus} ${specificEpithet}`;
-  return undefined;
-}
-
-/**
- * testWhetherTUnitsMatchByBinomialName(scname1, scname2)
- *
- * Test whether two scientific names match on the basis of their binomial names.
- */
-function testWhetherScientificNamesMatchByBinomialName(scname1, scname2) {
-  // Step 1. Try matching by explicit binomial name, if one is available.
-  if (hasProperty(scname1, 'binomialName') && hasProperty(scname2, 'binomialName')) {
-    if (scname1.binomialName.trim() !== '' && scname1.binomialName.toLowerCase().trim() === scname2.binomialName.toLowerCase().trim()) { return true; }
-  }
-
-  // Step 2. Otherwise, try to extract the binomial name from the scientificName
-  // and compare those.
-  const binomial1 = getBinomialName(scname1);
-  const binomial2 = getBinomialName(scname2);
-
-  if (binomial1 !== undefined && binomial2 !== undefined && binomial1.trim() !== '' && binomial1.trim() === binomial2.trim()) { return true; }
-
-  return false;
-}
-
-/**
- * testWhetherTUnitsMatchByBinomialName(tunit1, tunit2)
- *
- * Test whether two Tunits match on the basis of their binomial names.
- */
-function testWhetherTUnitsMatchByBinomialName(tunit1, tunit2) {
-  if (tunit1 === undefined || tunit2 === undefined) return false;
-  if (hasProperty(tunit1, 'scientificNames') && hasProperty(tunit2, 'scientificNames')) {
-    // Each external reference is a URL as a string.
-    return tunit1.scientificNames.some(scname1 =>
-      tunit2.scientificNames
-        .some(scname2 => testWhetherScientificNamesMatchByBinomialName(scname1, scname2)));
-  }
-
-  return false;
-}
-
-/**
- * getSpecimenIdentifierAsURN(specimen)
- *
- * Given a specimen, return a specimen identifier as a URN in the form:
- *   "urn:catalog:" + institutionCode (if present) + ':' +
- *      collectionCode (if present) + ':' + catalogNumber (if present)
- */
-function getSpecimenIdentifierAsURN(specimen) {
-  if (specimen === undefined) return undefined;
-
-  // Does it have an occurrenceID?
-  if (hasProperty(specimen, 'occurrenceID') && specimen.occurrenceID.trim() !== '') return specimen.occurrenceID.trim();
-
-  // Does it have a catalogNumber? We might need an institutionCode and a collectionCode as well.
-  if (hasProperty(specimen, 'catalogNumber')) {
-    if (hasProperty(specimen, 'institutionCode')) {
-      if (hasProperty(specimen, 'collectionCode')) {
-        return `urn:catalog:${specimen.institutionCode.trim()}:${specimen.collectionCode.trim()}:${specimen.catalogNumber.trim()}`;
-      }
-      return `urn:catalog:${specimen.institutionCode.trim()}::${specimen.catalogNumber.trim()}`;
-    }
-    if (hasProperty(specimen, 'collectionCode')) {
-      return `urn:catalog::${specimen.collectionCode.trim()}:${specimen.catalogNumber.trim()}`;
-    }
-    return `urn:catalog:::${specimen.catalogNumber.trim()}`;
-  }
-
-  // None of our specimen identifier schemes worked.
-  return undefined;
-}
-
-/**
- * testWhetherTUnitsMatchBySpecimenIdentifier(tunit1, tunit2)
- *
- * Test whether two Tunits match on the basis of their specimen identifiers.
- */
-function testWhetherTUnitsMatchBySpecimenIdentifier(tunit1, tunit2) {
-  if (tunit1 === undefined || tunit2 === undefined) return false;
-  if (hasProperty(tunit1, 'includesSpecimens') && hasProperty(tunit2, 'includesSpecimens')) {
-    // Convert specimen identifiers (if present) into a standard format and compare those.
-    return tunit1.includesSpecimens.some(specimen1 =>
-      tunit2.includesSpecimens.some((specimen2) => {
-        const specimenURN1 = getSpecimenIdentifierAsURN(specimen1);
-        const specimenURN2 = getSpecimenIdentifierAsURN(specimen2);
-
-        return specimenURN1 === specimenURN2;
-      }));
-  }
-
-  return false;
-}
 
 /**
  * getTaxonomicUnitsFromNodeLabel(nodeLabel)
@@ -1093,18 +933,18 @@ const vm = new Vue({
       return {};
     },
 
-    // Methods for parsing scientific name.
+    // Methods for parsing scientific names.
     getGenus(scname) {
       // Guess the genus name of a scientific name.
-      return getGenus(scname);
+      return new ScientificNameWrapper(scname).genus;
     },
     getSpecificEpithet(scname) {
       // Get the specific epithet name of a scientific name.
-      return getSpecificEpithet(scname);
+      return new ScientificNameWrapper(scname).specificEpithet;
     },
     getBinomialName(scname) {
       // Get the binomial name of a scientific name.
-      return getBinomialName(scname);
+      return new ScientificNameWrapper(scname).binomialName;
     },
 
     // Methods for parsing specimen identifiers.
@@ -1325,10 +1165,7 @@ const vm = new Vue({
       // Attempt pairwise matches between taxonomic units in the specifier
       // and associated with the node.
       return specifierTUnits.some(tunit1 =>
-        nodeTUnits.some(tunit2 =>
-          testWhetherTUnitsMatchByBinomialName(tunit1, tunit2) ||
-          testWhetherTUnitsMatchByExternalReferences(tunit1, tunit2) ||
-          testWhetherTUnitsMatchBySpecimenIdentifier(tunit1, tunit2)));
+        nodeTUnits.some(tunit2 => new TaxonomicUnitMatcher(tunit1, tunit2).matched));
     },
   },
 });
