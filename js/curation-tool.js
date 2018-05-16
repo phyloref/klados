@@ -408,23 +408,23 @@ const vm = new Vue({
         return;
       }
 
-      const fileInput = $(fileInputId);
-      if (!fileInput) {
+      const $fileInput = $(fileInputId);
+      if (!$fileInput) {
         this.alert('Programmer error: No file input element specified.');
         return;
       }
 
-      if (!fileInput.prop('files')) {
+      if (!$fileInput.prop('files')) {
         this.alert('File input element found, but files property missing: try another browser?');
         return;
       }
 
-      if (!fileInput.prop('files')[0]) {
+      if (!$fileInput.prop('files')[0]) {
         this.alert('Please select a file before attempting to load it.');
         return;
       }
 
-      const [file] = fileInput.prop('files');
+      const [file] = $fileInput.prop('files');
       const fr = new FileReader();
       fr.onload = ((e) => {
         const lines = e.target.result;
