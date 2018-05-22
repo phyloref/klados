@@ -812,9 +812,12 @@ const vm = new Vue({
           this.hasProperty(phylogeny.additionalNodeProperties[nodeLabelToToggle], 'expectedPhyloreferenceNamed')
         ) {
           // Delete this phyloreference from the provided node label.
-          phylogeny.additionalNodeProperties[nodeLabelToToggle].expectedPhyloreferenceNamed =
+          Vue.set(
+            phylogeny.additionalNodeProperties[nodeLabelToToggle],
+            'expectedPhyloreferenceNamed',
             phylogeny.additionalNodeProperties[nodeLabelToToggle].expectedPhyloreferenceNamed
-              .filter(label => (phylorefLabel !== label));
+              .filter(label => (phylorefLabel !== label)),
+          );
         }
       } else {
         // We need to add this node label.
@@ -827,7 +830,7 @@ const vm = new Vue({
         }
 
         if (!this.hasProperty(phylogeny.additionalNodeProperties[nodeLabelToToggle], 'expectedPhyloreferenceNamed')) {
-          phylogeny.additionalNodeProperties[nodeLabelToToggle].expectedPhyloreferenceNamed = [];
+          Vue.set(phylogeny.additionalNodeProperties[nodeLabelToToggle], 'expectedPhyloreferenceNamed', []);
         }
 
         // Finally, add it to the list unless it's already there!
@@ -997,7 +1000,7 @@ const vm = new Vue({
 
             // If the user entered a blank label, remove any label from this node.
             if (result.trim() === '') {
-              delete node.name;
+              Vue.delete(node, 'name');
             } else {
               node.name = result;
             }
