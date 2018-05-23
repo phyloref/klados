@@ -7,13 +7,17 @@
  * and tested. This library provides classes and methods that help read and
  * manipulate components of PHYX files.
  *
- * Note that our goal here isn't to provide a library for modeling an entire
- * PHYX file in Javascript. The Curation Tool can mostly access and edit
- * components of the PHYX file as text strings or JSON objects, and the terms
- * used in the PHYX file should be clearly defined on their own. This library
- * contains convenience classes and methods that make accessing those components
- * easier.
+ * Note that this file is NOT a model, but a part of the controller. Our goal
+ * here isn't to provide a library for modeling an entire PHYX file in Javascript.
+ * The Curation Tool can mostly access and edit components of the PHYX file as
+ * text strings or JSON objects, and the terms used in the PHYX file should be
+ * clearly defined on their own. This library contains convenience classes and
+ * methods that make accessing those components easier.
  */
+
+// Some of these wrappers work on Vue modal objects. In order to manipulate them
+// correctly, we need to import the Vue library and use it here.
+/* global Vue */
 
 /* Helper methods */
 
@@ -32,36 +36,30 @@ class ScientificNameWrapper {
     // a scientific name.
     this.scname = scname;
 
-    // If binomialName, genus or specificEpithet are missing, we can derive
-    // them from the scientificName.
+    // If any of the binomialName, genus or specificEpithet are missing, we can
+    // derive them from the scientificName.
     if (
       hasOwnProperty(scname, 'scientificName') &&
-      !hasOwnProperty(scname, 'binomialName') &&
-      !hasOwnProperty(scname, 'genus') &&
-      !hasOwnProperty(scname, 'specificEpithet')
+      !(
+        hasOwnProperty(scname, 'binomialName') &&
+        hasOwnProperty(scname, 'genus') &&
+        hasOwnProperty(scname, 'specificEpithet')
+      )
     ) {
-      this.parseFromScientificName(scname.scientificName);
+      // Try to parse the name from the scientific name.
+      const comps = scname.scientificName.split(/\s+/);
+
+      // Did we find a binomial?
+      if (comps.length >= 2) {
+        [, this.scname.specificEpithet] = comps;
+        this.scname.binomialName = `${comps[0]} ${comps[1]}`;
+      }
+
+      // Did we find a uninomial?
+      if (comps.length >= 1) {
+        [this.scname.genus] = comps;
+      }
     }
-  }
-
-  parseFromScientificName(verbatimName) {
-    // Returns true if a scientific name could be parsed, otherwise false.
-
-    const comps = verbatimName.split(/\s+/);
-
-    // Did we find a binomial?
-    if (comps.length >= 2) {
-      [, this.scname.specificEpithet] = comps;
-      this.scname.binomialName = `${comps[0]} ${comps[1]}`;
-    }
-
-    // Did we find a uninomial?
-    if (comps.length >= 1) {
-      [this.scname.genus] = comps;
-      return true;
-    }
-
-    return false;
   }
 
   asJSON() {
@@ -98,10 +96,59 @@ class ScientificNameWrapper {
 
 class SpecimenWrapper {
   // Wraps a specimen entry.
+  // TODO: This currently fails on URLs used as specimen identifiers.
 
   constructor(specimen) {
     // Constructs a wrapper around a specimen.
     this.specimen = specimen;
+
+    if (
+      hasOwnProperty(specimen, 'catalogNumber') ||
+      hasOwnProperty(specimen, 'institutionCode') ||
+      hasOwnProperty(specimen, 'collectionCode')
+    ) {
+      // Does this specimen already have a catalog number, institution code or collection code?
+      // If so, then there's no need to do anything else!
+    } else if (hasOwnProperty(specimen, 'occurrenceID')) {
+      // If not, try to read it from the occurrence ID
+      let occurID = specimen.occurrenceID;
+
+      // Split the occurrence ID into components by splitting them at
+      // colons. The two expected formats are:
+      //  - 'urn:catalog:[institutionCode]:[collectionCode]:[catalogNumber]'
+      //      (in which case, we ignore the first two "components" here)
+      //  - '[institutionCode]:[collectionCode]:[catalogNumber]'
+      if (occurID.startsWith('urn:catalog:')) {
+        occurID = occurID.substr(12);
+      }
+      const components = occurID.split(/\s*:\s*/);
+
+      switch (components.length) {
+        case 0:
+          // No components; could not parse! Do nothing.
+          break;
+        case 1:
+          // Only one component. Treat it as a catalogNumber.
+          Vue.set(specimen, 'catalogNumber', components[0]);
+          break;
+        case 2:
+          // Two components. Treat it as a institutionCode:catalogNumber
+          Vue.set(specimen, 'institutionCode', components[0]);
+          Vue.set(specimen, 'catalogNumber', components[1]);
+          break;
+        case 3:
+          // Three components. Treat it as institutionCode:collectionCode:catalogNumber.
+          Vue.set(specimen, 'institutionCode', components[0]);
+          Vue.set(specimen, 'collectionCode', components[1]);
+          Vue.set(specimen, 'catalogNumber', components[2]);
+          break;
+        default:
+          // Too many components! Don't try to parse it.
+          break;
+      }
+    } else {
+      // Could not read. Do nothing!
+    }
   }
 
   get catalogNumber() {
@@ -146,6 +193,189 @@ class SpecimenWrapper {
 
     // None of our specimen identifier schemes worked.
     return undefined;
+  }
+}
+
+/* Taxonomic unit wrapper */
+
+// eslint-disable-next-line no-unused-vars
+class TaxonomicUnitWrapper {
+  // Wraps taxonomic units.
+
+  constructor(tunit) {
+    // Wraps a taxonomic unit.
+    this.tunit = tunit;
+  }
+
+  get label() {
+    // Try to determine the label of a taxonomic unit. This checks the
+    // 'label' and 'description' properties, and then tries to create a
+    // descriptive label by combining the scientific names, specimens
+    // and external references of the taxonomic unit.
+    const tu = this.tunit; // TODO fix once I get refactor working in Atom
+    const labels = [];
+
+    // A label or description for the TU?
+    if ('label' in tu) return tu.label;
+    if ('description' in tu) return tu.description;
+
+    // Any scientific names?
+    if ('scientificNames' in tu) {
+      tu.scientificNames.forEach((scname) => {
+        if ('scientificName' in scname) labels.push(scname.scientificName);
+      });
+    }
+
+    // Any specimens?
+    if ('includesSpecimens' in tu) {
+      tu.includesSpecimens.forEach((specimen) => {
+        if ('occurrenceID' in specimen) labels.push(`Specimen ${specimen.occurrenceID}`);
+      });
+    }
+
+    // Any external references?
+    if ('externalReferences' in tu) {
+      tu.externalReferences.forEach(externalRef => labels.push(`<${externalRef}>`));
+    }
+
+    if (labels.length === 0) return 'Unnamed taxonomic unit';
+
+    return labels.join(', ');
+  }
+}
+
+/* Phyloreference wrapper */
+
+// eslint-disable-next-line no-unused-vars
+class PhyloreferenceWrapper {
+  // Wraps phyloreferences
+
+  constructor(phyloref) {
+    // Wraps a phyloreference.
+    this.phyloref = phyloref;
+  }
+
+  get specifiers() {
+    // Return a list of all specifiers for this phyloreference.
+
+    if (!hasOwnProperty(this.phyloref, 'internalSpecifiers')) Vue.set(this.phyloref, 'internalSpecifiers', []);
+    if (!hasOwnProperty(this.phyloref, 'externalSpecifiers')) Vue.set(this.phyloref, 'externalSpecifiers', []);
+
+    let specifiers = this.phyloref.internalSpecifiers;
+    specifiers = specifiers.concat(this.phyloref.externalSpecifiers);
+    return specifiers;
+  }
+
+  getSpecifierType(specifier) {
+    // For a given specifier, return a string indicating whether it is
+    // an 'Internal' or 'External' specifier.
+
+    if (hasOwnProperty(this.phyloref, 'internalSpecifiers') && this.phyloref.internalSpecifiers.includes(specifier)) return 'Internal';
+    if (hasOwnProperty(this.phyloref, 'externalSpecifiers') && this.phyloref.externalSpecifiers.includes(specifier)) return 'External';
+    return 'Specifier';
+  }
+
+  setSpecifierType(specifier, specifierType) {
+    // Change the type of a given specifier. To do this, we first need
+    // to determine if it was originally an internal or external
+    // specifier, then move it into the other list.
+
+    if (!hasOwnProperty(this.phyloref, 'internalSpecifiers')) Vue.set(this.phyloref, 'internalSpecifiers', []);
+    if (!hasOwnProperty(this.phyloref, 'externalSpecifiers')) Vue.set(this.phyloref, 'externalSpecifiers', []);
+
+    let index;
+    if (specifierType === 'Internal') {
+      index = this.phyloref.externalSpecifiers.indexOf(specifier);
+      if (index !== -1) { this.phyloref.externalSpecifiers.splice(index, 1); }
+
+      if (!this.phyloref.internalSpecifiers.includes(specifier)) {
+        this.phyloref.internalSpecifiers.unshift(specifier);
+      }
+    } else if (specifierType === 'External') {
+      index = this.phyloref.internalSpecifiers.indexOf(specifier);
+      if (index !== -1) {
+        this.phyloref.internalSpecifiers.splice(index, 1);
+      }
+
+      if (!this.phyloref.externalSpecifiers.includes(specifier)) {
+        this.phyloref.externalSpecifiers.unshift(specifier);
+      }
+    } else {
+      // Neither internal nor external? Ignore.
+    }
+  }
+
+  deleteSpecifier(specifier) {
+    // Since the user interface combines specifiers into a single list,
+    // it doesn't remember if the specifier to be deleted is internal
+    // or external. We delete the intended specifier from both arrays.
+
+    if (hasOwnProperty(this.phyloref, 'internalSpecifiers')) {
+      const index = this.phyloref.internalSpecifiers.indexOf(specifier);
+      if (index !== -1) this.phyloref.internalSpecifiers.splice(index, 1);
+    }
+
+    if (hasOwnProperty(this.phyloref, 'externalSpecifiers')) {
+      const index = this.phyloref.externalSpecifiers.indexOf(specifier);
+      if (index !== -1) this.phyloref.externalSpecifiers.splice(index, 1);
+    }
+  }
+
+  static getSpecifierLabel(specifier) {
+    // Try to determine the label of a specifier. This checks the
+    // 'label' and 'description' properties, and then tries to create a
+    // descriptive label by using the list of referenced taxonomic units.
+
+    // Is this specifier even non-null?
+    if (specifier === undefined) return '(undefined)';
+    if (specifier === null) return '(null)';
+
+    // Maybe there is a label or description right there?
+    if ('label' in specifier) return specifier.label;
+    if ('description' in specifier) return specifier.description;
+
+    // Look at the individual taxonomic units.
+    if ('referencesTaxonomicUnits' in specifier) {
+      const labels = specifier.referencesTaxonomicUnits
+        .map(tu => new TaxonomicUnitWrapper(tu).label);
+      if (labels.length > 0) return labels.join('; ');
+    }
+
+    // No idea!
+    return 'Unnamed specifier';
+  }
+}
+
+/* Node wrappers */
+
+// eslint-disable-next-line no-unused-vars
+class NodeLabelWrapper {
+  // Wraps node labels in phylogenies.
+
+  constructor(nodeLabel) {
+    // Wraps a node label.
+    this.nodeLabel = nodeLabel;
+  }
+
+  get tunits() {
+    // Return a list of taxonomic units extractable from this node label.
+    if (this.nodeLabel === undefined) return [];
+
+    // Check if the label starts with a binomial name.
+    const results = /^([A-Z][a-z]+) ([a-z-]+)\b/.exec(this.nodeLabel);
+    if (results !== null) {
+      return [{
+        scientificNames: [{
+          scientificName: this.nodeLabel,
+          binomialName: `${results[1]} ${results[2]}`,
+          genus: results[1],
+          specificEpithet: results[2],
+        }],
+      }];
+    }
+
+    // It may be a scientific name, but we don't know how to parse it as such.
+    return [];
   }
 }
 

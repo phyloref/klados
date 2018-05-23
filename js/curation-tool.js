@@ -14,6 +14,10 @@
 // import/export.
 /* global ScientificNameWrapper */
 /* global TaxonomicUnitMatcher */
+/* global NodeLabelWrapper */
+/* global PhyloreferenceWrapper */
+/* global TaxonomicUnitWrapper */
+/* global SpecimenWrapper */
 
 // List of example files to provide in the "Examples" dropdown.
 const examplePHYXURLs = [
@@ -46,32 +50,6 @@ function hasProperty(obj, propName) {
 // given certain properties. Eventually, we will encapsulate taxonomic units
 // into their own Javascript class; once we do, these functions will become
 // methods in that class.
-
-/**
- * getTaxonomicUnitsFromNodeLabel(nodeLabel)
- *
- * Given a node label, attempt to parse it as a scientific name.
- * Returns a list of taxonomic units.
- */
-function getTaxonomicUnitsFromNodeLabel(nodeLabel) {
-  if (nodeLabel === undefined || nodeLabel === null) return [];
-
-  // Check if the label starts with a binomial name.
-  const results = /^([A-Z][a-z]+) ([a-z-]+)\b/.exec(nodeLabel);
-  if (results !== null) {
-    return [{
-      scientificNames: [{
-        scientificName: nodeLabel,
-        binomialName: `${results[1]} ${results[2]}`,
-        genus: results[1],
-        specificEpithet: results[2],
-      }],
-    }];
-  }
-
-  // It may be a scientific name, but we don't know how to parse it as such.
-  return [];
-}
 
 /**
  * identifyDOI(testcase)
@@ -451,129 +429,28 @@ const vm = new Vue({
     },
 
     // Methods for listing and modifying specifiers.
-    getSpecifiers(phylorefWithSpecifiers) {
-      // Combine the internal and external specifiers into a single list,
-      // with internal specifiers before external specifiers.
-      const phyloref = phylorefWithSpecifiers;
-
-      if (!this.hasProperty(phyloref, 'internalSpecifiers')) phyloref.internalSpecifiers = [];
-      if (!this.hasProperty(phyloref, 'externalSpecifiers')) phyloref.externalSpecifiers = [];
-
-      let specifiers = phyloref.internalSpecifiers;
-      specifiers = specifiers.concat(phyloref.externalSpecifiers);
-      return specifiers;
+    getSpecifiers(phyloref) {
+      return new PhyloreferenceWrapper(phyloref).specifiers;
     },
+
     getSpecifierType(phyloref, specifier) {
-      // For a given specifier, return a string indicating whether it is
-      // an 'Internal' or 'External' specifier.
-
-      if (this.hasProperty(phyloref, 'internalSpecifiers') && phyloref.internalSpecifiers.includes(specifier)) return 'Internal';
-      if (this.hasProperty(phyloref, 'externalSpecifiers') && phyloref.externalSpecifiers.includes(specifier)) return 'External';
-      return 'Specifier';
+      return new PhyloreferenceWrapper(phyloref).getSpecifierType(specifier);
     },
-    setSpecifierType(phylorefWithSpecifiers, specifier, specifierType) {
-      // Change the type of a given specifier. To do this, we first need
-      // to determine if it was originally an internal or external
-      // specifier, then move it into the other list.
 
-      const phyloref = phylorefWithSpecifiers;
-
-      if (!this.hasProperty(phyloref, 'internalSpecifiers')) phyloref.internalSpecifiers = [];
-      if (!this.hasProperty(phyloref, 'externalSpecifiers')) phyloref.externalSpecifiers = [];
-
-      let index;
-      if (specifierType === 'Internal') {
-        index = phyloref.externalSpecifiers.indexOf(specifier);
-        if (index !== -1) { phyloref.externalSpecifiers.splice(index, 1); }
-
-        if (!phyloref.internalSpecifiers.includes(specifier)) {
-          phyloref.internalSpecifiers.unshift(specifier);
-        }
-      } else if (specifierType === 'External') {
-        index = phyloref.internalSpecifiers.indexOf(specifier);
-        if (index !== -1) {
-          phyloref.internalSpecifiers.splice(index, 1);
-        }
-
-        if (!phyloref.externalSpecifiers.includes(specifier)) {
-          phyloref.externalSpecifiers.unshift(specifier);
-        }
-      } else {
-        // Neither internal nor external? Ignore.
-      }
+    setSpecifierType(phyloref, specifier, specifierType) {
+      new PhyloreferenceWrapper(phyloref).setSpecifierType(specifier, specifierType);
     },
+
     deleteSpecifier(phyloref, specifier) {
-      // Since the user interface combines specifiers into a si**ngle list,
-      // it doesn't remember if the specifier to be deleted is internal
-      // or external. We delete the intended specifier from both arrays.
-
-      if (this.hasProperty(phyloref, 'internalSpecifiers')) {
-        const index = phyloref.internalSpecifiers.indexOf(specifier);
-        if (index !== -1) phyloref.internalSpecifiers.splice(index, 1);
-      }
-
-      if (this.hasProperty(phyloref, 'externalSpecifiers')) {
-        const index = phyloref.externalSpecifiers.indexOf(specifier);
-        if (index !== -1) phyloref.externalSpecifiers.splice(index, 1);
-      }
+      new PhyloreferenceWrapper(phyloref).deleteSpecifier(specifier);
     },
 
     // Methods for building human-readable labels for model elements.
     getTaxonomicUnitLabel(tu) {
-      // Try to determine the label of a taxonomic unit. This checks the
-      // 'label' and 'description' properties, and then tries to create a
-      // descriptive label by combining the scientific names, specimens
-      // and external references of the taxonomic unit.
-      const labels = [];
-
-      // A label or description for the TU?
-      if ('label' in tu) return tu.label;
-      if ('description' in tu) return tu.description;
-
-      // Any scientific names?
-      if ('scientificNames' in tu) {
-        tu.scientificNames.forEach((scname) => {
-          if ('scientificName' in scname) labels.push(scname.scientificName);
-        });
-      }
-
-      // Any specimens?
-      if ('includesSpecimens' in tu) {
-        tu.includesSpecimens.forEach((specimen) => {
-          if ('occurrenceID' in specimen) labels.push(`Specimen ${specimen.occurrenceID}`);
-        });
-      }
-
-      // Any external references?
-      if ('externalReferences' in tu) {
-        tu.externalReferences.forEach(externalRef => labels.push(`<${externalRef}>`));
-      }
-
-      if (labels.length === 0) return 'Unnamed taxonomic unit';
-
-      return labels.join(', ');
+      return new TaxonomicUnitWrapper(tu).label;
     },
     getSpecifierLabel(specifier) {
-      // Try to determine the label of a specifier. This checks the
-      // 'label' and 'description' properties, and then tries to create a
-      // descriptive label by using the list of referenced taxonomic units.
-
-      // Is this specifier even non-null?
-      if (specifier === undefined) return '(undefined)';
-      if (specifier === null) return '(null)';
-
-      // Maybe there is a label or description right there?
-      if ('label' in specifier) return specifier.label;
-      if ('description' in specifier) return specifier.description;
-
-      // Look at the individual taxonomic units.
-      if ('referencesTaxonomicUnits' in specifier) {
-        const labels = specifier.referencesTaxonomicUnits.map(tu => this.getTaxonomicUnitLabel(tu));
-        if (labels.length > 0) return labels.join('; ');
-      }
-
-      // No idea!
-      return 'Unnamed specifier';
+      return PhyloreferenceWrapper.getSpecifierLabel(specifier);
     },
     getPhylorefLabel(phyloref) {
       // Try to determine what the label of a particular phyloreference is,
@@ -948,51 +825,14 @@ const vm = new Vue({
     },
 
     // Methods for parsing specimen identifiers.
-    getSpecimenComponents(specimen) {
-      // Split the occurrence ID into components by splitting them at
-      // colons. The two expected formats are:
-      //  - 'urn:catalog:[institutionCode]:[collectionCode]:[catalogNumber]'
-      //      (in which case, we ignore the first two "components" here)
-      //  - '[institutionCode]:[collectionCode]:[catalogNumber]'
-
-      if (!this.hasProperty(specimen, 'occurrenceID')) return [];
-      let occurID = specimen.occurrenceID;
-      if (occurID.startsWith('urn:catalog:')) {
-        occurID = occurID.substr(12);
-      }
-      return occurID.split(/\s*:\s*/);
-    },
     getInstitutionCode(specimen) {
-      // Extract an institution code from the occurrence ID. If only
-      // two components are provided, we assume they are the institution
-      // code and the catalog number.
-
-      const comps = this.getSpecimenComponents(specimen);
-      if (comps.length === 1) return undefined;
-      if (comps.length === 2) return comps[0];
-      if (comps.length >= 3) return comps[0];
-      return undefined;
+      return new SpecimenWrapper(specimen).institionCode;
     },
     getCollectionCode(specimen) {
-      // Extract a collection code from the occurrence ID. If only
-      // two components are provided, we assume they are the institution
-      // code and the catalog number, and so no collection code is extracted.
-
-      const comps = this.getSpecimenComponents(specimen);
-      if (comps.length >= 3) return comps[1];
-      return undefined;
+      return new SpecimenWrapper(specimen).collectionCode;
     },
     getCatalogNumber(specimen) {
-      // Extract a catalog number from the occurrence ID. If only one
-      // component is provided, we assume that it is the catalog number.
-      // If only two components are provided, we assume they are the
-      // institution code and the catalog number.
-
-      const comps = this.getSpecimenComponents(specimen);
-      if (comps.length === 1) return comps[0];
-      if (comps.length === 2) return comps[1];
-      if (comps.length >= 3) return comps[2];
-      return undefined;
+      return new SpecimenWrapper(specimen).catalogNumber;
     },
 
     // Methods for manipulating phyloreferences.
@@ -1108,8 +948,7 @@ const vm = new Vue({
 
       // If that doesn't work, we can try to extract scientific names from
       // the node label.
-      const tunits = [];
-      getTaxonomicUnitsFromNodeLabel(nodeLabel.trim()).forEach(tunit => tunits.push(tunit));
+      const { tunits } = new NodeLabelWrapper(nodeLabel);
 
       return tunits;
     },
