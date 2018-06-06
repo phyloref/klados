@@ -747,12 +747,15 @@ const vm = new Vue({
         Array.isArray(phyloref['pso:holdsStatusInTime']) &&
         phyloref['pso:holdsStatusInTime'].length > 0
       ) {
+        // If we have any pso:holdsStatusInTime entries, pick the first one and
+        // extract the CURIE and time interval information from it.
         const lastStatusInTime = phyloref['pso:holdsStatusInTime'][phyloref['pso:holdsStatusInTime'].length - 1];
         const statusCURIE = lastStatusInTime['pso:withStatus']['@id'];
+
+        // Look for time interval information
         let intervalStart;
         let intervalEnd;
 
-        // Look for time interval information
         if (this.hasProperty(lastStatusInTime, 'tvc:atTime')) {
           const atTime = lastStatusInTime['tvc:atTime'];
           if (this.hasProperty(atTime, 'timeinterval:hasIntervalStartDate')) intervalStart = atTime['timeinterval:hasIntervalStartDate'];
