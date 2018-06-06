@@ -627,7 +627,7 @@
                                 data-toggle="dropdown"
                                 aria-haspopup="true"
                                 aria-expanded="false">
-                                Status: {{ getPhylorefStatus(selectedPhyloref) }} <span class="caret"></span>
+                                Status: {{ getPhylorefStatus(selectedPhyloref).statusInEnglish }} <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu">
                               <li><a href="#selected-phyloref" @click="setPhylorefStatus(selectedPhyloref, 'pso:draft')">Draft</a></li>
@@ -650,7 +650,7 @@
                             </button>
                             <ul class="dropdown-menu">
                               <a href="#selected-phyloref" v-for="statusChange of getPhylorefStatusChanges(selectedPhyloref)">
-                                {{ statusChange.statusCURIE }}
+                                {{ statusChange.statusInEnglish }}
                                 <small v-if="hasProperty(statusChange, 'intervalStart') || hasProperty(statusChange, 'intervalEnd')">
                                   <template v-if="hasProperty(statusChange, 'intervalStart')">from {{statusChange.intervalStart}}</template>
                                   <template v-if="hasProperty(statusChange, 'intervalEnd')">to {{statusChange.intervalEnd}}</template>

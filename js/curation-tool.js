@@ -735,9 +735,10 @@ const vm = new Vue({
       // No idea!
       return 'Unnamed specifier';
     },
-    getPhylorefStatusAsCURIE(phyloref) {
+    getPhylorefStatus(phyloref) {
       // Return a result object that contains:
       //  - status: phyloreference status as a short URI (CURIE)
+      //  - statusInEnglish: an English representation of the phyloref status
       //  - intervalStart: the start of the interval
       //  - intervalEnd: the end of the interval
 
@@ -747,7 +748,7 @@ const vm = new Vue({
         phyloref['pso:holdsStatusInTime'].length > 0
       ) {
         const lastStatusInTime = phyloref['pso:holdsStatusInTime'][phyloref['pso:holdsStatusInTime'].length - 1];
-        const statusCurie = lastStatusInTime['pso:withStatus']['@id'];
+        const statusCURIE = lastStatusInTime['pso:withStatus']['@id'];
         let intervalStart;
         let intervalEnd;
 
@@ -760,34 +761,29 @@ const vm = new Vue({
 
         // Return result object
         return {
-          status: statusCurie,
+          status: statusCURIE,
+          statusInEnglish: this.getPhylorefStatusCURIEsInEnglish()[statusCURIE],
           intervalStart,
           intervalEnd,
         };
       }
 
-      return undefined;
+      // If we couldn't figure out a status for this phyloref, assume it's a draft.
+      return {
+        status: 'pso:draft',
+        statusInEnglish: this.getPhylorefStatusCURIEsInEnglish()['pso:draft'],
+      };
     },
-    getPhylorefStatus(phyloref) {
-      // Return a readable string for the phyloreference
-
-      const statusCURIE = this.getPhylorefStatusAsCURIE(phyloref);
-
-      // Default to 'pso:draft' if no other known status
-      if (statusCURIE === undefined) return 'Draft';
-
-      // Translate status to English
-      const { status } = statusCURIE;
-
-      switch (status) {
-        case 'pso:draft': return 'Draft';
-        case 'pso:final-draft': return 'Final draft';
-        case 'pso:under-review': return 'Under review';
-        case 'pso:submitted': return 'Tested';
-        case 'pso:published': return 'Published';
-        case 'pso:retracted-from-publication': return 'Retracted';
-        default: return `Unknown phyloreference status: '${status}'`;
-      }
+    getPhylorefStatusCURIEsInEnglish() {
+      // Return dictionary of all phyloref statuses in English
+      return {
+        'pso:draft': 'Draft',
+        'pso:final-draft': 'Final draft',
+        'pso:under-review': 'Under review',
+        'pso:submitted': 'Tested',
+        'pso:published': 'Published',
+        'pso:retracted-from-publication': 'Retracted',
+      };
     },
     getPhylorefStatusChanges(phyloref) {
       // Return a list of status changes for a particular phyloreference
@@ -796,7 +792,10 @@ const vm = new Vue({
           const entry = entryToChange;
 
           // Create a statusCURIE convenience field.
-          if (this.hasProperty(entry, 'pso:withStatus')) entry.statusCURIE = entry['pso:withStatus']['@id'];
+          if (this.hasProperty(entry, 'pso:withStatus')) {
+            entry.statusCURIE = entry['pso:withStatus']['@id'];
+            entry.statusInEnglish = this.getPhylorefStatusCURIEsInEnglish()[entry.statusCURIE];
+          }
 
           // Create intervalStart/intervalEnd convenient fields
           if (this.hasProperty(entry, 'tvc:atTime')) {
@@ -814,17 +813,9 @@ const vm = new Vue({
     },
     setPhylorefStatus(phylorefToChange, status) {
       // Set the status of a phyloreference
-      const POSSIBLE_STATUSES = [
-        'pso:draft',
-        'pso:final-draft',
-        'pso:under-review',
-        'pso:submitted',
-        'pso:published',
-        'pso:retracted-from-publication',
-      ];
       const phyloref = phylorefToChange;
 
-      if (!POSSIBLE_STATUSES.includes(status)) {
+      if (!this.hasProperty(this.getPhylorefStatusCURIEsInEnglish(), status)) {
         this.alert(`Status '${status}' is not a possible status for a Phyloreference`);
         return;
       }
