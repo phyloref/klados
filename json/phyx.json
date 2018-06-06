@@ -235,12 +235,12 @@
             "range": "TU",
             "@type": "@set"
         },
-        
+
         "specifierWillNotMatch": {
             "@id": "testcase:specifier_will_not_match",
             "@type": "@set"
         },
-        
+
 
         "== TERMS FROM THE ANNOTATION ONTOLOGY ==": {},
 
@@ -264,7 +264,12 @@
         "annotationBody": {
             "@id": "oa:hasBody",
             "@type": "xsd:string"
-        }
+        },
 
+        "== TERMS FROM THE PUBLISHING STATUS ONTOLOGY AND RELATED ==": {},
+
+        "pso": "http://purl.org/spar/pso/",
+        "tvc": "http://www.essepuntato.it/2012/04/tvc/",
+        "timeinterval": "http://www.ontologydesignpatterns.org/cp/owl/timeinterval.owl#"
     }
 }
