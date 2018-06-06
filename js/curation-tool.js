@@ -298,6 +298,7 @@ const vm = new Vue({
 
     // The main data model.
     testcase: {
+      '@context': 'http://phyloref.org/curation-tool/json/phyx.json',
       doi: '',
       url: '',
       citation: '',
@@ -308,6 +309,7 @@ const vm = new Vue({
     // A copy of the data model, used to test when the data model has been
     // modified.
     testcaseAsLoaded: {
+      '@context': 'http://phyloref.org/curation-tool/json/phyx.json',
       doi: '',
       url: '',
       citation: '',
