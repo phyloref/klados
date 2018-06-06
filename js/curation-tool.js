@@ -9,6 +9,7 @@
 /* global Vue */ // From https://vuejs.org/
 /* global _ */ // From http://underscorejs.org/
 /* global d3 */ // From https://d3js.org/
+/* global moment */ // From https://momentjs.com/
 
 // List of example files to provide in the "Examples" dropdown.
 const examplePHYXURLs = [
@@ -803,8 +804,15 @@ const vm = new Vue({
           // Create intervalStart/intervalEnd convenient fields
           if (this.hasProperty(entry, 'tvc:atTime')) {
             const atTime = entry['tvc:atTime'];
-            if (this.hasProperty(atTime, 'timeinterval:hasIntervalStartDate')) entry.intervalStart = atTime['timeinterval:hasIntervalStartDate'];
-            if (this.hasProperty(atTime, 'timeinterval:hasIntervalEndDate')) entry.intervalEnd = atTime['timeinterval:hasIntervalEndDate'];
+            if (this.hasProperty(atTime, 'timeinterval:hasIntervalStartDate')) {
+              entry.intervalStart = atTime['timeinterval:hasIntervalStartDate'];
+              entry.intervalStartAsCalendar = moment(entry.intervalStart).calendar();
+            }
+
+            if (this.hasProperty(atTime, 'timeinterval:hasIntervalEndDate')) {
+              entry.intervalEnd = atTime['timeinterval:hasIntervalEndDate'];
+              entry.intervalEndAsCalendar = moment(entry.intervalEnd).calendar();
+            }
           }
 
           return entry;
