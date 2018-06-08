@@ -794,30 +794,30 @@ const vm = new Vue({
     getPhylorefStatusChanges(phyloref) {
       // Return a list of status changes for a particular phyloreference
       if (this.hasProperty(phyloref, 'pso:holdsStatusInTime')) {
-        return phyloref['pso:holdsStatusInTime'].map((entryToChange) => {
-          const entry = entryToChange;
+        return phyloref['pso:holdsStatusInTime'].map((entry) => {
+          const result = {};
 
           // Create a statusCURIE convenience field.
           if (this.hasProperty(entry, 'pso:withStatus')) {
-            entry.statusCURIE = entry['pso:withStatus']['@id'];
-            entry.statusInEnglish = this.getPhylorefStatusCURIEsInEnglish()[entry.statusCURIE];
+            result.statusCURIE = entry['pso:withStatus']['@id'];
+            result.statusInEnglish = this.getPhylorefStatusCURIEsInEnglish()[result.statusCURIE];
           }
 
           // Create intervalStart/intervalEnd convenient fields
           if (this.hasProperty(entry, 'tvc:atTime')) {
             const atTime = entry['tvc:atTime'];
             if (this.hasProperty(atTime, 'timeinterval:hasIntervalStartDate')) {
-              entry.intervalStart = atTime['timeinterval:hasIntervalStartDate'];
-              entry.intervalStartAsCalendar = moment(entry.intervalStart).calendar();
+              result.intervalStart = atTime['timeinterval:hasIntervalStartDate'];
+              result.intervalStartAsCalendar = moment(result.intervalStart).calendar();
             }
 
             if (this.hasProperty(atTime, 'timeinterval:hasIntervalEndDate')) {
-              entry.intervalEnd = atTime['timeinterval:hasIntervalEndDate'];
-              entry.intervalEndAsCalendar = moment(entry.intervalEnd).calendar();
+              result.intervalEnd = atTime['timeinterval:hasIntervalEndDate'];
+              result.intervalEndAsCalendar = moment(result.intervalEnd).calendar();
             }
           }
 
-          return entry;
+          return result;
         });
       }
 
