@@ -218,7 +218,7 @@ function getTaxonomicUnitsFromNodeLabel(nodeLabel) {
   if (nodeLabel === undefined || nodeLabel === null) return [];
 
   // Check if the label starts with a binomial name.
-  const results = /^([A-Z][a-z]+)[\s_]([a-z-]+)[\b_]/.exec(nodeLabel);
+  const results = /^([A-Z][a-z]+)[\s_]([a-z-]+)(?:\b|_)/.exec(nodeLabel);
   if (results !== null) {
     return [{
       scientificNames: [{
