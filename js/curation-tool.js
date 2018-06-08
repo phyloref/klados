@@ -218,11 +218,16 @@ function getTaxonomicUnitsFromNodeLabel(nodeLabel) {
   if (nodeLabel === undefined || nodeLabel === null) return [];
 
   // Check if the label starts with a binomial name.
-  const results = /^([A-Z][a-z]+)[\s_]([a-z-]+)(?:\b|_)/.exec(nodeLabel);
+  const results = /^([A-Z][a-z]+)[\s_]([a-z-]+)(\b.*|\s.*|_.*)$/.exec(nodeLabel);
   if (results !== null) {
+    // Add an extra space before the rest of the name if it exists
+    let rest = results[3];
+    if (rest !== undefined) rest = ` ${rest}`;
+
+    // Return all the components of each name including binomial, genus and specificEpithet.
     return [{
       scientificNames: [{
-        scientificName: nodeLabel,
+        scientificName: `${results[1]} ${results[2]}${rest}`,
         binomialName: `${results[1]} ${results[2]}`,
         genus: results[1],
         specificEpithet: results[2],
