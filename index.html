@@ -297,7 +297,7 @@
                                                         <span class="input-group-btn">
                                                             <button type="button" class="btn btn-danger" @click="selectedTUnit.scientificNames.splice(scnameIndex, 1)"><span class="glyphicon glyphicon-remove"></span></button>
                                                         </span>
-                                                        <input type="text" class="form-control" v-model:lazy="scname.scientificName">
+                                                        <input type="text" class="form-control" v-model.lazy="scname.scientificName">
                                                         <div class="input-group-btn">
                                                             <button type="button"
                                                                 class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
@@ -336,7 +336,7 @@
                                                             <button type="button" class="btn btn-danger" @click="selectedTUnit.externalReferences.splice(externalRefIndex, 1)"
                                                                 ><span class="glyphicon glyphicon-remove"></span></button>
                                                         </div>
-                                                        <input type="url" class="form-control" v-model:lazy="selectedTUnit.externalReferences[externalRefIndex]">
+                                                        <input type="url" class="form-control" v-model.lazy="selectedTUnit.externalReferences[externalRefIndex]">
                                                         <div class="input-group-btn">
                                                             <button type="button" class="btn btn-primary" @click="openURL(externalRef)">Go to URL</button>
                                                         </div>
@@ -369,7 +369,7 @@
                                                         <span class="input-group-btn">
                                                             <button type="button" class="btn btn-danger" @click="selectedTUnit.includesSpecimens.splice(scnameIndex, 1)"><span class="glyphicon glyphicon-remove"></span></button>
                                                         </span>
-                                                        <input type="text" class="form-control" v-model:lazy="specimen.occurrenceID">
+                                                        <input type="text" class="form-control" v-model.lazy="specimen.occurrenceID">
                                                         <div class="input-group-btn">
                                                             <button type="button"
                                                                 class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
@@ -437,7 +437,7 @@
                         <div class="input-group col-md-9">
                             <textarea
                                 id="definition"
-                                v-model="selectedPhyloref.cladeDefinition"
+                                v-model.lazy="selectedPhyloref.cladeDefinition"
                                 class="form-control"
                                 rows="6"
                                 placeholder="Phylogenetic clade definition"
@@ -449,7 +449,7 @@
                         <div class="input-group col-md-9">
                             <textarea
                                 id="curator-comments"
-                                v-model="selectedPhyloref['curatorComments']"
+                                v-model.lazy="selectedPhyloref.curatorComments"
                                 class="form-control"
                                 rows="2"
                                 placeholder="Curator notes relating to this phyloreference"
