@@ -41,6 +41,11 @@
                     "expectedPhyloreferenceNamed": [
                         "Crocodyloidea"
                     ]
+                },
+                "Osteolaemus tetraspis": {
+                    "expectedPhyloreferenceNamed": [
+                        "Osteolaeminae"
+                    ]
                 }
             }
         }
@@ -300,6 +305,19 @@
                             ]
                         }
                     ]
+                }
+            ],
+            "pso:holdsStatusInTime": [
+                {
+                    "@type": "http://purl.org/spar/pso/StatusInTime",
+                    "pso:withStatus": {
+                        "@id": "pso:final-draft"
+                    },
+                    "tvc:atTime": {
+                        "timeinterval:hasIntervalStartDate": "2018-06-11T20:00:47.151Z"
+                    },
+                    "statusCURIE": "pso:final-draft",
+                    "intervalStart": "2018-06-11T20:00:47.151Z"
                 }
             ]
         },
@@ -714,7 +732,18 @@
                     ]
                 }
             ],
-            "curatorComments": "Not illustrated in fig 1"
+            "curatorComments": "Not illustrated in fig 1, but it's resolution is pretty unambiguous, so I'm going to assert that it should resolve to \"Osteolaemus tetraspis\"",
+            "pso:holdsStatusInTime": [
+                {
+                    "@type": "http://purl.org/spar/pso/StatusInTime",
+                    "pso:withStatus": {
+                        "@id": "pso:submitted"
+                    },
+                    "tvc:atTime": {
+                        "timeinterval:hasIntervalStartDate": "2018-06-11T21:47:47.495Z"
+                    }
+                }
+            ]
         },
         {
             "label": "Crocodylidae (alt)",
