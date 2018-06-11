@@ -117,6 +117,12 @@
             "@type": "xsd:string"
         },
 
+        "labels": {
+            "@id": "rdfs:label",
+            "@type": "xsd:string",
+            "@container": "@set"
+        },
+
         "comment": {
             "@id": "rdfs:comment",
             "@type": "xsd:string"
