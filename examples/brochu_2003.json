@@ -41,6 +41,11 @@
                     "expectedPhyloreferenceNamed": [
                         "Crocodyloidea"
                     ]
+                },
+                "Osteolaemus tetraspis": {
+                    "expectedPhyloreferenceNamed": [
+                        "Osteolaeminae"
+                    ]
                 }
             }
         }
@@ -96,7 +101,18 @@
                     "specifierWillNotMatch": "Not present in figure 1"
                 }
             ],
-            "externalSpecifiers": []
+            "externalSpecifiers": [],
+            "pso:holdsStatusInTime": [
+                {
+                    "@type": "http://purl.org/spar/pso/StatusInTime",
+                    "pso:withStatus": {
+                        "@id": "pso:final-draft"
+                    },
+                    "tvc:atTime": {
+                        "timeinterval:hasIntervalStartDate": "2018-06-11T22:46:23.547Z"
+                    }
+                }
+            ]
         },
         {
             "label": "Crocodylia",
@@ -136,7 +152,18 @@
                     ]
                 }
             ],
-            "externalSpecifiers": []
+            "externalSpecifiers": [],
+            "pso:holdsStatusInTime": [
+                {
+                    "@type": "http://purl.org/spar/pso/StatusInTime",
+                    "pso:withStatus": {
+                        "@id": "pso:submitted"
+                    },
+                    "tvc:atTime": {
+                        "timeinterval:hasIntervalStartDate": "2018-06-11T22:46:33.179Z"
+                    }
+                }
+            ]
         },
         {
             "label": "Gavialoidea",
@@ -176,6 +203,17 @@
                             ]
                         }
                     ]
+                }
+            ],
+            "pso:holdsStatusInTime": [
+                {
+                    "@type": "http://purl.org/spar/pso/StatusInTime",
+                    "pso:withStatus": {
+                        "@id": "pso:under-review"
+                    },
+                    "tvc:atTime": {
+                        "timeinterval:hasIntervalStartDate": "2018-06-11T22:48:48.903Z"
+                    }
                 }
             ]
         },
@@ -231,7 +269,18 @@
                     ]
                 }
             ],
-            "curatorComments": "Not included in figure 1."
+            "curatorComments": "Not included in figure 1.",
+            "pso:holdsStatusInTime": [
+                {
+                    "@type": "http://purl.org/spar/pso/StatusInTime",
+                    "pso:withStatus": {
+                        "@id": "pso:final-draft"
+                    },
+                    "tvc:atTime": {
+                        "timeinterval:hasIntervalStartDate": "2018-06-11T22:48:53.135Z"
+                    }
+                }
+            ]
         },
         {
             "label": "Brevirostres",
@@ -260,7 +309,18 @@
                     ]
                 }
             ],
-            "externalSpecifiers": []
+            "externalSpecifiers": [],
+            "pso:holdsStatusInTime": [
+                {
+                    "@type": "http://purl.org/spar/pso/StatusInTime",
+                    "pso:withStatus": {
+                        "@id": "pso:submitted"
+                    },
+                    "tvc:atTime": {
+                        "timeinterval:hasIntervalStartDate": "2018-06-11T22:49:04.648Z"
+                    }
+                }
+            ]
         },
         {
             "label": "Alligatoroidea",
@@ -301,6 +361,19 @@
                         }
                     ]
                 }
+            ],
+            "pso:holdsStatusInTime": [
+                {
+                    "@type": "http://purl.org/spar/pso/StatusInTime",
+                    "pso:withStatus": {
+                        "@id": "pso:final-draft"
+                    },
+                    "tvc:atTime": {
+                        "timeinterval:hasIntervalStartDate": "2018-06-11T20:00:47.151Z"
+                    },
+                    "statusCURIE": "pso:final-draft",
+                    "intervalStart": "2018-06-11T20:00:47.151Z"
+                }
             ]
         },
         {
@@ -330,6 +403,17 @@
                             ]
                         }
                     ]
+                }
+            ],
+            "pso:holdsStatusInTime": [
+                {
+                    "@type": "http://purl.org/spar/pso/StatusInTime",
+                    "pso:withStatus": {
+                        "@id": "pso:submitted"
+                    },
+                    "tvc:atTime": {
+                        "timeinterval:hasIntervalStartDate": "2018-06-11T22:49:22.452Z"
+                    }
                 }
             ]
         },
@@ -361,6 +445,17 @@
                         }
                     ]
                 }
+            ],
+            "pso:holdsStatusInTime": [
+                {
+                    "@type": "http://purl.org/spar/pso/StatusInTime",
+                    "pso:withStatus": {
+                        "@id": "pso:submitted"
+                    },
+                    "tvc:atTime": {
+                        "timeinterval:hasIntervalStartDate": "2018-06-11T22:49:26.424Z"
+                    }
+                }
             ]
         },
         {
@@ -390,7 +485,18 @@
                     ]
                 }
             ],
-            "externalSpecifiers": []
+            "externalSpecifiers": [],
+            "pso:holdsStatusInTime": [
+                {
+                    "@type": "http://purl.org/spar/pso/StatusInTime",
+                    "pso:withStatus": {
+                        "@id": "pso:submitted"
+                    },
+                    "tvc:atTime": {
+                        "timeinterval:hasIntervalStartDate": "2018-06-11T22:49:31.471Z"
+                    }
+                }
+            ]
         },
         {
             "label": "Alligatorinae",
@@ -419,6 +525,17 @@
                             ]
                         }
                     ]
+                }
+            ],
+            "pso:holdsStatusInTime": [
+                {
+                    "@type": "http://purl.org/spar/pso/StatusInTime",
+                    "pso:withStatus": {
+                        "@id": "pso:submitted"
+                    },
+                    "tvc:atTime": {
+                        "timeinterval:hasIntervalStartDate": "2018-06-11T22:49:36.063Z"
+                    }
                 }
             ]
         },
@@ -449,6 +566,17 @@
                             ]
                         }
                     ]
+                }
+            ],
+            "pso:holdsStatusInTime": [
+                {
+                    "@type": "http://purl.org/spar/pso/StatusInTime",
+                    "pso:withStatus": {
+                        "@id": "pso:submitted"
+                    },
+                    "tvc:atTime": {
+                        "timeinterval:hasIntervalStartDate": "2018-06-11T22:49:42.007Z"
+                    }
                 }
             ]
         },
@@ -491,6 +619,17 @@
                         }
                     ]
                 }
+            ],
+            "pso:holdsStatusInTime": [
+                {
+                    "@type": "http://purl.org/spar/pso/StatusInTime",
+                    "pso:withStatus": {
+                        "@id": "pso:under-review"
+                    },
+                    "tvc:atTime": {
+                        "timeinterval:hasIntervalStartDate": "2018-06-11T22:49:48.240Z"
+                    }
+                }
             ]
         },
         {
@@ -531,7 +670,18 @@
                     ]
                 }
             ],
-            "externalSpecifiers": []
+            "externalSpecifiers": [],
+            "pso:holdsStatusInTime": [
+                {
+                    "@type": "http://purl.org/spar/pso/StatusInTime",
+                    "pso:withStatus": {
+                        "@id": "pso:submitted"
+                    },
+                    "tvc:atTime": {
+                        "timeinterval:hasIntervalStartDate": "2018-06-11T22:49:51.960Z"
+                    }
+                }
+            ]
         },
         {
             "label": "Mekosuchinae",
@@ -623,7 +773,18 @@
                 }
             ],
             "externalSpecifiers": [],
-            "curatorComments": "Not illustrated in fig 1"
+            "curatorComments": "Not illustrated in fig 1",
+            "pso:holdsStatusInTime": [
+                {
+                    "@type": "http://purl.org/spar/pso/StatusInTime",
+                    "pso:withStatus": {
+                        "@id": "pso:final-draft"
+                    },
+                    "tvc:atTime": {
+                        "timeinterval:hasIntervalStartDate": "2018-06-11T22:49:57.400Z"
+                    }
+                }
+            ]
         },
         {
             "label": "Tomistominae",
@@ -652,6 +813,17 @@
                             ]
                         }
                     ]
+                }
+            ],
+            "pso:holdsStatusInTime": [
+                {
+                    "@type": "http://purl.org/spar/pso/StatusInTime",
+                    "pso:withStatus": {
+                        "@id": "pso:submitted"
+                    },
+                    "tvc:atTime": {
+                        "timeinterval:hasIntervalStartDate": "2018-06-11T22:50:16.649Z"
+                    }
                 }
             ]
         },
@@ -682,6 +854,17 @@
                             ]
                         }
                     ]
+                }
+            ],
+            "pso:holdsStatusInTime": [
+                {
+                    "@type": "http://purl.org/spar/pso/StatusInTime",
+                    "pso:withStatus": {
+                        "@id": "pso:submitted"
+                    },
+                    "tvc:atTime": {
+                        "timeinterval:hasIntervalStartDate": "2018-06-11T22:50:26.448Z"
+                    }
                 }
             ]
         },
@@ -714,7 +897,18 @@
                     ]
                 }
             ],
-            "curatorComments": "Not illustrated in fig 1"
+            "curatorComments": "Not illustrated in fig 1, but it's resolution is pretty unambiguous, so I'm going to assert that it should resolve to \"Osteolaemus tetraspis\"",
+            "pso:holdsStatusInTime": [
+                {
+                    "@type": "http://purl.org/spar/pso/StatusInTime",
+                    "pso:withStatus": {
+                        "@id": "pso:submitted"
+                    },
+                    "tvc:atTime": {
+                        "timeinterval:hasIntervalStartDate": "2018-06-11T21:47:47.495Z"
+                    }
+                }
+            ]
         },
         {
             "label": "Crocodylidae (alt)",
@@ -744,7 +938,18 @@
                 }
             ],
             "externalSpecifiers": [],
-            "curatorComments": "Not illustrated on fig 1."
+            "curatorComments": "Not illustrated on fig 1.",
+            "pso:holdsStatusInTime": [
+                {
+                    "@type": "http://purl.org/spar/pso/StatusInTime",
+                    "pso:withStatus": {
+                        "@id": "pso:final-draft"
+                    },
+                    "tvc:atTime": {
+                        "timeinterval:hasIntervalStartDate": "2018-06-11T22:50:46.938Z"
+                    }
+                }
+            ]
         },
         {
             "label": "Crocodylinae (alt)",
@@ -775,7 +980,18 @@
                     ]
                 }
             ],
-            "curatorComments": "Not illustrated in fig 1."
+            "curatorComments": "Not illustrated in fig 1.",
+            "pso:holdsStatusInTime": [
+                {
+                    "@type": "http://purl.org/spar/pso/StatusInTime",
+                    "pso:withStatus": {
+                        "@id": "pso:final-draft"
+                    },
+                    "tvc:atTime": {
+                        "timeinterval:hasIntervalStartDate": "2018-06-11T22:50:53.131Z"
+                    }
+                }
+            ]
         },
         {
             "label": "Gavialidae (alt)",
@@ -805,7 +1021,18 @@
                 }
             ],
             "externalSpecifiers": [],
-            "curatorComments": "Not illustrated in fig 1."
+            "curatorComments": "Not illustrated in fig 1.",
+            "pso:holdsStatusInTime": [
+                {
+                    "@type": "http://purl.org/spar/pso/StatusInTime",
+                    "pso:withStatus": {
+                        "@id": "pso:final-draft"
+                    },
+                    "tvc:atTime": {
+                        "timeinterval:hasIntervalStartDate": "2018-06-11T22:50:58.482Z"
+                    }
+                }
+            ]
         },
         {
             "label": "Tomistominae (alt)",
@@ -836,7 +1063,18 @@
                     ]
                 }
             ],
-            "curatorComments": "Not illustrated in fig 1."
+            "curatorComments": "Not illustrated in fig 1.",
+            "pso:holdsStatusInTime": [
+                {
+                    "@type": "http://purl.org/spar/pso/StatusInTime",
+                    "pso:withStatus": {
+                        "@id": "pso:final-draft"
+                    },
+                    "tvc:atTime": {
+                        "timeinterval:hasIntervalStartDate": "2018-06-11T22:51:01.914Z"
+                    }
+                }
+            ]
         },
         {
             "label": "Gavialinae (alt)",
@@ -867,8 +1105,20 @@
                     ]
                 }
             ],
-            "curatorComments": "Not illustrated in fig 1"
+            "curatorComments": "Not illustrated in fig 1",
+            "pso:holdsStatusInTime": [
+                {
+                    "@type": "http://purl.org/spar/pso/StatusInTime",
+                    "pso:withStatus": {
+                        "@id": "pso:final-draft"
+                    },
+                    "tvc:atTime": {
+                        "timeinterval:hasIntervalStartDate": "2018-06-11T22:51:05.073Z"
+                    }
+                }
+            ]
         }
     ],
-    "title": "Phylogenetic Approaches Toward Crocodylian History"
+    "title": "Phylogenetic Approaches Toward Crocodylian History",
+    "@context": "https://www.ggvaidya.com/curation-tool/json/phyx.json"
 }
