@@ -13,11 +13,11 @@
 // These globals are from phyx.js. Eventually, we will replace this with
 // import/export.
 /* global ScientificNameWrapper */
-/* global TaxonomicUnitMatcher */
-/* global NodeLabelWrapper */
-/* global PhyloreferenceWrapper */
 /* global TaxonomicUnitWrapper */
+/* global TaxonomicUnitMatcher */
+/* global PhylogenyWrapper */
 /* global SpecimenWrapper */
+/* global PhylorefWrapper */
 
 // List of example files to provide in the "Examples" dropdown.
 const examplePHYXURLs = [
@@ -45,11 +45,6 @@ const examplePHYXURLs = [
 function hasProperty(obj, propName) {
   return Object.prototype.hasOwnProperty.call(obj, propName);
 }
-
-// The following functions test whether a pair of taxonomic units match
-// given certain properties. Eventually, we will encapsulate taxonomic units
-// into their own Javascript class; once we do, these functions will become
-// methods in that class.
 
 /**
  * identifyDOI(testcase)
@@ -429,20 +424,20 @@ const vm = new Vue({
     },
 
     // Methods for listing and modifying specifiers.
-    getSpecifiers(phyloref) {
-      return new PhyloreferenceWrapper(phyloref).specifiers;
+    getSpecifiers(phylorefWithSpecifiers) {
+      // Returns a list of all specifiers for this phyloreference.
+      return new PhylorefWrapper(phylorefWithSpecifiers).specifiers;
     },
-
     getSpecifierType(phyloref, specifier) {
-      return new PhyloreferenceWrapper(phyloref).getSpecifierType(specifier);
+      // Return 'Internal' or 'External', or 'Specifier' if we can't figure out
+      // the type of this specifier.
+      return new PhylorefWrapper(phyloref).getSpecifierType(specifier);
     },
-
-    setSpecifierType(phyloref, specifier, specifierType) {
-      new PhyloreferenceWrapper(phyloref).setSpecifierType(specifier, specifierType);
+    setSpecifierType(phylorefWithSpecifiers, specifier, specifierType) {
+      new PhylorefWrapper(phylorefWithSpecifiers).setSpecifierType(specifier, specifierType);
     },
-
     deleteSpecifier(phyloref, specifier) {
-      new PhyloreferenceWrapper(phyloref).deleteSpecifier(specifier);
+      new PhylorefWrapper(phyloref).deleteSpecifier(specifier);
     },
 
     // Methods for building human-readable labels for model elements.
@@ -450,7 +445,7 @@ const vm = new Vue({
       return new TaxonomicUnitWrapper(tu).label;
     },
     getSpecifierLabel(specifier) {
-      return PhyloreferenceWrapper.getSpecifierLabel(specifier);
+      return PhylorefWrapper.getSpecifierLabel(specifier);
     },
     getPhylorefLabel(phyloref) {
       // Try to determine what the label of a particular phyloreference is,
@@ -460,48 +455,15 @@ const vm = new Vue({
       const phylorefIndex = this.testcase.phylorefs.indexOf(phyloref);
       let potentialLabel = `Phyloreference ${phylorefIndex + 1}`;
 
-      if (this.hasProperty(phyloref, 'label')) potentialLabel = phyloref.label;
-      if (this.hasProperty(phyloref, 'title')) potentialLabel = phyloref.title;
+      const wrappedLabel = new PhylorefWrapper(phyloref).label;
+      if (wrappedLabel !== undefined) potentialLabel = wrappedLabel;
 
       if (potentialLabel.length > 54) { return `${potentialLabel.substr(0, 50)} ...`; }
 
       return potentialLabel;
     },
     getPhylorefExpectedNodeLabels(phylogeny, phyloref) {
-      // Given a specifier, determine which node labels we expect it to
-      // resolve to. To do this, we:
-      //  1. Find all node labels that are case-sensitively identical
-      //     to the phyloreference.
-      //  2. Find all node labels that have additionalNodeProperties with
-      //     expectedPhyloreferenceNamed case-sensitively identical to
-      //     the phyloreference.
-      const phylorefLabel = this.getPhylorefLabel(phyloref);
-      const nodeLabels = new Set();
-
-      this.getNodeLabelsInPhylogeny(phylogeny).forEach((nodeLabel) => {
-        // Is this node label identical to the phyloreference name?
-        if (nodeLabel === phylorefLabel) {
-          nodeLabels.add(nodeLabel);
-        } else if (
-          this.hasProperty(phylogeny, 'additionalNodeProperties') &&
-          this.hasProperty(phylogeny.additionalNodeProperties, nodeLabel) &&
-          this.hasProperty(phylogeny.additionalNodeProperties[nodeLabel], 'expectedPhyloreferenceNamed')
-        ) {
-          // Does this node label have an expectedPhyloreferenceNamed that
-          // includes this phyloreference name?
-
-          const expectedPhylorefs = phylogeny
-            .additionalNodeProperties[nodeLabel]
-            .expectedPhyloreferenceNamed;
-
-          if (expectedPhylorefs.includes(phylorefLabel)) {
-            nodeLabels.add(nodeLabel);
-          }
-        }
-      });
-
-      // Return node labels sorted alphabetically.
-      return Array.from(nodeLabels).sort();
+      return new PhylorefWrapper(phyloref).getExpectedNodeLabels(phylogeny);
     },
     togglePhylorefExpectedNodeLabel(phylogenyToToggle, phyloref, nodeLabelToToggle) {
       // Change the PHYX model so that the provided node label is either
@@ -518,7 +480,8 @@ const vm = new Vue({
       // information.
       //
       const phylogeny = phylogenyToToggle;
-      const phylorefLabel = this.getPhylorefLabel(phyloref);
+      const wrappedPhyloref = new PhylorefWrapper(phyloref);
+      const phylorefLabel = wrappedPhyloref.label;
       const currentExpectedNodeLabels = this.getPhylorefExpectedNodeLabels(phylogeny, phyloref);
 
       if (currentExpectedNodeLabels.includes(nodeLabelToToggle)) {
@@ -607,6 +570,7 @@ const vm = new Vue({
           // Instructions used to style nodes in Phylotree
           // - element: The D3 element of the node being styled
           // - data: The data associated with the node being styled
+          const wrappedPhylogeny = new PhylogenyWrapper(phylogeny);
 
           if (hasProperty(data, 'name') && data.children) {
             // If the node has a label and has children (i.e. is an internal node),
@@ -628,7 +592,7 @@ const vm = new Vue({
               if (
                 this.selectedPhyloref !== undefined &&
                 hasProperty(this.selectedPhyloref, 'label') &&
-                this.getPhylorefExpectedNodeLabels(phylogeny, this.selectedPhyloref)
+                new PhylorefWrapper(this.selectedPhyloref).getExpectedNodeLabels(phylogeny)
                   .includes(data.name)
               ) {
                 textLabel.classed('selected-internal-label', true);
@@ -638,7 +602,7 @@ const vm = new Vue({
 
           if (data.name !== undefined && data.children === undefined) {
             // Labeled leaf node! Look for taxonomic units.
-            const tunits = this.getTaxonomicUnitsForNodeLabelInPhylogeny(phylogeny, data.name);
+            const tunits = wrappedPhylogeny.getTaxonomicUnitsForNodeLabel(data.name);
 
             if (tunits.length === 0) {
               element.classed('terminal-node-without-tunits', true);
@@ -648,17 +612,17 @@ const vm = new Vue({
               //  - internal specifier in green
               //  - external specifier in red
               if (hasProperty(this.selectedPhyloref, 'internalSpecifiers')) {
-                if (this.selectedPhyloref
-                  .internalSpecifiers.some(specifier =>
-                    this.testWhetherSpecifierMatchesNode(specifier, phylogeny, data.name))
+                if (this.selectedPhyloref.internalSpecifiers
+                  .some(specifier => wrappedPhylogeny.getNodeLabelsMatchedBySpecifier(specifier)
+                    .includes(data.name))
                 ) {
                   element.classed('node internal-specifier-node', true);
                 }
               }
               if (hasProperty(this.selectedPhyloref, 'externalSpecifiers')) {
-                if (this.selectedPhyloref
-                  .externalSpecifiers.some(specifier =>
-                    this.testWhetherSpecifierMatchesNode(specifier, phylogeny, data.name))
+                if (this.selectedPhyloref.externalSpecifiers
+                  .some(specifier => wrappedPhylogeny.getNodeLabelsMatchedBySpecifier(specifier)
+                    .includes(data.name))
                 ) {
                   element.classed('node external-specifier-node', true);
                 }
@@ -731,12 +695,12 @@ const vm = new Vue({
         if (isNodeLabeled) {
           // Add custom menu items: display all taxonomic units and provide
           // a menu item to edit them.
-          const tunits = this.getTaxonomicUnitsForNodeLabelInPhylogeny(phylogeny, node.name);
+          const tunits = new PhylogenyWrapper(phylogeny).getTaxonomicUnitsForNodeLabel(node.name);
           tunits.forEach((tunit) => {
             if (node.name !== '') {
               d3.layout.phylotree.add_custom_menu(
                 node,
-                () => `Taxonomic unit: ${this.getTaxonomicUnitLabel(tunit)}`,
+                () => `Taxonomic unit: ${new TaxonomicUnitWrapper(tunit).label}`,
                 () => {
                   // TODO: deduplicate this code with the one below.
                   // console.log("Edit taxonomic units activated with: ", node);
@@ -745,7 +709,7 @@ const vm = new Vue({
                   if (!hasProperty(phylogeny.additionalNodeProperties, node.name)) {
                     Vue.set(phylogeny.additionalNodeProperties, node.name, {
                       representsTaxonomicUnits:
-                        this.getTaxonomicUnitsForNodeLabelInPhylogeny(phylogeny, node.name),
+                        new PhylogenyWrapper(phylogeny).getTaxonomicUnitsForNodeLabel(node.name),
                     });
                   }
 
@@ -766,7 +730,7 @@ const vm = new Vue({
                 if (!hasProperty(phylogeny.additionalNodeProperties, node.name)) {
                   Vue.set(phylogeny.additionalNodeProperties, node.name, {
                     representsTaxonomicUnits:
-                      this.getTaxonomicUnitsForNodeLabelInPhylogeny(phylogeny, node.name),
+                      new PhylogenyWrapper(phylogeny).getTaxonomicUnitsForNodeLabel(node.name),
                   });
                 }
 
@@ -826,12 +790,25 @@ const vm = new Vue({
 
     // Methods for parsing specimen identifiers.
     getInstitutionCode(specimen) {
-      return new SpecimenWrapper(specimen).institionCode;
+      // Extract an institution code from the occurrence ID. If only
+      // two components are provided, we assume they are the institution
+      // code and the catalog number.
+
+      return new SpecimenWrapper(specimen).institutionCode;
     },
     getCollectionCode(specimen) {
+      // Extract a collection code from the occurrence ID. If only
+      // two components are provided, we assume they are the institution
+      // code and the catalog number, and so no collection code is extracted.
+
       return new SpecimenWrapper(specimen).collectionCode;
     },
     getCatalogNumber(specimen) {
+      // Extract a catalog number from the occurrence ID. If only one
+      // component is provided, we assume that it is the catalog number.
+      // If only two components are provided, we assume they are the
+      // institution code and the catalog number.
+
       return new SpecimenWrapper(specimen).catalogNumber;
     },
 
@@ -883,74 +860,7 @@ const vm = new Vue({
       // - 'terminal': Return node labels on terminal nodes.
       // - 'both': Return node labels on both internal and terminal nodes.
 
-      const nodeLabels = new Set();
-
-      // Names from the Newick string.
-      const { newick = '()' } = phylogeny;
-      // console.log(`getNodeLabelsInPhylogeny(${newick})`);
-
-      // To recurse through the tree produced by Phylotree's Newick parser,
-      // we need a recursive function that adds a node's labels and all of its
-      // children's nodes into the list of node labels.
-      //
-      // TODO: In later versions, we will make the parsed Newick tree
-      // directly accessible, so we should replace this code to just
-      // recurse through that tree instead of re-parsing the Newick string.
-      function addNodeAndChildrenToNodeLabels(node) {
-        // console.log("Recursing into: " + JSON.stringify(node));
-
-        if (this.hasProperty(node, 'name') && node.name !== '') {
-          const nodeHasChildren = this.hasProperty(node, 'children') && node.children.length > 0;
-
-          // Only add the node label if it is on the type of node
-          // we're interested in.
-          if (
-            (nodeType === 'both') ||
-            (nodeType === 'internal' && nodeHasChildren) ||
-            (nodeType === 'terminal' && !nodeHasChildren)
-          ) {
-            nodeLabels.add(node.name);
-          }
-        }
-
-        if (this.hasProperty(node, 'children')) {
-          node.children.forEach(child => addNodeAndChildrenToNodeLabels(child));
-        }
-      }
-
-      // Parse the Newick string; if parseable, recurse through the node labels,
-      // adding them all to 'nodeLabels'.
-      const parsed = d3.layout.newick_parser(newick);
-      if (this.hasProperty(parsed, 'json')) {
-        // Recurse away!
-        addNodeAndChildrenToNodeLabels(parsed.json);
-      }
-
-      return Array.from(nodeLabels);
-    },
-
-    // Return a list of taxonomic units for a node label.
-    getTaxonomicUnitsForNodeLabelInPhylogeny(phylogeny, nodeLabel) {
-      // Look up additional node properties.
-      let additionalNodeProperties = {};
-      if (
-        this.hasProperty(phylogeny, 'additionalNodeProperties') &&
-        this.hasProperty(phylogeny.additionalNodeProperties, nodeLabel)
-      ) {
-        additionalNodeProperties = phylogeny.additionalNodeProperties[nodeLabel];
-      }
-
-      // If there are explicit taxonomic units in the
-      // representsTaxonomicUnits property, we need to use those.
-      if (this.hasProperty(additionalNodeProperties, 'representsTaxonomicUnits')) {
-        return additionalNodeProperties.representsTaxonomicUnits;
-      }
-
-      // If that doesn't work, we can try to extract scientific names from
-      // the node label.
-      const { tunits } = new NodeLabelWrapper(nodeLabel);
-
-      return tunits;
+      return new PhylogenyWrapper(phylogeny).getNodeLabels(nodeType);
     },
 
     // Taxonomic unit matching!
@@ -965,7 +875,7 @@ const vm = new Vue({
       let prefixCount = 0;
       this.testcase.phylogenies.forEach((phylogeny) => {
         nodeLabelsWithPrefix = nodeLabelsWithPrefix
-          .concat(this.getNodeLabelsMatchedBySpecifier(specifier, phylogeny)
+          .concat(new PhylogenyWrapper(phylogeny).getNodeLabelsMatchedBySpecifier(specifier)
             .map((nodeLabel) => {
               prefixCount += 1;
               return `${prefix + prefixCount}:${nodeLabel}`;
@@ -973,38 +883,6 @@ const vm = new Vue({
       });
 
       return nodeLabelsWithPrefix;
-    },
-
-    getNodeLabelsMatchedBySpecifier(specifier, phylogeny) {
-      // Return a list of node labels matched by a given specifier on
-      // a given phylogeny.
-      // Wrapper for testWhetherSpecifierMatchesNode() on every node label in
-      // a given phylogeny.
-
-      return this.getNodeLabelsInPhylogeny(phylogeny)
-        .filter(nodeLabel => this.testWhetherSpecifierMatchesNode(
-          specifier,
-          phylogeny,
-          nodeLabel,
-        ));
-    },
-
-    testWhetherSpecifierMatchesNode(specifier, phylogeny, nodeLabel) {
-      // Tests whether a specifier matches a node in a phylogeny.
-
-      // Does the specifier have any taxonomic units? If not, we can't
-      // match anything!
-      if (!this.hasProperty(specifier, 'referencesTaxonomicUnits')) { return false; }
-
-      // Find all the taxonomic units associated with the specifier and
-      // with the node.
-      const specifierTUnits = specifier.referencesTaxonomicUnits;
-      const nodeTUnits = this.getTaxonomicUnitsForNodeLabelInPhylogeny(phylogeny, nodeLabel);
-
-      // Attempt pairwise matches between taxonomic units in the specifier
-      // and associated with the node.
-      return specifierTUnits.some(tunit1 =>
-        nodeTUnits.some(tunit2 => new TaxonomicUnitMatcher(tunit1, tunit2).matched));
     },
   },
 });
