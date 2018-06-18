@@ -40,11 +40,11 @@ class ScientificNameWrapper {
     // them from the scientificName.
     if (
       hasOwnProperty(scname, 'scientificName') &&
-      !hasOwnProperty(scname, 'binomialName') &&
-      !hasOwnProperty(scname, 'genus') &&
-      !hasOwnProperty(scname, 'specificEpithet')
+      (!hasOwnProperty(scname, 'genus') && !hasOwnProperty(scname, 'specificEpithet'))
     ) {
-      this.parseFromScientificName(scname.scientificName);
+      // Do we also have a binomial name? If so, use that instead.
+      if (hasOwnProperty(scname, 'binomialName')) this.parseFromScientificName(scname.binomialName);
+      else this.parseFromScientificName(scname.scientificName);
     }
   }
 
@@ -138,6 +138,24 @@ class SpecimenWrapper {
         this.specimen.catalogNumber = catalogNumValues.join(':');
       }
     }
+
+    // There might be a catalogNumber, institutionCode or a collectionCode.
+    // In which case, let's construct an occurrenceID!
+    if (!hasOwnProperty(specimen, 'occurrenceID')) {
+      if (hasOwnProperty(specimen, 'catalogNumber')) {
+        if (hasOwnProperty(specimen, 'institutionCode')) {
+          if (hasOwnProperty(specimen, 'collectionCode')) {
+            this.specimen.occurrenceID = `urn:catalog:${specimen.institutionCode}:${specimen.collectionCode}:${specimen.catalogNumber}`;
+          } else {
+            this.specimen.occurrenceID = `urn:catalog:${specimen.institutionCode}::${specimen.catalogNumber}`;
+          }
+        } else {
+          this.specimen.occurrenceID = `urn:catalog:::${specimen.catalogNumber}`;
+        }
+      } else {
+        this.specimen.occurrenceID = 'urn:catalog:::';
+      }
+    }
   }
 
   get catalogNumber() {
@@ -185,7 +203,7 @@ class SpecimenWrapper {
   }
 
   get label() {
-    return `Specimen ${this.occurenceID}`;
+    return `Specimen ${this.occurrenceID}`;
   }
 }
 
@@ -365,7 +383,7 @@ class TaxonomicUnitMatcher {
       return tunit1.includesSpecimens.some(specimen1 =>
         tunit2.includesSpecimens.some((specimen2) => {
           const specimenURN1 = new SpecimenWrapper(specimen1).occurrenceID;
-          const specimenURN2 = new SpecimenWrapper(specimen2).occurenceID;
+          const specimenURN2 = new SpecimenWrapper(specimen2).occurrenceID;
 
           const result = (specimenURN1 === specimenURN2);
 
@@ -615,7 +633,7 @@ class PhylorefWrapper {
   }
 
   getExpectedNodeLabels(phylogeny) {
-    // Given a phyloref, determine which node labels we expect it to
+    // Given a phylogeny, determine which node labels we expect this phyloref to
     // resolve to. To do this, we:
     //  1. Find all node labels that are case-sensitively identical
     //     to the phyloreference.
