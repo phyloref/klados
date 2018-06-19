@@ -1,0 +1,7 @@
+{
+  "comments": "These rules are being turned off for Mocha tests",
+  "rules": {
+    "prefer-arrow-callback": "off",
+    "func-names": "off"
+  }
+}
