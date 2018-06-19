@@ -46,7 +46,16 @@ class ScientificNameWrapper {
   parseFromScientificName(verbatimName) {
     // Returns true if a scientific name could be parsed, otherwise false.
 
-    const comps = verbatimName.split(/\s+/);
+    // Splitting the verbatim name takes a while, so let's memoize this.
+    if (!hasOwnProperty(ScientificNameWrapper, 'nameComponentCache')) ScientificNameWrapper.nameComponentCache = {};
+
+    let comps = [];
+    if (hasOwnProperty(ScientificNameWrapper.nameComponentCache, verbatimName)) {
+      comps = ScientificNameWrapper.nameComponentCache[verbatimName];
+    } else {
+      comps = verbatimName.split(/\s+/);
+      ScientificNameWrapper.nameComponentCache[verbatimName] = comps;
+    }
 
     // Did we find a binomial?
     if (comps.length >= 2) {
@@ -253,10 +262,20 @@ class TaxonomicUnitWrapper {
     // Returns a list of taxonomic units.
     if (nodeLabel === undefined || nodeLabel === null) return [];
 
+    // This regular expression times a while to run, so let's memoize this.
+    if (!hasOwnProperty(TaxonomicUnitWrapper, 'taxonomicUnitsFromNodeLabelCache')) {
+      TaxonomicUnitWrapper.taxonomicUnitsFromNodeLabelCache = {};
+    }
+
+    if (hasOwnProperty(TaxonomicUnitWrapper.taxonomicUnitsFromNodeLabelCache, nodeLabel)) {
+      return TaxonomicUnitWrapper.taxonomicUnitsFromNodeLabelCache[nodeLabel];
+    }
+
     // Check if the label starts with a binomial name.
+    let tunits = [];
     const results = /^([A-Z][a-z]+) ([a-z-]+)\b/.exec(nodeLabel);
     if (results !== null) {
-      return [{
+      tunits = [{
         scientificNames: [{
           scientificName: nodeLabel,
           binomialName: `${results[1]} ${results[2]}`,
@@ -264,10 +283,15 @@ class TaxonomicUnitWrapper {
           specificEpithet: results[2],
         }],
       }];
+    } else {
+      // It may be a scientific name, but we don't know how to parse it as such.
+      tunits = [];
     }
 
-    // It may be a scientific name, but we don't know how to parse it as such.
-    return [];
+    // Record in the cache
+    TaxonomicUnitWrapper.taxonomicUnitsFromNodeLabelCache[nodeLabel] = tunits;
+
+    return tunits;
   }
 }
 
