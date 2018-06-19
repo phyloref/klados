@@ -45,16 +45,14 @@ class ScientificNameWrapper {
       scientificName: verbatimName,
     };
 
-    // Splitting the verbatim name takes a while, so let's memoize this.
-    if (!hasOwnProperty(ScientificNameWrapper, 'nameComponentCache')) ScientificNameWrapper.nameComponentCache = {};
-
-    let comps = [];
-    if (hasOwnProperty(ScientificNameWrapper.nameComponentCache, verbatimName)) {
-      comps = ScientificNameWrapper.nameComponentCache[verbatimName];
-    } else {
-      comps = verbatimName.split(/\s+/);
-      ScientificNameWrapper.nameComponentCache[verbatimName] = comps;
+    // Split the verbatim name into a genus and specific epithet, if possible.
+    // Splitting the verbatim name takes some time, so let's memoize this.
+    if (!hasOwnProperty(ScientificNameWrapper, 'scnameCache')) ScientificNameWrapper.scnameCache = {};
+    if (hasOwnProperty(ScientificNameWrapper.scnameCache, verbatimName)) {
+      return ScientificNameWrapper.scnameCache[verbatimName];
     }
+
+    const comps = verbatimName.split(/\s+/);
 
     // Did we find a binomial?
     if (comps.length >= 2) {
@@ -65,6 +63,9 @@ class ScientificNameWrapper {
     if (comps.length >= 1) {
       [scname.genus] = comps;
     }
+
+    // Store in the cache.
+    ScientificNameWrapper.scnameCache[verbatimName] = scname;
 
     return scname;
   }
