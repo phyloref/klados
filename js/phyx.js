@@ -13,6 +13,11 @@
  * used in the PHYX file should be clearly defined on their own. This library
  * contains convenience classes and methods that make accessing those components
  * easier.
+ *
+ * Most of these classes are wrappers. Because the object they wrap may be
+ * unexpectedly modified through the UI, wrapper constructors should be extremely
+ * lightweight so that the wrapper can be created quickly. Individual methods
+ * can be complex and slow if necessary.
  */
 
 // Tell ESLint about globals imported in the HTML page.
@@ -39,8 +44,11 @@ class ScientificNameWrapper {
   }
 
   static createFromVerbatimName(verbatimName) {
-    // Returns a scientific name created from a particular verbatim name.
+    // Returns a scientific name object created from a particular verbatim name.
+    // Not that the returned object will NOT be wrapped -- so remember to wrap it
+    // if necessary!
 
+    // Start with the 'scientific name' as the verbatim name.
     const scname = {
       scientificName: verbatimName,
     };
@@ -71,6 +79,8 @@ class ScientificNameWrapper {
   }
 
   asJSON() {
+    // Return this scientific name as a JSON object.
+
     const result = {
       '@id': 'dwc:Taxon',
       scientificName: this.scientificName,
@@ -83,33 +93,45 @@ class ScientificNameWrapper {
   }
 
   get scientificName() {
+    // Get the "dwc:scientificName" -- the complete scientific name.
     return this.scname.scientificName;
   }
 
   get binomialName() {
+    // Get the binomial name. Constructed from the genus and specific epithet
+    // if available.
     if (this.genus === undefined || this.specificEpithet === undefined) return undefined;
     return `${this.genus} ${this.specificEpithet}`;
   }
 
   get genus() {
+    // Try to read the genus if available.
     if (hasOwnProperty(this.scname, 'genus')) return this.scname.genus;
+
+    // If there is no genus but there is a scientificName, try to extract a genus
+    // from it.
     if (hasOwnProperty(this.scname, 'scientificName')) {
       const scname = ScientificNameWrapper.createFromVerbatimName(this.scname.scientificName);
-      if (scname !== undefined && hasOwnProperty(scname, 'genus')) return scname.genus;
+      if (hasOwnProperty(scname, 'genus')) return scname.genus;
     }
     return undefined;
   }
 
   get specificEpithet() {
+    // Try to read the specific epithet if available.
     if (hasOwnProperty(this.scname, 'specificEpithet')) return this.scname.specificEpithet;
+
+    // If there is no specific epithet but there is a scientificName, try to
+    // extract a specific epithet from it.
     if (hasOwnProperty(this.scname, 'scientificName')) {
       const scname = ScientificNameWrapper.createFromVerbatimName(this.scname.scientificName);
-      if (scname !== undefined && hasOwnProperty(scname, 'specificEpithet')) return scname.specificEpithet;
+      if (hasOwnProperty(scname, 'specificEpithet')) return scname.specificEpithet;
     }
     return undefined;
   }
 
   get label() {
+    // Return a label corresponding to this scientific name -- we use the complete verbatim name.
     return this.scientificName;
   }
 }
@@ -123,9 +145,9 @@ class SpecimenWrapper {
     // Constructs a wrapper around a specimen.
     this.specimen = specimen;
 
-    // There might be a catalogNumber, institutionCode or a collectionCode.
-    // In which case, let's construct an occurrenceID!
     if (!hasOwnProperty(specimen, 'occurrenceID')) {
+      // There might be a catalogNumber, institutionCode or a collectionCode.
+      // In which case, let's construct an occurrenceID!
       if (hasOwnProperty(specimen, 'catalogNumber')) {
         if (hasOwnProperty(specimen, 'institutionCode')) {
           if (hasOwnProperty(specimen, 'collectionCode')) {
@@ -148,8 +170,14 @@ class SpecimenWrapper {
     //  - 'urn:catalog:[institutionCode]:[collectionCode]:[catalogNumber]'
     //      (in which case, we ignore the first two "components" here)
     //  - '[institutionCode]:[collectionCode]:[catalogNumber]'
+    // Note that the returned object is NOT wrapped -- so please wrap it if needed!
 
+    // Copy the occurrence ID so we can truncate it if necessary.
     let occurID = occurrenceID;
+    if (occurID.startsWith('urn:catalog:')) occurID = occurID.substr(12);
+
+    // Prepare the specimen.
+    const specimen = {};
 
     // Parsing an occurrence ID takes some time, so we should memoize it.
     if (!hasOwnProperty(SpecimenWrapper, 'occurrenceIDCache')) SpecimenWrapper.occurrenceIDCache = {};
@@ -157,11 +185,8 @@ class SpecimenWrapper {
       return SpecimenWrapper.occurrenceIDCache[occurID];
     }
 
-    if (occurID.startsWith('urn:catalog:')) occurID = occurID.substr(12);
+    // Split the occurrence ID into components, and store them in the appropriate fields.
     const comps = occurID.split(/:/);
-
-    const specimen = {};
-
     if (comps.length === 1) {
       // specimen.institutionCode = undefined;
       // specimen.collectionCode = undefined;
@@ -179,7 +204,11 @@ class SpecimenWrapper {
   }
 
   get catalogNumber() {
+    // Get the catalog number from the specimen object if present.
     if (hasOwnProperty(this.specimen, 'catalogNumber')) return this.specimen.catalogNumber;
+
+    // Otherwise, try to parse the occurrenceID and see if we can extract a
+    // catalogNumber from there.
     if (hasOwnProperty(this.specimen, 'occurrenceID')) {
       const specimen = SpecimenWrapper.createFromOccurrenceID(this.specimen.occurrenceID);
       if (hasOwnProperty(specimen, 'catalogNumber')) return specimen.catalogNumber;
@@ -188,7 +217,11 @@ class SpecimenWrapper {
   }
 
   get institutionCode() {
+    // Get the institution code from the specimen object if present.
     if (hasOwnProperty(this.specimen, 'institutionCode')) return this.specimen.institutionCode;
+
+    // Otherwise, try to parse the occurrenceID and see if we can extract an
+    // occurrenceID from there.
     if (hasOwnProperty(this.specimen, 'occurrenceID')) {
       const specimen = SpecimenWrapper.createFromOccurrenceID(this.specimen.occurrenceID);
       if (hasOwnProperty(specimen, 'institutionCode')) return specimen.institutionCode;
@@ -197,7 +230,11 @@ class SpecimenWrapper {
   }
 
   get collectionCode() {
+    // Get the collection code from the specimen object if present.
     if (hasOwnProperty(this.specimen, 'collectionCode')) return this.specimen.collectionCode;
+
+    // Otherwise, try to parse the occurrenceID and see if we can extract an
+    // occurrenceID from there.
     if (hasOwnProperty(this.specimen, 'occurrenceID')) {
       const specimen = SpecimenWrapper.createFromOccurrenceID(this.specimen.occurrenceID);
       if (hasOwnProperty(specimen, 'collectionCode')) return specimen.collectionCode;
@@ -206,17 +243,22 @@ class SpecimenWrapper {
   }
 
   get occurrenceID() {
-    // Does it have an occurrenceID? If so, return it.
+    // Does this specimen have an occurrenceID? If so, return it.
     // If not, we attempt to construct one in the form:
     //   "urn:catalog:" + institutionCode (if present) + ':' +
     //      collectionCode (if present) + ':' + catalogNumber (if present)
     // If all else fails, we return undefined.
+    //
+    // If this was a full wrapper, we might create a setter on the occurrenceID;
+    // however, the Vue model modifies the underlying specimen object, not the
+    // wrapper.
 
+    // Return the occurrenceID if it exists.
     if (hasOwnProperty(this.specimen, 'occurrenceID') && this.specimen.occurrenceID.trim() !== '') {
       return this.specimen.occurrenceID.trim();
     }
 
-    // Does it have a catalogNumber? We might need an institutionCode and a collectionCode as well.
+    // Otherwise, we could try to construct the occurrenceID from its components.
     if (hasOwnProperty(this.specimen, 'catalogNumber')) {
       if (hasOwnProperty(this.specimen, 'institutionCode')) {
         if (hasOwnProperty(this.specimen, 'collectionCode')) {
@@ -235,6 +277,7 @@ class SpecimenWrapper {
   }
 
   get label() {
+    // Return a label for this specimen
     return `Specimen ${this.occurrenceID}`;
   }
 }
@@ -244,7 +287,7 @@ class SpecimenWrapper {
 class TaxonomicUnitWrapper {
   // Wraps a taxonomic unit.
   // Also provides static methods for obtaining lists of wrapped taxonomic units
-  // from node labels and other possible inputs.
+  // from node labels.
 
   constructor(tunit) {
     // Wrap a taxonomic unit.
@@ -281,6 +324,7 @@ class TaxonomicUnitWrapper {
       this.tunit.externalReferences.forEach(externalRef => labels.push(`<${externalRef}>`));
     }
 
+    // If we don't have any properties of a taxonomic unit, return a default label.
     if (labels.length === 0) return 'Unnamed taxonomic unit';
 
     return labels.join(', ');
@@ -359,7 +403,7 @@ class TaxonomicUnitMatcher {
   }
 
   match() {
-    // Execute the match
+    // Try to match the two taxonomic units using a number of matching methods.
     if (
       this.matchByBinomialName(this.tunit1, this.tunit2) ||
       this.matchByExternalReferences(this.tunit1, this.tunit2) ||
@@ -398,6 +442,8 @@ class TaxonomicUnitMatcher {
   }
 
   matchByExternalReferences(tunit1, tunit2) {
+    // Try to match by external references.
+
     if (hasOwnProperty(tunit1, 'externalReferences') && hasOwnProperty(tunit2, 'externalReferences')) {
       // Each external reference is a URL as a string. We will lowercase it,
       // but do no other transformation.
@@ -423,11 +469,13 @@ class TaxonomicUnitMatcher {
   }
 
   matchBySpecimenIdentifier(tunit1, tunit2) {
+    // Try to match by specimen identifier (i.e. occurrence ID).
+
     if (hasOwnProperty(tunit1, 'includesSpecimens') && hasOwnProperty(tunit2, 'includesSpecimens')) {
       // Convert specimen identifiers (if present) into a standard format and compare those.
-      return tunit1.includesSpecimens.some(specimen1 =>
-        tunit2.includesSpecimens.some((specimen2) => {
-          const specimenURN1 = new SpecimenWrapper(specimen1).occurrenceID;
+      return tunit1.includesSpecimens.some((specimen1) => {
+        const specimenURN1 = new SpecimenWrapper(specimen1).occurrenceID;
+        return tunit2.includesSpecimens.some((specimen2) => {
           const specimenURN2 = new SpecimenWrapper(specimen2).occurrenceID;
 
           const result = (specimenURN1 === specimenURN2);
@@ -437,7 +485,8 @@ class TaxonomicUnitMatcher {
           }
 
           return result;
-        }));
+        });
+      });
     }
 
     return false;
@@ -447,7 +496,7 @@ class TaxonomicUnitMatcher {
 /* Phylogeny wrapper */
 
 class PhylogenyWrapper {
-  // Wraps a Phylogeny in a PHYX file and provides access to node, node label
+  // Wraps a Phylogeny in a PHYX file and provides access to node, node labels
   // and other information. Remember that a Phylogeny also has the
   // additionalNodeProperties object which provides additional properties for
   // nodes.
@@ -488,6 +537,7 @@ class PhylogenyWrapper {
       }
     }
 
+    // Recurse through all children of this node.
     if (hasOwnProperty(node, 'children')) {
       node.children.forEach(child =>
         PhylogenyWrapper.addNodeAndChildrenToNodeLabels(child, nodeLabels, nodeType));
@@ -540,7 +590,8 @@ class PhylogenyWrapper {
     }
 
     // If that doesn't work, we can try to extract scientific names from
-    // the node label.
+    // the node label. Note that taxonomic units will NOT be extracted from
+    // the label if there is a taxonomic unit present!
     return TaxonomicUnitWrapper.getTaxonomicUnitsFromNodeLabel(nodeLabel.trim());
   }
 
@@ -578,6 +629,7 @@ class PhylorefWrapper {
   }
 
   get label() {
+    // Return a label for this phyloreference.
     if (hasOwnProperty(this.phyloref, 'label')) return this.phyloref.label;
     if (hasOwnProperty(this.phyloref, 'labels') && this.phyloref.labels.length > 0) return this.phyloref.labels[0];
     if (hasOwnProperty(this.phyloref, 'title')) return this.phyloref.title;
@@ -586,9 +638,9 @@ class PhylorefWrapper {
   }
 
   get specifiers() {
-    // Returns a list of all specifiers
-    // Combine the internal and external specifiers into a single list,
-    // with internal specifiers before external specifiers.
+    // Returns a list of all specifiers by combining the internal and external
+    // specifiers into a single list, with internal specifiers before
+    // external specifiers.
     if (!hasOwnProperty(this.phyloref, 'internalSpecifiers')) Vue.set(this.phyloref, 'internalSpecifiers', []);
     if (!hasOwnProperty(this.phyloref, 'externalSpecifiers')) Vue.set(this.phyloref, 'externalSpecifiers', []);
 
@@ -616,18 +668,22 @@ class PhylorefWrapper {
 
     let index;
     if (specifierType === 'Internal') {
+      // To set a specifier to 'Internal', we might need to delete it from the
+      // list of external specifiers first.
       index = this.phyloref.externalSpecifiers.indexOf(specifier);
-      if (index !== -1) { this.phyloref.externalSpecifiers.splice(index, 1); }
+      if (index !== -1) this.phyloref.externalSpecifiers.splice(index, 1);
 
+      // Don't add it to the list of internal specifiers if it's already there.
       if (!this.phyloref.internalSpecifiers.includes(specifier)) {
         this.phyloref.internalSpecifiers.unshift(specifier);
       }
     } else if (specifierType === 'External') {
+      // To set a specifier to 'External', we might need to delete it from the
+      // list of internal specifiers first.
       index = this.phyloref.internalSpecifiers.indexOf(specifier);
-      if (index !== -1) {
-        this.phyloref.internalSpecifiers.splice(index, 1);
-      }
+      if (index !== -1) this.phyloref.internalSpecifiers.splice(index, 1);
 
+      // Don't add it to the list of internal specifiers if it's already there.
       if (!this.phyloref.externalSpecifiers.includes(specifier)) {
         this.phyloref.externalSpecifiers.unshift(specifier);
       }
@@ -656,6 +712,10 @@ class PhylorefWrapper {
     // Try to determine the label of a specifier. This checks the
     // 'label' and 'description' properties, and then tries to create a
     // descriptive label by using the list of referenced taxonomic units.
+    //
+    // This logically belongs in PhylorefWrapper, but we don't actually need to
+    // know the phyloreference to figure out the specifier label, which is why
+    // this is a static method.
 
     // Is this specifier even non-null?
     if (specifier === undefined) return '(undefined)';
