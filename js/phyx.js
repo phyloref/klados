@@ -773,3 +773,13 @@ class PhylorefWrapper {
     return Array.from(nodeLabels).sort();
   }
 }
+
+/* Exports */
+module.exports = {
+  ScientificNameWrapper,
+  SpecimenWrapper,
+  TaxonomicUnitWrapper,
+  TaxonomicUnitMatcher,
+  PhylogenyWrapper,
+  PhylorefWrapper,
+};
