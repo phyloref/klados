@@ -116,39 +116,11 @@ class ScientificNameWrapper {
 /* Specimen wrapper */
 
 class SpecimenWrapper {
-  // Wraps a specimen entry.
+  // Wraps a specimen identifier.
 
   constructor(specimen) {
     // Constructs a wrapper around a specimen.
     this.specimen = specimen;
-
-    // If there is no catalogNumber, try to extract it from the 'occurrenceID'.
-    // The two expected formats are:
-    //  - 'urn:catalog:[institutionCode]:[collectionCode]:[catalogNumber]'
-    //      (in which case, we ignore the first two "components" here)
-    //  - '[institutionCode]:[collectionCode]:[catalogNumber]'
-    if (
-      hasOwnProperty(specimen, 'occurrenceID') &&
-      !hasOwnProperty(specimen, 'catalogNumber') &&
-      !hasOwnProperty(specimen, 'institutionCode') &&
-      !hasOwnProperty(specimen, 'collectionCode')
-    ) {
-      let occurID = specimen.occurrenceID;
-      if (occurID.startsWith('urn:catalog:')) occurID = occurID.substr(12);
-      const comps = occurID.split(/:/);
-
-      if (comps.length === 1) {
-        // specimen.institutionCode = undefined;
-        // specimen.collectionCode = undefined;
-        [this.specimen.catalogNumber] = comps;
-      } else if (comps.length === 2) {
-        [this.specimen.institutionCode, this.specimen.catalogNumber] = comps;
-      } else if (comps.length >= 3) {
-        let catalogNumValues = []; // Store all split catalog number values.
-        [this.specimen.institutionCode, this.specimen.collectionCode, ...catalogNumValues] = comps;
-        this.specimen.catalogNumber = catalogNumValues.join(':');
-      }
-    }
 
     // There might be a catalogNumber, institutionCode or a collectionCode.
     // In which case, let's construct an occurrenceID!
@@ -169,18 +141,66 @@ class SpecimenWrapper {
     }
   }
 
+  static createFromOccurrenceID(occurrenceID) {
+    // Create a specimen object from the occurrence ID.
+    // The two expected formats are:
+    //  - 'urn:catalog:[institutionCode]:[collectionCode]:[catalogNumber]'
+    //      (in which case, we ignore the first two "components" here)
+    //  - '[institutionCode]:[collectionCode]:[catalogNumber]'
+
+    let occurID = occurrenceID;
+
+    // Parsing an occurrence ID takes some time, so we should memoize it.
+    if (!hasOwnProperty(SpecimenWrapper, 'occurrenceIDCache')) SpecimenWrapper.occurrenceIDCache = {};
+    if (hasOwnProperty(SpecimenWrapper.occurrenceIDCache, occurID)) {
+      return SpecimenWrapper.occurrenceIDCache[occurID];
+    }
+
+    if (occurID.startsWith('urn:catalog:')) occurID = occurID.substr(12);
+    const comps = occurID.split(/:/);
+
+    const specimen = {};
+
+    if (comps.length === 1) {
+      // specimen.institutionCode = undefined;
+      // specimen.collectionCode = undefined;
+      [specimen.catalogNumber] = comps;
+    } else if (comps.length === 2) {
+      [specimen.institutionCode, specimen.catalogNumber] = comps;
+    } else if (comps.length >= 3) {
+      let catalogNumValues = []; // Store all split catalog number values.
+      [specimen.institutionCode, specimen.collectionCode, ...catalogNumValues] = comps;
+      specimen.catalogNumber = catalogNumValues.join(':');
+    }
+
+    SpecimenWrapper.occurrenceIDCache[occurID] = specimen;
+    return specimen;
+  }
+
   get catalogNumber() {
     if (hasOwnProperty(this.specimen, 'catalogNumber')) return this.specimen.catalogNumber;
+    if (hasOwnProperty(this.specimen, 'occurrenceID')) {
+      const specimen = SpecimenWrapper.createFromOccurrenceID(this.specimen.occurrenceID);
+      if (hasOwnProperty(specimen, 'catalogNumber')) return specimen.catalogNumber;
+    }
     return undefined;
   }
 
   get institutionCode() {
     if (hasOwnProperty(this.specimen, 'institutionCode')) return this.specimen.institutionCode;
+    if (hasOwnProperty(this.specimen, 'occurrenceID')) {
+      const specimen = SpecimenWrapper.createFromOccurrenceID(this.specimen.occurrenceID);
+      if (hasOwnProperty(specimen, 'institutionCode')) return specimen.institutionCode;
+    }
     return undefined;
   }
 
   get collectionCode() {
     if (hasOwnProperty(this.specimen, 'collectionCode')) return this.specimen.collectionCode;
+    if (hasOwnProperty(this.specimen, 'occurrenceID')) {
+      const specimen = SpecimenWrapper.createFromOccurrenceID(this.specimen.occurrenceID);
+      if (hasOwnProperty(specimen, 'collectionCode')) return specimen.collectionCode;
+    }
     return undefined;
   }
 
