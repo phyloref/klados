@@ -305,7 +305,6 @@ class TaxonomicUnitWrapper {
 
 /* Taxonomic unit matching */
 
-// eslint-disable-next-line no-unused-vars
 class TaxonomicUnitMatcher {
   // A taxonomic unit matcher tests for taxonomic matches between pairs of
   // taxonomic units.
@@ -426,7 +425,6 @@ class TaxonomicUnitMatcher {
 
 /* Phylogeny wrapper */
 
-// eslint-disable-next-line no-unused-vars
 class PhylogenyWrapper {
   // Wraps a Phylogeny in a PHYX file and provides access to node, node label
   // and other information. Remember that a Phylogeny also has the
