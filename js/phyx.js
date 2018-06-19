@@ -36,15 +36,10 @@ class ScientificNameWrapper {
     // a scientific name.
     this.scname = scname;
 
-    // If binomialName, genus or specificEpithet are missing, we can derive
-    // them from the scientificName.
-    if (
-      hasOwnProperty(scname, 'scientificName') &&
-      (!hasOwnProperty(scname, 'genus') && !hasOwnProperty(scname, 'specificEpithet'))
-    ) {
-      // Do we also have a binomial name? If so, use that instead.
-      if (hasOwnProperty(scname, 'binomialName')) this.parseFromScientificName(scname.binomialName);
-      else this.parseFromScientificName(scname.scientificName);
+    // For now, we ignore binomialName, genus and specificEpithet
+    // and rederive them from the scientific name.
+    if (hasOwnProperty(scname, 'scientificName')) {
+      this.parseFromScientificName(scname.scientificName);
     }
   }
 
@@ -56,7 +51,6 @@ class ScientificNameWrapper {
     // Did we find a binomial?
     if (comps.length >= 2) {
       [, this.scname.specificEpithet] = comps;
-      this.scname.binomialName = `${comps[0]} ${comps[1]}`;
     }
 
     // Did we find a uninomial?
@@ -74,7 +68,6 @@ class ScientificNameWrapper {
       scientificName: this.scientificName,
     };
 
-    if (this.binomialName !== undefined) result.binomialName = this.binomialName;
     if (this.genus !== undefined) result.genus = this.genus;
     if (this.specificEpithet !== undefined) result.specificEpithet = this.specificEpithet;
 
@@ -86,7 +79,8 @@ class ScientificNameWrapper {
   }
 
   get binomialName() {
-    return this.scname.binomialName;
+    if (this.genus === undefined || this.specificEpithet === undefined) return undefined;
+    return `${this.genus} ${this.specificEpithet}`;
   }
 
   get genus() {
