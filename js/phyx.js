@@ -29,22 +29,21 @@ function hasOwnProperty(obj, key) {
 
 class ScientificNameWrapper {
   // Wraps a scientific name to provide access to components of
-  // the scientific name.
+  // the scientific name. For now, we ignore binomialName, genus and
+  // specificEpithet and rederive them from the scientific name.
 
   constructor(scname) {
     // Create a new scientific name wrapper around the JSON representation of
     // a scientific name.
     this.scname = scname;
-
-    // For now, we ignore binomialName, genus and specificEpithet
-    // and rederive them from the scientific name.
-    if (hasOwnProperty(scname, 'scientificName')) {
-      this.parseFromScientificName(scname.scientificName);
-    }
   }
 
-  parseFromScientificName(verbatimName) {
-    // Returns true if a scientific name could be parsed, otherwise false.
+  static createFromVerbatimName(verbatimName) {
+    // Returns a scientific name created from a particular verbatim name.
+
+    const scname = {
+      scientificName: verbatimName,
+    };
 
     // Splitting the verbatim name takes a while, so let's memoize this.
     if (!hasOwnProperty(ScientificNameWrapper, 'nameComponentCache')) ScientificNameWrapper.nameComponentCache = {};
@@ -59,16 +58,15 @@ class ScientificNameWrapper {
 
     // Did we find a binomial?
     if (comps.length >= 2) {
-      [, this.scname.specificEpithet] = comps;
+      [, scname.specificEpithet] = comps;
     }
 
     // Did we find a uninomial?
     if (comps.length >= 1) {
-      [this.scname.genus] = comps;
-      return true;
+      [scname.genus] = comps;
     }
 
-    return false;
+    return scname;
   }
 
   asJSON() {
@@ -93,11 +91,21 @@ class ScientificNameWrapper {
   }
 
   get genus() {
-    return this.scname.genus;
+    if (hasOwnProperty(this.scname, 'genus')) return this.scname.genus;
+    if (hasOwnProperty(this.scname, 'scientificName')) {
+      const scname = ScientificNameWrapper.createFromVerbatimName(this.scname.scientificName);
+      if (scname !== undefined && hasOwnProperty(scname, 'genus')) return scname.genus;
+    }
+    return undefined;
   }
 
   get specificEpithet() {
-    return this.scname.specificEpithet;
+    if (hasOwnProperty(this.scname, 'specificEpithet')) return this.scname.specificEpithet;
+    if (hasOwnProperty(this.scname, 'scientificName')) {
+      const scname = ScientificNameWrapper.createFromVerbatimName(this.scname.scientificName);
+      if (scname !== undefined && hasOwnProperty(scname, 'specificEpithet')) return scname.specificEpithet;
+    }
+    return undefined;
   }
 
   get label() {
@@ -348,26 +356,25 @@ class TaxonomicUnitMatcher {
     // Try to match by binomial name, and return true if it could be matched.
 
     // Do both TUnits have scientificNames?
-    if (hasOwnProperty(tunit1, 'scientificNames') && hasOwnProperty(tunit2, 'scientificNames')) {
-      return tunit1.scientificNames.some(scname1 =>
-        tunit2.scientificNames.some((scname2) => {
-          const scname1wrapped = new ScientificNameWrapper(scname1);
-          const scname2wrapped = new ScientificNameWrapper(scname2);
+    if (!hasOwnProperty(tunit1, 'scientificNames') || !hasOwnProperty(tunit2, 'scientificNames')) return false;
 
-          const result = scname1wrapped.binomialName !== undefined &&
-            scname2wrapped.binomialName !== undefined &&
-            scname1wrapped.binomialName.trim().length > 0 &&
-            scname1wrapped.binomialName.trim() === scname2wrapped.binomialName.trim();
+    return tunit1.scientificNames.some((scname1) => {
+      const scname1wrapped = new ScientificNameWrapper(scname1);
+      return tunit2.scientificNames.some((scname2) => {
+        const scname2wrapped = new ScientificNameWrapper(scname2);
 
-          if (result) {
-            this.matchResult = `Scientific name '${scname1wrapped.scientificName}' and scientific name '${scname2wrapped.scientificName}' share the same binomial name`;
-          }
+        const result = scname1wrapped.binomialName !== undefined &&
+          scname2wrapped.binomialName !== undefined &&
+          scname1wrapped.binomialName.trim().length > 0 &&
+          scname1wrapped.binomialName.trim() === scname2wrapped.binomialName.trim();
 
-          return result;
-        }));
-    }
+        if (result) {
+          this.matchResult = `Scientific name '${scname1wrapped.scientificName}' and scientific name '${scname2wrapped.scientificName}' share the same binomial name`;
+        }
 
-    return false;
+        return result;
+      });
+    });
   }
 
   matchByExternalReferences(tunit1, tunit2) {
