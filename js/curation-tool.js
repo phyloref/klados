@@ -14,7 +14,6 @@
 // import/export.
 /* global ScientificNameWrapper */
 /* global TaxonomicUnitWrapper */
-/* global TaxonomicUnitMatcher */
 /* global PhylogenyWrapper */
 /* global SpecimenWrapper */
 /* global PhylorefWrapper */
