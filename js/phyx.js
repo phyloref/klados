@@ -177,7 +177,23 @@ class SpecimenWrapper {
     if (occurID.startsWith('urn:catalog:')) occurID = occurID.substr(12);
 
     // Prepare the specimen.
-    const specimen = {};
+    const specimen = {
+      occurrenceID: occurID,
+    };
+
+    // Look for certain prefixes that suggest that we've been passed a URN or
+    // URL instead. If so, don't do any further processing!
+    const URL_URN_PREFIXES = [
+      'http://',
+      'https://',
+      'ftp://',
+      'sftp://',
+      'file://',
+      'urn:',
+    ];
+    if (URL_URN_PREFIXES.filter(prefix => occurID.toLowerCase().startsWith(prefix)).length > 0) {
+      return specimen;
+    }
 
     // Parsing an occurrence ID takes some time, so we should memoize it.
     if (!hasOwnProperty(SpecimenWrapper, 'occurrenceIDCache')) SpecimenWrapper.occurrenceIDCache = {};
