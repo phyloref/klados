@@ -665,14 +665,14 @@ class PhylogenyWrapper {
     // Return a list of node labels matched by a given specifier on
     // a given phylogeny.
 
-    return this.getNodeLabels().filter((nodeLabel) => {
-      // Does the specifier have any taxonomic units? If not, we can't
-      // match anything!
-      if (!hasOwnProperty(specifier, 'referencesTaxonomicUnits')) { return false; }
+    // Does the specifier have any taxonomic units? If not, we can't
+    // match anything!
+    if (!hasOwnProperty(specifier, 'referencesTaxonomicUnits')) { return []; }
+    const specifierTUnits = specifier.referencesTaxonomicUnits;
 
+    return this.getNodeLabels().filter((nodeLabel) => {
       // Find all the taxonomic units associated with the specifier and
       // with the node.
-      const specifierTUnits = specifier.referencesTaxonomicUnits;
       const nodeTUnits = this.getTaxonomicUnitsForNodeLabel(nodeLabel);
 
       // Attempt pairwise matches between taxonomic units in the specifier

@@ -82,4 +82,60 @@ describe('PhylogenyWrapper', function () {
       }]);
     });
   });
+  describe('#getNodeLabelsMatchedBySpecifier', function () {
+    it('should match specifiers by specimen identifier', function () {
+      const wrapper = new phyx.PhylogenyWrapper({
+        newick: '((MVZ225749, MVZ191016), "Rana boylii")',
+        additionalNodeProperties: {
+          MVZ225749: {
+            representsTaxonomicUnits: [{
+              scientificNames: [{ scientificName: 'Rana luteiventris' }],
+              includesSpecimens: [{ occurrenceID: 'MVZ:225749' }],
+            }],
+          },
+          MVZ191016: {
+            representsTaxonomicUnits: [{
+              scientificNames: [{ scientificName: 'Rana luteiventris' }],
+              includesSpecimens: [{ occurrenceID: 'MVZ:191016' }],
+            }],
+          },
+        },
+      });
+
+      const specifier1 = {
+        referencesTaxonomicUnits: [{
+          includesSpecimens: [{
+            occurrenceID: 'MVZ:225749',
+          }],
+        }],
+      };
+      const specifier2 = {
+        referencesTaxonomicUnits: [{
+          includesSpecimens: [{
+            occurrenceID: 'MVZ:191016',
+          }],
+        }],
+      };
+      const specifier3 = {
+        referencesTaxonomicUnits: [{
+          scientificNames: [{
+            scientificName: 'Rana boyli',
+          }],
+        }],
+      };
+
+      assert.deepEqual(
+        wrapper.getNodeLabelsMatchedBySpecifier(specifier1),
+        ['MVZ225749'],
+      );
+      assert.deepEqual(
+        wrapper.getNodeLabelsMatchedBySpecifier(specifier2),
+        ['MVZ191016'],
+      );
+      assert.deepEqual(
+        wrapper.getNodeLabelsMatchedBySpecifier(specifier3),
+        [],
+      );
+    });
+  });
 });
