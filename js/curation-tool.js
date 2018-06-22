@@ -17,6 +17,7 @@
 /* global PhylogenyWrapper */
 /* global SpecimenWrapper */
 /* global PhylorefWrapper */
+/* global phyxCacheManager */
 
 // List of example files to provide in the "Examples" dropdown.
 const examplePHYXURLs = [
@@ -303,6 +304,9 @@ const vm = new Vue({
       // Updates the user interface to reflect the JSON document provided in 'testcase'.
 
       if (!this.closeCurrentStudy()) return;
+
+      // Before we load a new study, clear the PHYX caches.
+      phyxCacheManager.clear();
 
       const testcase = testcaseToLoad;
 
