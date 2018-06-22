@@ -238,9 +238,8 @@ class SpecimenWrapper {
     }
 
     // Parsing an occurrence ID takes some time, so we should memoize it.
-    if (!hasOwnProperty(SpecimenWrapper, 'occurrenceIDCache')) SpecimenWrapper.occurrenceIDCache = {};
-    if (hasOwnProperty(SpecimenWrapper.occurrenceIDCache, occurID)) {
-      return SpecimenWrapper.occurrenceIDCache[occurID];
+    if (phyxCacheManager.has('SpecimenWrapper.occurrenceIDCache', occurID)) {
+      return phyxCacheManager.get('SpecimenWrapper.occurrenceIDCache', occurID);
     }
 
     // Split the occurrence ID into components, and store them in the appropriate fields.
@@ -257,7 +256,7 @@ class SpecimenWrapper {
       specimen.catalogNumber = catalogNumValues.join(':');
     }
 
-    SpecimenWrapper.occurrenceIDCache[occurID] = specimen;
+    phyxCacheManager.put('SpecimenWrapper.occurrenceIDCache', occurID, specimen);
     return specimen;
   }
 
