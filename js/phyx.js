@@ -375,11 +375,11 @@ class TaxonomicUnitWrapper {
 
     // Check if the label starts with a binomial name.
     let tunits = [];
-    const results = /^([A-Z][a-z]+) ([a-z-]+)\b/.exec(nodeLabel);
+    const results = /^([A-Z][a-z]+)[ _]([a-z-]+)(?:\b|_)\s*(.*)/.exec(nodeLabel);
     if (results !== null) {
       tunits = [{
         scientificNames: [{
-          scientificName: nodeLabel,
+          scientificName: `${results[1]} ${results[2]} ${results[3]}`,
           binomialName: `${results[1]} ${results[2]}`,
           genus: results[1],
           specificEpithet: results[2],

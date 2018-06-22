@@ -85,4 +85,33 @@ describe('TaxonomicUnitWrapper', function () {
       assert.equal(wrapper.label, 'Specimen urn:catalog:MVZ::225749 or <http://arctos.database.museum/guid/MVZ:Herp:225749> or Rana luteiventris');
     });
   });
+  describe('#getTaxonomicUnitsFromNodeLabel', function () {
+    it('should catch invalid inputs', function () {
+      assert.deepEqual(phyx.TaxonomicUnitWrapper.getTaxonomicUnitsFromNodeLabel(), []);
+      assert.deepEqual(phyx.TaxonomicUnitWrapper.getTaxonomicUnitsFromNodeLabel(undefined), []);
+      assert.deepEqual(phyx.TaxonomicUnitWrapper.getTaxonomicUnitsFromNodeLabel(null), []);
+      assert.deepEqual(phyx.TaxonomicUnitWrapper.getTaxonomicUnitsFromNodeLabel(''), []);
+      assert.deepEqual(phyx.TaxonomicUnitWrapper.getTaxonomicUnitsFromNodeLabel('    '), []);
+    });
+    it('should work for a scientific name with specimen label', function () {
+      assert.deepEqual(phyx.TaxonomicUnitWrapper.getTaxonomicUnitsFromNodeLabel('Rana luteiventris MVZ225749'), [{
+        scientificNames: [{
+          scientificName: 'Rana luteiventris MVZ225749',
+          genus: 'Rana',
+          specificEpithet: 'luteiventris',
+          binomialName: 'Rana luteiventris',
+        }],
+      }]);
+    });
+    it('should work for a scientific name separated with underscores', function () {
+      assert.deepEqual(phyx.TaxonomicUnitWrapper.getTaxonomicUnitsFromNodeLabel('Rana_luteiventris_MVZ_225749'), [{
+        scientificNames: [{
+          scientificName: 'Rana luteiventris MVZ_225749',
+          genus: 'Rana',
+          specificEpithet: 'luteiventris',
+          binomialName: 'Rana luteiventris',
+        }],
+      }]);
+    });
+  });
 });
