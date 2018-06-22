@@ -9,6 +9,7 @@
 /* global Vue */ // From https://vuejs.org/
 /* global _ */ // From http://underscorejs.org/
 /* global d3 */ // From https://d3js.org/
+/* global moment */ // From https://momentjs.com/
 
 // List of example files to provide in the "Examples" dropdown.
 const examplePHYXURLs = [
@@ -217,11 +218,16 @@ function getTaxonomicUnitsFromNodeLabel(nodeLabel) {
   if (nodeLabel === undefined || nodeLabel === null) return [];
 
   // Check if the label starts with a binomial name.
-  const results = /^([A-Z][a-z]+) ([a-z-]+)\b/.exec(nodeLabel);
+  const results = /^([A-Z][a-z]+)[\s_]([a-z-]+)(\b.*|\s.*|_.*)$/.exec(nodeLabel);
   if (results !== null) {
+    // Add an extra space before the rest of the name if it exists
+    let rest = results[3];
+    if (rest !== undefined) rest = ` ${rest}`;
+
+    // Return all the components of each name including binomial, genus and specificEpithet.
     return [{
       scientificNames: [{
-        scientificName: nodeLabel,
+        scientificName: `${results[1]} ${results[2]}${rest}`,
         binomialName: `${results[1]} ${results[2]}`,
         genus: results[1],
         specificEpithet: results[2],
@@ -297,6 +303,7 @@ const vm = new Vue({
 
     // The main data model.
     testcase: {
+      '@context': 'http://phyloref.org/curation-tool/json/phyx.json',
       doi: '',
       url: '',
       citation: '',
@@ -307,6 +314,7 @@ const vm = new Vue({
     // A copy of the data model, used to test when the data model has been
     // modified.
     testcaseAsLoaded: {
+      '@context': 'http://phyloref.org/curation-tool/json/phyx.json',
       doi: '',
       url: '',
       citation: '',
@@ -735,6 +743,129 @@ const vm = new Vue({
       // No idea!
       return 'Unnamed specifier';
     },
+    getPhylorefStatus(phyloref) {
+      // Return a result object that contains:
+      //  - status: phyloreference status as a short URI (CURIE)
+      //  - statusInEnglish: an English representation of the phyloref status
+      //  - intervalStart: the start of the interval
+      //  - intervalEnd: the end of the interval
+
+      if (
+        this.hasProperty(phyloref, 'pso:holdsStatusInTime') &&
+        Array.isArray(phyloref['pso:holdsStatusInTime']) &&
+        phyloref['pso:holdsStatusInTime'].length > 0
+      ) {
+        // If we have any pso:holdsStatusInTime entries, pick the first one and
+        // extract the CURIE and time interval information from it.
+        const lastStatusInTime = phyloref['pso:holdsStatusInTime'][phyloref['pso:holdsStatusInTime'].length - 1];
+        const statusCURIE = lastStatusInTime['pso:withStatus']['@id'];
+
+        // Look for time interval information
+        let intervalStart;
+        let intervalEnd;
+
+        if (this.hasProperty(lastStatusInTime, 'tvc:atTime')) {
+          const atTime = lastStatusInTime['tvc:atTime'];
+          if (this.hasProperty(atTime, 'timeinterval:hasIntervalStartDate')) intervalStart = atTime['timeinterval:hasIntervalStartDate'];
+          if (this.hasProperty(atTime, 'timeinterval:hasIntervalEndDate')) intervalEnd = atTime['timeinterval:hasIntervalEndDate'];
+        }
+
+        // Return result object
+        return {
+          status: statusCURIE,
+          statusInEnglish: this.getPhylorefStatusCURIEsInEnglish()[statusCURIE],
+          intervalStart,
+          intervalEnd,
+        };
+      }
+
+      // If we couldn't figure out a status for this phyloref, assume it's a draft.
+      return {
+        status: 'pso:draft',
+        statusInEnglish: this.getPhylorefStatusCURIEsInEnglish()['pso:draft'],
+      };
+    },
+    getPhylorefStatusCURIEsInEnglish() {
+      // Return dictionary of all phyloref statuses in English
+      return {
+        'pso:draft': 'Draft',
+        'pso:final-draft': 'Final draft',
+        'pso:under-review': 'Under review',
+        'pso:submitted': 'Tested',
+        'pso:published': 'Published',
+        'pso:retracted-from-publication': 'Retracted',
+      };
+    },
+    getPhylorefStatusChanges(phyloref) {
+      // Return a list of status changes for a particular phyloreference
+      if (this.hasProperty(phyloref, 'pso:holdsStatusInTime')) {
+        return phyloref['pso:holdsStatusInTime'].map((entry) => {
+          const result = {};
+
+          // Create a statusCURIE convenience field.
+          if (this.hasProperty(entry, 'pso:withStatus')) {
+            result.statusCURIE = entry['pso:withStatus']['@id'];
+            result.statusInEnglish = this.getPhylorefStatusCURIEsInEnglish()[result.statusCURIE];
+          }
+
+          // Create intervalStart/intervalEnd convenient fields
+          if (this.hasProperty(entry, 'tvc:atTime')) {
+            const atTime = entry['tvc:atTime'];
+            if (this.hasProperty(atTime, 'timeinterval:hasIntervalStartDate')) {
+              result.intervalStart = atTime['timeinterval:hasIntervalStartDate'];
+              result.intervalStartAsCalendar = moment(result.intervalStart).calendar();
+            }
+
+            if (this.hasProperty(atTime, 'timeinterval:hasIntervalEndDate')) {
+              result.intervalEnd = atTime['timeinterval:hasIntervalEndDate'];
+              result.intervalEndAsCalendar = moment(result.intervalEnd).calendar();
+            }
+          }
+
+          return result;
+        });
+      }
+
+      // No changes? Return an empty list.
+      return [];
+    },
+    setPhylorefStatus(phylorefToChange, status) {
+      // Set the status of a phyloreference
+      const phyloref = phylorefToChange;
+
+      if (!this.hasProperty(this.getPhylorefStatusCURIEsInEnglish(), status)) {
+        this.alert(`Status '${status}' is not a possible status for a Phyloreference`);
+        return;
+      }
+
+      // See if we can end the previous interval.
+      const currentTime = new Date(Date.now()).toISOString();
+
+      if (!this.hasProperty(phyloref, 'pso:holdsStatusInTime')) Vue.set(phyloref, 'pso:holdsStatusInTime', []);
+
+      // Check to see if there's a previous time interval we should end.
+      if (
+        Array.isArray(phyloref['pso:holdsStatusInTime']) &&
+        phyloref['pso:holdsStatusInTime'].length > 0
+      ) {
+        const lastStatusInTime = phyloref['pso:holdsStatusInTime'][phyloref['pso:holdsStatusInTime'].length - 1];
+
+        if (!this.hasProperty(lastStatusInTime, 'tvc:atTime')) Vue.set(lastStatusInTime, 'tvc:atTime', {});
+        if (!this.hasProperty(lastStatusInTime['tvc:atTime'], 'timeinterval:hasIntervalEndDate')) {
+          // If the last time entry doesn't already have an interval end date, set it to now.
+          lastStatusInTime['tvc:atTime']['timeinterval:hasIntervalEndDate'] = currentTime;
+        }
+      }
+
+      // Create new entry.
+      phyloref['pso:holdsStatusInTime'].push({
+        '@type': 'http://purl.org/spar/pso/StatusInTime',
+        'pso:withStatus': { '@id': status },
+        'tvc:atTime': {
+          'timeinterval:hasIntervalStartDate': currentTime,
+        },
+      });
+    },
     getPhylorefLabel(phyloref) {
       // Try to determine what the label of a particular phyloreference is,
       // or default to 'Phyloreference <count>'. This checks the 'label' and
@@ -1076,12 +1207,16 @@ const vm = new Vue({
       // Create an empty phyloreference. We label it, but leave other
       // fields blank.
 
-      return {
+      const phyloref = {
         label: `Phyloreference ${count}`,
         cladeDefinition: '',
         internalSpecifiers: [],
         externalSpecifiers: [],
       };
+
+      this.setPhylorefStatus(phyloref, 'pso:draft');
+
+      return phyloref;
     },
     createEmptySpecifier() {
       // Create an empty specifier. No fields are required, so we

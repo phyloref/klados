@@ -1,0 +1,281 @@
+{
+    "@context": {
+        "xsd": "http://www.w3.org/2001/XMLSchema#",
+
+        "== TOP-LEVEL DOCUMENT PROPERTIES ==": {},
+        "ot": "http://purl.org/opentree/nexson#",
+
+        "curator": {
+            "@id": "ot:curatorName",
+            "@type": "xsd:string"
+        },
+
+        "comments": {
+            "@id": "ot:comment",
+            "@type": "xsd:string"
+        },
+
+        "citation": "ot:studyPublicationReference",
+
+        "url": {
+            "@id": "ot:studyPublication",
+            "@type": "@id"
+        },
+
+        "year": {
+            "@id": "ot:studyYear",
+            "@type": "xsd:integer"
+        },
+
+        "== Management of nodes and internode relationships ==": {},
+        "testcase": "http://vocab.phyloref.org/phyloref/testcase.owl#",
+
+        "nodes": {
+            "@id": "testcase:has_node",
+            "@container": "@set"
+        },
+
+        "inPhylogeny": {
+            "@id": "testcase:in_phylogeny",
+            "@type": "@id"
+        },
+
+        "hasRootNode": {
+            "@id": "testcase:has_root_node",
+            "@type": "@id"
+        },
+
+        "phylogenies": {
+            "@id": "testcase:has_phylogeny",
+            "@container": "@set"
+        },
+
+        "== CDAO and Phyloref properties ==": {},
+        "obo": "http://purl.obolibrary.org/obo/",
+        "phyloref": "http://phyloinformatics.net/phyloref.owl#",
+
+        "children": {
+            "@id": "obo:CDAO_0000149",
+            "@type": "@id"
+        },
+
+        "siblings": {
+            "@id": "phyloref:has_Sibling",
+            "@type": "@id"
+        },
+
+        "phylorefs": {
+            "@id": "testcase:has_phyloreference",
+            "@container": "@set"
+        },
+
+        "malformedPhyloreference": {
+            "@id": "testcase:malformed_phyloreference",
+            "@type": "xsd:string"
+        },
+
+        "hasSpecifier": {
+            "@id": "testcase:has_specifier",
+            "@type": "@set"
+        },
+
+        "hasInternalSpecifier": {
+            "@id": "testcase:has_internal_specifier",
+            "@type": "@set"
+        },
+
+        "hasExternalSpecifier": {
+            "@id": "testcase:has_external_specifier",
+            "@type": "@set"
+        },
+
+        "hasUnmatchedSpecifiers": {
+            "@id": "testcase:has_unmatched_specifier",
+            "@type": "@set"
+        },
+
+        "hasAdditionalClass": {
+            "@id": "testcase:has_additional_class",
+            "@type": "@set"
+        },
+
+        "newick": {
+            "@id": "testcase:as_newick_string",
+            "@type": "xsd:string"
+        },
+
+        "cladeDefinition": {
+            "@id": "testcase:clade_definition",
+            "@type": "xsd:string"
+        },
+
+        "== LOW-LEVEL RDF/RDFS/OWL TERMS ==": {},
+        "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+
+        "label": {
+            "@id": "rdfs:label",
+            "@type": "xsd:string"
+        },
+
+        "labels": {
+            "@id": "rdfs:label",
+            "@type": "xsd:string",
+            "@container": "@set"
+        },
+
+        "comment": {
+            "@id": "rdfs:comment",
+            "@type": "xsd:string"
+        },
+
+        "== GLUE TO RENDER ONTOLOGY IN RDF ==": {},
+        "owl": "http://www.w3.org/2002/07/owl#",
+
+        "owl:imports": {
+            "@id": "owl:imports",
+            "@type": "@id"
+        },
+
+        "equivalentClass": "owl:equivalentClass",
+        "intersectionOf": {
+            "@id": "owl:intersectionOf",
+            "@container": "@list"
+        },
+        "onProperty": {
+            "@id": "owl:onProperty",
+            "@type": "@id"
+        },
+        "someValuesFrom": {
+            "@id": "owl:someValuesFrom",
+            "@container": "@set"
+        },
+        "unionOf": {
+            "@id": "owl:unionOf",
+            "@container": "@list"
+        },
+        "hasValue": {
+            "@id": "owl:hasValue",
+            "@type": "xsd:string"
+        },
+
+        "filename": "testcase:filename",
+
+        "externalReferences": {
+            "@id": "obo:CDAO_0000164",
+            "@type": "@set"
+        },
+
+        "scientificNames": {
+            "@id": "testcase:has_scientific_name",
+            "@type": "@set"
+        },
+
+        "includesSpecimens": {
+            "@id": "testcase:includes_specimen",
+            "@type": "@set"
+        },
+
+        "== Properties of individual TUs ==": {},
+        "dwc": "http://rs.tdwg.org/dwc/terms/",
+
+        "=== Scientific names ===": {},
+
+        "scientificName": {
+            "@id": "dwc:scientificName",
+            "@type": "xsd:string"
+        },
+        "binomialName": {
+            "@id": "testcase:has_binomial_name",
+            "@type": "xsd:string"
+        },
+        "genus": {
+            "@id": "dwc:genus",
+            "@type": "xsd:string"
+        },
+        "specificEpithet": {
+            "@id": "dwc:specificEpithet",
+            "@type": "xsd:string"
+        },
+
+        "=== Specimen identifiers ===": {},
+
+        "occurrenceID": "dwc:occurrenceID",
+        "catalogNumber": "dwc:catalogNumber",
+        "collectionCode": "dwc:collectionCode",
+        "institutionCode": "dwc:institutionCode",
+
+        "subClassOf": {
+            "@id": "rdfs:subClassOf",
+            "@type": "@id"
+        },
+
+        "expectedPhyloreferenceNamed": "testcase:expected_phyloreference_named",
+
+        "reason": {
+            "@id": "testcase:reason_for_match",
+            "@type": "xsd:string"
+        },
+
+        "hasTaxonomicUnitMatches": {
+            "@id": "testcase:has_taxonomic_unit_match",
+            "@type": "@set"
+        },
+
+        "referencesTaxonomicUnits": {
+            "@id": "testcase:references_taxonomic_unit",
+            "domain": "Specifier",
+            "range": "TU",
+            "@type": "@set"
+        },
+
+        "matchesTaxonomicUnits": {
+            "@id": "testcase:matches_taxonomic_unit",
+            "domain": "TUMatch",
+            "range": "TU",
+            "@type": "@set"
+        },
+
+        "representsTaxonomicUnits": {
+            "@id": "obo:CDAO_0000187",
+            "domain": "Node",
+            "range": "TU",
+            "@type": "@set"
+        },
+
+        "specifierWillNotMatch": {
+            "@id": "testcase:specifier_will_not_match",
+            "@type": "@set"
+        },
+
+
+        "== TERMS FROM THE ANNOTATION ONTOLOGY ==": {},
+
+        "oa": "http://www.w3.org/ns/oa#",
+
+        "annotations": {
+            "@id": "testcase:has_annotation",
+            "@container": "@set"
+        },
+
+        "annotationTarget": {
+            "@id": "oa:hasTarget",
+            "@type": "@id"
+        },
+
+        "annotationName": {
+            "@id": "rdfs:label",
+            "@type": "xsd:string"
+        },
+
+        "annotationBody": {
+            "@id": "oa:hasBody",
+            "@type": "xsd:string"
+        },
+
+        "== TERMS FROM THE PUBLISHING STATUS ONTOLOGY AND RELATED ==": {},
+
+        "pso": "http://purl.org/spar/pso/",
+        "tvc": "http://www.essepuntato.it/2012/04/tvc/",
+        "timeinterval": "http://www.ontologydesignpatterns.org/cp/owl/timeinterval.owl#"
+    }
+}
