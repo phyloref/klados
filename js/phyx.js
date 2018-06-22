@@ -416,7 +416,7 @@ class TaxonomicUnitWrapper {
     if (results !== null) {
       tunits = [{
         scientificNames: [{
-          scientificName: `${results[1]} ${results[2]} ${results[3]}`,
+          scientificName: `${results[1]} ${results[2]} ${results[3]}`.trim(),
           binomialName: `${results[1]} ${results[2]}`,
           genus: results[1],
           specificEpithet: results[2],
