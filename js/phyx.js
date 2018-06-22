@@ -24,11 +24,54 @@
 /* global Vue */ // From https://vuejs.org/
 /* global d3 */ // From https://d3js.org/
 
+// Our global variables
+// eslint-disable-next-line no-var
+var phyxCacheManager;
+
 /* Helper methods */
 
 function hasOwnProperty(obj, key) {
   return Object.prototype.hasOwnProperty.call(obj, key);
 }
+
+/* Cache manager */
+
+class CacheManager {
+  // The Cache Manager helps manage the various caches we use in this library
+  // Ideally, caches should be created in the global phyxCacheManager object.
+  // A library can then call phyxCacheManager.clear() to empty the entire cache.
+
+  constructor() {
+    // Construct a new cache manager.
+    this.clear();
+  }
+
+  clear() {
+    // Clear all current caches
+    this.caches = {};
+  }
+
+  has(cacheName, cacheKey) {
+    // Return true if we have a value for this particular cache key.
+    return hasOwnProperty(this.caches, cacheName) &&
+      hasOwnProperty(this.caches[cacheName], cacheKey);
+  }
+
+  get(cacheName, cacheKey) {
+    // Look up the value of a key in a particular cache key.
+    if (!hasOwnProperty(this.caches, cacheName)) this.caches[cacheName] = {};
+    if (!hasOwnProperty(this.caches[cacheName], cacheKey)) return undefined;
+    return this.caches[cacheName][cacheKey];
+  }
+
+  put(cacheName, cacheKey, value) {
+    // Set the value of a key in a particular cache key.
+    if (!hasOwnProperty(this.caches, cacheName)) this.caches[cacheName] = {};
+    if (!hasOwnProperty(this.caches[cacheName], cacheKey)) this.caches[cacheName][cacheKey] = {};
+    this.caches[cacheName][cacheKey] = value;
+  }
+}
+phyxCacheManager = new CacheManager();
 
 /* Scientific name processing */
 
@@ -55,9 +98,8 @@ class ScientificNameWrapper {
 
     // Split the verbatim name into a genus and specific epithet, if possible.
     // Splitting the verbatim name takes some time, so let's memoize this.
-    if (!hasOwnProperty(ScientificNameWrapper, 'scnameCache')) ScientificNameWrapper.scnameCache = {};
-    if (hasOwnProperty(ScientificNameWrapper.scnameCache, verbatimName)) {
-      return ScientificNameWrapper.scnameCache[verbatimName];
+    if (phyxCacheManager.has('ScientificNameWrapper.scnameCache', verbatimName)) {
+      return phyxCacheManager.get('ScientificNameWrapper.scnameCache', verbatimName);
     }
 
     const comps = verbatimName.split(/\s+/);
@@ -73,7 +115,7 @@ class ScientificNameWrapper {
     }
 
     // Store in the cache.
-    ScientificNameWrapper.scnameCache[verbatimName] = scname;
+    phyxCacheManager.put('ScientificNameWrapper.scnameCache', verbatimName, scname);
 
     return scname;
   }
@@ -365,12 +407,8 @@ class TaxonomicUnitWrapper {
     if (nodeLabel === undefined || nodeLabel === null) return [];
 
     // This regular expression times a while to run, so let's memoize this.
-    if (!hasOwnProperty(TaxonomicUnitWrapper, 'taxonomicUnitsFromNodeLabelCache')) {
-      TaxonomicUnitWrapper.taxonomicUnitsFromNodeLabelCache = {};
-    }
-
-    if (hasOwnProperty(TaxonomicUnitWrapper.taxonomicUnitsFromNodeLabelCache, nodeLabel)) {
-      return TaxonomicUnitWrapper.taxonomicUnitsFromNodeLabelCache[nodeLabel];
+    if (phyxCacheManager.has('TaxonomicUnitWrapper.taxonomicUnitsFromNodeLabelCache', nodeLabel)) {
+      return phyxCacheManager.get('TaxonomicUnitWrapper.taxonomicUnitsFromNodeLabelCache', nodeLabel);
     }
 
     // Check if the label starts with a binomial name.
@@ -391,7 +429,7 @@ class TaxonomicUnitWrapper {
     }
 
     // Record in the cache
-    TaxonomicUnitWrapper.taxonomicUnitsFromNodeLabelCache[nodeLabel] = tunits;
+    phyxCacheManager.put('TaxonomicUnitWrapper.taxonomicUnitsFromNodeLabelCache', nodeLabel, tunits);
 
     return tunits;
   }
@@ -811,4 +849,5 @@ module.exports = {
   TaxonomicUnitMatcher,
   PhylogenyWrapper,
   PhylorefWrapper,
+  phyxCacheManager,
 };

@@ -113,5 +113,17 @@ describe('TaxonomicUnitWrapper', function () {
         }],
       }]);
     });
+    it('should update the cache manager as it works', function () {
+      assert.deepEqual(phyx.TaxonomicUnitWrapper.getTaxonomicUnitsFromNodeLabel('Rana_luteiventris_MVZ_225749'), [{
+        scientificNames: [{
+          scientificName: 'Rana luteiventris MVZ_225749',
+          genus: 'Rana',
+          specificEpithet: 'luteiventris',
+          binomialName: 'Rana luteiventris',
+        }],
+      }]);
+      assert.isNotEmpty(phyx.phyxCacheManager.caches);
+      assert.isNotEmpty(phyx.phyxCacheManager.caches['TaxonomicUnitWrapper.taxonomicUnitsFromNodeLabelCache']);
+    });
   });
 });
