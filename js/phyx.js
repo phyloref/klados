@@ -842,12 +842,14 @@ class PhylorefWrapper {
 }
 
 /* Exports */
-module.exports = {
-  ScientificNameWrapper,
-  SpecimenWrapper,
-  TaxonomicUnitWrapper,
-  TaxonomicUnitMatcher,
-  PhylogenyWrapper,
-  PhylorefWrapper,
-  phyxCacheManager,
-};
+if (!hasOwnProperty(this, 'window')) {
+  module.exports = {
+    ScientificNameWrapper,
+    SpecimenWrapper,
+    TaxonomicUnitWrapper,
+    TaxonomicUnitMatcher,
+    PhylogenyWrapper,
+    PhylorefWrapper,
+    phyxCacheManager,
+  };
+}
