@@ -471,9 +471,9 @@ class TaxonomicUnitMatcher {
   match() {
     // Try to match the two taxonomic units using a number of matching methods.
     if (
-      this.matchByBinomialName(this.tunit1, this.tunit2) ||
-      this.matchByExternalReferences(this.tunit1, this.tunit2) ||
-      this.matchBySpecimenIdentifier(this.tunit1, this.tunit2)
+      this.matchByBinomialName() ||
+      this.matchByExternalReferences() ||
+      this.matchBySpecimenIdentifier()
     ) {
       this.matched = true;
     } else {
@@ -482,15 +482,15 @@ class TaxonomicUnitMatcher {
     }
   }
 
-  matchByBinomialName(tunit1, tunit2) {
+  matchByBinomialName() {
     // Try to match by binomial name, and return true if it could be matched.
 
     // Do both TUnits have scientificNames?
-    if (!hasOwnProperty(tunit1, 'scientificNames') || !hasOwnProperty(tunit2, 'scientificNames')) return false;
+    if (!hasOwnProperty(this.tunit1, 'scientificNames') || !hasOwnProperty(this.tunit2, 'scientificNames')) return false;
 
-    return tunit1.scientificNames.some((scname1) => {
+    return this.tunit1.scientificNames.some((scname1) => {
       const scname1wrapped = new ScientificNameWrapper(scname1);
-      return tunit2.scientificNames.some((scname2) => {
+      return this.tunit2.scientificNames.some((scname2) => {
         const scname2wrapped = new ScientificNameWrapper(scname2);
 
         const result = scname1wrapped.binomialName !== undefined &&
@@ -499,7 +499,7 @@ class TaxonomicUnitMatcher {
           scname1wrapped.binomialName.trim() === scname2wrapped.binomialName.trim();
 
         if (result) {
-          this.matchResult = `Scientific name '${scname1wrapped.scientificName}' and scientific name '${scname2wrapped.scientificName}' share the same binomial name`;
+          this.matchReason = `Scientific name '${scname1wrapped.scientificName}' and scientific name '${scname2wrapped.scientificName}' share the same binomial name`;
         }
 
         return result;
@@ -507,14 +507,14 @@ class TaxonomicUnitMatcher {
     });
   }
 
-  matchByExternalReferences(tunit1, tunit2) {
+  matchByExternalReferences() {
     // Try to match by external references.
 
-    if (hasOwnProperty(tunit1, 'externalReferences') && hasOwnProperty(tunit2, 'externalReferences')) {
+    if (hasOwnProperty(this.tunit1, 'externalReferences') && hasOwnProperty(this.tunit2, 'externalReferences')) {
       // Each external reference is a URL as a string. We will lowercase it,
       // but do no other transformation.
-      return tunit1.externalReferences.some(extref1 =>
-        tunit2.externalReferences.some((extref2) => {
+      return this.tunit1.externalReferences.some(extref1 =>
+        this.tunit2.externalReferences.some((extref2) => {
           const result = (
             // Make sure that the external reference isn't blank
             extref1.trim() !== '' &&
@@ -524,7 +524,7 @@ class TaxonomicUnitMatcher {
           );
 
           if (result) {
-            this.matchResult = `External reference '${extref1}' is shared by taxonomic unit ${tunit1} and ${tunit2}`;
+            this.matchReason = `External reference '${extref1}' is shared by taxonomic unit ${this.tunit1} and ${this.tunit2}`;
           }
 
           return result;
@@ -534,20 +534,20 @@ class TaxonomicUnitMatcher {
     return false;
   }
 
-  matchBySpecimenIdentifier(tunit1, tunit2) {
+  matchBySpecimenIdentifier() {
     // Try to match by specimen identifier (i.e. occurrence ID).
 
-    if (hasOwnProperty(tunit1, 'includesSpecimens') && hasOwnProperty(tunit2, 'includesSpecimens')) {
+    if (hasOwnProperty(this.tunit1, 'includesSpecimens') && hasOwnProperty(this.tunit2, 'includesSpecimens')) {
       // Convert specimen identifiers (if present) into a standard format and compare those.
-      return tunit1.includesSpecimens.some((specimen1) => {
+      return this.tunit1.includesSpecimens.some((specimen1) => {
         const specimenURN1 = new SpecimenWrapper(specimen1).occurrenceID;
-        return tunit2.includesSpecimens.some((specimen2) => {
+        return this.tunit2.includesSpecimens.some((specimen2) => {
           const specimenURN2 = new SpecimenWrapper(specimen2).occurrenceID;
 
           const result = (specimenURN1 === specimenURN2);
 
           if (result) {
-            this.matchResult = `Specimen identifier '${specimenURN1}' is shared by taxonomic units`;
+            this.matchReason = `Specimen identifier '${specimenURN1}' is shared by taxonomic units`;
           }
 
           return result;

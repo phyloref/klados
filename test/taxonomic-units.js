@@ -127,3 +127,56 @@ describe('TaxonomicUnitWrapper', function () {
     });
   });
 });
+
+// To test matching, let's set up some taxonomic units.
+const tunit1 = { scientificNames: [{ scientificName: 'Rana luteiventris' }] };
+const tunit2 = {
+  scientificNames: [{ scientificName: 'Rana luteiventris MVZ225749' }],
+  includesSpecimens: [{ occurrenceID: 'urn:catalog:::MVZ225749' }],
+};
+const tunit3 = {
+  includesSpecimens: [{ catalogNumber: 'MVZ225749' }],
+  externalReferences: ['http://arctos.database.museum/guid/MVZ:Herp:225749'],
+};
+const tunit4 = {
+  externalReferences: ['http://arctos.database.museum/guid/MVZ:Herp:225749'],
+};
+
+describe('TaxonomicUnitMarcher', function () {
+  describe('#matchByBinomialName', function () {
+    it('should match by binomial name', function () {
+      assert.isNotOk(new phyx.TaxonomicUnitMatcher(tunit1, tunit2).matchByExternalReferences());
+      assert.isNotOk(new phyx.TaxonomicUnitMatcher(tunit1, tunit2).matchBySpecimenIdentifier());
+      assert.isOk(new phyx.TaxonomicUnitMatcher(tunit1, tunit2).matchByBinomialName());
+
+      const matcher = new phyx.TaxonomicUnitMatcher(tunit1, tunit2);
+      assert.isOk(matcher.matched);
+      assert.isDefined(matcher.matchReason);
+      assert.include(matcher.matchReason, 'share the same binomial name');
+    });
+  });
+  describe('#matchByExternalReferences', function () {
+    it('should match by external references', function () {
+      assert.isOk(new phyx.TaxonomicUnitMatcher(tunit3, tunit4).matchByExternalReferences());
+      assert.isNotOk(new phyx.TaxonomicUnitMatcher(tunit3, tunit4).matchBySpecimenIdentifier());
+      assert.isNotOk(new phyx.TaxonomicUnitMatcher(tunit3, tunit4).matchByBinomialName());
+
+      const matcher = new phyx.TaxonomicUnitMatcher(tunit3, tunit4);
+      assert.isOk(matcher.matched);
+      assert.isDefined(matcher.matchReason);
+      assert.include(matcher.matchReason, 'External reference');
+    });
+  });
+  describe('#matchBySpecimenIdentifier', function () {
+    it('should match by specimen identifiers', function () {
+      assert.isNotOk(new phyx.TaxonomicUnitMatcher(tunit2, tunit3).matchByExternalReferences());
+      assert.isOk(new phyx.TaxonomicUnitMatcher(tunit2, tunit3).matchBySpecimenIdentifier());
+      assert.isNotOk(new phyx.TaxonomicUnitMatcher(tunit2, tunit3).matchByBinomialName());
+
+      const matcher = new phyx.TaxonomicUnitMatcher(tunit2, tunit3);
+      assert.isOk(matcher.matched);
+      assert.isDefined(matcher.matchReason);
+      assert.include(matcher.matchReason, 'Specimen identifier');
+    });
+  });
+});
