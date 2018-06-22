@@ -16,7 +16,6 @@
                         {
                             "includesSpecimens": [
                                 {
-                                    "catalogNumber": "Mishler 7/24/98 (5)",
                                     "occurrenceID": "urn:catalog:::Mishler 7/24/98 (5)"
                                 }
                             ]
@@ -24,10 +23,7 @@
                         {
                             "scientificNames": [
                                 {
-                                    "scientificName": "Arthrocormus schimperi",
-                                    "genus": "Arthrocormus",
-                                    "specificEpithet": "schimperi",
-                                    "binomialName": "Arthrocormus schimperi"
+                                    "scientificName": "Arthrocormus schimperi"
                                 }
                             ]
                         }
@@ -41,7 +37,6 @@
                         {
                             "includesSpecimens": [
                                 {
-                                    "catalogNumber": "Wall 2527, Fiji (uc)",
                                     "occurrenceID": "urn:catalog:::Wall 2527, Fiji (uc)"
                                 }
                             ],
@@ -50,10 +45,7 @@
                         {
                             "scientificNames": [
                                 {
-                                    "scientificName": "Exodictyon sp",
-                                    "genus": "Exodictyon",
-                                    "specificEpithet": "sp",
-                                    "binomialName": "Exodictyon "
+                                    "scientificName": "Exodictyon sp"
                                 }
                             ]
                         }
@@ -65,7 +57,6 @@
                         {
                             "includesSpecimens": [
                                 {
-                                    "catalogNumber": "Mishler 7/24/98(3)",
                                     "occurrenceID": "urn:catalog:::Mishler 7/24/98(3)"
                                 }
                             ],
@@ -74,7 +65,6 @@
                         {
                             "includesSpecimens": [
                                 {
-                                    "catalogNumber": "Mishler 7/26/98(1)",
                                     "occurrenceID": "urn:catalog:::Mishler 7/26/98(1)"
                                 }
                             ]
@@ -82,10 +72,7 @@
                         {
                             "scientificNames": [
                                 {
-                                    "scientificName": "Exostratum blumii",
-                                    "genus": "Exostratum",
-                                    "specificEpithet": "blumii",
-                                    "binomialName": "Exostratum blumii"
+                                    "scientificName": "Exostratum blumii"
                                 }
                             ]
                         }
@@ -97,7 +84,6 @@
                         {
                             "includesSpecimens": [
                                 {
-                                    "catalogNumber": "Mishler 7/24/98(3)",
                                     "occurrenceID": "urn:catalog:::Mishler 7/24/98(3)"
                                 }
                             ],
@@ -106,7 +92,6 @@
                         {
                             "includesSpecimens": [
                                 {
-                                    "catalogNumber": "Mishler 7/26/98(1)",
                                     "occurrenceID": "urn:catalog:::Mishler 7/26/98(1)"
                                 }
                             ]
@@ -114,10 +99,7 @@
                         {
                             "scientificNames": [
                                 {
-                                    "scientificName": "Exostratum blumii",
-                                    "genus": "Exostratum",
-                                    "specificEpithet": "blumii",
-                                    "binomialName": "Exostratum blumii"
+                                    "scientificName": "Exostratum blumii"
                                 }
                             ]
                         }
@@ -551,8 +533,6 @@
                         {
                             "includesSpecimens": [
                                 {
-                                    "label": "Mishler 7/24/98 (5) Queensland, Australia (UC)",
-                                    "catalogNumber": "Mishler 7/24/98 (5)",
                                     "occurrenceID": "urn:catalog:::Mishler 7/24/98 (5)"
                                 }
                             ]
@@ -567,10 +547,7 @@
                         {
                             "scientificNames": [
                                 {
-                                    "scientificName": "Exostratum blumii (Nees ex Hampe) L. Ellis, Lindbergia 11: 22. (1985)",
-                                    "binomialName": "Exostratum blumii",
-                                    "specificEpithet": "blumii",
-                                    "genus": "Exostratum"
+                                    "scientificName": "Exostratum blumii (Nees ex Hampe) L. Ellis, Lindbergia 11: 22. (1985)"
                                 }
                             ]
                         }
@@ -603,8 +580,6 @@
                         {
                             "includesSpecimens": [
                                 {
-                                    "label": "Mishler 7/24/98(3), Queensland, Australia (uc)",
-                                    "catalogNumber": "Mishler 7/24/98(3)",
                                     "occurrenceID": "urn:catalog:::Mishler 7/24/98(3)"
                                 }
                             ]
@@ -619,10 +594,7 @@
                         {
                             "scientificNames": [
                                 {
-                                    "scientificName": "Arthrocormus schimperi (Dozy & Molk.) Dozy & Molk. (= Mielichhoferia schimperi Dozy & Molk.), Musci Frond. Ined. Archip. Ind. 75. (1846)",
-                                    "binomialName": "Arthrocormus schimperi",
-                                    "specificEpithet": "schimperi",
-                                    "genus": "Arthrocormus"
+                                    "scientificName": "Arthrocormus schimperi (Dozy & Molk.) Dozy & Molk. (= Mielichhoferia schimperi Dozy & Molk.), Musci Frond. Ined. Archip. Ind. 75. (1846)"
                                 }
                             ]
                         }
@@ -661,8 +633,6 @@
                         {
                             "includesSpecimens": [
                                 {
-                                    "label": "Wall 2527, Fiji (UC)",
-                                    "catalogNumber": "Wall 2527",
                                     "occurrenceID": "urn:catalog:::Wall 2527, Fiji (uc)"
                                 }
                             ]
@@ -677,10 +647,7 @@
                         {
                             "scientificNames": [
                                 {
-                                    "scientificName": "Leucophanes octoblepharoides Brid., Bryol. Univ. 1: 763. (1826)",
-                                    "binomialName": "Leucophanes octoblepharoides",
-                                    "specificEpithet": "octoblepharoides",
-                                    "genus": "Leucophanes"
+                                    "scientificName": "Leucophanes octoblepharoides Brid., Bryol. Univ. 1: 763. (1826)"
                                 }
                             ]
                         }
@@ -721,13 +688,12 @@
             ],
             "externalSpecifiers": [
                 {
-                    "verbatimSpecifier": "Wall 2527, Fiji (UC)",
+                    "verbatimSpecifier": "Wall 2527, Fiji (uc)",
                     "referencesTaxonomicUnits": [
                         {
                             "includesSpecimens": [
                                 {
-                                    "label": "Wall 2527, Fiji (UC)",
-                                    "catalogNumber": "Wall 2527"
+                                    "occurrenceID": "urn:catalog:::Wall 2527, Fiji (uc)"
                                 }
                             ]
                         }
