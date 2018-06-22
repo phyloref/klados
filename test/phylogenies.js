@@ -8,7 +8,9 @@
 // needs to add additional objects to it) and phyx (which needs to call it).
 global.d3 = require('d3');
 
-global.d3.layout = {};
+if (!Object.prototype.hasOwnProperty.call(global.d3, 'layout')) {
+  global.d3.layout = {};
+}
 require('../lib/phylotree.js/phylotree.js');
 
 const chai = require('chai');
