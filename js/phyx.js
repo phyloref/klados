@@ -321,13 +321,6 @@ class TaxonomicUnitWrapper {
     if (hasOwnProperty(this.tunit, 'label')) return this.tunit.label;
     if (hasOwnProperty(this.tunit, 'description')) return this.tunit.description;
 
-    // Any scientific names?
-    if (hasOwnProperty(this.tunit, 'scientificNames')) {
-      this.tunit.scientificNames.forEach((scname) => {
-        labels.push(new ScientificNameWrapper(scname).label);
-      });
-    }
-
     // Any specimens?
     if (hasOwnProperty(this.tunit, 'includesSpecimens')) {
       this.tunit.includesSpecimens.forEach((specimen) => {
@@ -340,10 +333,30 @@ class TaxonomicUnitWrapper {
       this.tunit.externalReferences.forEach(externalRef => labels.push(`<${externalRef}>`));
     }
 
-    // If we don't have any properties of a taxonomic unit, return a default label.
-    if (labels.length === 0) return 'Unnamed taxonomic unit';
+    // Any scientific names?
+    if (hasOwnProperty(this.tunit, 'scientificNames')) {
+      this.tunit.scientificNames.forEach((scname) => {
+        labels.push(new ScientificNameWrapper(scname).label);
+      });
+    }
 
-    return labels.join(', ');
+    // If we don't have any properties of a taxonomic unit, return undefined.
+    if (labels.length === 0) return undefined;
+
+    return labels.join(' or ');
+  }
+
+  // Access variables in the underlying wrapped taxonomic unit.
+  get scientificNames() {
+    return this.tunit.scientificNames;
+  }
+
+  get includeSpecimens() {
+    return this.tunit.includesSpecimens;
+  }
+
+  get externalReferences() {
+    return this.tunit.externalReferences;
   }
 
   static getTaxonomicUnitsFromNodeLabel(nodeLabel) {
