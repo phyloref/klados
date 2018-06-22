@@ -178,7 +178,7 @@
                         <div class="input-group">
                             <input v-model.lazy="phylogeny['description']" type="text" class="form-control" placeholder="Enter a description for this phylogeny, including links">
                             <span class="input-group-btn">
-                                <button class="btn btn-default" type="button"  @click="phylogenyDescriptionBeingEdited = undefined">Done editing</button>
+                                <button class="btn btn-default" type="button" @click="phylogenyDescriptionBeingEdited = undefined">Done editing</button>
                             </span>
                         </div>
                     </template>
@@ -295,9 +295,9 @@
                                                         v-if="hasProperty(selectedTUnit, 'scientificNames')"
                                                         v-for="(scname, scnameIndex) of selectedTUnit.scientificNames">
                                                         <span class="input-group-btn">
-                                                            <button class="btn btn-danger" @click="selectedTUnit.scientificNames.splice(scnameIndex, 1)"><span class="glyphicon glyphicon-remove"></span></button>
+                                                            <button type="button" class="btn btn-danger" @click="selectedTUnit.scientificNames.splice(scnameIndex, 1)"><span class="glyphicon glyphicon-remove"></span></button>
                                                         </span>
-                                                        <input type="text" class="form-control" v-model:lazy="scname.scientificName">
+                                                        <input type="text" class="form-control" v-model.lazy="scname.scientificName">
                                                         <div class="input-group-btn">
                                                             <button type="button"
                                                                 class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
@@ -313,7 +313,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="panel-footer">
-                                                    <button class="btn btn-default"
+                                                    <button type="button" class="btn btn-default"
                                                         @click="createOrAppend(selectedTUnit, 'scientificNames', {'scientificName': ''})"
                                                         >Add a new scientific name</button>
                                                 </div>
@@ -333,18 +333,19 @@
                                                         v-if="hasProperty(selectedTUnit, 'externalReferences')"
                                                         v-for="(externalRef, externalRefIndex) of selectedTUnit.externalReferences">
                                                         <div class="input-group-btn">
-                                                            <button class="btn btn-danger" @click="selectedTUnit.externalReferences.splice(externalRefIndex, 1)"
+                                                            <button type="button" class="btn btn-danger" @click="selectedTUnit.externalReferences.splice(externalRefIndex, 1)"
                                                                 ><span class="glyphicon glyphicon-remove"></span></button>
                                                         </div>
-                                                        <input type="url" class="form-control" v-model:lazy="selectedTUnit.externalReferences[externalRefIndex]">
+                                                        <input type="url" class="form-control" v-model.lazy="selectedTUnit.externalReferences[externalRefIndex]">
                                                         <div class="input-group-btn">
-                                                            <button class="btn btn-primary" @click="openURL(externalRef)">Go to URL</button>
+                                                            <button type="button" class="btn btn-primary" @click="openURL(externalRef)">Go to URL</button>
                                                         </div>
                                                     </div>
 
                                                 </div>
                                                 <div class="panel-footer">
                                                     <button
+                                                        type="button"
                                                         class="btn btn-default"
                                                         style="width: 100%"
                                                         href="#specifier-modal"
@@ -366,9 +367,9 @@
                                                         v-if="hasProperty(selectedTUnit, 'includesSpecimens')"
                                                         v-for="(specimen, specimenIndex) of selectedTUnit.includesSpecimens">
                                                         <span class="input-group-btn">
-                                                            <button class="btn btn-danger" @click="selectedTUnit.includesSpecimens.splice(scnameIndex, 1)"><span class="glyphicon glyphicon-remove"></span></button>
+                                                            <button type="button" class="btn btn-danger" @click="selectedTUnit.includesSpecimens.splice(scnameIndex, 1)"><span class="glyphicon glyphicon-remove"></span></button>
                                                         </span>
-                                                        <input type="text" class="form-control" v-model:lazy="specimen.occurrenceID">
+                                                        <input type="text" class="form-control" v-model.lazy="specimen.occurrenceID">
                                                         <div class="input-group-btn">
                                                             <button type="button"
                                                                 class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
@@ -384,7 +385,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="panel-footer">
-                                                    <button class="btn btn-default"
+                                                    <button type="button" class="btn btn-default"
                                                         @click="createOrAppend(selectedTUnit, 'includesSpecimens', {'occurrenceID': ''})"
                                                         >Add a new specimen</button>
                                                 </div>
@@ -436,7 +437,7 @@
                         <div class="input-group col-md-9">
                             <textarea
                                 id="definition"
-                                v-model="selectedPhyloref.cladeDefinition"
+                                v-model.lazy="selectedPhyloref.cladeDefinition"
                                 class="form-control"
                                 rows="6"
                                 placeholder="Phylogenetic clade definition"
@@ -448,7 +449,7 @@
                         <div class="input-group col-md-9">
                             <textarea
                                 id="curator-comments"
-                                v-model="selectedPhyloref['curatorComments']"
+                                v-model.lazy="selectedPhyloref.curatorComments"
                                 class="form-control"
                                 rows="2"
                                 placeholder="Curator notes relating to this phyloreference"
@@ -617,17 +618,53 @@
                             href="#selected-phyloref"
                             class="btn btn-default"
                             @click="changeSelectedPhyloref(-1)"
-                            >Previous phyloreference</a>
+                            >Previous</a>
+                        <div class="btn-group" role="group">
+                            <button
+                                id="phyloref-status"
+                                type="button"
+                                class="btn btn-primary dropdown-toggle"
+                                data-toggle="dropdown"
+                                aria-haspopup="true"
+                                aria-expanded="false">
+                                Status: {{ getPhylorefStatus(selectedPhyloref).statusInEnglish }} <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                              <li><a href="#selected-phyloref" @click="setPhylorefStatus(selectedPhyloref, 'pso:draft')">Draft</a></li>
+                              <li><a href="#selected-phyloref" @click="setPhylorefStatus(selectedPhyloref, 'pso:final-draft')">Final draft</a></li>
+                              <li><a href="#selected-phyloref" @click="setPhylorefStatus(selectedPhyloref, 'pso:under-review')">Under review</a></li>
+                              <li><a href="#selected-phyloref" @click="setPhylorefStatus(selectedPhyloref, 'pso:submitted')">Tested</a></li>
+                              <li><a href="#selected-phyloref" @click="setPhylorefStatus(selectedPhyloref, 'pso:published')">Published</a></li>
+                              <li><a href="#selected-phyloref" @click="setPhylorefStatus(selectedPhyloref, 'pso:retracted-from-publication')">Retracted</a></li>
+                            </ul>
+                        </div>
+                        <div class="btn-group" role="group">
+                            <button
+                                id="phyloref-status-changes"
+                                type="button"
+                                class="btn btn-default dropdown-toggle"
+                                data-toggle="dropdown"
+                                aria-haspopup="true"
+                                aria-expanded="false">
+                                {{ getPhylorefStatusChanges(selectedPhyloref).length }} changes <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                              <li><a href="#selected-phyloref" v-for="statusChange of getPhylorefStatusChanges(selectedPhyloref)">
+                                {{ statusChange.statusInEnglish }}
+                                <div style="font-size: 70%" v-if="hasProperty(statusChange, 'intervalStartAsCalendar')">{{ statusChange.intervalStartAsCalendar }}</div>
+                              </a></li>
+                            </ul>
+                        </div>
                         <a
                             href="#selected-phyloref"
                             class="btn btn-danger"
                             onclick="if(window.confirm('Are you sure you want to delete this phyloreference?')) { vm.testcase.phylorefs.splice(vm.testcase.phylorefs.indexOf(vm.selectedPhyloref), 1); vm.selectedPhyloref = undefined; }"
-                            >Delete phyloreference</a>
+                            >Delete</a>
                         <a
                             href="#selected-phyloref"
                             class="btn btn-default"
                             @click="changeSelectedPhyloref(+1)"
-                            >Next phyloreference</a>
+                            >Next</a>
                     </div>
                 </div>
 
@@ -666,9 +703,12 @@
     ></script>
 
     <!-- Phylotree -->
-    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
     <script src="./lib/phylotree.js/phylotree.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js" charset="utf-8"></script>
+
+    <!-- Moment: for datetime calculations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
 
     <!-- Our source code -->
     <script src="./js/phyx.js"></script>
