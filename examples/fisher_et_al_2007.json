@@ -119,10 +119,7 @@
                         {
                             "scientificNames": [
                                 {
-                                    "scientificName": "Syrrhopodon gardneri (Hook.) Schwägr., Sp. Musc. Frond. Suppl. 2(1): 110, tab. 131, figs. 1-13 (1824)",
-                                    "binomialName": "Syrrhopodon gardneri",
-                                    "specificEpithet": "gardneri",
-                                    "genus": "Syrrhopodon"
+                                    "scientificName": "Syrrhopodon gardneri (Hook.) Schwägr., Sp. Musc. Frond. Suppl. 2(1): 110, tab. 131, figs. 1-13 (1824)"
                                 }
                             ]
                         }
@@ -134,10 +131,7 @@
                         {
                             "scientificNames": [
                                 {
-                                    "scientificName": "Leucophanes octoblepharoides Brid., Bryol. Univ. 1: 763. (1826)",
-                                    "binomialName": "Leucophanes octoblepharoides",
-                                    "specificEpithet": "octoblepharoides",
-                                    "genus": "Leucophanes"
+                                    "scientificName": "Leucophanes octoblepharoides Brid., Bryol. Univ. 1: 763. (1826)"
                                 }
                             ]
                         }
@@ -151,10 +145,7 @@
                         {
                             "scientificNames": [
                                 {
-                                    "scientificName": "Octoblepharum albidum Hedw., Sp. Musc. 50. (1801)",
-                                    "binomialName": "Octoblepharum albidum",
-                                    "specificEpithet": "albidum",
-                                    "genus": "Octoblepharum"
+                                    "scientificName": "Octoblepharum albidum Hedw., Sp. Musc. 50. (1801)"
                                 }
                             ]
                         }
@@ -172,8 +163,7 @@
                         {
                             "scientificNames": [
                                 {
-                                    "scientificName": "Calymperes lonchophyllum Schwägr., Tab. Exhib. Calyptr. Opercul. (3). 1814 (1813).",
-                                    "binomialName": "Calymperes lonchophyllum"
+                                    "scientificName": "Calymperes lonchophyllum Schwägr., Tab. Exhib. Calyptr. Opercul. (3). 1814 (1813)."
                                 }
                             ]
                         }
@@ -185,8 +175,7 @@
                         {
                             "scientificNames": [
                                 {
-                                    "scientificName": "Syrrhopodon mauritianus Müll. Hal. ex Ångstr., Öfv. Förh. Kongl. Svenska Vet.-Akad. 33(4): 54. (1876)",
-                                    "binomialName": "Syrrhopodon mauritianus"
+                                    "scientificName": "Syrrhopodon mauritianus Müll. Hal. ex Ångstr., Öfv. Förh. Kongl. Svenska Vet.-Akad. 33(4): 54. (1876)"
                                 }
                             ]
                         }
@@ -200,8 +189,7 @@
                         {
                             "scientificNames": [
                                 {
-                                    "scientificName": "Syrrhopodon croceus Mitt., J. Proc. Linn. Soc., Bot. Suppl. 1: 41. (1859)",
-                                    "binomialName": "Syrrhopodon croceus"
+                                    "scientificName": "Syrrhopodon croceus Mitt., J. Proc. Linn. Soc., Bot. Suppl. 1: 41. (1859)"
                                 }
                             ]
                         }
@@ -219,10 +207,7 @@
                         {
                             "scientificNames": [
                                 {
-                                    "scientificName": "Syrrhopodon croceus Mitt., J. Proc. Linn. Soc., Bot. Suppl. 1: 41. (1859)",
-                                    "binomialName": "Syrrhopodon croceus",
-                                    "specificEpithet": "croceus",
-                                    "genus": "Syrrhopodon"
+                                    "scientificName": "Syrrhopodon croceus Mitt., J. Proc. Linn. Soc., Bot. Suppl. 1: 41. (1859)"
                                 }
                             ]
                         }
@@ -234,10 +219,7 @@
                         {
                             "scientificNames": [
                                 {
-                                    "scientificName": "Leucophanes octoblepharoides Brid., Bryol. Univ. 1: 763. (1826)",
-                                    "binomialName": "Leucophanes octoblepharoides",
-                                    "specificEpithet": "octoblepharoides",
-                                    "genus": "Leucophanes"
+                                    "scientificName": "Leucophanes octoblepharoides Brid., Bryol. Univ. 1: 763. (1826)"
                                 }
                             ]
                         }
@@ -251,10 +233,7 @@
                         {
                             "scientificNames": [
                                 {
-                                    "scientificName": "Syrrhopodon mauritianus Müll. Hal. ex Ångstr., Öfv. Förh. Kongl. Svenska Vet.-Akad. 33(4): 54. (1876)",
-                                    "binomialName": "Syrrhopodon mauritianus",
-                                    "specificEpithet": "mauritianus",
-                                    "genus": "Syrrhopodon"
+                                    "scientificName": "Syrrhopodon mauritianus Müll. Hal. ex Ångstr., Öfv. Förh. Kongl. Svenska Vet.-Akad. 33(4): 54. (1876)"
                                 }
                             ]
                         }
@@ -272,16 +251,10 @@
                         {
                             "scientificNames": [
                                 {
-                                    "scientificName": "Syrrhopodon fasciculatum Hook. & Grev., Edinb. J. Sci. 3: 225. (1825)",
-                                    "binomialName": "Syrrhopodon fasciculatum",
-                                    "specificEpithet": "fasciculatum",
-                                    "genus": "Syrrhopodon"
+                                    "scientificName": "Syrrhopodon fasciculatum Hook. & Grev., Edinb. J. Sci. 3: 225. (1825)"
                                 },
                                 {
-                                    "scientificName": "Mitthyridium fasciculatum",
-                                    "genus": "Mitthyridium",
-                                    "specificEpithet": "fasciculatum",
-                                    "binomialName": "Mitthyridium fasciculatum"
+                                    "scientificName": "Mitthyridium fasciculatum"
                                 }
                             ]
                         }
@@ -293,16 +266,10 @@
                         {
                             "scientificNames": [
                                 {
-                                    "scientificName": "Codonoblepharum undulatum Dozy & Molk., Ann. Sci. Nat., Bot., III, 2: 301. (1844)",
-                                    "binomialName": "Codonoblepharum undulatum",
-                                    "specificEpithet": "undulatum",
-                                    "genus": "Codonoblepharum"
+                                    "scientificName": "Codonoblepharum undulatum Dozy & Molk., Ann. Sci. Nat., Bot., III, 2: 301. (1844)"
                                 },
                                 {
-                                    "scientificName": "Mitthyridium undulatum",
-                                    "genus": "Mitthyridium",
-                                    "specificEpithet": "undulatum",
-                                    "binomialName": "Mitthyridium undulatum"
+                                    "scientificName": "Mitthyridium undulatum"
                                 }
                             ]
                         }
@@ -316,10 +283,7 @@
                         {
                             "scientificNames": [
                                 {
-                                    "scientificName": "Syrrhopodon croceus Mitt., J. Proc. Linn. Soc., Bot. Suppl. 1: 41. (1859)",
-                                    "binomialName": "Syrrhopodon croceus",
-                                    "specificEpithet": "croceus",
-                                    "genus": "Syrrhopodon"
+                                    "scientificName": "Syrrhopodon croceus Mitt., J. Proc. Linn. Soc., Bot. Suppl. 1: 41. (1859)"
                                 }
                             ]
                         }
@@ -337,16 +301,10 @@
                         {
                             "scientificNames": [
                                 {
-                                    "scientificName": "Weissia ciliata Hook., Musci Exot. 2: 7. 171. (1820)",
-                                    "binomialName": "Weissia ciliata",
-                                    "specificEpithet": "ciliata",
-                                    "genus": "Weissia"
+                                    "scientificName": "Weissia ciliata Hook., Musci Exot. 2: 7. 171. (1820)"
                                 },
                                 {
-                                    "scientificName": "Syrrhopodon ciliatus",
-                                    "genus": "Syrrhopodon",
-                                    "specificEpithet": "ciliatus",
-                                    "binomialName": "Syrrhopodon ciliatus"
+                                    "scientificName": "Syrrhopodon ciliatus"
                                 }
                             ]
                         }
@@ -358,10 +316,7 @@
                         {
                             "scientificNames": [
                                 {
-                                    "scientificName": "Syrrhopodon involutus Schwägr., Sp. Musc. Frond. Suppl. 2, 1(2): 117. pl. 132. (1824)",
-                                    "binomialName": "Syrrhopodon involutus",
-                                    "specificEpithet": "involutus",
-                                    "genus": "Syrrhopodon"
+                                    "scientificName": "Syrrhopodon involutus Schwägr., Sp. Musc. Frond. Suppl. 2, 1(2): 117. pl. 132. (1824)"
                                 }
                             ]
                         }
@@ -375,10 +330,7 @@
                         {
                             "scientificNames": [
                                 {
-                                    "scientificName": "Syrrhopodon perarmatus Broth. & Watts, J. & Proc. Roy. Soc. New South Wales 49: 133. (1915)",
-                                    "binomialName": "Syrrhopodon perarmatus",
-                                    "specificEpithet": "perarmatus",
-                                    "genus": "Syrrhopodon"
+                                    "scientificName": "Syrrhopodon perarmatus Broth. & Watts, J. & Proc. Roy. Soc. New South Wales 49: 133. (1915)"
                                 }
                             ]
                         }
@@ -396,10 +348,7 @@
                         {
                             "scientificNames": [
                                 {
-                                    "scientificName": "Syrrhopodon banksii Müll. Hal., Bot. Zeitung (Berlin) 16: 162. (1858)",
-                                    "binomialName": "Syrrhopodon banksii",
-                                    "specificEpithet": "banksii",
-                                    "genus": "Syrrhopodon"
+                                    "scientificName": "Syrrhopodon banksii Müll. Hal., Bot. Zeitung (Berlin) 16: 162. (1858)"
                                 }
                             ]
                         }
@@ -411,10 +360,7 @@
                         {
                             "scientificNames": [
                                 {
-                                    "scientificName": "Syrrhopodon involutus Schwägr., Sp. Musc. Frond. Suppl. 2, 1(2): 117. pl. 132. (1824)",
-                                    "binomialName": "Syrrhopodon involutus",
-                                    "specificEpithet": "involutus",
-                                    "genus": "Syrrhopodon"
+                                    "scientificName": "Syrrhopodon involutus Schwägr., Sp. Musc. Frond. Suppl. 2, 1(2): 117. pl. 132. (1824)"
                                 }
                             ]
                         }
@@ -427,10 +373,7 @@
                         {
                             "scientificNames": [
                                 {
-                                    "scientificName": "Syrrhopodon revolutus Dozy & Molk.",
-                                    "binomialName": "Syrrhopodon revolutus",
-                                    "specificEpithet": "revolutus",
-                                    "genus": "Syrrhopodon"
+                                    "scientificName": "Syrrhopodon revolutus Dozy & Molk."
                                 }
                             ]
                         }
@@ -444,10 +387,7 @@
                         {
                             "scientificNames": [
                                 {
-                                    "scientificName": "Syrrhopodon trachyphyllus Mont., Sylloge Gen. Sp. Cryptog. 47. (1856)",
-                                    "binomialName": "Syrrhopodon trachyphyllus",
-                                    "specificEpithet": "trachyphyllus",
-                                    "genus": "Syrrhopodon"
+                                    "scientificName": "Syrrhopodon trachyphyllus Mont., Sylloge Gen. Sp. Cryptog. 47. (1856)"
                                 }
                             ]
                         }
@@ -465,10 +405,7 @@
                         {
                             "scientificNames": [
                                 {
-                                    "scientificName": "Arthrocormus schimperi (Dozy & Molk.) Dozy & Molk. (=Mielichhoferia schimperi Dozy & Molk.), Musci Frond. Ined. Archip. Ind. 75. (1846)",
-                                    "binomialName": "Arthrocormus schimperi",
-                                    "specificEpithet": "schimperi",
-                                    "genus": "Arthrocormus"
+                                    "scientificName": "Arthrocormus schimperi (Dozy & Molk.) Dozy & Molk. (=Mielichhoferia schimperi Dozy & Molk.), Musci Frond. Ined. Archip. Ind. 75. (1846)"
                                 }
                             ]
                         }
@@ -480,10 +417,7 @@
                         {
                             "scientificNames": [
                                 {
-                                    "scientificName": "Leucophanes octoblepharoides Brid., Bryol. Univ. 1: 763. (1826)",
-                                    "binomialName": "Leucophanes octoblepharoides",
-                                    "specificEpithet": "octoblepharoides",
-                                    "genus": "Leucophanes"
+                                    "scientificName": "Leucophanes octoblepharoides Brid., Bryol. Univ. 1: 763. (1826)"
                                 }
                             ]
                         }
@@ -497,10 +431,7 @@
                         {
                             "scientificNames": [
                                 {
-                                    "scientificName": "Syrrhopodon muelleri (Dozy & Molk) Sande Lac., Bryol. Jav. 2: 224. (1870)",
-                                    "binomialName": "Syrrhopodon muelleri",
-                                    "specificEpithet": "muelleri",
-                                    "genus": "Syrrhopodon"
+                                    "scientificName": "Syrrhopodon muelleri (Dozy & Molk) Sande Lac., Bryol. Jav. 2: 224. (1870)"
                                 }
                             ]
                         }
@@ -518,10 +449,7 @@
                         {
                             "scientificNames": [
                                 {
-                                    "scientificName": "Arthrocormus schimperi (Dozy & Molk.) Dozy & Molk. (= Mielichhoferia schimperi Dozy & Molk.), Musci Frond. Ined. Archip. Ind. 75. (1846)",
-                                    "binomialName": "Arthrocormus schimperi",
-                                    "specificEpithet": "schimperi",
-                                    "genus": "Arthrocormus"
+                                    "scientificName": "Arthrocormus schimperi (Dozy & Molk.) Dozy & Molk. (= Mielichhoferia schimperi Dozy & Molk.), Musci Frond. Ined. Archip. Ind. 75. (1846)"
                                 }
                             ]
                         }
@@ -565,10 +493,7 @@
                         {
                             "scientificNames": [
                                 {
-                                    "scientificName": "Exostratum blumii (Nees ex Hampe) L. Ellis, Lindbergia 11: 22. (1985)",
-                                    "binomialName": "Exostratum blumii",
-                                    "specificEpithet": "blumii",
-                                    "genus": "Exostratum"
+                                    "scientificName": "Exostratum blumii (Nees ex Hampe) L. Ellis, Lindbergia 11: 22. (1985)"
                                 }
                             ]
                         }
@@ -612,16 +537,10 @@
                         {
                             "scientificNames": [
                                 {
-                                    "scientificName": "Exodictyon Cardot, Rev. Bryol. Lichénol. 26: 6. (1899), excl. parte, emend Ellis in Lindbergia 11: 16 (1985)",
-                                    "binomialName": "Exodictyon Cardot,",
-                                    "genus": "Exodictyon",
-                                    "specificEpithet": "Cardot,"
+                                    "scientificName": "Exodictyon Cardot, Rev. Bryol. Lichénol. 26: 6. (1899), excl. parte, emend Ellis in Lindbergia 11: 16 (1985)"
                                 },
                                 {
-                                    "scientificName": "Exodictyon sp",
-                                    "genus": "Exodictyon",
-                                    "specificEpithet": "sp",
-                                    "binomialName": "Exodictyon sp"
+                                    "scientificName": "Exodictyon sp"
                                 }
                             ]
                         }
@@ -665,8 +584,7 @@
                         {
                             "scientificNames": [
                                 {
-                                    "scientificName": "Leucophanes octoblepharoides Brid., Bryol. Univ. 1: 763. (1826)",
-                                    "binomialName": "Leucophanes octoblepharoides"
+                                    "scientificName": "Leucophanes octoblepharoides Brid., Bryol. Univ. 1: 763. (1826)"
                                 }
                             ]
                         }
@@ -678,8 +596,7 @@
                         {
                             "scientificNames": [
                                 {
-                                    "scientificName": "Leucophanes seychellarum Besch., Ann. Sci. Nat., Bot., VI, 9: 337. (1880)",
-                                    "binomialName": "Leucophanes seychellarum"
+                                    "scientificName": "Leucophanes seychellarum Besch., Ann. Sci. Nat., Bot., VI, 9: 337. (1880)"
                                 }
                             ]
                         }
