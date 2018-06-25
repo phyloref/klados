@@ -68,6 +68,10 @@
                 <div class="btn-group" role="group">
                     <button id="display-as-json-btn" type="button" class="btn btn-success" onclick="$('#display-as-json').toggle(300)">Display as JSON</button>
                 </div>
+
+                <div class="btn-group" role="group">
+                    <button id="download-as-jsonld-btn" type="button" class="btn btn-info" @click="downloadAsJSONLD()">Download as JSON-LD</button>
+                </div>
             </div>
         </div>
 
@@ -709,6 +713,9 @@
 
     <!-- Moment: for datetime calculations -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+
+    <!-- FileSaver.js: for saving generated files to the local hard drive -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.min.js"></script>
 
     <!-- Our source code -->
     <script src="./js/phyx.js"></script>

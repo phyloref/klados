@@ -10,6 +10,7 @@
 /* global _ */ // From http://underscorejs.org/
 /* global d3 */ // From https://d3js.org/
 /* global moment */ // From https://momentjs.com/
+/* global saveAs */ // From https://github.com/eligrey/FileSaver.js
 
 // These globals are from phyx.js. Eventually, we will replace this with
 // import/export.
@@ -343,6 +344,18 @@ const vm = new Vue({
       } catch (err) {
         throw new Error(`Error occurred while displaying new testcase: ${err}`);
       }
+    },
+
+    // Export functions.
+    downloadAsJSONLD() {
+      // This is a temporary function to help develop the JSON-LD production
+      // system -- eventually, we'll rename it to downloadAsJSON and make it
+      // export the PHYX file for download.
+      const content = ["{ 'hello': 'world' }"];
+
+      // Save to local hard drive.
+      const jsonldFile = new File(content, 'download.json', { type: 'application/json;charset=utf-8' });
+      saveAs(jsonldFile);
     },
 
     // User interface helper methods.
