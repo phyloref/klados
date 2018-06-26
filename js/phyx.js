@@ -580,34 +580,39 @@ class PhylogenyWrapper {
     this.phylogeny = phylogeny;
   }
 
-  static addNodeAndChildrenToNodeLabels(node, nodeLabels, nodeType = 'both') {
-    // Recurse into the children of this node and add labels into the list of
-    // nodeLabels as per the nodeType provided, which must be one of:
-    //  - 'internal': internal nodes only
-    //  - 'terminal': terminal nodes only
-    //  - 'both': both internal and terminal nodes
+  static recurseNodes(node, func, nodeCount = 0, parentCount = undefined) {
+    // Recurse through PhyloTree nodes, executing function on each node.
+    // Function is given two arguments:
+    //  - The current node
+    //  - The parent node (or undefined if not defined)
+    func(node, nodeCount, parentCount);
 
-    // console.log("Recursing into: " + JSON.stringify(node));
-
-    if (hasOwnProperty(node, 'name') && node.name !== '') {
-      const nodeHasChildren = hasOwnProperty(node, 'children') && node.children.length > 0;
-
-      // Only add the node label if it is on the type of node
-      // we're interested in.
-      if (
-        (nodeType === 'both') ||
-        (nodeType === 'internal' && nodeHasChildren) ||
-        (nodeType === 'terminal' && !nodeHasChildren)
-      ) {
-        nodeLabels.add(node.name);
-      }
-    }
+    let nextID = nodeCount + 1;
 
     // Recurse through all children of this node.
     if (hasOwnProperty(node, 'children')) {
-      node.children.forEach(child =>
-        PhylogenyWrapper.addNodeAndChildrenToNodeLabels(child, nodeLabels, nodeType));
+      node.children.forEach((child) => {
+        nextID = PhylogenyWrapper.recurseNodes(
+          child,
+          func,
+          nextID,
+          nodeCount,
+        );
+      });
     }
+
+    return nextID;
+  }
+
+  getTaxonomicUnits(nodeType = 'both') {
+    // Return a list of all taxonomic units in this phylogeny.
+    const nodeLabels = this.getNodeLabels(nodeType);
+    const tunits = new Set();
+
+    nodeLabels.forEach(nodeLabel =>
+      this.getTaxonomicUnitsForNodeLabel(nodeLabel).forEach(tunit => tunits.add(tunit)));
+
+    return tunits;
   }
 
   getNodeLabels(nodeType = 'both') {
@@ -631,7 +636,21 @@ class PhylogenyWrapper {
     const parsed = d3.layout.newick_parser(newick);
     if (hasOwnProperty(parsed, 'json')) {
       // Recurse away!
-      PhylogenyWrapper.addNodeAndChildrenToNodeLabels(parsed.json, nodeLabels, nodeType);
+      PhylogenyWrapper.recurseNodes(parsed.json, (node) => {
+        if (hasOwnProperty(node, 'name') && node.name !== '') {
+          const nodeHasChildren = hasOwnProperty(node, 'children') && node.children.length > 0;
+
+          // Only add the node label if it is on the type of node
+          // we're interested in.
+          if (
+            (nodeType === 'both') ||
+            (nodeType === 'internal' && nodeHasChildren) ||
+            (nodeType === 'terminal' && !nodeHasChildren)
+          ) {
+            nodeLabels.add(node.name);
+          }
+        }
+      });
     }
 
     return Array.from(nodeLabels);
@@ -680,6 +699,81 @@ class PhylogenyWrapper {
       return specifierTUnits.some(tunit1 =>
         nodeTUnits.some(tunit2 => new TaxonomicUnitMatcher(tunit1, tunit2).matched));
     });
+  }
+
+  getNodesAsJSONLD(baseURI) {
+    // Returns a list of all nodes in this phylogeny as a series of nodes.
+    // baseURI: The base URI to use for node elements (e.g. ':phylogeny1').
+
+    // List of nodes we have identified.
+    const nodes = [];
+
+    // We need to track the identifiers we give each node as we go.
+    const nodesById = {};
+    const nodeIdsByParentId = {};
+
+    // Extract the newick string.
+    const { newick = '()' } = this.phylogeny;
+
+    // Parse the Newick string; if parseable, recurse through the nodes,
+    // added them to the list of JSON-LD nodes as we go.
+    const parsed = d3.layout.newick_parser(newick);
+    if (hasOwnProperty(parsed, 'json')) {
+      PhylogenyWrapper.recurseNodes(parsed.json, (node, nodeCount, parentCount) => {
+        const nodeAsJSONLD = {};
+
+        // Set @id and @type.
+        const nodeURI = `${baseURI}_node${nodeCount}`;
+        nodeAsJSONLD['@id'] = nodeURI;
+        nodeAsJSONLD['@type'] = { '@id': 'http://purl.obolibrary.org/obo/CDAO_0000140' };
+
+        // Add label and taxonomic units.
+        if (hasOwnProperty(node, 'name') && node.name !== '') {
+          nodeAsJSONLD.labels = [node.name];
+          nodeAsJSONLD.representsTaxonomicUnits = this.getTaxonomicUnitsForNodeLabel(node.name);
+        }
+
+        // Add references to parents and siblings.
+        if (parentCount !== undefined) {
+          const parentURI = `${baseURI}_node${parentCount}`;
+          nodeAsJSONLD.parent = parentURI;
+
+          // Update list of nodes by parent IDs.
+          if (!hasOwnProperty(nodeIdsByParentId, parentURI)) {
+            nodeIdsByParentId[parentURI] = new Set();
+          }
+          nodeIdsByParentId[parentURI].add(nodeURI);
+        }
+
+        // Add nodeAsJSONLD to list
+        if (hasOwnProperty(nodesById, nodeURI)) {
+          throw new Error('Error in programming: duplicate node URI generated');
+        }
+        nodesById[nodeURI] = nodeAsJSONLD;
+        nodes.push(nodeAsJSONLD);
+      });
+    }
+
+    // Go through nodes again and set children and sibling relationships.
+    Object.keys(nodeIdsByParentId).forEach((parentId) => {
+      // What are the children of this parentId?
+      const childrenIDs = Array.from(nodeIdsByParentId[parentId]);
+      const children = childrenIDs.map(childId => nodesById[childId]);
+
+      // Is this the root node?
+      if (hasOwnProperty(nodesById, parentId)) {
+        const parent = nodesById[parentId];
+        parent.children = childrenIDs;
+      }
+
+      children.forEach((child) => {
+        const childToModify = child;
+        // Add all other sibling to node.siblings, but don't add this node itself!
+        childToModify.siblings = childrenIDs.filter(childId => childId !== child['@id']);
+      });
+    });
+
+    return nodes;
   }
 }
 
@@ -837,6 +931,62 @@ class PhylorefWrapper {
 
     // Return node labels sorted alphabetically.
     return Array.from(nodeLabels).sort();
+  }
+}
+
+/* PHYX file wrapper */
+
+// eslint-disable-next-line no-unused-vars
+class PHYXWrapper {
+  // Wraps an entire PHYX document.
+
+  constructor(phyx) {
+    // Wraps an entire PHYX document.
+    this.phyx = phyx;
+  }
+
+  asJSONLD() {
+    // Export this PHYX document as a JSON-LD document. This replicates what
+    // phyx2owl.py does in the Clade Ontology.
+    //
+    // The document is mostly in JSON-LD already, except for two important
+    // things:
+    //  1. We have to convert all phylogenies into a series of statements
+    //     relating to the nodes inside these phylogenies.
+    //  2. We have to convert phylogenies into OWL restrictions.
+    //  3. Insert all matches between taxonomic units in this file.
+    //
+    const jsonld = jQuery.extend(true, {}, this.phyx);
+
+    // Convert phylogenies into a node-based description.
+    if (hasOwnProperty(jsonld, 'phylogenies')) {
+      let countPhylogeny = 0;
+      jsonld.phylogenies.forEach((phylogenyToChange) => {
+        const phylogeny = phylogenyToChange;
+        const wrapper = new PhylogenyWrapper(phylogeny);
+        countPhylogeny += 1;
+
+        // Translate nodes into JSON-LD objects.
+        const nodes = wrapper.getNodesAsJSONLD(`_:phylogeny${countPhylogeny}`);
+
+        phylogeny.nodes = nodes;
+        if (nodes.length > 0) {
+          // We don't have a better way to identify the root node, so we just
+          // default to the first one.
+          [phylogeny.hasRootNode] = nodes;
+        }
+      });
+    }
+
+    // Convert phyloreferences into an OWL class restriction
+    if (hasOwnProperty(jsonld, 'phylorefs')) {
+      jsonld.phylorefs.forEach((phylorefToChange) => {
+        const phyloref = phylorefToChange;
+        phyloref.insertRestriction = ':restriction0';
+      });
+    }
+
+    return JSON.stringify(jsonld, undefined, 4);
   }
 }
 

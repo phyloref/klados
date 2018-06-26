@@ -19,6 +19,7 @@
 /* global PhylogenyWrapper */
 /* global SpecimenWrapper */
 /* global PhylorefWrapper */
+/* global PHYXWrapper */
 /* global phyxCacheManager */
 
 // List of example files to provide in the "Examples" dropdown.
@@ -351,7 +352,8 @@ const vm = new Vue({
       // This is a temporary function to help develop the JSON-LD production
       // system -- eventually, we'll rename it to downloadAsJSON and make it
       // export the PHYX file for download.
-      const content = ["{ 'hello': 'world' }"];
+      const wrapped = new PHYXWrapper(this.testcase);
+      const content = [wrapped.asJSONLD()];
 
       // Save to local hard drive.
       const jsonldFile = new File(content, 'download.json', { type: 'application/json;charset=utf-8' });
