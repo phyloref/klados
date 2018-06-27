@@ -779,6 +779,11 @@ class PhylogenyWrapper {
 
 /* Phyloreference wrapper */
 
+// We need some OWL constants for this.
+const CDAO_HAS_CHILD = 'obo:CDAO_0000149';
+const CDAO_HAS_DESCENDANT = 'obo:CDAO_0000174';
+const PHYLOREF_HAS_SIBLING = 'http://phyloinformatics.net/phyloref.owl#has_Sibling';
+
 // eslint-disable-next-line no-unused-vars
 class PhylorefWrapper {
   // Wraps a phyloreference in a PHYX model.
@@ -932,6 +937,218 @@ class PhylorefWrapper {
     // Return node labels sorted alphabetically.
     return Array.from(nodeLabels).sort();
   }
+
+  exportAsJSONLD(phylorefURI) {
+    // Keep all currently extant data.
+    //  baseURI: the base URI for this phyloreference
+    const phylorefAsJSONLD = JSON.parse(JSON.stringify(this.phyloref));
+
+    // Add identifiers for each specifier.
+    let internalSpecifierCount = 0;
+    phylorefAsJSONLD.internalSpecifiers.forEach((internalSpecifierToChange) => {
+      internalSpecifierCount += 1;
+
+      const internalSpecifier = internalSpecifierToChange;
+
+      internalSpecifier['@id'] = `${phylorefURI}_specifier_internal${internalSpecifierCount}`;
+      internalSpecifier['@type'] = [
+        'http://phyloinformatics.net/phyloref.owl#Phyloreference',
+        'owl:Class',
+      ];
+    });
+
+    let externalSpecifierCount = 0;
+    phylorefAsJSONLD.externalSpecifiers.forEach((externalSpecifierToChange) => {
+      externalSpecifierCount += 1;
+
+      const externalSpecifier = externalSpecifierToChange;
+      externalSpecifier['@id'] = `${phylorefURI}_specifier_external${externalSpecifierCount}`;
+      externalSpecifier['@type'] = [
+        'http://phyloinformatics.net/phyloref.owl#Phyloreference',
+        'owl:Class',
+      ];
+    });
+
+    if (internalSpecifierCount === 0 && externalSpecifierCount === 0) {
+      phylorefAsJSONLD.malformedPhyloreference = 'No specifiers provided';
+    } else if (externalSpecifierCount > 0) {
+      phylorefAsJSONLD.malformedPhyloreference = 'Multiple external specifiers are not yet supported';
+    } else if (internalSpecifierCount === 1 && externalSpecifierCount === 0) {
+      phylorefAsJSONLD.malformedPhyloreference = 'Only a single internal specifier was provided';
+    } else if (externalSpecifierCount === 0) {
+      // This phyloreference is made up entirely of internal specifiers.
+
+      // We can write this in an accumulative manner by creating class expressions
+      // in the form:
+      //  mrca(mrca(mrca(node1, node2), node3), node4)
+
+      // We could write this as a single giant expression, but this tends to
+      // slow down the reasoner dramatically. So instead, we break it up into a
+      // series of "additional classes", each of which represents a part of the
+      // overall expression.
+      phylorefAsJSONLD.hasAdditionalClass = [];
+
+      let equivalentClassAccumulator = PhylorefWrapper.getClassExpressionForMRCA(
+        phylorefURI,
+        phylorefAsJSONLD.hasAdditionalClass,
+        phylorefAsJSONLD.internalSpecifiers[0],
+        phylorefAsJSONLD.internalSpecifiers[1],
+      );
+
+      for (let index = 2; index < internalSpecifierCount; index += 1) {
+        equivalentClassAccumulator = PhylorefWrapper.getClassExpressionForMRCA(
+          phylorefURI,
+          phylorefAsJSONLD.hasAdditionalClass,
+          equivalentClassAccumulator,
+          phylorefAsJSONLD.internalSpecifiers[index],
+        );
+      }
+
+      phylorefAsJSONLD.equivalentClass = equivalentClassAccumulator;
+
+    } else {
+      // This phyloreference is made up of one external specifier and some number
+      // of internal specifiers.
+
+    }
+
+    return phylorefAsJSONLD;
+  }
+
+  static getOWLRestrictionForSpecifier(specifier) {
+    // Return an OWL restriction corresponding to a specifier.
+    return {
+      '@type': 'owl:Restriction',
+      onProperty: 'testcase:matches_specifier',
+      hasValue: {
+        '@id': specifier['@id'],
+      },
+    };
+  }
+
+  static wrapInternalOWLRestriction(restriction) {
+    // Wraps a restriction to act as an internal specifier.
+    // Mainly, we just need to extend the restriction to match:
+    //  restriction or cdao:has_Descendant some restriction
+    return {
+      '@type': 'owl:Restriction',
+      unionOf: [
+        restriction,
+        {
+          '@type': 'owl:Restriction',
+          onProperty: CDAO_HAS_DESCENDANT,
+          someValuesFrom: restriction,
+        },
+      ],
+    };
+  }
+
+  static wrapExternalOWLRestriction(restriction) {
+    // Wraps a restriction to act as an external specifier.
+    // This needs to match:
+    //  cdao:has_Sibling some (restriction or cdao:has_Descendant some restriction)
+    // Since that second part is just an internal specifier restriction, we can
+    // incorporate that in here.
+    return {
+      '@type': 'owl:Restriction',
+      onProperty: PHYLOREF_HAS_SIBLING,
+      someValuesFrom: PhylorefWrapper.wrapInternalOWLRestriction(restriction),
+    };
+  }
+
+  static getClassExpressionForMRCA(baseURI, additionalClasses, specifier1, specifier2) {
+    // Create an OWL restriction for the most recent common ancestor (MRCA)
+    // of the nodes matched by two specifiers.
+    const additionalClassesIds = new Set(additionalClasses.map(cl => cl['@id']));
+
+    // Specifiers might be either a real specifier or an additional class.
+    // We can check their @ids here and translate specifiers into class expressions.
+    let owlRestriction1;
+    if (additionalClassesIds.has(specifier1['@id'])) {
+      owlRestriction1 = specifier1;
+    } else {
+      owlRestriction1 = PhylorefWrapper.getOWLRestrictionForSpecifier(specifier1);
+    }
+
+    let owlRestriction2;
+    if (additionalClassesIds.has(specifier2['@id'])) {
+      owlRestriction2 = specifier2;
+    } else {
+      owlRestriction2 = PhylorefWrapper.getOWLRestrictionForSpecifier(specifier2);
+    }
+
+    // Construct OWL expression.
+    const mrcaAsOWL = {
+      '@type': 'owl:Class',
+      unionOf: [
+        {
+          // What if specifier2 is a descendant of specifier1? If so, the MRCA
+          // is specifier1!
+          '@type': 'owl:Class',
+          intersectionOf: [
+            owlRestriction1,
+            {
+              '@type': 'owl:Restriction',
+              onProperty: CDAO_HAS_DESCENDANT,
+              someValuesFrom: owlRestriction2,
+            },
+          ],
+        },
+        {
+          // What if specifier1 is a descendant of specifier2? If so, the MRCA
+          // is specifier2!
+          '@type': 'owl:Class',
+          intersectionOf: [
+            owlRestriction2,
+            {
+              '@type': 'owl:Restriction',
+              onProperty: CDAO_HAS_DESCENDANT,
+              someValuesFrom: owlRestriction1,
+            },
+          ],
+        },
+        {
+          // If neither specifier is a descendant of the other, we can use our
+          // standard formula.
+          '@type': 'owl:Class',
+          intersectionOf: [{
+            '@type': 'owl:Restriction',
+            onProperty: CDAO_HAS_CHILD,
+            someValuesFrom: {
+              '@type': 'owl:Class',
+              intersectionOf: [
+                PhylorefWrapper.wrapInternalOWLRestriction(owlRestriction1),
+                PhylorefWrapper.wrapExternalOWLRestriction(owlRestriction2),
+              ],
+            },
+          }, {
+            '@type': 'owl:Restriction',
+            onProperty: CDAO_HAS_CHILD,
+            someValuesFrom: {
+              '@type': 'owl:Class',
+              intersectionOf: [
+                PhylorefWrapper.wrapInternalOWLRestriction(owlRestriction2),
+                PhylorefWrapper.wrapExternalOWLRestriction(owlRestriction1),
+              ],
+            },
+          }],
+        },
+      ],
+    };
+
+    // Instead of building a single, large, complex expression, reasoners appear
+    // to prefer smaller expressions for classes that are assembled together.
+    // To help with that, we'll store the class expression in the additionalClasses
+    // list, and return a reference to this class.
+    const additionalClassId = `${baseURI}_additional${additionalClasses.length}`;
+    additionalClasses.push({
+      '@id': additionalClassId,
+      '@type': 'owl:Class',
+      equivalentClass: mrcaAsOWL,
+    });
+
+    return { '@id': additionalClassId };
+  }
 }
 
 /* PHYX file wrapper */
@@ -980,9 +1197,10 @@ class PHYXWrapper {
 
     // Convert phyloreferences into an OWL class restriction
     if (hasOwnProperty(jsonld, 'phylorefs')) {
-      jsonld.phylorefs.forEach((phylorefToChange) => {
-        const phyloref = phylorefToChange;
-        phyloref.insertRestriction = ':restriction0';
+      let countPhyloref = 0;
+      jsonld.phylorefs = jsonld.phylorefs.map((phyloref) => {
+        countPhyloref += 1;
+        return new PhylorefWrapper(phyloref).exportAsJSONLD(`_:phyloref${countPhyloref}`);
       });
     }
 
