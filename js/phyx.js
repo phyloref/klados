@@ -971,7 +971,7 @@ class PhylorefWrapper {
 
     if (internalSpecifierCount === 0 && externalSpecifierCount === 0) {
       phylorefAsJSONLD.malformedPhyloreference = 'No specifiers provided';
-    } else if (externalSpecifierCount > 0) {
+    } else if (externalSpecifierCount > 1) {
       phylorefAsJSONLD.malformedPhyloreference = 'Multiple external specifiers are not yet supported';
     } else if (internalSpecifierCount === 1 && externalSpecifierCount === 0) {
       phylorefAsJSONLD.malformedPhyloreference = 'Only a single internal specifier was provided';
@@ -1005,11 +1005,22 @@ class PhylorefWrapper {
       }
 
       phylorefAsJSONLD.equivalentClass = equivalentClassAccumulator;
-
     } else {
       // This phyloreference is made up of one external specifier and some number
       // of internal specifiers.
 
+      const internalSpecifierRestrictions = phylorefAsJSONLD.externalSpecifiers
+        .map(specifier => PhylorefWrapper
+          .wrapInternalOWLRestriction(PhylorefWrapper.getOWLRestrictionForSpecifier(specifier)));
+
+      const externalSpecifierRestrictions = phylorefAsJSONLD.externalSpecifiers
+        .map(specifier => PhylorefWrapper
+          .wrapExternalOWLRestriction(PhylorefWrapper.getOWLRestrictionForSpecifier(specifier)));
+
+      phylorefAsJSONLD.equivalentClass = {
+        '@type': 'owl:Class',
+        intersectionOf: internalSpecifierRestrictions.concat(externalSpecifierRestrictions),
+      };
     }
 
     return phylorefAsJSONLD;
