@@ -120,6 +120,7 @@ class ScientificNameWrapper {
     return scname;
   }
 
+/*
   asJSON() {
     // Return this scientific name as a JSON object.
 
@@ -133,6 +134,7 @@ class ScientificNameWrapper {
 
     return result;
   }
+*/
 
   get scientificName() {
     // Get the "dwc:scientificName" -- the complete scientific name.
@@ -454,7 +456,7 @@ class TaxonomicUnitMatcher {
     this.match();
   }
 
-  get asJSON() {
+  asJSON() {
     // Return this TUMatch as a JSON object for insertion into the PHYX file.
     if (!this.matched) return undefined;
 
@@ -783,6 +785,7 @@ class PhylogenyWrapper {
 const CDAO_HAS_CHILD = 'obo:CDAO_0000149';
 const CDAO_HAS_DESCENDANT = 'obo:CDAO_0000174';
 const PHYLOREF_HAS_SIBLING = 'http://phyloinformatics.net/phyloref.owl#has_Sibling';
+const PHYLOREFERENCE_TEST_CASE = 'testcase:PhyloreferenceTestCase';
 
 // eslint-disable-next-line no-unused-vars
 class PhylorefWrapper {
@@ -943,6 +946,12 @@ class PhylorefWrapper {
     //  baseURI: the base URI for this phyloreference
     const phylorefAsJSONLD = JSON.parse(JSON.stringify(this.phyloref));
 
+    // Set the @type.
+    phylorefAsJSONLD['@type'] = [
+      'http://phyloinformatics.net/phyloref.owl#Phyloreference',
+      'owl:Class',
+    ];
+
     // Add identifiers for each specifier.
     let internalSpecifierCount = 0;
     phylorefAsJSONLD.internalSpecifiers.forEach((internalSpecifierToChange) => {
@@ -952,7 +961,7 @@ class PhylorefWrapper {
 
       internalSpecifier['@id'] = `${phylorefURI}_specifier_internal${internalSpecifierCount}`;
       internalSpecifier['@type'] = [
-        'http://phyloinformatics.net/phyloref.owl#Phyloreference',
+        'http://phyloinformatics.net/phyloref.owl#Specifier',
         'owl:Class',
       ];
     });
@@ -964,7 +973,7 @@ class PhylorefWrapper {
       const externalSpecifier = externalSpecifierToChange;
       externalSpecifier['@id'] = `${phylorefURI}_specifier_external${externalSpecifierCount}`;
       externalSpecifier['@type'] = [
-        'http://phyloinformatics.net/phyloref.owl#Phyloreference',
+        'http://phyloinformatics.net/phyloref.owl#Specifier',
         'owl:Class',
       ];
     });
@@ -1215,7 +1224,74 @@ class PHYXWrapper {
       });
     }
 
-    return JSON.stringify(jsonld, undefined, 4);
+    // Match all specifiers with nodes.
+    if (hasOwnProperty(jsonld, 'phylorefs') && hasOwnProperty(jsonld, 'phylogenies')) {
+      jsonld.hasTaxonomicUnitMatches = [];
+
+      jsonld.phylorefs.forEach((phylorefToChange) => {
+        const phyloref = phylorefToChange;
+        let specifiers = [];
+
+        if (hasOwnProperty(phyloref, 'internalSpecifiers')) {
+          specifiers = specifiers.concat(phyloref.internalSpecifiers);
+        }
+
+        if (hasOwnProperty(phyloref, 'externalSpecifiers')) {
+          specifiers = specifiers.concat(phyloref.externalSpecifiers);
+        }
+
+        specifiers.forEach((specifier) => {
+          if (!hasOwnProperty(specifier, 'referencesTaxonomicUnits')) return;
+          const specifierTUs = specifier.referencesTaxonomicUnits;
+          let nodesMatchedCount = 0;
+
+          jsonld.phylogenies.forEach((phylogenyToChange) => {
+            const phylogeny = phylogenyToChange;
+
+            specifierTUs.forEach((specifierTU) => {
+              phylogeny.nodes.forEach((node) => {
+                if (!hasOwnProperty(node, 'representsTaxonomicUnits')) return;
+                const nodeTUs = node.representsTaxonomicUnits;
+
+                nodeTUs.forEach((nodeTU) => {
+                  const matcher = new TaxonomicUnitMatcher(specifierTU, nodeTU);
+                  if (matcher.matched) {
+                    jsonld.hasTaxonomicUnitMatches.push(matcher.asJSON());
+                    nodesMatchedCount += 1;
+                  }
+                });
+              });
+            });
+          });
+
+          if (nodesMatchedCount === 0) {
+            // No nodes matched? Record this as an unmatched specifier.
+            if (!hasOwnProperty(phyloref, 'hasUnmatchedSpecifiers')) phyloref.hasUnmatchedSpecifiers = [];
+            phyloref.hasUnmatchedSpecifiers.push(specifier);
+          }
+        });
+      });
+    }
+
+    // Finally, add the base URI as an ontology.
+    jsonld['@id'] = '_:curation_tool_export';
+    jsonld['@type'] = [PHYLOREFERENCE_TEST_CASE, 'owl:Ontology'];
+    jsonld['owl:imports'] = [
+      'https://raw.githubusercontent.com/phyloref/curation-workflow/develop/ontologies/phyloref_testcase.owl',
+      // - Will become 'http://vocab.phyloref.org/phyloref/testcase.owl'
+      'https://raw.githubusercontent.com/phyloref/phyloref-ontology/master/phyloref.owl',
+      // - Will become 'http://phyloinformatics.net/phyloref.owl'
+      'http://purl.obolibrary.org/obo/bco.owl',
+      // - Contains OWL definitions for Darwin Core terms
+    ];
+
+    // If the '@context' is missing, add it here.
+    if (!hasOwnProperty(jsonld, '@context')) {
+      // TODO: replace with 'http://phyloref.org/' once we have a copy there.
+      jsonld['@context'] = 'http://www.ggvaidya.com/curation-tool/json/phyx.json';
+    }
+
+    return JSON.stringify([jsonld], undefined, 4);
   }
 }
 
