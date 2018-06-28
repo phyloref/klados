@@ -786,6 +786,7 @@ const CDAO_HAS_CHILD = 'obo:CDAO_0000149';
 const CDAO_HAS_DESCENDANT = 'obo:CDAO_0000174';
 const PHYLOREF_HAS_SIBLING = 'http://phyloinformatics.net/phyloref.owl#has_Sibling';
 const PHYLOREFERENCE_TEST_CASE = 'testcase:PhyloreferenceTestCase';
+const PHYLOREFERENCE_PHYLOGENY = 'testcase:PhyloreferenceTestPhylogeny';
 
 // eslint-disable-next-line no-unused-vars
 class PhylorefWrapper {
@@ -977,6 +978,13 @@ class PhylorefWrapper {
         'owl:Class',
       ];
     });
+
+    // For historical reasons, the Clade Ontology uses 'hasInternalSpecifier' to
+    // store the specifiers as OWL classes and 'internalSpecifiers' to store them
+    // as RDF annotations. We simplify that here by duplicating them here, but
+    // this should really be fixed in the Clade Ontology and in phyx.json.
+    phylorefAsJSONLD.hasInternalSpecifier = phylorefAsJSONLD.internalSpecifiers;
+    phylorefAsJSONLD.hasExternalSpecifier = phylorefAsJSONLD.externalSpecifiers;
 
     if (internalSpecifierCount === 0 && externalSpecifierCount === 0) {
       phylorefAsJSONLD.malformedPhyloreference = 'No specifiers provided';
@@ -1200,6 +1208,12 @@ class PHYXWrapper {
       let countPhylogeny = 0;
       jsonld.phylogenies.forEach((phylogenyToChange) => {
         const phylogeny = phylogenyToChange;
+
+        // Set name and class for phylogeny.
+        phylogeny['@id'] = `_:phylogeny${countPhylogeny}`;
+        phylogeny['@type'] = PHYLOREFERENCE_PHYLOGENY;
+
+        // Extract nodes from phylogeny.
         const wrapper = new PhylogenyWrapper(phylogeny);
         countPhylogeny += 1;
 
