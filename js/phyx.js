@@ -465,8 +465,8 @@ class TaxonomicUnitMatcher {
       '@type': 'testcase:TUMatch',
       reason: this.matchReason,
       matchesTaxonomicUnits: [
-        this.tunit1,
-        this.tunit2,
+        { '@id': this.tunit1['@id'] },
+        { '@id': this.tunit2['@id'] },
       ],
     };
   }
