@@ -736,11 +736,13 @@ class PhylogenyWrapper {
           nodeAsJSONLD.representsTaxonomicUnits = this.getTaxonomicUnitsForNodeLabel(node.name);
 
           // Apply @id and @type to each taxonomic unit.
+          let countTaxonomicUnits = 0;
           nodeAsJSONLD.representsTaxonomicUnits.forEach((tunitToChange) => {
             const tunit = tunitToChange;
 
-            tunit['@id'] = `${nodeURI}_taxonomicunit${nodeCount}`;
+            tunit['@id'] = `${nodeURI}_taxonomicunit${countTaxonomicUnits}`;
             tunit['@type'] = { '@id': 'http://purl.obolibrary.org/obo/CDAO_0000138' };
+            countTaxonomicUnits += 1;
           });
         }
 
@@ -974,7 +976,6 @@ class PhylorefWrapper {
       internalSpecifier['@id'] = specifierId;
       internalSpecifier['@type'] = [
         'http://phyloinformatics.net/phyloref.owl#Specifier',
-        'owl:Class',
       ];
 
       // Add identifiers to all taxonomic units.
@@ -995,12 +996,11 @@ class PhylorefWrapper {
       externalSpecifierCount += 1;
 
       const externalSpecifier = externalSpecifierToChange;
-      const specifierId = `${phylorefURI}_specifier_external${internalSpecifierCount}`;
+      const specifierId = `${phylorefURI}_specifier_external${externalSpecifierCount}`;
 
       externalSpecifier['@id'] = specifierId;
       externalSpecifier['@type'] = [
         'http://phyloinformatics.net/phyloref.owl#Specifier',
-        'owl:Class',
       ];
 
       // Add identifiers to all taxonomic units.
@@ -1063,7 +1063,7 @@ class PhylorefWrapper {
       // This phyloreference is made up of one external specifier and some number
       // of internal specifiers.
 
-      const internalSpecifierRestrictions = phylorefAsJSONLD.externalSpecifiers
+      const internalSpecifierRestrictions = phylorefAsJSONLD.internalSpecifiers
         .map(specifier => PhylorefWrapper
           .wrapInternalOWLRestriction(PhylorefWrapper.getOWLRestrictionForSpecifier(specifier)));
 
