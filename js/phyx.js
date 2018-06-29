@@ -456,11 +456,12 @@ class TaxonomicUnitMatcher {
     this.match();
   }
 
-  asJSON() {
+  asJSON(idURI) {
     // Return this TUMatch as a JSON object for insertion into the PHYX file.
     if (!this.matched) return undefined;
 
     return {
+      '@id': idURI,
       '@type': 'testcase:TUMatch',
       reason: this.matchReason,
       matchesTaxonomicUnits: [
@@ -733,6 +734,14 @@ class PhylogenyWrapper {
         if (hasOwnProperty(node, 'name') && node.name !== '') {
           nodeAsJSONLD.labels = [node.name];
           nodeAsJSONLD.representsTaxonomicUnits = this.getTaxonomicUnitsForNodeLabel(node.name);
+
+          // Apply @id and @type to each taxonomic unit.
+          nodeAsJSONLD.representsTaxonomicUnits.forEach((tunitToChange) => {
+            const tunit = tunitToChange;
+
+            tunit['@id'] = `${nodeURI}_taxonomicunit${nodeCount}`;
+            tunit['@type'] = { '@id': 'http://purl.obolibrary.org/obo/CDAO_0000138' };
+          });
         }
 
         // Add references to parents and siblings.
@@ -947,7 +956,8 @@ class PhylorefWrapper {
     //  baseURI: the base URI for this phyloreference
     const phylorefAsJSONLD = JSON.parse(JSON.stringify(this.phyloref));
 
-    // Set the @type.
+    // Set the @id and @type.
+    phylorefAsJSONLD['@id'] = phylorefURI;
     phylorefAsJSONLD['@type'] = [
       'http://phyloinformatics.net/phyloref.owl#Phyloreference',
       'owl:Class',
@@ -959,12 +969,25 @@ class PhylorefWrapper {
       internalSpecifierCount += 1;
 
       const internalSpecifier = internalSpecifierToChange;
+      const specifierId = `${phylorefURI}_specifier_internal${internalSpecifierCount}`;
 
-      internalSpecifier['@id'] = `${phylorefURI}_specifier_internal${internalSpecifierCount}`;
+      internalSpecifier['@id'] = specifierId;
       internalSpecifier['@type'] = [
         'http://phyloinformatics.net/phyloref.owl#Specifier',
         'owl:Class',
       ];
+
+      // Add identifiers to all taxonomic units.
+      let countTaxonomicUnits = 0;
+      if (hasOwnProperty(internalSpecifier, 'referencesTaxonomicUnits')) {
+        internalSpecifier.referencesTaxonomicUnits.forEach((tunitToChange) => {
+          const tunit = tunitToChange;
+
+          tunit['@id'] = `${specifierId}_tunit${countTaxonomicUnits}`;
+          tunit['@type'] = { '@id': 'http://purl.obolibrary.org/obo/CDAO_0000138' };
+          countTaxonomicUnits += 1;
+        });
+      }
     });
 
     let externalSpecifierCount = 0;
@@ -972,11 +995,25 @@ class PhylorefWrapper {
       externalSpecifierCount += 1;
 
       const externalSpecifier = externalSpecifierToChange;
-      externalSpecifier['@id'] = `${phylorefURI}_specifier_external${externalSpecifierCount}`;
+      const specifierId = `${phylorefURI}_specifier_external${internalSpecifierCount}`;
+
+      externalSpecifier['@id'] = specifierId;
       externalSpecifier['@type'] = [
         'http://phyloinformatics.net/phyloref.owl#Specifier',
         'owl:Class',
       ];
+
+      // Add identifiers to all taxonomic units.
+      let countTaxonomicUnits = 0;
+      if (hasOwnProperty(externalSpecifier, 'referencesTaxonomicUnits')) {
+        externalSpecifier.referencesTaxonomicUnits.forEach((tunitToChange) => {
+          const tunit = tunitToChange;
+
+          tunit['@id'] = `${specifierId}_tunit${countTaxonomicUnits}`;
+          tunit['@type'] = { '@id': 'http://purl.obolibrary.org/obo/CDAO_0000138' };
+          countTaxonomicUnits += 1;
+        });
+      }
     });
 
     // For historical reasons, the Clade Ontology uses 'hasInternalSpecifier' to
@@ -1203,6 +1240,8 @@ class PHYXWrapper {
     //
     const jsonld = jQuery.extend(true, {}, this.phyx);
 
+    const baseURI = 'http://example.org/produced_by_curation_tool';
+
     // Convert phylogenies into a node-based description.
     if (hasOwnProperty(jsonld, 'phylogenies')) {
       let countPhylogeny = 0;
@@ -1210,7 +1249,7 @@ class PHYXWrapper {
         const phylogeny = phylogenyToChange;
 
         // Set name and class for phylogeny.
-        phylogeny['@id'] = `_:phylogeny${countPhylogeny}`;
+        phylogeny['@id'] = `${baseURI}#phylogeny${countPhylogeny}`;
         phylogeny['@type'] = PHYLOREFERENCE_PHYLOGENY;
 
         // Extract nodes from phylogeny.
@@ -1218,7 +1257,7 @@ class PHYXWrapper {
         countPhylogeny += 1;
 
         // Translate nodes into JSON-LD objects.
-        const nodes = wrapper.getNodesAsJSONLD(`_:phylogeny${countPhylogeny}`);
+        const nodes = wrapper.getNodesAsJSONLD(`${baseURI}#phylogeny${countPhylogeny}`);
 
         phylogeny.nodes = nodes;
         if (nodes.length > 0) {
@@ -1234,13 +1273,15 @@ class PHYXWrapper {
       let countPhyloref = 0;
       jsonld.phylorefs = jsonld.phylorefs.map((phyloref) => {
         countPhyloref += 1;
-        return new PhylorefWrapper(phyloref).exportAsJSONLD(`_:phyloref${countPhyloref}`);
+        return new PhylorefWrapper(phyloref).exportAsJSONLD(`${baseURI}#phyloref${countPhyloref}`);
       });
     }
 
     // Match all specifiers with nodes.
     if (hasOwnProperty(jsonld, 'phylorefs') && hasOwnProperty(jsonld, 'phylogenies')) {
       jsonld.hasTaxonomicUnitMatches = [];
+
+      let countTaxonomicUnitMatches = 0;
 
       jsonld.phylorefs.forEach((phylorefToChange) => {
         const phyloref = phylorefToChange;
@@ -1270,8 +1311,9 @@ class PHYXWrapper {
                 nodeTUs.forEach((nodeTU) => {
                   const matcher = new TaxonomicUnitMatcher(specifierTU, nodeTU);
                   if (matcher.matched) {
-                    jsonld.hasTaxonomicUnitMatches.push(matcher.asJSON());
+                    jsonld.hasTaxonomicUnitMatches.push(matcher.asJSON(`${baseURI}#taxonomic_unit_match${countTaxonomicUnitMatches}`));
                     nodesMatchedCount += 1;
+                    countTaxonomicUnitMatches += 1;
                   }
                 });
               });
@@ -1288,7 +1330,7 @@ class PHYXWrapper {
     }
 
     // Finally, add the base URI as an ontology.
-    jsonld['@id'] = '_:curation_tool_export';
+    jsonld['@id'] = baseURI;
     jsonld['@type'] = [PHYLOREFERENCE_TEST_CASE, 'owl:Ontology'];
     jsonld['owl:imports'] = [
       'https://raw.githubusercontent.com/phyloref/curation-workflow/develop/ontologies/phyloref_testcase.owl',
