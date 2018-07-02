@@ -120,22 +120,6 @@ class ScientificNameWrapper {
     return scname;
   }
 
-/*
-  asJSON() {
-    // Return this scientific name as a JSON object.
-
-    const result = {
-      '@id': 'dwc:Taxon',
-      scientificName: this.scientificName,
-    };
-
-    if (this.genus !== undefined) result.genus = this.genus;
-    if (this.specificEpithet !== undefined) result.specificEpithet = this.specificEpithet;
-
-    return result;
-  }
-*/
-
   get scientificName() {
     // Get the "dwc:scientificName" -- the complete scientific name.
     return this.scname.scientificName;
