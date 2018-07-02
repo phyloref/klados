@@ -798,6 +798,7 @@ const CDAO_HAS_DESCENDANT = 'obo:CDAO_0000174';
 const PHYLOREF_HAS_SIBLING = 'http://phyloinformatics.net/phyloref.owl#has_Sibling';
 const PHYLOREFERENCE_TEST_CASE = 'testcase:PhyloreferenceTestCase';
 const PHYLOREFERENCE_PHYLOGENY = 'testcase:PhyloreferenceTestPhylogeny';
+const TESTCASE_SPECIFIER = 'testcase:Specifier';
 
 // eslint-disable-next-line no-unused-vars
 class PhylorefWrapper {
@@ -975,7 +976,7 @@ class PhylorefWrapper {
 
       internalSpecifier['@id'] = specifierId;
       internalSpecifier['@type'] = [
-        'http://phyloinformatics.net/phyloref.owl#Specifier',
+        TESTCASE_SPECIFIER,
       ];
 
       // Add identifiers to all taxonomic units.
@@ -1000,7 +1001,7 @@ class PhylorefWrapper {
 
       externalSpecifier['@id'] = specifierId;
       externalSpecifier['@type'] = [
-        'http://phyloinformatics.net/phyloref.owl#Specifier',
+        TESTCASE_SPECIFIER,
       ];
 
       // Add identifiers to all taxonomic units.
