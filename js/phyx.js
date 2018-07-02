@@ -716,13 +716,14 @@ class PhylogenyWrapper {
     const nodeIdsByParentId = {};
 
     // Extract the newick string.
-    const { newick = '()' } = this.phylogeny;
+    const { newick = '()', additionalNodeProperties } = this.phylogeny;
 
     // Parse the Newick string; if parseable, recurse through the nodes,
     // added them to the list of JSON-LD nodes as we go.
     const parsed = d3.layout.newick_parser(newick);
     if (hasOwnProperty(parsed, 'json')) {
       PhylogenyWrapper.recurseNodes(parsed.json, (node, nodeCount, parentCount) => {
+        // Start with the additional node properties.
         const nodeAsJSONLD = {};
 
         // Set @id and @type.
@@ -730,9 +731,19 @@ class PhylogenyWrapper {
         nodeAsJSONLD['@id'] = nodeURI;
         nodeAsJSONLD['@type'] = { '@id': 'http://purl.obolibrary.org/obo/CDAO_0000140' };
 
-        // Add label and taxonomic units.
+        // Add labels, additional node properties and taxonomic units.
         if (hasOwnProperty(node, 'name') && node.name !== '') {
+          // Add labels.
           nodeAsJSONLD.labels = [node.name];
+
+          // Add additional node properties, if any.
+          if (additionalNodeProperties && hasOwnProperty(additionalNodeProperties, node.name)) {
+            Object.keys(additionalNodeProperties[node.name]).forEach((key) => {
+              nodeAsJSONLD[key] = additionalNodeProperties[node.name][key];
+            });
+          }
+
+          // Add taxonomic units.
           nodeAsJSONLD.representsTaxonomicUnits = this.getTaxonomicUnitsForNodeLabel(node.name);
 
           // Apply @id and @type to each taxonomic unit.
