@@ -107,7 +107,7 @@
                 },
                 "representsTaxonomicUnits": [{
                     "scientificNames": [{
-                        "binomialName": "Rana catesbeiana"
+                        "scientificName": "Rana catesbeiana"
                     }]
                 }]
             },
@@ -123,7 +123,7 @@
                 },
                 "representsTaxonomicUnits": [{
                     "scientificNames": [{
-                        "binomialName": "Rana catesbeiana"
+                        "scientificName": "Rana catesbeiana"
                     }]
                 }]
             },
@@ -139,7 +139,7 @@
                 },
                 "representsTaxonomicUnits": [{
                     "scientificNames": [{
-                        "binomialName": "Rana chiricahuensis"
+                        "scientificName": "Rana chiricahuensis"
                     }]
                 }]
             },
@@ -155,7 +155,7 @@
                 },
                 "representsTaxonomicUnits": [{
                     "scientificNames": [{
-                        "binomialName": "Rana chiricahuensis"
+                        "scientificName": "Rana chiricahuensis"
                     }]
                 }]
             },
@@ -237,7 +237,7 @@
                 },
                 "representsTaxonomicUnits": [{
                     "scientificNames": [{
-                        "binomialName": "Rana luteiventris"
+                        "scientificName": "Rana luteiventris"
                     }]
                 }]
             },
@@ -253,7 +253,7 @@
                 },
                 "representsTaxonomicUnits": [{
                     "scientificNames": [{
-                        "binomialName": "Rana luteiventris"
+                        "scientificName": "Rana luteiventris"
                     }]
                 }]
             },
@@ -281,7 +281,7 @@
                 },
                 "representsTaxonomicUnits": [{
                     "scientificNames": [{
-                        "binomialName": "Rana macroglossa"
+                        "scientificName": "Rana macroglossa"
                     }]
                 }]
             },
@@ -383,7 +383,7 @@
                 },
                 "representsTaxonomicUnits": [{
                     "scientificNames": [{
-                        "binomialName": "Rana palmipes"
+                        "scientificName": "Rana palmipes"
                     }]
                 }]
             },
@@ -399,7 +399,7 @@
                 },
                 "representsTaxonomicUnits": [{
                     "scientificNames": [{
-                        "binomialName": "Rana palmipes"
+                        "scientificName": "Rana palmipes"
                     }]
                 }]
             },
@@ -424,7 +424,7 @@
                 },
                 "representsTaxonomicUnits": [{
                     "scientificNames": [{
-                        "binomialName": "Rana pipiens"
+                        "scientificName": "Rana pipiens"
                     }]
                 }]
             },
@@ -440,7 +440,7 @@
                 },
                 "representsTaxonomicUnits": [{
                     "scientificNames": [{
-                        "binomialName": "Rana pipiens"
+                        "scientificName": "Rana pipiens"
                     }]
                 }]
             },
@@ -477,7 +477,7 @@
                 },
                 "representsTaxonomicUnits": [{
                     "scientificNames": [{
-                        "binomialName": "Rana septentrionalis"
+                        "scientificName": "Rana septentrionalis"
                     }]
                 }]
             },
@@ -528,7 +528,7 @@
                 },
                 "representsTaxonomicUnits": [{
                     "scientificNames": [{
-                        "binomialName": "Rana sphenocephala"
+                        "scientificName": "Rana sphenocephala"
                     }]
                 }]
             },
@@ -544,8 +544,7 @@
                 },
                 "representsTaxonomicUnits": [{
                     "scientificNames": [{
-                        "scientificName": "Rana sphenocephala utricularia",
-                        "binomialName": "Rana sphenocephala"
+                        "scientificName": "Rana sphenocephala utricularia"
                     }]
                 }]
             },
@@ -582,7 +581,7 @@
                 },
                 "representsTaxonomicUnits": [{
                     "scientificNames": [{
-                        "binomialName": "Rana sylvatica"
+                        "scientificName": "Rana sylvatica"
                     }]
                 }]
             },
@@ -675,7 +674,7 @@
                 },
                 "representsTaxonomicUnits": [{
                     "scientificNames": [{
-                        "binomialName": "Rana warszewitschii"
+                        "scientificName": "Rana warszewitschii"
                     }]
                 }]
             },
@@ -702,7 +701,7 @@
                 },
                 "representsTaxonomicUnits": [{
                     "scientificNames": [{
-                        "binomialName": "Rana zweifeli"
+                        "scientificName": "Rana zweifeli"
                     }]
                 }]
             },
@@ -805,15 +804,13 @@
             "internalSpecifiers": [{
                 "referencesTaxonomicUnits": [{
                     "scientificNames": [{
-                        "scientificName": "Rana temporaria Linne 1758",
-                        "binomialName": "Rana temporaria"
+                        "scientificName": "Rana temporaria Linne 1758"
                     }]
                 }]
             }, {
                 "referencesTaxonomicUnits": [{
                     "scientificNames": [{
-                        "scientificName": "Rana aurora Baird and Girard 1852",
-                        "binomialName": "Rana aurora"
+                        "scientificName": "Rana aurora Baird and Girard 1852"
                     }]
                 }]
             }]
@@ -825,32 +822,28 @@
                 {
                     "referencesTaxonomicUnits": [{
                         "scientificNames": [{
-                            "scientificName": "Rana aurora Baird and Girard 1852",
-                            "binomialName": "Rana aurora"
+                            "scientificName": "Rana aurora Baird and Girard 1852"
                         }]
                     }]
                 },
                 {
                     "referencesTaxonomicUnits": [{
                         "scientificNames": [{
-                            "scientificName": "Rana boylii Baird 1854",
-                            "binomialName": "Rana boylii"
+                            "scientificName": "Rana boylii Baird 1854"
                         }]
                     }]
                 },
                 {
                     "referencesTaxonomicUnits": [{
                         "scientificNames": [{
-                            "scientificName": "Rana cascadae Slater 1939",
-                            "binomialName": "Rana cascadae"
+                            "scientificName": "Rana cascadae Slater 1939"
                         }]
                     }]
                 },
                 {
                     "referencesTaxonomicUnits": [{
                         "scientificNames": [{
-                            "scientificName": "Rana muscosa Camp 1917",
-                            "binomialName": "Rana muscosa"
+                            "scientificName": "Rana muscosa Camp 1917"
                         }]
                     }]
                 },
@@ -858,8 +851,7 @@
                     "specifierWillNotMatch": "*Rana pretiosa* not present in this phylogeny",
                     "referencesTaxonomicUnits": [{
                         "scientificNames": [{
-                            "scientificName": "Rana pretiosa Baird and Girard 1853",
-                            "binomialName": "Rana pretiosa"
+                            "scientificName": "Rana pretiosa Baird and Girard 1853"
                         }]
                     }]
                 }
@@ -872,16 +864,14 @@
                 {
                     "referencesTaxonomicUnits": [{
                         "scientificNames": [{
-                            "scientificName": "Rana catesbeiana Shaw 1802",
-                            "binomialName": "Rana catesbeiana"
+                            "scientificName": "Rana catesbeiana Shaw 1802"
                         }]
                     }]
                 },
                 {
                     "referencesTaxonomicUnits": [{
                         "scientificNames": [{
-                            "scientificName": "Rana pipiens Schreber 1782",
-                            "binomialName": "Rana pipiens"
+                            "scientificName": "Rana pipiens Schreber 1782"
                         }]
                     }]
                 }
@@ -893,50 +883,43 @@
             "internalSpecifiers": [{
                 "referencesTaxonomicUnits": [{
                     "scientificNames": [{
-                        "scientificName": "Rana catesbeiana Shaw 1802",
-                        "binomialName": "Rana catesbeiana"
+                        "scientificName": "Rana catesbeiana Shaw 1802"
                     }]
                 }]
             }, {
                 "referencesTaxonomicUnits": [{
                     "scientificNames": [{
-                        "scientificName": "Rana clamitans Latreille 1802",
-                        "binomialName": "Rana clamitans"
+                        "scientificName": "Rana clamitans Latreille 1802"
                     }]
                 }]
             }, {
                 "referencesTaxonomicUnits": [{
                     "scientificNames": [{
-                        "scientificName": "Rana grylio Stejneger 1901",
-                        "binomialName": "Rana grylio"
+                        "scientificName": "Rana grylio Stejneger 1901"
                     }]
                 }]
             }, {
                 "referencesTaxonomicUnits": [{
                     "scientificNames": [{
-                        "scientificName": "Rana heckscheri Wright 1924",
-                        "binomialName": "Rana heckscheri"
+                        "scientificName": "Rana heckscheri Wright 1924"
                     }]
                 }]
             }, {
                 "referencesTaxonomicUnits": [{
                     "scientificNames": [{
-                        "scientificName": "Rana okaloosae Moler 1985",
-                        "binomialName": "Rana okaloosae"
+                        "scientificName": "Rana okaloosae Moler 1985"
                     }]
                 }]
             }, {
                 "referencesTaxonomicUnits": [{
                     "scientificNames": [{
-                        "scientificName": "Rana septentrionalis Baird 1854",
-                        "binomialName": "Rana septentrionalis"
+                        "scientificName": "Rana septentrionalis Baird 1854"
                     }]
                 }]
             }, {
                 "referencesTaxonomicUnits": [{
                     "scientificNames": [{
-                        "scientificName": "Rana virgatipes Cope1891",
-                        "binomialName": "Rana virgatipes"
+                        "scientificName": "Rana virgatipes Cope1891"
                     }]
                 }]
             }]
@@ -947,22 +930,19 @@
             "internalSpecifiers": [{
                 "referencesTaxonomicUnits": [{
                     "scientificNames": [{
-                        "scientificName": "Rana juliani Hillis and de Sá, 1988",
-                        "binomialName": "Rana juliani"
+                        "scientificName": "Rana juliani Hillis and de Sá, 1988"
                     }]
                 }]
             }, {
                 "referencesTaxonomicUnits": [{
                     "scientificNames": [{
-                        "scientificName": "Rana maculata Brocchi 1877",
-                        "binomialName": "Rana maculata"
+                        "scientificName": "Rana maculata Brocchi 1877"
                     }]
                 }]
             }, {
                 "referencesTaxonomicUnits": [{
                     "scientificNames": [{
-                        "scientificName": "Rana sierramadrensis Taylor 1939",
-                        "binomialName": "Rana sierramadrensis"
+                        "scientificName": "Rana sierramadrensis Taylor 1939"
                     }]
                 }]
             }]
@@ -973,15 +953,13 @@
             "internalSpecifiers": [{
                 "referencesTaxonomicUnits": [{
                     "scientificNames": [{
-                        "scientificName": "Rana palmipes Spix 1824",
-                        "binomialName": "Rana palmipes"
+                        "scientificName": "Rana palmipes Spix 1824"
                     }]
                 }]
             }, {
                 "referencesTaxonomicUnits": [{
                     "scientificNames": [{
-                        "scientificName": "Rana warszewitschii (Schmidt) 1857",
-                        "binomialName": "Rana warszewitschii"
+                        "scientificName": "Rana warszewitschii (Schmidt) 1857"
                     }]
                 }]
             }]
@@ -992,15 +970,13 @@
             "internalSpecifiers": [{
                 "referencesTaxonomicUnits": [{
                     "scientificNames": [{
-                        "scientificName": "Rana maculata Brocchi 1877",
-                        "binomialName": "Rana maculata"
+                        "scientificName": "Rana maculata Brocchi 1877"
                     }]
                 }]
             }, {
                 "referencesTaxonomicUnits": [{
                     "scientificNames": [{
-                        "scientificName": "Rana vibicaria (Cope) 1894",
-                        "binomialName": "Rana vibicaria"
+                        "scientificName": "Rana vibicaria (Cope) 1894"
                     }]
                 }]
             }]
@@ -1011,15 +987,13 @@
             "internalSpecifiers": [{
                 "referencesTaxonomicUnits": [{
                     "scientificNames": [{
-                        "scientificName": "Rana warszewitschii (Schmidt) 1857",
-                        "binomialName": "Rana warszewitschii"
+                        "scientificName": "Rana warszewitschii (Schmidt) 1857"
                     }]
                 }]
             }, {
                 "referencesTaxonomicUnits": [{
                     "scientificNames": [{
-                        "scientificName": "Rana vibicaria (Cope) 1894",
-                        "binomialName": "Rana vibicaria"
+                        "scientificName": "Rana vibicaria (Cope) 1894"
                     }]
                 }]
             }]
@@ -1029,29 +1003,25 @@
             "internalSpecifiers": [{
                 "referencesTaxonomicUnits": [{
                     "scientificNames": [{
-                        "scientificName": "Rana palmipes Spix 1824",
-                        "binomialName": "Rana palmipes"
+                        "scientificName": "Rana palmipes Spix 1824"
                     }]
                 }]
             }, {
                 "referencesTaxonomicUnits": [{
                     "scientificNames": [{
-                        "scientificName": "Rana vaillanti Brocchi 1877",
-                        "binomialName": "Rana vaillanti"
+                        "scientificName": "Rana vaillanti Brocchi 1877"
                     }]
                 }]
             }, {
                 "referencesTaxonomicUnits": [{
                     "scientificNames": [{
-                        "scientificName": "Rana bwana Hillis and de Sá 1988",
-                        "binomialName": "Rana bwana"
+                        "scientificName": "Rana bwana Hillis and de Sá 1988"
                     }]
                 }]
             }, {
                 "referencesTaxonomicUnits": [{
                     "scientificNames": [{
-                        "scientificName": "Rana juliani Hillis and de Sá 1988",
-                        "binomialName": "Rana juliani"
+                        "scientificName": "Rana juliani Hillis and de Sá 1988"
                     }]
                 }]
             }]
@@ -1061,15 +1031,13 @@
             "internalSpecifiers": [{
                 "referencesTaxonomicUnits": [{
                     "scientificNames": [{
-                        "scientificName": "Rana tarahumarae Boulenger 1917",
-                        "binomialName": "Rana tarahumarae"
+                        "scientificName": "Rana tarahumarae Boulenger 1917"
                     }]
                 }]
             }, {
                 "referencesTaxonomicUnits": [{
                     "scientificNames": [{
-                        "scientificName": "Rana sierramadrensis Taylor 1939",
-                        "binomialName": "Rana sierramadrensis"
+                        "scientificName": "Rana sierramadrensis Taylor 1939"
                     }]
                 }]
             }]
@@ -1079,15 +1047,13 @@
             "internalSpecifiers": [{
                 "referencesTaxonomicUnits": [{
                     "scientificNames": [{
-                        "scientificName": "Rana tarahumarae Boulenger 1917",
-                        "binomialName": "Rana tarahumarae"
+                        "scientificName": "Rana tarahumarae Boulenger 1917"
                     }]
                 }]
             }, {
                 "referencesTaxonomicUnits": [{
                     "scientificNames": [{
-                        "scientificName": "Rana zweifeli Hillis, Frost and Webb 1984",
-                        "binomialName": "Rana zweifeli"
+                        "scientificName": "Rana zweifeli Hillis, Frost and Webb 1984"
                     }]
                 }]
             }]
@@ -1097,29 +1063,25 @@
             "internalSpecifiers": [{
                 "referencesTaxonomicUnits": [{
                     "scientificNames": [{
-                        "scientificName": "Rana pipiens Schreber 1782",
-                        "binomialName": "Rana pipiens"
+                        "scientificName": "Rana pipiens Schreber 1782"
                     }]
                 }]
             }, {
                 "referencesTaxonomicUnits": [{
                     "scientificNames": [{
-                        "scientificName": "Rana montezumae Baird 1854",
-                        "binomialName": "Rana montezumae"
+                        "scientificName": "Rana montezumae Baird 1854"
                     }]
                 }]
             }, {
                 "referencesTaxonomicUnits": [{
                     "scientificNames": [{
-                        "scientificName": "Rana palustris LeConte 1825",
-                        "binomialName": "Rana palustris"
+                        "scientificName": "Rana palustris LeConte 1825"
                     }]
                 }]
             }, {
                 "referencesTaxonomicUnits": [{
                     "scientificNames": [{
-                        "scientificName": "Rana berlandieri Baird 1854",
-                        "binomialName": "Rana berlandieri"
+                        "scientificName": "Rana berlandieri Baird 1854"
                     }]
                 }]
             }]
@@ -1129,15 +1091,13 @@
             "internalSpecifiers": [{
                 "referencesTaxonomicUnits": [{
                     "scientificNames": [{
-                        "scientificName": "Rana pipiens Schreber 1782",
-                        "binomialName": "Rana pipiens"
+                        "scientificName": "Rana pipiens Schreber 1782"
                     }]
                 }]
             }, {
                 "referencesTaxonomicUnits": [{
                     "scientificNames": [{
-                        "scientificName": "Rana montezumae Baird 1854",
-                        "binomialName": "Rana montezumae"
+                        "scientificName": "Rana montezumae Baird 1854"
                     }]
                 }]
             }]
@@ -1147,23 +1107,20 @@
             "internalSpecifiers": [{
                 "referencesTaxonomicUnits": [{
                     "scientificNames": [{
-                        "scientificName": "Rana montezumae Baird 1854",
-                        "binomialName": "Rana montezumae"
+                        "scientificName": "Rana montezumae Baird 1854"
                     }]
                 }]
             }, {
                 "specifierWillNotMatch": "*Rana megapoda* not present in the current phylogeny",
                 "referencesTaxonomicUnits": [{
                     "scientificNames": [{
-                        "scientificName": "Rana megapoda Taylor 1942",
-                        "binomialName": "Rana megapoda"
+                        "scientificName": "Rana megapoda Taylor 1942"
                     }]
                 }]
             }, {
                 "referencesTaxonomicUnits": [{
                     "scientificNames": [{
-                        "scientificName": "Rana chiricahuensis Platz and Mecham 1979",
-                        "binomialName": "Rana chiricahuensis"
+                        "scientificName": "Rana chiricahuensis Platz and Mecham 1979"
                     }]
                 }]
             }]
@@ -1173,15 +1130,13 @@
             "internalSpecifiers": [{
                 "referencesTaxonomicUnits": [{
                     "scientificNames": [{
-                        "scientificName": "Rana areolata Baird and Girard 1852",
-                        "binomialName": "Rana areolata"
+                        "scientificName": "Rana areolata Baird and Girard 1852"
                     }]
                 }]
             }, {
                 "referencesTaxonomicUnits": [{
                     "scientificNames": [{
-                        "scientificName": "Rana palustris Le Conte 1825",
-                        "binomialName": "Rana palustris"
+                        "scientificName": "Rana palustris Le Conte 1825"
                     }]
                 }]
             }]
@@ -1192,50 +1147,43 @@
                 {
                     "referencesTaxonomicUnits": [{
                         "scientificNames": [{
-                            "scientificName": "Rana berlandieri Baird 1854",
-                            "binomialName": "Rana berlandieri"
+                            "scientificName": "Rana berlandieri Baird 1854"
                         }]
                     }]
                 }, {
                     "referencesTaxonomicUnits": [{
                         "scientificNames": [{
-                            "scientificName": "Rana sphenocephala Cope 1886",
-                            "binomialName": "Rana sphenocephala"
+                            "scientificName": "Rana sphenocephala Cope 1886"
                         }]
                     }]
                 }, {
                     "referencesTaxonomicUnits": [{
                         "scientificNames": [{
-                            "scientificName": "Rana forreri Boulenger 1883",
-                            "binomialName": "Rana forreri"
+                            "scientificName": "Rana forreri Boulenger 1883"
                         }]
                     }]
                 }, {
                     "referencesTaxonomicUnits": [{
                         "scientificNames": [{
-                            "scientificName": "Rana spectabilis Hillis and Frost 1985",
-                            "binomialName": "Rana spectabilis"
+                            "scientificName": "Rana spectabilis Hillis and Frost 1985"
                         }]
                     }]
                 }, {
                     "referencesTaxonomicUnits": [{
                         "scientificNames": [{
-                            "scientificName": "Rana omiltemana Gunther 1900",
-                            "binomialName": "Rana omiltemana"
+                            "scientificName": "Rana omiltemana Gunther 1900"
                         }]
                     }]
                 }, {
                     "referencesTaxonomicUnits": [{
                         "scientificNames": [{
-                            "scientificName": "Rana taylori Smith 1959",
-                            "binomialName": "Rana taylori"
+                            "scientificName": "Rana taylori Smith 1959"
                         }]
                     }]
                 }, {
                     "referencesTaxonomicUnits": [{
                         "scientificNames": [{
-                            "scientificName": "Rana magnaocularis Frost and Bagnara 1976",
-                            "binomialName": "Rana magnaocularis"
+                            "scientificName": "Rana magnaocularis Frost and Bagnara 1976"
                         }]
                     }]
                 }

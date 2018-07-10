@@ -8,7 +8,7 @@
   "scripts": {
     "lint": "eslint \"js/**\" \"examples/**\" --ext .js,.json",
     "pretest": "npm run lint",
-    "test": "echo \"No tests\""
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
@@ -24,10 +24,17 @@
   "homepage": "https://github.com/phyloref/curation-tool#readme",
   "devDependencies": {
     "babel-eslint": "^8.2.3",
+    "chai": "^4.1.2",
     "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.11.0",
     "eslint-plugin-json": "^1.2.0",
-    "eslint-plugin-vue": "^4.5.0"
+    "eslint-plugin-mocha": "^5.0.0",
+    "eslint-plugin-vue": "^4.5.0",
+    "mocha": "^5.2.0"
+  },
+  "dependencies": {
+    "d3": "^5.5.0",
+    "vue": "^2.5.16"
   }
 }
