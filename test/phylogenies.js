@@ -25,7 +25,8 @@ describe('PhylogenyWrapper', function () {
     it('should wrap a blank object', function () {
       assert.isOk(new phyx.PhylogenyWrapper({}));
     });
-
+  });
+  describe('#getNodeLabels', function () {
     it('should be able extract all node labels in a phylogeny', function () {
       const wrapper = new phyx.PhylogenyWrapper({
         newick: '(A, (B, (C, D))E, F, (G, (H, I, J)K, L)M, N)O',

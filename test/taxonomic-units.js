@@ -16,6 +16,8 @@ describe('TaxonomicUnitWrapper', function () {
       assert.exists(wrapper);
       assert.isUndefined(wrapper.label);
     });
+  });
+  describe('#label', function () {
     it('should wrap a taxonomic unit with a scientific name', function () {
       const wrapper = new phyx.TaxonomicUnitWrapper({
         scientificNames: [{
