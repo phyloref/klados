@@ -316,6 +316,9 @@ const vm = new Vue({
       // Before we load a new study, clear the PHYX caches.
       phyxCacheManager.clear();
 
+      // And reset the reasoning results.
+      this.reasoningResults = {};
+
       const testcase = testcaseToLoad;
 
       try {
@@ -726,9 +729,9 @@ const vm = new Vue({
             // we display it next to the node by creating a new 'text' element.
 
             // Make sure we don't already have an internal label node on this SVG node!
-            const label = element.selectAll('.internal-label');
-            if (label.empty()) {
-              const textLabel = element.append('text');
+            let textLabel = element.selectAll('.internal-label');
+            if (textLabel.empty()) {
+              textLabel = element.append('text');
 
               // Place internal label .3em to the right and below the node itself.
               textLabel.classed('internal-label', true)
@@ -746,6 +749,32 @@ const vm = new Vue({
               ) {
                 textLabel.classed('selected-internal-label', true);
               }
+            }
+
+            // If the internal label has the same IRI as the currently selected
+            // phyloreference's reasoned node, further mark it as the resolved node.
+            //
+            // Note that this node might NOT be labeled, in which case we need to
+            // label it now!
+            if (
+              this.selectedPhyloref !== undefined &&
+              hasProperty(data, '@id') &&
+              this.resolvedNodesForPhylogeny(this.selectedPhyloref, phylogeny).includes(data['@id'])
+            ) {
+              // TODO: maybe replace it with a star placed over the node or something.
+              if (textLabel.empty()) {
+                textLabel = element.append('text');
+
+                // Place internal label .3em to the right and below the node itself.
+                textLabel.classed('internal-label', true)
+                  .text('Actual resolution')
+                  .attr('dx', '.3em')
+                  .attr('dy', '.3em');
+
+                // TODO: perfect place to activate some kind of error!
+              }
+
+              textLabel.classed('resolved-internal-label', true);
             }
           }
 

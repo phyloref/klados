@@ -50,6 +50,12 @@
     fill: blue;
 }
 
+/* An additional class for internal nodes that are the resolved node */
+.resolved-internal-label {
+    font-size: 16pt;
+    fill: green;
+}
+
 /*
  * Create a table class for a fixed size body.
  * Based on https://stackoverflow.com/a/23518856/27310
