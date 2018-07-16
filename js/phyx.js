@@ -688,6 +688,26 @@ class PhylogenyWrapper {
     });
   }
 
+  getParsedNewickWithIRIs(baseURI) {
+    // Return the parsed Newick string, but with EVERY node given an IRI.
+    // baseURI: The base URI to use for node elements (e.g. ':phylogeny1').
+
+    const { newick = '()' } = this.phylogeny;
+    const parsed = d3.layout.newick_parser(newick);
+    if (hasOwnProperty(parsed, 'json')) {
+      PhylogenyWrapper.recurseNodes(parsed.json, (node, nodeCount) => {
+        // Start with the additional node properties.
+        const nodeAsJSONLD = node;
+
+        // Set @id and @type.
+        const nodeURI = `${baseURI}_node${nodeCount}`;
+        nodeAsJSONLD['@id'] = nodeURI;
+      });
+    }
+
+    return parsed;
+  }
+
   getNodesAsJSONLD(baseURI) {
     // Returns a list of all nodes in this phylogeny as a series of nodes.
     // baseURI: The base URI to use for node elements (e.g. ':phylogeny1').
@@ -700,18 +720,19 @@ class PhylogenyWrapper {
     const nodeIdsByParentId = {};
 
     // Extract the newick string.
-    const { newick = '()', additionalNodeProperties } = this.phylogeny;
+    const { additionalNodeProperties } = this.phylogeny;
 
     // Parse the Newick string; if parseable, recurse through the nodes,
     // added them to the list of JSON-LD nodes as we go.
-    const parsed = d3.layout.newick_parser(newick);
+
+    const parsed = this.getParsedNewickWithIRIs(baseURI);
     if (hasOwnProperty(parsed, 'json')) {
       PhylogenyWrapper.recurseNodes(parsed.json, (node, nodeCount, parentCount) => {
         // Start with the additional node properties.
         const nodeAsJSONLD = {};
 
-        // Set @id and @type.
-        const nodeURI = `${baseURI}_node${nodeCount}`;
+        // Set @id and @type. '@id' should already be set by getParsedNewickWithIRIs()!
+        const nodeURI = node['@id'];
         nodeAsJSONLD['@id'] = nodeURI;
         nodeAsJSONLD['@type'] = 'http://purl.obolibrary.org/obo/CDAO_0000140';
 

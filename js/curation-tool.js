@@ -693,7 +693,6 @@ const vm = new Vue({
 
       // Extract the Newick string to render.
       const phylogeny = phylogenyToRender;
-      const { newick = '()' } = phylogeny;
 
       // Using Phylotree is a four step process:
       //  1. You use d3.layout.phyloref() to create a tree object, which you
@@ -777,7 +776,8 @@ const vm = new Vue({
             }
           }
         });
-      tree(d3.layout.newick_parser(newick));
+      const countPhylogeny = this.testcase.phylogenies.indexOf(phylogeny) + 1;
+      tree(new PhylogenyWrapper(phylogeny).getParsedNewickWithIRIs(`http://example.org/produced_by_curation_tool#phylogeny${countPhylogeny}`));
 
       // Phylotree supports reading the tree back out as Newick, but their Newick
       // representation doesn't annotate internal nodes. We add a method to allow
@@ -804,8 +804,15 @@ const vm = new Vue({
         // be changed, which should cause Vue.js to cause the tree to be
         // re-rendered.
         const node = nodeLCV;
+        const nodeID = hasProperty(node, '@id') ? node['@id'] : '(none)';
         const label = node.name;
         const isNodeLabeled = (label !== undefined && label.trim() !== '');
+
+        d3.layout.phylotree.add_custom_menu(
+          node,
+          () => `Node IRI: ${nodeID}`,
+          () => {},
+        );
 
         d3.layout.phylotree.add_custom_menu(
           node,
