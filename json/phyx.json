@@ -85,27 +85,27 @@
 
         "hasSpecifier": {
             "@id": "testcase:has_specifier",
-            "@type": "@set"
+            "@container": "@set"
         },
 
         "hasInternalSpecifier": {
             "@id": "testcase:has_internal_specifier",
-            "@type": "@set"
+            "@container": "@set"
         },
 
         "hasExternalSpecifier": {
             "@id": "testcase:has_external_specifier",
-            "@type": "@set"
+            "@container": "@set"
         },
 
         "hasUnmatchedSpecifiers": {
             "@id": "testcase:has_unmatched_specifier",
-            "@type": "@set"
+            "@container": "@set"
         },
 
         "hasAdditionalClass": {
             "@id": "testcase:has_additional_class",
-            "@type": "@set"
+            "@container": "@set"
         },
 
         "newick": {
@@ -177,17 +177,17 @@
 
         "externalReferences": {
             "@id": "obo:CDAO_0000164",
-            "@type": "@set"
+            "@container": "@set"
         },
 
         "scientificNames": {
             "@id": "testcase:has_scientific_name",
-            "@type": "@set"
+            "@container": "@set"
         },
 
         "includesSpecimens": {
             "@id": "testcase:includes_specimen",
-            "@type": "@set"
+            "@container": "@set"
         }
     }, {
         "_comments": {
@@ -232,33 +232,33 @@
 
         "hasTaxonomicUnitMatches": {
             "@id": "testcase:has_taxonomic_unit_match",
-            "@type": "@set"
+            "@container": "@set"
         },
 
         "referencesTaxonomicUnits": {
             "@id": "testcase:references_taxonomic_unit",
             "domain": "Specifier",
             "range": "TU",
-            "@type": "@set"
+            "@container": "@set"
         },
 
         "matchesTaxonomicUnits": {
             "@id": "testcase:matches_taxonomic_unit",
             "domain": "TUMatch",
             "range": "TU",
-            "@type": "@set"
+            "@container": "@set"
         },
 
         "representsTaxonomicUnits": {
             "@id": "obo:CDAO_0000187",
             "domain": "Node",
             "range": "TU",
-            "@type": "@set"
+            "@container": "@set"
         },
 
         "specifierWillNotMatch": {
             "@id": "testcase:specifier_will_not_match",
-            "@type": "@set"
+            "@container": "@set"
         }
     }, {
         "_comments": {
