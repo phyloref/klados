@@ -1364,7 +1364,7 @@ class PHYXWrapper {
       jsonld['@context'] = 'http://www.ggvaidya.com/curation-tool/json/phyx.json';
     }
 
-    return JSON.stringify([jsonld], undefined, 4);
+    return jsonld;
   }
 }
 

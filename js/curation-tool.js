@@ -152,6 +152,9 @@ const vm = new Vue({
 
     // Example PHYX URLs to display
     examplePHYXURLs,
+
+    // Reasoning results from JPhyloRef
+    reasoningResults: {},
   },
 
   // Computed values inside the data model.
@@ -353,7 +356,7 @@ const vm = new Vue({
       // system -- eventually, we'll rename it to downloadAsJSON and make it
       // export the PHYX file for download.
       const wrapped = new PHYXWrapper(this.testcase);
-      const content = [wrapped.asJSONLD()];
+      const content = [JSON.stringify([wrapped.asJSONLD()], undefined, 4)];
 
       // Save to local hard drive.
       const jsonldFile = new File(content, 'download.json', { type: 'application/json;charset=utf-8' });
@@ -1041,6 +1044,19 @@ const vm = new Vue({
       });
 
       return nodeLabelsWithPrefix;
+    },
+
+    // Reasoning over phyloreferences
+    reasonOverPhyloreferences() {
+      // Reason over all the phyloreferences and store the results on
+      // the Vue model so we can.
+
+      $.post('http://localhost:8080/reason', {
+        jsonld: JSON.stringify([new PHYXWrapper(this.testcase).asJSONLD()], undefined, 4),
+      }).done((data) => {
+        this.reasoningResults = data;
+        console.log('Data retrieved: ', data);
+      });
     },
   },
 });
