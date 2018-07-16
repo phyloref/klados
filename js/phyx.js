@@ -713,7 +713,7 @@ class PhylogenyWrapper {
         // Set @id and @type.
         const nodeURI = `${baseURI}_node${nodeCount}`;
         nodeAsJSONLD['@id'] = nodeURI;
-        nodeAsJSONLD['@type'] = { '@id': 'http://purl.obolibrary.org/obo/CDAO_0000140' };
+        nodeAsJSONLD['@type'] = 'http://purl.obolibrary.org/obo/CDAO_0000140';
 
         // Add labels, additional node properties and taxonomic units.
         if (hasOwnProperty(node, 'name') && node.name !== '') {
@@ -736,7 +736,7 @@ class PhylogenyWrapper {
             const tunit = tunitToChange;
 
             tunit['@id'] = `${nodeURI}_taxonomicunit${countTaxonomicUnits}`;
-            tunit['@type'] = { '@id': 'http://purl.obolibrary.org/obo/CDAO_0000138' };
+            tunit['@type'] = 'http://purl.obolibrary.org/obo/CDAO_0000138';
             countTaxonomicUnits += 1;
           });
         }
@@ -981,7 +981,7 @@ class PhylorefWrapper {
           const tunit = tunitToChange;
 
           tunit['@id'] = `${specifierId}_tunit${countTaxonomicUnits}`;
-          tunit['@type'] = { '@id': 'http://purl.obolibrary.org/obo/CDAO_0000138' };
+          tunit['@type'] = 'http://purl.obolibrary.org/obo/CDAO_0000138';
           countTaxonomicUnits += 1;
         });
       }
@@ -1006,7 +1006,7 @@ class PhylorefWrapper {
           const tunit = tunitToChange;
 
           tunit['@id'] = `${specifierId}_tunit${countTaxonomicUnits}`;
-          tunit['@type'] = { '@id': 'http://purl.obolibrary.org/obo/CDAO_0000138' };
+          tunit['@type'] = 'http://purl.obolibrary.org/obo/CDAO_0000138';
           countTaxonomicUnits += 1;
         });
       }
