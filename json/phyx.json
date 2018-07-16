@@ -3,6 +3,7 @@
         "xsd": "http://www.w3.org/2001/XMLSchema#"
     }, {
         "_comments": {
+          "@id": "rdfs:comment",
           "_comments": "TOP-LEVEL DOCUMENT PROPERTIES"
         },
 
@@ -31,6 +32,7 @@
         }
     }, {
         "_comments": {
+          "@id": "rdfs:comment",
           "_comments": "Management of nodes and internode relationships"
         },
 
@@ -57,6 +59,7 @@
         }
     }, {
         "_comments": {
+          "@id": "rdfs:comment",
           "_comments": "CDAO and Phyloref properties"
         },
 
@@ -119,6 +122,7 @@
         }
     }, {
         "_comments": {
+          "@id": "rdfs:comment",
           "_comments": "LOW-LEVEL RDF/RDFS/OWL TERMS"
         },
 
@@ -141,6 +145,7 @@
         }
     }, {
         "_comments": {
+          "@id": "rdfs:comment",
           "_comments": "GLUE TO RENDER ONTOLOGY IN RDF"
         },
 
@@ -191,6 +196,7 @@
         }
     }, {
         "_comments": {
+          "@id": "rdfs:comment",
           "_comments": "Properties of individual TUs: scientific name and specimens"
         },
 
@@ -262,6 +268,7 @@
         }
     }, {
         "_comments": {
+          "@id": "rdfs:comment",
           "_comments": "TERMS FROM THE ANNOTATION ONTOLOGY"
         },
 
@@ -288,6 +295,7 @@
         }
     }, {
         "_comments": {
+          "@id": "rdfs:comment",
           "_comments": "TERMS FROM THE PUBLISHING STATUS ONTOLOGY AND RELATED"
         },
 
