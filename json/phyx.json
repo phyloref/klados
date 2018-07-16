@@ -1,8 +1,11 @@
 {
-    "@context": {
-        "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "@context": [{
+        "xsd": "http://www.w3.org/2001/XMLSchema#"
+    }, {
+        "_comments": {
+          "_comments": "TOP-LEVEL DOCUMENT PROPERTIES"
+        },
 
-        "== TOP-LEVEL DOCUMENT PROPERTIES ==": {},
         "ot": "http://purl.org/opentree/nexson#",
 
         "curator": {
@@ -25,9 +28,12 @@
         "year": {
             "@id": "ot:studyYear",
             "@type": "xsd:integer"
+        }
+    }, {
+        "_comments": {
+          "_comments": "Management of nodes and internode relationships"
         },
 
-        "== Management of nodes and internode relationships ==": {},
         "testcase": "http://vocab.phyloref.org/phyloref/testcase.owl#",
 
         "nodes": {
@@ -48,9 +54,12 @@
         "phylogenies": {
             "@id": "testcase:has_phylogeny",
             "@container": "@set"
+        }
+    }, {
+        "_comments": {
+          "_comments": "CDAO and Phyloref properties"
         },
 
-        "== CDAO and Phyloref properties ==": {},
         "obo": "http://purl.obolibrary.org/obo/",
         "phyloref": "http://phyloinformatics.net/phyloref.owl#",
 
@@ -107,9 +116,12 @@
         "cladeDefinition": {
             "@id": "testcase:clade_definition",
             "@type": "xsd:string"
+        }
+    }, {
+        "_comments": {
+          "_comments": "LOW-LEVEL RDF/RDFS/OWL TERMS"
         },
 
-        "== LOW-LEVEL RDF/RDFS/OWL TERMS ==": {},
         "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
 
         "label": {
@@ -126,9 +138,12 @@
         "comment": {
             "@id": "rdfs:comment",
             "@type": "xsd:string"
+        }
+    }, {
+        "_comments": {
+          "_comments": "GLUE TO RENDER ONTOLOGY IN RDF"
         },
 
-        "== GLUE TO RENDER ONTOLOGY IN RDF ==": {},
         "owl": "http://www.w3.org/2002/07/owl#",
 
         "owl:imports": {
@@ -173,12 +188,13 @@
         "includesSpecimens": {
             "@id": "testcase:includes_specimen",
             "@type": "@set"
+        }
+    }, {
+        "_comments": {
+          "_comments": "Properties of individual TUs: scientific name and specimens"
         },
 
-        "== Properties of individual TUs ==": {},
         "dwc": "http://rs.tdwg.org/dwc/terms/",
-
-        "=== Scientific names ===": {},
 
         "scientificName": {
             "@id": "dwc:scientificName",
@@ -196,8 +212,6 @@
             "@id": "dwc:specificEpithet",
             "@type": "xsd:string"
         },
-
-        "=== Specimen identifiers ===": {},
 
         "occurrenceID": "dwc:occurrenceID",
         "catalogNumber": "dwc:catalogNumber",
@@ -245,10 +259,11 @@
         "specifierWillNotMatch": {
             "@id": "testcase:specifier_will_not_match",
             "@type": "@set"
+        }
+    }, {
+        "_comments": {
+          "_comments": "TERMS FROM THE ANNOTATION ONTOLOGY"
         },
-
-
-        "== TERMS FROM THE ANNOTATION ONTOLOGY ==": {},
 
         "oa": "http://www.w3.org/ns/oa#",
 
@@ -270,12 +285,14 @@
         "annotationBody": {
             "@id": "oa:hasBody",
             "@type": "xsd:string"
+        }
+    }, {
+        "_comments": {
+          "_comments": "TERMS FROM THE PUBLISHING STATUS ONTOLOGY AND RELATED"
         },
-
-        "== TERMS FROM THE PUBLISHING STATUS ONTOLOGY AND RELATED ==": {},
 
         "pso": "http://purl.org/spar/pso/",
         "tvc": "http://www.essepuntato.it/2012/04/tvc/",
         "timeinterval": "http://www.ontologydesignpatterns.org/cp/owl/timeinterval.owl#"
-    }
+    }]
 }
