@@ -1051,12 +1051,33 @@ const vm = new Vue({
       // Reason over all the phyloreferences and store the results on
       // the Vue model so we can.
 
+      $('.reason-over-phylorefs').html('(reasoning)');
+      $('.reason-over-phylorefs').prop('disabled', true);
       $.post('http://localhost:8080/reason', {
         jsonld: JSON.stringify([new PHYXWrapper(this.testcase).asJSONLD()], undefined, 4),
       }).done((data) => {
         this.reasoningResults = data;
         console.log('Data retrieved: ', data);
+      }).always(() => {
+        $('.reason-over-phylorefs').prop('disabled', false);
+        $('.reason-over-phylorefs').html('Reason');
       });
+    },
+
+    resolvedNodesForPhylogeny(phyloref, phylogeny) {
+      const phylorefCount = this.testcase.phylorefs.indexOf(phyloref) + 1;
+      const phylorefIRI = `http://example.org/produced_by_curation_tool#phyloref${phylorefCount}`;
+
+      // console.log('Looking up phylorefIRI ', phylorefIRI, ' in ', this.reasoningResults);
+      if (!hasProperty(this.reasoningResults, 'phylorefs') || !hasProperty(this.reasoningResults.phylorefs, phylorefIRI)) return [];
+      const nodesResolved = this.reasoningResults.phylorefs[phylorefIRI];
+
+      // To make a list of resolved nodes, let's remove the phylogenyIRI from each node.
+      const phylogenyCount = this.testcase.phylogenies.indexOf(phylogeny) + 1;
+      const phylogenyIRI = `http://example.org/produced_by_curation_tool#phylogeny${phylogenyCount}`;
+
+      // Only return nodes that are part of this phylogeny.
+      return nodesResolved.filter(iri => iri.includes(phylogenyIRI));
     },
   },
 });
