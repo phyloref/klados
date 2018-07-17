@@ -724,12 +724,12 @@ const vm = new Vue({
           // - data: The data associated with the node being styled
           const wrappedPhylogeny = new PhylogenyWrapper(phylogeny);
 
-          if (hasProperty(data, 'name') && data.children) {
+          // Make sure we don't already have an internal label node on this SVG node!
+          let textLabel = element.selectAll('.internal-label');
+
+          if (hasProperty(data, 'name') && data.name !== '' && data.children) {
             // If the node has a label and has children (i.e. is an internal node),
             // we display it next to the node by creating a new 'text' element.
-
-            // Make sure we don't already have an internal label node on this SVG node!
-            let textLabel = element.selectAll('.internal-label');
             if (textLabel.empty()) {
               textLabel = element.append('text');
 
@@ -750,32 +750,33 @@ const vm = new Vue({
                 textLabel.classed('selected-internal-label', true);
               }
             }
+          }
 
-            // If the internal label has the same IRI as the currently selected
-            // phyloreference's reasoned node, further mark it as the resolved node.
-            //
-            // Note that this node might NOT be labeled, in which case we need to
-            // label it now!
-            if (
-              this.selectedPhyloref !== undefined &&
-              hasProperty(data, '@id') &&
-              this.resolvedNodesForPhylogeny(this.selectedPhyloref, phylogeny).includes(data['@id'])
-            ) {
-              // TODO: maybe replace it with a star placed over the node or something.
-              if (textLabel.empty()) {
-                textLabel = element.append('text');
+          // If the internal label has the same IRI as the currently selected
+          // phyloreference's reasoned node, further mark it as the resolved node.
+          //
+          // Note that this node might NOT be labeled, in which case we need to
+          // label it now!
+          if (
+            this.selectedPhyloref !== undefined &&
+            hasProperty(data, '@id') &&
+            this.resolvedNodesForPhylogeny(this.selectedPhyloref, phylogeny).includes(data['@id'])
+          ) {
+            // TODO: maybe replace it with a star placed over the node or something.
+            // That would work for terminal nodes as well!
+            if (textLabel.empty()) {
+              textLabel = element.append('text');
 
-                // Place internal label .3em to the right and below the node itself.
-                textLabel.classed('internal-label', true)
-                  .text('Actual resolution')
-                  .attr('dx', '.3em')
-                  .attr('dy', '.3em');
+              // Place internal label .3em to the right and below the node itself.
+              textLabel.classed('internal-label', true)
+                .text('Phyloref resolution')
+                .attr('dx', '.3em')
+                .attr('dy', '.3em');
 
-                // TODO: perfect place to activate some kind of error!
-              }
-
-              textLabel.classed('resolved-internal-label', true);
+              // TODO: perfect place to activate some kind of error!
             }
+
+            textLabel.classed('resolved-internal-label', true);
           }
 
           if (data.name !== undefined && data.children === undefined) {
