@@ -52,7 +52,7 @@
 
         "== CDAO and Phyloref properties ==": {},
         "obo": "http://purl.obolibrary.org/obo/",
-        "phyloref": "http://phyloinformatics.net/phyloref.owl#",
+        "phyloref": "http://ontology.phyloref.org/phyloref.owl#",
 
         "children": {
             "@id": "obo:CDAO_0000149",

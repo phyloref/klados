@@ -807,7 +807,7 @@ class PhylogenyWrapper {
 // We need some OWL constants for this.
 const CDAO_HAS_CHILD = 'obo:CDAO_0000149';
 const CDAO_HAS_DESCENDANT = 'obo:CDAO_0000174';
-const PHYLOREF_HAS_SIBLING = 'http://phyloinformatics.net/phyloref.owl#has_Sibling';
+const PHYLOREF_HAS_SIBLING = 'http://ontology.phyloref.org/phyloref.owl#has_Sibling';
 const PHYLOREFERENCE_TEST_CASE = 'testcase:PhyloreferenceTestCase';
 const PHYLOREFERENCE_PHYLOGENY = 'testcase:PhyloreferenceTestPhylogeny';
 const TESTCASE_SPECIFIER = 'testcase:Specifier';
@@ -1350,16 +1350,15 @@ class PHYXWrapper {
     jsonld['owl:imports'] = [
       'https://raw.githubusercontent.com/phyloref/curation-workflow/develop/ontologies/phyloref_testcase.owl',
       // - Will become 'http://vocab.phyloref.org/phyloref/testcase.owl'
-      'https://raw.githubusercontent.com/phyloref/phyloref-ontology/master/phyloref.owl',
-      // - Will become 'http://phyloinformatics.net/phyloref.owl'
+      'https://ontology.phyloref.org/phyloref.owl',
+      // - Phyloreferencing Ontology
       'http://purl.obolibrary.org/obo/bco.owl',
       // - Contains OWL definitions for Darwin Core terms
     ];
 
     // If the '@context' is missing, add it here.
     if (!hasOwnProperty(jsonld, '@context')) {
-      // TODO: replace with 'http://phyloref.org/' once we have a copy there.
-      jsonld['@context'] = 'http://www.ggvaidya.com/curation-tool/json/phyx.json';
+      jsonld['@context'] = 'https://www.phyloref.org/curation-tool/json/phyx.json';
     }
 
     return JSON.stringify([jsonld], undefined, 4);
