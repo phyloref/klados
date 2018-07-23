@@ -1083,7 +1083,7 @@ const vm = new Vue({
 
       $('.reason-over-phylorefs').html('(reasoning)');
       $('.reason-over-phylorefs').prop('disabled', true);
-      $.post('http://localhost:8080/reason', {
+      $.post('http://localhost:34214/reason', {
         jsonld: JSON.stringify([new PHYXWrapper(this.testcase).asJSONLD()], undefined, 4),
       }).done((data) => {
         this.reasoningResults = data;
