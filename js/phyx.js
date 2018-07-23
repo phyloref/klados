@@ -569,9 +569,19 @@ class PhylogenyWrapper {
 
   static recurseNodes(node, func, nodeCount = 0, parentCount = undefined) {
     // Recurse through PhyloTree nodes, executing function on each node.
-    // Function is given two arguments:
-    //  - The current node
-    //  - The parent node (or undefined if not defined)
+    //  - node: The node to recurse from. The function will be called on node
+    //          *before* being called on its children.
+    //  - func: The function to call on `node` and all of its children.
+    //  - nodeCount: `node` will be called with this nodeCount. All of its
+    //          children will be called with consecutively increasing nodeCounts.
+    //  - parentCount: The nodeCount associated with the parent of this node
+    //          within this run of recurseNodes. For instance, immediate children
+    //          of `node` will have a parentCount of 0. By default, `node` itself
+    //          will have a parentCount of `undefined`.
+    // When the function `func` is called, it is given three arguments:
+    //  - The current node object (initially: `node`)
+    //  - The count of the current node object (initially: `nodeCount`)
+    //  - The parent count of the current node object (initially: `parentCount`)
     func(node, nodeCount, parentCount);
 
     let nextID = nodeCount + 1;
@@ -593,6 +603,16 @@ class PhylogenyWrapper {
 
   getTaxonomicUnits(nodeType = 'both') {
     // Return a list of all taxonomic units in this phylogeny.
+    // Node labels will be extracted from:
+    //  - internal nodes only (if nodeType == 'internal')
+    //  - terminal nodes only (if nodeType == 'terminal')
+    //  - both internal and terminal nodes (if nodeType == 'both')
+    //
+    // See `getTaxonomicUnitsForNodeLabel` to see how node labels are converted
+    // into node labels, but in brief:
+    //  1. We look for taxonomic units in the additionalNodeProperties.
+    //  2. If none are found, we attempt to parse the node label as a scientific name.
+    //
     const nodeLabels = this.getNodeLabels(nodeType);
     const tunits = new Set();
 
@@ -603,10 +623,7 @@ class PhylogenyWrapper {
   }
 
   getNodeLabels(nodeType = 'both') {
-    // Return a list of all the node labels in a phylogeny. These
-    // node labels come from two sources:
-    //  1. We look for node names in the Newick string.
-    //  2. We look for node names in the additionalNodeProperties.
+    // Return a list of all the node labels in a phylogeny.
     //
     // nodeType can be one of:
     // - 'internal': Return node labels on internal nodes.
@@ -690,7 +707,7 @@ class PhylogenyWrapper {
 
   getNodesAsJSONLD(baseURI) {
     // Returns a list of all nodes in this phylogeny as a series of nodes.
-    // baseURI: The base URI to use for node elements (e.g. ':phylogeny1').
+    // - baseURI: The base URI to use for node elements (e.g. ':phylogeny1').
 
     // List of nodes we have identified.
     const nodes = [];
@@ -717,7 +734,7 @@ class PhylogenyWrapper {
 
         // Add labels, additional node properties and taxonomic units.
         if (hasOwnProperty(node, 'name') && node.name !== '') {
-          // Add labels.
+          // Add node label.
           nodeAsJSONLD.labels = [node.name];
 
           // Add additional node properties, if any.
@@ -951,7 +968,7 @@ class PhylorefWrapper {
 
   exportAsJSONLD(phylorefURI) {
     // Keep all currently extant data.
-    //  baseURI: the base URI for this phyloreference
+    // - baseURI: the base URI for this phyloreference
     const phylorefAsJSONLD = JSON.parse(JSON.stringify(this.phyloref));
 
     // Set the @id and @type.
@@ -1236,9 +1253,10 @@ class PHYXWrapper {
     //
     const jsonld = jQuery.extend(true, {}, this.phyx);
 
+    // Base URI for all exports from PHYXWrapper.
     const baseURI = 'http://example.org/produced_by_curation_tool';
 
-    // Convert phylogenies into a node-based description.
+    // Add descriptions for individual nodes in each phylogeny.
     if (hasOwnProperty(jsonld, 'phylogenies')) {
       let countPhylogeny = 0;
       jsonld.phylogenies.forEach((phylogenyToChange) => {
@@ -1277,6 +1295,7 @@ class PHYXWrapper {
     if (hasOwnProperty(jsonld, 'phylorefs') && hasOwnProperty(jsonld, 'phylogenies')) {
       jsonld.hasTaxonomicUnitMatches = [];
 
+      // Used to create unique identifiers for each taxonomic unit match.
       let countTaxonomicUnitMatches = 0;
 
       jsonld.phylorefs.forEach((phylorefToChange) => {
