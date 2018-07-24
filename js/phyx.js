@@ -1008,7 +1008,7 @@ class PhylorefWrapper {
 
       // Return result object
       return {
-        status: statusCURIE,
+        statusCURIE,
         statusInEnglish: PhylorefWrapper.getStatusCURIEsInEnglish()[statusCURIE],
         intervalStart,
         intervalEnd,
@@ -1017,7 +1017,7 @@ class PhylorefWrapper {
 
     // If we couldn't figure out a status for this phyloref, assume it's a draft.
     return {
-      status: 'pso:draft',
+      statusCURIE: 'pso:draft',
       statusInEnglish: PhylorefWrapper.getStatusCURIEsInEnglish()['pso:draft'],
     };
   }

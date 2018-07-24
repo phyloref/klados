@@ -476,13 +476,13 @@ const vm = new Vue({
     getPhylorefStatusChanges(phyloref) {
       return new PhylorefWrapper(phyloref).getStatusChanges();
     },
-    setPhylorefStatus(phyloref, status) {
-      if (!this.hasProperty(PhylorefWrapper.getStatusCURIEsInEnglish(), status)) {
-        this.alert(`Status '${status}' is not a possible status for a Phyloreference`);
+    setPhylorefStatus(phyloref, statusCURIE) {
+      if (!this.hasProperty(PhylorefWrapper.getStatusCURIEsInEnglish(), statusCURIE)) {
+        this.alert(`Status '${statusCURIE}' is not a possible status for a Phyloreference`);
         return;
       }
 
-      new PhylorefWrapper(phyloref).setStatus(status);
+      new PhylorefWrapper(phyloref).setStatus(statusCURIE);
     },
     getPhylorefLabel(phyloref) {
       // Try to determine what the label of a particular phyloreference is,

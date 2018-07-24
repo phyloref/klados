@@ -133,7 +133,7 @@ describe('PhylorefWrapper', function () {
       const wrapper = new phyx.PhylorefWrapper({});
 
       // Initially, an empty phyloref should report a status of 'pso:draft'.
-      assert.equal(wrapper.getCurrentStatus().status, 'pso:draft');
+      assert.equal(wrapper.getCurrentStatus().statusCURIE, 'pso:draft');
 
       // Let's try updating a bunch of status.
       wrapper.setStatus('pso:final-draft');
