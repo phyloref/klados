@@ -1059,6 +1059,11 @@ class PhylorefWrapper {
   setStatus(status) {
     // Set the status of a phyloreference
     //
+    // Check whether we have a valid status CURIE.
+    if (!hasOwnProperty(PhylorefWrapper.getStatusCURIEsInEnglish(), status)) {
+      throw new TypeError(`setStatus() called with invalid status CURIE '${status}'`);
+    }
+
     // See if we can end the previous interval.
     const currentTime = new Date(Date.now()).toISOString();
 

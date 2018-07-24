@@ -6,6 +6,9 @@
 
 global.Vue = require('vue');
 
+// Load moment as a global variable so it can be accessed by phyx.js.
+global.moment = require('moment');
+
 // Load d3 as a global variable so it can be accessed by both phylotree.js (which
 // needs to add additional objects to it) and phyx (which needs to call it).
 global.d3 = require('d3');
@@ -123,5 +126,34 @@ describe('PhylorefWrapper', function () {
         ['Test'],
       );
     });
+  });
+
+  describe('#statuses', function () {
+    const wrapper = new phyx.PhylorefWrapper({});
+
+    // Initially, an empty phyloref should report a status of 'pso:draft'.
+    assert.equal(wrapper.getCurrentStatus().status, 'pso:draft');
+
+    // Let's try updating a bunch of status.
+    wrapper.setStatus('pso:final-draft');
+    wrapper.setStatus('pso:under-review');
+    wrapper.setStatus('pso:submitted');
+    wrapper.setStatus('pso:published');
+    wrapper.setStatus('pso:retracted-from-publication');
+    assert.throws(
+      function () { wrapper.setStatus('pso:retracted-from_publication'); },
+      TypeError,
+      'setStatus() called with invalid status CURIE \'pso:retracted-from_publication\'',
+      'PhylorefWrapper throws TypeError on a mistyped status',
+    );
+
+    // And see if we get the statuses back in the correct order.
+    const statusChanges = wrapper.getStatusChanges();
+    assert.equal(statusChanges.length, 5);
+    assert.equal(statusChanges[0].statusCURIE, 'pso:final-draft');
+    assert.equal(statusChanges[1].statusCURIE, 'pso:under-review');
+    assert.equal(statusChanges[2].statusCURIE, 'pso:submitted');
+    assert.equal(statusChanges[3].statusCURIE, 'pso:published');
+    assert.equal(statusChanges[4].statusCURIE, 'pso:retracted-from-publication');
   });
 });
