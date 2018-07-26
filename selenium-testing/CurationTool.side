@@ -1,0 +1,62 @@
+{
+  "id": "e46e4615-e508-4d3b-bdbb-b5c2b2ff0015",
+  "name": "CurationTool",
+  "url": "http://www.phyloref.org",
+  "tests": [{
+    "id": "c7b9f0e8-85a0-423c-b795-ff6e761339fb",
+    "name": "Switch demos",
+    "commands": [{
+      "id": "84c4d3b0-42f0-447b-b1a2-82fd4ec0f761",
+      "comment": "",
+      "command": "open",
+      "target": "/curation-tool/",
+      "value": ""
+    }, {
+      "id": "71699d29-8710-4500-be97-3d884225a86b",
+      "comment": "",
+      "command": "clickAt",
+      "target": "//button[@type='button']",
+      "value": "309,18"
+    }, {
+      "id": "e626e80a-fc4b-4eb9-9f8d-ddcc66f5ef63",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "//button[@type='button']",
+      "value": ""
+    }, {
+      "id": "a30b1d4f-fa9b-4f9a-8285-5a8e4c6b849b",
+      "comment": "",
+      "command": "mouseOut",
+      "target": "//button[@type='button']",
+      "value": ""
+    }, {
+      "id": "3bb95ccc-429e-472b-a189-7509ad3cf1c7",
+      "comment": "",
+      "command": "clickAt",
+      "target": "css=li > a",
+      "value": "128,15"
+    }, {
+      "id": "a90cc2f2-1d9b-447d-85c4-1d6f3048080a",
+      "comment": "",
+      "command": "clickAt",
+      "target": "xpath=(//a[contains(text(),'Albifolium')])[2]",
+      "value": "59,25"
+    }, {
+      "id": "30297a8c-91eb-44bd-b6db-f04377966004",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=text.internal-label.selected-internal-label",
+      "value": "Albifolium"
+    }]
+  }],
+  "suites": [{
+    "id": "da49202b-01b5-4e3a-9cac-989c37c04ef0",
+    "name": "Default Suite",
+    "parallel": false,
+    "timeout": 300,
+    "tests": []
+  }],
+  "urls": ["http://www.phyloref.org/"],
+  "plugins": [],
+  "version": "1.0"
+}
