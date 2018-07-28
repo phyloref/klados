@@ -200,10 +200,15 @@
                 </div>
                 <div class="panel-body">
                   <template v-if="editingAnnotationsForPhylogeny !== phylogeny">
-                    <svg
-                      width="100%"
-                      :id="'phylogeny-svg-' + phylogenyIndex"
-                      :alt="getPhylogenyAsNewick('#phylogeny-svg-' + phylogenyIndex, phylogeny)"></svg>
+                    <template v-for="(error, errorIndex) of getPhylogenyParsingErrors(phylogeny)">
+                      <p><strong>{{error.heading}}.</strong> {{error.message}}</p>
+                    </template>
+                    <template v-if="getPhylogenyParsingErrors(phylogeny).length === 0">
+                      <svg
+                        width="100%"
+                        :id="'phylogeny-svg-' + phylogenyIndex"
+                        :alt="getPhylogenyAsNewick('#phylogeny-svg-' + phylogenyIndex, phylogeny)"></svg>
+                    </template>
                   </template>
                   <template v-else>
                         <p>This table displays all labeled nodes in this phylogeny and all known annotations

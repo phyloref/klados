@@ -682,6 +682,22 @@ const vm = new Vue({
       // console.log(`Additional node properties for '${nodeLabelToToggle}'`,
       // phylogeny.additionalNodeProperties[nodeLabelToToggle]);
     },
+    getPhylogenyParsingErrors(phylogeny) {
+      // Return a list of errors encountered when parsing this phylogeny.
+      const { newick = '()' } = phylogeny;
+      const newickTrimmed = newick.trim();
+
+      if (newickTrimmed === '' || newickTrimmed === '()' || newickTrimmed === '();') {
+        return [{
+          heading: 'No phylogeny entered',
+          message: 'Click on "Edit as Newick" to enter a phylogeny below.',
+        }];
+      }
+
+      // TODO: identify more Newick parsing errors.
+
+      return [];
+    },
     getPhylogenyAsNewick(nodeExpr, phylogeny) {
       // Returns the phylogeny as a Newick string. Since this method is
       // called frequently in rendering the "Edit as Newick" textareas,
