@@ -153,6 +153,10 @@ const vm = new Vue({
     // Display one of the two dropdown menus for the specifiers.
     dropdownTargetForSpecifier: 'none',
 
+    // Store spacing information on phylogenies.
+    phylogenySpacingX: {},
+    phylogenySpacingY: {},
+
     // Example PHYX URLs to display
     examplePHYXURLs,
     CURATION_TOOL_VERSION,
@@ -346,6 +350,10 @@ const vm = new Vue({
         this.selectedPhyloref = undefined;
         this.selectedSpecifier = undefined;
         this.selectedTUnit = undefined;
+
+        // Reset phylogeny scaling information.
+        this.phylogenySpacingX = {};
+        this.phylogenySpacingY = {};
       } catch (err) {
         throw new Error(`Error occurred while displaying new testcase: ${err}`);
       }
@@ -893,12 +901,12 @@ const vm = new Vue({
       });
 
       // Obtain phylogeny spacing_x and spacing_y values.
-      if (!this.hasProperty(phylogeny, 'spacing_x')) Vue.set(phylogeny, 'spacing_x', 20);
-      if (!this.hasProperty(phylogeny, 'spacing_y')) Vue.set(phylogeny, 'spacing_y', 40);
+      if (!this.hasProperty(this.phylogenySpacingX, phylogeny)) Vue.set(this.phylogenySpacingX, phylogeny, 20);
+      if (!this.hasProperty(this.phylogenySpacingY, phylogeny)) Vue.set(this.phylogenySpacingY, phylogeny, 40);
 
       tree
-        .spacing_x(phylogeny.spacing_x)
-        .spacing_y(phylogeny.spacing_y)
+        .spacing_x(this.phylogenySpacingX[phylogeny])
+        .spacing_y(this.phylogenySpacingY[phylogeny])
         .placenodes()
         .update();
       return tree;

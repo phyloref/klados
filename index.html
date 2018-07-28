@@ -258,19 +258,19 @@
                         <a :href="'#phylogeny-' + phylogenyIndex + '-footer'" class="btn btn-primary" @click="editingNewickForPhylogeny = (editingNewickForPhylogeny === phylogeny ? undefined : phylogeny)" class="btn btn-default">Edit as Newick</a>
                         <div class="btn-group" role="group">
                           <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Vertical scale: {{ phylogeny.spacing_x }} <span class="caret"></span>
+                            Vertical scale: {{ phylogenySpacingX[phylogeny] }} <span class="caret"></span>
                           </button>
                           <ul class="dropdown-menu">
-                            <li><a :href="'#phylogeny-' + phylogenyIndex + '-footer'" @click="phylogeny.spacing_x += 10">Increase scale</a></li>
-                            <li><a :href="'#phylogeny-' + phylogenyIndex + '-footer'" @click="phylogeny.spacing_x = (phylogeny.spacing_x < 10 ? 0 : phylogeny.spacing_x - 10)">Decrease scale</a></li>
+                            <li><a :href="'#phylogeny-' + phylogenyIndex + '-footer'" @click="phylogenySpacingX[phylogeny] += 10">Increase scale</a></li>
+                            <li><a :href="'#phylogeny-' + phylogenyIndex + '-footer'" @click="phylogenySpacingX[phylogeny] = (phylogenySpacingX[phylogeny] < 10 ? 0 : phylogenySpacingX[phylogeny] - 10)">Decrease scale</a></li>
                           </ul>
                         </div><div class="btn-group" role="group">
                           <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Horizontal scale: {{ phylogeny.spacing_y }} <span class="caret"></span>
+                            Horizontal scale: {{ phylogenySpacingY[phylogeny] }} <span class="caret"></span>
                           </button>
                           <ul class="dropdown-menu">
-                            <li><a :href="'#phylogeny-' + phylogenyIndex + '-footer'" @click="phylogeny.spacing_y += 10">Increase scale</a></li>
-                            <li><a :href="'#phylogeny-' + phylogenyIndex + '-footer'" @click="phylogeny.spacing_y = (phylogeny.spacing_y < 10 ? 0 : phylogeny.spacing_y - 10)">Decrease scale</a></li>
+                            <li><a :href="'#phylogeny-' + phylogenyIndex + '-footer'" @click="phylogenySpacingY[phylogeny] += 10">Increase scale</a></li>
+                            <li><a :href="'#phylogeny-' + phylogenyIndex + '-footer'" @click="phylogenySpacingY[phylogeny] = (phylogenySpacingY[phylogeny] < 10 ? 0 : phylogenySpacingY[phylogeny] - 10)">Decrease scale</a></li>
                           </ul>
                         </div>
                         <!--
