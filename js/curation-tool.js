@@ -901,8 +901,18 @@ const vm = new Vue({
       });
 
       // Obtain phylogeny spacing_x and spacing_y values.
-      if (!this.hasProperty(this.phylogenySpacingX, phylogeny)) Vue.set(this.phylogenySpacingX, phylogeny, 20);
-      if (!this.hasProperty(this.phylogenySpacingY, phylogeny)) Vue.set(this.phylogenySpacingY, phylogeny, 40);
+      // These could be stored in the PHYX model, where they could be carried
+      // from computer to computer. However, they are specific to the display
+      // on which the phylogeny was curated and are otherwise unrelated to the
+      // phylogeny itself. Therefore, I'm storing them elsewhere in the Vue
+      // model -- users will need to set the scaling every time they open this
+      // PHYX file.
+      if (!this.hasProperty(this.phylogenySpacingX, phylogeny)) {
+        Vue.set(this.phylogenySpacingX, phylogeny, 20);
+      }
+      if (!this.hasProperty(this.phylogenySpacingY, phylogeny)) {
+        Vue.set(this.phylogenySpacingY, phylogeny, 40);
+      }
 
       tree
         .spacing_x(this.phylogenySpacingX[phylogeny])
