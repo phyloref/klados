@@ -22,6 +22,9 @@
 /* global PHYXWrapper */
 /* global phyxCacheManager */
 
+// Version of the Curation Tool
+const CURATION_TOOL_VERSION = '0.1';
+
 // List of example files to provide in the "Examples" dropdown.
 const examplePHYXURLs = [
   {
@@ -152,6 +155,7 @@ const vm = new Vue({
 
     // Example PHYX URLs to display
     examplePHYXURLs,
+    CURATION_TOOL_VERSION,
   },
 
   // Computed values inside the data model.

@@ -13,7 +13,7 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-size=1">
 
-    <title>Phyloref Curation Tool, version 0.1</title>
+    <title>Phyloref Curation Tool</title>
 
     <!--
     <link rel="icon" href="images/favicon.png">
@@ -34,19 +34,26 @@
 </head>
 
 <body @unload="closeCurrentStudy()">
-    <!-- Navigation bar at the top of the page -->
-    <nav class="navbar navbar-default">
-        <div class="container">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="index.html">Curation Tool</a>
-            </div>
-        </div>
-    </nav>
 
     <!-- Vue.js will execute on this element and its children -->
     <div id="app">
-        <div class="col-md-12 panel">
+      <!-- Navigation bar at the top of the page -->
+      <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <a class="navbar-brand" href="index.html">Curation Tool v{{CURATION_TOOL_VERSION}}</a>
+          </div>
+          <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="https://www.phyloref.org/">Phyloreferencing website</a></li>
+              <li><a href="https://github.com/phyloref/curation-tool">Github repository</a></li>
+              <li><a href="https://github.com/phyloref/curation-tool/issues">Report bug</a></li>
+            </ul>
+          </div>
+        </div>
+      </nav>
 
+        <div class="col-md-12 panel">
             <!-- Menu for loading and exporting files -->
             <div class="btn-group btn-group-justified" role="group" aria-label="Options to load or save testcase">
                 <div class="btn-group" role="group">
