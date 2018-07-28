@@ -96,8 +96,11 @@
 
         <!-- Metadata for the entire study -->
         <form id="study-metadata" class="form-horizontal col-md-12">
-            <div class="panel panel-info">
-                <div class="panel-heading">Study metadata</div>
+            <div id="study-metadata" class="panel panel-info">
+                <div class="panel-heading">
+                  <a href="#" class="close glyphicon glyphicon-collapse-up" onclick="$('#study-metadata .panel-body').toggle(300); $(this).toggleClass('glyphicon-collapse-up glyphicon-collapse-down')"></a>
+                  Study metadata
+                </div>
                 <div class="form-group panel-body">
                     <label for="title" class="col-md-1 control-label">Title</label>
                     <div class="col-md-10 input-group">
@@ -174,7 +177,8 @@
         <div class="col-md-7">
             <div :id="'phylogeny-' + phylogenyIndex" class="panel panel-info" v-for="(phylogeny, phylogenyIndex) of testcase.phylogenies">
                 <div class="panel-heading">
-                    <a href="#" class="close glyphicon glyphicon-remove" @click="confirm('Are you sure you want to delete this phylogeny?', () => testcase.phylogenies.splice(phylogenyIndex, 1))"></a>
+                    <a href="#" class="close glyphicon glyphicon-collapse-up" onclick="$(this).parent().parent().find('.panel-body, .panel-footer').toggle(300); $(this).toggleClass('glyphicon-collapse-up glyphicon-collapse-down')"></a>
+
                     <template v-if="phylogenyDescriptionBeingEdited !== phylogeny">
                         <span role="button" @click="phylogenyDescriptionBeingEdited = phylogeny" title="Click to edit">
                             <template v-if="hasProperty(phylogeny, 'description')">
@@ -195,8 +199,10 @@
                     </template>
                 </div>
                 <div class="panel-body">
-                    <svg v-if="editingAnnotationsForPhylogeny !== phylogeny" :id="'phylogeny-svg-' + phylogenyIndex" :alt="getPhylogenyAsNewick('#phylogeny-svg-' + phylogenyIndex, phylogeny)"></svg>
-                    <div v-if="editingAnnotationsForPhylogeny === phylogeny">
+                  <template v-if="editingAnnotationsForPhylogeny !== phylogeny">
+                    <svg :id="'phylogeny-svg-' + phylogenyIndex" :alt="getPhylogenyAsNewick('#phylogeny-svg-' + phylogenyIndex, phylogeny)"></svg>
+                  </template>
+                  <template v-else>
                         <p>This table displays all labeled nodes in this phylogeny and all known annotations
                         applied to any of those nodes. A feature to change node labels is currently in development.
                         </p>
@@ -236,7 +242,7 @@
                         </table>
 
                         <p>This table contains {{getNodeLabelsInPhylogeny(phylogeny).length}} nodes.</p>
-                    </div>
+                    </template>
                 </div>
                 <div class="panel-footer">
                     <textarea
@@ -246,8 +252,11 @@
                         v-model.lazy="phylogeny.newick"
                         >{{getPhylogenyAsNewick('#phylogeny-svg-' + phylogenyIndex, phylogeny)}}</textarea>
                     <div class="btn-group btn-group-justified" role="group" aria-label="Actions for phylogeny">
-                        <a :href="'#phylogeny-' + phylogenyIndex" @click="editingNewickForPhylogeny = (editingNewickForPhylogeny === phylogeny ? undefined : phylogeny)" class="btn btn-default">Edit as Newick</a>
-                        <a :href="'#phylogeny-' + phylogenyIndex" @click="editingAnnotationsForPhylogeny = (editingAnnotationsForPhylogeny === phylogeny ? undefined : phylogeny)" class="btn btn-default">Edit annotations</a>
+                        <a class="btn btn-primary" :href="'#phylogeny-' + phylogenyIndex" @click="editingNewickForPhylogeny = (editingNewickForPhylogeny === phylogeny ? undefined : phylogeny)" class="btn btn-default">Edit as Newick</a>
+                        <!--
+                          <a class="btn btn-default" :href="'#phylogeny-' + phylogenyIndex" @click="editingAnnotationsForPhylogeny = (editingAnnotationsForPhylogeny === phylogeny ? undefined : phylogeny)" class="btn btn-default">Edit annotations</a>
+                        -->
+                        <a class="btn btn-danger" :href="'#phylogeny-' + phylogenyIndex" @click="confirm('Are you sure you want to permanently delete this phylogeny?', () => testcase.phylogenies.splice(phylogenyIndex, 1))">Delete phylogeny</a>
                     </div>
                 </div>
             </div>
@@ -433,7 +442,10 @@
         <!-- Phyloreference sidebar: displays phyloreferences and specifiers -->
         <div class="col-md-5 panel float-md-right">
             <div class="panel panel-info">
-                <div id="selected-phyloref" class="panel-heading">Phyloreferences</div>
+                <div id="selected-phyloref" class="panel-heading">
+                  <a href="#" class="close glyphicon glyphicon-collapse-up" onclick="$(this).parent().parent().find('.panel-body, .panel-footer, .list-group').toggle(300); $(this).toggleClass('glyphicon-collapse-up glyphicon-collapse-down')"></a>
+                  Phyloreferences
+                </div>
                 <div v-if="selectedPhyloref" class="panel-body">
                     <form id="phyloref" class="form-horizontal">
 
