@@ -892,9 +892,13 @@ const vm = new Vue({
         }
       });
 
+      // Obtain phylogeny spacing_x and spacing_y values.
+      if (!this.hasProperty(phylogeny, 'spacing_x')) Vue.set(phylogeny, 'spacing_x', 20);
+      if (!this.hasProperty(phylogeny, 'spacing_y')) Vue.set(phylogeny, 'spacing_y', 40);
+
       tree
-        .spacing_x(20)
-        .spacing_y(40)
+        .spacing_x(phylogeny.spacing_x)
+        .spacing_y(phylogeny.spacing_y)
         .placenodes()
         .update();
       return tree;

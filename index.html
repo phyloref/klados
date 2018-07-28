@@ -200,7 +200,10 @@
                 </div>
                 <div class="panel-body">
                   <template v-if="editingAnnotationsForPhylogeny !== phylogeny">
-                    <svg :id="'phylogeny-svg-' + phylogenyIndex" :alt="getPhylogenyAsNewick('#phylogeny-svg-' + phylogenyIndex, phylogeny)"></svg>
+                    <svg
+                      width="100%"
+                      :id="'phylogeny-svg-' + phylogenyIndex"
+                      :alt="getPhylogenyAsNewick('#phylogeny-svg-' + phylogenyIndex, phylogeny)"></svg>
                   </template>
                   <template v-else>
                         <p>This table displays all labeled nodes in this phylogeny and all known annotations
@@ -244,7 +247,7 @@
                         <p>This table contains {{getNodeLabelsInPhylogeny(phylogeny).length}} nodes.</p>
                     </template>
                 </div>
-                <div class="panel-footer">
+                <div :id="'phylogeny-' + phylogenyIndex + '-footer'" class="panel-footer">
                     <textarea
                         class="col-md-12"
                         v-if="editingNewickForPhylogeny === phylogeny"
@@ -252,7 +255,24 @@
                         v-model.lazy="phylogeny.newick"
                         >{{getPhylogenyAsNewick('#phylogeny-svg-' + phylogenyIndex, phylogeny)}}</textarea>
                     <div class="btn-group btn-group-justified" role="group" aria-label="Actions for phylogeny">
-                        <a class="btn btn-primary" :href="'#phylogeny-' + phylogenyIndex" @click="editingNewickForPhylogeny = (editingNewickForPhylogeny === phylogeny ? undefined : phylogeny)" class="btn btn-default">Edit as Newick</a>
+                        <a :href="'#phylogeny-' + phylogenyIndex + '-footer'" class="btn btn-primary" @click="editingNewickForPhylogeny = (editingNewickForPhylogeny === phylogeny ? undefined : phylogeny)" class="btn btn-default">Edit as Newick</a>
+                        <div class="btn-group" role="group">
+                          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Vertical scale: {{ phylogeny.spacing_x }} <span class="caret"></span>
+                          </button>
+                          <ul class="dropdown-menu">
+                            <li><a :href="'#phylogeny-' + phylogenyIndex + '-footer'" @click="phylogeny.spacing_x += 10">Increase scale</a></li>
+                            <li><a :href="'#phylogeny-' + phylogenyIndex + '-footer'" @click="phylogeny.spacing_x = (phylogeny.spacing_x < 10 ? 0 : phylogeny.spacing_x - 10)">Decrease scale</a></li>
+                          </ul>
+                        </div><div class="btn-group" role="group">
+                          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Horizontal scale: {{ phylogeny.spacing_y }} <span class="caret"></span>
+                          </button>
+                          <ul class="dropdown-menu">
+                            <li><a :href="'#phylogeny-' + phylogenyIndex + '-footer'" @click="phylogeny.spacing_y += 10">Increase scale</a></li>
+                            <li><a :href="'#phylogeny-' + phylogenyIndex + '-footer'" @click="phylogeny.spacing_y = (phylogeny.spacing_y < 10 ? 0 : phylogeny.spacing_y - 10)">Decrease scale</a></li>
+                          </ul>
+                        </div>
                         <!--
                           <a class="btn btn-default" :href="'#phylogeny-' + phylogenyIndex" @click="editingAnnotationsForPhylogeny = (editingAnnotationsForPhylogeny === phylogeny ? undefined : phylogeny)" class="btn btn-default">Edit annotations</a>
                         -->
