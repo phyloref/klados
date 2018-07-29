@@ -811,7 +811,7 @@ class PhylogenyWrapper {
 // We need some OWL constants for this.
 const CDAO_HAS_CHILD = 'obo:CDAO_0000149';
 const CDAO_HAS_DESCENDANT = 'obo:CDAO_0000174';
-const PHYLOREF_HAS_SIBLING = 'http://phyloinformatics.net/phyloref.owl#has_Sibling';
+const PHYLOREF_HAS_SIBLING = 'phyloref:has_Sibling';
 const PHYLOREFERENCE_TEST_CASE = 'testcase:PhyloreferenceTestCase';
 const PHYLOREFERENCE_PHYLOGENY = 'testcase:PhyloreferenceTestPhylogeny';
 const TESTCASE_SPECIFIER = 'testcase:Specifier';
@@ -978,7 +978,7 @@ class PhylorefWrapper {
     // Set the @id and @type.
     phylorefAsJSONLD['@id'] = phylorefURI;
     phylorefAsJSONLD['@type'] = [
-      'http://phyloinformatics.net/phyloref.owl#Phyloreference',
+      'phyloref:Phyloreference',
       'owl:Class',
     ];
 
