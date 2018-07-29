@@ -120,20 +120,6 @@ class ScientificNameWrapper {
     return scname;
   }
 
-  asJSON() {
-    // Return this scientific name as a JSON object.
-
-    const result = {
-      '@id': 'dwc:Taxon',
-      scientificName: this.scientificName,
-    };
-
-    if (this.genus !== undefined) result.genus = this.genus;
-    if (this.specificEpithet !== undefined) result.specificEpithet = this.specificEpithet;
-
-    return result;
-  }
-
   get scientificName() {
     // Get the "dwc:scientificName" -- the complete scientific name.
     return this.scname.scientificName;
@@ -454,16 +440,17 @@ class TaxonomicUnitMatcher {
     this.match();
   }
 
-  get asJSON() {
+  asJSON(idURI) {
     // Return this TUMatch as a JSON object for insertion into the PHYX file.
     if (!this.matched) return undefined;
 
     return {
+      '@id': idURI,
       '@type': 'testcase:TUMatch',
       reason: this.matchReason,
       matchesTaxonomicUnits: [
-        this.tunit1,
-        this.tunit2,
+        { '@id': this.tunit1['@id'] },
+        { '@id': this.tunit2['@id'] },
       ],
     };
   }
@@ -580,41 +567,63 @@ class PhylogenyWrapper {
     this.phylogeny = phylogeny;
   }
 
-  static addNodeAndChildrenToNodeLabels(node, nodeLabels, nodeType = 'both') {
-    // Recurse into the children of this node and add labels into the list of
-    // nodeLabels as per the nodeType provided, which must be one of:
-    //  - 'internal': internal nodes only
-    //  - 'terminal': terminal nodes only
-    //  - 'both': both internal and terminal nodes
+  static recurseNodes(node, func, nodeCount = 0, parentCount = undefined) {
+    // Recurse through PhyloTree nodes, executing function on each node.
+    //  - node: The node to recurse from. The function will be called on node
+    //          *before* being called on its children.
+    //  - func: The function to call on `node` and all of its children.
+    //  - nodeCount: `node` will be called with this nodeCount. All of its
+    //          children will be called with consecutively increasing nodeCounts.
+    //  - parentCount: The nodeCount associated with the parent of this node
+    //          within this run of recurseNodes. For instance, immediate children
+    //          of `node` will have a parentCount of 0. By default, `node` itself
+    //          will have a parentCount of `undefined`.
+    // When the function `func` is called, it is given three arguments:
+    //  - The current node object (initially: `node`)
+    //  - The count of the current node object (initially: `nodeCount`)
+    //  - The parent count of the current node object (initially: `parentCount`)
+    func(node, nodeCount, parentCount);
 
-    // console.log("Recursing into: " + JSON.stringify(node));
-
-    if (hasOwnProperty(node, 'name') && node.name !== '') {
-      const nodeHasChildren = hasOwnProperty(node, 'children') && node.children.length > 0;
-
-      // Only add the node label if it is on the type of node
-      // we're interested in.
-      if (
-        (nodeType === 'both') ||
-        (nodeType === 'internal' && nodeHasChildren) ||
-        (nodeType === 'terminal' && !nodeHasChildren)
-      ) {
-        nodeLabels.add(node.name);
-      }
-    }
+    let nextID = nodeCount + 1;
 
     // Recurse through all children of this node.
     if (hasOwnProperty(node, 'children')) {
-      node.children.forEach(child =>
-        PhylogenyWrapper.addNodeAndChildrenToNodeLabels(child, nodeLabels, nodeType));
+      node.children.forEach((child) => {
+        nextID = PhylogenyWrapper.recurseNodes(
+          child,
+          func,
+          nextID,
+          nodeCount,
+        );
+      });
     }
+
+    return nextID;
+  }
+
+  getTaxonomicUnits(nodeType = 'both') {
+    // Return a list of all taxonomic units in this phylogeny.
+    // Node labels will be extracted from:
+    //  - internal nodes only (if nodeType == 'internal')
+    //  - terminal nodes only (if nodeType == 'terminal')
+    //  - both internal and terminal nodes (if nodeType == 'both')
+    //
+    // See `getTaxonomicUnitsForNodeLabel` to see how node labels are converted
+    // into node labels, but in brief:
+    //  1. We look for taxonomic units in the additionalNodeProperties.
+    //  2. If none are found, we attempt to parse the node label as a scientific name.
+    //
+    const nodeLabels = this.getNodeLabels(nodeType);
+    const tunits = new Set();
+
+    nodeLabels.forEach(nodeLabel =>
+      this.getTaxonomicUnitsForNodeLabel(nodeLabel).forEach(tunit => tunits.add(tunit)));
+
+    return tunits;
   }
 
   getNodeLabels(nodeType = 'both') {
-    // Return a list of all the node labels in a phylogeny. These
-    // node labels come from two sources:
-    //  1. We look for node names in the Newick string.
-    //  2. We look for node names in the additionalNodeProperties.
+    // Return a list of all the node labels in a phylogeny.
     //
     // nodeType can be one of:
     // - 'internal': Return node labels on internal nodes.
@@ -631,7 +640,21 @@ class PhylogenyWrapper {
     const parsed = d3.layout.newick_parser(newick);
     if (hasOwnProperty(parsed, 'json')) {
       // Recurse away!
-      PhylogenyWrapper.addNodeAndChildrenToNodeLabels(parsed.json, nodeLabels, nodeType);
+      PhylogenyWrapper.recurseNodes(parsed.json, (node) => {
+        if (hasOwnProperty(node, 'name') && node.name !== '') {
+          const nodeHasChildren = hasOwnProperty(node, 'children') && node.children.length > 0;
+
+          // Only add the node label if it is on the type of node
+          // we're interested in.
+          if (
+            (nodeType === 'both') ||
+            (nodeType === 'internal' && nodeHasChildren) ||
+            (nodeType === 'terminal' && !nodeHasChildren)
+          ) {
+            nodeLabels.add(node.name);
+          }
+        }
+      });
     }
 
     return Array.from(nodeLabels);
@@ -681,9 +704,113 @@ class PhylogenyWrapper {
         nodeTUnits.some(tunit2 => new TaxonomicUnitMatcher(tunit1, tunit2).matched));
     });
   }
+
+  getNodesAsJSONLD(baseURI) {
+    // Returns a list of all nodes in this phylogeny as a series of nodes.
+    // - baseURI: The base URI to use for node elements (e.g. ':phylogeny1').
+
+    // List of nodes we have identified.
+    const nodes = [];
+
+    // We need to track the identifiers we give each node as we go.
+    const nodesById = {};
+    const nodeIdsByParentId = {};
+
+    // Extract the newick string.
+    const { newick = '()', additionalNodeProperties } = this.phylogeny;
+
+    // Parse the Newick string; if parseable, recurse through the nodes,
+    // added them to the list of JSON-LD nodes as we go.
+    const parsed = d3.layout.newick_parser(newick);
+    if (hasOwnProperty(parsed, 'json')) {
+      PhylogenyWrapper.recurseNodes(parsed.json, (node, nodeCount, parentCount) => {
+        // Start with the additional node properties.
+        const nodeAsJSONLD = {};
+
+        // Set @id and @type.
+        const nodeURI = `${baseURI}_node${nodeCount}`;
+        nodeAsJSONLD['@id'] = nodeURI;
+        nodeAsJSONLD['@type'] = { '@id': 'http://purl.obolibrary.org/obo/CDAO_0000140' };
+
+        // Add labels, additional node properties and taxonomic units.
+        if (hasOwnProperty(node, 'name') && node.name !== '') {
+          // Add node label.
+          nodeAsJSONLD.labels = [node.name];
+
+          // Add additional node properties, if any.
+          if (additionalNodeProperties && hasOwnProperty(additionalNodeProperties, node.name)) {
+            Object.keys(additionalNodeProperties[node.name]).forEach((key) => {
+              nodeAsJSONLD[key] = additionalNodeProperties[node.name][key];
+            });
+          }
+
+          // Add taxonomic units.
+          nodeAsJSONLD.representsTaxonomicUnits = this.getTaxonomicUnitsForNodeLabel(node.name);
+
+          // Apply @id and @type to each taxonomic unit.
+          let countTaxonomicUnits = 0;
+          nodeAsJSONLD.representsTaxonomicUnits.forEach((tunitToChange) => {
+            const tunit = tunitToChange;
+
+            tunit['@id'] = `${nodeURI}_taxonomicunit${countTaxonomicUnits}`;
+            tunit['@type'] = { '@id': 'http://purl.obolibrary.org/obo/CDAO_0000138' };
+            countTaxonomicUnits += 1;
+          });
+        }
+
+        // Add references to parents and siblings.
+        if (parentCount !== undefined) {
+          const parentURI = `${baseURI}_node${parentCount}`;
+          nodeAsJSONLD.parent = parentURI;
+
+          // Update list of nodes by parent IDs.
+          if (!hasOwnProperty(nodeIdsByParentId, parentURI)) {
+            nodeIdsByParentId[parentURI] = new Set();
+          }
+          nodeIdsByParentId[parentURI].add(nodeURI);
+        }
+
+        // Add nodeAsJSONLD to list
+        if (hasOwnProperty(nodesById, nodeURI)) {
+          throw new Error('Error in programming: duplicate node URI generated');
+        }
+        nodesById[nodeURI] = nodeAsJSONLD;
+        nodes.push(nodeAsJSONLD);
+      });
+    }
+
+    // Go through nodes again and set children and sibling relationships.
+    Object.keys(nodeIdsByParentId).forEach((parentId) => {
+      // What are the children of this parentId?
+      const childrenIDs = Array.from(nodeIdsByParentId[parentId]);
+      const children = childrenIDs.map(childId => nodesById[childId]);
+
+      // Is this the root node?
+      if (hasOwnProperty(nodesById, parentId)) {
+        const parent = nodesById[parentId];
+        parent.children = childrenIDs;
+      }
+
+      children.forEach((child) => {
+        const childToModify = child;
+        // Add all other sibling to node.siblings, but don't add this node itself!
+        childToModify.siblings = childrenIDs.filter(childId => childId !== child['@id']);
+      });
+    });
+
+    return nodes;
+  }
 }
 
 /* Phyloreference wrapper */
+
+// We need some OWL constants for this.
+const CDAO_HAS_CHILD = 'obo:CDAO_0000149';
+const CDAO_HAS_DESCENDANT = 'obo:CDAO_0000174';
+const PHYLOREF_HAS_SIBLING = 'http://ontology.phyloref.org/phyloref.owl#has_Sibling';
+const PHYLOREFERENCE_TEST_CASE = 'testcase:PhyloreferenceTestCase';
+const PHYLOREFERENCE_PHYLOGENY = 'testcase:PhyloreferenceTestPhylogeny';
+const TESTCASE_SPECIFIER = 'testcase:Specifier';
 
 // eslint-disable-next-line no-unused-vars
 class PhylorefWrapper {
@@ -837,6 +964,404 @@ class PhylorefWrapper {
 
     // Return node labels sorted alphabetically.
     return Array.from(nodeLabels).sort();
+  }
+
+  exportAsJSONLD(phylorefURI) {
+    // Keep all currently extant data.
+    // - baseURI: the base URI for this phyloreference
+    const phylorefAsJSONLD = JSON.parse(JSON.stringify(this.phyloref));
+
+    // Set the @id and @type.
+    phylorefAsJSONLD['@id'] = phylorefURI;
+    phylorefAsJSONLD['@type'] = [
+      'http://phyloinformatics.net/phyloref.owl#Phyloreference',
+      'owl:Class',
+    ];
+
+    // Add identifiers for each specifier.
+    let internalSpecifierCount = 0;
+    phylorefAsJSONLD.internalSpecifiers.forEach((internalSpecifierToChange) => {
+      internalSpecifierCount += 1;
+
+      const internalSpecifier = internalSpecifierToChange;
+      const specifierId = `${phylorefURI}_specifier_internal${internalSpecifierCount}`;
+
+      internalSpecifier['@id'] = specifierId;
+      internalSpecifier['@type'] = [
+        TESTCASE_SPECIFIER,
+      ];
+
+      // Add identifiers to all taxonomic units.
+      let countTaxonomicUnits = 0;
+      if (hasOwnProperty(internalSpecifier, 'referencesTaxonomicUnits')) {
+        internalSpecifier.referencesTaxonomicUnits.forEach((tunitToChange) => {
+          const tunit = tunitToChange;
+
+          tunit['@id'] = `${specifierId}_tunit${countTaxonomicUnits}`;
+          tunit['@type'] = { '@id': 'http://purl.obolibrary.org/obo/CDAO_0000138' };
+          countTaxonomicUnits += 1;
+        });
+      }
+    });
+
+    let externalSpecifierCount = 0;
+    phylorefAsJSONLD.externalSpecifiers.forEach((externalSpecifierToChange) => {
+      externalSpecifierCount += 1;
+
+      const externalSpecifier = externalSpecifierToChange;
+      const specifierId = `${phylorefURI}_specifier_external${externalSpecifierCount}`;
+
+      externalSpecifier['@id'] = specifierId;
+      externalSpecifier['@type'] = [
+        TESTCASE_SPECIFIER,
+      ];
+
+      // Add identifiers to all taxonomic units.
+      let countTaxonomicUnits = 0;
+      if (hasOwnProperty(externalSpecifier, 'referencesTaxonomicUnits')) {
+        externalSpecifier.referencesTaxonomicUnits.forEach((tunitToChange) => {
+          const tunit = tunitToChange;
+
+          tunit['@id'] = `${specifierId}_tunit${countTaxonomicUnits}`;
+          tunit['@type'] = { '@id': 'http://purl.obolibrary.org/obo/CDAO_0000138' };
+          countTaxonomicUnits += 1;
+        });
+      }
+    });
+
+    // For historical reasons, the Clade Ontology uses 'hasInternalSpecifier' to
+    // store the specifiers as OWL classes and 'internalSpecifiers' to store them
+    // as RDF annotations. We simplify that here by duplicating them here, but
+    // this should really be fixed in the Clade Ontology and in phyx.json.
+    phylorefAsJSONLD.hasInternalSpecifier = phylorefAsJSONLD.internalSpecifiers;
+    phylorefAsJSONLD.hasExternalSpecifier = phylorefAsJSONLD.externalSpecifiers;
+
+    if (internalSpecifierCount === 0 && externalSpecifierCount === 0) {
+      phylorefAsJSONLD.malformedPhyloreference = 'No specifiers provided';
+    } else if (externalSpecifierCount > 1) {
+      phylorefAsJSONLD.malformedPhyloreference = 'Multiple external specifiers are not yet supported';
+    } else if (internalSpecifierCount === 1 && externalSpecifierCount === 0) {
+      phylorefAsJSONLD.malformedPhyloreference = 'Only a single internal specifier was provided';
+    } else if (externalSpecifierCount === 0) {
+      // This phyloreference is made up entirely of internal specifiers.
+
+      // We can write this in an accumulative manner by creating class expressions
+      // in the form:
+      //  mrca(mrca(mrca(node1, node2), node3), node4)
+
+      // We could write this as a single giant expression, but this tends to
+      // slow down the reasoner dramatically. So instead, we break it up into a
+      // series of "additional classes", each of which represents a part of the
+      // overall expression.
+      phylorefAsJSONLD.hasAdditionalClass = [];
+
+      let equivalentClassAccumulator = PhylorefWrapper.getClassExpressionForMRCA(
+        phylorefURI,
+        phylorefAsJSONLD.hasAdditionalClass,
+        phylorefAsJSONLD.internalSpecifiers[0],
+        phylorefAsJSONLD.internalSpecifiers[1],
+      );
+
+      for (let index = 2; index < internalSpecifierCount; index += 1) {
+        equivalentClassAccumulator = PhylorefWrapper.getClassExpressionForMRCA(
+          phylorefURI,
+          phylorefAsJSONLD.hasAdditionalClass,
+          equivalentClassAccumulator,
+          phylorefAsJSONLD.internalSpecifiers[index],
+        );
+      }
+
+      phylorefAsJSONLD.equivalentClass = equivalentClassAccumulator;
+    } else {
+      // This phyloreference is made up of one external specifier and some number
+      // of internal specifiers.
+
+      const internalSpecifierRestrictions = phylorefAsJSONLD.internalSpecifiers
+        .map(specifier => PhylorefWrapper
+          .wrapInternalOWLRestriction(PhylorefWrapper.getOWLRestrictionForSpecifier(specifier)));
+
+      const externalSpecifierRestrictions = phylorefAsJSONLD.externalSpecifiers
+        .map(specifier => PhylorefWrapper
+          .wrapExternalOWLRestriction(PhylorefWrapper.getOWLRestrictionForSpecifier(specifier)));
+
+      phylorefAsJSONLD.equivalentClass = {
+        '@type': 'owl:Class',
+        intersectionOf: internalSpecifierRestrictions.concat(externalSpecifierRestrictions),
+      };
+    }
+
+    return phylorefAsJSONLD;
+  }
+
+  static getOWLRestrictionForSpecifier(specifier) {
+    // Return an OWL restriction corresponding to a specifier.
+    return {
+      '@type': 'owl:Restriction',
+      onProperty: 'testcase:matches_specifier',
+      hasValue: {
+        '@id': specifier['@id'],
+      },
+    };
+  }
+
+  static wrapInternalOWLRestriction(restriction) {
+    // Wraps a restriction to act as an internal specifier.
+    // Mainly, we just need to extend the restriction to match:
+    //  restriction or cdao:has_Descendant some restriction
+    return {
+      '@type': 'owl:Restriction',
+      unionOf: [
+        restriction,
+        {
+          '@type': 'owl:Restriction',
+          onProperty: CDAO_HAS_DESCENDANT,
+          someValuesFrom: restriction,
+        },
+      ],
+    };
+  }
+
+  static wrapExternalOWLRestriction(restriction) {
+    // Wraps a restriction to act as an external specifier.
+    // This needs to match:
+    //  cdao:has_Sibling some (restriction or cdao:has_Descendant some restriction)
+    // Since that second part is just an internal specifier restriction, we can
+    // incorporate that in here.
+    return {
+      '@type': 'owl:Restriction',
+      onProperty: PHYLOREF_HAS_SIBLING,
+      someValuesFrom: PhylorefWrapper.wrapInternalOWLRestriction(restriction),
+    };
+  }
+
+  static getClassExpressionForMRCA(baseURI, additionalClasses, specifier1, specifier2) {
+    // Create an OWL restriction for the most recent common ancestor (MRCA)
+    // of the nodes matched by two specifiers.
+    const additionalClassesIds = new Set(additionalClasses.map(cl => cl['@id']));
+
+    // Specifiers might be either a real specifier or an additional class.
+    // We can check their @ids here and translate specifiers into class expressions.
+    let owlRestriction1;
+    if (additionalClassesIds.has(specifier1['@id'])) {
+      owlRestriction1 = specifier1;
+    } else {
+      owlRestriction1 = PhylorefWrapper.getOWLRestrictionForSpecifier(specifier1);
+    }
+
+    let owlRestriction2;
+    if (additionalClassesIds.has(specifier2['@id'])) {
+      owlRestriction2 = specifier2;
+    } else {
+      owlRestriction2 = PhylorefWrapper.getOWLRestrictionForSpecifier(specifier2);
+    }
+
+    // Construct OWL expression.
+    const mrcaAsOWL = {
+      '@type': 'owl:Class',
+      unionOf: [
+        {
+          // What if specifier2 is a descendant of specifier1? If so, the MRCA
+          // is specifier1!
+          '@type': 'owl:Class',
+          intersectionOf: [
+            owlRestriction1,
+            {
+              '@type': 'owl:Restriction',
+              onProperty: CDAO_HAS_DESCENDANT,
+              someValuesFrom: owlRestriction2,
+            },
+          ],
+        },
+        {
+          // What if specifier1 is a descendant of specifier2? If so, the MRCA
+          // is specifier2!
+          '@type': 'owl:Class',
+          intersectionOf: [
+            owlRestriction2,
+            {
+              '@type': 'owl:Restriction',
+              onProperty: CDAO_HAS_DESCENDANT,
+              someValuesFrom: owlRestriction1,
+            },
+          ],
+        },
+        {
+          // If neither specifier is a descendant of the other, we can use our
+          // standard formula.
+          '@type': 'owl:Class',
+          intersectionOf: [{
+            '@type': 'owl:Restriction',
+            onProperty: CDAO_HAS_CHILD,
+            someValuesFrom: {
+              '@type': 'owl:Class',
+              intersectionOf: [
+                PhylorefWrapper.wrapInternalOWLRestriction(owlRestriction1),
+                PhylorefWrapper.wrapExternalOWLRestriction(owlRestriction2),
+              ],
+            },
+          }, {
+            '@type': 'owl:Restriction',
+            onProperty: CDAO_HAS_CHILD,
+            someValuesFrom: {
+              '@type': 'owl:Class',
+              intersectionOf: [
+                PhylorefWrapper.wrapInternalOWLRestriction(owlRestriction2),
+                PhylorefWrapper.wrapExternalOWLRestriction(owlRestriction1),
+              ],
+            },
+          }],
+        },
+      ],
+    };
+
+    // Instead of building a single, large, complex expression, reasoners appear
+    // to prefer smaller expressions for classes that are assembled together.
+    // To help with that, we'll store the class expression in the additionalClasses
+    // list, and return a reference to this class.
+    const additionalClassId = `${baseURI}_additional${additionalClasses.length}`;
+    additionalClasses.push({
+      '@id': additionalClassId,
+      '@type': 'owl:Class',
+      equivalentClass: mrcaAsOWL,
+    });
+
+    return { '@id': additionalClassId };
+  }
+}
+
+/* PHYX file wrapper */
+
+// eslint-disable-next-line no-unused-vars
+class PHYXWrapper {
+  // Wraps an entire PHYX document.
+
+  constructor(phyx) {
+    // Wraps an entire PHYX document.
+    this.phyx = phyx;
+  }
+
+  asJSONLD() {
+    // Export this PHYX document as a JSON-LD document. This replicates what
+    // phyx2owl.py does in the Clade Ontology.
+    //
+    // The document is mostly in JSON-LD already, except for two important
+    // things:
+    //  1. We have to convert all phylogenies into a series of statements
+    //     relating to the nodes inside these phylogenies.
+    //  2. We have to convert phylogenies into OWL restrictions.
+    //  3. Insert all matches between taxonomic units in this file.
+    //
+    const jsonld = jQuery.extend(true, {}, this.phyx);
+
+    // Base URI for all exports from PHYXWrapper.
+    const baseURI = 'http://example.org/produced_by_curation_tool';
+
+    // Add descriptions for individual nodes in each phylogeny.
+    if (hasOwnProperty(jsonld, 'phylogenies')) {
+      let countPhylogeny = 0;
+      jsonld.phylogenies.forEach((phylogenyToChange) => {
+        const phylogeny = phylogenyToChange;
+
+        // Set name and class for phylogeny.
+        phylogeny['@id'] = `${baseURI}#phylogeny${countPhylogeny}`;
+        phylogeny['@type'] = PHYLOREFERENCE_PHYLOGENY;
+
+        // Extract nodes from phylogeny.
+        const wrapper = new PhylogenyWrapper(phylogeny);
+        countPhylogeny += 1;
+
+        // Translate nodes into JSON-LD objects.
+        const nodes = wrapper.getNodesAsJSONLD(`${baseURI}#phylogeny${countPhylogeny}`);
+
+        phylogeny.nodes = nodes;
+        if (nodes.length > 0) {
+          // We don't have a better way to identify the root node, so we just
+          // default to the first one.
+          [phylogeny.hasRootNode] = nodes;
+        }
+      });
+    }
+
+    // Convert phyloreferences into an OWL class restriction
+    if (hasOwnProperty(jsonld, 'phylorefs')) {
+      let countPhyloref = 0;
+      jsonld.phylorefs = jsonld.phylorefs.map((phyloref) => {
+        countPhyloref += 1;
+        return new PhylorefWrapper(phyloref).exportAsJSONLD(`${baseURI}#phyloref${countPhyloref}`);
+      });
+    }
+
+    // Match all specifiers with nodes.
+    if (hasOwnProperty(jsonld, 'phylorefs') && hasOwnProperty(jsonld, 'phylogenies')) {
+      jsonld.hasTaxonomicUnitMatches = [];
+
+      // Used to create unique identifiers for each taxonomic unit match.
+      let countTaxonomicUnitMatches = 0;
+
+      jsonld.phylorefs.forEach((phylorefToChange) => {
+        const phyloref = phylorefToChange;
+        let specifiers = [];
+
+        if (hasOwnProperty(phyloref, 'internalSpecifiers')) {
+          specifiers = specifiers.concat(phyloref.internalSpecifiers);
+        }
+
+        if (hasOwnProperty(phyloref, 'externalSpecifiers')) {
+          specifiers = specifiers.concat(phyloref.externalSpecifiers);
+        }
+
+        specifiers.forEach((specifier) => {
+          if (!hasOwnProperty(specifier, 'referencesTaxonomicUnits')) return;
+          const specifierTUs = specifier.referencesTaxonomicUnits;
+          let nodesMatchedCount = 0;
+
+          jsonld.phylogenies.forEach((phylogenyToChange) => {
+            const phylogeny = phylogenyToChange;
+
+            specifierTUs.forEach((specifierTU) => {
+              phylogeny.nodes.forEach((node) => {
+                if (!hasOwnProperty(node, 'representsTaxonomicUnits')) return;
+                const nodeTUs = node.representsTaxonomicUnits;
+
+                nodeTUs.forEach((nodeTU) => {
+                  const matcher = new TaxonomicUnitMatcher(specifierTU, nodeTU);
+                  if (matcher.matched) {
+                    jsonld.hasTaxonomicUnitMatches.push(matcher.asJSON(`${baseURI}#taxonomic_unit_match${countTaxonomicUnitMatches}`));
+                    nodesMatchedCount += 1;
+                    countTaxonomicUnitMatches += 1;
+                  }
+                });
+              });
+            });
+          });
+
+          if (nodesMatchedCount === 0) {
+            // No nodes matched? Record this as an unmatched specifier.
+            if (!hasOwnProperty(phyloref, 'hasUnmatchedSpecifiers')) phyloref.hasUnmatchedSpecifiers = [];
+            phyloref.hasUnmatchedSpecifiers.push(specifier);
+          }
+        });
+      });
+    }
+
+    // Finally, add the base URI as an ontology.
+    jsonld['@id'] = baseURI;
+    jsonld['@type'] = [PHYLOREFERENCE_TEST_CASE, 'owl:Ontology'];
+    jsonld['owl:imports'] = [
+      'https://raw.githubusercontent.com/phyloref/curation-workflow/develop/ontologies/phyloref_testcase.owl',
+      // - Will become 'http://vocab.phyloref.org/phyloref/testcase.owl'
+      'https://ontology.phyloref.org/phyloref.owl',
+      // - Phyloreferencing Ontology
+      'http://purl.obolibrary.org/obo/bco.owl',
+      // - Contains OWL definitions for Darwin Core terms
+    ];
+
+    // If the '@context' is missing, add it here.
+    if (!hasOwnProperty(jsonld, '@context')) {
+      jsonld['@context'] = 'https://www.phyloref.org/curation-tool/json/phyx.json';
+    }
+
+    return JSON.stringify([jsonld], undefined, 4);
   }
 }
 
