@@ -1082,7 +1082,7 @@ const vm = new Vue({
     // Reasoning over phyloreferences
     reasonOverPhyloreferences() {
       // Reason over all the phyloreferences and store the results on
-      // the Vue model so we can.
+      // the Vue model at vm.reasoningResults so we can access them.
 
       $('.reason-over-phylorefs').html('(reasoning)');
       $('.reason-over-phylorefs').prop('disabled', true);
@@ -1101,7 +1101,13 @@ const vm = new Vue({
       });
     },
 
-    resolvedNodesForPhylogeny(phyloref, phylogeny) {
+    resolvedNodesForPhylogeny(phyloref, phylogeny, flagReturnNodeIRI = true) {
+      // Return a list of resolved nodes for a particular phyloreference on a
+      // particular phylogeny.
+      // - flagReturnNodeIRI: if true, we return the entire node IRI; otherwise,
+      //                      we return just the node ID.
+
+      // Convert the phyloreference to an IRI so we can look it up.
       const phylorefCount = this.testcase.phylorefs.indexOf(phyloref) + 1;
       const phylorefIRI = `http://example.org/produced_by_curation_tool#phyloref${phylorefCount}`;
 
@@ -1109,12 +1115,21 @@ const vm = new Vue({
       if (!hasProperty(this.reasoningResults, 'phylorefs') || !hasProperty(this.reasoningResults.phylorefs, phylorefIRI)) return [];
       const nodesResolved = this.reasoningResults.phylorefs[phylorefIRI];
 
-      // To make a list of resolved nodes, let's remove the phylogenyIRI from each node.
+      // We now have a list of all nodes matched by this phyloref, but we're
+      // only interested in matches for a single phylogeny.
       const phylogenyCount = this.testcase.phylogenies.indexOf(phylogeny) + 1;
       const phylogenyIRI = `http://example.org/produced_by_curation_tool#phylogeny${phylogenyCount}`;
 
-      // Only return nodes that are part of this phylogeny.
-      return nodesResolved.filter(iri => iri.includes(phylogenyIRI));
+      // Only return nodes that are part of this phylogeny. We can also remove
+      // the phylogeny IRI, so we get node identifiers only.
+      const nodeIRIs = nodesResolved
+        .filter(iri => iri.includes(phylogenyIRI));
+
+      // TODO: This would be a good place to look up this node on the phylogeny
+      // and use its node label instead of its node ID.
+
+      if (flagReturnNodeIRI) return nodeIRIs;
+      return nodeIRIs.map(iri => iri.replace(`${phylogenyIRI}_`, ''));
     },
   },
 });

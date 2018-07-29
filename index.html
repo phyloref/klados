@@ -538,11 +538,11 @@
                                 </template>
                                 <template v-if="resolvedNodesForPhylogeny(selectedPhyloref, phylogeny).length === 1">
                                     <!-- We matched exactly one node -->
-                                    <input readonly type="text" class="form-control" :value="resolvedNodesForPhylogeny(selectedPhyloref, phylogeny)[0]">
+                                    <input readonly type="text" class="form-control" :value="resolvedNodesForPhylogeny(selectedPhyloref, phylogeny, false)[0]">
                                 </template>
                                 <template v-if="resolvedNodesForPhylogeny(selectedPhyloref, phylogeny).length > 1">
                                     <!-- We matched more than one node -->
-                                    <input readonly type="text" class="form-control" :value="resolvedNodesForPhylogeny(selectedPhyloref, phylogeny).length + ' nodes matched: ' + resolvedNodesForPhylogeny(selectedPhyloref, phylogeny).join(', ')">
+                                    <input readonly type="text" class="form-control" :value="resolvedNodesForPhylogeny(selectedPhyloref, phylogeny).length + ' nodes matched: ' + resolvedNodesForPhylogeny(selectedPhyloref, phylogeny, false).join(', ')">
                                 </template>
 
                                 <!-- Display a button that activates reasoning. -->
