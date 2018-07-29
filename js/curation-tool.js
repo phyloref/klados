@@ -703,6 +703,11 @@ const vm = new Vue({
       // Extract the Newick string to render.
       const phylogeny = phylogenyToRender;
 
+      // Once we identify one or more pinning nodes in this phylogeny,
+      // we need to highlight all descendants of that node.
+      const pinningNodes = [];
+      const pinningNodeChildrenIRIs = new Set();
+
       // Using Phylotree is a four step process:
       //  1. You use d3.layout.phyloref() to create a tree object, which you
       //     can configure with options, selecting the SVG node to draw in,
@@ -739,7 +744,7 @@ const vm = new Vue({
               // Place internal label .3em to the right and below the node itself.
               textLabel.classed('internal-label', true)
                 .text(data.name)
-                .attr('dx', '.3em')
+                .attr('dx', '.6em')
                 .attr('dy', '.3em');
 
               // If the internal label has the same label as the currently
@@ -765,21 +770,25 @@ const vm = new Vue({
             hasProperty(data, '@id') &&
             this.resolvedNodesForPhylogeny(this.selectedPhyloref, phylogeny).includes(data['@id'])
           ) {
-            // TODO: maybe replace it with a star placed over the node or something.
-            // That would work for terminal nodes as well!
-            if (textLabel.empty()) {
-              textLabel = element.append('text');
+            // We found another pinning node!
+            pinningNodes.push(data);
+            PhylogenyWrapper.recurseNodes(data, node => pinningNodeChildrenIRIs.add(node['@id']));
 
-              // Place internal label .3em to the right and below the node itself.
-              textLabel.classed('internal-label', true)
-                .text('Phyloref resolution')
-                .attr('dx', '.3em')
-                .attr('dy', '.3em');
+            // Mark this node as a resolved node.
+            element.classed('resolved-node', true);
 
-              // TODO: perfect place to activate some kind of error!
-            }
+            // Make the pinning node circle larger (twice its usual size of 3).
+            element.select('circle').attr('r', 6);
+          }
 
-            textLabel.classed('resolved-internal-label', true);
+          // Maybe this isn't a pinning node, but it is a child of a pinning node.
+          if (
+            hasProperty(data, '@id') &&
+            pinningNodeChildrenIRIs.has(data['@id'])
+          ) {
+            // Apply a class.
+            // Note that this applies to the resolved-node too.
+            element.classed('descendant-of-pinning-node-node', true);
           }
 
           if (data.name !== undefined && data.children === undefined) {
@@ -810,6 +819,19 @@ const vm = new Vue({
                 }
               }
             }
+          }
+        })
+        .style_edges((element, data) => {
+          // Is the parent a descendant of a pinning node? If so, we need to
+          // select this branch!
+          // console.log('Found an edge with data: ', data);
+          if (
+            hasProperty(data, 'source') &&
+            hasProperty(data.source, '@id') &&
+            pinningNodeChildrenIRIs.has(data.source['@id'])
+          ) {
+            // Apply a class to this branch.
+            element.classed('descendant-of-pinning-node-branch', true);
           }
         });
       const countPhylogeny = this.testcase.phylogenies.indexOf(phylogeny) + 1;
