@@ -38,6 +38,9 @@ const examplePHYXURLs = [
   },
 ];
 
+// URL to be used to send JPhyloRef /reason requests.
+const JPHYLOREF_REASON_URL = 'http://localhost:34214/reason';
+
 // Helper methods for this library.
 
 /**
@@ -1083,11 +1086,15 @@ const vm = new Vue({
 
       $('.reason-over-phylorefs').html('(reasoning)');
       $('.reason-over-phylorefs').prop('disabled', true);
-      $.post('http://localhost:8080/reason', {
+      $.post(JPHYLOREF_REASON_URL, {
         jsonld: JSON.stringify([new PHYXWrapper(this.testcase).asJSONLD()], undefined, 4),
       }).done((data) => {
         this.reasoningResults = data;
-        console.log('Data retrieved: ', data);
+        // console.log('Data retrieved: ', data);
+      }).fail((jqXHR, textStatus, errorThrown) => {
+        let error = errorThrown;
+        if (error === undefined || error === '') error = 'unknown error';
+        this.alert(`Error occurred while reasoning (${textStatus}): ${error}`);
       }).always(() => {
         $('.reason-over-phylorefs').prop('disabled', false);
         $('.reason-over-phylorefs').html('Reason');
