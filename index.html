@@ -532,17 +532,22 @@
                                 <span class="input-group-addon" :title="phylogeny['description']">Phylogeny {{phylogenyIndex + 1}}</span>
 
                                 <!-- Display the matching node(s) -->
-                                <template v-if="resolvedNodesForPhylogeny(selectedPhyloref, phylogeny).length === 0">
+                                <template v-if="!hasProperty(reasoningResults, 'phylorefs')">
+                                  <input readonly type="text" class="form-control" value="Click 'Reason' to reason over these phyloreferences.">
+                                </template>
+                                <template v-else>
+                                  <template v-if="resolvedNodesForPhylogeny(selectedPhyloref, phylogeny).length === 0">
                                     <!-- We matched no nodes -->
-                                    <input readonly type="text" class="form-control" value="No nodes could be matched">
-                                </template>
-                                <template v-if="resolvedNodesForPhylogeny(selectedPhyloref, phylogeny).length === 1">
-                                    <!-- We matched exactly one node -->
-                                    <input readonly type="text" class="form-control" :value="resolvedNodesForPhylogeny(selectedPhyloref, phylogeny, false)[0]">
-                                </template>
-                                <template v-if="resolvedNodesForPhylogeny(selectedPhyloref, phylogeny).length > 1">
-                                    <!-- We matched more than one node -->
-                                    <input readonly type="text" class="form-control" :value="resolvedNodesForPhylogeny(selectedPhyloref, phylogeny).length + ' nodes matched: ' + resolvedNodesForPhylogeny(selectedPhyloref, phylogeny, false).join(', ')">
+                                    <input readonly type="text" class="form-control" :value="'No nodes could be matched'">
+                                  </template>
+                                  <template v-if="resolvedNodesForPhylogeny(selectedPhyloref, phylogeny).length === 1">
+                                      <!-- We matched exactly one node -->
+                                      <input readonly type="text" class="form-control" :value="resolvedNodesForPhylogeny(selectedPhyloref, phylogeny, false)[0]">
+                                  </template>
+                                  <template v-if="resolvedNodesForPhylogeny(selectedPhyloref, phylogeny).length > 1">
+                                      <!-- We matched more than one node -->
+                                      <input readonly type="text" class="form-control" :value="resolvedNodesForPhylogeny(selectedPhyloref, phylogeny).length + ' nodes matched: ' + resolvedNodesForPhylogeny(selectedPhyloref, phylogeny, false).join(', ')">
+                                  </template>
                                 </template>
 
                                 <!-- Display a button that activates reasoning. -->
