@@ -17,6 +17,7 @@
     "plugins": [
         "vue",
         "json",
-        "mocha"
+        "mocha",
+        "html"
     ]
 }
