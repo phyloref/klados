@@ -99,7 +99,7 @@
             <div id="study-metadata" class="panel panel-info">
                 <div class="panel-heading">
                   <!-- Minimize button for panel -->
-                  <a href="#" class="close glyphicon glyphicon-collapse-up" onclick="$('#study-metadata .panel-body').toggle(300); $(this).toggleClass('glyphicon-collapse-up glyphicon-collapse-down')"></a>
+                  <a href="#" class="close glyphicon glyphicon-collapse-up" onclick="vm.toggleButtonAndPanel(this, $('#study-metadata .panel-body'));"></a>
                   Study metadata
                 </div>
                 <div class="form-group panel-body">
@@ -179,7 +179,7 @@
             <div :id="'phylogeny-' + phylogenyIndex" class="panel panel-info" v-for="(phylogeny, phylogenyIndex) of testcase.phylogenies">
                 <div class="panel-heading">
                     <!-- Minimize button for panel -->
-                    <a href="#" class="close glyphicon glyphicon-collapse-up" onclick="$(this).parent().parent().find('.panel-body, .panel-footer').toggle(300); $(this).toggleClass('glyphicon-collapse-up glyphicon-collapse-down')"></a>
+                    <a href="#" class="close glyphicon glyphicon-collapse-up" onclick="vm.toggleButtonAndPanel(this, $(this).parent().parent().find('.panel-body, .panel-footer'))"></a>
 
                     <template v-if="phylogenyDescriptionBeingEdited !== phylogeny">
                         <span role="button" @click="phylogenyDescriptionBeingEdited = phylogeny" title="Click to edit">
@@ -482,7 +482,7 @@
             <div class="panel panel-info">
                 <div id="selected-phyloref" class="panel-heading">
                   <!-- Minimize button for panel -->
-                  <a href="#" class="close glyphicon glyphicon-collapse-up" onclick="$(this).parent().parent().find('.panel-body, .panel-footer, .list-group').toggle(300); $(this).toggleClass('glyphicon-collapse-up glyphicon-collapse-down')"></a>
+                  <a href="#" class="close glyphicon glyphicon-collapse-up" onclick="vm.toggleButtonAndPanel(this, $(this).parent().parent().find('.panel-body, .panel-footer, .list-group'))"></a>
                   Phyloreferences
                 </div>
                 <div v-if="selectedPhyloref" class="panel-body">

@@ -261,6 +261,15 @@ const vm = new Vue({
 
       if (result !== null) Vue.set(dict, key, result);
     },
+    toggleButtonAndPanel(button, panel, buttonClasses = 'glyphicon-collapse-up glyphicon-collapse-down') {
+      // Both button and panel should be JQuery selectors or objects.
+      // buttonClasses should be a space-separated list of classes to toggle on the button.
+      // The minimize button needs to do two things:
+      //  - Toggle itself into a maximize button
+      //  - Toggle the visibility of the associated panel
+      $(button).toggleClass(buttonClasses);
+      $(panel).toggle(300);
+    },
 
     // Data model management methods.
     loadPHYXFromURL(url) {
