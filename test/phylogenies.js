@@ -40,12 +40,28 @@ describe('PhylogenyWrapper', function () {
       assert.equal(errors.length, 1);
       assert.equal(errors[0].title, 'No phylogeny entered');
     });
+    it('should be able to identify an unbalanced Newick string', function () {
+      let errors = phyx.PhylogenyWrapper.getErrorsInNewickString('(A, B))');
+      assert.equal(errors.length, 2);
+      assert.equal(errors[0].title, 'Unbalanced parentheses in Newick string');
+      assert.equal(errors[0].message, 'You have 1 too few open parentheses');
+
+      errors = phyx.PhylogenyWrapper.getErrorsInNewickString('(A, (B, (C, D))');
+      assert.equal(errors.length, 2);
+      assert.equal(errors[0].title, 'Unbalanced parentheses in Newick string');
+      assert.equal(errors[0].message, 'You have 1 too many open parentheses');
+
+      errors = phyx.PhylogenyWrapper.getErrorsInNewickString('(A, (B, (C, (((D))');
+      assert.equal(errors.length, 2);
+      assert.equal(errors[0].title, 'Unbalanced parentheses in Newick string');
+      assert.equal(errors[0].message, 'You have 4 too many open parentheses');
+    });
     it('should be able to identify an incomplete Newick string', function () {
-      let errors = phyx.PhylogenyWrapper.getErrorsInNewickString('(');
+      let errors = phyx.PhylogenyWrapper.getErrorsInNewickString('(;)');
       assert.equal(errors.length, 1);
       assert.equal(errors[0].title, 'Error parsing phylogeny');
 
-      errors = phyx.PhylogenyWrapper.getErrorsInNewickString('(A, (B, ');
+      errors = phyx.PhylogenyWrapper.getErrorsInNewickString('))(A, (B, ');
       assert.equal(errors.length, 1);
       assert.equal(errors[0].title, 'Error parsing phylogeny');
     });

@@ -575,26 +575,45 @@ class PhylogenyWrapper {
     //  - message: A longer description of the error, which might include
     //    information specific to a particular error.
     const newickTrimmed = newick.trim();
+    const errors = [];
 
     // Look for an empty Newick string.
     if (newickTrimmed === '' || newickTrimmed === '()' || newickTrimmed === '();') {
+      // None of the later errors are relevant here, so bail out now.
       return [{
         title: 'No phylogeny entered',
         message: 'Click on "Edit as Newick" to enter a phylogeny below.',
       }];
     }
 
+    // Look for an unbalanced Newick string.
+    let parenLevels = 0;
+    for (let x = 0; x < newickTrimmed.length; x += 1) {
+      if (newickTrimmed[x] === '(') parenLevels += 1;
+      if (newickTrimmed[x] === ')') parenLevels -= 1;
+    }
+
+    if (parenLevels !== 0) {
+      errors.push({
+        title: 'Unbalanced parentheses in Newick string',
+        message: (parenLevels > 0 ?
+          `You have ${parenLevels} too many open parentheses` :
+          `You have ${-parenLevels} too few open parentheses`
+        ),
+      });
+    }
+
     // Finally, try parsing it with newick_parser and see if we get an error.
     const parsed = d3.layout.newick_parser(newickTrimmed);
     if (!hasOwnProperty(parsed, 'json') || parsed.json === null) {
       const error = (hasOwnProperty(parsed, 'error') ? parsed.error : 'unknown error');
-      return [{
+      errors.push({
         title: 'Error parsing phylogeny',
         message: `An error occured while parsing this phylogeny: ${error}`,
-      }];
+      });
     }
 
-    return [];
+    return errors;
   }
 
   static recurseNodes(node, func, nodeCount = 0, parentCount = undefined) {
