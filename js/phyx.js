@@ -574,6 +574,9 @@ class PhylogenyWrapper {
     //  - title: A short title of the error, distinct for each type of error.
     //  - message: A longer description of the error, which might include
     //    information specific to a particular error.
+    //
+    // We try to order errors from most helpful ('Unbalanced parentheses in
+    // Newick string') to least helpful ('Error parsing phylogeny').
     const newickTrimmed = newick.trim();
     const errors = [];
 

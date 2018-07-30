@@ -153,12 +153,16 @@ const vm = new Vue({
     // Display one of the two dropdown menus for the specifiers.
     dropdownTargetForSpecifier: 'none',
 
-    // Store spacing information on phylogenies.
+    // Store spacing information for individual phylogenies.
+    // This is a dictionary where the keys are the phylogeny object from the
+    // testcase.
     phylogenySpacingX: {},
     phylogenySpacingY: {},
 
-    // Example PHYX URLs to display
+    // Example PHYX URLs to display.
     examplePHYXURLs,
+
+    // The version of the Curation Tool.
     CURATION_TOOL_VERSION,
   },
 
@@ -720,7 +724,7 @@ const vm = new Vue({
         // Remove currently rendered tree.
         d3.select(nodeExpr).selectAll('*').remove();
 
-        // And return undefined, so the user knows that we didn't do anything.
+        // And return undefined, so the caller knows that we didn't do anything.
         return undefined;
       }
 

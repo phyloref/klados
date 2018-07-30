@@ -98,6 +98,7 @@
         <form id="study-metadata" class="form-horizontal col-md-12">
             <div id="study-metadata" class="panel panel-info">
                 <div class="panel-heading">
+                  <!-- Minimize button for panel -->
                   <a href="#" class="close glyphicon glyphicon-collapse-up" onclick="$('#study-metadata .panel-body').toggle(300); $(this).toggleClass('glyphicon-collapse-up glyphicon-collapse-down')"></a>
                   Study metadata
                 </div>
@@ -177,6 +178,7 @@
         <div class="col-md-7">
             <div :id="'phylogeny-' + phylogenyIndex" class="panel panel-info" v-for="(phylogeny, phylogenyIndex) of testcase.phylogenies">
                 <div class="panel-heading">
+                    <!-- Minimize button for panel -->
                     <a href="#" class="close glyphicon glyphicon-collapse-up" onclick="$(this).parent().parent().find('.panel-body, .panel-footer').toggle(300); $(this).toggleClass('glyphicon-collapse-up glyphicon-collapse-down')"></a>
 
                     <template v-if="phylogenyDescriptionBeingEdited !== phylogeny">
@@ -200,9 +202,11 @@
                 </div>
                 <div class="panel-body">
                   <template v-if="editingAnnotationsForPhylogeny !== phylogeny">
+                    <!-- Display the list of errors encountered when parsing this Newick string -->
                     <template v-for="(error, errorIndex) of getPhylogenyParsingErrors(phylogeny)">
                       <p><strong>{{error.title}}.</strong> {{error.message}}</p>
                     </template>
+                    <!-- Display the phylogeny, but only if there are no parsing errors -->
                     <template v-if="getPhylogenyParsingErrors(phylogeny).length === 0">
                       <svg
                         width="100%"
@@ -260,7 +264,10 @@
                         v-model.lazy="phylogeny.newick"
                         >{{getPhylogenyAsNewick('#phylogeny-svg-' + phylogenyIndex, phylogeny)}}</textarea>
                     <div class="btn-group btn-group-justified" role="group" aria-label="Actions for phylogeny">
+                        <!-- Display/hide the Newick editing textarea -->
                         <a :href="'#phylogeny-' + phylogenyIndex + '-footer'" class="btn btn-primary" @click="editingNewickForPhylogeny = (editingNewickForPhylogeny === phylogeny ? undefined : phylogeny)" class="btn btn-default">Edit as Newick</a>
+
+                        <!-- Dropdown button for vertical spacing -->
                         <div class="btn-group" role="group">
                           <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Vertical spacing: {{ phylogenySpacingX[phylogeny] }}px <span class="caret"></span>
@@ -269,7 +276,10 @@
                             <li><a :href="'#phylogeny-' + phylogenyIndex + '-footer'" @click="phylogenySpacingX[phylogeny] += 10">Increase scale</a></li>
                             <li><a :href="'#phylogeny-' + phylogenyIndex + '-footer'" @click="phylogenySpacingX[phylogeny] = (phylogenySpacingX[phylogeny] < 10 ? 0 : phylogenySpacingX[phylogeny] - 10)">Decrease scale</a></li>
                           </ul>
-                        </div><div class="btn-group" role="group">
+                        </div>
+
+                        <!-- Dropdown button for horizontal spacing -->
+                        <div class="btn-group" role="group">
                           <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Horizontal spacing: {{ phylogenySpacingY[phylogeny] }}px <span class="caret"></span>
                           </button>
@@ -278,9 +288,12 @@
                             <li><a :href="'#phylogeny-' + phylogenyIndex + '-footer'" @click="phylogenySpacingY[phylogeny] = (phylogenySpacingY[phylogeny] < 10 ? 0 : phylogenySpacingY[phylogeny] - 10)">Decrease scale</a></li>
                           </ul>
                         </div>
+
                         <!--
                           <a class="btn btn-default" :href="'#phylogeny-' + phylogenyIndex" @click="editingAnnotationsForPhylogeny = (editingAnnotationsForPhylogeny === phylogeny ? undefined : phylogeny)" class="btn btn-default">Edit annotations</a>
                         -->
+
+                        <!-- Button to delete this phylogeny -->
                         <a class="btn btn-danger" :href="'#phylogeny-' + phylogenyIndex" @click="confirm('Are you sure you want to permanently delete this phylogeny?', () => testcase.phylogenies.splice(phylogenyIndex, 1))">Delete phylogeny</a>
                     </div>
                 </div>
@@ -468,6 +481,7 @@
         <div class="col-md-5 panel float-md-right">
             <div class="panel panel-info">
                 <div id="selected-phyloref" class="panel-heading">
+                  <!-- Minimize button for panel -->
                   <a href="#" class="close glyphicon glyphicon-collapse-up" onclick="$(this).parent().parent().find('.panel-body, .panel-footer, .list-group').toggle(300); $(this).toggleClass('glyphicon-collapse-up glyphicon-collapse-down')"></a>
                   Phyloreferences
                 </div>
