@@ -13,7 +13,7 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-size=1">
 
-    <title>Phyloref Curation Tool, version 0.1</title>
+    <title>Phyloref Curation Tool</title>
 
     <!--
     <link rel="icon" href="images/favicon.png">
@@ -34,19 +34,26 @@
 </head>
 
 <body @unload="closeCurrentStudy()">
-    <!-- Navigation bar at the top of the page -->
-    <nav class="navbar navbar-default">
-        <div class="container">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="index.html">Curation Tool</a>
-            </div>
-        </div>
-    </nav>
 
     <!-- Vue.js will execute on this element and its children -->
     <div id="app">
-        <div class="col-md-12 panel">
+      <!-- Navigation bar at the top of the page -->
+      <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <a class="navbar-brand" href="index.html">Curation Tool v{{CURATION_TOOL_VERSION}}</a>
+          </div>
+          <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="https://www.phyloref.org/">Phyloreferencing website</a></li>
+              <li><a href="https://github.com/phyloref/curation-tool">Github repository</a></li>
+              <li><a href="https://github.com/phyloref/curation-tool/issues">Report bug</a></li>
+            </ul>
+          </div>
+        </div>
+      </nav>
 
+        <div class="col-md-12 panel">
             <!-- Menu for loading and exporting files -->
             <div class="btn-group btn-group-justified" role="group" aria-label="Options to load or save testcase">
                 <div class="btn-group" role="group">
@@ -89,8 +96,12 @@
 
         <!-- Metadata for the entire study -->
         <form id="study-metadata" class="form-horizontal col-md-12">
-            <div class="panel panel-info">
-                <div class="panel-heading">Study metadata</div>
+            <div id="study-metadata" class="panel panel-info">
+                <div class="panel-heading">
+                  <!-- Minimize button for panel -->
+                  <a href="#" class="close glyphicon glyphicon-collapse-up" onclick="vm.toggleButtonAndPanel(this, $('#study-metadata .panel-body'));"></a>
+                  Study metadata
+                </div>
                 <div class="form-group panel-body">
                     <label for="title" class="col-md-1 control-label">Title</label>
                     <div class="col-md-10 input-group">
@@ -167,7 +178,9 @@
         <div class="col-md-7">
             <div :id="'phylogeny-' + phylogenyIndex" class="panel panel-info" v-for="(phylogeny, phylogenyIndex) of testcase.phylogenies">
                 <div class="panel-heading">
-                    <a href="#" class="close glyphicon glyphicon-remove" @click="confirm('Are you sure you want to delete this phylogeny?', () => testcase.phylogenies.splice(phylogenyIndex, 1))"></a>
+                    <!-- Minimize button for panel -->
+                    <a href="#" class="close glyphicon glyphicon-collapse-up" onclick="vm.toggleButtonAndPanel(this, $(this).parent().parent().find('.panel-body, .panel-footer'))"></a>
+
                     <template v-if="phylogenyDescriptionBeingEdited !== phylogeny">
                         <span role="button" @click="phylogenyDescriptionBeingEdited = phylogeny" title="Click to edit">
                             <template v-if="hasProperty(phylogeny, 'description')">
@@ -188,8 +201,20 @@
                     </template>
                 </div>
                 <div class="panel-body">
-                    <svg v-if="editingAnnotationsForPhylogeny !== phylogeny" :id="'phylogeny-svg-' + phylogenyIndex" :alt="getPhylogenyAsNewick('#phylogeny-svg-' + phylogenyIndex, phylogeny)"></svg>
-                    <div v-if="editingAnnotationsForPhylogeny === phylogeny">
+                  <template v-if="editingAnnotationsForPhylogeny !== phylogeny">
+                    <!-- Display the list of errors encountered when parsing this Newick string -->
+                    <template v-for="(error, errorIndex) of getPhylogenyParsingErrors(phylogeny)">
+                      <p><strong>{{error.title}}.</strong> {{error.message}}</p>
+                    </template>
+                    <!-- Display the phylogeny, but only if there are no parsing errors -->
+                    <template v-if="getPhylogenyParsingErrors(phylogeny).length === 0">
+                      <svg
+                        width="100%"
+                        :id="'phylogeny-svg-' + phylogenyIndex"
+                        :alt="getPhylogenyAsNewick('#phylogeny-svg-' + phylogenyIndex, phylogeny)"></svg>
+                    </template>
+                  </template>
+                  <template v-else>
                         <p>This table displays all labeled nodes in this phylogeny and all known annotations
                         applied to any of those nodes. A feature to change node labels is currently in development.
                         </p>
@@ -229,9 +254,9 @@
                         </table>
 
                         <p>This table contains {{getNodeLabelsInPhylogeny(phylogeny).length}} nodes.</p>
-                    </div>
+                    </template>
                 </div>
-                <div class="panel-footer">
+                <div :id="'phylogeny-' + phylogenyIndex + '-footer'" class="panel-footer">
                     <textarea
                         class="col-md-12"
                         v-if="editingNewickForPhylogeny === phylogeny"
@@ -239,8 +264,37 @@
                         v-model.lazy="phylogeny.newick"
                         >{{getPhylogenyAsNewick('#phylogeny-svg-' + phylogenyIndex, phylogeny)}}</textarea>
                     <div class="btn-group btn-group-justified" role="group" aria-label="Actions for phylogeny">
-                        <a :href="'#phylogeny-' + phylogenyIndex" @click="editingNewickForPhylogeny = (editingNewickForPhylogeny === phylogeny ? undefined : phylogeny)" class="btn btn-default">Edit as Newick</a>
-                        <a :href="'#phylogeny-' + phylogenyIndex" @click="editingAnnotationsForPhylogeny = (editingAnnotationsForPhylogeny === phylogeny ? undefined : phylogeny)" class="btn btn-default">Edit annotations</a>
+                        <!-- Display/hide the Newick editing textarea -->
+                        <a :href="'#phylogeny-' + phylogenyIndex + '-footer'" class="btn btn-primary" @click="editingNewickForPhylogeny = (editingNewickForPhylogeny === phylogeny ? undefined : phylogeny)" class="btn btn-default">Edit as Newick</a>
+
+                        <!-- Dropdown button for vertical spacing -->
+                        <div class="btn-group" role="group">
+                          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Vertical spacing: {{ phylogenySpacingX[phylogeny] }}px <span class="caret"></span>
+                          </button>
+                          <ul class="dropdown-menu">
+                            <li><a :href="'#phylogeny-' + phylogenyIndex + '-footer'" @click="phylogenySpacingX[phylogeny] += 10">Increase scale</a></li>
+                            <li><a :href="'#phylogeny-' + phylogenyIndex + '-footer'" @click="phylogenySpacingX[phylogeny] = (phylogenySpacingX[phylogeny] < 10 ? 0 : phylogenySpacingX[phylogeny] - 10)">Decrease scale</a></li>
+                          </ul>
+                        </div>
+
+                        <!-- Dropdown button for horizontal spacing -->
+                        <div class="btn-group" role="group">
+                          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Horizontal spacing: {{ phylogenySpacingY[phylogeny] }}px <span class="caret"></span>
+                          </button>
+                          <ul class="dropdown-menu">
+                            <li><a :href="'#phylogeny-' + phylogenyIndex + '-footer'" @click="phylogenySpacingY[phylogeny] += 10">Increase scale</a></li>
+                            <li><a :href="'#phylogeny-' + phylogenyIndex + '-footer'" @click="phylogenySpacingY[phylogeny] = (phylogenySpacingY[phylogeny] < 10 ? 0 : phylogenySpacingY[phylogeny] - 10)">Decrease scale</a></li>
+                          </ul>
+                        </div>
+
+                        <!--
+                          <a class="btn btn-default" :href="'#phylogeny-' + phylogenyIndex" @click="editingAnnotationsForPhylogeny = (editingAnnotationsForPhylogeny === phylogeny ? undefined : phylogeny)" class="btn btn-default">Edit annotations</a>
+                        -->
+
+                        <!-- Button to delete this phylogeny -->
+                        <a class="btn btn-danger" :href="'#phylogeny-' + phylogenyIndex" @click="confirm('Are you sure you want to permanently delete this phylogeny?', () => testcase.phylogenies.splice(phylogenyIndex, 1))">Delete phylogeny</a>
                     </div>
                 </div>
             </div>
@@ -426,7 +480,11 @@
         <!-- Phyloreference sidebar: displays phyloreferences and specifiers -->
         <div class="col-md-5 panel float-md-right">
             <div class="panel panel-info">
-                <div id="selected-phyloref" class="panel-heading">Phyloreferences</div>
+                <div id="selected-phyloref" class="panel-heading">
+                  <!-- Minimize button for panel -->
+                  <a href="#" class="close glyphicon glyphicon-collapse-up" onclick="vm.toggleButtonAndPanel(this, $(this).parent().parent().find('.panel-body, .panel-footer, .list-group'))"></a>
+                  Phyloreferences
+                </div>
                 <div v-if="selectedPhyloref" class="panel-body">
                     <form id="phyloref" class="form-horizontal">
 

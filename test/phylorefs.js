@@ -10,6 +10,8 @@ global.Vue = require('vue');
 // needs to add additional objects to it) and phyx (which needs to call it).
 global.d3 = require('d3');
 
+// phylotree.js does not export functions itself, but adds them to global.d3.layout.
+// So we set up a global.d3.layout object for them to be added to.
 if (!Object.prototype.hasOwnProperty.call(global.d3, 'layout')) {
   global.d3.layout = {};
 }
