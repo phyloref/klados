@@ -735,6 +735,7 @@ const vm = new Vue({
 
       // Extract the Newick string to render.
       const phylogeny = phylogenyToRender;
+      const { newick = '()' } = phylogeny;
 
       // Once we identify one or more pinning nodes in this phylogeny,
       // we need to highlight all descendants of that node.
