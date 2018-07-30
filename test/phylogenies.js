@@ -26,6 +26,30 @@ describe('PhylogenyWrapper', function () {
       assert.isOk(new phyx.PhylogenyWrapper({}));
     });
   });
+  describe('#getErrorsInNewickString', function () {
+    it('should report no errors on a correct Newick string', function () {
+      const errors = phyx.PhylogenyWrapper.getErrorsInNewickString('(A:3, B:5, (C:6, N:7));');
+      assert.equal(errors.length, 0);
+    });
+    it('should be able to identify an empty Newick string', function () {
+      let errors = phyx.PhylogenyWrapper.getErrorsInNewickString('()');
+      assert.equal(errors.length, 1);
+      assert.equal(errors[0].title, 'No phylogeny entered');
+
+      errors = phyx.PhylogenyWrapper.getErrorsInNewickString('();  ');
+      assert.equal(errors.length, 1);
+      assert.equal(errors[0].title, 'No phylogeny entered');
+    });
+    it('should be able to identify an incomplete Newick string', function () {
+      let errors = phyx.PhylogenyWrapper.getErrorsInNewickString('(');
+      assert.equal(errors.length, 1);
+      assert.equal(errors[0].title, 'Error parsing phylogeny');
+
+      errors = phyx.PhylogenyWrapper.getErrorsInNewickString('(A, (B, ');
+      assert.equal(errors.length, 1);
+      assert.equal(errors[0].title, 'Error parsing phylogeny');
+    });
+  });
   describe('#getNodeLabels', function () {
     it('should be able extract all node labels in a phylogeny', function () {
       const wrapper = new phyx.PhylogenyWrapper({

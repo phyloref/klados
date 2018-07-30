@@ -567,6 +567,36 @@ class PhylogenyWrapper {
     this.phylogeny = phylogeny;
   }
 
+  static getErrorsInNewickString(newick) {
+    // Given a Newick string, return a list of errors found in parsing this
+    // string. The errors are returned as a list of objects, each of which
+    // has two properties:
+    //  - title: A short title of the error, distinct for each type of error.
+    //  - message: A longer description of the error, which might include
+    //    information specific to a particular error.
+    const newickTrimmed = newick.trim();
+
+    // Look for an empty Newick string.
+    if (newickTrimmed === '' || newickTrimmed === '()' || newickTrimmed === '();') {
+      return [{
+        title: 'No phylogeny entered',
+        message: 'Click on "Edit as Newick" to enter a phylogeny below.',
+      }];
+    }
+
+    // Finally, try parsing it with newick_parser and see if we get an error.
+    const parsed = d3.layout.newick_parser(newickTrimmed);
+    if (!hasOwnProperty(parsed, 'json') || parsed.json === null) {
+      const error = (hasOwnProperty(parsed, 'error') ? parsed.error : 'unknown error');
+      return [{
+        title: 'Error parsing phylogeny',
+        message: `An error occured while parsing this phylogeny: ${error}`,
+      }];
+    }
+
+    return [];
+  }
+
   static recurseNodes(node, func, nodeCount = 0, parentCount = undefined) {
     // Recurse through PhyloTree nodes, executing function on each node.
     //  - node: The node to recurse from. The function will be called on node
@@ -638,7 +668,7 @@ class PhylogenyWrapper {
     // Parse the Newick string; if parseable, recurse through the node labels,
     // adding them all to 'nodeLabels'.
     const parsed = d3.layout.newick_parser(newick);
-    if (hasOwnProperty(parsed, 'json')) {
+    if (hasOwnProperty(parsed, 'json') && parsed.json !== null) {
       // Recurse away!
       PhylogenyWrapper.recurseNodes(parsed.json, (node) => {
         if (hasOwnProperty(node, 'name') && node.name !== '') {

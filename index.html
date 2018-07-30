@@ -201,7 +201,7 @@
                 <div class="panel-body">
                   <template v-if="editingAnnotationsForPhylogeny !== phylogeny">
                     <template v-for="(error, errorIndex) of getPhylogenyParsingErrors(phylogeny)">
-                      <p><strong>{{error.heading}}.</strong> {{error.message}}</p>
+                      <p><strong>{{error.title}}.</strong> {{error.message}}</p>
                     </template>
                     <template v-if="getPhylogenyParsingErrors(phylogeny).length === 0">
                       <svg

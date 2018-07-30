@@ -685,18 +685,7 @@ const vm = new Vue({
     getPhylogenyParsingErrors(phylogeny) {
       // Return a list of errors encountered when parsing this phylogeny.
       const { newick = '()' } = phylogeny;
-      const newickTrimmed = newick.trim();
-
-      if (newickTrimmed === '' || newickTrimmed === '()' || newickTrimmed === '();') {
-        return [{
-          heading: 'No phylogeny entered',
-          message: 'Click on "Edit as Newick" to enter a phylogeny below.',
-        }];
-      }
-
-      // TODO: identify more Newick parsing errors.
-
-      return [];
+      return PhylogenyWrapper.getErrorsInNewickString(newick);
     },
     getPhylogenyAsNewick(nodeExpr, phylogeny) {
       // Returns the phylogeny as a Newick string. Since this method is
@@ -704,10 +693,13 @@ const vm = new Vue({
       // we hijack it to redraw the phylogenies.
 
       // Redraw the phylogeny.
+      const { newick = '()' } = phylogeny;
       const phylotree = this.renderTree(nodeExpr, phylogeny);
 
       // Return the Newick string that was rendered.
-      if (phylotree === undefined) { return '()'; }
+      // If we don't have one, return the existing Newick string
+      // so it can be edited.
+      if (phylotree === undefined) { return newick; }
 
       return phylotree.get_newick_with_internal_labels();
     },
@@ -722,6 +714,15 @@ const vm = new Vue({
       // Extract the Newick string to render.
       const phylogeny = phylogenyToRender;
       const { newick = '()' } = phylogeny;
+
+      // Is this Newick string parseable?
+      if (PhylogenyWrapper.getErrorsInNewickString(newick).length > 0) {
+        // Remove currently rendered tree.
+        d3.select(nodeExpr).selectAll('*').remove();
+
+        // And return undefined, so the user knows that we didn't do anything.
+        return undefined;
+      }
 
       // Using Phylotree is a four step process:
       //  1. You use d3.layout.phyloref() to create a tree object, which you
