@@ -38,6 +38,9 @@ const examplePHYXURLs = [
   },
 ];
 
+// URL to be used to send JPhyloRef /reason requests.
+const JPHYLOREF_REASON_URL = 'http://localhost:34214/reason';
+
 // Helper methods for this library.
 
 /**
@@ -700,6 +703,11 @@ const vm = new Vue({
       // Extract the Newick string to render.
       const phylogeny = phylogenyToRender;
 
+      // Once we identify one or more pinning nodes in this phylogeny,
+      // we need to highlight all descendants of that node.
+      const pinningNodes = [];
+      const pinningNodeChildrenIRIs = new Set();
+
       // Using Phylotree is a four step process:
       //  1. You use d3.layout.phyloref() to create a tree object, which you
       //     can configure with options, selecting the SVG node to draw in,
@@ -736,7 +744,7 @@ const vm = new Vue({
               // Place internal label .3em to the right and below the node itself.
               textLabel.classed('internal-label', true)
                 .text(data.name)
-                .attr('dx', '.3em')
+                .attr('dx', '.6em')
                 .attr('dy', '.3em');
 
               // If the internal label has the same label as the currently
@@ -762,21 +770,25 @@ const vm = new Vue({
             hasProperty(data, '@id') &&
             this.resolvedNodesForPhylogeny(this.selectedPhyloref, phylogeny).includes(data['@id'])
           ) {
-            // TODO: maybe replace it with a star placed over the node or something.
-            // That would work for terminal nodes as well!
-            if (textLabel.empty()) {
-              textLabel = element.append('text');
+            // We found another pinning node!
+            pinningNodes.push(data);
+            PhylogenyWrapper.recurseNodes(data, node => pinningNodeChildrenIRIs.add(node['@id']));
 
-              // Place internal label .3em to the right and below the node itself.
-              textLabel.classed('internal-label', true)
-                .text('Phyloref resolution')
-                .attr('dx', '.3em')
-                .attr('dy', '.3em');
+            // Mark this node as a resolved node.
+            element.classed('resolved-node', true);
 
-              // TODO: perfect place to activate some kind of error!
-            }
+            // Make the pinning node circle larger (twice its usual size of 3).
+            element.select('circle').attr('r', 6);
+          }
 
-            textLabel.classed('resolved-internal-label', true);
+          // Maybe this isn't a pinning node, but it is a child of a pinning node.
+          if (
+            hasProperty(data, '@id') &&
+            pinningNodeChildrenIRIs.has(data['@id'])
+          ) {
+            // Apply a class.
+            // Note that this applies to the resolved-node too.
+            element.classed('descendant-of-pinning-node-node', true);
           }
 
           if (data.name !== undefined && data.children === undefined) {
@@ -807,6 +819,19 @@ const vm = new Vue({
                 }
               }
             }
+          }
+        })
+        .style_edges((element, data) => {
+          // Is the parent a descendant of a pinning node? If so, we need to
+          // select this branch!
+          // console.log('Found an edge with data: ', data);
+          if (
+            hasProperty(data, 'source') &&
+            hasProperty(data.source, '@id') &&
+            pinningNodeChildrenIRIs.has(data.source['@id'])
+          ) {
+            // Apply a class to this branch.
+            element.classed('descendant-of-pinning-node-branch', true);
           }
         });
       const countPhylogeny = this.testcase.phylogenies.indexOf(phylogeny) + 1;
@@ -1079,22 +1104,32 @@ const vm = new Vue({
     // Reasoning over phyloreferences
     reasonOverPhyloreferences() {
       // Reason over all the phyloreferences and store the results on
-      // the Vue model so we can.
+      // the Vue model at vm.reasoningResults so we can access them.
 
       $('.reason-over-phylorefs').html('(reasoning)');
       $('.reason-over-phylorefs').prop('disabled', true);
-      $.post('http://localhost:34214/reason', {
+      $.post(JPHYLOREF_REASON_URL, {
         jsonld: JSON.stringify([new PHYXWrapper(this.testcase).asJSONLD()], undefined, 4),
       }).done((data) => {
         this.reasoningResults = data;
-        console.log('Data retrieved: ', data);
+        // console.log('Data retrieved: ', data);
+      }).fail((jqXHR, textStatus, errorThrown) => {
+        let error = errorThrown;
+        if (error === undefined || error === '') error = 'unknown error';
+        this.alert(`Error occurred while reasoning (${textStatus}): ${error}`);
       }).always(() => {
         $('.reason-over-phylorefs').prop('disabled', false);
         $('.reason-over-phylorefs').html('Reason');
       });
     },
 
-    resolvedNodesForPhylogeny(phyloref, phylogeny) {
+    resolvedNodesForPhylogeny(phyloref, phylogeny, flagReturnNodeIRI = true) {
+      // Return a list of resolved nodes for a particular phyloreference on a
+      // particular phylogeny.
+      // - flagReturnNodeIRI: if true, we return the entire node IRI; otherwise,
+      //                      we return just the node ID.
+
+      // Convert the phyloreference to an IRI so we can look it up.
       const phylorefCount = this.testcase.phylorefs.indexOf(phyloref) + 1;
       const phylorefIRI = `http://example.org/produced_by_curation_tool#phyloref${phylorefCount}`;
 
@@ -1102,12 +1137,21 @@ const vm = new Vue({
       if (!hasProperty(this.reasoningResults, 'phylorefs') || !hasProperty(this.reasoningResults.phylorefs, phylorefIRI)) return [];
       const nodesResolved = this.reasoningResults.phylorefs[phylorefIRI];
 
-      // To make a list of resolved nodes, let's remove the phylogenyIRI from each node.
+      // We now have a list of all nodes matched by this phyloref, but we're
+      // only interested in matches for a single phylogeny.
       const phylogenyCount = this.testcase.phylogenies.indexOf(phylogeny) + 1;
       const phylogenyIRI = `http://example.org/produced_by_curation_tool#phylogeny${phylogenyCount}`;
 
-      // Only return nodes that are part of this phylogeny.
-      return nodesResolved.filter(iri => iri.includes(phylogenyIRI));
+      // Only return nodes that are part of this phylogeny. We can also remove
+      // the phylogeny IRI, so we get node identifiers only.
+      const nodeIRIs = nodesResolved
+        .filter(iri => iri.includes(phylogenyIRI));
+
+      // TODO: This would be a good place to look up this node on the phylogeny
+      // and use its node label instead of its node ID.
+
+      if (flagReturnNodeIRI) return nodeIRIs;
+      return nodeIRIs.map(iri => iri.replace(`${phylogenyIRI}_`, ''));
     },
   },
 });

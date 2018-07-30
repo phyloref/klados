@@ -50,7 +50,24 @@
     fill: blue;
 }
 
-/* An additional class for internal nodes that are the resolved node */
+/* An additional class for nodes that are the resolved node. */
+.resolved-node {
+  stroke: 1px solid black;
+}
+
+/*
+ * The descendant-of-pinning-node class applies to the entire resolved node,
+ * which includes the circle as well as the text label. This turns the circle red.
+*/
+.descendant-of-pinning-node-node circle {
+  fill: red;
+}
+
+.descendant-of-pinning-node-branch {
+  stroke: red;
+}
+
+/* An additional class for internal node labels that are the resolved node */
 .resolved-internal-label {
     fill: green;
     font-style: normal;
