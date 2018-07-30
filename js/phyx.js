@@ -567,6 +567,58 @@ class PhylogenyWrapper {
     this.phylogeny = phylogeny;
   }
 
+  static getErrorsInNewickString(newick) {
+    // Given a Newick string, return a list of errors found in parsing this
+    // string. The errors are returned as a list of objects, each of which
+    // has two properties:
+    //  - title: A short title of the error, distinct for each type of error.
+    //  - message: A longer description of the error, which might include
+    //    information specific to a particular error.
+    //
+    // We try to order errors from most helpful ('Unbalanced parentheses in
+    // Newick string') to least helpful ('Error parsing phylogeny').
+    const newickTrimmed = newick.trim();
+    const errors = [];
+
+    // Look for an empty Newick string.
+    if (newickTrimmed === '' || newickTrimmed === '()' || newickTrimmed === '();') {
+      // None of the later errors are relevant here, so bail out now.
+      return [{
+        title: 'No phylogeny entered',
+        message: 'Click on "Edit as Newick" to enter a phylogeny below.',
+      }];
+    }
+
+    // Look for an unbalanced Newick string.
+    let parenLevels = 0;
+    for (let x = 0; x < newickTrimmed.length; x += 1) {
+      if (newickTrimmed[x] === '(') parenLevels += 1;
+      if (newickTrimmed[x] === ')') parenLevels -= 1;
+    }
+
+    if (parenLevels !== 0) {
+      errors.push({
+        title: 'Unbalanced parentheses in Newick string',
+        message: (parenLevels > 0 ?
+          `You have ${parenLevels} too many open parentheses` :
+          `You have ${-parenLevels} too few open parentheses`
+        ),
+      });
+    }
+
+    // Finally, try parsing it with newick_parser and see if we get an error.
+    const parsed = d3.layout.newick_parser(newickTrimmed);
+    if (!hasOwnProperty(parsed, 'json') || parsed.json === null) {
+      const error = (hasOwnProperty(parsed, 'error') ? parsed.error : 'unknown error');
+      errors.push({
+        title: 'Error parsing phylogeny',
+        message: `An error occured while parsing this phylogeny: ${error}`,
+      });
+    }
+
+    return errors;
+  }
+
   static recurseNodes(node, func, nodeCount = 0, parentCount = undefined) {
     // Recurse through PhyloTree nodes, executing function on each node.
     //  - node: The node to recurse from. The function will be called on node
@@ -638,7 +690,7 @@ class PhylogenyWrapper {
     // Parse the Newick string; if parseable, recurse through the node labels,
     // adding them all to 'nodeLabels'.
     const parsed = d3.layout.newick_parser(newick);
-    if (hasOwnProperty(parsed, 'json')) {
+    if (hasOwnProperty(parsed, 'json') && parsed.json !== null) {
       // Recurse away!
       PhylogenyWrapper.recurseNodes(parsed.json, (node) => {
         if (hasOwnProperty(node, 'name') && node.name !== '') {

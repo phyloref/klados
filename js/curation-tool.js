@@ -22,6 +22,9 @@
 /* global PHYXWrapper */
 /* global phyxCacheManager */
 
+// Version of the Curation Tool
+const CURATION_TOOL_VERSION = '0.1';
+
 // List of example files to provide in the "Examples" dropdown.
 const examplePHYXURLs = [
   {
@@ -150,8 +153,17 @@ const vm = new Vue({
     // Display one of the two dropdown menus for the specifiers.
     dropdownTargetForSpecifier: 'none',
 
-    // Example PHYX URLs to display
+    // Store spacing information for individual phylogenies.
+    // This is a dictionary where the keys are the phylogeny object from the
+    // testcase.
+    phylogenySpacingX: {},
+    phylogenySpacingY: {},
+
+    // Example PHYX URLs to display.
     examplePHYXURLs,
+
+    // The version of the Curation Tool.
+    CURATION_TOOL_VERSION,
   },
 
   // Computed values inside the data model.
@@ -249,6 +261,15 @@ const vm = new Vue({
 
       if (result !== null) Vue.set(dict, key, result);
     },
+    toggleButtonAndPanel(button, panel, buttonClasses = 'glyphicon-collapse-up glyphicon-collapse-down') {
+      // Both button and panel should be JQuery selectors or objects.
+      // buttonClasses should be a space-separated list of classes to toggle on the button.
+      // The minimize button needs to do two things:
+      //  - Toggle itself into a maximize button
+      //  - Toggle the visibility of the associated panel
+      $(button).toggleClass(buttonClasses);
+      $(panel).toggle(300);
+    },
 
     // Data model management methods.
     loadPHYXFromURL(url) {
@@ -342,6 +363,10 @@ const vm = new Vue({
         this.selectedPhyloref = undefined;
         this.selectedSpecifier = undefined;
         this.selectedTUnit = undefined;
+
+        // Reset phylogeny scaling information.
+        this.phylogenySpacingX = {};
+        this.phylogenySpacingY = {};
       } catch (err) {
         throw new Error(`Error occurred while displaying new testcase: ${err}`);
       }
@@ -670,16 +695,24 @@ const vm = new Vue({
       // console.log(`Additional node properties for '${nodeLabelToToggle}'`,
       // phylogeny.additionalNodeProperties[nodeLabelToToggle]);
     },
+    getPhylogenyParsingErrors(phylogeny) {
+      // Return a list of errors encountered when parsing this phylogeny.
+      const { newick = '()' } = phylogeny;
+      return PhylogenyWrapper.getErrorsInNewickString(newick);
+    },
     getPhylogenyAsNewick(nodeExpr, phylogeny) {
       // Returns the phylogeny as a Newick string. Since this method is
       // called frequently in rendering the "Edit as Newick" textareas,
       // we hijack it to redraw the phylogenies.
 
       // Redraw the phylogeny.
+      const { newick = '()' } = phylogeny;
       const phylotree = this.renderTree(nodeExpr, phylogeny);
 
       // Return the Newick string that was rendered.
-      if (phylotree === undefined) { return '()'; }
+      // If we don't have one, return the existing Newick string
+      // so it can be edited.
+      if (phylotree === undefined) { return newick; }
 
       return phylotree.get_newick_with_internal_labels();
     },
@@ -694,6 +727,15 @@ const vm = new Vue({
       // Extract the Newick string to render.
       const phylogeny = phylogenyToRender;
       const { newick = '()' } = phylogeny;
+
+      // Is this Newick string parseable?
+      if (PhylogenyWrapper.getErrorsInNewickString(newick).length > 0) {
+        // Remove currently rendered tree.
+        d3.select(nodeExpr).selectAll('*').remove();
+
+        // And return undefined, so the caller knows that we didn't do anything.
+        return undefined;
+      }
 
       // Using Phylotree is a four step process:
       //  1. You use d3.layout.phyloref() to create a tree object, which you
@@ -888,9 +930,23 @@ const vm = new Vue({
         }
       });
 
+      // Obtain phylogeny spacing_x and spacing_y values.
+      // These could be stored in the PHYX model, where they could be carried
+      // from computer to computer. However, they are specific to the display
+      // on which the phylogeny was curated and are otherwise unrelated to the
+      // phylogeny itself. Therefore, I'm storing them elsewhere in the Vue
+      // model -- users will need to set the scaling every time they open this
+      // PHYX file.
+      if (!this.hasProperty(this.phylogenySpacingX, phylogeny)) {
+        Vue.set(this.phylogenySpacingX, phylogeny, 20);
+      }
+      if (!this.hasProperty(this.phylogenySpacingY, phylogeny)) {
+        Vue.set(this.phylogenySpacingY, phylogeny, 40);
+      }
+
       tree
-        .spacing_x(20)
-        .spacing_y(40)
+        .spacing_x(this.phylogenySpacingX[phylogeny])
+        .spacing_y(this.phylogenySpacingY[phylogeny])
         .placenodes()
         .update();
       return tree;
