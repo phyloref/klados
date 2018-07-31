@@ -817,8 +817,8 @@ const vm = new Vue({
             pinningNodes.push(data);
             PhylogenyWrapper.recurseNodes(data, node => pinningNodeChildrenIRIs.add(node['@id']));
 
-            // Mark this node as a resolved node.
-            element.classed('resolved-node', true);
+            // Mark this node as the pinning node.
+            element.classed('pinning-node', true);
 
             // Make the pinning node circle larger (twice its usual size of 3).
             element.select('circle').attr('r', 6);
@@ -841,10 +841,7 @@ const vm = new Vue({
             if (tunits.length === 0) {
               element.classed('terminal-node-without-tunits', true);
             } else if (this.selectedPhyloref !== undefined) {
-              // If there's a selected phyloref, we should highlight
-              // specifiers:
-              //  - internal specifier in green
-              //  - external specifier in red
+              // We should highlight specifiers.
               if (hasProperty(this.selectedPhyloref, 'internalSpecifiers')) {
                 if (this.selectedPhyloref.internalSpecifiers
                   .some(specifier => wrappedPhylogeny.getNodeLabelsMatchedBySpecifier(specifier)
