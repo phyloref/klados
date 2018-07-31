@@ -1171,9 +1171,17 @@ const vm = new Vue({
         this.reasoningResults = data;
         // console.log('Data retrieved: ', data);
       }).fail((jqXHR, textStatus, errorThrown) => {
+        // We can try using the third argument, but it appears to be the
+        // HTTP status (e.g. 'Internal Server Error'). So we default to that,
+        // but look for a better one in the JSON response from the server, if
+        // available.
         let error = errorThrown;
+        if (this.hasProperty(jqXHR, 'responseJSON') && this.hasProperty(jqXHR.responseJSON, 'error')) {
+          ({ error } = jqXHR.responseJSON);
+        }
+
         if (error === undefined || error === '') error = 'unknown error';
-        this.alert(`Error occurred while reasoning (${textStatus}): ${error}`);
+        this.alert(`Error occurred on server while reasoning: ${error}`);
       }).always(() => {
         $('.reason-over-phylorefs').prop('disabled', false);
         $('.reason-over-phylorefs').html('Reason');
