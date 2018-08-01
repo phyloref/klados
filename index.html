@@ -725,10 +725,10 @@
                               OWL Representation
                             </div>
                             <div class="panel-body" style="display: none">
-                              <textarea>{{ getOWLRepresentationForPhyloref(selectedPhyloref) }}</textarea>
+                              <textarea readonly class="col-md-12" rows="10" :value="getOWLRepresentationForPhyloref(selectedPhyloref)"></textarea>
                             </div>
                         </div>
-                        
+
                     </form>
                 </div>
 

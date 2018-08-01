@@ -23,6 +23,7 @@
 // Tell ESLint about globals imported in the HTML page.
 /* global Vue */ // From https://vuejs.org/
 /* global d3 */ // From https://d3js.org/
+/* global _ */ // From underscore.js
 
 // Our global variables
 // eslint-disable-next-line no-var
@@ -1301,43 +1302,79 @@ class PhylorefWrapper {
     return { '@id': additionalClassId };
   }
 
-  static convertJSONLDToManchester(jsonld) {
-    // Convert JSON-LD objects into OWL Manchester syntax.
+  exportAsOWLManchester(baseURI) {
+    // Export this phyloreference as an OWL Manchester expression.
+    const jsonldExport = this.exportAsJSONLD(baseURI);
 
-    // console.log(JSON.stringify(jsonld));
+    console.log(JSON.stringify(jsonldExport));
 
-    if (hasOwnProperty(jsonld, '@id')) {
-      // If it had '@id', that's all we need to return.
-      return `<${jsonld['@id']}>`;
-    } else if (hasOwnProperty(jsonld, '@type')) {
-      const type = jsonld['@type'];
-
-      if (type === 'owl:Restriction') {
-        const onProperty = (hasOwnProperty(jsonld, 'onProperty') ? jsonld.onProperty : '(no property provided)');
-        const hasValue = (hasOwnProperty(jsonld, 'hasValue') ? this.convertJSONLDToManchester(jsonld.hasValue) : '(no value provided)');
-
-        if (hasOwnProperty(jsonld, 'someValuesFrom')) {
-          return `${onProperty} some ${this.convertJSONLDToManchester(jsonld.someValuesFrom)}`;
-        }
-
-        return `(${onProperty} value ${hasValue})`;
-      } else if (type === 'owl:Class') {
-        const unionOf = (hasOwnProperty(jsonld, 'unionOf') ? jsonld.unionOf : []);
-        const intersectionOf = (hasOwnProperty(jsonld, 'intersectionOf') ? jsonld.intersectionOf : []);
-
-        if (unionOf.length > 0) {
-          return `(${unionOf.map(obj => this.convertJSONLDToManchester(obj)).join(' or ')})`;
-        } else if (intersectionOf.length > 0) {
-          return `(${intersectionOf.map(obj => this.convertJSONLDToManchester(obj)).join(' and ')})`;
-        }
-
-        return `(unknown OWL Class type: ${JSON.stringify(jsonld)})`;
-      }
-
-      return `(unknown type '${type}' for ${JSON.stringify(jsonld)})`;
+    if (!hasOwnProperty(jsonldExport, 'equivalentClass')) {
+      return '(no equivalent class statement found)';
     }
 
-    return `(unknown element ${JSON.stringify(jsonld)})`;
+    // We also need the internal specifiers, external specifiers and
+    // additional classes.
+    const internalSpecifiers = (hasOwnProperty(jsonldExport, 'hasInternalSpecifier') ? jsonldExport.hasInternalSpecifier : []);
+    const externalSpecifiers = (hasOwnProperty(jsonldExport, 'hasExternalSpecifier') ? jsonldExport.hasExternalSpecifier : []);
+    const additionalClasses = (hasOwnProperty(jsonldExport, 'hasAdditionalClass') ? jsonldExport.hasAdditionalClass : []);
+
+    // We should convert these into dictionaries for quick access.
+    const internalSpecifierDict = _.object(_.map(internalSpecifiers, item => [item['@id'], item]));
+    const externalSpecifierDict = _.object(_.map(externalSpecifiers, item => [item['@id'], item]));
+    const additionalClassesDict = _.object(_.map(additionalClasses, item => [item['@id'], item]));
+
+    function convertJSONLDToManchester(jsonld) {
+      // console.log(JSON.stringify(jsonld));
+
+      if (hasOwnProperty(jsonld, '@id')) {
+        // If it had '@id', we need to look up what it is if we can.
+        const id = jsonld['@id'];
+
+        if (hasOwnProperty(internalSpecifierDict, id)) {
+          const internalSpecifier = internalSpecifierDict[id];
+          return `InternalSpecifier("${PhylorefWrapper.getSpecifierLabel(internalSpecifier)}")`;
+        } else if (hasOwnProperty(externalSpecifierDict, id)) {
+          const externalSpecifier = externalSpecifierDict[id];
+          return `ExternalSpecifier("${PhylorefWrapper.getSpecifierLabel(externalSpecifier)}")`;
+        } else if (hasOwnProperty(additionalClassesDict, id) && hasOwnProperty(additionalClassesDict[id], 'equivalentClass')) {
+          // We can substitute an additional class directly.
+          return convertJSONLDToManchester(additionalClassesDict[id].equivalentClass);
+        }
+
+        // We don't know what it is, so treat it as an @id.
+        return `<${jsonld['@id']}>`;
+      } else if (hasOwnProperty(jsonld, '@type')) {
+        const type = jsonld['@type'];
+
+        if (type === 'owl:Restriction') {
+          const onProperty = (hasOwnProperty(jsonld, 'onProperty') ? jsonld.onProperty : '(no property provided)');
+          const hasValue = (hasOwnProperty(jsonld, 'hasValue') ? convertJSONLDToManchester(jsonld.hasValue) : '(no value provided)');
+
+          if (hasOwnProperty(jsonld, 'someValuesFrom')) {
+            return `${onProperty} some ${convertJSONLDToManchester(jsonld.someValuesFrom)}`;
+          }
+
+          return `${onProperty} value ${hasValue}`;
+        } else if (type === 'owl:Class') {
+          const unionOf = (hasOwnProperty(jsonld, 'unionOf') ? jsonld.unionOf : []);
+          const intersectionOf = (hasOwnProperty(jsonld, 'intersectionOf') ? jsonld.intersectionOf : []);
+
+          if (unionOf.length > 0) {
+            return `(${unionOf.map(obj => convertJSONLDToManchester(obj)).join(' or ')})`;
+          } else if (intersectionOf.length > 0) {
+            return `(${intersectionOf.map(obj => convertJSONLDToManchester(obj)).join(' and ')})`;
+          }
+
+          return `(unknown OWL Class type: ${JSON.stringify(jsonld)})`;
+        }
+
+        return `(unknown type '${type}' for ${JSON.stringify(jsonld)})`;
+      }
+
+      return `(unknown element ${JSON.stringify(jsonld)})`;
+    }
+
+    return convertJSONLDToManchester(jsonldExport.equivalentClass);
   }
 }
 
