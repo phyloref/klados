@@ -1317,10 +1317,10 @@ class PhylorefWrapper {
         const hasValue = (hasOwnProperty(jsonld, 'hasValue') ? this.convertJSONLDToManchester(jsonld.hasValue) : '(no value provided)');
 
         if (hasOwnProperty(jsonld, 'someValuesFrom')) {
-          return `some ${this.convertJSONLDToManchester(jsonld.someValuesFrom)}`;
+          return `${onProperty} some ${this.convertJSONLDToManchester(jsonld.someValuesFrom)}`;
         }
 
-        return `${onProperty} ${hasValue}`;
+        return `(${onProperty} value ${hasValue})`;
       } else if (type === 'owl:Class') {
         const unionOf = (hasOwnProperty(jsonld, 'unionOf') ? jsonld.unionOf : []);
         const intersectionOf = (hasOwnProperty(jsonld, 'intersectionOf') ? jsonld.intersectionOf : []);
