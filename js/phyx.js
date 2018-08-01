@@ -1182,7 +1182,7 @@ class PhylorefWrapper {
     // Mainly, we just need to extend the restriction to match:
     //  restriction or cdao:has_Descendant some restriction
     return {
-      '@type': 'owl:Restriction',
+      '@type': 'owl:Class',
       unionOf: [
         restriction,
         {
@@ -1299,6 +1299,45 @@ class PhylorefWrapper {
     });
 
     return { '@id': additionalClassId };
+  }
+
+  static convertJSONLDToManchester(jsonld) {
+    // Convert JSON-LD objects into OWL Manchester syntax.
+
+    // console.log(JSON.stringify(jsonld));
+
+    if (hasOwnProperty(jsonld, '@id')) {
+      // If it had '@id', that's all we need to return.
+      return `<${jsonld['@id']}>`;
+    } else if (hasOwnProperty(jsonld, '@type')) {
+      const type = jsonld['@type'];
+
+      if (type === 'owl:Restriction') {
+        const onProperty = (hasOwnProperty(jsonld, 'onProperty') ? jsonld.onProperty : '(no property provided)');
+        const hasValue = (hasOwnProperty(jsonld, 'hasValue') ? this.convertJSONLDToManchester(jsonld.hasValue) : '(no value provided)');
+
+        if (hasOwnProperty(jsonld, 'someValuesFrom')) {
+          return `some ${this.convertJSONLDToManchester(jsonld.someValuesFrom)}`;
+        }
+
+        return `${onProperty} ${hasValue}`;
+      } else if (type === 'owl:Class') {
+        const unionOf = (hasOwnProperty(jsonld, 'unionOf') ? jsonld.unionOf : []);
+        const intersectionOf = (hasOwnProperty(jsonld, 'intersectionOf') ? jsonld.intersectionOf : []);
+
+        if (unionOf.length > 0) {
+          return `(${unionOf.map(obj => this.convertJSONLDToManchester(obj)).join(' or ')})`;
+        } else if (intersectionOf.length > 0) {
+          return `(${intersectionOf.map(obj => this.convertJSONLDToManchester(obj)).join(' and ')})`;
+        }
+
+        return `(unknown OWL Class type: ${JSON.stringify(jsonld)})`;
+      }
+
+      return `(unknown type '${type}' for ${JSON.stringify(jsonld)})`;
+    }
+
+    return `(unknown element ${JSON.stringify(jsonld)})`;
   }
 }
 
@@ -1431,7 +1470,7 @@ class PHYXWrapper {
 
     // If the '@context' is missing, add it here.
     if (!hasOwnProperty(jsonld, '@context')) {
-      jsonld['@context'] = 'https://www.phyloref.org/curation-tool/json/phyx.json';
+      jsonld['@context'] = 'https://www.ggvaidya.com/curation-tool/json/phyx.json';
     }
 
     return jsonld;

@@ -715,6 +715,20 @@
                                 >Delete some specifiers</button>
                             </div>
                         </div>
+
+                        <!-- An OWL representation of this phyloreference -->
+                        <div id="owl-representation" class="panel panel-info">
+                            <div class="panel-heading">
+                              <!-- Minimize button for panel -->
+                              <a href="#owl-representation" class="close glyphicon glyphicon-collapse-down" onclick="vm.toggleButtonAndPanel(this, $(this).parent().parent().find('.panel-body'));"></a>
+
+                              OWL Representation
+                            </div>
+                            <div class="panel-body" style="display: none">
+                              <textarea>{{ getOWLRepresentationForPhyloref(selectedPhyloref) }}</textarea>
+                            </div>
+                        </div>
+                        
                     </form>
                 </div>
 

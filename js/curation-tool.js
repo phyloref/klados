@@ -625,6 +625,17 @@ const vm = new Vue({
         },
       });
     },
+    getOWLRepresentationForPhyloref(phyloref) {
+      // Return an OWL representation for a phyloreference.
+      const jsonld = new PhylorefWrapper(phyloref).exportAsJSONLD('http://example.org/#phyloref');
+
+      // Pretty print JSON with 4 spaces at the start of each line.
+      if (this.hasProperty(jsonld, 'equivalentClass')) {
+        return PhylorefWrapper.convertJSONLDToManchester(jsonld.equivalentClass);
+      }
+
+      return 'No JSON-LD representation found.';
+    },
     getPhylorefLabel(phyloref) {
       // Try to determine what the label of a particular phyloreference is,
       // or default to 'Phyloreference <count>'. This checks the 'label' and
