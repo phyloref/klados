@@ -1163,6 +1163,12 @@ const vm = new Vue({
       $('#reason-over-phylorefs').html('(reasoning)');
       $('#reason-over-phylorefs').prop('disabled', true);
       $.post(JPHYLOREF_REASON_URL, {
+        // This will convert the JSON-LD file into an application/x-www-form-urlencoded
+        // string (see https://api.jquery.com/jquery.ajax/#jQuery-ajax-settings under
+        // processData for details). The POST data sent to the server will look like:
+        //  jsonld=%7B%5B%7B%22title%22%3A...
+        // which translates to:
+        //  jsonld={[{"title":...
         jsonld: JSON.stringify([new PHYXWrapper(this.testcase).asJSONLD()], undefined, 4),
       }).done((data) => {
         this.reasoningResults = data;
