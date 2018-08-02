@@ -1160,8 +1160,8 @@ const vm = new Vue({
       // Reason over all the phyloreferences and store the results on
       // the Vue model at vm.reasoningResults so we can access them.
 
-      $('.reason-over-phylorefs').html('(reasoning)');
-      $('.reason-over-phylorefs').prop('disabled', true);
+      $('#reason-over-phylorefs').html('(reasoning)');
+      $('#reason-over-phylorefs').prop('disabled', true);
       $.post(JPHYLOREF_REASON_URL, {
         jsonld: JSON.stringify([new PHYXWrapper(this.testcase).asJSONLD()], undefined, 4),
       }).done((data) => {
@@ -1180,8 +1180,8 @@ const vm = new Vue({
         if (error === undefined || error === '') error = 'unknown error';
         this.alert(`Error occurred on server while reasoning: ${error}`);
       }).always(() => {
-        $('.reason-over-phylorefs').prop('disabled', false);
-        $('.reason-over-phylorefs').html('Reason');
+        $('#reason-over-phylorefs').prop('disabled', false);
+        $('#reason-over-phylorefs').html('Reason');
       });
     },
 
