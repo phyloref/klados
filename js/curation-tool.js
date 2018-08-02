@@ -875,7 +875,8 @@ const vm = new Vue({
           }
         });
       const countPhylogeny = this.testcase.phylogenies.indexOf(phylogeny) + 1;
-      tree(new PhylogenyWrapper(phylogeny).getParsedNewickWithIRIs(`http://example.org/produced_by_curation_tool#phylogeny${countPhylogeny}`));
+      tree(new PhylogenyWrapper(phylogeny)
+        .getParsedNewickWithIRIs(PHYXWrapper.getBaseURIForPhylogeny(countPhylogeny)));
 
       // Phylotree supports reading the tree back out as Newick, but their Newick
       // representation doesn't annotate internal nodes. We add a method to allow
@@ -1199,7 +1200,7 @@ const vm = new Vue({
 
       // Convert the phyloreference to an IRI so we can look it up.
       const phylorefCount = this.testcase.phylorefs.indexOf(phyloref) + 1;
-      const phylorefIRI = `http://example.org/produced_by_curation_tool#phyloref${phylorefCount}`;
+      const phylorefIRI = PHYXWrapper.getBaseURIForPhyloref(phylorefCount);
 
       // console.log('Looking up phylorefIRI ', phylorefIRI, ' in ', this.reasoningResults);
       if (!hasProperty(this.reasoningResults, 'phylorefs') || !hasProperty(this.reasoningResults.phylorefs, phylorefIRI)) return [];
@@ -1208,7 +1209,7 @@ const vm = new Vue({
       // We now have a list of all nodes matched by this phyloref, but we're
       // only interested in matches for a single phylogeny.
       const phylogenyCount = this.testcase.phylogenies.indexOf(phylogeny) + 1;
-      const phylogenyIRI = `http://example.org/produced_by_curation_tool#phylogeny${phylogenyCount}`;
+      const phylogenyIRI = PHYXWrapper.getBaseURIForPhylogeny(phylogenyCount);
 
       // Only return nodes that are part of this phylogeny. We can also remove
       // the phylogeny IRI, so we get node identifiers only.

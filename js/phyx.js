@@ -1313,6 +1313,26 @@ class PHYXWrapper {
     this.phyx = phyx;
   }
 
+  static get BASE_URI() {
+    // Returns the default base URI for PHYX documents in JSON-LD.
+    return 'http://example.org/produced_by_curation_tool';
+  }
+
+  static getBaseURIForPhyloref(phylorefCount) {
+    // Return the base URI for a phyloreference based on its index.
+    return `${PHYXWrapper.BASE_URI}#phyloref${phylorefCount}`;
+  }
+
+  static getBaseURIForPhylogeny(phylogenyCount) {
+    // Return the base URI for phylogenies based on its index.
+    return `${PHYXWrapper.BASE_URI}#phylogeny${phylogenyCount}`;
+  }
+
+  static getBaseURIForTUMatch(countTaxonomicUnitMatches) {
+    // Return the base URI for taxonomic unit matches.
+    return `${PHYXWrapper.BASE_URI}#taxonomic_unit_match${countTaxonomicUnitMatches}`;
+  }
+
   asJSONLD() {
     // Export this PHYX document as a JSON-LD document. This replicates what
     // phyx2owl.py does in the Clade Ontology.
@@ -1326,9 +1346,6 @@ class PHYXWrapper {
     //
     const jsonld = jQuery.extend(true, {}, this.phyx);
 
-    // Base URI for all exports from PHYXWrapper.
-    const baseURI = 'http://example.org/produced_by_curation_tool';
-
     // Add descriptions for individual nodes in each phylogeny.
     if (hasOwnProperty(jsonld, 'phylogenies')) {
       let countPhylogeny = 0;
@@ -1336,7 +1353,7 @@ class PHYXWrapper {
         const phylogeny = phylogenyToChange;
 
         // Set name and class for phylogeny.
-        phylogeny['@id'] = `${baseURI}#phylogeny${countPhylogeny}`;
+        phylogeny['@id'] = PHYXWrapper.getBaseURIForPhylogeny(countPhylogeny);
         phylogeny['@type'] = PHYLOREFERENCE_PHYLOGENY;
 
         // Extract nodes from phylogeny.
@@ -1344,7 +1361,7 @@ class PHYXWrapper {
         countPhylogeny += 1;
 
         // Translate nodes into JSON-LD objects.
-        const nodes = wrapper.getNodesAsJSONLD(`${baseURI}#phylogeny${countPhylogeny}`);
+        const nodes = wrapper.getNodesAsJSONLD(PHYXWrapper.getBaseURIForPhylogeny(countPhylogeny));
 
         phylogeny.nodes = nodes;
         if (nodes.length > 0) {
@@ -1360,7 +1377,8 @@ class PHYXWrapper {
       let countPhyloref = 0;
       jsonld.phylorefs = jsonld.phylorefs.map((phyloref) => {
         countPhyloref += 1;
-        return new PhylorefWrapper(phyloref).exportAsJSONLD(`${baseURI}#phyloref${countPhyloref}`);
+        return new PhylorefWrapper(phyloref)
+          .exportAsJSONLD(PHYXWrapper.getBaseURIForPhyloref(countPhyloref));
       });
     }
 
@@ -1399,7 +1417,9 @@ class PHYXWrapper {
                 nodeTUs.forEach((nodeTU) => {
                   const matcher = new TaxonomicUnitMatcher(specifierTU, nodeTU);
                   if (matcher.matched) {
-                    jsonld.hasTaxonomicUnitMatches.push(matcher.asJSON(`${baseURI}#taxonomic_unit_match${countTaxonomicUnitMatches}`));
+                    const tuMatchAsJSONLD =
+                      matcher.asJSON(PHYXWrapper.getBaseURIForTUMatch(countTaxonomicUnitMatches));
+                    jsonld.hasTaxonomicUnitMatches.push(tuMatchAsJSONLD);
                     nodesMatchedCount += 1;
                     countTaxonomicUnitMatches += 1;
                   }
@@ -1418,7 +1438,7 @@ class PHYXWrapper {
     }
 
     // Finally, add the base URI as an ontology.
-    jsonld['@id'] = baseURI;
+    jsonld['@id'] = PHYXWrapper.BASE_URI;
     jsonld['@type'] = [PHYLOREFERENCE_TEST_CASE, 'owl:Ontology'];
     jsonld['owl:imports'] = [
       'https://raw.githubusercontent.com/phyloref/curation-workflow/develop/ontologies/phyloref_testcase.owl',
