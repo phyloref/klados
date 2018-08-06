@@ -50,6 +50,11 @@
     text-anchor: start; /* Display text starting at the node */
 }
 
+/* The selected internal label on a phylogeny, whether determined to be the pinning node or not. */
+.selected-internal-label {
+  font-size: 16pt;
+}
+
 /*
  * An additional class for nodes that are the pinning node. When the phyloreference
  * resolves to a single terminal node, it will be laid out in this way, rather
