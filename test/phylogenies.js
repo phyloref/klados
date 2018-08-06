@@ -18,7 +18,7 @@ require('../lib/phylotree.js/phylotree.js');
 const chai = require('chai');
 const phyx = require('../js/phyx');
 
-const { assert } = chai;
+const assert = chai.assert;
 
 describe('PhylogenyWrapper', function () {
   describe('#constructor', function () {

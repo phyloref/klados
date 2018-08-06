@@ -685,7 +685,7 @@ class PhylogenyWrapper {
     const nodeLabels = new Set();
 
     // Names from the Newick string.
-    const { newick = '()' } = this.phylogeny;
+    const newick = this.phylogeny.newick || '()';
 
     // Parse the Newick string; if parseable, recurse through the node labels,
     // adding them all to 'nodeLabels'.
@@ -761,7 +761,7 @@ class PhylogenyWrapper {
     // Return the parsed Newick string, but with EVERY node given an IRI.
     // baseURI: The base URI to use for node elements (e.g. ':phylogeny1').
 
-    const { newick = '()' } = this.phylogeny;
+    const newick = this.phylogeny.newick || '()';
     const parsed = d3.layout.newick_parser(newick);
     if (hasOwnProperty(parsed, 'json')) {
       PhylogenyWrapper.recurseNodes(parsed.json, (node, nodeCount) => {

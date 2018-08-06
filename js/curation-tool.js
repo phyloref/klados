@@ -706,7 +706,7 @@ const vm = new Vue({
     },
     getPhylogenyParsingErrors(phylogeny) {
       // Return a list of errors encountered when parsing this phylogeny.
-      const { newick = '()' } = phylogeny;
+      const newick = phylogeny.newick || '()';
       return PhylogenyWrapper.getErrorsInNewickString(newick);
     },
     getPhylogenyAsNewick(nodeExpr, phylogeny) {
@@ -715,7 +715,7 @@ const vm = new Vue({
       // we hijack it to redraw the phylogenies.
 
       // Redraw the phylogeny.
-      const { newick = '()' } = phylogeny;
+      const newick = phylogeny.newick || '()';
       const phylotree = this.renderTree(nodeExpr, phylogeny);
 
       // Return the Newick string that was rendered.
@@ -735,7 +735,7 @@ const vm = new Vue({
 
       // Extract the Newick string to render.
       const phylogeny = phylogenyToRender;
-      const { newick = '()' } = phylogeny;
+      const newick = phylogeny.newick || '()';
 
       // Once we identify one or more pinning nodes in this phylogeny,
       // we need to highlight all descendants of that node.
@@ -1181,7 +1181,7 @@ const vm = new Vue({
         // available.
         let error = errorThrown;
         if (this.hasProperty(jqXHR, 'responseJSON') && this.hasProperty(jqXHR.responseJSON, 'error')) {
-          ({ error } = jqXHR.responseJSON);
+          error = jqXHR.responseJSON.error;
         }
 
         if (error === undefined || error === '') error = 'unknown error';

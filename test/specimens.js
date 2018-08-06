@@ -7,7 +7,7 @@
 const chai = require('chai');
 const phyx = require('../js/phyx');
 
-const { assert } = chai;
+const assert = chai.assert;
 
 describe('SpecimenWrapper', function () {
   describe('#constructor', function () {
