@@ -18,5 +18,8 @@
         "vue",
         "json",
         "mocha"
-    ]
+    ],
+    "rules": {
+      "prefer-destructuring": "off"
+    }
 }
