@@ -1047,7 +1047,17 @@ class PhylorefWrapper {
     // Set the @id and @type.
     phylorefAsJSONLD['@id'] = phylorefURI;
     phylorefAsJSONLD['@type'] = [
+      // These classes are phyloreferences, and so should be classified as such.
       'phyloref:Phyloreference',
+
+      // Since we're writting this in RDF, just adding a '@type' of
+      // phyloref:Phyloreference would imply that phylorefURI is a named
+      // individual of class phyloref:Phyloreference. We need to explicitly
+      // let OWL know that this phylorefURI is an owl:Class.
+      //
+      // (This is implied by some of the properties that we apply to phylorefURI,
+      // such as by the domain of owl:equivalentClass. But it's nice to make that
+      // explicit as well!)
       'owl:Class',
     ];
 
