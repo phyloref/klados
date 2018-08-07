@@ -273,8 +273,8 @@
                             Vertical spacing: {{ phylogenySpacingX[phylogeny] }}px <span class="caret"></span>
                           </button>
                           <ul class="dropdown-menu">
-                            <li><a :href="'#phylogeny-' + phylogenyIndex + '-footer'" @click="phylogenySpacingX[phylogeny] += 10">Increase scale</a></li>
-                            <li><a :href="'#phylogeny-' + phylogenyIndex + '-footer'" @click="phylogenySpacingX[phylogeny] = (phylogenySpacingX[phylogeny] < 10 ? 0 : phylogenySpacingX[phylogeny] - 10)">Decrease scale</a></li>
+                            <li><a :href="'#phylogeny-' + phylogenyIndex + '-footer'" @click="phylogenySpacingX[phylogeny] += SPACING_X_STEP">Increase scale</a></li>
+                            <li><a :href="'#phylogeny-' + phylogenyIndex + '-footer'" @click="phylogenySpacingX[phylogeny] = (phylogenySpacingX[phylogeny] < SPACING_X_STEP ? 0 : phylogenySpacingX[phylogeny] - SPACING_X_STEP)">Decrease scale</a></li>
                           </ul>
                         </div>
 
@@ -284,8 +284,8 @@
                             Horizontal spacing: {{ phylogenySpacingY[phylogeny] }}px <span class="caret"></span>
                           </button>
                           <ul class="dropdown-menu">
-                            <li><a :href="'#phylogeny-' + phylogenyIndex + '-footer'" @click="phylogenySpacingY[phylogeny] += 10">Increase scale</a></li>
-                            <li><a :href="'#phylogeny-' + phylogenyIndex + '-footer'" @click="phylogenySpacingY[phylogeny] = (phylogenySpacingY[phylogeny] < 10 ? 0 : phylogenySpacingY[phylogeny] - 10)">Decrease scale</a></li>
+                            <li><a :href="'#phylogeny-' + phylogenyIndex + '-footer'" @click="phylogenySpacingY[phylogeny] += SPACING_Y_STEP">Increase scale</a></li>
+                            <li><a :href="'#phylogeny-' + phylogenyIndex + '-footer'" @click="phylogenySpacingY[phylogeny] = (phylogenySpacingY[phylogeny] < SPACING_Y_STEP ? 0 : phylogenySpacingY[phylogeny] - SPACING_Y_STEP)">Decrease scale</a></li>
                           </ul>
                         </div>
 

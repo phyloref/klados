@@ -162,6 +162,10 @@ const vm = new Vue({
     phylogenySpacingX: {},
     phylogenySpacingY: {},
 
+    // How large a step should we change spacing by?
+    SPACING_X_STEP: 5,
+    SPACING_Y_STEP: 5,
+
     // Example PHYX URLs to display.
     examplePHYXURLs,
 
