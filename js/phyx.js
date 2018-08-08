@@ -685,7 +685,7 @@ class PhylogenyWrapper {
     const nodeLabels = new Set();
 
     // Names from the Newick string.
-    const { newick = '()' } = this.phylogeny;
+    const newick = this.phylogeny.newick || '()';
 
     // Parse the Newick string; if parseable, recurse through the node labels,
     // adding them all to 'nodeLabels'.
@@ -757,6 +757,26 @@ class PhylogenyWrapper {
     });
   }
 
+  getParsedNewickWithIRIs(baseURI) {
+    // Return the parsed Newick string, but with EVERY node given an IRI.
+    // baseURI: The base URI to use for node elements (e.g. ':phylogeny1').
+
+    const newick = this.phylogeny.newick || '()';
+    const parsed = d3.layout.newick_parser(newick);
+    if (hasOwnProperty(parsed, 'json')) {
+      PhylogenyWrapper.recurseNodes(parsed.json, (node, nodeCount) => {
+        // Start with the additional node properties.
+        const nodeAsJSONLD = node;
+
+        // Set @id and @type.
+        const nodeURI = `${baseURI}_node${nodeCount}`;
+        nodeAsJSONLD['@id'] = nodeURI;
+      });
+    }
+
+    return parsed;
+  }
+
   getNodesAsJSONLD(baseURI) {
     // Returns a list of all nodes in this phylogeny as a series of nodes.
     // - baseURI: The base URI to use for node elements (e.g. ':phylogeny1').
@@ -769,20 +789,21 @@ class PhylogenyWrapper {
     const nodeIdsByParentId = {};
 
     // Extract the newick string.
-    const { newick = '()', additionalNodeProperties } = this.phylogeny;
+    const { additionalNodeProperties } = this.phylogeny;
 
     // Parse the Newick string; if parseable, recurse through the nodes,
     // added them to the list of JSON-LD nodes as we go.
-    const parsed = d3.layout.newick_parser(newick);
+
+    const parsed = this.getParsedNewickWithIRIs(baseURI);
     if (hasOwnProperty(parsed, 'json')) {
       PhylogenyWrapper.recurseNodes(parsed.json, (node, nodeCount, parentCount) => {
         // Start with the additional node properties.
         const nodeAsJSONLD = {};
 
-        // Set @id and @type.
-        const nodeURI = `${baseURI}_node${nodeCount}`;
+        // Set @id and @type. '@id' should already be set by getParsedNewickWithIRIs()!
+        const nodeURI = node['@id'];
         nodeAsJSONLD['@id'] = nodeURI;
-        nodeAsJSONLD['@type'] = { '@id': 'http://purl.obolibrary.org/obo/CDAO_0000140' };
+        nodeAsJSONLD['@type'] = 'http://purl.obolibrary.org/obo/CDAO_0000140';
 
         // Add labels, additional node properties and taxonomic units.
         if (hasOwnProperty(node, 'name') && node.name !== '') {
@@ -805,7 +826,7 @@ class PhylogenyWrapper {
             const tunit = tunitToChange;
 
             tunit['@id'] = `${nodeURI}_taxonomicunit${countTaxonomicUnits}`;
-            tunit['@type'] = { '@id': 'http://purl.obolibrary.org/obo/CDAO_0000138' };
+            tunit['@type'] = 'http://purl.obolibrary.org/obo/CDAO_0000138';
             countTaxonomicUnits += 1;
           });
         }
@@ -859,7 +880,7 @@ class PhylogenyWrapper {
 // We need some OWL constants for this.
 const CDAO_HAS_CHILD = 'obo:CDAO_0000149';
 const CDAO_HAS_DESCENDANT = 'obo:CDAO_0000174';
-const PHYLOREF_HAS_SIBLING = 'http://ontology.phyloref.org/phyloref.owl#has_Sibling';
+const PHYLOREF_HAS_SIBLING = 'phyloref:has_Sibling';
 const PHYLOREFERENCE_TEST_CASE = 'testcase:PhyloreferenceTestCase';
 const PHYLOREFERENCE_PHYLOGENY = 'testcase:PhyloreferenceTestPhylogeny';
 const TESTCASE_SPECIFIER = 'testcase:Specifier';
@@ -1026,7 +1047,17 @@ class PhylorefWrapper {
     // Set the @id and @type.
     phylorefAsJSONLD['@id'] = phylorefURI;
     phylorefAsJSONLD['@type'] = [
-      'http://phyloinformatics.net/phyloref.owl#Phyloreference',
+      // These classes are phyloreferences, and so should be classified as such.
+      'phyloref:Phyloreference',
+
+      // Since we're writing this in RDF, just adding a '@type' of
+      // phyloref:Phyloreference would imply that phylorefURI is a named
+      // individual of class phyloref:Phyloreference. We need to explicitly
+      // let OWL know that this phylorefURI is an owl:Class.
+      //
+      // (This is implied by some of the properties that we apply to phylorefURI,
+      // such as by the domain of owl:equivalentClass. But it's nice to make that
+      // explicit as well!)
       'owl:Class',
     ];
 
@@ -1050,7 +1081,7 @@ class PhylorefWrapper {
           const tunit = tunitToChange;
 
           tunit['@id'] = `${specifierId}_tunit${countTaxonomicUnits}`;
-          tunit['@type'] = { '@id': 'http://purl.obolibrary.org/obo/CDAO_0000138' };
+          tunit['@type'] = 'http://purl.obolibrary.org/obo/CDAO_0000138';
           countTaxonomicUnits += 1;
         });
       }
@@ -1075,7 +1106,7 @@ class PhylorefWrapper {
           const tunit = tunitToChange;
 
           tunit['@id'] = `${specifierId}_tunit${countTaxonomicUnits}`;
-          tunit['@type'] = { '@id': 'http://purl.obolibrary.org/obo/CDAO_0000138' };
+          tunit['@type'] = 'http://purl.obolibrary.org/obo/CDAO_0000138';
           countTaxonomicUnits += 1;
         });
       }
@@ -1292,6 +1323,26 @@ class PHYXWrapper {
     this.phyx = phyx;
   }
 
+  static get BASE_URI() {
+    // Returns the default base URI for PHYX documents in JSON-LD.
+    return 'http://example.org/produced_by_curation_tool';
+  }
+
+  static getBaseURIForPhyloref(phylorefCount) {
+    // Return the base URI for a phyloreference based on its index.
+    return `${PHYXWrapper.BASE_URI}#phyloref${phylorefCount}`;
+  }
+
+  static getBaseURIForPhylogeny(phylogenyCount) {
+    // Return the base URI for phylogenies based on its index.
+    return `${PHYXWrapper.BASE_URI}#phylogeny${phylogenyCount}`;
+  }
+
+  static getBaseURIForTUMatch(countTaxonomicUnitMatches) {
+    // Return the base URI for taxonomic unit matches.
+    return `${PHYXWrapper.BASE_URI}#taxonomic_unit_match${countTaxonomicUnitMatches}`;
+  }
+
   asJSONLD() {
     // Export this PHYX document as a JSON-LD document. This replicates what
     // phyx2owl.py does in the Clade Ontology.
@@ -1305,9 +1356,6 @@ class PHYXWrapper {
     //
     const jsonld = jQuery.extend(true, {}, this.phyx);
 
-    // Base URI for all exports from PHYXWrapper.
-    const baseURI = 'http://example.org/produced_by_curation_tool';
-
     // Add descriptions for individual nodes in each phylogeny.
     if (hasOwnProperty(jsonld, 'phylogenies')) {
       let countPhylogeny = 0;
@@ -1315,7 +1363,7 @@ class PHYXWrapper {
         const phylogeny = phylogenyToChange;
 
         // Set name and class for phylogeny.
-        phylogeny['@id'] = `${baseURI}#phylogeny${countPhylogeny}`;
+        phylogeny['@id'] = PHYXWrapper.getBaseURIForPhylogeny(countPhylogeny);
         phylogeny['@type'] = PHYLOREFERENCE_PHYLOGENY;
 
         // Extract nodes from phylogeny.
@@ -1323,7 +1371,7 @@ class PHYXWrapper {
         countPhylogeny += 1;
 
         // Translate nodes into JSON-LD objects.
-        const nodes = wrapper.getNodesAsJSONLD(`${baseURI}#phylogeny${countPhylogeny}`);
+        const nodes = wrapper.getNodesAsJSONLD(PHYXWrapper.getBaseURIForPhylogeny(countPhylogeny));
 
         phylogeny.nodes = nodes;
         if (nodes.length > 0) {
@@ -1339,7 +1387,8 @@ class PHYXWrapper {
       let countPhyloref = 0;
       jsonld.phylorefs = jsonld.phylorefs.map((phyloref) => {
         countPhyloref += 1;
-        return new PhylorefWrapper(phyloref).exportAsJSONLD(`${baseURI}#phyloref${countPhyloref}`);
+        return new PhylorefWrapper(phyloref)
+          .exportAsJSONLD(PHYXWrapper.getBaseURIForPhyloref(countPhyloref));
       });
     }
 
@@ -1378,7 +1427,9 @@ class PHYXWrapper {
                 nodeTUs.forEach((nodeTU) => {
                   const matcher = new TaxonomicUnitMatcher(specifierTU, nodeTU);
                   if (matcher.matched) {
-                    jsonld.hasTaxonomicUnitMatches.push(matcher.asJSON(`${baseURI}#taxonomic_unit_match${countTaxonomicUnitMatches}`));
+                    const tuMatchAsJSONLD =
+                      matcher.asJSON(PHYXWrapper.getBaseURIForTUMatch(countTaxonomicUnitMatches));
+                    jsonld.hasTaxonomicUnitMatches.push(tuMatchAsJSONLD);
                     nodesMatchedCount += 1;
                     countTaxonomicUnitMatches += 1;
                   }
@@ -1397,13 +1448,13 @@ class PHYXWrapper {
     }
 
     // Finally, add the base URI as an ontology.
-    jsonld['@id'] = baseURI;
+    jsonld['@id'] = PHYXWrapper.BASE_URI;
     jsonld['@type'] = [PHYLOREFERENCE_TEST_CASE, 'owl:Ontology'];
     jsonld['owl:imports'] = [
       'https://raw.githubusercontent.com/phyloref/curation-workflow/develop/ontologies/phyloref_testcase.owl',
       // - Will become 'http://vocab.phyloref.org/phyloref/testcase.owl'
       'https://ontology.phyloref.org/phyloref.owl',
-      // - Phyloreferencing Ontology
+      // - The Phyloreferencing ontology.
       'http://purl.obolibrary.org/obo/bco.owl',
       // - Contains OWL definitions for Darwin Core terms
     ];
@@ -1413,7 +1464,7 @@ class PHYXWrapper {
       jsonld['@context'] = 'https://www.phyloref.org/curation-tool/json/phyx.json';
     }
 
-    return JSON.stringify([jsonld], undefined, 4);
+    return jsonld;
   }
 }
 

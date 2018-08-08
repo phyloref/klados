@@ -7,7 +7,7 @@
 const chai = require('chai');
 const phyx = require('../js/phyx');
 
-const { assert } = chai;
+const assert = chai.assert;
 
 describe('TaxonomicUnitWrapper', function () {
   describe('#constructor', function () {

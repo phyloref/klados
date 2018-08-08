@@ -8,23 +8,29 @@
  * Classes for phylogeny SVG elements
  */
 
-/* Phylotree nodes */
+/*
+ * Phylotree .node refers to the SVG groups that contain both the
+ * node itself as well as the text label next to it. This is confusing,
+ * but we will try to use that consistently below: *-node refers to the group
+ * that includes both the node as well as the label with it, while *-label
+ * refers only to the labels next to the nodes.
+ */
  .node {
      /* Phylotree's CSS sets this to 10px; we prefer larger node labels */
      font-size: 10pt;
  }
 
  /* Node label for an internal specifier */
-.internal-specifier-node {
+.internal-specifier-node text {
     font-weight: bolder;
-    fill: green;
+    fill: green !important;
     font-size: 12pt;
 }
 
 /* Node label for an external specifier */
-.external-specifier-node {
+.external-specifier-node-label {
     font-weight: bolder;
-    fill: magenta;
+    fill: green;
     font-size: 12pt;
 }
 
@@ -35,19 +41,52 @@
     font-weight: bolder;
 }
 
-/* Labels for internal nodes */
+/* Labels for internal nodes, whether phylorefs or not */
 .internal-label {
     font-family: serif;
     font-size: 12pt;
     font-style: italic;
 
-    text-anchor: start; /* Display text starting at the internal node */
+    text-anchor: start; /* Display text starting at the node */
 }
 
-/* An additional class for internal nodes that are currently selected */
+/* The selected internal label on a phylogeny, whether determined to be the pinning node or not. */
 .selected-internal-label {
-    font-size: 16pt;
-    fill: blue;
+  font-size: 16pt;
+}
+
+/*
+ * An additional class for nodes that are the pinning node. When the phyloreference
+ * resolves to a single terminal node, it will be laid out in this way, rather
+ * than as an .internal-specifier-node.
+ */
+.pinning-node text {
+  font-size: 16pt;
+  fill: rgb(0, 24, 168) !important;
+}
+
+/*
+ * The descendant-of-pinning-node class instructions below apply to the entire resolved node,
+ * which includes the circle as well as the text label. We want to coordinate
+ * colours between:
+ *  - The circle that appears next to the node label,
+ *  - The node label, whether internal or terminal, and
+ *  - The branches descending from the pinning node.
+ *
+ * Note that .internal-specifier-node is set up to override this formatting, so
+ * internal node labels will be formatted differently from other terminals
+ * descending from the pinning node.
+ */
+.descendant-of-pinning-node-node circle {
+  fill: rgb(0, 24, 168);
+}
+
+.descendant-of-pinning-node-node text {
+  fill: rgb(0, 24, 168);
+}
+
+.descendant-of-pinning-node-branch {
+  stroke: rgb(0, 24, 168);
 }
 
 /*

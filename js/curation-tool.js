@@ -41,6 +41,9 @@ const examplePHYXURLs = [
   },
 ];
 
+// URL to be used to send JPhyloRef /reason requests.
+const JPHYLOREF_REASON_URL = 'http://localhost:34214/reason';
+
 // Helper methods for this library.
 
 /**
@@ -161,6 +164,9 @@ const vm = new Vue({
 
     // Example PHYX URLs to display.
     examplePHYXURLs,
+
+    // Reasoning results from JPhyloRef
+    reasoningResults: {},
 
     // The version of the Curation Tool.
     CURATION_TOOL_VERSION,
@@ -334,6 +340,9 @@ const vm = new Vue({
       // Before we load a new study, clear the PHYX caches.
       phyxCacheManager.clear();
 
+      // And reset the reasoning results.
+      this.reasoningResults = {};
+
       const testcase = testcaseToLoad;
 
       try {
@@ -378,7 +387,7 @@ const vm = new Vue({
       // system -- eventually, we'll rename it to downloadAsJSON and make it
       // export the PHYX file for download.
       const wrapped = new PHYXWrapper(this.testcase);
-      const content = [wrapped.asJSONLD()];
+      const content = [JSON.stringify([wrapped.asJSONLD()], undefined, 4)];
 
       // Save to local hard drive.
       const jsonldFile = new File(content, 'download.json', { type: 'application/json;charset=utf-8' });
@@ -697,7 +706,7 @@ const vm = new Vue({
     },
     getPhylogenyParsingErrors(phylogeny) {
       // Return a list of errors encountered when parsing this phylogeny.
-      const { newick = '()' } = phylogeny;
+      const newick = phylogeny.newick || '()';
       return PhylogenyWrapper.getErrorsInNewickString(newick);
     },
     getPhylogenyAsNewick(nodeExpr, phylogeny) {
@@ -706,7 +715,7 @@ const vm = new Vue({
       // we hijack it to redraw the phylogenies.
 
       // Redraw the phylogeny.
-      const { newick = '()' } = phylogeny;
+      const newick = phylogeny.newick || '()';
       const phylotree = this.renderTree(nodeExpr, phylogeny);
 
       // Return the Newick string that was rendered.
@@ -726,7 +735,12 @@ const vm = new Vue({
 
       // Extract the Newick string to render.
       const phylogeny = phylogenyToRender;
-      const { newick = '()' } = phylogeny;
+      const newick = phylogeny.newick || '()';
+
+      // Once we identify one or more pinning nodes in this phylogeny,
+      // we need to highlight all descendants of that node.
+      const pinningNodes = [];
+      const pinningNodeChildrenIRIs = new Set();
 
       // Is this Newick string parseable?
       if (PhylogenyWrapper.getErrorsInNewickString(newick).length > 0) {
@@ -761,19 +775,19 @@ const vm = new Vue({
           // - data: The data associated with the node being styled
           const wrappedPhylogeny = new PhylogenyWrapper(phylogeny);
 
-          if (hasProperty(data, 'name') && data.children) {
+          // Make sure we don't already have an internal label node on this SVG node!
+          let textLabel = element.selectAll('.internal-label');
+
+          if (hasProperty(data, 'name') && data.name !== '' && data.children) {
             // If the node has a label and has children (i.e. is an internal node),
             // we display it next to the node by creating a new 'text' element.
-
-            // Make sure we don't already have an internal label node on this SVG node!
-            const label = element.selectAll('.internal-label');
-            if (label.empty()) {
-              const textLabel = element.append('text');
+            if (textLabel.empty()) {
+              textLabel = element.append('text');
 
               // Place internal label .3em to the right and below the node itself.
               textLabel.classed('internal-label', true)
                 .text(data.name)
-                .attr('dx', '.3em')
+                .attr('dx', '.6em')
                 .attr('dy', '.3em');
 
               // If the internal label has the same label as the currently
@@ -789,6 +803,37 @@ const vm = new Vue({
             }
           }
 
+          // If the internal label has the same IRI as the currently selected
+          // phyloreference's reasoned node, further mark it as the resolved node.
+          //
+          // Note that this node might NOT be labeled, in which case we need to
+          // label it now!
+          if (
+            this.selectedPhyloref !== undefined &&
+            hasProperty(data, '@id') &&
+            this.resolvedNodesForPhylogeny(this.selectedPhyloref, phylogeny).includes(data['@id'])
+          ) {
+            // We found another pinning node!
+            pinningNodes.push(data);
+            PhylogenyWrapper.recurseNodes(data, node => pinningNodeChildrenIRIs.add(node['@id']));
+
+            // Mark this node as the pinning node.
+            element.classed('pinning-node', true);
+
+            // Make the pinning node circle larger (twice its usual size of 3).
+            element.select('circle').attr('r', 6);
+          }
+
+          // Maybe this isn't a pinning node, but it is a child of a pinning node.
+          if (
+            hasProperty(data, '@id') &&
+            pinningNodeChildrenIRIs.has(data['@id'])
+          ) {
+            // Apply a class.
+            // Note that this applies to the resolved-node too.
+            element.classed('descendant-of-pinning-node-node', true);
+          }
+
           if (data.name !== undefined && data.children === undefined) {
             // Labeled leaf node! Look for taxonomic units.
             const tunits = wrappedPhylogeny.getTaxonomicUnitsForNodeLabel(data.name);
@@ -796,10 +841,7 @@ const vm = new Vue({
             if (tunits.length === 0) {
               element.classed('terminal-node-without-tunits', true);
             } else if (this.selectedPhyloref !== undefined) {
-              // If there's a selected phyloref, we should highlight
-              // specifiers:
-              //  - internal specifier in green
-              //  - external specifier in red
+              // We should highlight specifiers.
               if (hasProperty(this.selectedPhyloref, 'internalSpecifiers')) {
                 if (this.selectedPhyloref.internalSpecifiers
                   .some(specifier => wrappedPhylogeny.getNodeLabelsMatchedBySpecifier(specifier)
@@ -818,8 +860,23 @@ const vm = new Vue({
               }
             }
           }
+        })
+        .style_edges((element, data) => {
+          // Is the parent a descendant of a pinning node? If so, we need to
+          // select this branch!
+          // console.log('Found an edge with data: ', data);
+          if (
+            hasProperty(data, 'source') &&
+            hasProperty(data.source, '@id') &&
+            pinningNodeChildrenIRIs.has(data.source['@id'])
+          ) {
+            // Apply a class to this branch.
+            element.classed('descendant-of-pinning-node-branch', true);
+          }
         });
-      tree(d3.layout.newick_parser(newick));
+      const countPhylogeny = this.testcase.phylogenies.indexOf(phylogeny) + 1;
+      tree(new PhylogenyWrapper(phylogeny)
+        .getParsedNewickWithIRIs(PHYXWrapper.getBaseURIForPhylogeny(countPhylogeny)));
 
       // Phylotree supports reading the tree back out as Newick, but their Newick
       // representation doesn't annotate internal nodes. We add a method to allow
@@ -846,8 +903,15 @@ const vm = new Vue({
         // be changed, which should cause Vue.js to cause the tree to be
         // re-rendered.
         const node = nodeLCV;
+        const nodeID = hasProperty(node, '@id') ? node['@id'] : '(none)';
         const label = node.name;
         const isNodeLabeled = (label !== undefined && label.trim() !== '');
+
+        d3.layout.phylotree.add_custom_menu(
+          node,
+          () => `Node IRI: ${nodeID}`,
+          () => {},
+        );
 
         d3.layout.phylotree.add_custom_menu(
           node,
@@ -1090,6 +1154,73 @@ const vm = new Vue({
       });
 
       return nodeLabelsWithPrefix;
+    },
+
+    // Reasoning over phyloreferences
+    reasonOverPhyloreferences() {
+      // Reason over all the phyloreferences and store the results on
+      // the Vue model at vm.reasoningResults so we can access them.
+
+      $('#reason-over-phylorefs').html('(reasoning)');
+      $('#reason-over-phylorefs').prop('disabled', true);
+      $.post(JPHYLOREF_REASON_URL, {
+        // This will convert the JSON-LD file into an application/x-www-form-urlencoded
+        // string (see https://api.jquery.com/jquery.ajax/#jQuery-ajax-settings under
+        // processData for details). The POST data sent to the server will look like:
+        //  jsonld=%7B%5B%7B%22title%22%3A...
+        // which translates to:
+        //  jsonld={[{"title":...
+        jsonld: JSON.stringify([new PHYXWrapper(this.testcase).asJSONLD()], undefined, 4),
+      }).done((data) => {
+        this.reasoningResults = data;
+        // console.log('Data retrieved: ', data);
+      }).fail((jqXHR, textStatus, errorThrown) => {
+        // We can try using the third argument, but it appears to be the
+        // HTTP status (e.g. 'Internal Server Error'). So we default to that,
+        // but look for a better one in the JSON response from the server, if
+        // available.
+        let error = errorThrown;
+        if (this.hasProperty(jqXHR, 'responseJSON') && this.hasProperty(jqXHR.responseJSON, 'error')) {
+          error = jqXHR.responseJSON.error;
+        }
+
+        if (error === undefined || error === '') error = 'unknown error';
+        this.alert(`Error occurred on server while reasoning: ${error}`);
+      }).always(() => {
+        $('#reason-over-phylorefs').prop('disabled', false);
+        $('#reason-over-phylorefs').html('Reason');
+      });
+    },
+
+    resolvedNodesForPhylogeny(phyloref, phylogeny, flagReturnNodeIRI = true) {
+      // Return a list of resolved nodes for a particular phyloreference on a
+      // particular phylogeny.
+      // - flagReturnNodeIRI: if true, we return the entire node IRI; otherwise,
+      //                      we return just the node ID.
+
+      // Convert the phyloreference to an IRI so we can look it up.
+      const phylorefCount = this.testcase.phylorefs.indexOf(phyloref) + 1;
+      const phylorefIRI = PHYXWrapper.getBaseURIForPhyloref(phylorefCount);
+
+      // console.log('Looking up phylorefIRI ', phylorefIRI, ' in ', this.reasoningResults);
+      if (!hasProperty(this.reasoningResults, 'phylorefs') || !hasProperty(this.reasoningResults.phylorefs, phylorefIRI)) return [];
+      const nodesResolved = this.reasoningResults.phylorefs[phylorefIRI];
+
+      // We now have a list of all nodes matched by this phyloref, but we're
+      // only interested in matches for a single phylogeny.
+      const phylogenyCount = this.testcase.phylogenies.indexOf(phylogeny) + 1;
+      const phylogenyIRI = PHYXWrapper.getBaseURIForPhylogeny(phylogenyCount);
+
+      // Only return nodes that are part of this phylogeny. We can also remove
+      // the phylogeny IRI, so we get node identifiers only.
+      const nodeIRIs = nodesResolved
+        .filter(iri => iri.includes(phylogenyIRI));
+
+      // TODO: This would be a good place to look up this node on the phylogeny
+      // and use its node label instead of its node ID.
+
+      if (flagReturnNodeIRI) return nodeIRIs;
+      return nodeIRIs.map(iri => iri.replace(`${phylogenyIRI}_`, ''));
     },
   },
 });
