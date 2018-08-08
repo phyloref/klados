@@ -1050,7 +1050,7 @@ class PhylorefWrapper {
       // These classes are phyloreferences, and so should be classified as such.
       'phyloref:Phyloreference',
 
-      // Since we're writting this in RDF, just adding a '@type' of
+      // Since we're writing this in RDF, just adding a '@type' of
       // phyloref:Phyloreference would imply that phylorefURI is a named
       // individual of class phyloref:Phyloreference. We need to explicitly
       // let OWL know that this phylorefURI is an owl:Class.
