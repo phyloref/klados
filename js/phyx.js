@@ -23,6 +23,7 @@
 // Tell ESLint about globals imported in the HTML page.
 /* global Vue */ // From https://vuejs.org/
 /* global d3 */ // From https://d3js.org/
+/* global moment */ // From https://momentjs.com/
 
 // Our global variables
 // eslint-disable-next-line no-var
@@ -1037,6 +1038,134 @@ class PhylorefWrapper {
 
     // Return node labels sorted alphabetically.
     return Array.from(nodeLabels).sort();
+  }
+
+  static getStatusCURIEsInEnglish() {
+    // Return dictionary of all phyloref statuses in English
+    return {
+      'pso:draft': 'Draft',
+      'pso:final-draft': 'Final draft',
+      'pso:under-review': 'Under review',
+      'pso:submitted': 'Tested',
+      'pso:published': 'Published',
+      'pso:retracted-from-publication': 'Retracted',
+    };
+  }
+
+  getCurrentStatus() {
+    // Return a result object that contains:
+    //  - status: phyloreference status as a short URI (CURIE)
+    //  - statusInEnglish: an English representation of the phyloref status
+    //  - intervalStart: the start of the interval
+    //  - intervalEnd: the end of the interval
+
+    if (
+      hasOwnProperty(this.phyloref, 'pso:holdsStatusInTime') &&
+      Array.isArray(this.phyloref['pso:holdsStatusInTime']) &&
+      this.phyloref['pso:holdsStatusInTime'].length > 0
+    ) {
+      // If we have any pso:holdsStatusInTime entries, pick the first one and
+      // extract the CURIE and time interval information from it.
+      const lastStatusInTime = this.phyloref['pso:holdsStatusInTime'][this.phyloref['pso:holdsStatusInTime'].length - 1];
+      const statusCURIE = lastStatusInTime['pso:withStatus']['@id'];
+
+      // Look for time interval information
+      let intervalStart;
+      let intervalEnd;
+
+      if (hasOwnProperty(lastStatusInTime, 'tvc:atTime')) {
+        const atTime = lastStatusInTime['tvc:atTime'];
+        if (hasOwnProperty(atTime, 'timeinterval:hasIntervalStartDate')) intervalStart = atTime['timeinterval:hasIntervalStartDate'];
+        if (hasOwnProperty(atTime, 'timeinterval:hasIntervalEndDate')) intervalEnd = atTime['timeinterval:hasIntervalEndDate'];
+      }
+
+      // Return result object
+      return {
+        statusCURIE,
+        statusInEnglish: PhylorefWrapper.getStatusCURIEsInEnglish()[statusCURIE],
+        intervalStart,
+        intervalEnd,
+      };
+    }
+
+    // If we couldn't figure out a status for this phyloref, assume it's a draft.
+    return {
+      statusCURIE: 'pso:draft',
+      statusInEnglish: PhylorefWrapper.getStatusCURIEsInEnglish()['pso:draft'],
+    };
+  }
+
+  getStatusChanges() {
+    // Return a list of status changes for a particular phyloreference
+    if (hasOwnProperty(this.phyloref, 'pso:holdsStatusInTime')) {
+      return this.phyloref['pso:holdsStatusInTime'].map((entry) => {
+        const result = {};
+
+        // Create a statusCURIE convenience field.
+        if (hasOwnProperty(entry, 'pso:withStatus')) {
+          result.statusCURIE = entry['pso:withStatus']['@id'];
+          result.statusInEnglish = PhylorefWrapper.getStatusCURIEsInEnglish()[result.statusCURIE];
+        }
+
+        // Create intervalStart/intervalEnd convenient fields
+        if (hasOwnProperty(entry, 'tvc:atTime')) {
+          const atTime = entry['tvc:atTime'];
+          if (hasOwnProperty(atTime, 'timeinterval:hasIntervalStartDate')) {
+            result.intervalStart = atTime['timeinterval:hasIntervalStartDate'];
+            result.intervalStartAsCalendar = moment(result.intervalStart).calendar();
+          }
+
+          if (hasOwnProperty(atTime, 'timeinterval:hasIntervalEndDate')) {
+            result.intervalEnd = atTime['timeinterval:hasIntervalEndDate'];
+            result.intervalEndAsCalendar = moment(result.intervalEnd).calendar();
+          }
+        }
+
+        return result;
+      });
+    }
+
+    // No changes? Return an empty list.
+    return [];
+  }
+
+  setStatus(status) {
+    // Set the status of a phyloreference
+    //
+    // Check whether we have a valid status CURIE.
+    if (!hasOwnProperty(PhylorefWrapper.getStatusCURIEsInEnglish(), status)) {
+      throw new TypeError(`setStatus() called with invalid status CURIE '${status}'`);
+    }
+
+    // See if we can end the previous interval.
+    const currentTime = new Date(Date.now()).toISOString();
+
+    if (!hasOwnProperty(this.phyloref, 'pso:holdsStatusInTime')) {
+      Vue.set(this.phyloref, 'pso:holdsStatusInTime', []);
+    }
+
+    // Check to see if there's a previous time interval we should end.
+    if (
+      Array.isArray(this.phyloref['pso:holdsStatusInTime']) &&
+      this.phyloref['pso:holdsStatusInTime'].length > 0
+    ) {
+      const lastStatusInTime = this.phyloref['pso:holdsStatusInTime'][this.phyloref['pso:holdsStatusInTime'].length - 1];
+
+      if (!hasOwnProperty(lastStatusInTime, 'tvc:atTime')) Vue.set(lastStatusInTime, 'tvc:atTime', {});
+      if (!hasOwnProperty(lastStatusInTime['tvc:atTime'], 'timeinterval:hasIntervalEndDate')) {
+        // If the last time entry doesn't already have an interval end date, set it to now.
+        lastStatusInTime['tvc:atTime']['timeinterval:hasIntervalEndDate'] = currentTime;
+      }
+    }
+
+    // Create new entry.
+    this.phyloref['pso:holdsStatusInTime'].push({
+      '@type': 'http://purl.org/spar/pso/StatusInTime',
+      'pso:withStatus': { '@id': status },
+      'tvc:atTime': {
+        'timeinterval:hasIntervalStartDate': currentTime,
+      },
+    });
   }
 
   exportAsJSONLD(phylorefURI) {
