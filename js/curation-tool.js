@@ -661,6 +661,7 @@ const vm = new Vue({
         .svg(d3.select(nodeExpr))
         .options({
           transitions: false,
+          'left-offset': 100,
         })
         .style_nodes((element, data) => {
           // Instructions used to style nodes in Phylotree
@@ -680,7 +681,7 @@ const vm = new Vue({
               // Place internal label .3em to the right and below the node itself.
               textLabel.classed('internal-label', true)
                 .text(data.name)
-                .attr('dx', '.6em')
+                .attr('dx', '-.5em')
                 .attr('dy', '.3em');
 
               // If the internal label has the same label as the currently
