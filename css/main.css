@@ -36,8 +36,6 @@
 
 /* Node label for a terminal node without taxonomic units */
 .terminal-node-without-tunits {
-    font-style: italic;
-    font-weight: bolder;
 }
 
 /* Labels for internal nodes, whether phylorefs or not */
