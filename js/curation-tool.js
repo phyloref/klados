@@ -43,6 +43,10 @@ const examplePHYXURLs = [
 // URL to be used to send JPhyloRef /reason requests.
 const JPHYLOREF_REASON_URL = 'http://localhost:34214/reason';
 
+// Default spacing X and Y for phyloreferences.
+const DEFAULT_SPACING_X = 20;
+const DEFAULT_SPACING_Y = 40;
+
 // Helper methods for this library.
 
 /**
@@ -160,6 +164,10 @@ const vm = new Vue({
     // testcase.
     phylogenySpacingX: {},
     phylogenySpacingY: {},
+
+    // Default spacing
+    DEFAULT_SPACING_X,
+    DEFAULT_SPACING_Y,
 
     // Example PHYX URLs to display.
     examplePHYXURLs,
@@ -375,6 +383,7 @@ const vm = new Vue({
         // Reset phylogeny scaling information.
         this.phylogenySpacingX = {};
         this.phylogenySpacingY = {};
+
       } catch (err) {
         throw new Error(`Error occurred while displaying new testcase: ${err}`);
       }
@@ -894,19 +903,43 @@ const vm = new Vue({
       // phylogeny itself. Therefore, I'm storing them elsewhere in the Vue
       // model -- users will need to set the scaling every time they open this
       // PHYX file.
-      if (!this.hasProperty(this.phylogenySpacingX, phylogeny)) {
-        Vue.set(this.phylogenySpacingX, phylogeny, 20);
+      const phylogenyIndex = this.testcase.phylogenies.indexOf(phylogeny);
+      if (!this.hasProperty(this.phylogenySpacingX, phylogenyIndex)) {
+        Vue.set(this.phylogenySpacingX, phylogenyIndex, DEFAULT_SPACING_X);
       }
-      if (!this.hasProperty(this.phylogenySpacingY, phylogeny)) {
-        Vue.set(this.phylogenySpacingY, phylogeny, 40);
+      if (!this.hasProperty(this.phylogenySpacingY, phylogenyIndex)) {
+        Vue.set(this.phylogenySpacingY, phylogenyIndex, DEFAULT_SPACING_Y);
       }
-
+      
       tree
-        .spacing_x(this.phylogenySpacingX[phylogeny])
-        .spacing_y(this.phylogenySpacingY[phylogeny])
+        .spacing_x(this.phylogenySpacingX[phylogenyIndex])
+        .spacing_y(this.phylogenySpacingY[phylogenyIndex])
         .placenodes()
         .update();
       return tree;
+    },
+
+    // Get and set phylogeny spacing information.
+    getPhylogenySpacingX(phylogenyIndex) {
+      // Return the phylogeny spacing in the X dimension for a particular phylogeny by index.
+      // Will set up the spacing variable if it has not been created yet, so this should be
+      // called before accessing this.phylogenySpacingX directly.
+      if (!this.hasProperty(this.phylogenySpacingX, phylogenyIndex)) {
+        Vue.set(this.phylogenySpacingX, phylogenyIndex, DEFAULT_SPACING_X);
+      }
+
+      return this.phylogenySpacingX[phylogenyIndex];
+    },
+
+    getPhylogenySpacingY(phylogenyIndex) {
+      // Return the phylogeny spacing in the Y dimension for a particular phylogeny by index.
+      // Will set up the spacing variable if it has not been created yet, so this should be
+      // called before accessing this.phylogenySpacingY directly.
+      if (!this.hasProperty(this.phylogenySpacingY, phylogenyIndex)) {
+        Vue.set(this.phylogenySpacingY, phylogenyIndex, DEFAULT_SPACING_Y);
+      }
+       
+      return this.phylogenySpacingY[phylogenyIndex];
     },
 
     // Methods for creating new, empty data model elements.
