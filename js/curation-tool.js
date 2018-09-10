@@ -383,7 +383,6 @@ const vm = new Vue({
         // Reset phylogeny scaling information.
         this.phylogenySpacingX = {};
         this.phylogenySpacingY = {};
-
       } catch (err) {
         throw new Error(`Error occurred while displaying new testcase: ${err}`);
       }
@@ -910,7 +909,7 @@ const vm = new Vue({
       if (!this.hasProperty(this.phylogenySpacingY, phylogenyIndex)) {
         Vue.set(this.phylogenySpacingY, phylogenyIndex, DEFAULT_SPACING_Y);
       }
-      
+
       tree
         .spacing_x(this.phylogenySpacingX[phylogenyIndex])
         .spacing_y(this.phylogenySpacingY[phylogenyIndex])
@@ -938,7 +937,7 @@ const vm = new Vue({
       if (!this.hasProperty(this.phylogenySpacingY, phylogenyIndex)) {
         Vue.set(this.phylogenySpacingY, phylogenyIndex, DEFAULT_SPACING_Y);
       }
-       
+
       return this.phylogenySpacingY[phylogenyIndex];
     },
 
