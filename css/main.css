@@ -28,7 +28,7 @@
 }
 
 /* Node label for an external specifier */
-.external-specifier-node-label {
+.external-specifier-node text {
     font-weight: bolder;
     fill: rgb(0, 24, 168) !important;
     font-size: 12pt;
