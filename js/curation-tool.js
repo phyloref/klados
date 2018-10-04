@@ -1149,3 +1149,10 @@ const vm = new Vue({
     },
   },
 });
+
+/* Exports */
+if (!hasProperty(this, 'window')) {
+  module.exports = {
+    vm,
+  };
+}
