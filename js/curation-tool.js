@@ -661,7 +661,7 @@ const vm = new Vue({
         .svg(d3.select(nodeExpr))
         .options({
           transitions: false,
-          'left-offset': 100,
+          'left-offset': 100, // So we have space to display a long label on the root node.
         })
         .style_nodes((element, data) => {
           // Instructions used to style nodes in Phylotree
@@ -678,7 +678,7 @@ const vm = new Vue({
             if (textLabel.empty()) {
               textLabel = element.append('text');
 
-              // Place internal label .3em to the right and below the node itself.
+              // Place internal label to the left of the root node.
               textLabel.classed('internal-label', true)
                 .text(data.name)
                 .attr('dx', '-.5em')

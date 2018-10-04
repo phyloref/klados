@@ -44,7 +44,7 @@
     font-size: 12pt;
     font-style: italic;
 
-    text-anchor: end; /* Display text starting at the node */
+    text-anchor: end; /* Align text so it ends at the coordinates provided */
 }
 
 /* The selected internal label on a phylogeny, whether determined to be the pinning node or not. */
