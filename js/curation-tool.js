@@ -380,7 +380,7 @@ const vm = new Vue({
         this.selectedSpecifier = undefined;
         this.selectedTUnit = undefined;
 
-        // Reset phylogeny scaling information.
+        // Reset phylogeny spacing information.
         this.phylogenySpacingX = {};
         this.phylogenySpacingY = {};
       } catch (err) {
@@ -900,9 +900,14 @@ const vm = new Vue({
       // from computer to computer. However, they are specific to the display
       // on which the phylogeny was curated and are otherwise unrelated to the
       // phylogeny itself. Therefore, I'm storing them elsewhere in the Vue
-      // model -- users will need to set the scaling every time they open this
+      // model -- users will need to set the spacing every time they open this
       // PHYX file.
+
+      // Phylogeny-specific spacing is stored by the index number of the phylogeny.
       const phylogenyIndex = this.testcase.phylogenies.indexOf(phylogeny);
+
+      // If either spacingX or spacingY is not already set, we set them to their
+      // defaults.
       if (!this.hasProperty(this.phylogenySpacingX, phylogenyIndex)) {
         Vue.set(this.phylogenySpacingX, phylogenyIndex, DEFAULT_SPACING_X);
       }
@@ -910,6 +915,7 @@ const vm = new Vue({
         Vue.set(this.phylogenySpacingY, phylogenyIndex, DEFAULT_SPACING_Y);
       }
 
+      // Place and update the nodes on the phylogeny.
       tree
         .spacing_x(this.phylogenySpacingX[phylogenyIndex])
         .spacing_y(this.phylogenySpacingY[phylogenyIndex])
