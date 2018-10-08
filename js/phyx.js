@@ -368,8 +368,8 @@ class TaxonomicUnitWrapper {
       });
     }
 
-    // If we don't have any properties of a taxonomic unit, return undefined.
-    if (labels.length === 0) return undefined;
+    // If we don't have any properties of a taxonomic unit, return 'Empty taxonomic unit'.
+    if (labels.length === 0) return 'Empty taxonomic unit';
 
     return labels.join(' or ');
   }
