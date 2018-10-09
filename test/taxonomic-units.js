@@ -14,7 +14,7 @@ describe('TaxonomicUnitWrapper', function () {
     it('should wrap a blank object', function () {
       const wrapper = new phyx.TaxonomicUnitWrapper({});
       assert.exists(wrapper);
-      assert.isUndefined(wrapper.label);
+      assert.equal(wrapper.label, 'Empty taxonomic unit');
     });
   });
   describe('#label', function () {
