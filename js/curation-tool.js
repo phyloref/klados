@@ -628,6 +628,7 @@ const vm = new Vue({
 
       // Extract the Newick string to render.
       const phylogeny = phylogenyToRender;
+      const phylogenyIndex = this.testcase.phylogenies.indexOf(phylogeny);
       const newick = phylogeny.newick || '()';
 
       // Once we identify one or more pinning nodes in this phylogeny,
@@ -692,6 +693,7 @@ const vm = new Vue({
                 new PhylorefWrapper(this.selectedPhyloref).getExpectedNodeLabels(phylogeny)
                   .includes(data.name)
               ) {
+                textLabel.attr('id', `expected_phyloref_node_${phylogenyIndex}`);
                 textLabel.classed('selected-internal-label', true);
               }
             }
@@ -716,6 +718,9 @@ const vm = new Vue({
 
             // Make the pinning node circle larger (twice its usual size of 3).
             element.select('circle').attr('r', 6);
+
+            // Set its id to 'pinning_node_{{phylogenyIndex}}'
+            element.attr('id', `pinning_node_${phylogenyIndex}`);
           }
 
           // Maybe this isn't a pinning node, but it is a child of a pinning node.

@@ -567,7 +567,13 @@
                             <!-- If phylogenies were loaded, we need to display a selector for each phylogeny -->
                             <div class="input-group" v-for="(phylogeny, phylogenyIndex) of testcase['phylogenies']">
                                 <!-- Display the phylogeny where this node is expected to match -->
-                                <span class="input-group-addon" :title="phylogeny['description']">Phylogeny {{phylogenyIndex + 1}}</span>
+                                <span class="input-group-btn">
+                                    <a
+                                        class="btn btn-default" 
+                                        :href="'#expected_phyloref_node_' + phylogenyIndex"
+                                        title="Click here to jump to this expected node"
+                                        type="button">Phylogeny {{phylogenyIndex + 1}}</a>
+                                </span>
 
                                 <!-- Display the matching node(s) -->
                                 <template v-if="getPhylorefExpectedNodeLabels(phylogeny, selectedPhyloref).length === 0">
@@ -625,7 +631,13 @@
                             <!-- If phylogenies were loaded, we need to display a selector for each phylogeny -->
                             <div class="input-group" v-for="(phylogeny, phylogenyIndex) of testcase['phylogenies']">
                                 <!-- Display the phylogeny where this node is expected to match -->
-                                <span class="input-group-addon" :title="phylogeny['description']">Phylogeny {{phylogenyIndex + 1}}</span>
+                                <span class="input-group-btn">
+                                    <a
+                                        class="btn btn-default" 
+                                        :href="'#pinning_node_' + phylogenyIndex"
+                                        title="Click here to jump to this node"
+                                        type="button">Phylogeny {{phylogenyIndex + 1}}</a>
+                                </span>
 
                                 <!-- Display the matching node(s) -->
                                 <template v-if="!hasProperty(reasoningResults, 'phylorefs')">
