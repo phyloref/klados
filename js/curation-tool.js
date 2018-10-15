@@ -686,14 +686,15 @@ const vm = new Vue({
                 .attr('dy', '.3em');
 
               // If the internal label has the same label as the currently
-              // selected phyloreference, make it bolder and turn it blue.
+              // selected phyloreference, add an 'id' so we can jump to it
+              // and a CSS class to render it differently from other labels.
               if (
                 this.selectedPhyloref !== undefined &&
                 hasProperty(this.selectedPhyloref, 'label') &&
                 new PhylorefWrapper(this.selectedPhyloref).getExpectedNodeLabels(phylogeny)
                   .includes(data.name)
               ) {
-                textLabel.attr('id', `expected_phyloref_node_${phylogenyIndex}`);
+                textLabel.attr('id', `current_expected_label_phylogeny${phylogenyIndex}`);
                 textLabel.classed('selected-internal-label', true);
               }
             }
@@ -719,8 +720,8 @@ const vm = new Vue({
             // Make the pinning node circle larger (twice its usual size of 3).
             element.select('circle').attr('r', 6);
 
-            // Set its id to 'pinning_node_{{phylogenyIndex}}'
-            element.attr('id', `pinning_node_${phylogenyIndex}`);
+            // Set its id to 'current_pinning_node_phylogeny{{phylogenyIndex}}'
+            element.attr('id', `current_pinning_node_phylogeny${phylogenyIndex}`);
           }
 
           // Maybe this isn't a pinning node, but it is a child of a pinning node.

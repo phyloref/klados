@@ -570,8 +570,8 @@
                                 <span class="input-group-btn">
                                     <a
                                         class="btn btn-default" 
-                                        :href="'#expected_phyloref_node_' + phylogenyIndex"
-                                        title="Click here to jump to this expected node"
+                                        :href="'#current_expected_label_phylogeny' + phylogenyIndex"
+                                        title="Click here to jump to the expected label"
                                         type="button">Phylogeny {{phylogenyIndex + 1}}</a>
                                 </span>
 
@@ -634,7 +634,7 @@
                                 <span class="input-group-btn">
                                     <a
                                         class="btn btn-default" 
-                                        :href="'#pinning_node_' + phylogenyIndex"
+                                        :href="'#current_pinning_node_phylogeny' + phylogenyIndex"
                                         title="Click here to jump to this node"
                                         type="button">Phylogeny {{phylogenyIndex + 1}}</a>
                                 </span>
