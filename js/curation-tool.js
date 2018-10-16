@@ -671,7 +671,7 @@ const vm = new Vue({
           const wrappedPhylogeny = new PhylogenyWrapper(phylogeny);
 
           // Make sure we don't already have an internal label node on this SVG node!
-          let textLabel = element.selectAll('.internal-label');
+          let textLabel = element.selectAll('text');
 
           if (hasProperty(data, 'name') && data.name !== '' && data.children) {
             // If the node has a label and has children (i.e. is an internal node),
@@ -741,7 +741,18 @@ const vm = new Vue({
             if (tunits.length === 0) {
               element.classed('terminal-node-without-tunits', true);
             } else if (this.selectedPhyloref !== undefined) {
-              // We should highlight specifiers.
+              // If this is a terminal node, we should set its ID to
+              // `current_expected_label_phylogeny${phylogenyIndex}` if it is
+              // the currently expected node label.
+              if (
+                hasProperty(this.selectedPhyloref, 'label') &&
+                new PhylorefWrapper(this.selectedPhyloref).getExpectedNodeLabels(phylogeny)
+                  .includes(data.name)
+              ) {
+                textLabel.attr('id', `current_expected_label_phylogeny${phylogenyIndex}`);
+              }
+
+              // We should highlight internal specifiers.
               if (hasProperty(this.selectedPhyloref, 'internalSpecifiers')) {
                 if (this.selectedPhyloref.internalSpecifiers
                   .some(specifier => wrappedPhylogeny.getNodeLabelsMatchedBySpecifier(specifier)
@@ -750,6 +761,8 @@ const vm = new Vue({
                   element.classed('node internal-specifier-node', true);
                 }
               }
+
+              // We should highlight external specifiers.
               if (hasProperty(this.selectedPhyloref, 'externalSpecifiers')) {
                 if (this.selectedPhyloref.externalSpecifiers
                   .some(specifier => wrappedPhylogeny.getNodeLabelsMatchedBySpecifier(specifier)
