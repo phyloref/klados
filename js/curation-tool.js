@@ -43,9 +43,11 @@ const examplePHYXURLs = [
 // URL to be used to send JPhyloRef /reason requests.
 const JPHYLOREF_REASON_URL = 'http://localhost:34214/reason';
 
-// Default spacing X and Y for phyloreferences.
+// Default and minimal spacing X and Y for phylogenies.
 const DEFAULT_SPACING_X = 20;
+const MIN_SPACING_X = 10;
 const DEFAULT_SPACING_Y = 40;
+const MIN_SPACING_Y = 10;
 
 // Helper methods for this library.
 
@@ -936,6 +938,20 @@ const vm = new Vue({
       return this.phylogenySpacingX[phylogenyIndex];
     },
 
+    changePhylogenySpacingX(phylogenyIndex, changeBy) {
+      // Change the phylogeny spacing in the X dimension by the changeBy value.
+      // We prevent the value from going below MIN_SPACING_X.
+      if (!this.hasProperty(this.phylogenySpacingX, phylogenyIndex)) {
+        Vue.set(this.phylogenySpacingX, phylogenyIndex, DEFAULT_SPACING_X);
+      }
+
+      this.phylogenySpacingX[phylogenyIndex] += changeBy;
+
+      if (this.phylogenySpacingX[phylogenyIndex] < MIN_SPACING_X) {
+        this.phylogenySpacingX[phylogenyIndex] = MIN_SPACING_X;
+      }
+    },
+
     getPhylogenySpacingY(phylogenyIndex) {
       // Return the phylogeny spacing in the Y dimension for a particular phylogeny by index.
       // Will set up the spacing variable if it has not been created yet, so this should be
@@ -945,6 +961,20 @@ const vm = new Vue({
       }
 
       return this.phylogenySpacingY[phylogenyIndex];
+    },
+
+    changePhylogenySpacingY(phylogenyIndex, changeBy) {
+      // Change the phylogeny spacing in the Y dimension by the changeBy value.
+      // We prevent the value from going below MIN_SPACING_Y.
+      if (!this.hasProperty(this.phylogenySpacingY, phylogenyIndex)) {
+        Vue.set(this.phylogenySpacingY, phylogenyIndex, DEFAULT_SPACING_Y);
+      }
+
+      this.phylogenySpacingY[phylogenyIndex] += changeBy;
+
+      if (this.phylogenySpacingY[phylogenyIndex] < MIN_SPACING_Y) {
+        this.phylogenySpacingY[phylogenyIndex] = MIN_SPACING_Y;
+      }
     },
 
     // Methods for creating new, empty data model elements.

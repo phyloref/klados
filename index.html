@@ -273,8 +273,8 @@
                             Vertical spacing: {{ getPhylogenySpacingX(phylogenyIndex) }}px <span class="caret"></span>
                           </button>
                           <ul class="dropdown-menu">
-                            <li><a :href="'#phylogeny-' + phylogenyIndex + '-footer'" @click="phylogenySpacingX[phylogenyIndex] += 10">Increase scale</a></li>
-                            <li><a :href="'#phylogeny-' + phylogenyIndex + '-footer'" @click="phylogenySpacingX[phylogenyIndex] = (phylogenySpacingX[phylogenyIndex] < 10 ? 0 : phylogenySpacingX[phylogenyIndex] - 10)">Decrease scale</a></li>
+                            <li><a :href="'#phylogeny-' + phylogenyIndex + '-footer'" @click="changePhylogenySpacingX(phylogenyIndex, +10)">Increase scale</a></li>
+                            <li><a :href="'#phylogeny-' + phylogenyIndex + '-footer'" @click="changePhylogenySpacingX(phylogenyIndex, -10)">Decrease scale</a></li>
                           </ul>
                         </div>
 
@@ -284,8 +284,8 @@
                             Horizontal spacing: {{ getPhylogenySpacingY(phylogenyIndex) }}px <span class="caret"></span>
                           </button>
                           <ul class="dropdown-menu">
-                            <li><a :href="'#phylogeny-' + phylogenyIndex + '-footer'" @click="phylogenySpacingY[phylogenyIndex] += 10">Increase scale</a></li>
-                            <li><a :href="'#phylogeny-' + phylogenyIndex + '-footer'" @click="phylogenySpacingY[phylogenyIndex] = (phylogenySpacingY[phylogenyIndex] < 10 ? 0 : phylogenySpacingY[phylogenyIndex] - 10)">Decrease scale</a></li>
+                            <li><a :href="'#phylogeny-' + phylogenyIndex + '-footer'" @click="changePhylogenySpacingY(phylogenyIndex, +10)">Increase scale</a></li>
+                            <li><a :href="'#phylogeny-' + phylogenyIndex + '-footer'" @click="changePhylogenySpacingY(phylogenyIndex, -10)">Decrease scale</a></li>
                           </ul>
                         </div>
 
