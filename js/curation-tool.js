@@ -516,10 +516,14 @@ const vm = new Vue({
 
     // Methods for building human-readable labels for model elements.
     getTaxonomicUnitLabel(tu) {
-      return new TaxonomicUnitWrapper(tu).label;
+      const label = new TaxonomicUnitWrapper(tu).label;
+      if (label === undefined) return 'Empty taxonomic unit';
+      return label;
     },
     getSpecifierLabel(specifier) {
-      return PhylorefWrapper.getSpecifierLabel(specifier);
+      const label = PhylorefWrapper.getSpecifierLabel(specifier);
+      if (label === undefined) return 'Empty specifier';
+      return label;
     },
     getPhylorefStatus(phyloref) {
       return new PhylorefWrapper(phyloref).getCurrentStatus();

@@ -368,8 +368,8 @@ class TaxonomicUnitWrapper {
       });
     }
 
-    // If we don't have any properties of a taxonomic unit, return 'Empty taxonomic unit'.
-    if (labels.length === 0) return 'Empty taxonomic unit';
+    // If we don't have any properties of a taxonomic unit, return undefined.
+    if (labels.length === 0) return undefined;
 
     return labels.join(' or ');
   }
@@ -985,8 +985,8 @@ class PhylorefWrapper {
     // this is a static method.
 
     // Is this specifier even non-null?
-    if (specifier === undefined) return '(undefined)';
-    if (specifier === null) return '(null)';
+    if (specifier === undefined) return undefined;
+    if (specifier === null) return undefined;
 
     // Maybe there is a label or description right there?
     if (hasOwnProperty(specifier, 'label')) return specifier.label;
@@ -995,12 +995,13 @@ class PhylorefWrapper {
     // Look at the individual taxonomic units.
     if (hasOwnProperty(specifier, 'referencesTaxonomicUnits')) {
       const labels = specifier.referencesTaxonomicUnits
-        .map(tu => new TaxonomicUnitWrapper(tu).label);
+        .map(tu => new TaxonomicUnitWrapper(tu).label)
+        .filter(label => (label !== undefined));
       if (labels.length > 0) return labels.join('; ');
     }
 
     // No idea!
-    return 'Unnamed specifier';
+    return undefined;
   }
 
   getExpectedNodeLabels(phylogeny) {
