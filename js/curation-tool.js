@@ -381,15 +381,23 @@ const vm = new Vue({
     },
 
     // Export functions.
+    downloadAsJSON() {
+      // Provide the JSON file as a download to the browser.
+      const content = [JSON.stringify(this.testcase, undefined, 4)];
+
+      // Save to local hard drive.
+      const jsonFile = new File(content, 'download.json', { type: 'application/json;charset=utf-8' });
+      saveAs(jsonFile);
+    },
+
     downloadAsJSONLD() {
-      // This is a temporary function to help develop the JSON-LD production
-      // system -- eventually, we'll rename it to downloadAsJSON and make it
-      // export the PHYX file for download.
+      // Exports the PHYX file as an OWL/JSON-LD file, which can be opened in
+      // Protege or converted into OWL/XML or other formats.
       const wrapped = new PHYXWrapper(this.testcase);
       const content = [JSON.stringify([wrapped.asJSONLD()], undefined, 4)];
 
       // Save to local hard drive.
-      const jsonldFile = new File(content, 'download.json', { type: 'application/json;charset=utf-8' });
+      const jsonldFile = new File(content, 'download.jsonld', { type: 'application/json;charset=utf-8' });
       saveAs(jsonldFile);
     },
 
