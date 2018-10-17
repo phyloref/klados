@@ -133,7 +133,7 @@
         </div>
 
         <!-- Metadata for the entire study -->
-        <form id="study-metadata" class="form-horizontal col-md-12">
+        <div id="study-metadata" class="form-horizontal col-md-12">
             <div id="study-metadata" class="panel panel-info">
                 <div class="panel-heading">
                   <!-- Minimize button for panel -->
@@ -169,7 +169,7 @@
                     </div>
                 </div>
             </div>
-        </form>
+        </div>
 
         <!-- Dropdown menus for navigating phylogenies and phyloreferences -->
         <div class="col-md-12 panel">
@@ -360,7 +360,7 @@
 
                     <!-- Body of specifier editor modal dialog box -->
                     <div class="modal-body col-md-12">
-                            <form id="tunit-editor-form">
+                            <div id="tunit-editor-form">
                                 <div v-if="selectedTUnitListContainer.type == 'specifier'">
                                     <label for="verbatim-specifier" class="control-label">Verbatim specifier</label>
                                     <input id="verbatim-specifier" type="text" class="form-control" v-model.trim="selectedTUnitListContainer.container['verbatimSpecifier']" placeholder="Enter the verbatim description of this specifier">
@@ -504,7 +504,7 @@
                                     </div>
 
                                 </div>
-                            </form>
+                            </div>
                     </div>
 
                     <!-- Footer of the specifier editor modal dialog box -->
@@ -524,7 +524,7 @@
                   Phyloreferences
                 </div>
                 <div v-if="selectedPhyloref" class="panel-body">
-                    <form id="phyloref" class="form-horizontal">
+                    <div id="phyloref" class="form-horizontal">
 
                         <!-- Phyloreference label -->
                         <label for="label" class="control-label col-md-3">Label</label>
@@ -754,7 +754,7 @@
                                 >Delete some specifiers</button>
                             </div>
                         </div>
-                    </form>
+                    </div>
                 </div>
 
                 <div class="panel-footer" v-if="selectedPhyloref !== undefined && testcase.phylorefs.indexOf(selectedPhyloref) != -1">
