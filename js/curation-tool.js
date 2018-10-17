@@ -616,7 +616,9 @@ const vm = new Vue({
       // so it can be edited.
       if (phylotree === undefined) { return newick; }
 
-      return phylotree.get_newick_with_internal_labels();
+      // The blank function is the annotator -- we can use it to add annotations
+      // to the produced Newick string.
+      return phylotree.get_newick(() => undefined);
     },
     renderTree(nodeExpr, phylogenyToRender) {
       // renderTree(nodeExpr, phylogeny) {
@@ -660,6 +662,7 @@ const vm = new Vue({
       const tree = d3.layout.phylotree()
         .svg(d3.select(nodeExpr))
         .options({
+          'internal-names': true,
           transitions: false,
           'left-offset': 100, // So we have space to display a long label on the root node.
         })
@@ -772,25 +775,6 @@ const vm = new Vue({
       tree(new PhylogenyWrapper(phylogeny)
         .getParsedNewickWithIRIs(PHYXWrapper.getBaseURIForPhylogeny(countPhylogeny)));
 
-      // Phylotree supports reading the tree back out as Newick, but their Newick
-      // representation doesn't annotate internal nodes. We add a method to allow
-      // us to do that here.
-      //
-      // This is not in camelcase in order to keep it in line with the other
-      // functions on Phylotree.
-      // eslint-disable-next-line camelcase
-      tree.get_newick_with_internal_labels = function get_newick_with_internal_labels() {
-        return `${this.get_newick((node) => {
-          // Don't annotate terminal nodes.
-          if (!node.children) return undefined;
-
-          // For internal nodes, annotate with their names.
-          return node.name;
-        })};`;
-        // ^ tree.get_newick() doesn't add the final semicolon, so we do
-        //   that here.
-      };
-
       tree.get_nodes().forEach((nodeLCV) => {
         // All nodes (including named nodes) can be renamed.
         // Renaming a node will cause the phylogeny.newick property to
@@ -832,7 +816,10 @@ const vm = new Vue({
 
             // This should have updated the Phylotree model. To update the
             // Vue and force a redraw, we now need to update phylogeny.newick.
-            const newNewick = tree.get_newick_with_internal_labels();
+            //
+            // The blank function is the annotator -- we can use it to add additional
+            // annotations into the Newick string.
+            const newNewick = tree.get_newick(() => undefined);
             // console.log('Newick string updated to: ', newNewick);
             phylogeny.newick = newNewick;
           },
