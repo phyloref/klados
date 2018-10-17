@@ -382,6 +382,11 @@
                     <!-- Body of specifier editor modal dialog box -->
                     <div class="modal-body col-md-12">
                             <div id="tunit-editor-form">
+                                <p>Changes made to taxonomic units in this dialog box will
+                                immediately change the {{selectedTUnitListContainer.type}}
+                                in the main display.
+                                </p>
+
                                 <div v-if="selectedTUnitListContainer.type == 'specifier'">
                                     <label for="verbatim-specifier" class="control-label">Verbatim specifier</label>
                                     <input id="verbatim-specifier" type="text" class="form-control" v-model.trim="selectedTUnitListContainer.container['verbatimSpecifier']" placeholder="Enter the verbatim description of this specifier">
