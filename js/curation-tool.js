@@ -388,6 +388,19 @@ const vm = new Vue({
       // Save to local hard drive.
       const jsonFile = new File(content, 'download.json', { type: 'application/json;charset=utf-8' });
       saveAs(jsonFile);
+
+      // saveAs(jsonFile) doesn't report on whether the user acceped the download
+      // or not. We assume, possibly incorrectly, that they did and that the
+      // current JSON content has been saved. We therefore reset testcaseAsLoaded
+      // so we can watch for other changes.
+      //
+      // A more sophisticated API like https://github.com/jimmywarting/StreamSaver.js
+      // might be able to let us know if the file was saved correctly.
+      //
+      // Deep-copy the testcase into a 'testcaseAsLoaded' variable in our
+      // model. We deep-compare this.testcase with this.testcaseAsLoaded to
+      // determine if the loaded model has been modified.
+      this.testcaseAsLoaded = jQuery.extend(true, {}, this.testcase);
     },
 
     downloadAsJSONLD() {
