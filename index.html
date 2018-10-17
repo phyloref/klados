@@ -230,6 +230,13 @@
                     <!-- Minimize button for panel -->
                     <a href="#" class="close glyphicon glyphicon-collapse-up" onclick="vm.toggleButtonAndPanel(this, $(this).parent().parent().find('.panel-body, .panel-footer'))"></a>
 
+                    <!-- Add a warning if this phylogeny has changed -->
+                    <a href="#" onclose="return false;"
+                      v-if="!isEqualJSON(phylogeny, testcaseAsLoaded.phylogenies[phylogenyIndex])"
+                      data-toggle="tooltip" data-placement="bottom" title="This phylogeny has been modified since being loaded! Please save it locally."
+                      style="padding: 0em 1em"
+                      class="close glyphicon glyphicon-warning-sign"></a>
+
                     <template v-if="phylogenyDescriptionBeingEdited !== phylogeny">
                         <span role="button" @click="phylogenyDescriptionBeingEdited = phylogeny" title="Click to edit">
                             <template v-if="hasProperty(phylogeny, 'description')">

@@ -285,6 +285,14 @@ const vm = new Vue({
       $(button).toggleClass(buttonClasses);
       $(panel).toggle(300);
     },
+    isEqualJSON(json1, json2) {
+      // Compare two JSON objects and determine if they are identical.
+      if (json1 === undefined) return false;
+      if (json2 === undefined) return false;
+
+      // _.isEqual will compare the two objects using a recursive comparison.
+      return _.isEqual(json1, json2);
+    },
 
     // Data model management methods.
     loadPHYXFromURL(url) {
