@@ -207,12 +207,10 @@
                       <p><strong>{{error.title}}.</strong> {{error.message}}</p>
                     </template>
                     <!-- Display the phylogeny, but only if there are no parsing errors -->
-                    <template v-if="getPhylogenyParsingErrors(phylogeny).length === 0">
                       <svg
                         width="100%"
                         :id="'phylogeny-svg-' + phylogenyIndex"
                         :alt="getPhylogenyAsNewick('#phylogeny-svg-' + phylogenyIndex, phylogeny)"></svg>
-                    </template>
                   </template>
                   <template v-else>
                         <p>This table displays all labeled nodes in this phylogeny and all known annotations

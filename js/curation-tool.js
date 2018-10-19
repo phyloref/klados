@@ -661,7 +661,9 @@ const vm = new Vue({
         .svg(d3.select(nodeExpr))
         .options({
           transitions: false,
+          'left-right-spacing': 'fit-to-size'
         })
+        .size([10, d3.select(nodeExpr).node().getBoundingClientRect().width])
         .style_nodes((element, data) => {
           // Instructions used to style nodes in Phylotree
           // - element: The D3 element of the node being styled
