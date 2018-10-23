@@ -491,12 +491,19 @@
 
                                     <!-- List of taxonomic units, including the option to add new taxonomic units -->
                                     <div class="list-group">
-                                        <a class="list-group-item"
+                                        <div class="list-group-item"
                                             v-for="(tunit, tunitIndex) of selectedTUnitListContainer.list"
                                             :class="{active: selectedTUnit === tunit}"
                                             @click="selectedTUnit = tunit"
                                             :title="getTaxonomicUnitLabel(tunit)"
-                                        >{{getTaxonomicUnitLabel(tunit)}}</a>
+                                        >{{getTaxonomicUnitLabel(tunit)}}
+                                        
+                                        <a href="#" 
+                                            :title="'Delete ' + getTaxonomicUnitLabel(tunit)" 
+                                            href="javascript: void(0)"
+                                            class="icon-danger close glyphicon glyphicon-remove" 
+                                            @click="deleteTUnit(tunit)"></a>
+                                        </div>
                                         <a class="list-group-item"
                                             href="javascript: void(0)"
                                             onclick="vm.selectedTUnitListContainer.list.push(vm.createEmptyTaxonomicUnit(vm.selectedTUnitListContainer.list.length + 1))"

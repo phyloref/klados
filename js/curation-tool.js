@@ -486,6 +486,26 @@ const vm = new Vue({
       // We've set up a data-dismiss to do that, so we don't need to do
       // anything here, but the function is here in case we need it later.
     },
+    deleteTUnit(tunitToDelete) {
+      const tunit = tunitToDelete;
+
+      // Delete the specified taxonomic unit from the selectedTUnitListContainer.
+      this.confirm('Are you sure you want to delete this taxonomic unit? This cannot be undone!', () => {
+        // Is this the selectedTUnit? If so, reset it.
+        if (this.selectedTUnit === tunit) this.selectedTUnit = undefined;
+
+        // Before deleting this taxonomic unit from its list, let's wipe it in
+        // the UI. Otherwise, Vue uses the values in the UI to set the values
+        // in the this.selectedTUnit.
+        tunit.scientificNames = [];
+        tunit.externalReferences = [];
+        tunit.specimens = [];
+
+        // Delete it from its list.
+        const list = this.selectedTUnitListContainer.list;
+        list.splice(list.indexOf(tunit), 1);
+      });
+    },
 
     // Methods for listing and modifying specifiers.
     getSpecifiers(phylorefWithSpecifiers) {
@@ -506,10 +526,14 @@ const vm = new Vue({
 
     // Methods for building human-readable labels for model elements.
     getTaxonomicUnitLabel(tu) {
-      return new TaxonomicUnitWrapper(tu).label;
+      const label = new TaxonomicUnitWrapper(tu).label;
+      if (label === undefined) return 'Empty taxonomic unit';
+      return label;
     },
     getSpecifierLabel(specifier) {
-      return PhylorefWrapper.getSpecifierLabel(specifier);
+      const label = PhylorefWrapper.getSpecifierLabel(specifier);
+      if (label === undefined) return 'Empty specifier';
+      return label;
     },
     getPhylorefStatus(phyloref) {
       return new PhylorefWrapper(phyloref).getCurrentStatus();
