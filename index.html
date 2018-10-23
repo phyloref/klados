@@ -308,22 +308,22 @@
                         <!-- Dropdown button for vertical spacing -->
                         <div class="btn-group" role="group">
                           <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Vertical spacing: {{ phylogenySpacingX[phylogeny] }}px <span class="caret"></span>
+                            Vertical spacing: {{ getPhylogenySpacingX(phylogenyIndex) }}px <span class="caret"></span>
                           </button>
                           <ul class="dropdown-menu">
-                            <li><a :href="'#phylogeny-' + phylogenyIndex + '-footer'" @click="phylogenySpacingX[phylogeny] += 10">Increase scale</a></li>
-                            <li><a :href="'#phylogeny-' + phylogenyIndex + '-footer'" @click="phylogenySpacingX[phylogeny] = (phylogenySpacingX[phylogeny] < 10 ? 0 : phylogenySpacingX[phylogeny] - 10)">Decrease scale</a></li>
+                            <li><a :href="'#phylogeny-' + phylogenyIndex + '-footer'" @click="changePhylogenySpacingX(phylogenyIndex, +10)">Increase scale</a></li>
+                            <li><a :href="'#phylogeny-' + phylogenyIndex + '-footer'" @click="changePhylogenySpacingX(phylogenyIndex, -10)">Decrease scale</a></li>
                           </ul>
                         </div>
 
                         <!-- Dropdown button for horizontal spacing -->
                         <div class="btn-group" role="group">
                           <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Horizontal spacing: {{ phylogenySpacingY[phylogeny] }}px <span class="caret"></span>
+                            Horizontal spacing: {{ getPhylogenySpacingY(phylogenyIndex) }}px <span class="caret"></span>
                           </button>
                           <ul class="dropdown-menu">
-                            <li><a :href="'#phylogeny-' + phylogenyIndex + '-footer'" @click="phylogenySpacingY[phylogeny] += 10">Increase scale</a></li>
-                            <li><a :href="'#phylogeny-' + phylogenyIndex + '-footer'" @click="phylogenySpacingY[phylogeny] = (phylogenySpacingY[phylogeny] < 10 ? 0 : phylogenySpacingY[phylogeny] - 10)">Decrease scale</a></li>
+                            <li><a :href="'#phylogeny-' + phylogenyIndex + '-footer'" @click="changePhylogenySpacingY(phylogenyIndex, +10)">Increase scale</a></li>
+                            <li><a :href="'#phylogeny-' + phylogenyIndex + '-footer'" @click="changePhylogenySpacingY(phylogenyIndex, -10)">Decrease scale</a></li>
                           </ul>
                         </div>
 
