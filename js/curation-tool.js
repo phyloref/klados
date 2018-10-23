@@ -945,7 +945,8 @@ const vm = new Vue({
         Vue.set(this.phylogenySpacingX, phylogenyIndex, DEFAULT_SPACING_X);
       }
 
-      this.phylogenySpacingX[phylogenyIndex] += changeBy;
+      let spacing = this.phylogenySpacingX[phylogenyIndex] + changeBy;
+      this.phylogenySpacingX[phylogenyIndex] = spacing < MIN_SPACING_X ? MIN_SPACING_X : spacing;
 
       if (this.phylogenySpacingX[phylogenyIndex] < MIN_SPACING_X) {
         this.phylogenySpacingX[phylogenyIndex] = MIN_SPACING_X;
