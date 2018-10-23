@@ -945,7 +945,7 @@ const vm = new Vue({
         Vue.set(this.phylogenySpacingX, phylogenyIndex, DEFAULT_SPACING_X);
       }
 
-      let spacing = this.phylogenySpacingX[phylogenyIndex] + changeBy;
+      const spacing = this.phylogenySpacingX[phylogenyIndex] + changeBy;
       this.phylogenySpacingX[phylogenyIndex] = spacing < MIN_SPACING_X ? MIN_SPACING_X : spacing;
     },
 
@@ -967,7 +967,7 @@ const vm = new Vue({
         Vue.set(this.phylogenySpacingY, phylogenyIndex, DEFAULT_SPACING_Y);
       }
 
-      let spacing = this.phylogenySpacingY[phylogenyIndex] + changeBy;
+      const spacing = this.phylogenySpacingY[phylogenyIndex] + changeBy;
       this.phylogenySpacingY[phylogenyIndex] = spacing < MIN_SPACING_Y ? MIN_SPACING_Y : spacing;
     },
 
