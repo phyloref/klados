@@ -947,10 +947,6 @@ const vm = new Vue({
 
       let spacing = this.phylogenySpacingX[phylogenyIndex] + changeBy;
       this.phylogenySpacingX[phylogenyIndex] = spacing < MIN_SPACING_X ? MIN_SPACING_X : spacing;
-
-      if (this.phylogenySpacingX[phylogenyIndex] < MIN_SPACING_X) {
-        this.phylogenySpacingX[phylogenyIndex] = MIN_SPACING_X;
-      }
     },
 
     getPhylogenySpacingY(phylogenyIndex) {
@@ -973,10 +969,6 @@ const vm = new Vue({
 
       let spacing = this.phylogenySpacingY[phylogenyIndex] + changeBy;
       this.phylogenySpacingY[phylogenyIndex] = spacing < MIN_SPACING_Y ? MIN_SPACING_Y : spacing;
-
-      if (this.phylogenySpacingY[phylogenyIndex] < MIN_SPACING_Y) {
-        this.phylogenySpacingY[phylogenyIndex] = MIN_SPACING_Y;
-      }
     },
 
     // Methods for creating new, empty data model elements.
