@@ -685,6 +685,7 @@ const vm = new Vue({
 
       // Extract the Newick string to render.
       const phylogeny = phylogenyToRender;
+      const phylogenyIndex = this.testcase.phylogenies.indexOf(phylogeny);
       const newick = phylogeny.newick || '()';
 
       // Once we identify one or more pinning nodes in this phylogeny,
@@ -728,7 +729,7 @@ const vm = new Vue({
           const wrappedPhylogeny = new PhylogenyWrapper(phylogeny);
 
           // Make sure we don't already have an internal label node on this SVG node!
-          let textLabel = element.selectAll('.internal-label');
+          let textLabel = element.selectAll('text');
 
           if (hasProperty(data, 'name') && data.name !== '' && data.children) {
             // If the node has a label and has children (i.e. is an internal node),
@@ -743,13 +744,15 @@ const vm = new Vue({
                 .attr('dy', '.3em');
 
               // If the internal label has the same label as the currently
-              // selected phyloreference, make it bolder and turn it blue.
+              // selected phyloreference, add an 'id' so we can jump to it
+              // and a CSS class to render it differently from other labels.
               if (
                 this.selectedPhyloref !== undefined &&
                 hasProperty(this.selectedPhyloref, 'label') &&
                 new PhylorefWrapper(this.selectedPhyloref).getExpectedNodeLabels(phylogeny)
                   .includes(data.name)
               ) {
+                textLabel.attr('id', `current_expected_label_phylogeny${phylogenyIndex}`);
                 textLabel.classed('selected-internal-label', true);
               }
             }
@@ -774,6 +777,9 @@ const vm = new Vue({
 
             // Make the pinning node circle larger (twice its usual size of 3).
             element.select('circle').attr('r', 6);
+
+            // Set its id to 'current_pinning_node_phylogeny{{phylogenyIndex}}'
+            element.attr('id', `current_pinning_node_phylogeny${phylogenyIndex}`);
           }
 
           // Maybe this isn't a pinning node, but it is a child of a pinning node.
@@ -793,7 +799,18 @@ const vm = new Vue({
             if (tunits.length === 0) {
               element.classed('terminal-node-without-tunits', true);
             } else if (this.selectedPhyloref !== undefined) {
-              // We should highlight specifiers.
+              // If this is a terminal node, we should set its ID to
+              // `current_expected_label_phylogeny${phylogenyIndex}` if it is
+              // the currently expected node label.
+              if (
+                hasProperty(this.selectedPhyloref, 'label') &&
+                new PhylorefWrapper(this.selectedPhyloref).getExpectedNodeLabels(phylogeny)
+                  .includes(data.name)
+              ) {
+                textLabel.attr('id', `current_expected_label_phylogeny${phylogenyIndex}`);
+              }
+
+              // We should highlight internal specifiers.
               if (hasProperty(this.selectedPhyloref, 'internalSpecifiers')) {
                 if (this.selectedPhyloref.internalSpecifiers
                   .some(specifier => wrappedPhylogeny.getNodeLabelsMatchedBySpecifier(specifier)
@@ -802,6 +819,8 @@ const vm = new Vue({
                   element.classed('node internal-specifier-node', true);
                 }
               }
+
+              // We should highlight external specifiers.
               if (hasProperty(this.selectedPhyloref, 'externalSpecifiers')) {
                 if (this.selectedPhyloref.externalSpecifiers
                   .some(specifier => wrappedPhylogeny.getNodeLabelsMatchedBySpecifier(specifier)
