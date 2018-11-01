@@ -391,15 +391,36 @@ const vm = new Vue({
     },
 
     // Export functions.
+    downloadAsJSON() {
+      // Provide the JSON file as a download to the browser.
+      const content = [JSON.stringify(this.testcase, undefined, 4)];
+
+      // Save to local hard drive.
+      const jsonFile = new File(content, 'download.json', { type: 'application/json;charset=utf-8' });
+      saveAs(jsonFile);
+
+      // saveAs(jsonFile) doesn't report on whether the user acceped the download
+      // or not. We assume, possibly incorrectly, that they did and that the
+      // current JSON content has been saved. We therefore reset testcaseAsLoaded
+      // so we can watch for other changes.
+      //
+      // A more sophisticated API like https://github.com/jimmywarting/StreamSaver.js
+      // might be able to let us know if the file was saved correctly.
+      //
+      // Deep-copy the testcase into a 'testcaseAsLoaded' variable in our
+      // model. We deep-compare this.testcase with this.testcaseAsLoaded to
+      // determine if the loaded model has been modified.
+      this.testcaseAsLoaded = jQuery.extend(true, {}, this.testcase);
+    },
+
     downloadAsJSONLD() {
-      // This is a temporary function to help develop the JSON-LD production
-      // system -- eventually, we'll rename it to downloadAsJSON and make it
-      // export the PHYX file for download.
+      // Exports the PHYX file as an OWL/JSON-LD file, which can be opened in
+      // Protege or converted into OWL/XML or other formats.
       const wrapped = new PHYXWrapper(this.testcase);
       const content = [JSON.stringify([wrapped.asJSONLD()], undefined, 4)];
 
       // Save to local hard drive.
-      const jsonldFile = new File(content, 'download.json', { type: 'application/json;charset=utf-8' });
+      const jsonldFile = new File(content, 'download.jsonld', { type: 'application/json;charset=utf-8' });
       saveAs(jsonldFile);
     },
 

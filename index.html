@@ -95,7 +95,7 @@
             <!-- Menu for loading and exporting files -->
             <div class="btn-group btn-group-justified" role="group" aria-label="Options to load or save testcase">
                 <div class="btn-group" role="group">
-                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Load an example <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu">
@@ -105,29 +105,40 @@
                     </ul>
                 </div>
 
-                <label class="btn btn-info btn-group" for="file-input" role="group">
+                <div class="btn-group" role="group">
+                    <button id="download-as-json-btn" type="button" class="btn btn-primary" @click="downloadAsJSON()">Save as JSON</button>
+                </div>
+
+                <label class="btn btn-success btn-group" for="file-input" role="group">
                     <input id="file-input" type="file" style="display:none;" @change="loadPHYXFromFileInputById('#file-input')">
                     Read from local JSON file
                 </label>
 
                 <div class="btn-group" role="group">
-                    <button id="display-as-json-btn" type="button" class="btn btn-success" onclick="$('#display-as-json').toggle(300)">Display as JSON</button>
-                </div>
-
-                <div class="btn-group" role="group">
-                    <button id="download-as-jsonld-btn" type="button" class="btn btn-info" @click="downloadAsJSONLD()">Download as JSON-LD</button>
+                    <button id="download-as-jsonld-btn" type="button" class="btn btn-info" onclick="$('#advanced-options').toggle(300)">Advanced</button>
                 </div>
             </div>
         </div>
 
-        <!-- Displays the test case as a JSON document -->
-        <div id="display-as-json" class="col-md-12" hidden>
-            <div class="panel panel-success">
-                <div class="panel-heading">Test case as JSON</div>
+        <!-- A display for advanced options -->
+        <div id="advanced-options" class="col-md-12" hidden>
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                  <!-- Collapse button for panel -->
+                  <a href="#" class="close glyphicon glyphicon-collapse-up" onclick="$('#advanced-options').hide(300)"></a>
+                  Advanced options
+                </div>
                 <div class="panel-body">
                     <p>The following is a representation of this PHYX in JSON. You
-                    can edit the JSON directly, or copy it elsewhere to save it.</p>
-                    <textarea id="test-content" cols="80" rows="10" v-model="phyxAsJSON"></textarea>
+                    can edit the JSON directly if you like.</p>
+                    <textarea id="test-content" style="width: 100%; margin: auto;" rows="10" v-model="phyxAsJSON"></textarea>
+                </div>
+                <div class="panel-footer">
+                  <div class="btn-group btn-group-justified" role="group" aria-label="Actions for phylogenies">
+                    <div class="btn-group" role="group">
+                      <button id="download-as-jsonld-btn" type="button" class="btn btn-info" @click="downloadAsJSONLD()">Download as JSON-LD</button>
+                    </div>
+                  </div>
                 </div>
             </div>
         </div>
