@@ -303,7 +303,10 @@
                         >{{getPhylogenyAsNewick('#phylogeny-svg-' + phylogenyIndex, phylogeny)}}</textarea>
                     <div class="btn-group btn-group-justified" role="group" aria-label="Actions for phylogeny">
                         <!-- Display/hide the Newick editing textarea -->
-                        <a :href="'#phylogeny-' + phylogenyIndex + '-footer'" class="btn btn-primary" @click="editingNewickForPhylogeny = (editingNewickForPhylogeny === phylogeny ? undefined : phylogeny)" class="btn btn-default">Edit as Newick</a>
+                        <a :href="'#phylogeny-' + phylogenyIndex + '-footer'" class="btn btn-primary" @click="editingNewickForPhylogeny = (editingNewickForPhylogeny === phylogeny ? undefined : phylogeny)" class="btn btn-default">
+                          <template v-if="editingNewickForPhylogeny === phylogeny">Close Newick editor</template>
+                          <template v-else>Edit as Newick</template>
+                        </a>
 
                         <!-- Dropdown button for vertical spacing -->
                         <div class="btn-group" role="group">
