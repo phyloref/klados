@@ -957,9 +957,6 @@ const vm = new Vue({
       // model -- users will need to set the spacing every time they open this
       // PHYX file.
 
-      // Phylogeny-specific spacing is stored by the index number of the phylogeny.
-      const phylogenyIndex = this.testcase.phylogenies.indexOf(phylogeny);
-
       // If either spacingX or spacingY is not already set, we set them to their
       // defaults.
       if (!this.hasProperty(this.phylogenySpacingX, phylogenyIndex)) {
