@@ -233,7 +233,7 @@
                     <!-- Add a warning if this phylogeny has changed -->
                     <span
                       v-if="!isEqualJSON(phylogeny, testcaseAsLoaded.phylogenies[phylogenyIndex])"
-                      data-toggle="tooltip" data-placement="bottom" title="This phylogeny has been modified since being loaded! Please save it locally."
+                      data-toggle="tooltip" data-placement="bottom" title="This phylogeny has been modified since being loaded! Use 'Save as JSON' to save your changes."
                       style="padding: 0em 1em"
                       class="close glyphicon glyphicon-warning-sign"></span>
 
@@ -558,7 +558,7 @@
                   <!-- Add a warning if this phyloref has changed -->
                   <span
                     v-if="selectedPhyloref !== undefined && !isEqualJSON(selectedPhyloref, testcaseAsLoaded.phylorefs[testcase.phylorefs.indexOf(selectedPhyloref)])"
-                    data-toggle="tooltip" data-placement="bottom" title="This phyloreference has been modified since being loaded! Please save it locally."
+                    data-toggle="tooltip" data-placement="bottom" title="This phyloreference has been modified since being loaded! Use 'Save as JSON' to save your changes."
                     style="padding: 0em 1em"
                     class="close glyphicon glyphicon-warning-sign"></span>
 
@@ -878,7 +878,7 @@
                     <!-- Add a warning if this phylogeny has changed -->
                     <span
                       v-if="!isEqualJSON(phyloref, testcaseAsLoaded.phylorefs[phylorefIndex])"
-                      data-toggle="tooltip" data-placement="bottom" title="This phyloreference has been modified since being loaded! Please save it locally."
+                      data-toggle="tooltip" data-placement="bottom" title="This phyloreference has been modified since being loaded! Use 'Save as JSON' to save your changes."
                       class="close glyphicon glyphicon-warning-sign"></span>
 
                     </a>
