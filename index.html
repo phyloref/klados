@@ -230,6 +230,13 @@
                     <!-- Minimize button for panel -->
                     <a href="#" class="close glyphicon glyphicon-collapse-up" onclick="vm.toggleButtonAndPanel(this, $(this).parent().parent().find('.panel-body, .panel-footer'))"></a>
 
+                    <!-- Add a warning if this phylogeny has changed -->
+                    <span
+                      v-if="!isEqualJSON(phylogeny, testcaseAsLoaded.phylogenies[phylogenyIndex])"
+                      data-toggle="tooltip" data-placement="bottom" title="This phylogeny has been modified since being loaded! Use 'Save as JSON' to save your changes."
+                      style="padding: 0em 1em"
+                      class="close glyphicon glyphicon-warning-sign"></span>
+
                     <template v-if="phylogenyDescriptionBeingEdited !== phylogeny">
                         <span role="button" @click="phylogenyDescriptionBeingEdited = phylogeny" title="Click to edit">
                             <template v-if="hasProperty(phylogeny, 'description')">
@@ -375,6 +382,11 @@
                     <!-- Body of specifier editor modal dialog box -->
                     <div class="modal-body col-md-12">
                             <div id="tunit-editor-form">
+                                <p>Changes made to taxonomic units in this dialog box will
+                                immediately change the {{selectedTUnitListContainer.type}}
+                                in the main display.
+                                </p>
+
                                 <div v-if="selectedTUnitListContainer.type == 'specifier'">
                                     <label for="verbatim-specifier" class="control-label">Verbatim specifier</label>
                                     <input id="verbatim-specifier" type="text" class="form-control" v-model.trim="selectedTUnitListContainer.container['verbatimSpecifier']" placeholder="Enter the verbatim description of this specifier">
@@ -542,6 +554,14 @@
                 <div id="selected-phyloref" class="panel-heading">
                   <!-- Minimize button for panel -->
                   <a href="#" class="close glyphicon glyphicon-collapse-up" onclick="vm.toggleButtonAndPanel(this, $(this).parent().parent().find('.panel-body, .panel-footer, .list-group'))"></a>
+
+                  <!-- Add a warning if this phyloref has changed -->
+                  <span
+                    v-if="selectedPhyloref !== undefined && !isEqualJSON(selectedPhyloref, testcaseAsLoaded.phylorefs[testcase.phylorefs.indexOf(selectedPhyloref)])"
+                    data-toggle="tooltip" data-placement="bottom" title="This phyloreference has been modified since being loaded! Use 'Save as JSON' to save your changes."
+                    style="padding: 0em 1em"
+                    class="close glyphicon glyphicon-warning-sign"></span>
+
                   Phyloreferences
                 </div>
                 <div v-if="selectedPhyloref" class="panel-body">
@@ -853,7 +873,15 @@
                         v-for="(phyloref, phylorefIndex) of testcase.phylorefs"
                         :class="{active: selectedPhyloref === phyloref}"
                         @click="selectedPhyloref = phyloref"
-                    >{{hasProperty(phyloref, 'label') ? phyloref.label : 'Phyloreference ' + (phylorefIndex + 1)}}</a>
+                    >{{hasProperty(phyloref, 'label') ? phyloref.label : 'Phyloreference ' + (phylorefIndex + 1)}}
+
+                    <!-- Add a warning if this phylogeny has changed -->
+                    <span
+                      v-if="!isEqualJSON(phyloref, testcaseAsLoaded.phylorefs[phylorefIndex])"
+                      data-toggle="tooltip" data-placement="bottom" title="This phyloreference has been modified since being loaded! Use 'Save as JSON' to save your changes."
+                      class="close glyphicon glyphicon-warning-sign"></span>
+
+                    </a>
                     <a class="list-group-item" href="javascript: void(0)" @click="testcase.phylorefs.push(createEmptyPhyloref(testcase.phylorefs.length + 1))"><strong>Add phyloreference</strong></a>
                 </div>
             </div>
