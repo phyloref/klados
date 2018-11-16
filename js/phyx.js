@@ -1607,6 +1607,7 @@ if (!hasOwnProperty(this, 'window')) {
     TaxonomicUnitMatcher,
     PhylogenyWrapper,
     PhylorefWrapper,
+    PHYXWrapper,
     phyxCacheManager,
   };
 }
