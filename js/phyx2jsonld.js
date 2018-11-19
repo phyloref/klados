@@ -59,17 +59,13 @@ const args = yargs.usage('Usage: $0 input.json [-o output.jsonld]')
   // Retrieve arguments.
   .argv;
 
-// Convert PHYX to JSON-LD and write it out.
-function phyxContentToJSONLD(phyxContent) {
-  const json = JSON.parse(phyxContent);
-  const wrappedPhyx = new phyx.PHYXWrapper(json);
-  const jsonOutput = JSON.stringify(wrappedPhyx.asJSONLD());
-
+// Write out to STDOUT or to specified output file.
+function writeResult(output) {
   // Do we have an output filename to write to?
   if ('o' in args) {
     // Write to the output filename provided, or report an error if it could not
     // be written.
-    fs.writeFile(args.o, jsonOutput, (err) => {
+    fs.writeFile(args.o, output, (err) => {
       if (err) {
         process.stderr.write(`Could not write to ${args.o}: ${err}\n`);
         process.exit(1);
@@ -77,8 +73,16 @@ function phyxContentToJSONLD(phyxContent) {
     });
   } else {
     // Write to the console (i.e. STDOUT).
-    process.stdout.write(jsonOutput);
+    process.stdout.write(output);
   }
+}
+
+// Convert PHYX to JSON-LD.
+function convertPHYXToJSONLD(phyxContent) {
+  const json = JSON.parse(phyxContent);
+  const wrappedPhyx = new phyx.PHYXWrapper(json);
+  const jsonOutput = JSON.stringify(wrappedPhyx.asJSONLD());
+  return jsonOutput;
 }
 
 // Load the input file or STDIN.
@@ -87,14 +91,18 @@ if (inputFilenames.length > 1) {
   process.stderr.write(`phyx2jsonld.js only supports a single input PHYX file, but ${inputFilenames.length} provided: ${inputFilenames}\n`);
   process.exit(1);
 } else if (inputFilenames.length === 0) {
-  getStdin().then(str => phyxContentToJSONLD(str));
+  getStdin().then(str => writeResult(convertPHYXToJSONLD(str)));
 } else {
   fs.readFile(inputFilenames[0], 'utf8', (err, data) => {
     if (err === null) {
-      phyxContentToJSONLD(data);
+      writeResult(convertPHYXToJSONLD(data));
     } else {
       process.stderr.write(`Error loading input file '${inputFilenames[0]}': ${err}`);
       process.exit(1);
     }
   });
 }
+
+module.exports = {
+  convertPHYXToJSONLD,
+};
