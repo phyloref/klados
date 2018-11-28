@@ -881,6 +881,7 @@ class PhylogenyWrapper {
 // We need some OWL constants for this.
 const CDAO_HAS_CHILD = 'obo:CDAO_0000149';
 const CDAO_HAS_DESCENDANT = 'obo:CDAO_0000174';
+const CDAO_HAS_ANCESTOR = 'obo:CDAO_0000144';
 const PHYLOREF_HAS_SIBLING = 'phyloref:has_Sibling';
 const PHYLOREFERENCE_TEST_CASE = 'testcase:PhyloreferenceTestCase';
 const PHYLOREFERENCE_PHYLOGENY = 'testcase:PhyloreferenceTestPhylogeny';
@@ -1262,7 +1263,63 @@ class PhylorefWrapper {
     if (internalSpecifierCount === 0 && externalSpecifierCount === 0) {
       phylorefAsJSONLD.malformedPhyloreference = 'No specifiers provided';
     } else if (externalSpecifierCount > 1) {
-      phylorefAsJSONLD.malformedPhyloreference = 'Multiple external specifiers are not yet supported';
+      // Multiple external specifiers can't be easily implemented using pinning
+      // nodes in OWL. Instead, we:
+      //  (1) Choose one external specifier at random, and calculate the pinning
+      //      node for that clade.
+      //  (2) We expand the set to include the pinning node and all of its descendants,
+      //      i.e. to include the entire clade.
+      //  (3) We intersect this clade with the clades formed by the descendants of
+      //      the external OWL restrictions for every other external specifier.
+
+      // Calculate internal and external specifier restrictions for phylorefs.
+      const internalSpecifierRestrictions = phylorefAsJSONLD.internalSpecifiers
+        .map(specifier => PhylorefWrapper
+          .wrapInternalOWLRestriction(PhylorefWrapper.getOWLRestrictionForSpecifier(specifier)));
+
+      const externalSpecifierRestrictions = phylorefAsJSONLD.externalSpecifiers
+        .map(specifier => PhylorefWrapper
+          .wrapExternalOWLRestriction(PhylorefWrapper.getOWLRestrictionForSpecifier(specifier)));
+
+      // Choose one external specifier and calculate a clade with that.
+      const firstExternalSpecifier = externalSpecifierRestrictions.shift();
+      const initialPinningNode = {
+        '@type': 'owl:Class',
+        intersectionOf: internalSpecifierRestrictions.concat(firstExternalSpecifier),
+      };
+      const initialClade = {
+        '@type': 'owl:Class',
+        unionOf: [
+          initialPinningNode,
+          {
+            '@type': 'owl:Restriction',
+            onProperty: CDAO_HAS_ANCESTOR,
+            someValuesFrom: initialPinningNode,
+          },
+        ],
+      };
+      console.log('initialClade', initialClade);
+
+      // Intersect this initial clade with the remaining external specifiers and their descendants.
+      const externalSpecifierCladeRestrictions = externalSpecifierRestrictions
+        .map(restriction => ({
+          '@type': 'owl:Class',
+          unionOf: [
+            restriction,
+            {
+              '@type': 'owl:Restriction',
+              onProperty: CDAO_HAS_ANCESTOR,
+              someValuesFrom: restriction,
+            },
+          ],
+        }));
+      console.log('externalSpecifierCladeRestrictions', externalSpecifierCladeRestrictions);
+
+      // Prepare a final intersection of all these clades we're looking at.
+      phylorefAsJSONLD.equivalentClass = {
+        '@type': 'owl:Class',
+        intersectionOf: externalSpecifierCladeRestrictions.concat(initialClade),
+      };
     } else if (internalSpecifierCount === 1 && externalSpecifierCount === 0) {
       phylorefAsJSONLD.malformedPhyloreference = 'Only a single internal specifier was provided';
     } else if (externalSpecifierCount === 0) {
