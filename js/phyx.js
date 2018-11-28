@@ -1191,7 +1191,16 @@ class PhylorefWrapper {
       'owl:Class',
     ];
 
-    // Add identifiers for each specifier.
+    // What if we're missing either internal or external specifiers?
+    if (!hasOwnProperty(phylorefAsJSONLD, 'internalSpecifiers')) {
+      phylorefAsJSONLD.internalSpecifiers = [];
+    }
+
+    if (!hasOwnProperty(phylorefAsJSONLD, 'externalSpecifiers')) {
+      phylorefAsJSONLD.externalSpecifiers = [];
+    }
+
+    // Add identifiers for each internal specifier.
     let internalSpecifierCount = 0;
     phylorefAsJSONLD.internalSpecifiers.forEach((internalSpecifierToChange) => {
       internalSpecifierCount += 1;
@@ -1217,6 +1226,7 @@ class PhylorefWrapper {
       }
     });
 
+    // Add identifiers for each external specifier.
     let externalSpecifierCount = 0;
     phylorefAsJSONLD.externalSpecifiers.forEach((externalSpecifierToChange) => {
       externalSpecifierCount += 1;
