@@ -1281,12 +1281,14 @@ class PhylorefWrapper {
         .map(specifier => PhylorefWrapper
           .wrapExternalOWLRestriction(PhylorefWrapper.getOWLRestrictionForSpecifier(specifier)));
 
-      // Choose one external specifier and calculate a clade with that.
+      // Choose one external specifier and resolve to a pining node.
       const firstExternalSpecifier = externalSpecifierRestrictions.shift();
       const initialPinningNode = {
         '@type': 'owl:Class',
         intersectionOf: internalSpecifierRestrictions.concat(firstExternalSpecifier),
       };
+
+      // Create a class that consists of the pinning nodes and all of their descendants.
       const initialClade = {
         '@type': 'owl:Class',
         unionOf: [
@@ -1298,9 +1300,10 @@ class PhylorefWrapper {
           },
         ],
       };
-      console.log('initialClade', initialClade);
 
-      // Intersect this initial clade with the remaining external specifiers and their descendants.
+      // For each remaining external specifier, create a class that consists of
+      // the node that excludes the specified lineage as well as all of its
+      // descendants.
       const externalSpecifierCladeRestrictions = externalSpecifierRestrictions
         .map(restriction => ({
           '@type': 'owl:Class',
@@ -1313,9 +1316,11 @@ class PhylorefWrapper {
             },
           ],
         }));
-      console.log('externalSpecifierCladeRestrictions', externalSpecifierCladeRestrictions);
 
-      // Prepare a final intersection of all these clades we're looking at.
+      // At this point, we have an initial clade (calculated from one external
+      // specifier and all internal specifiers) and the clades specified by each
+      // remaining external specifier. The intersection of all these clades should
+      // give us clade we want.
       phylorefAsJSONLD.equivalentClass = {
         '@type': 'owl:Class',
         intersectionOf: externalSpecifierCladeRestrictions.concat(initialClade),
