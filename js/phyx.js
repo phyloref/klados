@@ -54,8 +54,8 @@ class CacheManager {
 
   has(cacheName, cacheKey) {
     // Return true if we have a value for this particular cache key.
-    return hasOwnProperty(this.caches, cacheName) &&
-      hasOwnProperty(this.caches[cacheName], cacheKey);
+    return hasOwnProperty(this.caches, cacheName)
+      && hasOwnProperty(this.caches[cacheName], cacheKey);
   }
 
   get(cacheName, cacheKey) {
@@ -459,9 +459,9 @@ class TaxonomicUnitMatcher {
   match() {
     // Try to match the two taxonomic units using a number of matching methods.
     if (
-      this.matchByBinomialName() ||
-      this.matchByExternalReferences() ||
-      this.matchBySpecimenIdentifier()
+      this.matchByBinomialName()
+      || this.matchByExternalReferences()
+      || this.matchBySpecimenIdentifier()
     ) {
       this.matched = true;
     } else {
@@ -481,10 +481,10 @@ class TaxonomicUnitMatcher {
       return this.tunit2.scientificNames.some((scname2) => {
         const scname2wrapped = new ScientificNameWrapper(scname2);
 
-        const result = scname1wrapped.binomialName !== undefined &&
-          scname2wrapped.binomialName !== undefined &&
-          scname1wrapped.binomialName.trim().length > 0 &&
-          scname1wrapped.binomialName.trim() === scname2wrapped.binomialName.trim();
+        const result = scname1wrapped.binomialName !== undefined
+          && scname2wrapped.binomialName !== undefined
+          && scname1wrapped.binomialName.trim().length > 0
+          && scname1wrapped.binomialName.trim() === scname2wrapped.binomialName.trim();
 
         if (result) {
           this.matchReason = `Scientific name '${scname1wrapped.scientificName}' and scientific name '${scname2wrapped.scientificName}' share the same binomial name`;
@@ -501,22 +501,25 @@ class TaxonomicUnitMatcher {
     if (hasOwnProperty(this.tunit1, 'externalReferences') && hasOwnProperty(this.tunit2, 'externalReferences')) {
       // Each external reference is a URL as a string. We will lowercase it,
       // but do no other transformation.
-      return this.tunit1.externalReferences.some(extref1 =>
-        this.tunit2.externalReferences.some((extref2) => {
-          const result = (
-            // Make sure that the external reference isn't blank
-            extref1.trim() !== '' &&
+      return this.tunit1.externalReferences.some(
+        extref1 => this.tunit2.externalReferences.some(
+          (extref2) => {
+            const result = (
+              // Make sure that the external reference isn't blank
+              extref1.trim() !== ''
 
-            // And that it is identical after trimming
-            extref1.toLowerCase().trim() === extref2.toLowerCase().trim()
-          );
+                // And that it is identical after trimming
+                && extref1.toLowerCase().trim() === extref2.toLowerCase().trim()
+            );
 
-          if (result) {
-            this.matchReason = `External reference '${extref1}' is shared by taxonomic unit ${this.tunit1} and ${this.tunit2}`;
-          }
+            if (result) {
+              this.matchReason = `External reference '${extref1}' is shared by taxonomic unit ${this.tunit1} and ${this.tunit2}`;
+            }
 
-          return result;
-        }));
+            return result;
+          },
+        ),
+      );
     }
 
     return false;
@@ -600,9 +603,9 @@ class PhylogenyWrapper {
     if (parenLevels !== 0) {
       errors.push({
         title: 'Unbalanced parentheses in Newick string',
-        message: (parenLevels > 0 ?
-          `You have ${parenLevels} too many open parentheses` :
-          `You have ${-parenLevels} too few open parentheses`
+        message: (parenLevels > 0
+          ? `You have ${parenLevels} too many open parentheses`
+          : `You have ${-parenLevels} too few open parentheses`
         ),
       });
     }
@@ -669,8 +672,11 @@ class PhylogenyWrapper {
     const nodeLabels = this.getNodeLabels(nodeType);
     const tunits = new Set();
 
-    nodeLabels.forEach(nodeLabel =>
-      this.getTaxonomicUnitsForNodeLabel(nodeLabel).forEach(tunit => tunits.add(tunit)));
+    nodeLabels.forEach(
+      nodeLabel => this.getTaxonomicUnitsForNodeLabel(nodeLabel).forEach(
+        tunit => tunits.add(tunit),
+      ),
+    );
 
     return tunits;
   }
@@ -700,9 +706,9 @@ class PhylogenyWrapper {
           // Only add the node label if it is on the type of node
           // we're interested in.
           if (
-            (nodeType === 'both') ||
-            (nodeType === 'internal' && nodeHasChildren) ||
-            (nodeType === 'terminal' && !nodeHasChildren)
+            (nodeType === 'both')
+            || (nodeType === 'internal' && nodeHasChildren)
+            || (nodeType === 'terminal' && !nodeHasChildren)
           ) {
             nodeLabels.add(node.name);
           }
@@ -719,8 +725,8 @@ class PhylogenyWrapper {
     // Look up additional node properties.
     let additionalNodeProperties = {};
     if (
-      hasOwnProperty(this.phylogeny, 'additionalNodeProperties') &&
-      hasOwnProperty(this.phylogeny.additionalNodeProperties, nodeLabel)
+      hasOwnProperty(this.phylogeny, 'additionalNodeProperties')
+      && hasOwnProperty(this.phylogeny.additionalNodeProperties, nodeLabel)
     ) {
       additionalNodeProperties = this.phylogeny.additionalNodeProperties[nodeLabel];
     }
@@ -753,8 +759,11 @@ class PhylogenyWrapper {
 
       // Attempt pairwise matches between taxonomic units in the specifier
       // and associated with the node.
-      return specifierTUnits.some(tunit1 =>
-        nodeTUnits.some(tunit2 => new TaxonomicUnitMatcher(tunit1, tunit2).matched));
+      return specifierTUnits.some(
+        tunit1 => nodeTUnits.some(
+          tunit2 => new TaxonomicUnitMatcher(tunit1, tunit2).matched,
+        ),
+      );
     });
   }
 
@@ -1020,9 +1029,9 @@ class PhylorefWrapper {
       if (nodeLabel === phylorefLabel) {
         nodeLabels.add(nodeLabel);
       } else if (
-        hasOwnProperty(phylogeny, 'additionalNodeProperties') &&
-        hasOwnProperty(phylogeny.additionalNodeProperties, nodeLabel) &&
-        hasOwnProperty(phylogeny.additionalNodeProperties[nodeLabel], 'expectedPhyloreferenceNamed')
+        hasOwnProperty(phylogeny, 'additionalNodeProperties')
+        && hasOwnProperty(phylogeny.additionalNodeProperties, nodeLabel)
+        && hasOwnProperty(phylogeny.additionalNodeProperties[nodeLabel], 'expectedPhyloreferenceNamed')
       ) {
         // Does this node label have an expectedPhyloreferenceNamed that
         // includes this phyloreference name?
@@ -1061,9 +1070,9 @@ class PhylorefWrapper {
     //  - intervalEnd: the end of the interval
 
     if (
-      hasOwnProperty(this.phyloref, 'pso:holdsStatusInTime') &&
-      Array.isArray(this.phyloref['pso:holdsStatusInTime']) &&
-      this.phyloref['pso:holdsStatusInTime'].length > 0
+      hasOwnProperty(this.phyloref, 'pso:holdsStatusInTime')
+      && Array.isArray(this.phyloref['pso:holdsStatusInTime'])
+      && this.phyloref['pso:holdsStatusInTime'].length > 0
     ) {
       // If we have any pso:holdsStatusInTime entries, pick the first one and
       // extract the CURIE and time interval information from it.
@@ -1147,8 +1156,8 @@ class PhylorefWrapper {
 
     // Check to see if there's a previous time interval we should end.
     if (
-      Array.isArray(this.phyloref['pso:holdsStatusInTime']) &&
-      this.phyloref['pso:holdsStatusInTime'].length > 0
+      Array.isArray(this.phyloref['pso:holdsStatusInTime'])
+      && this.phyloref['pso:holdsStatusInTime'].length > 0
     ) {
       const lastStatusInTime = this.phyloref['pso:holdsStatusInTime'][this.phyloref['pso:holdsStatusInTime'].length - 1];
 
@@ -1567,8 +1576,9 @@ class PHYXWrapper {
                 nodeTUs.forEach((nodeTU) => {
                   const matcher = new TaxonomicUnitMatcher(specifierTU, nodeTU);
                   if (matcher.matched) {
-                    const tuMatchAsJSONLD =
-                      matcher.asJSON(PHYXWrapper.getBaseURIForTUMatch(countTaxonomicUnitMatches));
+                    const tuMatchAsJSONLD = matcher.asJSON(
+                      PHYXWrapper.getBaseURIForTUMatch(countTaxonomicUnitMatches),
+                    );
                     jsonld.hasTaxonomicUnitMatches.push(tuMatchAsJSONLD);
                     nodesMatchedCount += 1;
                     countTaxonomicUnitMatches += 1;

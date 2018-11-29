@@ -621,9 +621,9 @@ const vm = new Vue({
       if (currentExpectedNodeLabels.includes(nodeLabelToToggle)) {
         // We need to delete this node label.
         if (
-          this.hasProperty(phylogeny, 'additionalNodeProperties') &&
-          this.hasProperty(phylogeny.additionalNodeProperties, nodeLabelToToggle) &&
-          this.hasProperty(phylogeny.additionalNodeProperties[nodeLabelToToggle], 'expectedPhyloreferenceNamed')
+          this.hasProperty(phylogeny, 'additionalNodeProperties')
+          && this.hasProperty(phylogeny.additionalNodeProperties, nodeLabelToToggle)
+          && this.hasProperty(phylogeny.additionalNodeProperties[nodeLabelToToggle], 'expectedPhyloreferenceNamed')
         ) {
           // Delete this phyloreference from the provided node label.
           Vue.set(
@@ -755,9 +755,9 @@ const vm = new Vue({
               // selected phyloreference, add an 'id' so we can jump to it
               // and a CSS class to render it differently from other labels.
               if (
-                this.selectedPhyloref !== undefined &&
-                hasProperty(this.selectedPhyloref, 'label') &&
-                new PhylorefWrapper(this.selectedPhyloref).getExpectedNodeLabels(phylogeny)
+                this.selectedPhyloref !== undefined
+                && hasProperty(this.selectedPhyloref, 'label')
+                && new PhylorefWrapper(this.selectedPhyloref).getExpectedNodeLabels(phylogeny)
                   .includes(data.name)
               ) {
                 textLabel.attr('id', `current_expected_label_phylogeny${phylogenyIndex}`);
@@ -772,9 +772,9 @@ const vm = new Vue({
           // Note that this node might NOT be labeled, in which case we need to
           // label it now!
           if (
-            this.selectedPhyloref !== undefined &&
-            hasProperty(data, '@id') &&
-            this.resolvedNodesForPhylogeny(this.selectedPhyloref, phylogeny).includes(data['@id'])
+            this.selectedPhyloref !== undefined
+            && hasProperty(data, '@id')
+            && this.resolvedNodesForPhylogeny(this.selectedPhyloref, phylogeny).includes(data['@id'])
           ) {
             // We found another pinning node!
             pinningNodes.push(data);
@@ -792,8 +792,8 @@ const vm = new Vue({
 
           // Maybe this isn't a pinning node, but it is a child of a pinning node.
           if (
-            hasProperty(data, '@id') &&
-            pinningNodeChildrenIRIs.has(data['@id'])
+            hasProperty(data, '@id')
+            && pinningNodeChildrenIRIs.has(data['@id'])
           ) {
             // Apply a class.
             // Note that this applies to the resolved-node too.
@@ -811,8 +811,8 @@ const vm = new Vue({
               // `current_expected_label_phylogeny${phylogenyIndex}` if it is
               // the currently expected node label.
               if (
-                hasProperty(this.selectedPhyloref, 'label') &&
-                new PhylorefWrapper(this.selectedPhyloref).getExpectedNodeLabels(phylogeny)
+                hasProperty(this.selectedPhyloref, 'label')
+                && new PhylorefWrapper(this.selectedPhyloref).getExpectedNodeLabels(phylogeny)
                   .includes(data.name)
               ) {
                 textLabel.attr('id', `current_expected_label_phylogeny${phylogenyIndex}`);
@@ -845,9 +845,9 @@ const vm = new Vue({
           // select this branch!
           // console.log('Found an edge with data: ', data);
           if (
-            hasProperty(data, 'source') &&
-            hasProperty(data.source, '@id') &&
-            pinningNodeChildrenIRIs.has(data.source['@id'])
+            hasProperty(data, 'source')
+            && hasProperty(data.source, '@id')
+            && pinningNodeChildrenIRIs.has(data.source['@id'])
           ) {
             // Apply a class to this branch.
             element.classed('descendant-of-pinning-node-branch', true);
