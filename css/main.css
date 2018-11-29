@@ -5,6 +5,32 @@
  */
 
 /*
+ * Classes for overall design.
+ */
+
+#wrapper {
+  padding-left: 250px;
+  transition: all 0.4s ease 0s;
+}
+
+#sidebar-wrapper {
+  font-size: 80%;
+  margin-left: -250px;
+  padding: 5px;
+  left: 250px;
+  width: 250px;
+  position: fixed;
+  height: 100%;
+  overflow-y: auto;
+  z-index: 1000;
+  transition: all 0.4s ease 0s;
+}
+
+#page-content-wrapper {
+  width: 100%;
+}
+
+/*
  * Classes for phylogeny SVG elements
  */
 
