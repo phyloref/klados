@@ -16,7 +16,7 @@
 #sidebar-wrapper {
   font-size: 80%;
   margin-left: -250px;
-  padding: 5px;
+  padding: 0px 5px;
   left: 250px;
   width: 250px;
   position: fixed;

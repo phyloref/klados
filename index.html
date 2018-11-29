@@ -96,8 +96,12 @@
       <!-- Sidebar showing phyloreferences and phylogenies -->
       <div id="sidebar-wrapper">
         <div class="panel panel-primary">
-          <div class="panel-heading">Current PHYX file</div>
+          <div class="panel-heading" @click="promptAndSetDict('Enter a new title for this PHYX file', testcase, 'title')">
+            <template v-if="testcase.title">{{testcase.title}}</template>
+            <template v-else>No PHYX file loaded</template>
+          </div>
           <div class="list-group">
+            <a class="list-group-item" href="javascript: void(0)" @click="promptAndSetDict('Enter a new title for this PHYX file', testcase, 'title')">Change PHYX title</a>
             <a class="list-group-item" href="javascript: void(0)" onclick="$('#file-input').trigger('click')">Read from local JSON file</a>
             <input id="file-input" type="file" style="display:none;" @change="loadPHYXFromFileInputById('#file-input')">
             <a class="list-group-item" href="javascript: void(0)" @click="downloadAsJSON()">Save as JSON</a>
