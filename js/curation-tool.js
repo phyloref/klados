@@ -156,9 +156,6 @@ const vm = new Vue({
     // Display the delete buttons on the specifiers.
     deletingSpecifiersMode: false,
 
-    // Which phylogeny label is currently being edited?
-    phylogenyDescriptionBeingEdited: undefined,
-
     // Display one of the two dropdown menus for the specifiers.
     dropdownTargetForSpecifier: 'none',
 
@@ -221,6 +218,12 @@ const vm = new Vue({
       // We compute this from testcase.doi, which should always be without
       // the prefix.
       return this.DOI_PREFIX + this.testcase.doi;
+    },
+    selectedPhylogenyIndex() {
+      return this.testcase.phylogenies.indexOf(this.selectedPhylogeny);
+    },
+    selectedPhylorefIndex() {
+      return this.testcase.phylorefs.indexOf(this.selectedPhyloref);
     },
   },
 
