@@ -140,6 +140,8 @@
             <a href="javascript: void(0)"
               class="list-group-item"
               v-for="(phylogeny, phylogenyIndex) of testcase.phylogenies"
+              :class="{active: selectedPhylogeny === phylogeny}"
+              @click="selectedPhylogeny = phylogeny"
             >{{hasProperty(phylogeny, 'description') ? phylogeny.description : 'Phylogeny ' + (phylogenyIndex + 1)}}
 
             <!-- Add a warning if this phylogeny has changed -->
@@ -148,7 +150,7 @@
               data-toggle="tooltip" data-placement="bottom" title="This phylogeny has been modified since being loaded! Use 'Save as JSON' to save your changes."
               class="close glyphicon glyphicon-warning-sign"></span>
             </a>
-            <a class="list-group-item" href="javascript: void(0)" @click="testcase.phylogenies.push({})"><strong>Add phyloreference</strong></a>
+            <a class="list-group-item" href="javascript: void(0)" @click="testcase.phylogenies.push({})"><strong>Add phylogeny</strong></a>
           </div>
         </div>
       </div>

@@ -145,6 +145,7 @@ const vm = new Vue({
 
     // UI elements.
     selectedPhyloref: undefined,
+    selectedPhylogeny: undefined,
     selectedTUnitListContainer: undefined,
     selectedTUnit: undefined,
 
@@ -386,6 +387,7 @@ const vm = new Vue({
         this.testcase = testcase;
 
         // Reset all UI selections.
+        this.selectedPhylogeny = undefined;
         this.selectedPhyloref = undefined;
         this.selectedSpecifier = undefined;
         this.selectedTUnit = undefined;
