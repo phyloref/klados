@@ -1178,8 +1178,9 @@ const vm = new Vue({
       // Reason over all the phyloreferences and store the results on
       // the Vue model at vm.reasoningResults so we can access them.
 
-      $('#reason-over-phylorefs').html('(reasoning)');
-      $('#reason-over-phylorefs').prop('disabled', true);
+      // Disable "Reason" buttons so they can't be reused.
+      $('.start-reasoning').html('(reasoning)');
+      $('.start-reasoning').prop('disabled', true);
       $.post(JPHYLOREF_REASON_URL, {
         // This will convert the JSON-LD file into an application/x-www-form-urlencoded
         // string (see https://api.jquery.com/jquery.ajax/#jQuery-ajax-settings under
@@ -1204,8 +1205,9 @@ const vm = new Vue({
         if (error === undefined || error === '') error = 'unknown error';
         this.alert(`Error occurred on server while reasoning: ${error}`);
       }).always(() => {
-        $('#reason-over-phylorefs').prop('disabled', false);
-        $('#reason-over-phylorefs').html('Reason');
+        // Reset "Reasoning" buttons to their usual state.
+        $('.start-reasoning').prop('disabled', false);
+        $('.start-reasoning').html('Reason');
       });
     },
 

@@ -105,6 +105,7 @@
             <a class="list-group-item" href="javascript: void(0)" onclick="$('#file-input').trigger('click')">Read from local JSON file</a>
             <input id="file-input" type="file" style="display:none;" @change="loadPHYXFromFileInputById('#file-input')">
             <a class="list-group-item" href="javascript: void(0)" @click="downloadAsJSON()">Save as JSON</a>
+            <a class="list-group-item start-reasoning" href="javascript: void(0)" @click="reasonOverPhyloreferences()">Reason</a>
             <a class="list-group-item" href="javascript: void(0)" onclick="$('.phyx-examples').toggle()">Toggle examples</a>
             <a href="javascript: void(0)"
               class="list-group-item phyx-examples"
@@ -472,7 +473,7 @@
 
                     <!-- Display the matching node(s) -->
                     <template v-if="!hasProperty(reasoningResults, 'phylorefs')">
-                      <input readonly type="text" class="form-control" value="Click 'Reason' to reason over these phyloreferences.">
+                      <input readonly type="text" class="form-control" value="Click 'Reason' to reason over all phyloreferences.">
                     </template>
                     <template v-else>
                       <template v-if="resolvedNodesForPhylogeny(selectedPhyloref, phylogeny).length === 0">
@@ -492,9 +493,8 @@
                     <!-- Display a button that activates reasoning. -->
                     <div class="input-group-btn">
                       <button
-                        id="reason-over-phylorefs"
                         type="button"
-                        class="btn btn-primary"
+                        class="btn btn-primary start-reasoning"
                         @click="reasonOverPhyloreferences()"
                         >Reason</button>
                       </button>
