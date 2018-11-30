@@ -145,6 +145,7 @@ const vm = new Vue({
 
     // UI elements.
     selectedPhyloref: undefined,
+    selectedSpecifier: undefined,
     selectedPhylogeny: undefined,
     selectedTUnitListContainer: undefined,
     selectedTUnit: undefined,
@@ -569,6 +570,11 @@ const vm = new Vue({
       if (label === undefined) return 'Empty specifier';
       return label;
     },
+    getSpecifierLabelAsHTML(specifier) {
+      const label = PhylorefWrapper.getSpecifierLabelAsHTML(specifier);
+      if (label === undefined) return '<em>Empty specifier</em>';
+      return label;
+    },
     getPhylorefStatus(phyloref) {
       return new PhylorefWrapper(phyloref).getCurrentStatus();
     },
@@ -664,6 +670,13 @@ const vm = new Vue({
       // Did that work?
       // console.log(`Additional node properties for '${nodeLabelToToggle}'`,
       // phylogeny.additionalNodeProperties[nodeLabelToToggle]);
+    },
+    getPhylogenyLabel(phylogeny) {
+      // Return a label for this phylogeny.
+      if(hasProperty(phylogeny, 'label')) return phylogeny.label;
+      if(hasProperty(phylogeny, 'description')) return phylogeny.description;
+      const index = this.testcase.phylogenies.indexOf(phylogeny);
+      return `Phylogeny ${index + 1}`;
     },
     getPhylogenyParsingErrors(phylogeny) {
       // Return a list of errors encountered when parsing this phylogeny.

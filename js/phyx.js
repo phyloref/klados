@@ -163,6 +163,12 @@ class ScientificNameWrapper {
     // Return a label corresponding to this scientific name -- we use the complete verbatim name.
     return this.scientificName;
   }
+
+  get labelAsHTML() {
+    // Return a label corresponding to this scientific name -- we use the complete verbatim name.
+    if (this.binomialName === undefined) return this.scientificName;
+    return `<em>${this.binomialName}</em>`;
+  }
 }
 
 /* Specimen wrapper */
@@ -324,6 +330,11 @@ class SpecimenWrapper {
     // Return a label for this specimen
     return `Specimen ${this.occurrenceID}`;
   }
+
+  get labelAsHTML() {
+    // Return a label for this specimen as HTML.
+    return `Specimen ${this.occurrenceID}`;
+  }
 }
 
 /* Taxonomic unit wrapper */
@@ -365,6 +376,42 @@ class TaxonomicUnitWrapper {
     if (hasOwnProperty(this.tunit, 'scientificNames')) {
       this.tunit.scientificNames.forEach((scname) => {
         labels.push(new ScientificNameWrapper(scname).label);
+      });
+    }
+
+    // If we don't have any properties of a taxonomic unit, return undefined.
+    if (labels.length === 0) return undefined;
+
+    return labels.join(' or ');
+  }
+
+  get labelAsHTML() {
+    // Try to determine the label of a taxonomic unit as an HTML string. This
+    // checks the 'label' and 'description' properties, and then tries to create
+    // a descriptive label by combining the scientific names, specimens
+    // and external references of the taxonomic unit.
+    const labels = [];
+
+    // A label or description for the TU?
+    if (hasOwnProperty(this.tunit, 'label')) return this.tunit.label;
+    if (hasOwnProperty(this.tunit, 'description')) return this.tunit.description;
+
+    // Any specimens?
+    if (hasOwnProperty(this.tunit, 'includesSpecimens')) {
+      this.tunit.includesSpecimens.forEach((specimen) => {
+        labels.push(new SpecimenWrapper(specimen).labelAsHTML);
+      });
+    }
+
+    // Any external references?
+    if (hasOwnProperty(this.tunit, 'externalReferences')) {
+      this.tunit.externalReferences.forEach(externalRef => labels.push(`<a target="_new" href="${externalRef}">${externalRef}</a>`));
+    }
+
+    // Any scientific names?
+    if (hasOwnProperty(this.tunit, 'scientificNames')) {
+      this.tunit.scientificNames.forEach((scname) => {
+        labels.push(new ScientificNameWrapper(scname).labelAsHTML);
       });
     }
 
@@ -996,6 +1043,35 @@ class PhylorefWrapper {
     if (hasOwnProperty(specifier, 'referencesTaxonomicUnits')) {
       const labels = specifier.referencesTaxonomicUnits
         .map(tu => new TaxonomicUnitWrapper(tu).label)
+        .filter(label => (label !== undefined));
+      if (labels.length > 0) return labels.join('; ');
+    }
+
+    // No idea!
+    return undefined;
+  }
+
+  static getSpecifierLabelAsHTML(specifier) {
+    // Try to determine the label of a specifier as an HTML string. This checks
+    // the 'label' and 'description' properties, and then tries to create a
+    // descriptive label by using the list of referenced taxonomic units.
+    //
+    // This logically belongs in PhylorefWrapper, but we don't actually need to
+    // know the phyloreference to figure out the specifier label, which is why
+    // this is a static method.
+
+    // Is this specifier even non-null?
+    if (specifier === undefined) return undefined;
+    if (specifier === null) return undefined;
+
+    // Maybe there is a label or description right there?
+    if (hasOwnProperty(specifier, 'label')) return specifier.label;
+    if (hasOwnProperty(specifier, 'description')) return specifier.description;
+
+    // Look at the individual taxonomic units.
+    if (hasOwnProperty(specifier, 'referencesTaxonomicUnits')) {
+      const labels = specifier.referencesTaxonomicUnits
+        .map(tu => new TaxonomicUnitWrapper(tu).labelAsHTML)
         .filter(label => (label !== undefined));
       if (labels.length > 0) return labels.join('; ');
     }
