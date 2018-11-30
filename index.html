@@ -204,13 +204,13 @@
               <div id="phyloref" class="form-horizontal">
 
                 <!-- Phyloreference label -->
-                <label for="label" class="control-label col-md-1">Label</label>
+                <label for="label" class="control-label col-md-2">Label</label>
                 <div class="input-group col-md-10">
                   <input id="label" v-model="selectedPhyloref.label" type="text" class="form-control" placeholder="Phyloreference label">
                 </div>
 
                 <!-- Phyloreference clade definition -->
-                <label for="definition" class="control-label col-md-1">Clade definition</label>
+                <label for="definition" class="control-label col-md-2">Clade definition</label>
                 <div class="input-group col-md-10">
                   <textarea
                     id="definition"
@@ -222,7 +222,7 @@
                 </div>
 
                 <!-- Phyloreference curator comments -->
-                <label for="curator-comments" class="control-label col-md-1">Curator comments</label>
+                <label for="curator-comments" class="control-label col-md-2">Curator comments</label>
                 <div class="input-group col-md-10">
                   <textarea
                     id="curator-comments"
@@ -529,17 +529,17 @@
             <div class="panel panel-info">
               <div class="panel-heading">Phylogeny information</div>
               <div class="panel-body">
-                <label for="title" class="col-md-1 control-label">Title</label>
+                <label for="title" class="col-md-2 control-label">Title</label>
                 <div class="col-md-10 input-group">
                   <input id="title" type="text" class="form-control" v-model.trim="selectedPhylogeny.title" placeholder="Enter phylogeny title">
                 </div>
 
-                <label for="description" class="col-md-1 control-label">Description</label>
+                <label for="description" class="col-md-2 control-label">Description</label>
                 <div class="col-md-10 input-group">
                     <textarea id="description" class="form-control" v-model.trim="selectedPhylogeny.description" placeholder="Enter phylogeny description"></textarea>
                 </div>
 
-                <label for="newick" class="col-md-1 control-label">Newick</label>
+                <label for="newick" class="col-md-2 control-label">Newick</label>
                 <div class="col-md-10 input-group">
                   <textarea
                     rows="5"
