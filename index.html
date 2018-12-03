@@ -112,7 +112,6 @@
                 v-for="example of examplePHYXURLs"
                 @click="loadPHYXFromURL(example.url)"
                 > &#9679; {{example.title}}</a>
-            </a>
             <a class="list-group-item" href="javascript: void(0)" onclick="$('#advanced-options').toggle(300)">Advanced</a>
           </div>
         </div>
@@ -587,7 +586,6 @@
                         class="btn btn-primary start-reasoning"
                         @click="reasonOverPhyloreferences()"
                         >Reason</button>
-                      </button>
                     </div>
                   </div>
                 </div>
@@ -639,7 +637,6 @@
                     >{{getPhylogenyAsNewick('#phylogeny-svg-' + selectedPhylogenyIndex, selectedPhylogeny)}}</textarea>
                 </div>
               </div>
-            </div>
             </div>
           </div>
 
@@ -695,7 +692,6 @@
               </div>
             </div>
           </div>
-      </div>
 
         </template>
         <template v-else>
@@ -886,6 +882,7 @@
         </div>
       </div>
     </div>
+  </div>
 
     <!-- End of page UI -->
 
