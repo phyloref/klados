@@ -594,10 +594,19 @@
                   <svg
                     width="100%"
                     v-if="getPhylogenyParsingErrors(selectedPhylogeny).length === 0"
-                    :id="'phylogeny-svg-view-' + selectedPhylogenyIndex"
-                    :alt="getPhylogenyAsNewick('#phylogeny-svg-view-' + selectedPhylogenyIndex, selectedPhylogeny)"></svg>
+                    :id="'phylogeny-svg-view-' + selectedPhylorefIndex + '-phylogeny-' + selectedPhylogenyIndex"
+                    :alt="getPhylogenyAsNewick('#phylogeny-svg-view-' + selectedPhylorefIndex + '-phylogeny-' + selectedPhylogenyIndex, selectedPhylogeny)"></svg>
                 </div>
-
+              </div>
+              <div class="panel-footer">
+                <div class="btn-group btn-group-justified" role="group" aria-label="Actions for phylogeny">
+                  <!-- Dropdown button for vertical spacing -->
+                  <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-default" @click="renderTree('#phylogeny-svg-view-' + selectedPhylorefIndex + '-phylogeny-' + selectedPhylogenyIndex, selectedPhylogeny)">
+                      Refresh
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </template>

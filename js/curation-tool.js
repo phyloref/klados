@@ -996,8 +996,10 @@ const vm = new Vue({
       tree
         .spacing_x(this.phylogenySpacingX[phylogenyIndex])
         .spacing_y(this.phylogenySpacingY[phylogenyIndex])
-        .placenodes()
         .update();
+
+      // console.log("renderTree(", nodeExpr, ", ", phylogenyToRender, ") as ", tree, ": nodes placed and updated.");
+
       return tree;
     },
 
