@@ -160,7 +160,7 @@
                 class="list-group-item"
                 @class="{active: selectedPhylogeny === phylogeny}"
                 href="javascript: void(0)"
-                @click="selectedPhyloref = phyloref; selectedSpecifier = undefined; selectedPhylogeny = phylogeny"
+                @click="resetSVG(); selectedPhyloref = phyloref; selectedSpecifier = undefined; selectedPhylogeny = phylogeny"
               >
                 &#9679; Phylogeny:
                   <template v-if="getPhylorefExpectedNodeLabels(phylogeny, selectedPhyloref).length < 1">no expected node</template>
@@ -180,7 +180,7 @@
               class="list-group-item"
               v-for="(phylogeny, phylogenyIndex) of testcase.phylogenies"
               :class="{active: selectedPhylogeny === phylogeny}"
-              @click="selectedPhyloref = undefined; selectedSpecifier = undefined; selectedPhylogeny = phylogeny"
+              @click="resetSVG(); selectedPhyloref = undefined; selectedSpecifier = undefined; selectedPhylogeny = phylogeny"
             >{{hasProperty(phylogeny, 'description') ? phylogeny.description : 'Phylogeny ' + (phylogenyIndex + 1)}}
 
             <!-- Add a warning if this phylogeny has changed -->
@@ -602,7 +602,7 @@
                 <div class="btn-group btn-group-justified" role="group" aria-label="Actions for phylogeny">
                   <!-- Dropdown button for vertical spacing -->
                   <div class="btn-group" role="group">
-                    <button type="button" class="btn btn-default" @click="renderTree('#phylogeny-svg-view-' + selectedPhylorefIndex + '-phylogeny-' + selectedPhylogenyIndex, selectedPhylogeny)">
+                    <button type="button" class="btn btn-default" @click="resetSVG(); renderTree('#phylogeny-svg-view-' + selectedPhylorefIndex + '-phylogeny-' + selectedPhylogenyIndex, selectedPhylogeny)">
                       Refresh
                     </button>
                   </div>
@@ -670,6 +670,9 @@
             </div>
             <div class="panel-footer">
               <div class="btn-group btn-group-justified" role="group" aria-label="Actions for phylogeny">
+                <!-- Refresh phylogeny -->
+                <a href="javascript: void(0)" class="btn btn-default" @click="resetSVG(); renderTree('#phylogeny-svg-' + selectedPhylogenyIndex, selectedPhylogeny)">Refresh</a>
+
                 <!-- Dropdown button for vertical spacing -->
                 <div class="btn-group" role="group">
                   <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

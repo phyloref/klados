@@ -701,6 +701,10 @@ const vm = new Vue({
       // to the produced Newick string.
       return phylotree.get_newick(() => undefined);
     },
+    resetSVG() {
+      // Reset all SVG nodes.
+      $('svg *').remove();
+    },
     renderTree(nodeExpr, phylogenyToRender) {
       // renderTree(nodeExpr, phylogeny) {
       // Given a phylogeny, try to render it as a tree using Phylotree.
