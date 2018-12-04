@@ -1408,7 +1408,7 @@ class PhylorefWrapper {
     // Mainly, we just need to extend the restriction to match:
     //  restriction or cdao:has_Descendant some restriction
     return {
-      '@type': 'owl:Restriction',
+      '@type': 'owl:Class',
       unionOf: [
         restriction,
         {
