@@ -227,9 +227,11 @@
           <!-- Add a warning if this phyloreference has changed -->
           <div
             v-if="!isEqualJSON(selectedPhyloref, testcaseAsLoaded.phylorefs[selectedPhylorefIndex])"
-            style="padding: 0em 1em"
             class="panel panel-warning">
-            This phyloreference has been modified since being loaded! Use 'Save as JSON' to save your changes.
+            <div class="panel-heading">Warning!</div>
+            <div class="panel-body">
+              This phyloreference has been modified since being loaded! Use 'Save as JSON' to save your changes.
+            </div>
           </div>
 
           <!-- Phyloreference information -->
@@ -617,9 +619,11 @@
           <!-- Add a warning if this phylogeny has changed -->
           <div
             v-if="!isEqualJSON(selectedPhylogeny, testcaseAsLoaded.phylogenies[selectedPhylogenyIndex])"
-            style="padding: 0em 1em"
             class="panel panel-warning">
-            This phylogeny has been modified since being loaded! Use 'Save as JSON' to save your changes.
+            <div class="panel-heading">Warning!</div>
+            <div class="panel-body">
+              This phylogeny has been modified since being loaded! Use 'Save as JSON' to save your changes.
+            </div>
           </div>
 
           <div id="phylogeny-metadata" class="form-horizontal">
