@@ -1591,7 +1591,7 @@ class PHYXWrapper {
     jsonld['@id'] = PHYXWrapper.BASE_URI;
     jsonld['@type'] = [PHYLOREFERENCE_TEST_CASE, 'owl:Ontology'];
     jsonld['owl:imports'] = [
-      'https://raw.githubusercontent.com/phyloref/curation-workflow/develop/ontologies/phyloref_testcase.owl',
+      'http://raw.githubusercontent.com/phyloref/curation-workflow/develop/ontologies/phyloref_testcase.owl',
       // - Will become 'http://vocab.phyloref.org/phyloref/testcase.owl'
       'http://ontology.phyloref.org/phyloref.owl',
       // - The Phyloreferencing ontology.
@@ -1601,7 +1601,7 @@ class PHYXWrapper {
 
     // If the '@context' is missing, add it here.
     if (!hasOwnProperty(jsonld, '@context')) {
-      jsonld['@context'] = 'https://www.phyloref.org/curation-tool/json/phyx.json';
+      jsonld['@context'] = 'http://www.phyloref.org/curation-tool/json/phyx.json';
     }
 
     return jsonld;
