@@ -825,6 +825,26 @@ class PhylogenyWrapper {
     return parsed;
   }
 
+  getNodesById(baseURI, nodeId) {
+    // Returns a list of nodes in this phylogeny with a particular ID.
+    const parsed = this.getParsedNewickWithIRIs(baseURI);
+
+    function recurse(node) {
+      // console.log("recurse(", node, ")");
+      const found = [];
+      if(hasOwnProperty(node, '@id') && node['@id'] === nodeId) found.push(node);
+      if(hasOwnProperty(node, 'children')) {
+        const returned = found.concat(node.children.map((child) => recurse(child)).reduce((a, b) => a.concat(b)));
+        // console.log("returned: ", returned);
+        return returned;
+      } else {
+        return found;
+      }
+    }
+
+    return recurse(parsed.json);
+  }
+
   getNodesAsJSONLD(baseURI) {
     // Returns a list of all nodes in this phylogeny as a series of nodes.
     // - baseURI: The base URI to use for node elements (e.g. ':phylogeny1').

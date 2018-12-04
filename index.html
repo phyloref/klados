@@ -95,13 +95,9 @@
 
       <!-- Sidebar showing phyloreferences and phylogenies -->
       <div id="sidebar-wrapper">
-        <div class="panel panel-primary">
-          <div class="panel-heading" @click="promptAndSetDict('Enter a new title for this PHYX file', testcase, 'title')">
-            <template v-if="testcase.title">{{testcase.title}}</template>
-            <template v-else>No PHYX file loaded</template>
-          </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">Load and save</div>
           <div class="list-group">
-            <a class="list-group-item" href="javascript: void(0)" @click="promptAndSetDict('Enter a new title for this PHYX file', testcase, 'title')">Change PHYX title</a>
             <a class="list-group-item" href="javascript: void(0)" onclick="$('#file-input').trigger('click')">Read from local JSON file</a>
             <input id="file-input" type="file" style="display:none;" @change="loadPHYXFromFileInputById('#file-input')">
             <a class="list-group-item" href="javascript: void(0)" @click="downloadAsJSON()">Save as JSON</a>
@@ -113,6 +109,17 @@
                 @click="loadPHYXFromURL(example.url)"
                 > &#9679; {{example.title}}</a>
             <a class="list-group-item" href="javascript: void(0)" onclick="$('#advanced-options').toggle(300)">Advanced</a>
+          </div>
+        </div>
+
+        <div class="panel panel-default">
+          <div class="panel-heading" @click="promptAndSetDict('Enter a new title for this PHYX file', testcase, 'title')">
+            <template v-if="testcase.title">{{testcase.title}}</template>
+            <template v-else>No PHYX file loaded</template>
+          </div>
+          <div class="list-group">
+            <a class="list-group-item" href="javascript: void(0)" @click="promptAndSetDict('Enter a new title for this PHYX file', testcase, 'title')">Change PHYX title</a>
+            <a class="list-group-item" href="javascript: void(0)" @click="selectedPhyloref = undefined; selectedSpecifier = undefined; selectedPhylogeny = undefined">Display summary</a>
           </div>
         </div>
 
@@ -488,8 +495,8 @@
               <div class="panel-heading">Expected and actual resolution on {{getPhylogenyLabel(selectedPhylogeny)}}</div>
               <div class="panel-body">
                 <!-- Node(s) this phyloreference is expected to resolve to -->
-                <label for="curator-comments" class="control-label col-md-3">Expected nodes</label>
-                <div class="input-group col-md-9">
+                <label for="curator-comments" class="control-label col-md-2">Expected nodes</label>
+                <div class="input-group col-md-10">
                   <div class="input-group">
                     <!-- Display the phylogeny where this node is expected to match -->
                     <span class="input-group-btn">
@@ -547,8 +554,8 @@
                 </div>
 
                 <!-- Node(s) this phyloreference actually resolved to -->
-                <label for="curator-comments" class="control-label col-md-3">Actual nodes</label>
-                <div class="input-group col-md-9">
+                <label for="curator-comments" class="control-label col-md-2">Actual nodes</label>
+                <div class="input-group col-md-10">
                   <!-- What if no phylogenies were loaded? -->
 
                   <!-- If phylogenies were loaded, we need to display a selector for each phylogeny -->
@@ -712,7 +719,48 @@
         </template>
         <template v-else>
           <!-- Nothing has been selected -->
-          <p>Choose a phylogeny or phyloreference from the sidebar on the left.</p>
+          <div class="panel">
+            <div class="panel-body">
+              <table class="table table-hover table-bordered">
+                <thead>
+                  <th>&nbsp;</th>
+                  <th>Phyloreference</th>
+                  <th>Internal</th>
+                  <th>External</th>
+                  <th v-for="(phylogeny, phylogenyIndex) of testcase.phylogenies">{{getPhylogenyLabel(phylogeny)}}</th>
+                </thead>
+                <tbody>
+                  <tr v-if="testcase.phylorefs.length === 0">
+                    <td :colspan="4 + testcase.phylogenies.length"><center><em>No phyloreferences loaded</em></center></td>
+                  </tr>
+                  <tr v-for="(phyloref, phylorefIndex) of testcase.phylorefs">
+                    <td>&nbsp;</td>
+                    <td>{{getPhylorefLabel(phyloref)}}</td>
+                    <td>{{phyloref.internalSpecifiers.length}}</td>
+                    <td>{{phyloref.externalSpecifiers.length}}</td>
+                    <td v-for="(phylogeny, phylogenyIndex) of testcase.phylogenies">
+                      <span v-if="getPhylorefExpectedNodeLabels(phylogeny, phyloref).length === 0"><strong>Not matched</strong></span>
+                      <span v-else>Matched</span>
+
+                      <template v-if="hasProperty(reasoningResults, 'phylorefs')">
+                        <template v-if="resolvedNodesForPhylogeny(phyloref, phylogeny).length === 0"><strong>Not resolved</strong></template>
+                        <template v-else>
+                          Resolved to {{resolvedNodesForPhylogeny(phyloref, phylogeny)}}
+                          While expecting {{getPhylorefExpectedNodeLabels(phylogeny, phyloref)}}
+                          <ul v-for="(phylogenyNodeID, phylogenyNodeIDIndex) of resolvedNodesForPhylogeny(phyloref, phylogeny)">
+                            <li>Result {{phylogenyNodeIDIndex + 1}}:</li>
+                            <ul v-for="(result, resultIndex) of getNodesById(phylogeny, phylogenyNodeID)">
+                              <li>Label: {{result['name']}}</li>
+                            </ul>
+                          </ul>
+                        </template>
+                      </template>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </template>
 
       </div>

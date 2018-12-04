@@ -1170,6 +1170,12 @@ const vm = new Vue({
       return new PhylogenyWrapper(phylogeny).getNodeLabels(nodeType);
     },
 
+    getNodesById(phylogeny, nodeId) {
+      // Return a list of all nodes in this phylogeny that have a particular ID.
+      const phylogenyIndex = this.testcase.phylogenies.indexOf(phylogeny);
+      return new PhylogenyWrapper(phylogeny).getNodesById(PHYXWrapper.getBaseURIForPhylogeny(phylogenyIndex + 1), nodeId);
+    },
+
     // Taxonomic unit matching!
     getAllNodeLabelsMatchedBySpecifier(specifier) {
       // Return a list of node labels matched by a given specifier.
