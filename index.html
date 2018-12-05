@@ -35,68 +35,37 @@
 
 <body @unload="closeCurrentStudy()">
 
-    <!-- Vue.js will execute on this element and its children -->
-    <div id="app">
-      <!-- Navigation bar at the top of the page -->
-      <nav class="navbar navbar-default">
-        <div class="container-fluid">
-          <div class="navbar-header">
-            <a class="navbar-brand" href="index.html">Curation Tool v{{CURATION_TOOL_VERSION}}</a>
-          </div>
-          <div class="collapse navbar-collapse">
-            <ul class="nav navbar-nav navbar-right">
-              <li><a href="#" onclick="$('#about-curation-tool').modal()">About this tool</a></li>
-              <li><a href="https://www.phyloref.org/">Phyloreferencing website</a></li>
-              <li><a href="https://github.com/phyloref/curation-tool">Github repository</a></li>
-              <li><a href="https://github.com/phyloref/curation-tool/issues">Report bug</a></li>
-            </ul>
-          </div>
+  <!-- Vue.js will execute on this element and its children -->
+  <div id="app">
+
+    <!-- Navigation bar at the top of the page -->
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="index.html">Curation Tool v{{CURATION_TOOL_VERSION}}</a>
         </div>
-      </nav>
-
-    <div id="wrapper">
-
-      <!-- About-us modal dialog box: acknowledges funding and links to libraries used -->
-      <div id="about-curation-tool" class="modal fade">
-        <div class="modal-dialog modal-lg form-horizontal">
-          <div class="modal-content">
-            <!-- Header of tunit editor modal dialog box -->
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              <h4 class="modal-title">About this tool</h4>
-            </div>
-
-            <!-- Body of the about-us modal dialog -->
-            <div class="modal-body col-md-12">
-              <p>The Phyloreferencing Curation Tool was built as part of the <a href="https://www.phyloref.org">Phyloreferencing project</a>, funded by the US National Science Foundation through collaborative grants <a href="http://www.nsf.gov/awardsearch/showAward?AWD_ID=1458484">DBI-1458484</a> and <a href="http://www.nsf.gov/awardsearch/showAward?AWD_ID=1458604">DBI-1458604</a>. See <a href="http://www.phyloref.org/about/#funding">Funding</a> for details.
-              </p>
-
-              <p>The Curation Tool uses a number of open-source libraries, including:</p>
-
-              <ul>
-                <li><a href="https://getbootstrap.com/">Bootstrap</a></li>
-                <li><a href="https://jquery.com/">jQuery</a></li>
-                <li><a href="https://jqueryui.com/">jQuery UI</a></li>
-                <li><a href="https://vuejs.org/">Vue.js</a></li>
-                <li><a href="https://github.com/veg/phylotree.js">phylotree.js</a>, published as <a href="https://doi.org/10.1186/s12859-018-2283-2">Shank <em>et al</em>, 2018</a></li>
-                <li><a href="https://d3js.org/">D3.js</a></li>
-                <li><a href="https://momentjs.com/">Moment.js</a></li>
-                <li><a href="https://github.com/eligrey/FileSaver.js">FileSaver.js</a></li>
-              </ul>
-            </div>
-
-            <!-- Footer of the about-us modal dialog -->
-            <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-          </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#" onclick="$('#about-curation-tool').modal()">About this tool</a></li>
+            <li><a href="https://www.phyloref.org/">Phyloreferencing website</a></li>
+            <li><a href="https://github.com/phyloref/curation-tool">Github repository</a></li>
+            <li><a href="https://github.com/phyloref/curation-tool/issues">Report bug</a></li>
+          </ul>
         </div>
       </div>
+    </nav>
+
+    <!--
+      The wrapper adds a padding to the left, so that the sidebar can be moved there.
+    -->
+    <div id="wrapper">
 
       <!-- Sidebar showing phyloreferences and phylogenies -->
       <div id="sidebar-wrapper">
+
+        <!-- Sidebar section: main menu for loading and saving PHYX files -->
         <div class="panel panel-default">
-          <div class="panel-heading">Load and save</div>
+          <div class="panel-heading">Main menu</div>
           <div class="list-group">
             <a class="list-group-item" href="javascript: void(0)" onclick="$('#file-input').trigger('click')">Read from local JSON file</a>
             <input id="file-input" type="file" style="display:none;" @change="loadPHYXFromFileInputById('#file-input')">
@@ -169,7 +138,7 @@
                 href="javascript: void(0)"
                 @click="resetSVG(); selectedPhyloref = phyloref; selectedSpecifier = undefined; selectedPhylogeny = phylogeny"
               >
-                &#9679; Phylogeny:
+                &#9679; <strong>Phylogeny:</strong>
                   <template v-if="getPhylorefExpectedNodeLabels(phylogeny, selectedPhyloref).length < 1">no expected node</template>
                   <template v-else>node expected</template>
                   in {{getPhylogenyLabel(phylogeny)}}
@@ -204,12 +173,15 @@
 
       <!-- Start of page content -->
       <div id="page-content-wrapper">
-        <!-- A display for advanced options -->
+
+        <!-- The following components are designed to appear above the main panel -->
+
+        <!-- The advanced panel provides access to advanced features of the Curation Tool -->
         <div id="advanced-options" hidden>
           <div class="panel panel-info">
             <div class="panel-heading">
-              <!-- Collapse button for panel -->
-              <a href="#" class="close glyphicon glyphicon-collapse-up" onclick="$('#advanced-options').hide(300)"></a>
+              <!-- Close button for panel -->
+              <a href="#" class="close" onclick="$('#advanced-options').hide(300)">&times;</a>
               Advanced options
             </div>
             <div class="panel-body">
@@ -227,7 +199,9 @@
           </div>
         </div>
 
-        <!-- A phyloreference has been selected -->
+        <!-- End of panels above the main panel -->
+
+        <!-- This is the main panel -->
         <template v-if="selectedPhyloref">
           <!-- A phyloreference has been selected -->
 
@@ -242,100 +216,104 @@
           </div>
 
           <!-- Phyloreference information -->
-          <div class="panel panel-info" v-if="selectedSpecifier === undefined && selectedPhylogeny === undefined">
-            <div class="panel-heading">Phyloreference information</div>
-            <div class="panel-body">
-              <div id="phyloref" class="form-horizontal">
+          <template v-if="selectedSpecifier === undefined && selectedPhylogeny === undefined">
+            <div class="panel panel-info">
+              <div class="panel-heading">Phyloreference information</div>
 
-                <!-- Phyloreference label -->
-                <label for="label" class="control-label col-md-2">Label</label>
-                <div class="input-group col-md-10">
-                  <input id="label" v-model="selectedPhyloref.label" type="text" class="form-control" placeholder="Phyloreference label">
+              <div class="panel-body">
+                <div id="phyloref" class="form-horizontal">
+
+                  <!-- Phyloreference label -->
+                  <label for="label" class="control-label col-md-2 col-lg-1 col-sm-3">Label</label>
+                  <div class="input-group col-md-10 col-lg-11 col-sm-9">
+                    <input id="label" v-model="selectedPhyloref.label" type="text" class="form-control" placeholder="Phyloreference label">
+                  </div>
+
+                  <!-- Phyloreference clade definition -->
+                  <label for="definition" class="control-label col-md-2 col-lg-1 col-sm-3">Clade definition</label>
+                  <div class="input-group col-md-10 col-lg-11 col-sm-9">
+                    <textarea
+                      id="definition"
+                      v-model.lazy="selectedPhyloref.cladeDefinition"
+                      class="form-control"
+                      rows="6"
+                      placeholder="Phylogenetic clade definition"
+                    ></textarea>
+                  </div>
+
+                  <!-- Phyloreference curator comments -->
+                  <label for="curator-comments" class="control-label col-md-2 col-lg-1 col-sm-3">Curator comments</label>
+                  <div class="input-group col-md-10 col-lg-11 col-sm-9">
+                    <textarea
+                      id="curator-comments"
+                      v-model.lazy="selectedPhyloref.curatorComments"
+                      class="form-control"
+                      rows="2"
+                      placeholder="Curator notes relating to this phyloreference"
+                    ></textarea>
+                  </div>
                 </div>
+              </div>
 
-                <!-- Phyloreference clade definition -->
-                <label for="definition" class="control-label col-md-2">Clade definition</label>
-                <div class="input-group col-md-10">
-                  <textarea
-                    id="definition"
-                    v-model.lazy="selectedPhyloref.cladeDefinition"
-                    class="form-control"
-                    rows="6"
-                    placeholder="Phylogenetic clade definition"
-                  ></textarea>
-                </div>
-
-                <!-- Phyloreference curator comments -->
-                <label for="curator-comments" class="control-label col-md-2">Curator comments</label>
-                <div class="input-group col-md-10">
-                  <textarea
-                    id="curator-comments"
-                    v-model.lazy="selectedPhyloref.curatorComments"
-                    class="form-control"
-                    rows="2"
-                    placeholder="Curator notes relating to this phyloreference"
-                  ></textarea>
+              <div class="panel-footer" v-if="selectedPhyloref !== undefined && testcase.phylorefs.indexOf(selectedPhyloref) != -1">
+                <div class="btn-group btn-group-justified" role="group" aria-label="Actions for the entire phyloreference">
+                  <a
+                    href="#selected-phyloref"
+                    class="btn btn-default"
+                    @click="changeSelectedPhyloref(-1)"
+                  >Previous</a>
+                  <div class="btn-group" role="group">
+                    <button
+                      id="phyloref-status"
+                      type="button"
+                      class="btn btn-primary dropdown-toggle"
+                      data-toggle="dropdown"
+                      aria-haspopup="true"
+                      aria-expanded="false">
+                      Status: {{ getPhylorefStatus(selectedPhyloref).statusInEnglish }} <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                      <li><a href="#selected-phyloref" @click="setPhylorefStatus(selectedPhyloref, 'pso:draft')">Draft</a></li>
+                      <li><a href="#selected-phyloref" @click="setPhylorefStatus(selectedPhyloref, 'pso:final-draft')">Final draft</a></li>
+                      <li><a href="#selected-phyloref" @click="setPhylorefStatus(selectedPhyloref, 'pso:under-review')">Under review</a></li>
+                      <li><a href="#selected-phyloref" @click="setPhylorefStatus(selectedPhyloref, 'pso:submitted')">Tested</a></li>
+                      <li><a href="#selected-phyloref" @click="setPhylorefStatus(selectedPhyloref, 'pso:published')">Published</a></li>
+                      <li><a href="#selected-phyloref" @click="setPhylorefStatus(selectedPhyloref, 'pso:retracted-from-publication')">Retracted</a></li>
+                    </ul>
+                  </div>
+                  <div class="btn-group" role="group">
+                    <button
+                      id="phyloref-status-changes"
+                      type="button"
+                      class="btn btn-default dropdown-toggle"
+                      data-toggle="dropdown"
+                      aria-haspopup="true"
+                      aria-expanded="false">
+                      {{ getPhylorefStatusChanges(selectedPhyloref).length }} changes <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                      <li><a href="#selected-phyloref" v-for="statusChange of getPhylorefStatusChanges(selectedPhyloref)">
+                        {{ statusChange.statusInEnglish }}
+                        <div style="font-size: 70%" v-if="hasProperty(statusChange, 'intervalStartAsCalendar')">{{ statusChange.intervalStartAsCalendar }}</div>
+                      </a></li>
+                    </ul>
+                  </div>
+                  <a
+                    href="#selected-phyloref"
+                    class="btn btn-danger"
+                    onclick="if(window.confirm('Are you sure you want to delete this phyloreference?')) { vm.testcase.phylorefs.splice(vm.testcase.phylorefs.indexOf(vm.selectedPhyloref), 1); vm.selectedPhyloref = undefined; }"
+                    >Delete</a>
+                  <a
+                    href="#selected-phyloref"
+                    class="btn btn-default"
+                    @click="changeSelectedPhyloref(+1)"
+                    >Next</a>
                 </div>
               </div>
             </div>
-            <div class="panel-footer" v-if="selectedPhyloref !== undefined && testcase.phylorefs.indexOf(selectedPhyloref) != -1">
-              <div class="btn-group btn-group-justified" role="group" aria-label="Actions for the entire phyloreference">
-                <a
-                  href="#selected-phyloref"
-                  class="btn btn-default"
-                  @click="changeSelectedPhyloref(-1)"
-                >Previous</a>
-                <div class="btn-group" role="group">
-                  <button
-                    id="phyloref-status"
-                    type="button"
-                    class="btn btn-primary dropdown-toggle"
-                    data-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false">
-                    Status: {{ getPhylorefStatus(selectedPhyloref).statusInEnglish }} <span class="caret"></span>
-                  </button>
-                  <ul class="dropdown-menu">
-                    <li><a href="#selected-phyloref" @click="setPhylorefStatus(selectedPhyloref, 'pso:draft')">Draft</a></li>
-                    <li><a href="#selected-phyloref" @click="setPhylorefStatus(selectedPhyloref, 'pso:final-draft')">Final draft</a></li>
-                    <li><a href="#selected-phyloref" @click="setPhylorefStatus(selectedPhyloref, 'pso:under-review')">Under review</a></li>
-                    <li><a href="#selected-phyloref" @click="setPhylorefStatus(selectedPhyloref, 'pso:submitted')">Tested</a></li>
-                    <li><a href="#selected-phyloref" @click="setPhylorefStatus(selectedPhyloref, 'pso:published')">Published</a></li>
-                    <li><a href="#selected-phyloref" @click="setPhylorefStatus(selectedPhyloref, 'pso:retracted-from-publication')">Retracted</a></li>
-                  </ul>
-                </div>
-                <div class="btn-group" role="group">
-                  <button
-                    id="phyloref-status-changes"
-                    type="button"
-                    class="btn btn-default dropdown-toggle"
-                    data-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false">
-                    {{ getPhylorefStatusChanges(selectedPhyloref).length }} changes <span class="caret"></span>
-                  </button>
-                  <ul class="dropdown-menu">
-                    <li><a href="#selected-phyloref" v-for="statusChange of getPhylorefStatusChanges(selectedPhyloref)">
-                      {{ statusChange.statusInEnglish }}
-                      <div style="font-size: 70%" v-if="hasProperty(statusChange, 'intervalStartAsCalendar')">{{ statusChange.intervalStartAsCalendar }}</div>
-                    </a></li>
-                  </ul>
-                </div>
-                <a
-                  href="#selected-phyloref"
-                  class="btn btn-danger"
-                  onclick="if(window.confirm('Are you sure you want to delete this phyloreference?')) { vm.testcase.phylorefs.splice(vm.testcase.phylorefs.indexOf(vm.selectedPhyloref), 1); vm.selectedPhyloref = undefined; }"
-                  >Delete</a>
-                <a
-                  href="#selected-phyloref"
-                  class="btn btn-default"
-                  @click="changeSelectedPhyloref(+1)"
-                  >Next</a>
-              </div>
-            </div>
-          </div>
+          </template>
 
-          <!-- Panel with information on current specifier -->
+          <!-- Panels with information on the current specifier -->
           <template v-if="selectedSpecifier !== undefined">
             <label for="verbatim-specifier" class="control-label">Verbatim specifier</label>
             <input id="verbatim-specifier" type="text" class="form-control"
@@ -370,130 +348,130 @@
                           <button type="button" class="btn btn-danger" @click="selectedTUnit.scientificNames.splice(scnameIndex, 1)"><span class="glyphicon glyphicon-remove"></span></button>
                         </span>
                         <input type="text" class="form-control" v-model.lazy="scname.scientificName">
-                          <div class="input-group-btn">
-                            <button type="button"
-                              class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                            ><span class="glyphicon glyphicon-search"></span> <span class="caret"></span></button>
-                            <ul class="dropdown-menu dropdown-menu-right">
-                              <li class="dropdown-header">Components of the scientific name</li>
-                              <li><a href="#" onclick="return false"><em>Entered scientific name:</em> {{scname.scientificName}}</a></li>
-                              <li><a href="#" onclick="return false"><em>Binomial name:</em> {{getBinomialName(scname)}}</a></li>
-                              <li><a href="#" onclick="return false"><em>Genus:</em> {{getGenus(scname)}}</a></li>
-                              <li><a href="#" onclick="return false"><em>Specific epithet:</em> {{getSpecificEpithet(scname)}}</a></li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="panel-footer">
-                        <button type="button" class="btn btn-default"
-                          @click="createOrAppend(selectedTUnit, 'scientificNames', {'scientificName': ''})"
-                        >Add a new scientific name</button>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Panel listing external references in this taxonomic unit -->
-                  <div class="col-md-6">
-                    <div class="panel panel-default">
-                    <div class="panel-heading">External references</div>
-                    <div class="panel-body">
-                      <span v-if="!hasProperty(selectedTUnit, 'externalReferences') || selectedTUnit.externalReferences.length == 0">
-                        <em>No external references provided.</em>
-                      </span>
-
-                      <div class="input-group"
-                        v-if="hasProperty(selectedTUnit, 'externalReferences')"
-                        v-for="(externalRef, externalRefIndex) of selectedTUnit.externalReferences">
                         <div class="input-group-btn">
-                          <button type="button" class="btn btn-danger" @click="selectedTUnit.externalReferences.splice(externalRefIndex, 1)"
-                            ><span class="glyphicon glyphicon-remove"></span></button>
-                          </div>
-                          <input type="url" class="form-control" v-model.lazy="selectedTUnit.externalReferences[externalRefIndex]">
-                            <div class="input-group-btn">
-                              <button type="button" class="btn btn-primary" @click="openURL(externalRef)">Go to URL</button>
-                            </div>
-                          </div>
-
-                        </div>
-                        <div class="panel-footer">
-                          <button
-                            type="button"
-                            class="btn btn-default"
-                            style="width: 100%"
-                            href="#specifier-modal"
-                            onclick="if(!('externalReferences' in vm.selectedTUnit)) Vue.set(vm.selectedTUnit, 'externalReferences', []); vm.selectedTUnit.externalReferences.push('http://example.org/');"
-                          >Add a new external reference</button>
+                          <button type="button"
+                            class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                          ><span class="glyphicon glyphicon-search"></span> <span class="caret"></span></button>
+                          <ul class="dropdown-menu dropdown-menu-right">
+                            <li class="dropdown-header">Components of the scientific name</li>
+                            <li><a href="#" onclick="return false"><em>Entered scientific name:</em> {{scname.scientificName}}</a></li>
+                            <li><a href="#" onclick="return false"><em>Binomial name:</em> {{getBinomialName(scname)}}</a></li>
+                            <li><a href="#" onclick="return false"><em>Genus:</em> {{getGenus(scname)}}</a></li>
+                            <li><a href="#" onclick="return false"><em>Specific epithet:</em> {{getSpecificEpithet(scname)}}</a></li>
+                          </ul>
                         </div>
                       </div>
                     </div>
-
-                    <!-- Panel listing specimens in this taxonomic unit -->
-                    <div class="col-md-6">
-                      <div class="panel panel-default">
-                        <div class="panel-heading">Specimens</div>
-                        <div class="panel-body">
-                          <span v-if="!hasProperty(selectedTUnit, 'includesSpecimens') || selectedTUnit.includesSpecimens.length == 0">
-                            <em>No specimens provided.</em>
-                          </span>
-                          <div class="input-group"
-                            v-if="hasProperty(selectedTUnit, 'includesSpecimens')"
-                            v-for="(specimen, specimenIndex) of selectedTUnit.includesSpecimens">
-                            <span class="input-group-btn">
-                              <button type="button" class="btn btn-danger" @click="selectedTUnit.includesSpecimens.splice(scnameIndex, 1)"><span class="glyphicon glyphicon-remove"></span></button>
-                            </span>
-                            <input type="text" class="form-control" v-model.lazy="specimen.occurrenceID">
-                              <div class="input-group-btn">
-                                <button type="button"
-                                  class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                                ><span class="glyphicon glyphicon-search"></span> <span class="caret"></span></button>
-                                <ul class="dropdown-menu dropdown-menu-right">
-                                  <li class="dropdown-header">Specimen components</li>
-                                  <li><a href="#" onclick="return false">Occurrence ID: {{specimen.occurrenceID}}</a></li>
-                                  <li><a href="#" onclick="return false">Institution Code: {{getInstitutionCode(specimen)}}</a></li>
-                                  <li><a href="#" onclick="return false">Collection Code: {{getCollectionCode(specimen)}}</a></li>
-                                  <li><a href="#" onclick="return false">Catalog Number: {{getCatalogNumber(specimen)}}</a></li>
-                                </ul>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="panel-footer">
-                            <button type="button" class="btn btn-default"
-                              @click="createOrAppend(selectedTUnit, 'includesSpecimens', {'occurrenceID': ''})"
-                              >Add a new specimen</button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <!-- List of taxonomic units, including the option to add new taxonomic units -->
-                    <div class="list-group">
-                      <div class="list-group-item"
-                        v-for="(tunit, tunitIndex) of selectedSpecifier.referencesTaxonomicUnits"
-                        :class="{active: selectedTUnit === tunit}"
-                        @click="selectedTUnit = tunit"
-                        :title="getTaxonomicUnitLabel(tunit)"
-                      >{{getTaxonomicUnitLabel(tunit)}}
-
-                      <a href="#"
-                        :title="'Delete ' + getTaxonomicUnitLabel(tunit)"
-                        href="javascript: void(0)"
-                        class="icon-danger close glyphicon glyphicon-remove"
-                        @click="deleteTUnit(tunit)"></a>
-                    </div>
-                    <a class="list-group-item"
-                      href="javascript: void(0)"
-                      onclick="vm.selectedSpecifier.referencesTaxonomicUnits.push(vm.createEmptyTaxonomicUnit(vm.selectedSpecifier.referencesTaxonomicUnits.length + 1))"
-                      ><strong>Add new taxonomic unit</strong></a>
+                    <div class="panel-footer">
+                      <button type="button" class="btn btn-default"
+                        @click="createOrAppend(selectedTUnit, 'scientificNames', {'scientificName': ''})"
+                      >Add a new scientific name</button>
                     </div>
                   </div>
-                </template>
+                </div>
 
+                <!-- Panel listing external references in this taxonomic unit -->
+                <div class="col-md-6">
+                  <div class="panel panel-default">
+                  <div class="panel-heading">External references</div>
+                  <div class="panel-body">
+                    <span v-if="!hasProperty(selectedTUnit, 'externalReferences') || selectedTUnit.externalReferences.length == 0">
+                      <em>No external references provided.</em>
+                    </span>
+
+                    <div class="input-group"
+                      v-if="hasProperty(selectedTUnit, 'externalReferences')"
+                      v-for="(externalRef, externalRefIndex) of selectedTUnit.externalReferences">
+                      <div class="input-group-btn">
+                        <button type="button" class="btn btn-danger" @click="selectedTUnit.externalReferences.splice(externalRefIndex, 1)"
+                          ><span class="glyphicon glyphicon-remove"></span></button>
+                      </div>
+                      <input type="url" class="form-control" v-model.lazy="selectedTUnit.externalReferences[externalRefIndex]">
+                      <div class="input-group-btn">
+                        <button type="button" class="btn btn-primary" @click="openURL(externalRef)">Go to URL</button>
+                      </div>
+                    </div>
+
+                    </div>
+                    <div class="panel-footer">
+                      <button
+                        type="button"
+                        class="btn btn-default"
+                        style="width: 100%"
+                        href="#specifier-modal"
+                        onclick="if(!('externalReferences' in vm.selectedTUnit)) Vue.set(vm.selectedTUnit, 'externalReferences', []); vm.selectedTUnit.externalReferences.push('http://example.org/');"
+                      >Add a new external reference</button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Panel listing specimens in this taxonomic unit -->
+                <div class="col-md-6">
+                  <div class="panel panel-default">
+                    <div class="panel-heading">Specimens</div>
+                    <div class="panel-body">
+                      <span v-if="!hasProperty(selectedTUnit, 'includesSpecimens') || selectedTUnit.includesSpecimens.length == 0">
+                        <em>No specimens provided.</em>
+                      </span>
+                      <div class="input-group"
+                        v-if="hasProperty(selectedTUnit, 'includesSpecimens')"
+                        v-for="(specimen, specimenIndex) of selectedTUnit.includesSpecimens">
+                        <span class="input-group-btn">
+                          <button type="button" class="btn btn-danger" @click="selectedTUnit.includesSpecimens.splice(scnameIndex, 1)"><span class="glyphicon glyphicon-remove"></span></button>
+                        </span>
+                        <input type="text" class="form-control" v-model.lazy="specimen.occurrenceID">
+                        <div class="input-group-btn">
+                          <button type="button"
+                            class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                          ><span class="glyphicon glyphicon-search"></span> <span class="caret"></span></button>
+                          <ul class="dropdown-menu dropdown-menu-right">
+                            <li class="dropdown-header">Specimen components</li>
+                            <li><a href="#" onclick="return false">Occurrence ID: {{specimen.occurrenceID}}</a></li>
+                            <li><a href="#" onclick="return false">Institution Code: {{getInstitutionCode(specimen)}}</a></li>
+                            <li><a href="#" onclick="return false">Collection Code: {{getCollectionCode(specimen)}}</a></li>
+                            <li><a href="#" onclick="return false">Catalog Number: {{getCatalogNumber(specimen)}}</a></li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="panel-footer">
+                      <button type="button" class="btn btn-default"
+                        @click="createOrAppend(selectedTUnit, 'includesSpecimens', {'occurrenceID': ''})"
+                        >Add a new specimen</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- List of taxonomic units, including the option to add new taxonomic units -->
+              <div class="list-group">
+                <div class="list-group-item"
+                  v-for="(tunit, tunitIndex) of selectedSpecifier.referencesTaxonomicUnits"
+                  :class="{active: selectedTUnit === tunit}"
+                  @click="selectedTUnit = tunit"
+                  :title="getTaxonomicUnitLabel(tunit)"
+                >{{getTaxonomicUnitLabel(tunit)}}
+
+                <a href="#"
+                  :title="'Delete ' + getTaxonomicUnitLabel(tunit)"
+                  href="javascript: void(0)"
+                  class="icon-danger close glyphicon glyphicon-remove"
+                  @click="deleteTUnit(tunit)"></a>
+              </div>
+              <a class="list-group-item"
+                href="javascript: void(0)"
+                onclick="vm.selectedSpecifier.referencesTaxonomicUnits.push(vm.createEmptyTaxonomicUnit(vm.selectedSpecifier.referencesTaxonomicUnits.length + 1))"
+                ><strong>Add new taxonomic unit</strong></a>
+              </div>
+            </div>
+          </template>
 
           <!-- Panel with information on expected and actual resolution -->
           <template v-if="selectedPhylogeny !== undefined">
             <div class="panel panel-info">
               <div class="panel-heading">Expected and actual resolution on {{getPhylogenyLabel(selectedPhylogeny)}}</div>
               <div class="panel-body">
+
                 <!-- Node(s) this phyloreference is expected to resolve to -->
                 <label for="curator-comments" class="control-label col-md-2">Expected nodes</label>
                 <div class="input-group col-md-10">
@@ -517,6 +495,7 @@
                       <!-- We matched exactly one node -->
                       <input readonly type="text" class="form-control" :value="getPhylorefExpectedNodeLabels(selectedPhylogeny, selectedPhyloref)[0]">
                     </template>
+
                     <template v-if="getPhylorefExpectedNodeLabels(selectedPhylogeny, selectedPhyloref).length > 1">
                       <!-- We matched more than one node -->
                       <input readonly type="text" class="form-control" :value="getPhylorefExpectedNodeLabels(selectedPhylogeny, selectedPhyloref).length + ' nodes matched: ' + getPhylorefExpectedNodeLabels(selectedPhylogeny, selectedPhyloref).join(', ')">
@@ -556,7 +535,6 @@
                 <!-- Node(s) this phyloreference actually resolved to -->
                 <label for="curator-comments" class="control-label col-md-2">Actual nodes</label>
                 <div class="input-group col-md-10">
-                  <!-- What if no phylogenies were loaded? -->
 
                   <!-- If phylogenies were loaded, we need to display a selector for each phylogeny -->
                   <div class="input-group">
@@ -599,6 +577,7 @@
                   </div>
                 </div>
 
+                <!-- Display the phylogeny -->
                 <div class="well" style="margin-top: 1em">
                   <svg
                     width="100%"
@@ -718,15 +697,15 @@
 
         </template>
         <template v-else>
-          <!-- Nothing has been selected -->
+          <!-- Neither a phyloreference nor a phylogeny has been selected -->
           <div class="panel">
             <div class="panel-body">
               <table class="table table-hover table-bordered">
                 <thead>
                   <th>&nbsp;</th>
                   <th>Phyloreference</th>
-                  <th>Internal</th>
-                  <th>External</th>
+                  <th>Internal specifiers</th>
+                  <th>External specifiers</th>
                   <th v-for="(phylogeny, phylogenyIndex) of testcase.phylogenies">{{getPhylogenyLabel(phylogeny)}}</th>
                 </thead>
                 <tbody>
@@ -763,11 +742,51 @@
           </div>
         </template>
 
+      </div><!-- End of main content div -->
+    </div><!-- End of wrapper -->
+
+    <!-- Modal dialogs start here -->
+
+    <!-- About-us modal dialog box: acknowledges funding and links to libraries used -->
+    <div id="about-curation-tool" class="modal fade">
+      <div class="modal-dialog modal-lg form-horizontal">
+        <div class="modal-content">
+          <!-- Header of tunit editor modal dialog box -->
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">About this tool</h4>
+          </div>
+
+          <!-- Body of the about-us modal dialog -->
+          <div class="modal-body col-md-12">
+            <p>The Phyloreferencing Curation Tool was built as part of the <a href="https://www.phyloref.org">Phyloreferencing project</a>, funded by the US National Science Foundation through collaborative grants <a href="http://www.nsf.gov/awardsearch/showAward?AWD_ID=1458484">DBI-1458484</a> and <a href="http://www.nsf.gov/awardsearch/showAward?AWD_ID=1458604">DBI-1458604</a>. See <a href="http://www.phyloref.org/about/#funding">Funding</a> for details.
+            </p>
+
+            <p>The Curation Tool uses a number of open-source libraries, including:</p>
+
+            <ul>
+              <li><a href="https://getbootstrap.com/">Bootstrap</a></li>
+              <li><a href="https://jquery.com/">jQuery</a></li>
+              <li><a href="https://jqueryui.com/">jQuery UI</a></li>
+              <li><a href="https://vuejs.org/">Vue.js</a></li>
+              <li><a href="https://github.com/veg/phylotree.js">phylotree.js</a>, published as <a href="https://doi.org/10.1186/s12859-018-2283-2">Shank <em>et al</em>, 2018</a></li>
+              <li><a href="https://d3js.org/">D3.js</a></li>
+              <li><a href="https://momentjs.com/">Moment.js</a></li>
+              <li><a href="https://github.com/eligrey/FileSaver.js">FileSaver.js</a></li>
+            </ul>
+          </div>
+
+          <!-- Footer of the about-us modal dialog -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
 
-    <!-- End of page UI -->
+    <!-- End of modal dialogs -->
+
+  </div><!-- End of page UI -->
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script
