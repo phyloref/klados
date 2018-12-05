@@ -78,6 +78,10 @@ function writeResult(output) {
 }
 
 // Convert PHYX to JSON-LD.
+//  - phyxContent: A string containing the contents of a PHYX file.
+//  - returns: A string containing the contents of a JSON-LD file.
+//  - throws:
+//    - SyntaxError: if the JSON is malformed.
 function convertPHYXToJSONLD(phyxContent) {
   const json = JSON.parse(phyxContent);
   const wrappedPhyx = new phyx.PHYXWrapper(json);
