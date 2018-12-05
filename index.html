@@ -111,24 +111,24 @@
                   class="close glyphicon glyphicon-warning-sign"></span>
               </a>
               <!-- Display internal specifiers if active -->
-              <a @click="selectedSpecifier = internalSpecifier"
+              <a
                 href="javascript: void(0)"
                 v-if="selectedPhyloref === phyloref"
                 class="list-group-item"
                 @class="{active: selectedSpecifier === internalSpecifier}"
-                @click="selectedPhyloref = phyloref; selectedSpecifier = internalSpecifier; selectedPhylogeny = undefined"
+                @click="selectedPhyloref = phyloref; selectedSpecifier = internalSpecifier; selectedTUnit = undefined; selectedPhylogeny = undefined"
                 v-for="(internalSpecifier, internalSpecifierIndex) of phyloref.internalSpecifiers">
-                &#9679; Internal: <span v-html="getSpecifierLabelAsHTML(internalSpecifier)"></span>
+                &#9679; <strong>Internal:</strong> <span v-html="getSpecifierLabelAsHTML(internalSpecifier)"></span>
               </a>
               <!-- Display external specifiers if active -->
-              <a @click="selectedSpecifier = externalSpecifier"
+              <a
                 href="javascript: void(0)"
                 v-if="selectedPhyloref === phyloref"
                 class="list-group-item"
                 @class="{active: selectedSpecifier === externalSpecifier}"
-                @click="selectedPhyloref = phyloref; selectedSpecifier = externalSpecifier; selectedPhylogeny = undefined"
+                @click="selectedPhyloref = phyloref; selectedSpecifier = externalSpecifier; selectedTUnit = undefined; selectedPhylogeny = undefined"
                 v-for="(externalSpecifier, externalSpecifierIndex) of phyloref.externalSpecifiers">
-                &#9679; External: <span v-html="getSpecifierLabelAsHTML(externalSpecifier)"></span>
+                &#9679; <strong>External:</strong> <span v-html="getSpecifierLabelAsHTML(externalSpecifier)"></span>
               </a>
               <!-- Display phylogenies if present -->
               <a v-if="selectedPhyloref === phyloref"
@@ -136,7 +136,7 @@
                 class="list-group-item"
                 @class="{active: selectedPhylogeny === phylogeny}"
                 href="javascript: void(0)"
-                @click="resetSVG(); selectedPhyloref = phyloref; selectedSpecifier = undefined; selectedPhylogeny = phylogeny"
+                @click="resetSVG(); selectedPhyloref = phyloref; selectedSpecifier = undefined; selectedTUnit = undefined; selectedPhylogeny = phylogeny"
               >
                 &#9679; <strong>Phylogeny:</strong>
                   <template v-if="getPhylorefExpectedNodeLabels(phylogeny, selectedPhyloref).length < 1">no expected node</template>
