@@ -65,7 +65,7 @@ function writeResult(output) {
   if ('o' in args) {
     // Write to the output filename provided, or report an error if it could not
     // be written.
-    fs.writeFile(args.o, output, (err) => {
+    fs.writeFileSync(args.o, output, (err) => {
       if (err) {
         process.stderr.write(`Could not write to ${args.o}: ${err}\n`);
         process.exit(1);
