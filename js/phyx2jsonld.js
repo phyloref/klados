@@ -48,7 +48,7 @@ if (!Object.prototype.hasOwnProperty.call(global.d3, 'layout')) {
 require('../lib/phylotree.js/phylotree.js');
 
 // Load phyx.js, our PHYX library.
-const phyx = require('../js/phyx');
+const phyx = require('./phyx');
 
 // Configure the needed command line arguments.
 const args = yargs.usage('Usage: $0 input.json [-o output.jsonld]')
