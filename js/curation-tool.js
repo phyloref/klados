@@ -1069,10 +1069,12 @@ const vm = new Vue({
       return phyloref;
     },
     createEmptySpecifier() {
-      // Create an empty specifier. No fields are required, so we
-      // create a blank object and return that.
+      // Create an empty specifier. We set up the referencesTaxonomicUnits list
+      // that every specifier has.
 
-      return {};
+      return {
+        referencesTaxonomicUnits: []
+      };
     },
     createEmptyTaxonomicUnit() {
       // Create an empty taxonomic unit. No fields are required, so
