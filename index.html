@@ -718,20 +718,35 @@
                     <td>{{phyloref.internalSpecifiers.length}}</td>
                     <td>{{phyloref.externalSpecifiers.length}}</td>
                     <td v-for="(phylogeny, phylogenyIndex) of testcase.phylogenies">
-                      <span v-if="getPhylorefExpectedNodeLabels(phylogeny, phyloref).length === 0"><strong>Not matched</strong></span>
-                      <span v-else>Matched</span>
-
-                      <template v-if="hasProperty(reasoningResults, 'phylorefs')">
-                        <template v-if="resolvedNodesForPhylogeny(phyloref, phylogeny).length === 0"><strong>Not resolved</strong></template>
-                        <template v-else>
-                          Resolved to {{resolvedNodesForPhylogeny(phyloref, phylogeny)}}
-                          While expecting {{getPhylorefExpectedNodeLabels(phylogeny, phyloref)}}
-                          <ul v-for="(phylogenyNodeID, phylogenyNodeIDIndex) of resolvedNodesForPhylogeny(phyloref, phylogeny)">
-                            <li>Result {{phylogenyNodeIDIndex + 1}}:</li>
-                            <ul v-for="(result, resultIndex) of getNodesById(phylogeny, phylogenyNodeID)">
-                              <li>Label: {{result['name']}}</li>
-                            </ul>
-                          </ul>
+                      <template v-if="getPhylorefExpectedNodeLabels(phylogeny, phyloref).length === 0">
+                        <strong>Not matched</strong>
+                        <template v-if="hasProperty(reasoningResults, 'phylorefs')">
+                          but
+                          <template v-if="getNodeLabelsResolvedByPhyloref(phyloref, phylogeny) > 1">
+                            <strong>resolved to multiple nodes: {{getNodeLabelsResolvedByPhyloref(phyloref, phylogeny)}}</strong>
+                          </template>
+                          <template v-else>
+                            resolved to {{getNodeLabelsResolvedByPhyloref(phyloref, phylogeny)[0]||"(none)"}}
+                          </template>
+                        </template>
+                      </template>
+                      <template v-else>
+                        Matched
+                        <template v-if="hasProperty(reasoningResults, 'phylorefs')">
+                          and
+                          <template v-if="getNodeLabelsResolvedByPhyloref(phyloref, phylogeny) > 1">
+                            <strong>resolved to multiple nodes: {{getNodeLabelsResolvedByPhyloref(phyloref, phylogeny)}}</strong>
+                          </template>
+                          <template v-else>
+                            resolved
+                            <template v-if="getNodeLabelsResolvedByPhyloref(phyloref, phylogeny)[0] === getPhylorefExpectedNodeLabels(phylogeny, phyloref)[0]">
+                              correctly
+                            </template>
+                            <template v-else>
+                              <strong>incorrectly</strong>
+                            </template>
+                            to {{getNodeLabelsResolvedByPhyloref(phyloref, phylogeny)[0]||"(none)"}}
+                          </template>
                         </template>
                       </template>
                     </td>

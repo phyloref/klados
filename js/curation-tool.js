@@ -796,7 +796,7 @@ const vm = new Vue({
           if (
             this.selectedPhyloref !== undefined &&
             hasProperty(data, '@id') &&
-            this.resolvedNodesForPhylogeny(this.selectedPhyloref, phylogeny).includes(data['@id'])
+            this.getResolvedNodesForPhylogeny(this.selectedPhyloref, phylogeny).includes(data['@id'])
           ) {
             // We found another pinning node!
             pinningNodes.push(data);
@@ -1176,6 +1176,13 @@ const vm = new Vue({
       return new PhylogenyWrapper(phylogeny).getNodesById(PHYXWrapper.getBaseURIForPhylogeny(phylogenyIndex + 1), nodeId);
     },
 
+    getNodeLabelsResolvedByPhyloref(phyloref, phylogeny) {
+      return this.getResolvedNodesForPhylogeny(phyloref, phylogeny)
+        .map(nodeId => this.getNodesById(phylogeny, nodeId))
+        .reduce((a, b) => a.concat(b), [])
+        .map(node => node.name);
+    },
+
     // Taxonomic unit matching!
     getAllNodeLabelsMatchedBySpecifier(specifier) {
       // Return a list of node labels matched by a given specifier.
@@ -1236,7 +1243,7 @@ const vm = new Vue({
       });
     },
 
-    resolvedNodesForPhylogeny(phyloref, phylogeny, flagReturnNodeIRI = true) {
+    getResolvedNodesForPhylogeny(phyloref, phylogeny, flagReturnNodeIRI = true) {
       // Return a list of resolved nodes for a particular phyloreference on a
       // particular phylogeny.
       // - flagReturnNodeIRI: if true, we return the entire node IRI; otherwise,
