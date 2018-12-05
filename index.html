@@ -645,17 +645,17 @@
                       <input readonly type="text" class="form-control" value="Click 'Reason' to reason over all phyloreferences.">
                     </template>
                     <template v-else>
-                      <template v-if="resolvedNodesForPhylogeny(selectedPhyloref, selectedPhylogeny).length === 0">
+                      <template v-if="getResolvedNodesForPhylogeny(selectedPhyloref, selectedPhylogeny).length === 0">
                         <!-- We matched no nodes -->
                         <input readonly type="text" class="form-control" :value="'No nodes could be matched'">
                       </template>
-                      <template v-if="resolvedNodesForPhylogeny(selectedPhyloref, selectedPhylogeny).length === 1">
+                      <template v-if="getResolvedNodesForPhylogeny(selectedPhyloref, selectedPhylogeny).length === 1">
                         <!-- We matched exactly one node -->
-                        <input readonly type="text" class="form-control" :value="resolvedNodesForPhylogeny(selectedPhyloref, selectedPhylogeny, false)[0]">
+                        <input readonly type="text" class="form-control" :value="getResolvedNodesForPhylogeny(selectedPhyloref, selectedPhylogeny, false)[0]">
                       </template>
-                      <template v-if="resolvedNodesForPhylogeny(selectedPhyloref, selectedPhylogeny).length > 1">
+                      <template v-if="getResolvedNodesForPhylogeny(selectedPhyloref, selectedPhylogeny).length > 1">
                         <!-- We matched more than one node -->
-                        <input readonly type="text" class="form-control" :value="resolvedNodesForPhylogeny(selectedPhyloref, selectedPhylogeny).length + ' nodes matched: ' + resolvedNodesForPhylogeny(selectedPhyloref, selectedPhylogeny, false).join(', ')">
+                        <input readonly type="text" class="form-control" :value="getResolvedNodesForPhylogeny(selectedPhyloref, selectedPhylogeny).length + ' nodes matched: ' + getResolvedNodesForPhylogeny(selectedPhyloref, selectedPhylogeny, false).join(', ')">
                       </template>
                     </template>
 
