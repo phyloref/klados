@@ -91,7 +91,13 @@ if (inputFilenames.length > 1) {
   process.stderr.write(`phyx2jsonld.js only supports a single input PHYX file, but ${inputFilenames.length} provided: ${inputFilenames}\n`);
   process.exit(1);
 } else if (inputFilenames.length === 0) {
-  getStdin().then(str => writeResult(convertPHYXToJSONLD(str)));
+  getStdin()
+    .then(str => writeResult(convertPHYXToJSONLD(str)))
+    .catch((err) => {
+      // If something goes wrong, report it to the user.
+      process.stderr.write(`Error occurred while converting PHYX to JSONLD: ${err}\n`);
+      process.exit(1);
+    });
 } else {
   fs.readFile(inputFilenames[0], 'utf8', (err, data) => {
     if (err === null) {
