@@ -807,7 +807,7 @@
                   </tr>
                   <tr v-for="(phyloref, phylorefIndex) of testcase.phylorefs">
                     <td>&nbsp;</td>
-                    <td>{{getPhylorefLabel(phyloref)}}</td>
+                    <td><a href="javascript: void(0)" @click="selectedPhyloref = phyloref">{{getPhylorefLabel(phyloref)}}</a></td>
                     <td>{{phyloref.internalSpecifiers.length}}</td>
                     <td>{{phyloref.externalSpecifiers.length}}</td>
                     <td v-for="(phylogeny, phylogenyIndex) of testcase.phylogenies">
