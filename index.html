@@ -260,7 +260,7 @@
                   <a
                     href="#selected-phyloref"
                     class="btn btn-default"
-                    @click="changeSelectedPhyloref(-1)"
+                    @click="resetSVG(); changeSelectedPhyloref(-1)"
                   >Previous</a>
                   <div class="btn-group" role="group">
                     <button
@@ -306,7 +306,7 @@
                   <a
                     href="#selected-phyloref"
                     class="btn btn-default"
-                    @click="changeSelectedPhyloref(+1)"
+                    @click="resetSVG(); changeSelectedPhyloref(+1)"
                     >Next</a>
                 </div>
               </div>
