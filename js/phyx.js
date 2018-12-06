@@ -1523,22 +1523,15 @@ class PHYXWrapper {
 
     // Add descriptions for individual nodes in each phylogeny.
     if (hasOwnProperty(jsonld, 'phylogenies')) {
-      let countPhylogeny = 0;
-      jsonld.phylogenies = jsonld.phylogenies.map((phylogeny) => {
-        countPhylogeny += 1;
-        return new PhylogenyWrapper(phylogeny)
-          .asJSONLD(PHYXWrapper.getBaseURIForPhylogeny(countPhylogeny));
-      });
+      jsonld.phylogenies = jsonld.phylogenies.map((phylogeny, countPhylogeny) =>
+        new PhylogenyWrapper(phylogeny)
+          .asJSONLD(PHYXWrapper.getBaseURIForPhylogeny(countPhylogeny)));
     }
 
     // Convert phyloreferences into an OWL class restriction
     if (hasOwnProperty(jsonld, 'phylorefs')) {
-      let countPhyloref = 0;
-      jsonld.phylorefs = jsonld.phylorefs.map((phyloref) => {
-        countPhyloref += 1;
-        return new PhylorefWrapper(phyloref)
-          .asJSONLD(PHYXWrapper.getBaseURIForPhyloref(countPhyloref));
-      });
+      jsonld.phylorefs = jsonld.phylorefs.map((phyloref, countPhyloref) =>
+        new PhylorefWrapper(phyloref).asJSONLD(PHYXWrapper.getBaseURIForPhyloref(countPhyloref)));
     }
 
     // Match all specifiers with nodes.
