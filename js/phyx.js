@@ -441,7 +441,7 @@ class TaxonomicUnitMatcher {
     this.match();
   }
 
-  asJSON(idURI) {
+  asJSONLD(idURI) {
     // Return this TUMatch as a JSON object for insertion into the PHYX file.
     if (!this.matched) return undefined;
 
@@ -1192,7 +1192,9 @@ class PhylorefWrapper {
     });
   }
 
-  exportAsJSONLD(phylorefURI) {
+  asJSONLD(phylorefURI) {
+    // Export this phyloreference in JSON-LD.
+
     // Keep all currently extant data.
     // - baseURI: the base URI for this phyloreference
     const phylorefAsJSONLD = JSON.parse(JSON.stringify(this.phyloref));
@@ -1532,8 +1534,7 @@ class PHYXWrapper {
       let countPhyloref = 0;
       jsonld.phylorefs = jsonld.phylorefs.map((phyloref) => {
         countPhyloref += 1;
-        return new PhylorefWrapper(phyloref)
-          .exportAsJSONLD(PHYXWrapper.getBaseURIForPhyloref(countPhyloref));
+        return new PhylorefWrapper(phyloref).asJSONLD(PHYXWrapper.getBaseURIForPhyloref(countPhyloref));
       });
     }
 
@@ -1573,7 +1574,7 @@ class PHYXWrapper {
                   const matcher = new TaxonomicUnitMatcher(specifierTU, nodeTU);
                   if (matcher.matched) {
                     const tuMatchAsJSONLD =
-                      matcher.asJSON(PHYXWrapper.getBaseURIForTUMatch(countTaxonomicUnitMatches));
+                      matcher.asJSONLD(PHYXWrapper.getBaseURIForTUMatch(countTaxonomicUnitMatches));
                     jsonld.hasTaxonomicUnitMatches.push(tuMatchAsJSONLD);
                     nodesMatchedCount += 1;
                     countTaxonomicUnitMatches += 1;
