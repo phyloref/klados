@@ -25,6 +25,14 @@
 /* global d3 */ // From https://d3js.org/
 /* global moment */ // From https://momentjs.com/
 
+// Some OWL constants to be used.
+const CDAO_HAS_CHILD = 'obo:CDAO_0000149';
+const CDAO_HAS_DESCENDANT = 'obo:CDAO_0000174';
+const PHYLOREF_HAS_SIBLING = 'phyloref:has_Sibling';
+const PHYLOREFERENCE_TEST_CASE = 'testcase:PhyloreferenceTestCase';
+const PHYLOREFERENCE_PHYLOGENY = 'testcase:PhyloreferenceTestPhylogeny';
+const TESTCASE_SPECIFIER = 'testcase:Specifier';
+
 // Our global variables
 // eslint-disable-next-line no-var
 var phyxCacheManager;
@@ -886,12 +894,12 @@ class PhylogenyWrapper {
     phylogenyAsJSONLD['@type'] = PHYLOREFERENCE_PHYLOGENY;
 
     // Translate nodes into JSON-LD objects.
-    phylogenyAsJSONLD.nodes = this.getNodesAsJSONLD(baseURI);;
+    phylogenyAsJSONLD.nodes = this.getNodesAsJSONLD(baseURI);
     if (phylogenyAsJSONLD.nodes.length > 0) {
       // We don't have a better way to identify the root node, so we just
       // default to the first one.
       phylogenyAsJSONLD.hasRootNode = {
-        '@id': phylogenyAsJSONLD.nodes[0]['@id']
+        '@id': phylogenyAsJSONLD.nodes[0]['@id'],
       };
     }
 
@@ -900,14 +908,6 @@ class PhylogenyWrapper {
 }
 
 /* Phyloreference wrapper */
-
-// We need some OWL constants for this.
-const CDAO_HAS_CHILD = 'obo:CDAO_0000149';
-const CDAO_HAS_DESCENDANT = 'obo:CDAO_0000174';
-const PHYLOREF_HAS_SIBLING = 'phyloref:has_Sibling';
-const PHYLOREFERENCE_TEST_CASE = 'testcase:PhyloreferenceTestCase';
-const PHYLOREFERENCE_PHYLOGENY = 'testcase:PhyloreferenceTestPhylogeny';
-const TESTCASE_SPECIFIER = 'testcase:Specifier';
 
 // eslint-disable-next-line no-unused-vars
 class PhylorefWrapper {
@@ -1524,9 +1524,11 @@ class PHYXWrapper {
     // Add descriptions for individual nodes in each phylogeny.
     if (hasOwnProperty(jsonld, 'phylogenies')) {
       let countPhylogeny = 0;
-      jsonld.phylogenies = jsonld.phylogenies.map(
-        (phylogeny) => new PhylogenyWrapper(phylogeny).asJSONLD(PHYXWrapper.getBaseURIForPhylogeny(countPhylogeny))
-      );
+      jsonld.phylogenies = jsonld.phylogenies.map((phylogeny) => {
+        countPhylogeny += 1;
+        return new PhylogenyWrapper(phylogeny)
+          .asJSONLD(PHYXWrapper.getBaseURIForPhylogeny(countPhylogeny));
+      });
     }
 
     // Convert phyloreferences into an OWL class restriction
@@ -1534,7 +1536,8 @@ class PHYXWrapper {
       let countPhyloref = 0;
       jsonld.phylorefs = jsonld.phylorefs.map((phyloref) => {
         countPhyloref += 1;
-        return new PhylorefWrapper(phyloref).asJSONLD(PHYXWrapper.getBaseURIForPhyloref(countPhyloref));
+        return new PhylorefWrapper(phyloref)
+          .asJSONLD(PHYXWrapper.getBaseURIForPhyloref(countPhyloref));
       });
     }
 
