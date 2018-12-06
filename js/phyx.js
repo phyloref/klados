@@ -874,6 +874,29 @@ class PhylogenyWrapper {
 
     return nodes;
   }
+
+  asJSONLD(baseURI) {
+    // Export this phylogeny as JSON-LD.
+
+    // Create a copy to export.
+    const phylogenyAsJSONLD = JSON.parse(JSON.stringify(this.phylogeny));
+
+    // Set name and class for phylogeny.
+    phylogenyAsJSONLD['@id'] = baseURI;
+    phylogenyAsJSONLD['@type'] = PHYLOREFERENCE_PHYLOGENY;
+
+    // Translate nodes into JSON-LD objects.
+    phylogenyAsJSONLD.nodes = this.getNodesAsJSONLD(baseURI);;
+    if (phylogenyAsJSONLD.nodes.length > 0) {
+      // We don't have a better way to identify the root node, so we just
+      // default to the first one.
+      phylogenyAsJSONLD.hasRootNode = {
+        '@id': phylogenyAsJSONLD.nodes[0]['@id']
+      };
+    }
+
+    return phylogenyAsJSONLD;
+  }
 }
 
 /* Phyloreference wrapper */
@@ -1499,27 +1522,9 @@ class PHYXWrapper {
     // Add descriptions for individual nodes in each phylogeny.
     if (hasOwnProperty(jsonld, 'phylogenies')) {
       let countPhylogeny = 0;
-      jsonld.phylogenies.forEach((phylogenyToChange) => {
-        const phylogeny = phylogenyToChange;
-
-        // Set name and class for phylogeny.
-        phylogeny['@id'] = PHYXWrapper.getBaseURIForPhylogeny(countPhylogeny);
-        phylogeny['@type'] = PHYLOREFERENCE_PHYLOGENY;
-
-        // Extract nodes from phylogeny.
-        const wrapper = new PhylogenyWrapper(phylogeny);
-        countPhylogeny += 1;
-
-        // Translate nodes into JSON-LD objects.
-        const nodes = wrapper.getNodesAsJSONLD(PHYXWrapper.getBaseURIForPhylogeny(countPhylogeny));
-
-        phylogeny.nodes = nodes;
-        if (nodes.length > 0) {
-          // We don't have a better way to identify the root node, so we just
-          // default to the first one.
-          [phylogeny.hasRootNode] = nodes;
-        }
-      });
+      jsonld.phylogenies = jsonld.phylogenies.map(
+        (phylogeny) => new PhylogenyWrapper(phylogeny).asJSONLD(PHYXWrapper.getBaseURIForPhylogeny(countPhylogeny))
+      );
     }
 
     // Convert phyloreferences into an OWL class restriction
