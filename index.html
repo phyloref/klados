@@ -55,9 +55,7 @@
       </div>
     </nav>
 
-    <!--
-      The wrapper adds a padding to the left, so that the sidebar can be moved there.
-    -->
+    <!-- The wrapper adds a padding to the left, so that the sidebar can be moved there. -->
     <div id="wrapper">
 
       <!-- Sidebar showing phyloreferences and phylogenies -->
@@ -81,6 +79,7 @@
           </div>
         </div>
 
+        <!-- Sidebar section: information about this particular PHYX file -->
         <div class="panel panel-default">
           <div class="panel-heading" @click="promptAndSetDict('Enter a new title for this PHYX file', testcase, 'title')">
             <template v-if="testcase.title">{{testcase.title}}</template>
@@ -92,6 +91,7 @@
           </div>
         </div>
 
+        <!-- Sidebar section: list of phyloreferences in PHYX file -->
         <div class="panel panel-default">
           <div class="panel-heading">Phyloreferences</div>
 
@@ -110,45 +110,53 @@
                   data-toggle="tooltip" data-placement="bottom" title="This phyloreference has been modified since being loaded! Use 'Save as JSON' to save your changes."
                   class="close glyphicon glyphicon-warning-sign"></span>
               </a>
-              <!-- Display internal specifiers if active -->
-              <a
-                href="javascript: void(0)"
-                v-if="selectedPhyloref === phyloref"
-                class="list-group-item"
-                @class="{active: selectedSpecifier === internalSpecifier}"
-                @click="resetSVG(); selectedPhyloref = phyloref; selectedSpecifier = internalSpecifier; selectedTUnit = undefined; selectedPhylogeny = undefined"
-                v-for="(internalSpecifier, internalSpecifierIndex) of phyloref.internalSpecifiers">
-                &#9679; <strong>Internal:</strong> <span v-html="getSpecifierLabelAsHTML(internalSpecifier)"></span>
-              </a>
-              <!-- Display external specifiers if active -->
-              <a
-                href="javascript: void(0)"
-                v-if="selectedPhyloref === phyloref"
-                class="list-group-item"
-                @class="{active: selectedSpecifier === externalSpecifier}"
-                @click="resetSVG(); selectedPhyloref = phyloref; selectedSpecifier = externalSpecifier; selectedTUnit = undefined; selectedPhylogeny = undefined"
-                v-for="(externalSpecifier, externalSpecifierIndex) of phyloref.externalSpecifiers">
-                &#9679; <strong>External:</strong> <span v-html="getSpecifierLabelAsHTML(externalSpecifier)"></span>
-              </a>
-              <!-- Display phylogenies if present -->
-              <a v-if="selectedPhyloref === phyloref"
-                v-for="(phylogeny, phylogenyIndex) of testcase.phylogenies"
-                class="list-group-item"
-                @class="{active: selectedPhylogeny === phylogeny}"
-                href="javascript: void(0)"
-                @click="resetSVG(); selectedPhyloref = phyloref; selectedSpecifier = undefined; selectedTUnit = undefined; selectedPhylogeny = phylogeny"
-              >
-                &#9679; <strong>Phylogeny:</strong>
-                  <template v-if="getPhylorefExpectedNodeLabels(phylogeny, selectedPhyloref).length < 1">no expected node</template>
-                  <template v-else>node expected</template>
-                  in {{getPhylogenyLabel(phylogeny)}}
-              </a>
 
+              <!-- Add the following information if this phyloreference is selected -->
+              <template v-if="selectedPhyloref === phyloref">
+
+                <!-- Display internal specifiers -->
+                <a
+                  href="javascript: void(0)"
+                  class="list-group-item"
+                  @class="{active: selectedSpecifier === internalSpecifier}"
+                  @click="resetSVG(); selectedPhyloref = phyloref; selectedSpecifier = internalSpecifier; selectedTUnit = undefined; selectedPhylogeny = undefined"
+                  v-for="(internalSpecifier, internalSpecifierIndex) of phyloref.internalSpecifiers">
+                  &#9679; <strong>Internal:</strong> <span v-html="getSpecifierLabelAsHTML(internalSpecifier)"></span>
+                </a>
+
+                <!-- Display external specifiers -->
+                <a
+                  href="javascript: void(0)"
+                  class="list-group-item"
+                  @class="{active: selectedSpecifier === externalSpecifier}"
+                  @click="resetSVG(); selectedPhyloref = phyloref; selectedSpecifier = externalSpecifier; selectedTUnit = undefined; selectedPhylogeny = undefined"
+                  v-for="(externalSpecifier, externalSpecifierIndex) of phyloref.externalSpecifiers">
+                  &#9679; <strong>External:</strong> <span v-html="getSpecifierLabelAsHTML(externalSpecifier)"></span>
+                </a>
+
+                <!-- Display phylogenies -->
+                <a
+                  v-for="(phylogeny, phylogenyIndex) of testcase.phylogenies"
+                  class="list-group-item"
+                  @class="{active: selectedPhylogeny === phylogeny}"
+                  href="javascript: void(0)"
+                  @click="resetSVG(); selectedPhyloref = phyloref; selectedSpecifier = undefined; selectedTUnit = undefined; selectedPhylogeny = phylogeny"
+                >
+                  &#9679; <strong>Phylogeny:</strong>
+                    <template v-if="getPhylorefExpectedNodeLabels(phylogeny, selectedPhyloref).length < 1">no expected node</template>
+                    <template v-else>node expected</template>
+                    in {{getPhylogenyLabel(phylogeny)}}
+                </a>
+              </template>
             </template>
+
+            <!-- Let users add phyloreferences directly from the sidebar -->
             <a class="list-group-item" href="javascript: void(0)" @click="testcase.phylorefs.push(createEmptyPhyloref(testcase.phylorefs.length + 1))"><strong>Add phyloreference</strong></a>
+
           </div>
         </div>
 
+        <!-- Sidebar section: list of phylogenies in PHYX file -->
         <div class="panel panel-default">
           <div class="panel-heading">Phylogenies</div>
           <div class="list-group">
@@ -168,13 +176,13 @@
             <a class="list-group-item" href="javascript: void(0)" @click="testcase.phylogenies.push({})"><strong>Add phylogeny</strong></a>
           </div>
         </div>
-      </div>
-      <!-- End of sidebar -->
+
+      </div><!-- End of sidebar -->
 
       <!-- Start of page content -->
       <div id="page-content-wrapper">
 
-        <!-- The following components are designed to appear above the main panel -->
+        <!-- The following components appear above the main panel -->
 
         <!-- The advanced panel provides access to advanced features of the Curation Tool -->
         <div id="advanced-options" hidden>
@@ -197,11 +205,12 @@
               </div>
             </div>
           </div>
-        </div>
+        </div><!-- End of panels above the main panel -->
 
-        <!-- End of panels above the main panel -->
-
-        <!-- This is the main panel -->
+        <!--
+          The main panel can be in one of three states: when a phyloreference has been selected,
+          when a phylogeny has been selected, or when nothing has been selected.
+        -->
         <template v-if="selectedPhyloref">
           <!-- A phyloreference has been selected -->
 
@@ -255,6 +264,7 @@
                 </div>
               </div>
 
+              <!-- List of buttons that can be used to change or modify the selected phyloreference -->
               <div class="panel-footer" v-if="selectedPhyloref !== undefined && testcase.phylorefs.indexOf(selectedPhyloref) != -1">
                 <div class="btn-group btn-group-justified" role="group" aria-label="Actions for the entire phyloreference">
                   <a
@@ -797,7 +807,10 @@
 
         </template>
         <template v-else>
-          <!-- Neither a phyloreference nor a phylogeny has been selected -->
+          <!--
+            Neither a phyloreference nor a phylogeny has been selected, so
+            display a summary of the entire PHYX file instead.
+          -->
           <div class="panel">
             <div class="panel-body">
               <table class="table table-hover table-bordered">
