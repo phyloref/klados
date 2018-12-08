@@ -28,7 +28,7 @@
 // Some OWL constants to be used.
 const CDAO_HAS_CHILD = 'obo:CDAO_0000149';
 const CDAO_HAS_DESCENDANT = 'obo:CDAO_0000174';
-const PHYLOREF_HAS_SIBLING = 'phyloref:has_Sibling';
+const PHYLOREF_EXCLUDES_LINEAGE_TO = 'phyloref:excludes_lineage_to';
 const PHYLOREFERENCE_TEST_CASE = 'testcase:PhyloreferenceTestCase';
 const PHYLOREFERENCE_PHYLOGENY = 'testcase:PhyloreferenceTestPhylogeny';
 const TESTCASE_SPECIFIER = 'testcase:Specifier';
@@ -1378,8 +1378,9 @@ class PhylorefWrapper {
     // incorporate that in here.
     return {
       '@type': 'owl:Restriction',
-      onProperty: PHYLOREF_HAS_SIBLING,
-      someValuesFrom: PhylorefWrapper.wrapInternalOWLRestriction(restriction),
+      // onProperty: PHYLOREF_HAS_SIBLING,
+      onProperty: PHYLOREF_EXCLUDES_LINEAGE_TO,
+      someValuesFrom: restriction,
     };
   }
 
