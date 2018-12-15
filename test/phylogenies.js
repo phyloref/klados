@@ -94,14 +94,21 @@ describe('PhylogenyWrapper', function () {
       });
     });
 
-    it('should be able to identify an incomplete Newick string', function () {
-      let errors = phyx.PhylogenyWrapper.getErrorsInNewickString('(;)');
-      assert.equal(errors.length, 1);
-      assert.equal(errors[0].title, 'Error parsing phylogeny');
+    describe('when given an incomplete Newick string', function () {
+      const incompleteNewickStrings = [
+        '(;)',
+        '))(A, (B, ',
+      ];
 
-      errors = phyx.PhylogenyWrapper.getErrorsInNewickString('))(A, (B, ');
-      assert.equal(errors.length, 1);
-      assert.equal(errors[0].title, 'Error parsing phylogeny');
+      it('should report an error parsing the phylogeny', function () {
+        incompleteNewickStrings.forEach((newick) => {
+          const errors = phyx.PhylogenyWrapper.getErrorsInNewickString(newick);
+
+          assert.equal(errors.length, 1);
+          assert.equal(errors[0].title, 'Error parsing phylogeny');
+          assert(errors[0].message.startsWith('An error occured while parsing this phylogeny:'));
+        });
+      });
     });
   });
   describe('#getNodeLabels', function () {
