@@ -111,121 +111,124 @@ describe('PhylogenyWrapper', function () {
       });
     });
   });
+
   describe('#getNodeLabels', function () {
-    it('should be able extract all node labels in a phylogeny', function () {
-      const wrapper = new phyx.PhylogenyWrapper({
-        newick: '(A, (B, (C, D))E, F, (G, (H, I, J)K, L)M, N)O',
+    describe('given a valid phylogeny', function () {
+      const tests = [
+        {
+          newick: '(A, (B, (C, D))E, F, (G, (H, I, J)K, L)M, N)O',
+          nodeLabels: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O'],
+          internalNodeLabels: ['E', 'K', 'M', 'O'],
+          terminalNodeLabels: ['A', 'B', 'C', 'D', 'F', 'G', 'H', 'I', 'J', 'L', 'N'],
+        },
+      ];
+
+      tests.forEach((test) => {
+        const wrapper = new phyx.PhylogenyWrapper({ newick: test.newick });
+
+        it('should be able to return a list of all node labels in this phylogeny', function () {
+          expect(wrapper.getNodeLabels().sort())
+            .to.have.members(test.nodeLabels.sort());
+        });
+
+        it('should be able to return a list of all internal labels in this phylogeny', function () {
+          expect(wrapper.getNodeLabels('internal').sort())
+            .to.have.members(test.internalNodeLabels.sort());
+        });
+
+        it('should be able to return a list of all terminal labels in this phylogeny', function () {
+          expect(wrapper.getNodeLabels('terminal').sort())
+            .to.have.members(test.terminalNodeLabels.sort());
+        });
       });
-      assert.deepEqual(wrapper.getNodeLabels().sort(), [
-        'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O',
-      ]);
-      assert.deepEqual(wrapper.getNodeLabels('internal').sort(), [
-        'E', 'K', 'M', 'O',
-      ]);
-      assert.deepEqual(wrapper.getNodeLabels('terminal').sort(), [
-        'A', 'B', 'C', 'D', 'F', 'G', 'H', 'I', 'J', 'L', 'N',
-      ]);
     });
   });
-  describe('#getTaxonomicUnitsForNodeLabel', function () {
-    it('should be able to combine additional node properties with node labels', function () {
-      const wrapper = new phyx.PhylogenyWrapper({
-        newick: '((MVZ225749, MVZ191016), "Rana boylii")',
-        additionalNodeProperties: {
-          MVZ225749: {
-            representsTaxonomicUnits: [{
-              scientificNames: [{ scientificName: 'Rana luteiventris' }],
-              includesSpecimens: [{ occurrenceID: 'MVZ:225749' }],
-            }],
-          },
-          MVZ191016: {
-            representsTaxonomicUnits: [{
-              scientificNames: [{ scientificName: 'Rana luteiventris' }],
-              includesSpecimens: [{ occurrenceID: 'MVZ:191016' }],
-            }],
-          },
+
+  describe('given a particular phylogeny with additional node properties', function () {
+    const wrapper = new phyx.PhylogenyWrapper({
+      newick: '((MVZ225749, MVZ191016), "Rana boylii")',
+      additionalNodeProperties: {
+        MVZ225749: {
+          representsTaxonomicUnits: [{
+            scientificNames: [{ scientificName: 'Rana luteiventris' }],
+            includesSpecimens: [{ occurrenceID: 'MVZ:225749' }],
+          }],
         },
-      });
-
-      assert.deepEqual(wrapper.getNodeLabels().sort(), [
-        'MVZ191016',
-        'MVZ225749',
-        'Rana boylii',
-        'root',
-      ]);
-
-      assert.deepEqual(wrapper.getTaxonomicUnitsForNodeLabel('MVZ191016'), [{
-        scientificNames: [{ scientificName: 'Rana luteiventris' }],
-        includesSpecimens: [{ occurrenceID: 'MVZ:191016' }],
-      }]);
-      assert.deepEqual(wrapper.getTaxonomicUnitsForNodeLabel('MVZ225749'), [{
-        scientificNames: [{ scientificName: 'Rana luteiventris' }],
-        includesSpecimens: [{ occurrenceID: 'MVZ:225749' }],
-      }]);
-      assert.deepEqual(wrapper.getTaxonomicUnitsForNodeLabel('Rana boylii'), [{
-        scientificNames: [{
-          scientificName: 'Rana boylii',
-          binomialName: 'Rana boylii',
-          genus: 'Rana',
-          specificEpithet: 'boylii',
-        }],
-      }]);
+        MVZ191016: {
+          representsTaxonomicUnits: [{
+            scientificNames: [{ scientificName: 'Rana luteiventris' }],
+            includesSpecimens: [{ occurrenceID: 'MVZ:191016' }],
+          }],
+        },
+      },
     });
-  });
-  describe('#getNodeLabelsMatchedBySpecifier', function () {
-    it('should match specifiers by specimen identifier', function () {
-      const wrapper = new phyx.PhylogenyWrapper({
-        newick: '((MVZ225749, MVZ191016), "Rana boylii")',
-        additionalNodeProperties: {
-          MVZ225749: {
-            representsTaxonomicUnits: [{
-              scientificNames: [{ scientificName: 'Rana luteiventris' }],
-              includesSpecimens: [{ occurrenceID: 'MVZ:225749' }],
-            }],
-          },
-          MVZ191016: {
-            representsTaxonomicUnits: [{
-              scientificNames: [{ scientificName: 'Rana luteiventris' }],
-              includesSpecimens: [{ occurrenceID: 'MVZ:191016' }],
-            }],
-          },
-        },
+
+    describe('#getTaxonomicUnitsForNodeLabel', function () {
+      it('should be able to return the list of node labels', function () {
+        expect(wrapper.getNodeLabels().sort())
+          .to.have.members([
+            'MVZ191016',
+            'MVZ225749',
+            'Rana boylii',
+            'root',
+          ]);
       });
 
-      const specifier1 = {
-        referencesTaxonomicUnits: [{
-          includesSpecimens: [{
-            occurrenceID: 'MVZ:225749',
-          }],
-        }],
-      };
-      const specifier2 = {
-        referencesTaxonomicUnits: [{
-          includesSpecimens: [{
-            occurrenceID: 'MVZ:191016',
-          }],
-        }],
-      };
-      const specifier3 = {
-        referencesTaxonomicUnits: [{
+      it('should be able to return the list of taxonomic units for each node', function () {
+        expect(wrapper.getTaxonomicUnitsForNodeLabel('MVZ191016')).to.deep.equal([{
+          scientificNames: [{ scientificName: 'Rana luteiventris' }],
+          includesSpecimens: [{ occurrenceID: 'MVZ:191016' }],
+        }]);
+
+        expect(wrapper.getTaxonomicUnitsForNodeLabel('MVZ225749')).to.deep.equal([{
+          scientificNames: [{ scientificName: 'Rana luteiventris' }],
+          includesSpecimens: [{ occurrenceID: 'MVZ:225749' }],
+        }]);
+
+        expect(wrapper.getTaxonomicUnitsForNodeLabel('Rana boylii')).to.deep.equal([{
           scientificNames: [{
-            scientificName: 'Rana boyli',
+            scientificName: 'Rana boylii',
+            binomialName: 'Rana boylii',
+            genus: 'Rana',
+            specificEpithet: 'boylii',
           }],
-        }],
-      };
+        }]);
+      });
+    });
 
-      assert.deepEqual(
-        wrapper.getNodeLabelsMatchedBySpecifier(specifier1),
-        ['MVZ225749'],
-      );
-      assert.deepEqual(
-        wrapper.getNodeLabelsMatchedBySpecifier(specifier2),
-        ['MVZ191016'],
-      );
-      assert.deepEqual(
-        wrapper.getNodeLabelsMatchedBySpecifier(specifier3),
-        [],
-      );
+    describe('#getNodeLabelsMatchedBySpecifier', function () {
+      it('should match specifiers by specimen identifier', function () {
+        const specifier1 = {
+          referencesTaxonomicUnits: [{
+            includesSpecimens: [{
+              occurrenceID: 'MVZ:225749',
+            }],
+          }],
+        };
+        const specifier2 = {
+          referencesTaxonomicUnits: [{
+            includesSpecimens: [{
+              occurrenceID: 'MVZ:191016',
+            }],
+          }],
+        };
+        const specifier3 = {
+          referencesTaxonomicUnits: [{
+            scientificNames: [{
+              scientificName: 'Rana boyli',
+            }],
+          }],
+        };
+
+        expect(wrapper.getNodeLabelsMatchedBySpecifier(specifier1))
+          .to.have.members(['MVZ225749']);
+
+        expect(wrapper.getNodeLabelsMatchedBySpecifier(specifier2))
+          .to.have.members(['MVZ191016']);
+
+        expect(wrapper.getNodeLabelsMatchedBySpecifier(specifier3))
+          .to.have.members([]);
+      });
     });
   });
 });
