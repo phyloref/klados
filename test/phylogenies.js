@@ -1,4 +1,4 @@
-/*
+ /*
  * Test phylogenies.
  */
 
@@ -126,17 +126,17 @@ describe('PhylogenyWrapper', function () {
       tests.forEach((test) => {
         const wrapper = new phyx.PhylogenyWrapper({ newick: test.newick });
 
-        it('should be able to return a list of all node labels in this phylogeny', function () {
+        it('should return a list of all node labels in this phylogeny', function () {
           expect(wrapper.getNodeLabels().sort())
             .to.have.members(test.nodeLabels.sort());
         });
 
-        it('should be able to return a list of all internal labels in this phylogeny', function () {
+        it('should return a list of all internal labels in this phylogeny', function () {
           expect(wrapper.getNodeLabels('internal').sort())
             .to.have.members(test.internalNodeLabels.sort());
         });
 
-        it('should be able to return a list of all terminal labels in this phylogeny', function () {
+        it('should return a list of all terminal labels in this phylogeny', function () {
           expect(wrapper.getNodeLabels('terminal').sort())
             .to.have.members(test.terminalNodeLabels.sort());
         });
@@ -163,8 +163,8 @@ describe('PhylogenyWrapper', function () {
       },
     });
 
-    describe('#getTaxonomicUnitsForNodeLabel', function () {
-      it('should be able to return the list of node labels', function () {
+    describe('#getNodeLabels', function () {
+      it('should return the list of node labels', function () {
         expect(wrapper.getNodeLabels().sort())
           .to.have.members([
             'MVZ191016',
@@ -173,8 +173,10 @@ describe('PhylogenyWrapper', function () {
             'root',
           ]);
       });
+    });
 
-      it('should be able to return the list of taxonomic units for each node', function () {
+    describe('#getTaxonomicUnitsForNodeLabel', function () {
+      it('should return the list of expected taxonomic units for each node', function () {
         expect(wrapper.getTaxonomicUnitsForNodeLabel('MVZ191016')).to.deep.equal([{
           scientificNames: [{ scientificName: 'Rana luteiventris' }],
           includesSpecimens: [{ occurrenceID: 'MVZ:191016' }],
@@ -197,7 +199,7 @@ describe('PhylogenyWrapper', function () {
     });
 
     describe('#getNodeLabelsMatchedBySpecifier', function () {
-      it('should match specifiers by specimen identifier', function () {
+      it('should match nodes to specifiers and return the matched node labels', function () {
         const specifier1 = {
           referencesTaxonomicUnits: [{
             includesSpecimens: [{
