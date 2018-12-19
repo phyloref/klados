@@ -23,7 +23,9 @@ require('../lib/phylotree.js/phylotree.js');
 const chai = require('chai');
 const phyx = require('../js/phyx');
 
+// Testing methods.
 const assert = chai.assert;
+const expect = chai.expect;
 
 // Some phylogenies to use in testing.
 const phylogeny1 = {
@@ -71,93 +73,150 @@ const specifier3 = {
 };
 
 describe('PhylorefWrapper', function () {
-  describe('#constructor', function () {
-    it('should wrap a blank object', function () {
-      const wrapper = new phyx.PhylogenyWrapper({});
-      assert.isOk(wrapper);
-      assert.isUndefined(wrapper.label);
-    });
-  });
+  describe('given an empty phyloreference', function () {
+    const wrapper = new phyx.PhylorefWrapper({});
 
-  describe('#specifiers', function () {
-    it('should be able to insert and delete specifiers', function () {
-      const wrapper = new phyx.PhylorefWrapper({});
-      assert.isUndefined(wrapper.label);
-
-      wrapper.phyloref.label = 'phyloref1';
-      assert.equal(wrapper.label, 'phyloref1');
-
-      assert.deepEqual(wrapper.specifiers, []);
-
-      wrapper.phyloref.externalSpecifiers.push(specifier3);
-      assert.deepEqual(wrapper.specifiers, [specifier3]);
-
-      wrapper.phyloref.externalSpecifiers.push(specifier2);
-      assert.deepEqual(wrapper.specifiers, [specifier3, specifier2]);
-
-      wrapper.deleteSpecifier(specifier2);
-      assert.deepEqual(wrapper.specifiers, [specifier3]);
-
-      wrapper.phyloref.externalSpecifiers.push(specifier1);
-      assert.deepEqual(wrapper.specifiers, [specifier3, specifier1]);
-
-      wrapper.setSpecifierType(specifier1, 'Internal');
-      assert.deepEqual(wrapper.specifiers, [specifier1, specifier3]);
-
-      wrapper.phyloref.internalSpecifiers.push(specifier2);
-      assert.deepEqual(wrapper.specifiers, [specifier1, specifier2, specifier3]);
-
-      assert.equal(wrapper.getSpecifierType(specifier1), 'Internal');
-      assert.equal(wrapper.getSpecifierType(specifier2), 'Internal');
-      assert.equal(wrapper.getSpecifierType(specifier3), 'External');
-
-      assert.equal(phyx.PhylorefWrapper.getSpecifierLabel(specifier1), 'Specimen MVZ:225749');
-      assert.equal(phyx.PhylorefWrapper.getSpecifierLabel(specifier2), 'Specimen MVZ:191016');
-      assert.equal(phyx.PhylorefWrapper.getSpecifierLabel(specifier3), 'Rana boylii');
+    describe('#constructor', function () {
+      it('should return a PhylorefWrapper', function () {
+        expect(wrapper).to.be.an.instanceOf(phyx.PhylorefWrapper);
+      });
     });
 
-    it('should be able to determine expected node labels for a phylogeny', function () {
-      const phyloref1 = new phyx.PhylorefWrapper({
-        label: 'phyloref1',
-        internalSpecifiers: [specifier1, specifier2],
-        externalSpecifiers: [specifier3],
+    describe('#label', function () {
+      it('should return undefined', function () {
+        expect(wrapper.label).to.be.undefined;
       });
 
-      assert.deepEqual(
-        phyloref1.getExpectedNodeLabels(phylogeny1),
-        ['Test'],
-      );
+      it('should be settable by assigning to .label', function () {
+        wrapper.label = 'phyloref1';
+        expect(wrapper.label).equals('phyloref1');
+      });
+    });
+
+    describe('#specifiers', function () {
+      it('should initially return an empty list', function () {
+        expect(wrapper.specifiers).to.be.empty;
+      });
+
+      describe('when a new external specifier is added using .externalSpecifiers', function () {
+        it('should return a list with the new specifier', function () {
+          wrapper.phyloref.externalSpecifiers.push(specifier3);
+          expect(wrapper.specifiers).to.deep.equal([specifier3]);
+        });
+      });
+
+      describe('when a new external specifier is added using .externalSpecifiers', function () {
+        it('should return a list with the new specifier', function () {
+          wrapper.phyloref.externalSpecifiers.push(specifier2);
+          expect(wrapper.specifiers).to.deep.equal([specifier3, specifier2]);
+        });
+      });
+
+      describe('when a specifier is deleted using .deleteSpecifier', function () {
+        it('should return the updated list', function () {
+          wrapper.deleteSpecifier(specifier2);
+          expect(wrapper.specifiers).to.deep.equal([specifier3]);
+        });
+      });
+
+      describe('when a specifier is added using .externalSpecifiers', function () {
+        it('should return the updated list', function () {
+          wrapper.phyloref.externalSpecifiers.push(specifier1);
+          expect(wrapper.specifiers).to.deep.equal([specifier3, specifier1]);
+        });
+      });
+
+      describe('when a specifier is changed to an internal specifier using .setSpecifierType', function () {
+        it('should remain in the list of specifiers', function () {
+          wrapper.setSpecifierType(specifier1, 'Internal');
+          expect(wrapper.specifiers).to.deep.equal([specifier1, specifier3]);
+        });
+      });
+
+      describe('when a specifier is added using .internalSpecifiers', function () {
+        it('should be included in the list of all specifiers', function () {
+          wrapper.phyloref.internalSpecifiers.push(specifier2);
+          expect(wrapper.specifiers).to.deep.equal([specifier1, specifier2, specifier3]);
+        });
+      });
+    });
+
+    describe('#getSpecifierType', function () {
+      it('should return the correct specifier type for each specifier', function () {
+        expect(wrapper.getSpecifierType(specifier1)).to.equal('Internal');
+        expect(wrapper.getSpecifierType(specifier2)).to.equal('Internal');
+        expect(wrapper.getSpecifierType(specifier3)).to.equal('External');
+      });
+    });
+
+    describe('#getSpecifierLabel', function () {
+      it('should return the correct label for each specifier', function () {
+        expect(phyx.PhylorefWrapper.getSpecifierLabel(specifier1)).to.equal('Specimen MVZ:225749');
+        expect(phyx.PhylorefWrapper.getSpecifierLabel(specifier2)).to.equal('Specimen MVZ:191016');
+        expect(phyx.PhylorefWrapper.getSpecifierLabel(specifier3)).to.equal('Rana boylii');
+      });
     });
   });
 
-  describe('#statuses', function () {
-    it('should be able to update statuses while tracking them', function () {
-      const wrapper = new phyx.PhylorefWrapper({});
+  describe('given a particular phylogeny', function () {
+    describe('#getExpectedNodeLabels', function () {
+      it('should be able to determine expected node labels for a phylogeny', function () {
+        const phyloref1 = new phyx.PhylorefWrapper({
+          label: 'phyloref1',
+          internalSpecifiers: [specifier1, specifier2],
+          externalSpecifiers: [specifier3],
+        });
 
-      // Initially, an empty phyloref should report a status of 'pso:draft'.
-      assert.equal(wrapper.getCurrentStatus().statusCURIE, 'pso:draft');
+        expect(phyloref1.getExpectedNodeLabels(phylogeny1))
+          .to.deep.equal(['Test']);
+      });
+    });
+  });
 
-      // Let's try updating a bunch of status.
-      wrapper.setStatus('pso:final-draft');
-      wrapper.setStatus('pso:under-review');
-      wrapper.setStatus('pso:submitted');
-      wrapper.setStatus('pso:published');
-      wrapper.setStatus('pso:retracted-from-publication');
-      assert.throws(
-        function () { wrapper.setStatus('pso:retracted-from_publication'); },
-        TypeError,
-        'setStatus() called with invalid status CURIE \'pso:retracted-from_publication\'',
-        'PhylorefWrapper throws TypeError on a mistyped status',
-      );
+  describe('given an empty phyloreference', function () {
+    const wrapper = new phyx.PhylorefWrapper({});
 
-      // And see if we get the statuses back in the correct order.
-      const statusChanges = wrapper.getStatusChanges();
-      assert.equal(statusChanges.length, 5);
-      assert.equal(statusChanges[0].statusCURIE, 'pso:final-draft');
-      assert.equal(statusChanges[1].statusCURIE, 'pso:under-review');
-      assert.equal(statusChanges[2].statusCURIE, 'pso:submitted');
-      assert.equal(statusChanges[3].statusCURIE, 'pso:published');
-      assert.equal(statusChanges[4].statusCURIE, 'pso:retracted-from-publication');
+    describe('#getCurrentStatus', function () {
+      it('should return "pso:draft" as the default initial status', function () {
+        // Initially, an empty phyloref should report a status of 'pso:draft'.
+        expect(wrapper.getCurrentStatus().statusCURIE).to.equal('pso:draft');
+      });
+    });
+
+    describe('#setStatus', function () {
+      it('should throw an error if given a mistyped status', function () {
+        expect(function () { wrapper.setStatus('pso:retracted-from_publication'); })
+          .to.throw(
+            TypeError,
+            'setStatus() called with invalid status CURIE \'pso:retracted-from_publication\'',
+            'PhylorefWrapper throws TypeError on a mistyped status',
+          );
+      });
+    });
+
+    describe('#getStatusChanges', function () {
+      it('should return the empty list', function () {
+        expect(wrapper.getStatusChanges()).to.be.empty;
+      });
+
+      describe('when modified by using .setStatus', function () {
+        it('should return the updated list', function () {
+          wrapper.setStatus('pso:final-draft');
+          wrapper.setStatus('pso:under-review');
+          wrapper.setStatus('pso:submitted');
+          wrapper.setStatus('pso:published');
+          wrapper.setStatus('pso:retracted-from-publication');
+
+          // And see if we get the statuses back in the correct order.
+          const statusChanges = wrapper.getStatusChanges();
+          assert.equal(statusChanges.length, 5);
+          assert.equal(statusChanges[0].statusCURIE, 'pso:final-draft');
+          assert.equal(statusChanges[1].statusCURIE, 'pso:under-review');
+          assert.equal(statusChanges[2].statusCURIE, 'pso:submitted');
+          assert.equal(statusChanges[3].statusCURIE, 'pso:published');
+          assert.equal(statusChanges[4].statusCURIE, 'pso:retracted-from-publication');
+        });
+      });
     });
   });
 });
