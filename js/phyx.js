@@ -1597,7 +1597,7 @@ class PHYXWrapper {
     jsonld['owl:imports'] = [
       'http://raw.githubusercontent.com/phyloref/curation-workflow/develop/ontologies/phyloref_testcase.owl',
       // - Will become 'http://vocab.phyloref.org/phyloref/testcase.owl'
-      'http://ontology.phyloref.org/phyloref.owl',
+      'http://ontology.phyloref.org/2018-12-04/phyloref.owl',
       // - The Phyloreferencing ontology.
       'http://purl.obolibrary.org/obo/bco.owl',
       // - Contains OWL definitions for Darwin Core terms
