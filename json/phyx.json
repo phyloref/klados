@@ -64,7 +64,7 @@
         },
 
         "obo": "http://purl.obolibrary.org/obo/",
-        "phyloref": "http://ontology.phyloref.org/2018-12-04/phyloref.owl#",
+        "phyloref": "http://ontology.phyloref.org/phyloref.owl#",
 
         "children": {
             "@id": "obo:CDAO_0000149",
