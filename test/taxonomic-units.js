@@ -7,7 +7,7 @@
 const chai = require('chai');
 const phyx = require('../js/phyx');
 
-const assert = chai.assert;
+// Use Chai's expect API.
 const expect = chai.expect;
 
 describe('TaxonomicUnitWrapper', function () {
@@ -44,7 +44,7 @@ describe('TaxonomicUnitWrapper', function () {
           catalogNumber: '225749',
         }],
       });
-      assert.equal(wrapper.label, 'Specimen urn:catalog:MVZ::225749');
+      expect(wrapper.label).to.equal('Specimen urn:catalog:MVZ::225749');
     });
     it('should return specimen identifiers and scientific names concatenated with "or"', function () {
       const wrapper = new phyx.TaxonomicUnitWrapper({
@@ -117,6 +117,10 @@ describe('TaxonomicUnitWrapper', function () {
 });
 
 // To test matching, let's set up some taxonomic units.
+// Note that:
+//  tunit1 and tunit2 should match by scientific name.
+//  tunit2 and tunit3 should match by specimen identifier.
+//  tunit3 and tunit4 should match by external references.
 const tunit1 = { scientificNames: [{ scientificName: 'Rana luteiventris' }] };
 const tunit2 = {
   scientificNames: [{ scientificName: 'Rana luteiventris MVZ225749' }],

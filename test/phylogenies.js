@@ -18,7 +18,6 @@ require('../lib/phylotree.js/phylotree.js');
 const chai = require('chai');
 const phyx = require('../js/phyx');
 
-const assert = chai.assert;
 const expect = chai.expect;
 
 describe('PhylogenyWrapper', function () {
@@ -54,8 +53,8 @@ describe('PhylogenyWrapper', function () {
       it('should return a single "No phylogeny entered" error', function () {
         emptyNewickStrings.forEach((newick) => {
           const errors = phyx.PhylogenyWrapper.getErrorsInNewickString(newick);
-          assert.equal(errors.length, 1);
-          assert.equal(errors[0].title, 'No phylogeny entered');
+          expect(errors).to.have.length(1);
+          expect(errors[0].title).to.equal('No phylogeny entered');
         });
       });
     });
@@ -81,15 +80,15 @@ describe('PhylogenyWrapper', function () {
           const errors = phyx.PhylogenyWrapper.getErrorsInNewickString(entry.newick);
 
           // We should get two errors.
-          assert.equal(errors.length, 2);
+          expect(errors).to.have.lengthOf(2);
 
           // Should include an error about the unbalanced parentheses.
-          assert.equal(errors[0].title, 'Unbalanced parentheses in Newick string');
-          assert.equal(errors[0].message, entry.expected);
+          expect(errors[0].title).to.equal('Unbalanced parentheses in Newick string');
+          expect(errors[0].message).to.equal(entry.expected);
 
           // Should include an error passed on from the Newick parser.
-          assert.equal(errors[1].title, 'Error parsing phylogeny');
-          assert(errors[1].message.startsWith('An error occured while parsing this phylogeny:'));
+          expect(errors[1].title).to.equal('Error parsing phylogeny');
+          expect(errors[1].message).to.include('An error occured while parsing this phylogeny:');
         });
       });
     });
@@ -104,9 +103,9 @@ describe('PhylogenyWrapper', function () {
         incompleteNewickStrings.forEach((newick) => {
           const errors = phyx.PhylogenyWrapper.getErrorsInNewickString(newick);
 
-          assert.equal(errors.length, 1);
-          assert.equal(errors[0].title, 'Error parsing phylogeny');
-          assert(errors[0].message.startsWith('An error occured while parsing this phylogeny:'));
+          expect(errors).to.have.lengthOf(1);
+          expect(errors[0].title).to.equal('Error parsing phylogeny');
+          expect(errors[0].message).to.include('An error occured while parsing this phylogeny:');
         });
       });
     });

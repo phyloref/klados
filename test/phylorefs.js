@@ -24,7 +24,6 @@ const chai = require('chai');
 const phyx = require('../js/phyx');
 
 // Testing methods.
-const assert = chai.assert;
 const expect = chai.expect;
 
 // Some phylogenies to use in testing.
@@ -209,12 +208,12 @@ describe('PhylorefWrapper', function () {
 
           // And see if we get the statuses back in the correct order.
           const statusChanges = wrapper.getStatusChanges();
-          assert.equal(statusChanges.length, 5);
-          assert.equal(statusChanges[0].statusCURIE, 'pso:final-draft');
-          assert.equal(statusChanges[1].statusCURIE, 'pso:under-review');
-          assert.equal(statusChanges[2].statusCURIE, 'pso:submitted');
-          assert.equal(statusChanges[3].statusCURIE, 'pso:published');
-          assert.equal(statusChanges[4].statusCURIE, 'pso:retracted-from-publication');
+          expect(statusChanges.length, 'number of status changes should be 5').to.equal(5);
+          expect(statusChanges[0].statusCURIE, 'first status change should be "pso:final-draft"').to.equal('pso:final-draft');
+          expect(statusChanges[1].statusCURIE, 'second status change should be "pso:under-review"').to.equal('pso:under-review');
+          expect(statusChanges[2].statusCURIE, 'third status change should be a "pso:submitted"').to.equal('pso:submitted');
+          expect(statusChanges[3].statusCURIE, 'fourth status change should be a "pso:published"').to.equal('pso:published');
+          expect(statusChanges[4].statusCURIE, 'fifth status change should be a "pso:retracted-from-publication"').to.equal('pso:retracted-from-publication');
         });
       });
     });
