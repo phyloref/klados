@@ -1206,7 +1206,8 @@ class PhylorefWrapper {
     phylorefAsJSONLD['@id'] = phylorefURI;
 
     // These classes are phyloreferences, and so should be classified as such.
-    phylorefAsJSONLD['rdfs:subClassOf'] = 'phyloref:Phyloreference';
+    // However, this drastically slows down FaCT++, so I'm commenting it out for now.
+    // phylorefAsJSONLD.subClassOf = 'phyloref:Phyloreference';
 
     phylorefAsJSONLD['@type'] = [
       // Since we're writing this in RDF, just adding a '@type' of
@@ -1218,6 +1219,11 @@ class PhylorefWrapper {
       // such as by the domain of owl:equivalentClass. But it's nice to make that
       // explicit as well!)
       'owl:Class',
+
+      // For historical reasons, we need to pun this as an individual with a type
+      // of Phyloreference. This will be removed once we implement
+      // https://github.com/phyloref/jphyloref/issues/43
+      'phyloref:Phyloreference',
     ];
 
     // Add identifiers for each internal specifier.
