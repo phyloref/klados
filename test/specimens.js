@@ -2,19 +2,23 @@
  * Test specimen processing.
  */
 
-/* eslint-env mocha */
-
 const chai = require('chai');
 const phyx = require('../js/phyx');
 
 const expect = chai.expect;
+
+/*
+ * Test whether SpecimenWrapper can parse specimen identifiers from simple specimen
+ * identifiers, from institutionCode:catalogNumber format, and from Darwin Core triples.
+ * However, URNs and HTTP URLs should not be accidentally parsed as Darwin Core triples.
+ */
 
 describe('SpecimenWrapper', function () {
   describe('#constructor', function () {
     it('should be able to wrap an empty specimen', function () {
       const wrapped = new phyx.SpecimenWrapper({});
 
-      expect(wrapped).to.be.an.instanceOf(phyx.SpecimenWrapper)
+      expect(wrapped).to.be.an.instanceOf(phyx.SpecimenWrapper);
       expect(wrapped.occurrenceID).to.equal('urn:catalog:::');
     });
     it('should be able to extract an occurenceID and catalogNumber from simple specimen IDs', function () {
@@ -24,7 +28,7 @@ describe('SpecimenWrapper', function () {
       expect(wrapper.occurrenceID).to.equal('Wall 2527, Fiji (uc)');
       expect(wrapper.catalogNumber).to.equal('Wall 2527, Fiji (uc)');
     });
-    it('should extract occurenceID, institutionCode and catalogNumber from Darwin Core doubles', function () {
+    it('should extract institutionCode and catalogNumber from a institutionCode:catalogNumber combination', function () {
       const wrapper = new phyx.SpecimenWrapper({
         occurrenceID: 'FMNH:PR 2081',
       });
