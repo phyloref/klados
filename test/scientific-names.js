@@ -2,12 +2,14 @@
  * Test scientific name processing.
  */
 
-/* eslint-env mocha */
-
 const chai = require('chai');
 const phyx = require('../js/phyx');
 
 const expect = chai.expect;
+
+/*
+ * Test whether ScientificNameWrapper parses scientific names correctly.
+ */
 
 describe('ScientificNameWrapper', function () {
   describe('#constructor', function () {
