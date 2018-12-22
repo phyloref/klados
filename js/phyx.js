@@ -1527,13 +1527,14 @@ class PHYXWrapper {
     if (hasOwnProperty(jsonld, 'phylogenies')) {
       jsonld.phylogenies = jsonld.phylogenies.map((phylogeny, countPhylogeny) =>
         new PhylogenyWrapper(phylogeny)
-          .asJSONLD(PHYXWrapper.getBaseURIForPhylogeny(countPhylogeny)));
+          .asJSONLD(PHYXWrapper.getBaseURIForPhylogeny(countPhylogeny + 1)));
     }
 
     // Convert phyloreferences into an OWL class restriction
     if (hasOwnProperty(jsonld, 'phylorefs')) {
       jsonld.phylorefs = jsonld.phylorefs.map((phyloref, countPhyloref) =>
-        new PhylorefWrapper(phyloref).asJSONLD(PHYXWrapper.getBaseURIForPhyloref(countPhyloref)));
+        new PhylorefWrapper(phyloref)
+          .asJSONLD(PHYXWrapper.getBaseURIForPhyloref(countPhyloref + 1)));
     }
 
     // Match all specifiers with nodes.
