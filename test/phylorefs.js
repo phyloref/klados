@@ -2,12 +2,8 @@
  * Test phyloreferences.
  */
 
-/* eslint-env mocha */
-
-global.Vue = require('vue');
-
-// Load moment as a global variable so it can be accessed by phyx.js.
-global.moment = require('moment');
+// These tests need to parse Newick strings, which requires phylotree.js which itself
+// requires d3. These are set up here.
 
 // Load d3 as a global variable so it can be accessed by both phylotree.js (which
 // needs to add additional objects to it) and phyx (which needs to call it).
@@ -20,58 +16,55 @@ if (!Object.prototype.hasOwnProperty.call(global.d3, 'layout')) {
 }
 require('../lib/phylotree.js/phylotree.js');
 
-const chai = require('chai');
-const phyx = require('../js/phyx');
+// These tests invoke code that uses Vue to set variables. We therefore need to
+// set it up here.
+global.Vue = require('vue');
 
-// Testing methods.
+// These tests invoke momentjs to parse dates. We therefore need to set it up here.
+global.moment = require('moment');
+
+// Require phyx.js, our PHYX library, and Chai for testing.
+const phyx = require('../js/phyx');
+const chai = require('chai');
+
+// We use Chai's Expect API.
 const expect = chai.expect;
 
-// Some phylogenies to use in testing.
-const phylogeny1 = {
-  newick: '((MVZ225749, MVZ191016)Test, "Rana boylii")',
-  additionalNodeProperties: {
-    MVZ225749: {
-      representsTaxonomicUnits: [{
-        scientificNames: [{ scientificName: 'Rana luteiventris' }],
-        includesSpecimens: [{ occurrenceID: 'MVZ:225749' }],
-      }],
-    },
-    MVZ191016: {
-      representsTaxonomicUnits: [{
-        scientificNames: [{ scientificName: 'Rana luteiventris' }],
-        includesSpecimens: [{ occurrenceID: 'MVZ:191016' }],
-      }],
-    },
-    Test: {
-      expectedPhyloreferenceNamed: 'phyloref1',
-    },
-  },
-};
-
-// Some specifiers to use in testing.
-const specifier1 = {
-  referencesTaxonomicUnits: [{
-    includesSpecimens: [{
-      occurrenceID: 'MVZ:225749',
-    }],
-  }],
-};
-const specifier2 = {
-  referencesTaxonomicUnits: [{
-    includesSpecimens: [{
-      occurrenceID: 'MVZ:191016',
-    }],
-  }],
-};
-const specifier3 = {
-  referencesTaxonomicUnits: [{
-    scientificNames: [{
-      scientificName: 'Rana boylii',
-    }],
-  }],
-};
+/*
+ * Phyloref tests cover three aspects of phyloreferences:
+ *  - Whether we can create a phyloref with a particular set of specifiers,
+ *    and whether we can correctly change the type of a specifer (from 'External'
+ *    to 'Internal'), delete specifiers, and retrieve specifier labels.
+ *  - Whether we can determine to which node a phyloref is expected to resolve to
+ *    by using additionalNodeProperties.
+ *  - Whether we can update the phyloref's status several times and retrieve the
+ *    full history of its status changes.
+ */
 
 describe('PhylorefWrapper', function () {
+  // Some specifiers to use in testing.
+  const specifier1 = {
+    referencesTaxonomicUnits: [{
+      includesSpecimens: [{
+        occurrenceID: 'MVZ:225749',
+      }],
+    }],
+  };
+  const specifier2 = {
+    referencesTaxonomicUnits: [{
+      includesSpecimens: [{
+        occurrenceID: 'MVZ:191016',
+      }],
+    }],
+  };
+  const specifier3 = {
+    referencesTaxonomicUnits: [{
+      scientificNames: [{
+        scientificName: 'Rana boylii',
+      }],
+    }],
+  };
+
   describe('given an empty phyloreference', function () {
     const wrapper = new phyx.PhylorefWrapper({});
 
@@ -158,6 +151,16 @@ describe('PhylorefWrapper', function () {
   });
 
   describe('given a particular phylogeny', function () {
+    // Some phylogenies to use in testing.
+    const phylogeny1 = {
+      newick: '((MVZ225749, MVZ191016)Test, "Rana boylii")',
+      additionalNodeProperties: {
+        Test: {
+          expectedPhyloreferenceNamed: 'phyloref1',
+        },
+      },
+    };
+
     describe('#getExpectedNodeLabels', function () {
       it('should be able to determine expected node labels for a phylogeny', function () {
         const phyloref1 = new phyx.PhylorefWrapper({
