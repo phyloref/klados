@@ -953,8 +953,8 @@ class PhylorefWrapper {
     // For a given specifier, return a string indicating whether it is
     // an 'Internal' or 'External' specifier.
 
-    if (hasOwnProperty(this.phyloref, 'internalSpecifiers') && this.phyloref.internalSpecifiers.includes(specifier)) return 'Internal';
-    if (hasOwnProperty(this.phyloref, 'externalSpecifiers') && this.phyloref.externalSpecifiers.includes(specifier)) return 'External';
+    if (this.phyloref.internalSpecifiers.includes(specifier)) return 'Internal';
+    if (this.phyloref.externalSpecifiers.includes(specifier)) return 'External';
     return 'Specifier';
   }
 
