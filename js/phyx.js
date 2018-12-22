@@ -953,8 +953,8 @@ class PhylorefWrapper {
     // For a given specifier, return a string indicating whether it is
     // an 'Internal' or 'External' specifier.
 
-    if (hasOwnProperty(this.phyloref, 'internalSpecifiers') && this.phyloref.internalSpecifiers.includes(specifier)) return 'Internal';
-    if (hasOwnProperty(this.phyloref, 'externalSpecifiers') && this.phyloref.externalSpecifiers.includes(specifier)) return 'External';
+    if (this.phyloref.internalSpecifiers.includes(specifier)) return 'Internal';
+    if (this.phyloref.externalSpecifiers.includes(specifier)) return 'External';
     return 'Specifier';
   }
 
@@ -1541,13 +1541,9 @@ class PHYXWrapper {
         const phyloref = phylorefToChange;
         let specifiers = [];
 
-        if (hasOwnProperty(phyloref, 'internalSpecifiers')) {
-          specifiers = specifiers.concat(phyloref.internalSpecifiers);
-        }
-
-        if (hasOwnProperty(phyloref, 'externalSpecifiers')) {
-          specifiers = specifiers.concat(phyloref.externalSpecifiers);
-        }
+        specifiers = specifiers
+          .concat(phyloref.internalSpecifiers)
+          .concat(phyloref.externalSpecifiers);
 
         specifiers.forEach((specifier) => {
           if (!hasOwnProperty(specifier, 'referencesTaxonomicUnits')) return;
