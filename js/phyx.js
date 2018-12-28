@@ -916,6 +916,10 @@ class PhylorefWrapper {
   constructor(phyloref) {
     // Wraps the provided phyloreference
     this.phyloref = phyloref;
+
+    // Reset internal and external specifiers if needed.
+    if (!hasOwnProperty(this.phyloref, 'internalSpecifiers')) Vue.set(this.phyloref, 'internalSpecifiers', []);
+    if (!hasOwnProperty(this.phyloref, 'externalSpecifiers')) Vue.set(this.phyloref, 'externalSpecifiers', []);
   }
 
   get label() {
@@ -927,13 +931,19 @@ class PhylorefWrapper {
     return undefined;
   }
 
+  set label(newLabel) {
+    // Set a label for this phyloreference.
+    if (hasOwnProperty(this.phyloref, 'label')) {
+      this.phyloref.label = newLabel;
+    } else {
+      Vue.set(this.phyloref, 'label', newLabel);
+    }
+  }
+
   get specifiers() {
     // Returns a list of all specifiers by combining the internal and external
     // specifiers into a single list, with internal specifiers before
     // external specifiers.
-    if (!hasOwnProperty(this.phyloref, 'internalSpecifiers')) Vue.set(this.phyloref, 'internalSpecifiers', []);
-    if (!hasOwnProperty(this.phyloref, 'externalSpecifiers')) Vue.set(this.phyloref, 'externalSpecifiers', []);
-
     let specifiers = this.phyloref.internalSpecifiers;
     specifiers = specifiers.concat(this.phyloref.externalSpecifiers);
     return specifiers;
@@ -943,8 +953,8 @@ class PhylorefWrapper {
     // For a given specifier, return a string indicating whether it is
     // an 'Internal' or 'External' specifier.
 
-    if (hasOwnProperty(this.phyloref, 'internalSpecifiers') && this.phyloref.internalSpecifiers.includes(specifier)) return 'Internal';
-    if (hasOwnProperty(this.phyloref, 'externalSpecifiers') && this.phyloref.externalSpecifiers.includes(specifier)) return 'External';
+    if (this.phyloref.internalSpecifiers.includes(specifier)) return 'Internal';
+    if (this.phyloref.externalSpecifiers.includes(specifier)) return 'External';
     return 'Specifier';
   }
 
@@ -952,9 +962,6 @@ class PhylorefWrapper {
     // Change the type of a given specifier. To do this, we first need
     // to determine if it was originally an internal or external
     // specifier, then move it into the other list.
-
-    if (!hasOwnProperty(this.phyloref, 'internalSpecifiers')) Vue.set(this.phyloref, 'internalSpecifiers', []);
-    if (!hasOwnProperty(this.phyloref, 'externalSpecifiers')) Vue.set(this.phyloref, 'externalSpecifiers', []);
 
     let index;
     if (specifierType === 'Internal') {
@@ -987,15 +994,11 @@ class PhylorefWrapper {
     // it doesn't remember if the specifier to be deleted is internal
     // or external. We delete the intended specifier from both arrays.
 
-    if (hasOwnProperty(this.phyloref, 'internalSpecifiers')) {
-      const index = this.phyloref.internalSpecifiers.indexOf(specifier);
-      if (index !== -1) this.phyloref.internalSpecifiers.splice(index, 1);
-    }
+    let index = this.phyloref.internalSpecifiers.indexOf(specifier);
+    if (index !== -1) this.phyloref.internalSpecifiers.splice(index, 1);
 
-    if (hasOwnProperty(this.phyloref, 'externalSpecifiers')) {
-      const index = this.phyloref.externalSpecifiers.indexOf(specifier);
-      if (index !== -1) this.phyloref.externalSpecifiers.splice(index, 1);
-    }
+    index = this.phyloref.externalSpecifiers.indexOf(specifier);
+    if (index !== -1) this.phyloref.externalSpecifiers.splice(index, 1);
   }
 
   static getSpecifierLabel(specifier) {
@@ -1216,15 +1219,6 @@ class PhylorefWrapper {
       // explicit as well!)
       'owl:Class',
     ];
-
-    // What if we're missing either internal or external specifiers?
-    if (!hasOwnProperty(phylorefAsJSONLD, 'internalSpecifiers')) {
-      phylorefAsJSONLD.internalSpecifiers = [];
-    }
-
-    if (!hasOwnProperty(phylorefAsJSONLD, 'externalSpecifiers')) {
-      phylorefAsJSONLD.externalSpecifiers = [];
-    }
 
     // Add identifiers for each internal specifier.
     let internalSpecifierCount = 0;
