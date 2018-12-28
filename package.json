@@ -12,6 +12,9 @@
     "url": "git+https://github.com/phyloref/curation-tool.git"
   },
   "dependencies": {
+    "bootstrap": "^4.2.1",
+    "jquery": "^3.3.1",
+    "popper.js": "^1.14.6",
     "vue": "^2.5.17"
   },
   "devDependencies": {
