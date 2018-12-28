@@ -123,33 +123,33 @@ describe('PhylogenyWrapper', function () {
   });
 
   describe('#getNodeLabels', function () {
-    describe('given a valid phylogeny', function () {
-      const tests = [
-        {
-          // Note that 'newick' is the input for this test.
-          newick: '(A, (B, (C, D))E, F, (G, (H, I, J)K, L)M, N)O',
-          // The following keys indicate the expected all/internal/terminal node labels
-          // for the given Newick string.
-          nodeLabels: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O'],
-          internalNodeLabels: ['E', 'K', 'M', 'O'],
-          terminalNodeLabels: ['A', 'B', 'C', 'D', 'F', 'G', 'H', 'I', 'J', 'L', 'N'],
-        },
-      ];
+    const tests = [
+      {
+        // Note that 'newick' is the input for this test.
+        newick: '(A, (B, (C, D))E, F, (G, (H, I, J)K, L)M, N)O',
+        // The following keys indicate the expected all/internal/terminal node labels
+        // for the given Newick string.
+        nodeLabels: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O'],
+        internalNodeLabels: ['E', 'K', 'M', 'O'],
+        terminalNodeLabels: ['A', 'B', 'C', 'D', 'F', 'G', 'H', 'I', 'J', 'L', 'N'],
+      },
+    ];
 
-      tests.forEach((test) => {
-        const wrapper = new phyx.PhylogenyWrapper({ newick: test.newick });
+    tests.forEach((test) => {
+      const wrapper = new phyx.PhylogenyWrapper({ newick: test.newick });
 
-        it('should return a list of all node labels in this phylogeny', function () {
+      describe('For a particular Newick phylogeny', function () {
+        it('should return a list of all node labels by default', function () {
           expect(wrapper.getNodeLabels().sort())
             .to.have.members(test.nodeLabels.sort());
         });
 
-        it('should return a list of all internal labels in this phylogeny', function () {
+        it('should return a list of internal labels when asked for internal labels', function () {
           expect(wrapper.getNodeLabels('internal').sort())
             .to.have.members(test.internalNodeLabels.sort());
         });
 
-        it('should return a list of all terminal labels in this phylogeny', function () {
+        it('should return a list of terminal labels when asked for terminal labels', function () {
           expect(wrapper.getNodeLabels('terminal').sort())
             .to.have.members(test.terminalNodeLabels.sort());
         });
