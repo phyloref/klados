@@ -1,5 +1,29 @@
-# Curation Tool
+# curation-tool
 
-The Curation Tool will be designed to allow users to curate phyloreferences from phylogenetic publications, in which phyloreferences are recorded (using the data model in the [Phyloreferencing specification](https://github.com/phyloref/specification/blob/master/specification.md)) as well as phylogenies from the same publication, with annotations to indicate where the phyloreferences are expected to resolve. These can then optionally be uploaded to the [Curation Workflow](https://github.com/phyloref/curation-workflow/) for use in continuous testing.
+## Project setup
+```
+npm install
+```
 
-While the Curation Tool is being developed, you can [see design previews](designs/) for the Curation Tool.
+### Compiles and hot-reloads for development
+```
+npm run serve
+```
+
+### Compiles and minifies for production
+```
+npm run build
+```
+
+### Run your tests
+```
+npm run test
+```
+
+### Lints and fixes files
+```
+npm run lint
+```
+
+### Customize configuration
+See [Configuration Reference](https://cli.vuejs.org/config/).
