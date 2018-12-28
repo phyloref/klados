@@ -2,7 +2,7 @@
 <div>
   <!-- Navigation bar at the top of the page -->
   <nav class="navbar navbar-default navbar-expand-lg navbar-light">
-    <a class="navbar-brand" href="index.html">Curation Tool v{{version}}</a>
+    <a class="navbar-brand" href="index.html">Curation Tool v{{CURATION_TOOL_VERSION}}</a>
     <div class="collapse navbar-collapse">
       <ul class="navbar-nav">
         <li class="nav-item"><a class="nav-link" href="#" onclick="$('#about-curation-tool').modal()">About this tool</a></li>
@@ -53,11 +53,16 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   name: 'TopNavigationBar',
   props: [
     'version'
-  ]
+  ],
+  computed: mapState({
+    CURATION_TOOL_VERSION: state => state.CURATION_TOOL_VERSION
+  }),
 }
 </script>
 

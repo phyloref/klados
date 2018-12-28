@@ -1,7 +1,6 @@
 <template>
   <div id="app">
-  Who am i? '{{CURATION_TOOL_VERSION}}' is who I am.
-    <TopNavigationBar :version="CURATION_TOOL_VERSION" />
+    <TopNavigationBar />
     <div id="wrapper">
       <div id="sidebar-wrapper">
         <Sidebar />
@@ -32,7 +31,6 @@ import SelectedPhylorefView from './components/views/SelectedPhylorefView.vue'
 
 export default {
   name: 'app',
-  data() { return this.$root.$data; },
   components: {
     TopNavigationBar,
     Sidebar,
