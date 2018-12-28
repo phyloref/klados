@@ -1,12 +1,22 @@
 <template>
   <div id="app">
-    <TopNavigationBar />
+  Who am i? '{{CURATION_TOOL_VERSION}}' is who I am.
+    <TopNavigationBar :version="CURATION_TOOL_VERSION" />
     <div id="wrapper">
       <div id="sidebar-wrapper">
-        <MainMenuSidebar />
-        <PHYXSidebar />
-        <PhyloreferencesSidebar />
-        <PhylogeniesSidebar />
+        <Sidebar />
+      </div>
+      <div id="page-content-wrapper">
+        <AdvancedOptionsPanel />
+        <template v-if="selectedPhyloref">
+          <SelectedPhylorefView />
+        </template>
+        <template v-else-if="selectedPhylogeny">
+          <SelectedPhylogenyView />
+        </template>
+        <template v-else>
+          <PHYXView />
+        </template>
       </div>
     </div>
   </div>
@@ -14,11 +24,22 @@
 
 <script>
 import TopNavigationBar from './components/TopNavigationBar.vue'
+import AdvancedOptionsPanel from './components/AdvancedOptionsPanel.vue'
+import Sidebar from './components/sidebar/Sidebar.vue'
+import PHYXView from './components/views/PHYXView.vue'
+import SelectedPhylogenyView from './components/views/SelectedPhylogenyView.vue'
+import SelectedPhylorefView from './components/views/SelectedPhylorefView.vue'
 
 export default {
   name: 'app',
+  data() { return this.$root.$data; },
   components: {
-    TopNavigationBar
+    TopNavigationBar,
+    Sidebar,
+    AdvancedOptionsPanel,
+    PHYXView,
+    SelectedPhylogenyView,
+    SelectedPhylorefView
   }
 }
 </script>
