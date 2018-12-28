@@ -11,6 +11,13 @@ import App from './App.vue'
 // Import our Vuex store.
 import store from './store'
 
+// Import JQuery.
+const $ = require('jquery')
+window.$ = $
+
+// Import jquery-modal to display modals.
+require('jquery-modal')
+
 Vue.config.productionTip = false
 
 new Vue({
