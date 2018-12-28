@@ -41,4 +41,3 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
   [OWL 2 ontology]: https://www.w3.org/TR/owl2-overview/
   [JSON-LD format]: https://en.wikipedia.org/wiki/JSON-LD
   [Clade Ontology]: https://github.com/phyloref/clade-ontology/
-
