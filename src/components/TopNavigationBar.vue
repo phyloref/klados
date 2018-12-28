@@ -53,17 +53,14 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState } from 'vuex';
 
 export default {
   name: 'TopNavigationBar',
-  props: [
-    'version'
-  ],
   computed: mapState({
-    CURATION_TOOL_VERSION: state => state.CURATION_TOOL_VERSION
+    CURATION_TOOL_VERSION: state => state.CURATION_TOOL_VERSION,
   }),
-}
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

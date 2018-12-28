@@ -2,9 +2,9 @@
 import Vue from 'vue';
 
 // Important Bootstrap and a default theme that mimicks the Bootstrap 3 theme.
-import 'bootstrap'
-import 'bootstrap/dist/css/bootstrap.min.css'
-import 'bootstrap-4-theme/dist/bootstrap-theme.min.css'
+import 'bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap-4-theme/dist/bootstrap-theme.min.css';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-vue/dist/bootstrap-vue.min.css';
