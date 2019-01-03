@@ -1,22 +1,21 @@
 <template>
   <div
     id="advanced-options"
-    hidden
+    class="d-none"
   >
-    <div class="panel panel-info">
-      <div class="panel-heading">
-        <!-- Close button for panel -->
-        <a
-          href="#"
-          class="close"
-          onclick="$('#advanced-options').hide(300)"
-        >
-          &times;
-        </a>
-        Advanced options
-      </div>
-      <div class="panel-body">
-        <p>
+    <div class="card mb-2">
+      <div class="card-body">
+        <h5 class="card-title">Advanced options
+          <!-- Close button for panel -->
+          <a
+            href="#"
+            class="close"
+            onclick="$('#advanced-options').toggleClass('d-none')"
+          >
+            &times;
+          </a>
+        </h5>
+        <p class="card-text">
           The following is a representation of this PHYX in JSON. You
           can edit the JSON directly if you like.
         </p>
@@ -27,7 +26,7 @@
           rows="10"
         />
       </div>
-      <div class="panel-footer">
+      <div class="card-footer">
         <div
           class="btn-group btn-group-justified"
           role="group"
