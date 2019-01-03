@@ -62,10 +62,10 @@
         <a
           class="list-group-item"
           href="javascript: void(0)"
-          @click="promptAndSetDict('Enter a new title for this PHYX file', testcase, 'title')"
+          @click="promptAndSetDict('Enter a new title for this PHYX file', phyx, 'title')"
         >
-        <template v-if="testcase.title">
-          {{ testcase.title }} (click to change)
+        <template v-if="phyx.title">
+          {{ phyx.title }} (click to change)
         </template>
         <template v-else>
           PHYX file untitled (click to set)
@@ -86,7 +86,7 @@
       <!-- List of phyloreferences -->
       <div class="list-group list-group-flush">
         <a href="javascript: void(0)" class="list-group-item disabled">Phyloreferences</a>
-        <template v-for="(phyloref, phylorefIndex) of testcase.phylorefs">
+        <template v-for="(phyloref, phylorefIndex) of phyx.phylorefs">
           <a
             href="javascript: void(0)"
             class="list-group-item"
@@ -97,7 +97,7 @@
 
             <!-- Add a warning if this phyloreference has changed -->
             <span
-              v-if="!isEqualJSON(phyloref, testcaseAsLoaded.phylorefs[phylorefIndex])"
+              v-if="!isEqualJSON(phyloref, phyxAsLoaded.phylorefs[phylorefIndex])"
               data-toggle="tooltip"
               data-placement="bottom"
               title="This phyloreference has been modified since being loaded! Use 'Save as JSON' to save your changes."
@@ -132,7 +132,7 @@
 
           <!-- Display phylogenies -->
           <a
-            v-for="(phylogeny, phylogenyIndex) of testcase.phylogenies"
+            v-for="(phylogeny, phylogenyIndex) of phyx.phylogenies"
             class="list-group-item"
             :class="{active: selectedPhylogeny === phylogeny}"
             href="javascript: void(0)"
@@ -153,7 +153,7 @@
         <a
           class="list-group-item"
           href="javascript: void(0)"
-          @click="testcase.phylorefs.push(createEmptyPhyloref(testcase.phylorefs.length + 1))"
+          @click="phyx.phylorefs.push(createEmptyPhyloref(phyx.phylorefs.length + 1))"
         >
           <strong>Add phyloreference</strong>
         </a>
@@ -165,7 +165,7 @@
       <div class="list-group list-group-flush">
         <a href="javascript: void(0)" class="list-group-item disabled">Phylogenies</a>
         <a
-          v-for="(phylogeny, phylogenyIndex) of testcase.phylogenies"
+          v-for="(phylogeny, phylogenyIndex) of phyx.phylogenies"
           href="javascript: void(0)"
           class="list-group-item"
           :class="{active: selectedPhylogeny === phylogeny}"
@@ -175,7 +175,7 @@
 
           <!-- Add a warning if this phylogeny has changed -->
           <span
-            v-if="!isEqualJSON(phylogeny, testcaseAsLoaded.phylogenies[phylogenyIndex])"
+            v-if="!isEqualJSON(phylogeny, phyxAsLoaded.phylogenies[phylogenyIndex])"
             data-toggle="tooltip"
             data-placement="bottom"
             title="This phylogeny has been modified since being loaded! Use 'Save as JSON' to save your changes."
@@ -185,7 +185,7 @@
         <a
           class="list-group-item"
           href="javascript: void(0)"
-          @click="testcase.phylogenies.push({})"
+          @click="phyx.phylogenies.push({})"
         >
           <strong>Add phylogeny</strong>
         </a>
@@ -217,7 +217,7 @@ export default {
       ];
     },
     ...mapState({
-      testcase: state => state.testcase,
+      phyx: state => state.phyx,
       selectedPhyloref: state => state.selectedPhyloref,
       selectedSpecifier: state => state.selectedPhyloref.internalSpecifier,
       selectedTUnit: state => state.selectedPhyloref.internalSpecifier,
