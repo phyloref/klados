@@ -2,11 +2,8 @@
   <!-- Sidebar showing phyloreferences and phylogenies -->
   <div id="sidebar-wrapper">
     <!-- Sidebar section: main menu for loading and saving PHYX files -->
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        Main menu
-      </div>
-      <div class="list-group">
+    <div class="card">
+      <div class="list-group list-group-flush">
         <a
           class="list-group-item"
           href="javascript: void(0)"
@@ -60,25 +57,19 @@
     </div>
 
     <!-- Sidebar section: information about this particular PHYX file -->
-    <div class="panel panel-default">
-      <div
-        class="panel-heading"
-        @click="promptAndSetDict('Enter a new title for this PHYX file', testcase, 'title')"
-      >
-        <template v-if="testcase.title">
-          {{ testcase.title }}
-        </template>
-        <template v-else>
-          No PHYX file loaded
-        </template>
-      </div>
-      <div class="list-group">
+    <div class="card mt-1">
+      <div class="list-group list-group-flush">
         <a
           class="list-group-item"
           href="javascript: void(0)"
           @click="promptAndSetDict('Enter a new title for this PHYX file', testcase, 'title')"
         >
-          Change PHYX title
+        <template v-if="testcase.title">
+          {{ testcase.title }} (click to change)
+        </template>
+        <template v-else>
+          PHYX file untitled (click to set)
+        </template>
         </a>
         <a
           class="list-group-item"
@@ -91,13 +82,10 @@
     </div>
 
     <!-- Sidebar section: list of phyloreferences in PHYX file -->
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        Phyloreferences
-      </div>
-
+    <div class="card mt-1">
       <!-- List of phyloreferences -->
-      <div class="list-group">
+      <div class="list-group list-group-flush">
+        <a href="javascript: void(0)" class="list-group-item disabled">Phyloreferences</a>
         <template v-for="(phyloref, phylorefIndex) of testcase.phylorefs">
           <a
             href="javascript: void(0)"
@@ -120,7 +108,7 @@
 
         <!-- Add the following information if this phyloreference is selected -->
         <template v-if="selectedPhyloref === phyloref">
-          <!-- Display internal specifiers -->
+          <!-- Display internal specifiers
           <a
             v-for="(internalSpecifier, internalSpecifierIndex) of phyloref.internalSpecifiers"
             href="javascript: void(0)"
@@ -129,9 +117,9 @@
             @click="resetSVG(); selectedPhyloref = phyloref; selectedSpecifier = internalSpecifier; selectedTUnit = undefined; selectedPhylogeny = undefined"
           >
             &#9679; <strong>Internal:</strong> <span v-html="getSpecifierLabelAsHTML(internalSpecifier)" />
-          </a>
+          </a> -->
 
-          <!-- Display external specifiers -->
+          <!-- Display external specifiers
           <a
             v-for="(externalSpecifier, externalSpecifierIndex) of phyloref.externalSpecifiers"
             href="javascript: void(0)"
@@ -140,7 +128,7 @@
             @click="resetSVG(); selectedPhyloref = phyloref; selectedSpecifier = externalSpecifier; selectedTUnit = undefined; selectedPhylogeny = undefined"
           >
             &#9679; <strong>External:</strong> <span v-html="getSpecifierLabelAsHTML(externalSpecifier)" />
-          </a>
+          </a> -->
 
           <!-- Display phylogenies -->
           <a
@@ -173,11 +161,9 @@
     </div>
 
     <!-- Sidebar section: list of phylogenies in PHYX file -->
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        Phylogenies
-      </div>
-      <div class="list-group">
+    <div class="card mt-1">
+      <div class="list-group list-group-flush">
+        <a href="javascript: void(0)" class="list-group-item disabled">Phylogenies</a>
         <a
           v-for="(phylogeny, phylogenyIndex) of testcase.phylogenies"
           href="javascript: void(0)"
@@ -209,12 +195,17 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 export default {
   name: 'Sidebar',
+  computed: mapState({
+    examplePHYXURLs: state => state.examplePHYXURLs,
+    testcase: state => state.testcase,
+    selectedPhyloref: state => state.selectedPhyloref,
+    selectedSpecifier: state => state.selectedPhyloref.internalSpecifier,
+    selectedTUnit: state => state.selectedPhyloref.internalSpecifier,
+    selectedPhylogeny: state => state.selectedPhyloref.selectedPhylogeny,
+  }),
 };
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-
-</style>
