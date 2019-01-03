@@ -34,14 +34,14 @@
         <a
           class="list-group-item"
           href="javascript: void(0)"
-          onclick="$('.phyx-examples').toggleClass('hidden')"
+          onclick="$('.phyx-examples').toggleClass('d-none')"
         >
           Examples
         </a>
         <a
           v-for="example of examplePHYXURLs"
           href="javascript: void(0)"
-          class="list-group-item phyx-examples hidden"
+          class="list-group-item phyx-examples d-none"
           @click="loadPHYXFromURL(example.url)"
         >
           &#9679; {{ example.title }}
@@ -199,13 +199,30 @@ import { mapState } from 'vuex';
 
 export default {
   name: 'Sidebar',
-  computed: mapState({
-    examplePHYXURLs: state => state.examplePHYXURLs,
-    testcase: state => state.testcase,
-    selectedPhyloref: state => state.selectedPhyloref,
-    selectedSpecifier: state => state.selectedPhyloref.internalSpecifier,
-    selectedTUnit: state => state.selectedPhyloref.internalSpecifier,
-    selectedPhylogeny: state => state.selectedPhyloref.selectedPhylogeny,
-  }),
+  computed: {
+    examplePHYXURLs () {
+      return [
+        {
+          url: 'examples/fisher_et_al_2007.json',
+          title: 'Fisher et al, 2007',
+        },
+        {
+          url: 'examples/hillis_and_wilcox_2005.json',
+          title: 'Hillis and Wilcox, 2005',
+        },
+        {
+          url: 'examples/brochu_2003.json',
+          title: 'Brochu 2003',
+        },
+      ];
+    },
+    ...mapState({
+      testcase: state => state.testcase,
+      selectedPhyloref: state => state.selectedPhyloref,
+      selectedSpecifier: state => state.selectedPhyloref.internalSpecifier,
+      selectedTUnit: state => state.selectedPhyloref.internalSpecifier,
+      selectedPhylogeny: state => state.selectedPhyloref.selectedPhylogeny,
+    })
+  },
 };
 </script>
