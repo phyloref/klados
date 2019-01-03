@@ -2,9 +2,7 @@
   <div id="app">
     <TopNavigationBar :version="CURATION_TOOL_VERSION" />
     <div id="wrapper">
-      <div id="sidebar-wrapper">
-        <Sidebar />
-      </div>
+      <Sidebar />
       <div id="page-content-wrapper">
         <AdvancedOptionsPanel />
         <template v-if="selectedPhyloref">
