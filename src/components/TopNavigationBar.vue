@@ -19,7 +19,10 @@
 export default {
   name: 'TopNavigationBar',
   props: {
-    version: String,
+    version: {
+      type: String,
+      default: "UNKNOWN",
+    }
   },
 };
 </script>
