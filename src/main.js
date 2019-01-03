@@ -1,9 +1,16 @@
+// Import Vue.
 import Vue from 'vue';
 
-// Important Bootstrap and a default theme that mimicks the Bootstrap 3 theme.
+// Import Bootstrap.
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap-4-theme/dist/bootstrap-theme.min.css';
+
+// Import Bootstrap-Vue, which helps integrate Bootstrap with Vue.
+import BootstrapVue from 'bootstrap-vue';
+
+Vue.use(BootstrapVue);
+
+import 'bootstrap-vue/dist/bootstrap-vue.css';
 
 // Import the main Vue file.
 import App from './App.vue';
@@ -13,9 +20,6 @@ import store from './store';
 
 // Import JQuery.
 window.$ = require('jquery');
-
-// Import jquery-modal to display modals.
-require('jquery-modal');
 
 Vue.config.productionTip = false;
 
