@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <TopNavigationBar />
+    <TopNavigationBar :version="CURATION_TOOL_VERSION" />
     <div id="wrapper">
       <div id="sidebar-wrapper">
         <Sidebar />
@@ -18,16 +18,29 @@
         </template>
       </div>
     </div>
+
+    <!-- All modals are included here -->
+    <AboutCurationToolModal />
   </div>
 </template>
 
 <script>
-import TopNavigationBar from './components/TopNavigationBar.vue'
-import AdvancedOptionsPanel from './components/AdvancedOptionsPanel.vue'
-import Sidebar from './components/sidebar/Sidebar.vue'
-import PHYXView from './components/views/PHYXView.vue'
-import SelectedPhylogenyView from './components/views/SelectedPhylogenyView.vue'
-import SelectedPhylorefView from './components/views/SelectedPhylorefView.vue'
+import { mapState } from 'vuex';
+
+// Navigation controls.
+import TopNavigationBar from './components/TopNavigationBar.vue';
+import Sidebar from './components/sidebar/Sidebar.vue';
+
+// Panels to be displayed as part of the UI.
+import AdvancedOptionsPanel from './components/AdvancedOptionsPanel.vue';
+
+// Views that dominate the UI when selected.
+import SelectedPhylogenyView from './components/views/SelectedPhylogenyView.vue';
+import SelectedPhylorefView from './components/views/SelectedPhylorefView.vue';
+import PHYXView from './components/views/PHYXView.vue';
+
+// Modal dialogs to be displayed above the UI.
+import AboutCurationToolModal from './components/modals/AboutCurationToolModal.vue';
 
 export default {
   name: 'app',
@@ -37,7 +50,13 @@ export default {
     AdvancedOptionsPanel,
     PHYXView,
     SelectedPhylogenyView,
-    SelectedPhylorefView
+    SelectedPhylorefView,
+    AboutCurationToolModal,
+  },
+  computed: {
+    CURATION_TOOL_VERSION () { return this.$store.state.CURATION_TOOL_VERSION; },
+    selectedPhyloref () { return this.$store.state.selectedPhyloref; },
+    selectedPhylogeny () { return this.$store.state.selectedPhylogeny; },
   }
 }
 </script>
