@@ -12,10 +12,6 @@ export default {
     },
   },
   getters: {
-    // Make it easier to access the key parts of the current Phyx file.
-    phylorefs: state => state.currentPhyx.phylorefs,
-    phylogenies: state => state.currentPhyx.phylogenies,
-
     // Read as JSON.
     getPhyxAsJSON: state => JSON.stringify(state.currentPhyx, undefined, 4),
   },
