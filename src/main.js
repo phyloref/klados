@@ -8,8 +8,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 // Import Bootstrap-Vue, which helps integrate Bootstrap with Vue.
 import BootstrapVue from 'bootstrap-vue';
 
-Vue.use(BootstrapVue);
-
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
