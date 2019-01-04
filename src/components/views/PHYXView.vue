@@ -8,17 +8,17 @@
       <th>Phyloreference</th>
       <th>Internal specifiers</th>
       <th>External specifiers</th>
-      <th v-for="(phylogeny, phylogenyIndex) of phyx.phylogenies">
+      <th v-for="(phylogeny, phylogenyIndex) of phylogenies">
         {{ getPhylogenyLabel(phylogeny) }}
       </th>
     </thead>
     <tbody>
-      <tr v-if="phyx.phylorefs.length === 0">
-        <td :colspan="4 + phyx.phylogenies.length">
+      <tr v-if="phylorefs.length === 0">
+        <td :colspan="4 + phylogenies.length">
           <Center><em>No phyloreferences loaded</em></Center>
         </td>
       </tr>
-      <tr v-for="(phyloref, phylorefIndex) of phyx.phylorefs">
+      <tr v-for="(phyloref, phylorefIndex) of phylorefs">
         <td>&nbsp;</td>
         <td>
           <a
@@ -30,7 +30,7 @@
         </td>
         <td>{{ phyloref.internalSpecifiers.length }}</td>
         <td>{{ phyloref.externalSpecifiers.length }}</td>
-        <td v-for="(phylogeny, phylogenyIndex) of phyx.phylogenies">
+        <td v-for="(phylogeny, phylogenyIndex) of phylogenies">
           <template v-if="getPhylorefExpectedNodeLabels(phylogeny, phyloref).length === 0">
             <strong>Not matched</strong>
             <template v-if="hasProperty(reasoningResults, 'phylorefs')">
@@ -75,6 +75,8 @@ export default {
   name: 'PHYXView',
   computed: mapState({
     phyx: state => state.phyx,
+    phylorefs: state => state.phyx.currentPhyx.phylorefs,
+    phylogenies: state => state.phyx.currentPhyx.phylogenies,
     selectedPhyloref: state => state.selectedPhyloref,
     selectedSpecifier: state => state.selectedPhyloref.internalSpecifier,
     selectedTUnit: state => state.selectedPhyloref.internalSpecifier,

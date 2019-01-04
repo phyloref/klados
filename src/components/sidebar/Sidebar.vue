@@ -86,7 +86,7 @@
       <!-- List of phyloreferences -->
       <div class="list-group list-group-flush">
         <a href="javascript: void(0)" class="list-group-item disabled">Phyloreferences</a>
-        <template v-for="(phyloref, phylorefIndex) of phyx.phylorefs">
+        <template v-for="(phyloref, phylorefIndex) of phylorefs">
           <a
             href="javascript: void(0)"
             class="list-group-item"
@@ -132,7 +132,7 @@
 
           <!-- Display phylogenies -->
           <a
-            v-for="(phylogeny, phylogenyIndex) of phyx.phylogenies"
+            v-for="(phylogeny, phylogenyIndex) of phylogenies"
             class="list-group-item"
             :class="{active: selectedPhylogeny === phylogeny}"
             href="javascript: void(0)"
@@ -153,7 +153,7 @@
         <a
           class="list-group-item"
           href="javascript: void(0)"
-          @click="phyx.phylorefs.push(createEmptyPhyloref(phyx.phylorefs.length + 1))"
+          @click="phylorefs.push(createEmptyPhyloref(phylorefs.length + 1))"
         >
           <strong>Add phyloreference</strong>
         </a>
@@ -165,7 +165,7 @@
       <div class="list-group list-group-flush">
         <a href="javascript: void(0)" class="list-group-item disabled">Phylogenies</a>
         <a
-          v-for="(phylogeny, phylogenyIndex) of phyx.phylogenies"
+          v-for="(phylogeny, phylogenyIndex) of phylogenies"
           href="javascript: void(0)"
           class="list-group-item"
           :class="{active: selectedPhylogeny === phylogeny}"
@@ -185,7 +185,7 @@
         <a
           class="list-group-item"
           href="javascript: void(0)"
-          @click="phyx.phylogenies.push({})"
+          @click="phylogenies.push({})"
         >
           <strong>Add phylogeny</strong>
         </a>
@@ -218,6 +218,8 @@ export default {
     },
     ...mapState({
       phyx: state => state.phyx,
+      phylorefs: state => state.phyx.currentPhyx.phylorefs,
+      phylogenies: state => state.phyx.currentPhyx.phylogenies,
       selectedPhyloref: state => state.selectedPhyloref,
       selectedSpecifier: state => state.selectedPhyloref.internalSpecifier,
       selectedTUnit: state => state.selectedPhyloref.internalSpecifier,
