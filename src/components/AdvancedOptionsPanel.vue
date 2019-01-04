@@ -54,6 +54,16 @@
 <script>
 export default {
   name: 'AdvancedOptionsPanel',
+  computed: {
+    phyxAsJSON: {
+      get () {
+        return this.$store.getters['phyx/asJSON'];
+      },
+      set (value) {
+        this.$store.commit('phyx/setFromJSON', value);
+      }
+    },
+  }
 };
 </script>
 
