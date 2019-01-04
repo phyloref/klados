@@ -12,7 +12,7 @@
           <SelectedPhylogenyView />
         </template>
         <template v-else>
-          <PHYXView />
+          <PhyxView />
         </template>
       </div>
     </div>
@@ -35,7 +35,7 @@ import AdvancedOptionsPanel from './components/AdvancedOptionsPanel.vue';
 // Views that dominate the UI when selected.
 import SelectedPhylogenyView from './components/views/SelectedPhylogenyView.vue';
 import SelectedPhylorefView from './components/views/SelectedPhylorefView.vue';
-import PHYXView from './components/views/PHYXView.vue';
+import PhyxView from './components/views/PhyxView.vue';
 
 // Modal dialogs to be displayed above the UI.
 import AboutCurationToolModal from './components/modals/AboutCurationToolModal.vue';
@@ -46,7 +46,7 @@ export default {
     TopNavigationBar,
     Sidebar,
     AdvancedOptionsPanel,
-    PHYXView,
+    PhyxView,
     SelectedPhylogenyView,
     SelectedPhylorefView,
     AboutCurationToolModal,
