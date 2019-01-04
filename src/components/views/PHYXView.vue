@@ -2,8 +2,9 @@
   <!--
     Display a summary of the entire PHYX file.
   -->
-  <div class="card">
-    <h5 class="card-header">Phyloreferences in this file</h5>
+  <div class="card border-dark">
+    <h5 class="card-header border-dark">Phyloreferences in this file</h5>
+    <div class="card-body p-0">
       <table class="table table-hover table-flush mb-0">
         <thead>
           <th>&nbsp;</th>
@@ -68,7 +69,7 @@
           </tr>
         </tbody>
       </table>
-
+    </div>
   </div>
 </template>
 
