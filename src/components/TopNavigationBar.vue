@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Navigation bar at the top of the page -->
-    <nav class="navbar navbar-default navbar-expand-lg navbar-light">
+    <nav class="navbar navbar-expand navbar-dark bg-dark mb-2">
       <a
         class="navbar-brand"
         href="index.html"

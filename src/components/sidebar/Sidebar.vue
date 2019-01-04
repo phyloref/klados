@@ -2,10 +2,10 @@
   <!-- Sidebar showing phyloreferences and phylogenies -->
   <div id="sidebar-wrapper">
     <!-- Sidebar section: main menu for loading and saving PHYX files -->
-    <div class="card">
+    <div class="card bg-dark">
       <div class="list-group list-group-flush">
         <a
-          class="list-group-item"
+          class="list-group-item list-group-item-action bg-dark text-light disabled"
           href="javascript: void(0)"
           onclick="$('#file-input').trigger('click')"
         >
@@ -18,21 +18,21 @@
           @change="loadPHYXFromFileInputById('#file-input')"
         >
         <a
-          class="list-group-item"
+          class="list-group-item list-group-item-action"
           href="javascript: void(0)"
           @click="downloadAsJSON()"
         >
           Save as JSON
         </a>
         <a
-          class="list-group-item start-reasoning"
+          class="list-group-item list-group-item-action start-reasoning"
           href="javascript: void(0)"
           @click="reasonOverPhyloreferences()"
         >
           Reason
         </a>
         <a
-          class="list-group-item"
+          class="list-group-item list-group-item-action"
           href="javascript: void(0)"
           onclick="$('.phyx-examples').toggleClass('d-none')"
         >
@@ -41,13 +41,13 @@
         <a
           v-for="example of examplePHYXURLs"
           href="javascript: void(0)"
-          class="list-group-item phyx-examples d-none"
+          class="list-group-item list-group-item-action phyx-examples d-none"
           @click="loadPHYXFromURL(example.url)"
         >
           &#9679; {{ example.title }}
         </a>
         <a
-          class="list-group-item"
+          class="list-group-item list-group-item-action"
           href="javascript: void(0)"
           onclick="$('#advanced-options').toggleClass('d-none')"
         >
@@ -57,22 +57,27 @@
     </div>
 
     <!-- Sidebar section: information about this particular PHYX file -->
-    <div class="card mt-1">
+    <div class="card mt-1 bg-dark">
       <div class="list-group list-group-flush">
         <a
-          class="list-group-item"
+          class="list-group-item list-group-item-action bg-dark text-light disabled"
           href="javascript: void(0)"
-          @click="promptAndSetDict('Enter a new title for this PHYX file', phyx, 'title')"
         >
         <template v-if="phyx.title">
-          {{ phyx.title }} (click to change)
+          {{ phyx.title }}
         </template>
         <template v-else>
-          PHYX file untitled (click to set)
+          Untitled PHYX file
         </template>
         </a>
         <a
-          class="list-group-item"
+          class="list-group-item list-group-item-action"
+          href="javascript: void(0)"
+        >
+          Edit title
+        </a>
+        <a
+          class="list-group-item list-group-item-action"
           href="javascript: void(0)"
           @click="selectedPhyloref = undefined; selectedSpecifier = undefined; selectedPhylogeny = undefined"
         >
@@ -82,14 +87,14 @@
     </div>
 
     <!-- Sidebar section: list of phyloreferences in PHYX file -->
-    <div class="card mt-1">
+    <div class="card mt-1 bg-dark">
       <!-- List of phyloreferences -->
       <div class="list-group list-group-flush">
-        <a href="javascript: void(0)" class="list-group-item disabled">Phyloreferences</a>
+        <a href="javascript: void(0)" class="list-group-item list-group-item-action bg-dark text-light disabled">Phyloreferences</a>
         <template v-for="(phyloref, phylorefIndex) of phylorefs">
           <a
             href="javascript: void(0)"
-            class="list-group-item"
+            class="list-group-item list-group-item-action"
             :class="{active: selectedPhyloref === phyloref}"
             @click="resetSVG(); selectedPhyloref = phyloref; selectedSpecifier = undefined; selectedPhylogeny = undefined"
           >
@@ -112,7 +117,7 @@
           <a
             v-for="(internalSpecifier, internalSpecifierIndex) of phyloref.internalSpecifiers"
             href="javascript: void(0)"
-            class="list-group-item"
+            class="list-group-item list-group-item-action"
             :class="{active: selectedSpecifier === internalSpecifier}"
             @click="resetSVG(); selectedPhyloref = phyloref; selectedSpecifier = internalSpecifier; selectedTUnit = undefined; selectedPhylogeny = undefined"
           >
@@ -123,7 +128,7 @@
           <a
             v-for="(externalSpecifier, externalSpecifierIndex) of phyloref.externalSpecifiers"
             href="javascript: void(0)"
-            class="list-group-item"
+            class="list-group-item list-group-item-action"
             :class="{active: selectedSpecifier === externalSpecifier}"
             @click="resetSVG(); selectedPhyloref = phyloref; selectedSpecifier = externalSpecifier; selectedTUnit = undefined; selectedPhylogeny = undefined"
           >
@@ -133,7 +138,7 @@
           <!-- Display phylogenies -->
           <a
             v-for="(phylogeny, phylogenyIndex) of phylogenies"
-            class="list-group-item"
+            class="list-group-item list-group-item-action"
             :class="{active: selectedPhylogeny === phylogeny}"
             href="javascript: void(0)"
             @click="resetSVG(); selectedPhyloref = phyloref; selectedSpecifier = undefined; selectedTUnit = undefined; selectedPhylogeny = phylogeny"
@@ -151,23 +156,23 @@
 
         <!-- Let users add phyloreferences directly from the sidebar -->
         <a
-          class="list-group-item"
+          class="list-group-item list-group-item-action"
           href="javascript: void(0)"
           @click="phylorefs.push(createEmptyPhyloref(phylorefs.length + 1))"
         >
-          <strong>Add phyloreference</strong>
+          <em>Add phyloreference</em>
         </a>
       </div>
     </div>
 
     <!-- Sidebar section: list of phylogenies in PHYX file -->
-    <div class="card mt-1">
+    <div class="card mt-1 bg-dark">
       <div class="list-group list-group-flush">
-        <a href="javascript: void(0)" class="list-group-item disabled">Phylogenies</a>
+        <a href="javascript: void(0)" class="list-group-item list-group-item-action bg-dark text-light disabled">Phylogenies</a>
         <a
           v-for="(phylogeny, phylogenyIndex) of phylogenies"
           href="javascript: void(0)"
-          class="list-group-item"
+          class="list-group-item list-group-item-action"
           :class="{active: selectedPhylogeny === phylogeny}"
           @click="resetSVG(); selectedPhyloref = undefined; selectedSpecifier = undefined; selectedPhylogeny = phylogeny"
         >
@@ -183,11 +188,11 @@
           />
         </a>
         <a
-          class="list-group-item"
+          class="list-group-item list-group-item-action"
           href="javascript: void(0)"
           @click="phylogenies.push({})"
         >
-          <strong>Add phylogeny</strong>
+          <em>Add phylogeny</em>
         </a>
       </div>
     </div>
