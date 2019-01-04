@@ -49,7 +49,7 @@
         <a
           class="list-group-item list-group-item-action"
           href="javascript: void(0)"
-          onclick="$('#advanced-options').toggleClass('d-none')"
+          onclick="$('#advanced-options').modal()"
         >
           Advanced
         </a>
