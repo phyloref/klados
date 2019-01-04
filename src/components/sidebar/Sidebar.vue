@@ -1,11 +1,35 @@
 <template>
   <!-- Sidebar showing phyloreferences and phylogenies -->
   <div id="sidebar-wrapper">
-    <!-- Sidebar section: main menu for loading and saving PHYX files -->
+    <!-- Sidebar section: information about this particular PHYX file -->
     <div class="card bg-dark">
       <div class="list-group list-group-flush">
         <a
           class="list-group-item list-group-item-action bg-dark text-light disabled"
+          href="javascript: void(0)"
+        >
+          <template v-if="phyx.title">
+            {{ phyx.title }}
+          </template>
+          <template v-else>
+            Untitled PHYX file
+          </template>
+        </a>
+        <a
+          class="list-group-item list-group-item-action"
+          href="javascript: void(0)"
+        >
+          Edit title
+        </a>
+        <a
+          class="list-group-item list-group-item-action"
+          href="javascript: void(0)"
+          @click="selectedPhyloref = undefined; selectedSpecifier = undefined; selectedPhylogeny = undefined"
+        >
+          Display summary
+        </a>
+        <a
+          class="list-group-item list-group-item-action"
           href="javascript: void(0)"
           onclick="$('#file-input').trigger('click')"
         >
@@ -14,8 +38,8 @@
         <input
           id="file-input"
           type="file"
-          style="display:none;"
-          @change="loadPHYXFromFileInputById('#file-input')"
+          class="d-none"
+          @change="loadPhyxFromFileInputById('#file-input')"
         >
         <a
           class="list-group-item list-group-item-action"
@@ -42,7 +66,7 @@
           v-for="example of examplePHYXURLs"
           href="javascript: void(0)"
           class="list-group-item list-group-item-action phyx-examples d-none"
-          @click="loadPHYXFromURL(example.url)"
+          @click="loadPhyxFromURL(example.url)"
         >
           &#9679; {{ example.title }}
         </a>
@@ -52,36 +76,6 @@
           onclick="$('#advanced-options').modal()"
         >
           Advanced
-        </a>
-      </div>
-    </div>
-
-    <!-- Sidebar section: information about this particular PHYX file -->
-    <div class="card mt-2 bg-dark">
-      <div class="list-group list-group-flush">
-        <a
-          class="list-group-item list-group-item-action bg-dark text-light disabled"
-          href="javascript: void(0)"
-        >
-          <template v-if="phyx.title">
-            {{ phyx.title }}
-          </template>
-          <template v-else>
-            Untitled PHYX file
-          </template>
-        </a>
-        <a
-          class="list-group-item list-group-item-action"
-          href="javascript: void(0)"
-        >
-          Edit title
-        </a>
-        <a
-          class="list-group-item list-group-item-action"
-          href="javascript: void(0)"
-          @click="selectedPhyloref = undefined; selectedSpecifier = undefined; selectedPhylogeny = undefined"
-        >
-          Display summary
         </a>
       </div>
     </div>
@@ -240,6 +234,29 @@ export default {
       selectedTUnit: state => state.selectedPhyloref.internalSpecifier,
       selectedPhylogeny: state => state.selectedPhyloref.selectedPhylogeny,
     }),
+  },
+  methods: {
+    loadPhyxFromFileInputById(id) {
+
+    },
+
+    loadPhyxFromURL(url) {
+      // Change the current PHYX to that in the provided URL.
+      // Will ask the user to confirm before replacing it.
+
+      $.getJSON(url)
+        .done((data) => {
+          this.$store.commit('setPhyxAsLoaded', data);
+        })
+        .fail((error) => {
+          if (error.status === 200) {
+            alert(`Could not load PHYX file '${url}': file malformed, see console for details.`);
+          } else {
+            alert(`Could not load PHYX file '${url}': server error ${error.status} ${error.statusText}`);
+          }
+          // throw new Error(`Could not load PHYX file ${url}: ${error}`);
+        });
+    },
   },
 };
 </script>
