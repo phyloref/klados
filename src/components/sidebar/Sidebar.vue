@@ -63,12 +63,12 @@
           class="list-group-item list-group-item-action bg-dark text-light disabled"
           href="javascript: void(0)"
         >
-        <template v-if="phyx.title">
-          {{ phyx.title }}
-        </template>
-        <template v-else>
-          Untitled PHYX file
-        </template>
+          <template v-if="phyx.title">
+            {{ phyx.title }}
+          </template>
+          <template v-else>
+            Untitled PHYX file
+          </template>
         </a>
         <a
           class="list-group-item list-group-item-action"
@@ -90,7 +90,12 @@
     <div class="card mt-2 bg-dark">
       <!-- List of phyloreferences -->
       <div class="list-group list-group-flush">
-        <a href="javascript: void(0)" class="list-group-item list-group-item-action bg-dark text-light disabled">Phyloreferences</a>
+        <a
+          href="javascript: void(0)"
+          class="list-group-item list-group-item-action bg-dark text-light disabled"
+        >
+          Phyloreferences
+        </a>
         <template v-for="(phyloref, phylorefIndex) of phylorefs">
           <a
             href="javascript: void(0)"
@@ -168,7 +173,12 @@
     <!-- Sidebar section: list of phylogenies in PHYX file -->
     <div class="card mt-2 bg-dark">
       <div class="list-group list-group-flush">
-        <a href="javascript: void(0)" class="list-group-item list-group-item-action bg-dark text-light disabled">Phylogenies</a>
+        <a
+          href="javascript: void(0)"
+          class="list-group-item list-group-item-action bg-dark text-light disabled"
+        >
+          Phylogenies
+        </a>
         <a
           v-for="(phylogeny, phylogenyIndex) of phylogenies"
           href="javascript: void(0)"
@@ -205,7 +215,7 @@ import { mapState } from 'vuex';
 export default {
   name: 'Sidebar',
   computed: {
-    examplePHYXURLs () {
+    examplePHYXURLs() {
       return [
         {
           url: 'examples/fisher_et_al_2007.json',
@@ -229,7 +239,7 @@ export default {
       selectedSpecifier: state => state.selectedPhyloref.internalSpecifier,
       selectedTUnit: state => state.selectedPhyloref.internalSpecifier,
       selectedPhylogeny: state => state.selectedPhyloref.selectedPhylogeny,
-    })
+    }),
   },
 };
 </script>

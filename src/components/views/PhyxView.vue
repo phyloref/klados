@@ -3,7 +3,9 @@
     Display a summary of the entire PHYX file.
   -->
   <div class="card border-dark">
-    <h5 class="card-header border-dark">Phyloreferences in this file</h5>
+    <h5 class="card-header border-dark">
+      Phyloreferences in this file
+    </h5>
     <div class="card-body p-0">
       <table class="table table-hover table-flush mb-0">
         <thead>
@@ -16,7 +18,10 @@
           </th>
         </thead>
         <tbody>
-          <tr v-if="phylorefs.length === 0" class="bg-white">
+          <tr
+            v-if="phylorefs.length === 0"
+            class="bg-white"
+          >
             <td :colspan="4 + phylogenies.length">
               <Center><em>No phyloreferences loaded</em></Center>
             </td>

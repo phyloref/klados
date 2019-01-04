@@ -55,8 +55,8 @@ export default {
   props: {
     version: {
       type: String,
-      default: "UNKNOWN",
-    }
+      default: 'UNKNOWN',
+    },
   },
 };
 </script>

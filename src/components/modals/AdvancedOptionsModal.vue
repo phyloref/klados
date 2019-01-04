@@ -5,7 +5,10 @@
     tabindex="-1"
     role="dialog"
   >
-    <div class="modal-dialog" role="document">
+    <div
+      class="modal-dialog"
+      role="document"
+    >
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">
@@ -30,9 +33,14 @@
             can edit the JSON directly if you like.
           </p>
 
-          <div v-if="JSONParsingError" class="card text-white bg-danger mb-2">
+          <div
+            v-if="JSONParsingError"
+            class="card text-white bg-danger mb-2"
+          >
             <div class="card-body">
-              <p class="card-text">This JSON could not be parsed: {{JSONParsingError}}</p>
+              <p class="card-text">
+                This JSON could not be parsed: {{ JSONParsingError }}
+              </p>
             </div>
           </div>
 
@@ -67,27 +75,27 @@
 <script>
 export default {
   name: 'AdvancedOptionsPanel',
-  data () {
+  data() {
     return {
       JSONParsingError: undefined,
     };
   },
   computed: {
     phyxAsJSON: {
-      get () {
+      get() {
         return this.$store.getters.getPhyxAsJSON;
       },
-      set (value) {
+      set(value) {
         try {
           const phyx = JSON.parse(value);
           this.$store.commit('setPhyx', phyx);
           this.JSONParsingError = undefined;
-        } catch(ex) {
+        } catch (ex) {
           this.JSONParsingError = ex.message;
         }
-      }
+      },
     },
-  }
+  },
 };
 </script>
 
