@@ -94,7 +94,7 @@
         <div class="modal-footer">
           <button
             type="button"
-            class="btn btn-default"
+            class="btn btn-secondary"
             data-dismiss="modal"
           >
             Close

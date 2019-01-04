@@ -4,7 +4,6 @@
     <div id="wrapper">
       <Sidebar />
       <div id="page-content-wrapper">
-        <AdvancedOptionsPanel />
         <template v-if="selectedPhyloref">
           <SelectedPhylorefView />
         </template>
@@ -19,6 +18,7 @@
 
     <!-- All modals are included here -->
     <AboutCurationToolModal />
+    <AdvancedOptionsModal />
   </div>
 </template>
 
@@ -30,7 +30,7 @@ import TopNavigationBar from './components/TopNavigationBar.vue';
 import Sidebar from './components/sidebar/Sidebar.vue';
 
 // Panels to be displayed as part of the UI.
-import AdvancedOptionsPanel from './components/AdvancedOptionsPanel.vue';
+
 
 // Views that dominate the UI when selected.
 import SelectedPhylogenyView from './components/views/SelectedPhylogenyView.vue';
@@ -39,17 +39,18 @@ import PhyxView from './components/views/PhyxView.vue';
 
 // Modal dialogs to be displayed above the UI.
 import AboutCurationToolModal from './components/modals/AboutCurationToolModal.vue';
+import AdvancedOptionsModal from './components/modals/AdvancedOptionsModal.vue';
 
 export default {
   name: 'app',
   components: {
     TopNavigationBar,
     Sidebar,
-    AdvancedOptionsPanel,
     PhyxView,
     SelectedPhylogenyView,
     SelectedPhylorefView,
     AboutCurationToolModal,
+    AdvancedOptionsModal,
   },
   computed: {
     CURATION_TOOL_VERSION () { return this.$store.state.CURATION_TOOL_VERSION; },
