@@ -57,7 +57,7 @@
     </div>
 
     <!-- Sidebar section: information about this particular PHYX file -->
-    <div class="card mt-1 bg-dark">
+    <div class="card mt-2 bg-dark">
       <div class="list-group list-group-flush">
         <a
           class="list-group-item list-group-item-action bg-dark text-light disabled"
@@ -87,7 +87,7 @@
     </div>
 
     <!-- Sidebar section: list of phyloreferences in PHYX file -->
-    <div class="card mt-1 bg-dark">
+    <div class="card mt-2 bg-dark">
       <!-- List of phyloreferences -->
       <div class="list-group list-group-flush">
         <a href="javascript: void(0)" class="list-group-item list-group-item-action bg-dark text-light disabled">Phyloreferences</a>
@@ -166,7 +166,7 @@
     </div>
 
     <!-- Sidebar section: list of phylogenies in PHYX file -->
-    <div class="card mt-1 bg-dark">
+    <div class="card mt-2 bg-dark">
       <div class="list-group list-group-flush">
         <a href="javascript: void(0)" class="list-group-item list-group-item-action bg-dark text-light disabled">Phylogenies</a>
         <a
