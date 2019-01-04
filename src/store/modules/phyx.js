@@ -8,7 +8,6 @@
 import Vue from 'vue';
 
 export default {
-  namespaced: true,
   state: {
     // The currently loaded Phyx file. All methods modify and change this variable.
     currentPhyx: {

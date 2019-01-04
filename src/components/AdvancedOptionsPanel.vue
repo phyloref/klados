@@ -19,9 +19,16 @@
           The following is a representation of this PHYX in JSON. You
           can edit the JSON directly if you like.
         </p>
+
+        <div v-if="JSONParsingError" class="card text-white bg-danger mb-2">
+          <div class="card-body">
+            <p class="card-text">This JSON could not be parsed: {{JSONParsingError}}</p>
+          </div>
+        </div>
+
         <textarea
           id="test-content"
-          v-model="phyxAsJSON"
+          v-model.lazy="phyxAsJSON"
           style="width: 100%; margin: auto;"
           rows="10"
         />
@@ -54,13 +61,24 @@
 <script>
 export default {
   name: 'AdvancedOptionsPanel',
+  data () {
+    return {
+      JSONParsingError: undefined,
+    };
+  },
   computed: {
     phyxAsJSON: {
       get () {
-        return this.$store.getters['phyx/asJSON'];
+        return this.$store.getters.getPhyxAsJSON;
       },
       set (value) {
-        this.$store.commit('phyx/setFromJSON', value);
+        try {
+          const phyx = JSON.parse(value);
+          this.$store.commit('setPhyx', phyx);
+          this.JSONParsingError = undefined;
+        } catch(ex) {
+          this.JSONParsingError = ex.message;
+        }
       }
     },
   }
