@@ -88,7 +88,7 @@ export default {
       set(value) {
         try {
           const phyx = JSON.parse(value);
-          this.$store.commit('setPhyx', phyx);
+          this.$store.commit('setCurrentPhyx', phyx);
           this.JSONParsingError = undefined;
         } catch (ex) {
           this.JSONParsingError = ex.message;
