@@ -227,6 +227,8 @@ export default {
     },
     ...mapState({
       phyx: state => state.phyx,
+      currentPhyx: state => state.phyx.currentPhyx,
+      loadedPhyx: state => state.phyx.loadedPhyx,
       phylorefs: state => state.phyx.currentPhyx.phylorefs,
       phylogenies: state => state.phyx.currentPhyx.phylogenies,
       selectedPhyloref: state => state.selectedPhyloref,
@@ -246,7 +248,8 @@ export default {
 
       $.getJSON(url)
         .done((data) => {
-          this.$store.commit('setPhyxAsLoaded', data);
+          this.$store.commit('setCurrentPhyx', data);
+          this.$store.commit('setLoadedPhyx', data);
         })
         .fail((error) => {
           if (error.status === 200) {
