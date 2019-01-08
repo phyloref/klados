@@ -34,6 +34,11 @@ export default {
         Vue.set(state, 'loadedPhyx', phyx);
       }
     },
+    createEmptyPhyloref(state) {
+      state.currentPhyx.phylorefs.push({});
+    },
+    createEmptyPhylogeny(state) {
+      state.currentPhyx.phylogenies.push({});
     },
   },
 };
