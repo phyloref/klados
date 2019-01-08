@@ -72,6 +72,7 @@ export default {
  */
 
 #wrapper {
+  padding-top: 64px;
   padding-left: 250px;
   transition: all 0.4s ease 0s;
 }
