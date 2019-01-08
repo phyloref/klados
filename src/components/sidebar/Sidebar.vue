@@ -181,7 +181,7 @@
           href="javascript: void(0)"
           class="list-group-item list-group-item-action"
           :class="{active: selectedPhylogeny === phylogeny}"
-          @click="resetSVG(); selectedPhyloref = undefined; selectedSpecifier = undefined; selectedPhylogeny = phylogeny"
+          @click="$store.commit('changeDisplay', {phylogeny})"
         >
           {{ phylogeny.description || 'Phylogeny ' + (phylogenyIndex + 1) }}
 
