@@ -87,10 +87,6 @@ export default {
     phyx: state => state.phyx,
     phylorefs: state => state.phyx.currentPhyx.phylorefs,
     phylogenies: state => state.phyx.currentPhyx.phylogenies,
-    selectedPhyloref: state => state.selectedPhyloref,
-    selectedSpecifier: state => state.selectedPhyloref.internalSpecifier,
-    selectedTUnit: state => state.selectedPhyloref.internalSpecifier,
-    selectedPhylogeny: state => state.selectedPhyloref.selectedPhylogeny,
   }),
 };
 </script>
