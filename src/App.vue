@@ -4,11 +4,11 @@
     <div id="wrapper">
       <Sidebar />
       <div id="page-content-wrapper">
-        <template v-if="selectedPhyloref">
-          <SelectedPhylorefView />
+        <template v-if="display.phyloref">
+          <SelectedPhylorefView :phyloref="display.phyloref" :specifier="display.specifier" />
         </template>
-        <template v-else-if="selectedPhylogeny">
-          <SelectedPhylogenyView />
+        <template v-else-if="display.phylogeny">
+          <SelectedPhylogenyView :phylogeny="display.phylogeny" />
         </template>
         <template v-else>
           <PhyxView />
@@ -29,10 +29,7 @@ import { mapState } from 'vuex';
 import TopNavigationBar from './components/TopNavigationBar.vue';
 import Sidebar from './components/sidebar/Sidebar.vue';
 
-// Panels to be displayed as part of the UI.
-
-
-// Views that dominate the UI when selected.
+// At any point, one of these views will be displayed.
 import SelectedPhylogenyView from './components/views/SelectedPhylogenyView.vue';
 import SelectedPhylorefView from './components/views/SelectedPhylorefView.vue';
 import PhyxView from './components/views/PhyxView.vue';
@@ -52,11 +49,10 @@ export default {
     AboutCurationToolModal,
     AdvancedOptionsModal,
   },
-  computed: {
-    CURATION_TOOL_VERSION () { return this.$store.state.CURATION_TOOL_VERSION; },
-    selectedPhyloref () { return this.$store.state.selectedPhyloref; },
-    selectedPhylogeny () { return this.$store.state.selectedPhylogeny; },
-  }
+  computed: mapState({
+    CURATION_TOOL_VERSION: state => state.CURATION_TOOL_VERSION,
+    display: state => state.ui.display,
+  }),
 }
 </script>
 
