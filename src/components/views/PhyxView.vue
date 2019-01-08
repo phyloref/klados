@@ -14,7 +14,7 @@
           <th>Internal specifiers</th>
           <th>External specifiers</th>
           <th v-for="(phylogeny, phylogenyIndex) of phylogenies">
-            {{ getPhylogenyLabel(phylogeny) }}
+            {{ phylogeny.label || `Phylogeny ${phylogenyIndex}` }}
           </th>
         </thead>
         <tbody>
@@ -33,11 +33,15 @@
                 href="javascript: void(0)"
                 @click="resetSVG(); selectedPhyloref = phyloref"
               >
-                {{ getPhylorefLabel(phyloref) }}
+                {{ phyloref.label || `Phyloref ${phylorefIndex}` }}
               </a>
             </td>
             <td>{{ phyloref.internalSpecifiers.length }}</td>
             <td>{{ phyloref.externalSpecifiers.length }}</td>
+            <td v-for="(phylogeny, phylogenyIndex) of phylogenies">
+              TODO
+            </td>
+            <!--
             <td v-for="(phylogeny, phylogenyIndex) of phylogenies">
               <template v-if="getPhylorefExpectedNodeLabels(phylogeny, phyloref).length === 0">
                 <strong>Not matched</strong>
@@ -71,6 +75,7 @@
                 </template>
               </template>
             </td>
+            -->
           </tr>
         </tbody>
       </table>

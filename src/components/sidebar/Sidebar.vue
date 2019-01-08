@@ -8,25 +8,14 @@
           class="list-group-item list-group-item-action bg-dark text-light disabled"
           href="javascript: void(0)"
         >
-          <template v-if="phyx.title">
-            {{ phyx.title }}
-          </template>
-          <template v-else>
-            Untitled PHYX file
-          </template>
+          {{ currentPhyx.title || 'Untitled Phyx file' }}
         </a>
         <a
           class="list-group-item list-group-item-action"
           href="javascript: void(0)"
+          @click="promptAndSetDict('Please enter the new title for this Phyx file', currentPhyx, 'title')"
         >
           Edit title
-        </a>
-        <a
-          class="list-group-item list-group-item-action"
-          href="javascript: void(0)"
-          @click="selectedPhyloref = undefined; selectedSpecifier = undefined; selectedPhylogeny = undefined"
-        >
-          Display summary
         </a>
         <a
           class="list-group-item list-group-item-action"
@@ -90,74 +79,88 @@
         >
           Phyloreferences
         </a>
+        <a
+          class="list-group-item list-group-item-action"
+          href="javascript: void(0)"
+          :class="{active: !selectedPhyloref && !selectedPhylogeny}"
+          @click="$store.commit('changeDisplay', {})"
+        >
+          <em>Summary</em>
+        </a>
         <template v-for="(phyloref, phylorefIndex) of phylorefs">
           <a
             href="javascript: void(0)"
             class="list-group-item list-group-item-action"
             :class="{active: selectedPhyloref === phyloref}"
-            @click="resetSVG(); selectedPhyloref = phyloref; selectedSpecifier = undefined; selectedPhylogeny = undefined"
+            @click="$store.commit('changeDisplay', {phyloref})"
           >
-            {{ hasProperty(phyloref, 'label') ? phyloref.label : 'Phyloreference ' + (phylorefIndex + 1) }}
+            <span v-if="phyloref.label">
+              {{phyloref.label}}
+            </span>
+            <span v-else>
+              {{ 'Phyloreference ' + (phylorefIndex + 1) }}
+            </span>
 
             <!-- Add a warning if this phyloreference has changed -->
             <span
-              v-if="!isEqualJSON(phyloref, phyxAsLoaded.phylorefs[phylorefIndex])"
+              v-if="!isEqualJSON(phyloref, loadedPhyx.phylorefs[phylorefIndex])"
               data-toggle="tooltip"
               data-placement="bottom"
               title="This phyloreference has been modified since being loaded! Use 'Save as JSON' to save your changes."
               class="close glyphicon glyphicon-warning-sign"
             />
           </a>
-        </template>
 
-        <!-- Add the following information if this phyloreference is selected -->
-        <template v-if="selectedPhyloref === phyloref">
-          <!-- Display internal specifiers
-          <a
-            v-for="(internalSpecifier, internalSpecifierIndex) of phyloref.internalSpecifiers"
-            href="javascript: void(0)"
-            class="list-group-item list-group-item-action"
-            :class="{active: selectedSpecifier === internalSpecifier}"
-            @click="resetSVG(); selectedPhyloref = phyloref; selectedSpecifier = internalSpecifier; selectedTUnit = undefined; selectedPhylogeny = undefined"
-          >
-            &#9679; <strong>Internal:</strong> <span v-html="getSpecifierLabelAsHTML(internalSpecifier)" />
-          </a> -->
+          <!-- Add the following information if this phyloreference is selected -->
+          <template v-if="selectedPhyloref === phyloref">
+            <!-- Display internal specifiers
+            <a
+              v-for="(internalSpecifier, internalSpecifierIndex) of phyloref.internalSpecifiers"
+              href="javascript: void(0)"
+              class="list-group-item list-group-item-action"
+              :class="{active: selectedSpecifier === internalSpecifier}"
+              @click="resetSVG(); selectedPhyloref = phyloref; selectedSpecifier = internalSpecifier; selectedTUnit = undefined; selectedPhylogeny = undefined"
+            >
+              &#9679; <strong>Internal:</strong> <span v-html="getSpecifierLabelAsHTML(internalSpecifier)" />
+            </a> -->
 
-          <!-- Display external specifiers
-          <a
-            v-for="(externalSpecifier, externalSpecifierIndex) of phyloref.externalSpecifiers"
-            href="javascript: void(0)"
-            class="list-group-item list-group-item-action"
-            :class="{active: selectedSpecifier === externalSpecifier}"
-            @click="resetSVG(); selectedPhyloref = phyloref; selectedSpecifier = externalSpecifier; selectedTUnit = undefined; selectedPhylogeny = undefined"
-          >
-            &#9679; <strong>External:</strong> <span v-html="getSpecifierLabelAsHTML(externalSpecifier)" />
-          </a> -->
+            <!-- Display external specifiers
+            <a
+              v-for="(externalSpecifier, externalSpecifierIndex) of phyloref.externalSpecifiers"
+              href="javascript: void(0)"
+              class="list-group-item list-group-item-action"
+              :class="{active: selectedSpecifier === externalSpecifier}"
+              @click="resetSVG(); selectedPhyloref = phyloref; selectedSpecifier = externalSpecifier; selectedTUnit = undefined; selectedPhylogeny = undefined"
+            >
+              &#9679; <strong>External:</strong> <span v-html="getSpecifierLabelAsHTML(externalSpecifier)" />
+            </a> -->
 
-          <!-- Display phylogenies -->
-          <a
-            v-for="(phylogeny, phylogenyIndex) of phylogenies"
-            class="list-group-item list-group-item-action"
-            :class="{active: selectedPhylogeny === phylogeny}"
-            href="javascript: void(0)"
-            @click="resetSVG(); selectedPhyloref = phyloref; selectedSpecifier = undefined; selectedTUnit = undefined; selectedPhylogeny = phylogeny"
-          >
-            &#9679; <strong>Phylogeny:</strong>
-            <template v-if="getPhylorefExpectedNodeLabels(phylogeny, selectedPhyloref).length < 1">
-              no expected node
-            </template>
-            <template v-else>
-              node expected
-            </template>
-            in {{ getPhylogenyLabel(phylogeny) }}
-          </a>
+            <!-- Display phylogenies -->
+            <a
+              v-for="(phylogeny, phylogenyIndex) of phylogenies"
+              class="list-group-item list-group-item-action"
+              :class="{active: selectedPhylogeny === phylogeny}"
+              href="javascript: void(0)"
+              @click="$store.commit('changeDisplay', {phyloref, phylogeny})"
+            >
+              &#9679; <strong>Phylogeny:</strong>
+              <!--
+              <template v-if="getPhylorefExpectedNodeLabels(phylogeny, selectedPhyloref).length < 1">
+                no expected node
+              </template>
+              <template v-else>
+                node expected
+              </template>-->
+              in {{ phylogeny.label || `Phylogeny ${phylogenyIndex}` }}
+            </a>
+          </template>
         </template>
 
         <!-- Let users add phyloreferences directly from the sidebar -->
         <a
           class="list-group-item list-group-item-action"
           href="javascript: void(0)"
-          @click="phylorefs.push(createEmptyPhyloref(phylorefs.length + 1))"
+          @click="$store.commit('createEmptyPhyloref')"
         >
           <em>Add phyloreference</em>
         </a>
@@ -180,11 +183,11 @@
           :class="{active: selectedPhylogeny === phylogeny}"
           @click="resetSVG(); selectedPhyloref = undefined; selectedSpecifier = undefined; selectedPhylogeny = phylogeny"
         >
-          {{ hasProperty(phylogeny, 'description') ? phylogeny.description : 'Phylogeny ' + (phylogenyIndex + 1) }}
+          {{ phylogeny.description || 'Phylogeny ' + (phylogenyIndex + 1) }}
 
           <!-- Add a warning if this phylogeny has changed -->
           <span
-            v-if="!isEqualJSON(phylogeny, phyxAsLoaded.phylogenies[phylogenyIndex])"
+            v-if="!isEqualJSON(phylogeny, loadedPhyx.phylogenies[phylogenyIndex])"
             data-toggle="tooltip"
             data-placement="bottom"
             title="This phylogeny has been modified since being loaded! Use 'Save as JSON' to save your changes."
@@ -194,7 +197,7 @@
         <a
           class="list-group-item list-group-item-action"
           href="javascript: void(0)"
-          @click="phylogenies.push({})"
+          @click="$store.commit('createEmptyPhylogeny')"
         >
           <em>Add phylogeny</em>
         </a>
@@ -204,7 +207,9 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import Vue from 'vue';
+import { mapState, mapGetters } from 'vuex';
+import { _ } from 'underscore';
 
 export default {
   name: 'Sidebar',
@@ -225,6 +230,9 @@ export default {
         },
       ];
     },
+    ...mapGetters([
+      'phyxTitle',
+    ]),
     ...mapState({
       phyx: state => state.phyx,
       currentPhyx: state => state.phyx.currentPhyx,
@@ -237,8 +245,23 @@ export default {
     }),
   },
   methods: {
-    loadPhyxFromFileInputById(id) {
+    isEqualJSON(json1, json2) {
+      // Compare two objects and report if they are identical or not.
+      // Compare two JSON objects and determine if they are identical.
+      if (json1 === undefined) return false;
+      if (json2 === undefined) return false;
 
+      // _.isEqual will compare the two objects using a recursive comparison.
+      return _.isEqual(json1, json2);
+    },
+
+    promptAndSetDict(message, dict, key) {
+      // Given a dictionary and key, we prompt the user (using window.prompt)
+      // to provide a new value for that dictionary and key. If one is provided,
+      // we replace it.
+      const response = window.prompt(message, dict[key]);
+      if (response !== undefined && response !== null)
+        Vue.set(dict, key, response);
     },
 
     loadPhyxFromURL(url) {

@@ -25,6 +25,7 @@
     "lodash": "^4.17.11",
     "newick-js": "^1.1.0",
     "popper.js": "^1.14.6",
+    "underscore": "^1.9.1",
     "vue": "^2.5.17",
     "vue-resize": "^0.4.5",
     "vuex": "^3.0.1"
