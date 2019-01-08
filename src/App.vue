@@ -5,10 +5,10 @@
       <Sidebar />
       <div id="page-content-wrapper">
         <template v-if="display.phyloref">
-          <SelectedPhylorefView :phyloref="display.phyloref" :specifier="display.specifier" />
+          <PhylorefView :phyloref="display.phyloref" :specifier="display.specifier" />
         </template>
         <template v-else-if="display.phylogeny">
-          <SelectedPhylogenyView :phylogeny="display.phylogeny" />
+          <PhylogenyView :phylogeny="display.phylogeny" />
         </template>
         <template v-else>
           <PhyxView />
@@ -30,8 +30,8 @@ import TopNavigationBar from './components/TopNavigationBar.vue';
 import Sidebar from './components/sidebar/Sidebar.vue';
 
 // At any point, one of these views will be displayed.
-import SelectedPhylogenyView from './components/views/SelectedPhylogenyView.vue';
-import SelectedPhylorefView from './components/views/SelectedPhylorefView.vue';
+import PhylogenyView from './components/views/PhylogenyView.vue';
+import PhylorefView from './components/views/PhylorefView.vue';
 import PhyxView from './components/views/PhyxView.vue';
 
 // Modal dialogs to be displayed above the UI.
@@ -44,8 +44,8 @@ export default {
     TopNavigationBar,
     Sidebar,
     PhyxView,
-    SelectedPhylogenyView,
-    SelectedPhylorefView,
+    PhylogenyView,
+    PhylorefView,
     AboutCurationToolModal,
     AdvancedOptionsModal,
   },
