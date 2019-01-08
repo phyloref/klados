@@ -231,10 +231,9 @@ export default {
       loadedPhyx: state => state.phyx.loadedPhyx,
       phylorefs: state => state.phyx.currentPhyx.phylorefs,
       phylogenies: state => state.phyx.currentPhyx.phylogenies,
-      selectedPhyloref: state => state.selectedPhyloref,
-      selectedSpecifier: state => state.selectedPhyloref.internalSpecifier,
-      selectedTUnit: state => state.selectedPhyloref.internalSpecifier,
-      selectedPhylogeny: state => state.selectedPhyloref.selectedPhylogeny,
+      selectedPhyloref: state => state.ui.display.phyloref,
+      selectedPhylogeny: state => state.ui.display.phylogeny,
+      selectedSpecifier: state => state.ui.display.internalSpecifier,
     }),
   },
   methods: {
