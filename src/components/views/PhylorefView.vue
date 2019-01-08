@@ -911,7 +911,18 @@
 
 <script>
 export default {
-  name: 'SelectedPhylorefView',
+  name: 'PhylorefView',
+  methods: {
+    isEqualJSON(json1, json2) {
+      // Compare two objects and report if they are identical or not.
+      // Compare two JSON objects and determine if they are identical.
+      if (json1 === undefined) return false;
+      if (json2 === undefined) return false;
+
+      // _.isEqual will compare the two objects using a recursive comparison.
+      return _.isEqual(json1, json2);
+    },
+  },
 };
 </script>
 

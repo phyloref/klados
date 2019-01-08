@@ -2,7 +2,7 @@
   <div>
     <!-- Add a warning if this phylogeny has changed -->
     <div
-      v-if="!isEqualJSON(selectedPhylogeny, testcaseAsLoaded.phylogenies[selectedPhylogenyIndex])"
+      v-if="!isEqualJSON(selectedPhylogeny, loadedPhyx.phylogenies[currentPhyx.phylogenies.indexOf(selectedPhylogeny)])"
       class="panel panel-warning"
     >
       <div class="panel-heading">
@@ -65,7 +65,7 @@
               rows="5"
               class="form-control"
               placeholder="Enter Newick string for phylogeny here"
-            >{{ getPhylogenyAsNewick('#phylogeny-svg-' + selectedPhylogenyIndex, selectedPhylogeny) }}</textarea>
+            >getPhylogenyAsNewick('#phylogeny-svg-' + selectedPhylogenyIndex, selectedPhylogeny)</textarea>
           </div>
         </div>
       </div>
@@ -73,22 +73,22 @@
 
     <!-- Display the list of errors encountered when parsing this Newick string -->
     <div
-      v-if="getPhylogenyParsingErrors(selectedPhylogeny).length !== 0"
+      v-if="true || getPhylogenyParsingErrors(selectedPhylogeny).length !== 0"
       class="panel panel-warning"
     >
       <div class="panel-heading">
         Errors occurred while parsing Newick string
       </div>
       <div class="panel-body">
-        <template v-for="(error, errorIndex) of getPhylogenyParsingErrors(selectedPhylogeny)">
+        <!-- template v-for="(error, errorIndex) of getPhylogenyParsingErrors(selectedPhylogeny)">
           <p><strong>{{ error.title }}.</strong> {{ error.message }}</p>
-        </template>
+        </template> -->
       </div>
     </div>
 
     <!-- Display the phylogeny (unless there were Newick parsing errors) -->
     <div
-      v-if="getPhylogenyParsingErrors(selectedPhylogeny).length === 0"
+      v-if="true || getPhylogenyParsingErrors(selectedPhylogeny).length === 0"
       class="panel panel-info"
     >
       <div class="panel-heading">
@@ -98,7 +98,7 @@
         <svg
           :id="'phylogeny-svg-' + selectedPhylogenyIndex"
           width="100%"
-          :alt="getPhylogenyAsNewick('#phylogeny-svg-' + selectedPhylogenyIndex, selectedPhylogeny)"
+          :alt="'test' || getPhylogenyAsNewick('#phylogeny-svg-' + selectedPhylogenyIndex, selectedPhylogeny)"
         />
       </div>
       <div class="panel-footer">
@@ -128,7 +128,7 @@
               aria-haspopup="true"
               aria-expanded="false"
             >
-              Vertical spacing: {{ getPhylogenySpacingX(selectedPhylogenyIndex) }}px <span class="caret" />
+              Vertical spacing: getPhylogenySpacingX(selectedPhylogenyIndex) px <span class="caret" />
             </button>
             <ul class="dropdown-menu">
               <li>
@@ -162,7 +162,7 @@
               aria-haspopup="true"
               aria-expanded="false"
             >
-              Horizontal spacing: {{ getPhylogenySpacingY(selectedPhylogenyIndex) }}px <span class="caret" />
+              Horizontal spacing: getPhylogenySpacingY(selectedPhylogenyIndex) px <span class="caret" />
             </button>
             <ul class="dropdown-menu">
               <li>
@@ -192,7 +192,7 @@
           <a
             class="btn btn-danger"
             :href="'#phylogeny-' + selectedPhylogenyIndex"
-            @click="confirm('Are you sure you want to permanently delete this phylogeny?', () => testcase.phylogenies.splice(selectedPhylogenyIndex, 1))"
+            @click="confirm('Are you sure you want to permanently delete this phylogeny?', () => phylogenies.splice(selectedPhylogenyIndex, 1))"
           >
             Delete phylogeny
           </a>
@@ -203,8 +203,27 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 export default {
-  name: 'SelectedPhylogenyView',
+  name: 'PhylogenyView',
+  computed: mapState({
+    currentPhyx: state => state.phyx.currentPhyx,
+    loadedPhyx: state => state.phyx.loadedPhyx,
+    phylogenies: state => state.phyx.currentPhyx.phylogenies,
+    selectedPhylogeny: state => state.ui.display.phylogeny,
+  }),
+  methods: {
+    isEqualJSON(json1, json2) {
+      // Compare two objects and report if they are identical or not.
+      // Compare two JSON objects and determine if they are identical.
+      if (json1 === undefined) return false;
+      if (json2 === undefined) return false;
+
+      // _.isEqual will compare the two objects using a recursive comparison.
+      return _.isEqual(json1, json2);
+    },
+  },
 };
 </script>
 
