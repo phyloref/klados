@@ -7,7 +7,7 @@
       Phyloreferences in this file
     </h5>
     <div class="card-body p-0">
-      <table class="table table-hover table-flush mb-0">
+      <table class="table table-hover table-flush">
         <thead>
           <th>&nbsp;</th>
           <th>Phyloreference</th>
@@ -36,8 +36,8 @@
                 {{ phyloref.label || `Phyloref ${phylorefIndex}` }}
               </a>
             </td>
-            <td>{{ phyloref.internalSpecifiers.length }}</td>
-            <td>{{ phyloref.externalSpecifiers.length }}</td>
+            <td>{{ (phyloref.internalSpecifiers || []).length }}</td>
+            <td>{{ (phyloref.externalSpecifiers || []).length }}</td>
             <td v-for="(phylogeny, phylogenyIndex) of phylogenies">
               TODO
             </td>
@@ -87,7 +87,7 @@
 import { mapState } from 'vuex';
 
 export default {
-  name: 'PHYXView',
+  name: 'PhyxView',
   computed: mapState({
     phyx: state => state.phyx,
     phylorefs: state => state.phyx.currentPhyx.phylorefs,
