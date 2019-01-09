@@ -1,73 +1,71 @@
 <template>
   <div>
     <!-- Add a warning if this phylogeny has changed -->
-    <div
-      v-if="!isEqualJSON(selectedPhylogeny, loadedPhyx.phylogenies[currentPhyx.phylogenies.indexOf(selectedPhylogeny)])"
-      class="panel panel-warning"
-    >
-      <div class="panel-heading">
-        Warning!
-      </div>
-      <div class="panel-body">
-        This phylogeny has been modified since being loaded! Use 'Save as JSON' to save your changes.
-      </div>
-    </div>
+    <ModifiedCard
+      message="This phylogeny has been modified since being loaded. Use 'Save as JSON' to save your changes."
+      :compare="selectedPhylogeny"
+      :compareTo="loadedPhyx.phylogenies[currentPhyx.phylogenies.indexOf(selectedPhylogeny)]"
+    />
 
-    <div
-      id="phylogeny-metadata"
-      class="form-horizontal"
-    >
-      <div class="panel panel-info">
-        <div class="panel-heading">
-          Phylogeny information
-        </div>
-        <div class="panel-body">
-          <label
-            for="title"
-            class="col-md-2 control-label"
-          >
-            Title
-          </label>
-          <div class="col-md-10 input-group">
-            <input
-              id="title"
-              v-model.trim="selectedPhylogeny.title"
-              type="text"
-              class="form-control"
-              placeholder="Enter phylogeny title"
+    <div class="card">
+      <h5 class="card-header">
+        Phylogeny information
+      </h5>
+      <div class="card-body">
+        <form>
+          <div class="form-group row">
+            <label
+              for="phylogenyTitle"
+              class="col-md-2 col-form-label"
             >
+              Title
+            </label>
+            <div class="col-md-10">
+              <input
+                id="phylogenyTitle"
+                v-model.trim="phylogenyTitle"
+                type="text"
+                class="form-control"
+                placeholder="Enter phylogeny title"
+              >
+            </div>
           </div>
 
-          <label
-            for="description"
-            class="col-md-2 control-label"
-          >
-            Description
-          </label>
-          <div class="col-md-10 input-group">
-            <textarea
-              id="description"
-              v-model.trim="selectedPhylogeny.description"
-              class="form-control"
-              placeholder="Enter phylogeny description"
-            />
+          <div class="form-group row">
+            <label
+              for="phylogenyDescription"
+              class="col-md-2 col-form-label"
+            >
+              Description
+            </label>
+            <div class="col-md-10">
+              <textarea
+                id="phylogenyDescription"
+                v-model.trim="phylogenyDescription"
+                type="text"
+                class="form-control"
+                placeholder="Enter phylogeny description"
+              />
+            </div>
           </div>
 
-          <label
-            for="newick"
-            class="col-md-2 control-label"
-          >
-            Newick
-          </label>
-          <div class="col-md-10 input-group">
-            <textarea
-              v-model.lazy="selectedPhylogeny.newick"
-              rows="5"
-              class="form-control"
-              placeholder="Enter Newick string for phylogeny here"
-            >getPhylogenyAsNewick('#phylogeny-svg-' + selectedPhylogenyIndex, selectedPhylogeny)</textarea>
+          <div class="form-group row">
+            <label
+              for="newick"
+              class="col-md-2 control-label"
+            >
+              Newick
+            </label>
+            <div class="col-md-10 input-group">
+              <textarea
+                v-model.lazy="phylogenyNewick"
+                rows="5"
+                class="form-control"
+                placeholder="Enter Newick string for phylogeny here"
+              />
+            </div>
           </div>
-        </div>
+        </form>
       </div>
     </div>
 
@@ -203,26 +201,35 @@
 </template>
 
 <script>
+import { _ } from 'underscore';
 import { mapState } from 'vuex';
+
+import ModifiedCard from '../cards/ModifiedCard.vue';
 
 export default {
   name: 'PhylogenyView',
-  computed: mapState({
-    currentPhyx: state => state.phyx.currentPhyx,
-    loadedPhyx: state => state.phyx.loadedPhyx,
-    phylogenies: state => state.phyx.currentPhyx.phylogenies,
-    selectedPhylogeny: state => state.ui.display.phylogeny,
-  }),
-  methods: {
-    isEqualJSON(json1, json2) {
-      // Compare two objects and report if they are identical or not.
-      // Compare two JSON objects and determine if they are identical.
-      if (json1 === undefined) return false;
-      if (json2 === undefined) return false;
-
-      // _.isEqual will compare the two objects using a recursive comparison.
-      return _.isEqual(json1, json2);
+  components: { ModifiedCard },
+  computed: {
+    phylogenyTitle: {
+      get() { return this.$store.state.ui.display.phylogeny.title; },
+      set(title) { this.$store.commit('setPhylogenyTitle', { phylogeny: this.$store.state.ui.display.phylogeny, title }); },
     },
+    phylogenyDescription: {
+      get() { return this.$store.state.ui.display.phylogeny.description; },
+      set(description) { this.$store.commit('setPhylogenyDescription', { phylogeny: this.$store.state.ui.display.phylogeny, description }); },
+    },
+    phylogenyNewick: {
+      get() { return this.$store.state.ui.display.phylogeny.newick; },
+      set(newick) { this.$store.commit('setPhylogenyNewick', { phylogeny: this.$store.state.ui.display.phylogeny, newick }); },
+    },
+    ...mapState({
+      currentPhyx: state => state.phyx.currentPhyx,
+      loadedPhyx: state => state.phyx.loadedPhyx,
+      phylogenies: state => state.phyx.currentPhyx.phylogenies,
+      selectedPhylogeny: state => state.ui.display.phylogeny,
+      selectedPhylogenyIndex: state => state.phyx.currentPhyx.phylogenies.indexOf(state.ui.display.phylogeny),
+        // PLEASE DELETE THIS
+    })
   },
 };
 </script>

@@ -1,17 +1,11 @@
 <template>
   <div>
     <!-- Add a warning if this phyloreference has changed -->
-    <div
-      v-if="!isEqualJSON(selectedPhyloref, testcaseAsLoaded.phylorefs[selectedPhylorefIndex])"
-      class="panel panel-warning"
-    >
-      <div class="panel-heading">
-        Warning!
-      </div>
-      <div class="panel-body">
-        This phyloreference has been modified since being loaded! Use 'Save as JSON' to save your changes.
-      </div>
-    </div>
+    <ModifiedPanel
+      message="This phyloreference has been modified since being loaded! Use 'Save as JSON' to save your changes."
+      :compare="selectedPhyloref"
+      :compareTo="currentPhyx.phylorefs[currentPhyx.phylorefs.indexOf(selectedPhyloref)]"
+    />
 
     <!-- Phyloreference information -->
     <template v-if="selectedSpecifier === undefined && selectedPhylogeny === undefined">
@@ -80,7 +74,7 @@
 
         <!-- List of buttons that can be used to change or modify the selected phyloreference -->
         <div
-          v-if="selectedPhyloref !== undefined && testcase.phylorefs.indexOf(selectedPhyloref) != -1"
+          v-if="selectedPhyloref !== undefined && currentPhyx.phylorefs.indexOf(selectedPhyloref) != -1"
           class="panel-footer"
         >
           <div
@@ -107,7 +101,7 @@
                 aria-haspopup="true"
                 aria-expanded="false"
               >
-                Status: {{ getPhylorefStatus(selectedPhyloref).statusInEnglish }} <span class="caret" />
+                Status: getPhylorefStatus(selectedPhyloref).statusInEnglish <span class="caret" />
               </button>
               <ul class="dropdown-menu">
                 <li>
@@ -172,10 +166,11 @@
                 aria-haspopup="true"
                 aria-expanded="false"
               >
-                {{ getPhylorefStatusChanges(selectedPhyloref).length }} changes <span class="caret" />
+                getPhylorefStatusChanges(selectedPhyloref).length changes <span class="caret" />
               </button>
               <ul class="dropdown-menu">
                 <li>
+                  <!--
                   <a
                     v-for="statusChange of getPhylorefStatusChanges(selectedPhyloref)"
                     href="#selected-phyloref"
@@ -188,6 +183,7 @@
                       {{ statusChange.intervalStartAsCalendar }}
                     </div>
                   </a>
+                -->
                 </li>
               </ul>
             </div>
@@ -219,15 +215,16 @@
           Specifiers
         </div>
         <div class="panel-body">
+          <!--
           <div
             v-for="(specifier, specifierIndex) of getSpecifiers(selectedPhyloref)"
             v-if="selectedPhyloref"
             :id="'specifier-' + specifierIndex"
             class="input-group"
           >
-            <!-- Buttons before specifier label -->
+            <!-- Buttons before specifier label
             <div class="input-group-btn">
-              <!-- Delete button: initially hidden, made visible by clicking the "Delete some specifiers" button -->
+              <!-- Delete button: initially hidden, made visible by clicking the "Delete some specifiers" button
               <button
                 v-if="deletingSpecifiersMode"
                 type="button"
@@ -237,7 +234,7 @@
                 <span class="glyphicon glyphicon-remove" />
               </button>
 
-              <!-- Match results with dropdown menu -->
+              <!-- Match results with dropdown menu
               <button
                 type="button"
                 class="btn dropdown-toggle"
@@ -321,7 +318,7 @@
                 </li>
               </ul>
 
-              <!-- Specifier type with dropdown menu: internal or external specifier -->
+              <!-- Specifier type with dropdown menu: internal or external specifier
               <button
                 type="button"
                 class="btn btn-default dropdown-toggle"
@@ -334,7 +331,7 @@
               </button>
             </div>
 
-            <!-- Specifier label -->
+            <!-- Specifier label
             <input
               type="text"
               disabled
@@ -343,7 +340,7 @@
               :title="getSpecifierLabel(specifier)"
             >
 
-            <!-- Buttons after specifier label: edit button -->
+            <!-- Buttons after specifier label: edit button
             <div class="input-group-btn">
               <button
                 type="button"
@@ -353,7 +350,7 @@
                 <span class="glyphicon glyphicon-edit" />
               </button>
             </div>
-          </div>
+          </div>-->
         </div>
 
         <!-- Add or delete specifiers -->
@@ -690,7 +687,7 @@
     - display all phylogenies when looking up a phyloreference or specifiers
     - display only the selected phylogeny when it's selected
 -->
-    <template v-for="(phylogeny, phylogenyIndex) of testcase.phylogenies">
+    <template v-for="(phylogeny, phylogenyIndex) of currentPhyx.phylogenies">
       <template v-if="selectedPhylogeny === undefined || selectedPhylogeny === phylogeny">
         <div class="panel panel-info">
           <div class="panel-heading">
@@ -910,19 +907,21 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+import ModifiedPanel from '../panels/ModifiedPanel.vue';
+
 export default {
   name: 'PhylorefView',
-  methods: {
-    isEqualJSON(json1, json2) {
-      // Compare two objects and report if they are identical or not.
-      // Compare two JSON objects and determine if they are identical.
-      if (json1 === undefined) return false;
-      if (json2 === undefined) return false;
-
-      // _.isEqual will compare the two objects using a recursive comparison.
-      return _.isEqual(json1, json2);
-    },
+  components: {
+    ModifiedPanel
   },
+  computed: mapState({
+    currentPhyx: state => state.phyx.currentPhyx,
+    loadedPhyx: state => state.phyx.loadedPhyx,
+    phylogenies: state => state.phyx.currentPhyx.phylogenies,
+    selectedPhylogeny: state => state.ui.display.phylogeny,
+    selectedPhyloref: state => state.ui.display.phyloref,
+  }),
 };
 </script>
 

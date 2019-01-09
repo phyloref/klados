@@ -3,12 +3,17 @@ import Vue from 'vue';
 
 // Import Bootstrap.
 import 'bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
-
-// Import Bootstrap-Vue, which helps integrate Bootstrap with Vue.
 import BootstrapVue from 'bootstrap-vue';
 
-import 'bootstrap-vue/dist/bootstrap-vue.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap-vue/dist/bootstrap-vue.min.css';
+
+// Use icons from Font Awesome.
+import { library } from '@fortawesome/fontawesome-svg-core';
+import {
+  faExclamationCircle,
+} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-vue/dist/bootstrap-vue.min.css';

@@ -17,6 +17,14 @@
         >
           Edit title
         </a>
+
+        <a
+          class="list-group-item list-group-item-action start-reasoning"
+          href="javascript: void(0)"
+          @click="reasonOverPhyloreferences()"
+        >
+          Reason
+        </a>
         <a
           class="list-group-item list-group-item-action"
           href="javascript: void(0)"
@@ -36,13 +44,6 @@
           @click="downloadAsJSON()"
         >
           Save as JSON
-        </a>
-        <a
-          class="list-group-item list-group-item-action start-reasoning"
-          href="javascript: void(0)"
-          @click="reasonOverPhyloreferences()"
-        >
-          Reason
         </a>
         <a
           class="list-group-item list-group-item-action"
@@ -102,12 +103,10 @@
             </span>
 
             <!-- Add a warning if this phyloreference has changed -->
-            <span
-              v-if="!isEqualJSON(phyloref, loadedPhyx.phylorefs[phylorefIndex])"
-              data-toggle="tooltip"
-              data-placement="bottom"
-              title="This phyloreference has been modified since being loaded! Use 'Save as JSON' to save your changes."
-              class="close glyphicon glyphicon-warning-sign"
+            <ModifiedIcon
+              message="This phyloreference has been modified since being loaded! Use 'Save as JSON' to save your changes.",
+              :compare="phyloref",
+              :compareTo="loadedPhyx.phylorefs[phylorefIndex]"
             />
           </a>
 
@@ -186,12 +185,10 @@
           {{ phylogeny.description || 'Phylogeny ' + (phylogenyIndex + 1) }}
 
           <!-- Add a warning if this phylogeny has changed -->
-          <span
-            v-if="!isEqualJSON(phylogeny, loadedPhyx.phylogenies[phylogenyIndex])"
-            data-toggle="tooltip"
-            data-placement="bottom"
-            title="This phylogeny has been modified since being loaded! Use 'Save as JSON' to save your changes."
-            class="close glyphicon glyphicon-warning-sign"
+          <ModifiedIcon
+            message="This phylogeny has been modified since being loaded! Use 'Save as JSON' to save your changes."
+            :compare="phylogeny"
+            :compareTo="loadedPhyx.phylogenies[phylogenyIndex]"
           />
         </a>
         <a
@@ -209,10 +206,12 @@
 <script>
 import Vue from 'vue';
 import { mapState, mapGetters } from 'vuex';
-import { _ } from 'underscore';
+
+import ModifiedIcon from '../icons/ModifiedIcon.vue';
 
 export default {
   name: 'Sidebar',
+  components: { ModifiedIcon },
   computed: {
     examplePHYXURLs() {
       return [
@@ -245,16 +244,6 @@ export default {
     }),
   },
   methods: {
-    isEqualJSON(json1, json2) {
-      // Compare two objects and report if they are identical or not.
-      // Compare two JSON objects and determine if they are identical.
-      if (json1 === undefined) return false;
-      if (json2 === undefined) return false;
-
-      // _.isEqual will compare the two objects using a recursive comparison.
-      return _.isEqual(json1, json2);
-    },
-
     promptAndSetDict(message, dict, key) {
       // Given a dictionary and key, we prompt the user (using window.prompt)
       // to provide a new value for that dictionary and key. If one is provided,
@@ -272,6 +261,8 @@ export default {
         .done((data) => {
           this.$store.commit('setCurrentPhyx', data);
           this.$store.commit('setLoadedPhyx', data);
+          // Reset the display.
+          this.$store.state.ui.display = {};
         })
         .fail((error) => {
           if (error.status === 200) {
