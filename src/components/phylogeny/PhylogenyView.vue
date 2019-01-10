@@ -94,7 +94,8 @@
       </div>
       <div class="panel-body">
         <svg
-          :id="'phylogeny-svg-' + selectedPhylogenyIndex"
+          id="phylogeny"
+          :but-id="'phylogeny-svg-' + selectedPhylogenyIndex"
           width="100%"
           :alt="'test' || getPhylogenyAsNewick('#phylogeny-svg-' + selectedPhylogenyIndex, selectedPhylogeny)"
         />
@@ -219,7 +220,21 @@ export default {
       set(description) { this.$store.commit('setPhylogenyDescription', { phylogeny: this.$store.state.ui.display.phylogeny, description }); },
     },
     phylogenyNewick: {
-      get() { return this.$store.state.ui.display.phylogeny.newick; },
+      get() {
+        const tree = d3.layout.phylotree()
+          .svg(d3.select("#phylogeny"))
+          .options({
+            'internal-names': true,
+            transitions: false,
+            'left-offset': 100, // So we have space to display a long label on the root node.
+          })
+        tree(this.$store.state.ui.display.phylogeny.newick || '()');
+        tree
+          //.spacing_x(this.phylogenySpacingX[phylogenyIndex])
+          //.spacing_y(this.phylogenySpacingY[phylogenyIndex])
+          .update();
+        return this.$store.state.ui.display.phylogeny.newick;
+      },
       set(newick) { this.$store.commit('setPhylogenyNewick', { phylogeny: this.$store.state.ui.display.phylogeny, newick }); },
     },
     ...mapState({
@@ -235,6 +250,6 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style>
 
 </style>
