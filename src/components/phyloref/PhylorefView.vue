@@ -88,11 +88,11 @@
           <div
             v-for="(specifier, specifierIndex) of selectedPhyloref.internalSpecifiers"
             class="list-group-item"
-          ><SpecifierDiv :specifier="specifier" /></div>
+          ><SpecifierDiv type="Internal" :specifier="specifier" /></div>
           <div
             v-for="(specifier, specifierIndex) of selectedPhyloref.externalSpecifiers"
             class="list-group-item"
-          ><SpecifierDiv :specifier="specifier" /></div>
+          ><SpecifierDiv type="External" :specifier="specifier" /></div>
         </div>
           <!--
           <div
