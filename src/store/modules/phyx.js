@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import phylogeny from './phylogeny';
+import phyloref from './phyloref';
 
 export default {
   state: {
@@ -42,5 +43,8 @@ export default {
       state.currentPhyx.phylogenies.push({});
     },
   },
-  modules: { phylogeny },
+  modules: {
+    phylogeny,
+    phyloref,
+  },
 };
