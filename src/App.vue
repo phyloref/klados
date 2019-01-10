@@ -30,9 +30,9 @@ import TopNavigationBar from './components/TopNavigationBar.vue';
 import Sidebar from './components/sidebar/Sidebar.vue';
 
 // At any point, one of these views will be displayed.
-import PhylogenyView from './components/views/PhylogenyView.vue';
-import PhylorefView from './components/views/PhylorefView.vue';
-import PhyxView from './components/views/PhyxView.vue';
+import PhylogenyView from './components/phylogeny/PhylogenyView.vue';
+import PhylorefView from './components/phyloref/PhylorefView.vue';
+import PhyxView from './components/phyx/PhyxView.vue';
 
 // Modal dialogs to be displayed above the UI.
 import AboutCurationToolModal from './components/modals/AboutCurationToolModal.vue';
