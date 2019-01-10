@@ -93,12 +93,7 @@
         Phylogeny visualization
       </div>
       <div class="panel-body">
-        <svg
-          id="phylogeny"
-          :but-id="'phylogeny-svg-' + selectedPhylogenyIndex"
-          width="100%"
-          :alt="'test' || getPhylogenyAsNewick('#phylogeny-svg-' + selectedPhylogenyIndex, selectedPhylogeny)"
-        />
+        <Phylotree :newick="phylogenyNewick" />
       </div>
       <div class="panel-footer">
         <div
@@ -206,36 +201,23 @@ import { _ } from 'underscore';
 import { mapState } from 'vuex';
 
 import ModifiedCard from '../cards/ModifiedCard.vue';
+import Phylotree from './Phylotree.vue';
 
 export default {
   name: 'PhylogenyView',
-  components: { ModifiedCard },
+  components: { ModifiedCard, Phylotree },
   computed: {
     phylogenyTitle: {
       get() { return this.$store.state.ui.display.phylogeny.title; },
-      set(title) { this.$store.commit('setPhylogenyTitle', { phylogeny: this.$store.state.ui.display.phylogeny, title }); },
+      set(title) { this.$store.commit('setPhylogenyProps', { phylogeny: this.$store.state.ui.display.phylogeny, title }); },
     },
     phylogenyDescription: {
       get() { return this.$store.state.ui.display.phylogeny.description; },
-      set(description) { this.$store.commit('setPhylogenyDescription', { phylogeny: this.$store.state.ui.display.phylogeny, description }); },
+      set(description) { this.$store.commit('setPhylogenyProps', { phylogeny: this.$store.state.ui.display.phylogeny, description }); },
     },
     phylogenyNewick: {
-      get() {
-        const tree = d3.layout.phylotree()
-          .svg(d3.select("#phylogeny"))
-          .options({
-            'internal-names': true,
-            transitions: false,
-            'left-offset': 100, // So we have space to display a long label on the root node.
-          })
-        tree(this.$store.state.ui.display.phylogeny.newick || '()');
-        tree
-          //.spacing_x(this.phylogenySpacingX[phylogenyIndex])
-          //.spacing_y(this.phylogenySpacingY[phylogenyIndex])
-          .update();
-        return this.$store.state.ui.display.phylogeny.newick;
-      },
-      set(newick) { this.$store.commit('setPhylogenyNewick', { phylogeny: this.$store.state.ui.display.phylogeny, newick }); },
+      get() { return this.$store.state.ui.display.phylogeny.newick; },
+      set(newick) { this.$store.commit('setPhylogenyProps', { phylogeny: this.$store.state.ui.display.phylogeny, newick }); },
     },
     ...mapState({
       currentPhyx: state => state.phyx.currentPhyx,
