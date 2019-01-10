@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Add a warning if this phyloreference has changed -->
-    <ModifiedPanel
+    <ModifiedCard
       message="This phyloreference has been modified since being loaded! Use 'Save as JSON' to save your changes."
       :compare="selectedPhyloref"
       :compareTo="currentPhyx.phylorefs[currentPhyx.phylorefs.indexOf(selectedPhyloref)]"
@@ -9,215 +9,94 @@
 
     <!-- Phyloreference information -->
     <template v-if="selectedSpecifier === undefined && selectedPhylogeny === undefined">
-      <div class="panel panel-info">
-        <div class="panel-heading">
+      <div class="card">
+        <h5 class="card-header">
           Phyloreference information
-        </div>
+        </h5>
 
-        <div class="panel-body">
-          <div
-            id="phyloref"
-            class="form-horizontal"
-          >
+        <div class="card-body">
+          <form>
             <!-- Phyloreference label -->
-            <label
-              for="label"
-              class="control-label col-md-2 col-lg-1 col-sm-3"
-            >
-              Label
-            </label>
-            <div class="input-group col-md-10 col-lg-11 col-sm-9">
-              <input
-                id="label"
-                v-model="selectedPhyloref.label"
-                type="text"
-                class="form-control"
-                placeholder="Phyloreference label"
+            <div class="form-group row">
+              <label
+                for="label"
+                class="col-form-label col-md-2"
               >
+                Label
+              </label>
+              <div class="col-md-10">
+                <input
+                  id="label"
+                  v-model="selectedPhyloref.label"
+                  type="text"
+                  class="form-control"
+                  placeholder="Phyloreference label"
+                >
+              </div>
             </div>
 
             <!-- Phyloreference clade definition -->
-            <label
-              for="definition"
-              class="control-label col-md-2 col-lg-1 col-sm-3"
-            >
-              Clade definition
-            </label>
-            <div class="input-group col-md-10 col-lg-11 col-sm-9">
-              <textarea
-                id="definition"
-                v-model.lazy="selectedPhyloref.cladeDefinition"
-                class="form-control"
-                rows="6"
-                placeholder="Phylogenetic clade definition"
-              />
+            <div class="form-group row">
+              <label
+                for="definition"
+                class="col-form-label col-md-2"
+              >
+                Clade definition
+              </label>
+              <div class="col-md-10">
+                <textarea
+                  id="definition"
+                  v-model.lazy="selectedPhyloref.cladeDefinition"
+                  class="form-control"
+                  rows="6"
+                  placeholder="Phylogenetic clade definition"
+                />
+              </div>
             </div>
 
             <!-- Phyloreference curator comments -->
-            <label
-              for="curator-comments"
-              class="control-label col-md-2 col-lg-1 col-sm-3"
-            >
-              Curator comments
-            </label>
-            <div class="input-group col-md-10 col-lg-11 col-sm-9">
-              <textarea
-                id="curator-comments"
-                v-model.lazy="selectedPhyloref.curatorComments"
-                class="form-control"
-                rows="2"
-                placeholder="Curator notes relating to this phyloreference"
-              />
-            </div>
-          </div>
-        </div>
-
-        <!-- List of buttons that can be used to change or modify the selected phyloreference -->
-        <div
-          v-if="selectedPhyloref !== undefined && currentPhyx.phylorefs.indexOf(selectedPhyloref) != -1"
-          class="panel-footer"
-        >
-          <div
-            class="btn-group btn-group-justified"
-            role="group"
-            aria-label="Actions for the entire phyloreference"
-          >
-            <a
-              href="#selected-phyloref"
-              class="btn btn-default"
-              @click="resetSVG(); changeSelectedPhyloref(-1)"
-            >
-              Previous
-            </a>
-            <div
-              class="btn-group"
-              role="group"
-            >
-              <button
-                id="phyloref-status"
-                type="button"
-                class="btn btn-primary dropdown-toggle"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
+            <div class="form-group row">
+              <label
+                for="curator-comments"
+                class="col-form-label col-md-2"
               >
-                Status: getPhylorefStatus(selectedPhyloref).statusInEnglish <span class="caret" />
-              </button>
-              <ul class="dropdown-menu">
-                <li>
-                  <a
-                    href="#selected-phyloref"
-                    @click="setPhylorefStatus(selectedPhyloref, 'pso:draft')"
-                  >
-                    Draft
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#selected-phyloref"
-                    @click="setPhylorefStatus(selectedPhyloref, 'pso:final-draft')"
-                  >
-                    Final draft
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#selected-phyloref"
-                    @click="setPhylorefStatus(selectedPhyloref, 'pso:under-review')"
-                  >
-                    Under review
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#selected-phyloref"
-                    @click="setPhylorefStatus(selectedPhyloref, 'pso:submitted')"
-                  >
-                    Tested
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#selected-phyloref"
-                    @click="setPhylorefStatus(selectedPhyloref, 'pso:published')"
-                  >
-                    Published
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#selected-phyloref"
-                    @click="setPhylorefStatus(selectedPhyloref, 'pso:retracted-from-publication')"
-                  >
-                    Retracted
-                  </a>
-                </li>
-              </ul>
+                Curator comments
+              </label>
+              <div class="col-md-10">
+                <textarea
+                  id="curator-comments"
+                  v-model.lazy="selectedPhyloref.curatorComments"
+                  class="form-control"
+                  rows="2"
+                  placeholder="Curator notes relating to this phyloreference"
+                />
+              </div>
             </div>
-            <div
-              class="btn-group"
-              role="group"
-            >
-              <button
-                id="phyloref-status-changes"
-                type="button"
-                class="btn btn-default dropdown-toggle"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-              >
-                getPhylorefStatusChanges(selectedPhyloref).length changes <span class="caret" />
-              </button>
-              <ul class="dropdown-menu">
-                <li>
-                  <!--
-                  <a
-                    v-for="statusChange of getPhylorefStatusChanges(selectedPhyloref)"
-                    href="#selected-phyloref"
-                  >
-                    {{ statusChange.statusInEnglish }}
-                    <div
-                      v-if="hasProperty(statusChange, 'intervalStartAsCalendar')"
-                      style="font-size: 70%"
-                    >
-                      {{ statusChange.intervalStartAsCalendar }}
-                    </div>
-                  </a>
-                -->
-                </li>
-              </ul>
-            </div>
-            <a
-              href="#selected-phyloref"
-              class="btn btn-danger"
-              onclick="if(window.confirm('Are you sure you want to delete this phyloreference?')) { vm.testcase.phylorefs.splice(vm.testcase.phylorefs.indexOf(vm.selectedPhyloref), 1); vm.selectedPhyloref = undefined; }"
-            >
-              Delete
-            </a>
-            <a
-              href="#selected-phyloref"
-              class="btn btn-default"
-              @click="resetSVG(); changeSelectedPhyloref(+1)"
-            >
-              Next
-            </a>
-          </div>
+          </form>
         </div>
       </div>
 
       <!-- List of specifiers associated with this phyloreference -->
       <div
         id="specifiers"
-        class="panel panel-info"
-        style="margin-top: 1em"
+        class="card mt-2"
       >
-        <div class="panel-heading">
+        <h5 class="card-header">
           Specifiers
+        </h5>
+        <div class="list-group list-group-flush">
+          <div
+            v-for="(specifier, specifierIndex) of selectedPhyloref.internalSpecifiers"
+            class="list-group-item"
+          ><SpecifierDiv :specifier="specifier" /></div>
+          <div
+            v-for="(specifier, specifierIndex) of selectedPhyloref.externalSpecifiers"
+            class="list-group-item"
+          ><SpecifierDiv :specifier="specifier" /></div>
         </div>
-        <div class="panel-body">
           <!--
           <div
-            v-for="(specifier, specifierIndex) of getSpecifiers(selectedPhyloref)"
+            v-for=""
             v-if="selectedPhyloref"
             :id="'specifier-' + specifierIndex"
             class="input-group"
@@ -350,8 +229,8 @@
                 <span class="glyphicon glyphicon-edit" />
               </button>
             </div>
-          </div>-->
-        </div>
+          </div>
+        </div>-->
 
         <!-- Add or delete specifiers -->
         <div class="panel-footer">
@@ -686,15 +565,14 @@
   We should:
     - display all phylogenies when looking up a phyloreference or specifiers
     - display only the selected phylogeny when it's selected
--->
     <template v-for="(phylogeny, phylogenyIndex) of currentPhyx.phylogenies">
       <template v-if="selectedPhylogeny === undefined || selectedPhylogeny === phylogeny">
         <div class="panel panel-info">
           <div class="panel-heading">
-            Expected and actual resolution on {{ getPhylogenyLabel(phylogeny) }}
+            Expected and actual resolution on getPhylogenyLabel(phylogeny)
           </div>
           <div class="panel-body">
-            <!-- Node(s) this phyloreference is expected to resolve to -->
+            <!-- Node(s) this phyloreference is expected to resolve to
             <label
               for="curator-comments"
               class="control-label col-md-2"
@@ -703,7 +581,7 @@
             </label>
             <div class="input-group col-md-10">
               <div class="input-group">
-                <!-- Display the phylogeny where this node is expected to match -->
+                <!-- Display the phylogeny where this node is expected to match
                 <span class="input-group-btn">
                   <a
                     class="btn btn-default"
@@ -715,9 +593,9 @@
                   </a>
                 </span>
 
-                <!-- Display the matching node(s) -->
+                <!-- Display the matching node(s)
                 <template v-if="getPhylorefExpectedNodeLabels(phylogeny, selectedPhyloref).length === 0">
-                  <!-- We matched no nodes -->
+                  <!-- We matched no nodes
                   <input
                     readonly
                     type="text"
@@ -727,7 +605,7 @@
                 </template>
 
                 <template v-if="getPhylorefExpectedNodeLabels(phylogeny, selectedPhyloref).length === 1">
-                  <!-- We matched exactly one node -->
+                  <!-- We matched exactly one node
                   <input
                     readonly
                     type="text"
@@ -737,7 +615,7 @@
                 </template>
 
                 <template v-if="getPhylorefExpectedNodeLabels(phylogeny, selectedPhyloref).length > 1">
-                  <!-- We matched more than one node -->
+                  <!-- We matched more than one node
                   <input
                     readonly
                     type="text"
@@ -746,7 +624,7 @@
                   >
                 </template>
 
-                <!-- Display a dropdown menu that allows the modified label to be changed. -->
+                <!-- Display a dropdown menu that allows the modified label to be changed.
                 <div class="input-group-btn">
                   <button
                     type="button"
@@ -758,7 +636,7 @@
                     Change <span class="caret" />
                   </button>
                   <ul class="dropdown-menu dropdown-menu-right">
-                    <!-- List every labeled node in this phylogeny. -->
+                    <!-- List every labeled node in this phylogeny.
                     <li class="dropdown-header">
                       Labeled internal nodes in this phylogeny
                     </li>
@@ -792,7 +670,7 @@
               </div>
             </div>
 
-            <!-- Node(s) this phyloreference actually resolved to -->
+            <!-- Node(s) this phyloreference actually resolved to
             <label
               for="curator-comments"
               class="control-label col-md-2"
@@ -800,9 +678,9 @@
               Actual nodes
             </label>
             <div class="input-group col-md-10">
-              <!-- If phylogenies were loaded, we need to display a selector for each phylogeny -->
+              <!-- If phylogenies were loaded, we need to display a selector for each phylogeny
               <div class="input-group">
-                <!-- Display the phylogeny where this node is expected to match -->
+                <!-- Display the phylogeny where this node is expected to match
                 <span class="input-group-btn">
                   <a
                     class="btn btn-default"
@@ -814,7 +692,7 @@
                   </a>
                 </span>
 
-                <!-- Display the matching node(s) -->
+                <!-- Display the matching node(s)
                 <template v-if="!hasProperty(reasoningResults, 'phylorefs')">
                   <input
                     readonly
@@ -825,7 +703,7 @@
                 </template>
                 <template v-else>
                   <template v-if="getResolvedNodesForPhylogeny(selectedPhyloref, phylogeny).length === 0">
-                    <!-- We matched no nodes -->
+                    <!-- We matched no nodes
                     <input
                       readonly
                       type="text"
@@ -834,7 +712,7 @@
                     >
                   </template>
                   <template v-if="getResolvedNodesForPhylogeny(selectedPhyloref, phylogeny).length === 1">
-                    <!-- We matched exactly one node -->
+                    <!-- We matched exactly one node
                     <input
                       readonly
                       type="text"
@@ -843,7 +721,7 @@
                     >
                   </template>
                   <template v-if="getResolvedNodesForPhylogeny(selectedPhyloref, phylogeny).length > 1">
-                    <!-- We matched more than one node -->
+                    <!-- We matched more than one node
                     <input
                       readonly
                       type="text"
@@ -853,7 +731,7 @@
                   </template>
                 </template>
 
-                <!-- Display a button that activates reasoning. -->
+                <!-- Display a button that activates reasoning.
                 <div class="input-group-btn">
                   <button
                     type="button"
@@ -866,7 +744,7 @@
               </div>
             </div>
 
-            <!-- Display the phylogeny -->
+            <!-- Display the phylogeny
             <div
               class="well"
               style="margin-top: 1em"
@@ -885,7 +763,7 @@
               role="group"
               aria-label="Actions for phylogeny"
             >
-              <!-- Dropdown button for vertical spacing -->
+              <!-- Dropdown button for vertical spacing
               <div
                 class="btn-group"
                 role="group"
@@ -902,18 +780,20 @@
           </div>
         </div>
       </template>
-    </template>
+    </template>-->
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
-import ModifiedPanel from '../panels/ModifiedPanel.vue';
+import SpecifierDiv from '../phyloref/SpecifierDiv.vue';
+import ModifiedCard from '../cards/ModifiedCard.vue';
 
 export default {
   name: 'PhylorefView',
   components: {
-    ModifiedPanel
+    ModifiedCard,
+    SpecifierDiv,
   },
   computed: mapState({
     currentPhyx: state => state.phyx.currentPhyx,

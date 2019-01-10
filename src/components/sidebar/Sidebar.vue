@@ -112,27 +112,25 @@
 
           <!-- Add the following information if this phyloreference is selected -->
           <template v-if="selectedPhyloref === phyloref">
-            <!-- Display internal specifiers
             <a
-              v-for="(internalSpecifier, internalSpecifierIndex) of phyloref.internalSpecifiers"
+              v-for="(specifier, specifierIndex) of phyloref.internalSpecifiers"
               href="javascript: void(0)"
               class="list-group-item list-group-item-action"
-              :class="{active: selectedSpecifier === internalSpecifier}"
-              @click="resetSVG(); selectedPhyloref = phyloref; selectedSpecifier = internalSpecifier; selectedTUnit = undefined; selectedPhylogeny = undefined"
+              :class="{active: selectedSpecifier === specifier}"
+              @click="$store.state.ui.display = { phyloref, selectedSpecifier: specifier }"
             >
-              &#9679; <strong>Internal:</strong> <span v-html="getSpecifierLabelAsHTML(internalSpecifier)" />
-            </a> -->
+              &#9679; <strong>Internal:</strong> <SpecifierLabel :specifier="specifier" />
+            </a>
 
-            <!-- Display external specifiers
             <a
-              v-for="(externalSpecifier, externalSpecifierIndex) of phyloref.externalSpecifiers"
+              v-for="(specifier, specifierIndex) of phyloref.externalSpecifiers"
               href="javascript: void(0)"
               class="list-group-item list-group-item-action"
-              :class="{active: selectedSpecifier === externalSpecifier}"
-              @click="resetSVG(); selectedPhyloref = phyloref; selectedSpecifier = externalSpecifier; selectedTUnit = undefined; selectedPhylogeny = undefined"
+              :class="{active: selectedSpecifier === specifier}"
+              @click="$store.state.ui.display = { phyloref, selectedSpecifier: specifier }"
             >
-              &#9679; <strong>External:</strong> <span v-html="getSpecifierLabelAsHTML(externalSpecifier)" />
-            </a> -->
+              &#9679; <strong>External:</strong> <SpecifierLabel :specifier="specifier" />
+            </a>
 
             <!-- Display phylogenies -->
             <a
@@ -207,11 +205,15 @@
 import Vue from 'vue';
 import { mapState, mapGetters } from 'vuex';
 
+import SpecifierLabel from '../phyloref/SpecifierLabel.vue';
 import ModifiedIcon from '../icons/ModifiedIcon.vue';
 
 export default {
   name: 'Sidebar',
-  components: { ModifiedIcon },
+  components: {
+    ModifiedIcon,
+    SpecifierLabel,
+  },
   computed: {
     examplePHYXURLs() {
       return [
@@ -240,7 +242,7 @@ export default {
       phylogenies: state => state.phyx.currentPhyx.phylogenies,
       selectedPhyloref: state => state.ui.display.phyloref,
       selectedPhylogeny: state => state.ui.display.phylogeny,
-      selectedSpecifier: state => state.ui.display.internalSpecifier,
+      selectedSpecifier: state => state.ui.display.selectedSpecifier,
     }),
   },
   methods: {
