@@ -6,8 +6,6 @@
 </template>
 
 <script>
-import { _ } from 'underscore';
-
 /*
  * Note that this requires the Phylotree Javascript to be loaded in the HTML
  * header: I haven't figured out how to include phylotree.js from within Vue CLI.
