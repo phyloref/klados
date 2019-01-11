@@ -23,7 +23,7 @@
             class="bg-white"
           >
             <td :colspan="4 + phylogenies.length">
-              <Center><em>No phyloreferences loaded</em></Center>
+              <center><em>No phyloreferences loaded</em></Center>
             </td>
           </tr>
           <tr v-for="(phyloref, phylorefIndex) of phylorefs">
@@ -31,7 +31,7 @@
             <td>
               <a
                 href="javascript: void(0)"
-                @click="resetSVG(); selectedPhyloref = phyloref"
+                @click="$store.commit('changeDisplay', { phyloref })"
               >
                 {{ phyloref.label || `Phyloref ${phylorefIndex}` }}
               </a>
