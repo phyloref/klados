@@ -117,7 +117,7 @@
               href="javascript: void(0)"
               class="list-group-item list-group-item-action"
               :class="{active: selectedSpecifier === specifier}"
-              @click="$store.state.ui.display = { phyloref, selectedSpecifier: specifier }"
+              @click="$store.state.ui.display = { phyloref, specifier }"
             >
               &#9679; <strong>Internal:</strong> <SpecifierLabel :specifier="specifier" />
             </a>
@@ -127,7 +127,7 @@
               href="javascript: void(0)"
               class="list-group-item list-group-item-action"
               :class="{active: selectedSpecifier === specifier}"
-              @click="$store.state.ui.display = { phyloref, selectedSpecifier: specifier }"
+              @click="$store.state.ui.display = { phyloref, specifier }"
             >
               &#9679; <strong>External:</strong> <SpecifierLabel :specifier="specifier" />
             </a>
