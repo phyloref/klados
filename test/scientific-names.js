@@ -2,40 +2,46 @@
  * Test scientific name processing.
  */
 
-/* eslint-env mocha */
-
 const chai = require('chai');
 const phyx = require('../js/phyx');
 
-const assert = chai.assert;
+const expect = chai.expect;
+
+/*
+ * Test whether ScientificNameWrapper parses scientific names correctly.
+ */
 
 describe('ScientificNameWrapper', function () {
   describe('#constructor', function () {
-    it('should wrap a blank object', function () {
+    it('should accept empty scientific names without errors', function () {
       const wrapper = new phyx.ScientificNameWrapper({});
-      assert.exists(wrapper);
-      assert.isUndefined(wrapper.scientificName);
+
+      expect(wrapper).to.be.an.instanceOf(phyx.ScientificNameWrapper);
+      expect(wrapper.scientificName).to.be.undefined;
     });
-    it('should handle uninomial names', function () {
+    it('should be able to parse uninomial names as genus names without a specific epithet', function () {
       const wrapper = new phyx.ScientificNameWrapper({
         scientificName: 'Mus',
       });
-      assert.equal(wrapper.genus, 'Mus');
-      assert.isUndefined(wrapper.specificEpithet);
+
+      expect(wrapper.genus).to.equal('Mus');
+      expect(wrapper.specificEpithet).to.be.undefined;
     });
-    it('should handle binomial names', function () {
+    it('should be able to parse binomial names into genus and specific epithet', function () {
       const wrapper = new phyx.ScientificNameWrapper({
         scientificName: 'Mus musculus',
       });
-      assert.equal(wrapper.genus, 'Mus');
-      assert.equal(wrapper.specificEpithet, 'musculus');
+
+      expect(wrapper.genus).to.equal('Mus');
+      expect(wrapper.specificEpithet).to.equal('musculus');
     });
-    it('should handle scientific names with authority', function () {
+    it('should ignore authority after a binomial name', function () {
       const wrapper = new phyx.ScientificNameWrapper({
         scientificName: 'Mus musculus Linnaeus, 1758',
       });
-      assert.equal(wrapper.genus, 'Mus');
-      assert.equal(wrapper.specificEpithet, 'musculus');
+
+      expect(wrapper.genus).to.equal('Mus');
+      expect(wrapper.specificEpithet).to.equal('musculus');
     });
   });
 });
