@@ -197,7 +197,6 @@
 </template>
 
 <script>
-import { _ } from 'underscore';
 import { mapState } from 'vuex';
 
 import ModifiedCard from '../cards/ModifiedCard.vue';

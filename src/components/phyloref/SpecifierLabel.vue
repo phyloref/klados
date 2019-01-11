@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { _ } from 'underscore';
+import { has } from 'lodash';
 
 export default {
   name: 'SpecifierLabel',
@@ -20,11 +20,11 @@ export default {
       // is a single taxonomic unit. Therefore, we'll hackily support one before
       // permanently shifting to the new model.
       return this.specifier.referencesTaxonomicUnits.map((tunit) => {
-        if (_.has(tunit, 'scientificNames')) {
+        if (has(tunit, 'scientificNames')) {
           return tunit.scientificNames.map(scname => scname.scientificName).join(' or ');
-        } else if(_.has(tunit, 'specimens')) {
+        } else if(has(tunit, 'specimens')) {
           return tunit.specimens.map(specimen => specimen.specimenIdentifier).join(' or ');
-        } else if(_.has(tunit, 'externalReferences')) {
+        } else if(has(tunit, 'externalReferences')) {
           return tunit.externalReferences.map(extref => extref['@id']).join(' or ');
         } else {
           return "(empty taxonomic units)";
