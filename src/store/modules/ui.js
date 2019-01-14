@@ -16,7 +16,7 @@ export default {
   mutations: {
     changeDisplay(state, newDisplay) {
       // Change the main view of the UI to select a particular element.
-      // The new view object should contain one of the following keys:
+      // The new view object should contain some combination of the following keys:
       //  'phyloref': A phyloreference to display.
       //  'phylogeny': A phylogeny to display.
       //  'specifier': A specifier to display.
