@@ -1206,9 +1206,10 @@ class PhylorefWrapper {
     phylorefAsJSONLD['@id'] = phylorefURI;
 
     // These classes are phyloreferences, and so should be classified as such.
-    phylorefAsJSONLD['rdfs:subClassOf'] = 'phyloref:Phyloreference';
+    // phylorefAsJSONLD['subClassOf'] = 'phyloref:Phyloreference';
 
     phylorefAsJSONLD['@type'] = [
+      'phyloref:Phyloreference',
       // Since we're writing this in RDF, just adding a '@type' of
       // phyloref:Phyloreference would imply that phylorefURI is a named
       // individual of class phyloref:Phyloreference. We need to explicitly
