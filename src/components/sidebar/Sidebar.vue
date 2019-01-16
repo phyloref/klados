@@ -104,8 +104,8 @@
 
             <!-- Add a warning if this phyloreference has changed -->
             <ModifiedIcon
-              message="This phyloreference has been modified since being loaded! Use 'Save as JSON' to save your changes.",
-              :compare="phyloref",
+              message="This phyloreference has been modified since being loaded! Use 'Save as JSON' to save your changes."
+              :compare="phyloref"
               :compareTo="loadedPhyx.phylorefs[phylorefIndex]"
             />
           </a>
@@ -117,7 +117,7 @@
               href="javascript: void(0)"
               class="list-group-item list-group-item-action"
               :class="{active: selectedSpecifier === specifier}"
-              @click="$store.state.ui.display = { phyloref, specifier }"
+              @click="$store.commit('changeDisplay', { phyloref, specifier })"
             >
               &#9679; <strong>Internal:</strong> <SpecifierLabel :specifier="specifier" />
             </a>
@@ -127,7 +127,7 @@
               href="javascript: void(0)"
               class="list-group-item list-group-item-action"
               :class="{active: selectedSpecifier === specifier}"
-              @click="$store.state.ui.display = { phyloref, specifier }"
+              @click="$store.commit('changeDisplay', { phyloref, specifier })"
             >
               &#9679; <strong>External:</strong> <SpecifierLabel :specifier="specifier" />
             </a>

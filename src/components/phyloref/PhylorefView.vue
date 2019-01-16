@@ -310,15 +310,15 @@ export default {
   },
   computed: {
     selectedPhylorefLabel: {
-      get () { return this.$store.state.ui.display.phyloref.label; },
+      get () { return this.selectedPhyloref['label']; },
       set (label) { this.$store.commit('setPhylorefProps', { phyloref: this.selectedPhyloref, label }); },
     },
     selectedCladeDefinition: {
-      get () { return this.$store.state.ui.display.phyloref.cladeDefinition; },
+      get () { return this.selectedPhyloref['cladeDefinition']; },
       set (cladeDefinition) { this.$store.commit('setPhylorefProps', { phyloref: this.selectedPhyloref, cladeDefinition }); },
     },
     selectedCuratorComments: {
-      get () { return this.$store.state.ui.display.phyloref.curatorComments; },
+      get () { return this.selectedPhyloref['curatorComments']; },
       set (curatorComments) { this.$store.commit('setPhylorefProps', { phyloref: this.selectedPhyloref, curatorComments }); },
     },
     ...mapState({

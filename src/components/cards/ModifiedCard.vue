@@ -18,13 +18,13 @@ export default {
   props: {
     message: {
       type: String,
-      default: "This element has changed! Please remember to save it."
+      default: "This element has changed! Please remember to save it.",
     },
     compare: Object,
     compareTo: Object,
   },
   computed: {
-    dataChanged: function () { return !isEqual(this.compare, this.compareTo); },
+    dataChanged () { return !isEqual(this.compare, this.compareTo); },
   },
 };
 </script>
