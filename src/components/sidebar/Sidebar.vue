@@ -264,7 +264,7 @@ export default {
           this.$store.commit('setCurrentPhyx', data);
           this.$store.commit('setLoadedPhyx', data);
           // Reset the display.
-          this.$store.state.ui.display = {};
+          this.$store.commit('changeDisplay', {});
         })
         .fail((error) => {
           if (error.status === 200) {
