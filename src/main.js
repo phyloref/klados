@@ -15,16 +15,6 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap-vue/dist/bootstrap-vue.min.css';
-
-// Use icons from Font Awesome.
-import { library } from '@fortawesome/fontawesome-svg-core';
-import {
-  faExclamationCircle,
-} from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-
 // Use vue-resize to track when phylogenies are resized.
 import VueResize from 'vue-resize';
 import 'vue-resize/dist/vue-resize.css';
