@@ -15,6 +15,10 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
+// Use vue-resize to track when phylogenies are resized.
+import VueResize from 'vue-resize';
+import 'vue-resize/dist/vue-resize.css';
+
 // Import the main Vue file.
 import App from './App.vue';
 
@@ -27,6 +31,7 @@ Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 // Add additional features to Vue.
 Vue.use(BootstrapVue);
+Vue.use(VueResize);
 
 // Import JQuery.
 window.$ = require('jquery');
