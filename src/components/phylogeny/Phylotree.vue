@@ -1,8 +1,11 @@
 <template>
-  <svg
-    :id="uniqueId"
-    class="col-md-12"
-  />
+  <div class="phylotreeContainer">
+    <svg
+      :id="uniqueId"
+      class="col-md-12 phylogeny"
+    />
+    <resize-observer @notify="redrawTree()" />
+  </div>
 </template>
 
 <script>
@@ -34,19 +37,42 @@ export default {
     newickAsString () { return this.newick; },
   },
   mounted () {
-    // Set up Phylotree.
-    const tree = d3.layout.phylotree()
-      .svg(d3.select(`#${this.uniqueId}`))
-      .options({
-        'internal-names': true,
-        transitions: false,
-        'left-offset': 100, // So we have space to display a long label on the root node.
-      })
-    tree(this.newick || '()');
-    tree
-      .spacing_x(this.spacingX)
-      .spacing_y(this.spacingY)
-      .update();
+    this.redrawTree();
+  },
+  methods: {
+    redrawTree () {
+      // Set up Phylotree.
+      const tree = d3.layout.phylotree()
+        .svg(d3.select(`#${this.uniqueId}`))
+        .options({
+          'internal-names': true,
+          transitions: false,
+          'left-offset': 100, // So we have space to display a long label on the root node.
+          'left-right-spacing': 'fit-to-size',
+          'top-bottom-spacing': 'fixed-step',
+        })
+      tree(this.newick || '()');
+      tree
+        .size([
+          // height
+          0,
+          // width
+          $(`#${this.uniqueId}`).width()
+        ])
+        .spacing_x(this.spacingX)
+        .spacing_y(this.spacingY)
+        .update();
+    },
   },
 };
 </script>
+
+<style scoped>
+.phylogeny {
+  width: 100%;
+}
+.phylotreeContainer {
+  /* Required for Vue-Resize to track its size */
+  position: relative;
+}
+</style>
