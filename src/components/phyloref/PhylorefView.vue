@@ -26,7 +26,7 @@
             <div class="col-md-10">
               <input
                 id="label"
-                v-model="selectedPhyloref.label"
+                v-model="selectedPhylorefLabel"
                 type="text"
                 class="form-control"
                 placeholder="Phyloreference label"
@@ -45,7 +45,7 @@
             <div class="col-md-10">
               <textarea
                 id="definition"
-                v-model.lazy="selectedPhyloref.cladeDefinition"
+                v-model.lazy="selectedCladeDefinition"
                 class="form-control"
                 rows="6"
                 placeholder="Phylogenetic clade definition"
@@ -64,7 +64,7 @@
             <div class="col-md-10">
               <textarea
                 id="curator-comments"
-                v-model.lazy="selectedPhyloref.curatorComments"
+                v-model.lazy="selectedCuratorComments"
                 class="form-control"
                 rows="2"
                 placeholder="Curator notes relating to this phyloreference"
@@ -308,14 +308,28 @@ export default {
     SpecifierDiv,
     Phylotree,
   },
-  computed: mapState({
-    currentPhyx: state => state.phyx.currentPhyx,
-    loadedPhyx: state => state.phyx.loadedPhyx,
-    phylogenies: state => state.phyx.currentPhyx.phylogenies,
-    display: state => state.ui.display,
-    selectedPhylogeny: state => state.ui.display.phylogeny,
-    selectedPhyloref: state => state.ui.display.phyloref,
-  }),
+  computed: {
+    selectedPhylorefLabel: {
+      get () { return this.$store.state.ui.display.phyloref.label; },
+      set (label) { this.$store.commit('setPhylorefProps', { phyloref: this.selectedPhyloref, label }); },
+    },
+    selectedCladeDefinition: {
+      get () { return this.$store.state.ui.display.phyloref.cladeDefinition; },
+      set (cladeDefinition) { this.$store.commit('setPhylorefProps', { phyloref: this.selectedPhyloref, cladeDefinition }); },
+    },
+    selectedCuratorComments: {
+      get () { return this.$store.state.ui.display.phyloref.curatorComments; },
+      set (curatorComments) { this.$store.commit('setPhylorefProps', { phyloref: this.selectedPhyloref, curatorComments }); },
+    },
+    ...mapState({
+      currentPhyx: state => state.phyx.currentPhyx,
+      loadedPhyx: state => state.phyx.loadedPhyx,
+      phylogenies: state => state.phyx.currentPhyx.phylogenies,
+      display: state => state.ui.display,
+      selectedPhylogeny: state => state.ui.display.phylogeny,
+      selectedPhyloref: state => state.ui.display.phyloref,
+    })
+  },
 };
 </script>
 
