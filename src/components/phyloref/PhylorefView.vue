@@ -262,31 +262,10 @@
 
             <!-- Display the phylogeny -->
             <div
-              class="well"
+              class="card"
               style="margin-top: 1em"
             >
               <Phylotree :newick="phylogeny.newick" />
-            </div>
-          </div>
-          <div class="panel-footer">
-            <div
-              class="btn-group btn-group-justified"
-              role="group"
-              aria-label="Actions for phylogeny"
-            >
-              <!-- Dropdown button for vertical spacing -->
-              <div
-                class="btn-group"
-                role="group"
-              >
-                <button
-                  type="button"
-                  class="btn btn-default"
-                  @click="resetSVG(); renderTree('#phylogeny-svg-view-' + selectedPhylorefIndex + '-phylogeny-' + phylogenyIndex, phylogeny)"
-                >
-                  Refresh
-                </button>
-              </div>
             </div>
           </div>
         </div>
