@@ -67,7 +67,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .phylogeny {
   width: 100%;
 }
@@ -75,4 +75,109 @@ export default {
   /* Required for Vue-Resize to track its size */
   position: relative;
 }
+
+/*
+ * The following code is stolen from Bootstrap 3.3, which is a Phylotree.js
+ * dependency. Since we otherwise use Bootstrap 4+, we need to override this
+ * here so the menu works.
+ *
+ * We apply it only to subclasses of #d3_layout_phylotree_context_menu to limit
+ * their fallout on other elements.
+ */
+#d3_layout_phylotree_context_menu.dropdown-menu {
+ position: absolute;
+ top: 100%;
+ left: 0;
+ z-index: 1000;
+ display: none;
+ float: left;
+ min-width: 160px;
+ padding: 5px 0;
+ margin: 2px 0 0;
+ font-size: 14px;
+ text-align: left;
+ list-style: none;
+ background-color: #fff;
+ -webkit-background-clip: padding-box;
+         background-clip: padding-box;
+ border: 1px solid #ccc;
+ border: 1px solid rgba(0, 0, 0, .15);
+ border-radius: 4px;
+ -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+         box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+}
+#d3_layout_phylotree_context_menu.dropdown-menu.pull-right {
+ right: 0;
+ left: auto;
+}
+#d3_layout_phylotree_context_menu.dropdown-menu .divider {
+ height: 1px;
+ margin: 9px 0;
+ overflow: hidden;
+ background-color: #e5e5e5;
+}
+#d3_layout_phylotree_context_menu.dropdown-menu > li > a {
+ display: block;
+ padding: 3px 20px;
+ clear: both;
+ font-weight: normal;
+ line-height: 1.42857143;
+ color: #333;
+ white-space: nowrap;
+}
+#d3_layout_phylotree_context_menu.dropdown-menu > li > a:hover,
+#d3_layout_phylotree_context_menu.dropdown-menu > li > a:focus {
+ color: #262626;
+ text-decoration: none;
+ background-color: #f5f5f5;
+}
+#d3_layout_phylotree_context_menu.dropdown-menu > .active > a,
+#d3_layout_phylotree_context_menu.dropdown-menu > .active > a:hover,
+#d3_layout_phylotree_context_menu.dropdown-menu > .active > a:focus {
+ color: #fff;
+ text-decoration: none;
+ background-color: #337ab7;
+ outline: 0;
+}
+#d3_layout_phylotree_context_menu.dropdown-menu > .disabled > a,
+#d3_layout_phylotree_context_menu.dropdown-menu > .disabled > a:hover,
+#d3_layout_phylotree_context_menu.dropdown-menu > .disabled > a:focus {
+ color: #777;
+}
+#d3_layout_phylotree_context_menu.dropdown-menu > .disabled > a:hover,
+#d3_layout_phylotree_context_menu.dropdown-menu > .disabled > a:focus {
+ text-decoration: none;
+ cursor: not-allowed;
+ background-color: transparent;
+ background-image: none;
+ filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+}
+.open > #d3_layout_phylotree_context_menu.dropdown-menu {
+ display: block;
+}
+#d3_layout_phylotree_context_menu.dropdown-menu-right {
+ right: 0;
+ left: auto;
+}
+#d3_layout_phylotree_context_menu.dropdown-menu-left {
+ right: auto;
+ left: 0;
+}
+#d3_layout_phylotree_context_menu.dropdown-header {
+ display: block;
+ padding: 3px 20px;
+ font-size: 12px;
+ line-height: 1.42857143;
+ color: #777;
+ white-space: nowrap;
+}
+#d3_layout_phylotree_context_menu.dropdown-backdrop {
+ position: fixed;
+ top: 0;
+ right: 0;
+ bottom: 0;
+ left: 0;
+ z-index: 990;
+}
+
 </style>
