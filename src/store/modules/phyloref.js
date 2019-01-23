@@ -35,6 +35,29 @@ export default {
       payload.phyloref.externalSpecifiers.push({ referencesTaxonomicUnits: [{}] });
     },
 
+    deleteSpecifier(state, payload) {
+      if (!has(payload, 'phyloref')) {
+        throw new Error('deleteSpecifier needs a phyloref to modify using the "phyloref" argument');
+      }
+      if (!has(payload, 'specifier')) {
+        throw new Error('deleteSpecifier needs a specifier to delete using the "specifier" argument');
+      }
+
+      if (has(payload.phyloref, 'internalSpecifiers') && payload.phyloref.internalSpecifiers.includes(payload.specifier)) {
+        payload.phyloref.internalSpecifiers.splice(
+          payload.phyloref.internalSpecifiers.indexOf(payload.specifier),
+          1,
+        );
+      }
+
+      if (has(payload.phyloref, 'externalSpecifiers') && payload.phyloref.externalSpecifiers.includes(payload.specifier)) {
+        payload.phyloref.externalSpecifiers.splice(
+          payload.phyloref.externalSpecifiers.indexOf(payload.specifier),
+          1,
+        );
+      }
+    },
+
     // Modify specifier props.
     setSpecifierProps(state, payload) {
       if (!has(payload, 'specifier')) {
