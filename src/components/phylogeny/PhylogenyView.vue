@@ -71,14 +71,14 @@
 
     <!-- Display the list of errors encountered when parsing this Newick string -->
     <div
-      v-if="true || getPhylogenyParsingErrors(selectedPhylogeny).length !== 0"
-      class="card border-dark"
+      v-if="phylogenyNewickErrors.length !== 0"
+      class="card border-dark mt-2"
     >
-      <div class="card-header bg-danger">
+      <h5 class="card-header bg-danger">
         Errors occurred while parsing Newick string
-      </div>
+      </h5>
       <div class="card-body">
-        <template v-for="(error, errorIndex) of getPhylogenyParsingErrors(selectedPhylogeny)">
+        <template v-for="(error, errorIndex) of phylogenyNewickErrors">
           <p><strong>{{ error.title }}.</strong> {{ error.message }}</p>
         </template>
       </div>
@@ -86,14 +86,14 @@
 
     <!-- Display the phylogeny (unless there were Newick parsing errors) -->
     <div
-      v-if="true || getPhylogenyParsingErrors(selectedPhylogeny).length === 0"
-      class="card"
+      v-if="phylogenyNewickErrors.length === 0"
+      class="card mt-2"
     >
-      <div class="panel-heading">
+      <h5 class="card-header">
         Phylogeny visualization
-      </div>
+      </h5>
       <div class="card-body">
-        <Phylotree :newick="phylogenyNewick" />
+        <Phylotree :phylogeny="selectedPhylogeny" :newick="phylogenyNewick" />
       </div>
     </div>
   </div>
@@ -101,6 +101,7 @@
 
 <script>
 import { mapState } from 'vuex';
+import { parse as parseNewick } from 'newick-js';
 
 import ModifiedCard from '../cards/ModifiedCard.vue';
 import Phylotree from './Phylotree.vue';
@@ -120,6 +121,57 @@ export default {
     phylogenyNewick: {
       get() { return this.selectedPhylogeny.newick; },
       set(newick) { this.$store.commit('setPhylogenyProps', { phylogeny: this.selectedPhylogeny, newick }); },
+    },
+    phylogenyNewickErrors() {
+      // Given a Newick string, return a list of errors found in parsing this
+      // string. The errors are returned as a list of objects, each of which
+      // has two properties:
+      //  - title: A short title of the error, distinct for each type of error.
+      //  - message: A longer description of the error, which might include
+      //    information specific to a particular error.
+      //
+      // We try to order errors from most helpful ('Unbalanced parentheses in
+      // Newick string') to least helpful ('Error parsing phylogeny').
+      const newickTrimmed = this.selectedPhylogeny.newick.trim();
+      const errors = [];
+
+      // Look for an empty Newick string.
+      if (newickTrimmed === '' || newickTrimmed === '()' || newickTrimmed === '();') {
+        // None of the later errors are relevant here, so bail out now.
+        return [{
+          title: 'No phylogeny entered',
+          message: 'Click on "Edit as Newick" to enter a phylogeny below.',
+        }];
+      }
+
+      // Look for an unbalanced Newick string.
+      let parenLevels = 0;
+      for (let x = 0; x < newickTrimmed.length; x += 1) {
+        if (newickTrimmed[x] === '(') parenLevels += 1;
+        if (newickTrimmed[x] === ')') parenLevels -= 1;
+      }
+
+      if (parenLevels !== 0) {
+        errors.push({
+          title: 'Unbalanced parentheses in Newick string',
+          message: (parenLevels > 0
+            ? `You have ${parenLevels} too many open parentheses`
+            : `You have ${-parenLevels} too few open parentheses`
+          ),
+        });
+      }
+
+      // Finally, try parsing it with parseNewick and see if we get an error.
+      try {
+        parseNewick(newickTrimmed);
+      } catch (ex) {
+        errors.push({
+          title: 'Error parsing phylogeny',
+          message: `An error occured while parsing this phylogeny: ${ex.message}`,
+        });
+      }
+
+      return errors;
     },
     ...mapState({
       currentPhyx: state => state.phyx.currentPhyx,
