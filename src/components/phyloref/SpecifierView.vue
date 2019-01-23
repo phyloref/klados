@@ -3,28 +3,99 @@
     <!-- Add a warning if this phyloreference has changed -->
     <!-- TODO: change to be about specifiers -->
     <ModifiedCard
-      message="This phyloreference has been modified since being loaded! Use 'Save as JSON' to save your changes."
-      :compare="selectedPhyloref"
-      :compareTo="currentPhyx.phylorefs[currentPhyx.phylorefs.indexOf(selectedPhyloref)]"
+      message="This specifier has been modified since being loaded! Use 'Save as JSON' to save your changes."
+      :compare="selectedSpecifier"
+      :compareTo="loadedSpecifier"
     />
 
-    <!-- Panels with information on the current specifier -->
-    <template v-if="selectedSpecifier !== undefined">
-      <label
-        for="verbatim-specifier"
-        class="control-label"
-      >
-        Verbatim specifier
-      </label>
-      <input
-        id="verbatim-specifier"
-        v-model.trim="selectedSpecifier.verbatimSpecifier"
-        type="text"
-        class="form-control"
-        placeholder="Enter the verbatim description of this specifier"
-      >
+    <div class="card">
+      <h5 class="card-header">
+        Specifier
+      </h5>
+      <div class="card-body">
+        <div class="form-group row">
+          <label
+            for="specifier-type"
+            class="col-form-label col-md-2"
+          >
+            Specifier type
+          </label>
+          <div class="col-md-10">
+            <select id="specifier-type" class="form-control" v-model="specifierType">
+              <option>Internal specifier</option>
+              <option>External specifier</option>
+            </select>
+          </div>
+        </div>
 
-      <!-- List of taxonomic units -->
+        <div class="form-group row">
+          <label
+            for="verbatim-specifier"
+            class="col-form-label col-md-2"
+          >
+            Verbatim specifier
+          </label>
+          <div class="col-md-10">
+            <input
+              id="verbatim-specifier"
+              v-model.trim="selectedVerbatimSpecifier"
+              type="text"
+              class="form-control"
+              placeholder="Enter the verbatim description of this specifier"
+            />
+          </div>
+        </div>
+
+        <div class="card mb-2">
+          <h6 class="card-header">
+            Scientific names
+          </h6>
+          <div class="card-body">
+            <div v-for="(sciname, index) of selectedSpecifierFirstTUnit.scientificNames" class="input-group">
+              <input type="text" class="form-control" :value="sciname.scientificName" />
+            </div>
+            <input
+              type="text" class="form-control"
+              placeholder="Enter a new scientific name here."
+              v-model.lazy="addNewScientificName"
+            />
+          </div>
+        </div>
+
+        <div class="card mb-2">
+          <h6 class="card-header">
+            Specimens
+          </h6>
+          <div class="card-body">
+            <div v-for="(specimen, index) of selectedSpecifierFirstTUnit.includesSpecimens" class="input-group">
+              <input type="text" class="form-control" :value="specimen.occurrenceID" />
+            </div>
+            <input
+              type="text" class="form-control"
+              placeholder="Enter a new specimen identifier here."
+              v-model.lazy="addNewSpecimen"
+            />
+          </div>
+        </div>
+
+        <div class="card mb-2">
+          <h6 class="card-header">
+            External references
+          </h6>
+          <div class="card-body">
+            <div v-for="(extref, index) of selectedSpecifierFirstTUnit.externalReferences" class="input-group">
+              <input type="text" class="form-control" :value="extref" />
+            </div>
+            <input
+              type="text" class="form-control"
+              placeholder="Enter a new external reference URI here."
+              v-model.lazy="addNewExternalReference"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- List of taxonomic units
       <div
         id="tunits-panel"
         class="panel panel-info"
@@ -49,7 +120,7 @@
             for each type of identifier.
           </p>
 
-          <!-- Panel listing scientific names in this taxonomic unit -->
+          <!-- Panel listing scientific names in this taxonomic unit
           <div class="col-md-12">
             <div class="panel panel-default">
               <div class="panel-heading">
@@ -140,7 +211,7 @@
             </div>
           </div>
 
-          <!-- Panel listing external references in this taxonomic unit -->
+          <!-- Panel listing external references in this taxonomic unit
           <div class="col-md-6">
             <div class="panel panel-default">
               <div class="panel-heading">
@@ -195,7 +266,7 @@
             </div>
           </div>
 
-          <!-- Panel listing specimens in this taxonomic unit -->
+          <!-- Panel listing specimens in this taxonomic unit
           <div class="col-md-6">
             <div class="panel panel-default">
               <div class="panel-heading">
@@ -287,7 +358,7 @@
           </div>
         </div>
 
-        <!-- List of taxonomic units, including the option to add new taxonomic units -->
+        <!-- List of taxonomic units, including the option to add new taxonomic units
         <div class="list-group">
           <!--
           <div
@@ -322,6 +393,7 @@
 </template>
 
 <script>
+import { has } from 'lodash';
 import { mapState } from 'vuex';
 import SpecifierDiv from '../phyloref/SpecifierDiv.vue';
 import ModifiedCard from '../cards/ModifiedCard.vue';
@@ -332,15 +404,87 @@ export default {
     ModifiedCard,
     SpecifierDiv,
   },
-  computed: mapState({
-    currentPhyx: state => state.phyx.currentPhyx,
-    loadedPhyx: state => state.phyx.loadedPhyx,
-    phylogenies: state => state.phyx.currentPhyx.phylogenies,
-    selectedPhylogeny: state => state.ui.display.phylogeny,
-    selectedPhyloref: state => state.ui.display.phyloref,
-    selectedSpecifier: state => state.ui.display.specifier,
-    selectedTUnit: state => state.ui.display.tunit,
-  }),
+  computed: {
+    loadedSpecifier: function () {
+      const loadedPhyx = this.loadedPhyx;
+      const currentPhyx = this.currentPhyx;
+      const loadedPhyloref = loadedPhyx.phylorefs[currentPhyx.phylorefs.indexOf(this.selectedPhyloref)];
+      if (loadedPhyloref === undefined) return undefined;
+      if (has(this.selectedPhyloref, 'internalSpecifiers') && this.selectedPhyloref.internalSpecifiers.includes(this.selectedSpecifier))
+        return loadedPhyloref.internalSpecifiers[this.selectedPhyloref.internalSpecifiers.indexOf(this.selectedSpecifier)];
+      if (has(this.selectedPhyloref, 'externalSpecifiers') && this.selectedPhyloref.externalSpecifiers.includes(this.selectedSpecifier))
+        return loadedPhyloref.externalSpecifiers[this.selectedPhyloref.externalSpecifiers.indexOf(this.selectedSpecifier)];
+      return undefined;
+    },
+    specifierType: {
+      get() {
+        if(has(this.selectedPhyloref, 'internalSpecifiers') && this.selectedPhyloref.internalSpecifiers.includes(this.selectedSpecifier))
+          return "Internal specifier";
+        if(has(this.selectedPhyloref, 'externalSpecifiers') && this.selectedPhyloref.externalSpecifiers.includes(this.selectedSpecifier))
+          return "External specifier";
+        return undefined;
+      },
+      set(type) {
+        if (type == "Internal specifier") {
+          this.$store.commit('setSpecifierType', { phyloref: this.selectedPhyloref, specifier: this.selectedSpecifier, specifierType: 'internal' });
+        } else if (type == "External specifier") {
+          this.$store.commit('setSpecifierType', { phyloref: this.selectedPhyloref, specifier: this.selectedSpecifier, specifierType: 'external' });
+        } else {
+          throw new Error(`Unknown specifier type: ${type}`);
+        }
+      },
+    },
+    selectedVerbatimSpecifier: {
+      get() { return this.selectedSpecifier.verbatimSpecifier; },
+      set(verbatimSpecifier) { this.$store.commit('setSpecifierProps', { specifier: this.selectedSpecifier, verbatimSpecifier }); },
+    },
+    selectedSpecifierFirstTUnit: {
+      // This is a temporary hack to reconcile the new single-tunit-to-specifier model
+      // and the existing multiple-tunits-for-each-specifier model. This computed value
+      // will return the first tunit and will later be replaced with selectedSpecifier.
+      get() {
+        // TODO remove hack.
+        if(!has(this.selectedSpecifier, 'referencesTaxonomicUnits')) this.selectedSpecifier.referencesTaxonomicUnits = [{}];
+        return this.selectedSpecifier.referencesTaxonomicUnits[0];
+      }
+    },
+    addNewScientificName: {
+      get() {
+        return "";
+      },
+      set(scientificName) {
+        if(scientificName.trim() === '') return;
+        this.$store.commit('addToSpecifier', { specifier: this.selectedSpecifierFirstTUnit, scientificName: { scientificName } });
+      },
+    },
+    addNewSpecimen: {
+      get() {
+        return "";
+      },
+      set(occurrenceID) {
+        if(occurrenceID.trim() === '') return;
+        this.$store.commit('addToSpecifier', { specifier: this.selectedSpecifierFirstTUnit, specimen: { occurrenceID } });
+      },
+    },
+    addNewExternalReference: {
+      get() {
+        return "";
+      },
+      set(extref) {
+        if(extref.trim() === '') return;
+        this.$store.commit('addToSpecifier', { specifier: this.selectedSpecifierFirstTUnit, externalReference: extref });
+      },
+    },
+    ...mapState({
+      currentPhyx: state => state.phyx.currentPhyx,
+      loadedPhyx: state => state.phyx.loadedPhyx,
+      phylogenies: state => state.phyx.currentPhyx.phylogenies,
+      selectedPhylogeny: state => state.ui.display.phylogeny,
+      selectedPhyloref: state => state.ui.display.phyloref,
+      selectedSpecifier: state => state.ui.display.specifier,
+      selectedTUnit: state => state.ui.display.tunit,
+    }),
+  },
 };
 </script>
 

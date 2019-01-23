@@ -131,6 +131,13 @@
             >
               &#9679; <strong>External:</strong> <SpecifierLabel :specifier="specifier" />
             </a>
+            <a
+              href="javascript: void(0)"
+              class="list-group-item list-group-item-action"
+              @click="$store.commit('addSpecifier', { phyloref })"
+            >
+              &#9679; <em>Add specifier</em>
+            </a>
           </template>
         </template>
 
@@ -223,7 +230,7 @@ export default {
       phylogenies: state => state.phyx.currentPhyx.phylogenies,
       selectedPhyloref: state => state.ui.display.phyloref,
       selectedPhylogeny: state => state.ui.display.phylogeny,
-      selectedSpecifier: state => state.ui.display.selectedSpecifier,
+      selectedSpecifier: state => state.ui.display.specifier,
     }),
   },
   methods: {
