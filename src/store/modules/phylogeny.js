@@ -11,8 +11,8 @@ export default {
       if (!has(payload, 'phylogeny')) {
         throw new Error('setPhylogenyProps needs a phylogeny to modify using the "phylogeny" argument');
       }
-      if (has(payload, 'title')) {
-        Vue.set(payload.phylogeny, 'title', payload.title);
+      if (has(payload, 'label')) {
+        Vue.set(payload.phylogeny, 'label', payload.label);
       }
       if (has(payload, 'description')) {
         Vue.set(payload.phylogeny, 'description', payload.description);

@@ -15,18 +15,18 @@
         <form>
           <div class="form-group row">
             <label
-              for="phylogenyTitle"
+              for="phylogenyLabel"
               class="col-md-2 col-form-label"
             >
-              Title
+              Label
             </label>
             <div class="col-md-10">
               <input
-                id="phylogenyTitle"
-                v-model.trim="phylogenyTitle"
+                id="phylogenyLabel"
+                v-model.trim="phylogenyLabel"
                 type="text"
                 class="form-control"
-                placeholder="Enter phylogeny title"
+                placeholder="Enter phylogeny name"
               >
             </div>
           </div>
@@ -206,9 +206,9 @@ export default {
   name: 'PhylogenyView',
   components: { ModifiedCard, Phylotree },
   computed: {
-    phylogenyTitle: {
-      get() { return this.$store.state.ui.display.phylogeny.title; },
-      set(title) { this.$store.commit('setPhylogenyProps', { phylogeny: this.$store.state.ui.display.phylogeny, title }); },
+    phylogenyLabel: {
+      get() { return this.selectedPhylogeny.label; },
+      set(label) { this.$store.commit('setPhylogenyProps', { phylogeny: this.selectedPhylogeny, label }); },
     },
     phylogenyDescription: {
       get() { return this.$store.state.ui.display.phylogeny.description; },

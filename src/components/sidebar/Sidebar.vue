@@ -148,7 +148,7 @@
               <template v-else>
                 node expected
               </template>-->
-              in {{ phylogeny.label || `Phylogeny ${phylogenyIndex}` }}
+              in {{ phylogeny.label || `Phylogeny ${phylogenyIndex + 1}` }}
             </a>
           </template>
         </template>
@@ -180,7 +180,7 @@
           :class="{active: selectedPhylogeny === phylogeny}"
           @click="$store.commit('changeDisplay', {phylogeny})"
         >
-          {{ phylogeny.description || 'Phylogeny ' + (phylogenyIndex + 1) }}
+          {{ phylogeny.label || `Phylogeny ${phylogenyIndex + 1}` }}
 
           <!-- Add a warning if this phylogeny has changed -->
           <ModifiedIcon
