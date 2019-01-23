@@ -77,6 +77,7 @@ export default {
 #wrapper {
   padding-top: 64px;
   padding-left: 250px;
+  margin-bottom: 10px;
   transition: all 0.4s ease 0s;
 }
 
@@ -84,9 +85,11 @@ export default {
   font-size: 80%;
   margin-left: -250px;
   padding: 0px 5px;
+  position: fixed;
+  padding-top: 64px;
+  bottom: 0px;
   left: 250px;
   width: 250px;
-  position: fixed;
   height: 100%;
   overflow-y: auto;
   z-index: 1000;
