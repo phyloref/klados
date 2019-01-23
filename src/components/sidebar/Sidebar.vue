@@ -91,7 +91,7 @@
         <template v-for="(phyloref, phylorefIndex) of phylorefs">
           <a
             href="javascript: void(0)"
-            class="list-group-item list-group-item-action"
+            class="h6 list-group-item list-group-item-action border-dark"
             :class="{active: selectedPhyloref === phyloref}"
             @click="$store.commit('changeDisplay', {phyloref})"
           >
@@ -116,7 +116,7 @@
               v-for="(specifier, specifierIndex) of phyloref.internalSpecifiers"
               href="javascript: void(0)"
               class="list-group-item list-group-item-action"
-              :class="{active: selectedSpecifier === specifier}"
+              :class="{'active border-dark': selectedSpecifier === specifier}"
               @click="$store.commit('changeDisplay', { phyloref, specifier })"
             >
               &#9679; <strong>Internal:</strong> <SpecifierLabel :specifier="specifier" />
@@ -125,8 +125,8 @@
             <a
               v-for="(specifier, specifierIndex) of phyloref.externalSpecifiers"
               href="javascript: void(0)"
-              class="list-group-item list-group-item-action"
-              :class="{active: selectedSpecifier === specifier}"
+              class="list-group-item list-group-item-action border-white"
+              :class="{'active border-dark': selectedSpecifier === specifier}"
               @click="$store.commit('changeDisplay', { phyloref, specifier })"
             >
               &#9679; <strong>External:</strong> <SpecifierLabel :specifier="specifier" />
@@ -143,7 +143,7 @@
 
         <!-- Let users add phyloreferences directly from the sidebar -->
         <a
-          class="list-group-item list-group-item-action"
+          class="list-group-item list-group-item-action border-dark"
           href="javascript: void(0)"
           @click="$store.commit('createEmptyPhyloref')"
         >
@@ -164,7 +164,7 @@
         <a
           v-for="(phylogeny, phylogenyIndex) of phylogenies"
           href="javascript: void(0)"
-          class="list-group-item list-group-item-action"
+          class="list-group-item list-group-item-action border-dark"
           :class="{active: selectedPhylogeny === phylogeny}"
           @click="$store.commit('changeDisplay', {phylogeny})"
         >
@@ -178,7 +178,7 @@
           />
         </a>
         <a
-          class="list-group-item list-group-item-action"
+          class="list-group-item list-group-item-action border-dark"
           href="javascript: void(0)"
           @click="$store.commit('createEmptyPhylogeny')"
         >
