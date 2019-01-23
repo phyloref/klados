@@ -51,14 +51,27 @@
             Scientific names
           </h6>
           <div class="card-body">
-            <div v-for="(sciname, index) of selectedSpecifierFirstTUnit.scientificNames" class="input-group">
-              <input type="text" class="form-control" :value="sciname.scientificName" />
+            <div v-for="(sciname, index) of selectedSpecifierFirstTUnit.scientificNames">
+              <div :id="`sciname_${index}`" class="sciname">
+                <div class="input-group">
+                  <input type="text" class="form-control" :value="sciname.scientificName" />
+                  <div class="input-group-append">
+                    <button class="btn btn-outline-secondary details" type="button" onclick="$(this).parents().filter('.sciname').find('.details').toggleClass('d-none')">Show details</button>
+                    <button class="btn btn-outline-secondary details d-none" type="button" onclick="$(this).parents().filter('.sciname').find('.details').toggleClass('d-none')">Hide details</button>
+                  </div>
+                </div>
+                <ul class="details d-none">
+                  <li>Scientific name: TODO</li>
+                  <li>Genus: TODO</li>
+                  <li>Specific epithet: TODO</li>
+                </ul>
+              </div>
+              <input
+                type="text" class="form-control"
+                placeholder="Enter a new scientific name here."
+                v-model.lazy="addNewScientificName"
+              />
             </div>
-            <input
-              type="text" class="form-control"
-              placeholder="Enter a new scientific name here."
-              v-model.lazy="addNewScientificName"
-            />
           </div>
         </div>
 
@@ -69,6 +82,9 @@
           <div class="card-body">
             <div v-for="(specimen, index) of selectedSpecifierFirstTUnit.includesSpecimens" class="input-group">
               <input type="text" class="form-control" :value="specimen.occurrenceID" />
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="button">Show details</button>
+              </div>
             </div>
             <input
               type="text" class="form-control"
@@ -85,6 +101,9 @@
           <div class="card-body">
             <div v-for="(extref, index) of selectedSpecifierFirstTUnit.externalReferences" class="input-group">
               <input type="text" class="form-control" :value="extref" />
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="button">Show details</button>
+              </div>
             </div>
             <input
               type="text" class="form-control"
