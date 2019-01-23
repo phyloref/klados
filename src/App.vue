@@ -135,15 +135,6 @@ export default {
 .terminal-node-without-tunits {
 }
 
-/* Labels for internal nodes, whether phylorefs or not */
-.internal-label {
-    font-family: serif;
-    font-size: 12pt;
-    font-style: italic;
-
-    text-anchor: end; /* Align text so it ends at the coordinates provided */
-}
-
 /* The selected internal label on a phylogeny, whether determined to be the pinning node or not. */
 .selected-internal-label {
     font-size: 16pt;
