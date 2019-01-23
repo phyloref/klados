@@ -131,25 +131,6 @@
             >
               &#9679; <strong>External:</strong> <SpecifierLabel :specifier="specifier" />
             </a>
-
-            <!-- Display phylogenies -->
-            <a
-              v-for="(phylogeny, phylogenyIndex) of phylogenies"
-              class="list-group-item list-group-item-action"
-              :class="{active: selectedPhylogeny === phylogeny}"
-              href="javascript: void(0)"
-              @click="$store.commit('changeDisplay', {phyloref, phylogeny})"
-            >
-              &#9679; <strong>Phylogeny:</strong>
-              <!--
-              <template v-if="getPhylorefExpectedNodeLabels(phylogeny, selectedPhyloref).length < 1">
-                no expected node
-              </template>
-              <template v-else>
-                node expected
-              </template>-->
-              in {{ phylogeny.label || `Phylogeny ${phylogenyIndex + 1}` }}
-            </a>
           </template>
         </template>
 
