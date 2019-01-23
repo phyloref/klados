@@ -72,125 +72,28 @@
     <!-- Display the list of errors encountered when parsing this Newick string -->
     <div
       v-if="true || getPhylogenyParsingErrors(selectedPhylogeny).length !== 0"
-      class="panel panel-warning"
+      class="card border-dark"
     >
-      <div class="panel-heading">
+      <div class="card-header bg-danger">
         Errors occurred while parsing Newick string
       </div>
-      <div class="panel-body">
-        <!-- template v-for="(error, errorIndex) of getPhylogenyParsingErrors(selectedPhylogeny)">
+      <div class="card-body">
+        <template v-for="(error, errorIndex) of getPhylogenyParsingErrors(selectedPhylogeny)">
           <p><strong>{{ error.title }}.</strong> {{ error.message }}</p>
-        </template> -->
+        </template>
       </div>
     </div>
 
     <!-- Display the phylogeny (unless there were Newick parsing errors) -->
     <div
       v-if="true || getPhylogenyParsingErrors(selectedPhylogeny).length === 0"
-      class="panel panel-info"
+      class="card"
     >
       <div class="panel-heading">
         Phylogeny visualization
       </div>
-      <div class="panel-body">
+      <div class="card-body">
         <Phylotree :newick="phylogenyNewick" />
-      </div>
-      <div class="panel-footer">
-        <div
-          class="btn-group btn-group-justified"
-          role="group"
-          aria-label="Actions for phylogeny"
-        >
-          <!-- Refresh phylogeny -->
-          <a
-            href="javascript: void(0)"
-            class="btn btn-default"
-            @click="resetSVG(); renderTree('#phylogeny-svg-' + selectedPhylogenyIndex, selectedPhylogeny)"
-          >
-            Refresh
-          </a>
-
-          <!-- Dropdown button for vertical spacing -->
-          <div
-            class="btn-group"
-            role="group"
-          >
-            <button
-              type="button"
-              class="btn btn-default dropdown-toggle"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              Vertical spacing: getPhylogenySpacingX(selectedPhylogenyIndex) px <span class="caret" />
-            </button>
-            <ul class="dropdown-menu">
-              <li>
-                <a
-                  :href="'#phylogeny-' + selectedPhylogenyIndex + '-footer'"
-                  @click="changePhylogenySpacingX(selectedPhylogenyIndex, +10)"
-                >
-                  Increase scale
-                </a>
-              </li>
-              <li>
-                <a
-                  :href="'#phylogeny-' + selectedPhylogenyIndex + '-footer'"
-                  @click="changePhylogenySpacingX(selectedPhylogenyIndex, -10)"
-                >
-                  Decrease scale
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          <!-- Dropdown button for horizontal spacing -->
-          <div
-            class="btn-group"
-            role="group"
-          >
-            <button
-              type="button"
-              class="btn btn-default dropdown-toggle"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              Horizontal spacing: getPhylogenySpacingY(selectedPhylogenyIndex) px <span class="caret" />
-            </button>
-            <ul class="dropdown-menu">
-              <li>
-                <a
-                  :href="'#phylogeny-' + selectedPhylogenyIndex + '-footer'"
-                  @click="changePhylogenySpacingY(selectedPhylogenyIndex, +10)"
-                >
-                  Increase scale
-                </a>
-              </li>
-              <li>
-                <a
-                  :href="'#phylogeny-' + selectedPhylogenyIndex + '-footer'"
-                  @click="changePhylogenySpacingY(selectedPhylogenyIndex, -10)"
-                >
-                  Decrease scale
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          <!--
-        <a class="btn btn-default" :href="'#phylogeny-' + phylogenyIndex" @click="editingAnnotationsForPhylogeny = (editingAnnotationsForPhylogeny === phylogeny ? undefined : phylogeny)" class="btn btn-default">Edit annotations</a>
-      -->
-
-          <!-- Button to delete this phylogeny -->
-          <a
-            class="btn btn-danger"
-            :href="'#phylogeny-' + selectedPhylogenyIndex"
-            @click="confirm('Are you sure you want to permanently delete this phylogeny?', () => phylogenies.splice(selectedPhylogenyIndex, 1))"
-          >
-            Delete phylogeny
-          </a>
-        </div>
       </div>
     </div>
   </div>
@@ -211,12 +114,12 @@ export default {
       set(label) { this.$store.commit('setPhylogenyProps', { phylogeny: this.selectedPhylogeny, label }); },
     },
     phylogenyDescription: {
-      get() { return this.$store.state.ui.display.phylogeny.description; },
-      set(description) { this.$store.commit('setPhylogenyProps', { phylogeny: this.$store.state.ui.display.phylogeny, description }); },
+      get() { return this.selectedPhylogeny.description; },
+      set(description) { this.$store.commit('setPhylogenyProps', { phylogeny: this.selectedPhylogeny, description }); },
     },
     phylogenyNewick: {
-      get() { return this.$store.state.ui.display.phylogeny.newick; },
-      set(newick) { this.$store.commit('setPhylogenyProps', { phylogeny: this.$store.state.ui.display.phylogeny, newick }); },
+      get() { return this.selectedPhylogeny.newick; },
+      set(newick) { this.$store.commit('setPhylogenyProps', { phylogeny: this.selectedPhylogeny, newick }); },
     },
     ...mapState({
       currentPhyx: state => state.phyx.currentPhyx,
