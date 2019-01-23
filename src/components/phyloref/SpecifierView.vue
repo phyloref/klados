@@ -52,12 +52,13 @@
           </h6>
           <div class="card-body">
             <div v-for="(sciname, index) of selectedSpecifierFirstTUnit.scientificNames">
-              <div :id="`sciname_${index}`" class="sciname">
+              <div class="sciname">
                 <div class="input-group">
                   <input type="text" class="form-control" :value="sciname.scientificName" />
                   <div class="input-group-append">
                     <button class="btn btn-outline-secondary details" type="button" onclick="$(this).parents().filter('.sciname').find('.details').toggleClass('d-none')">Show details</button>
                     <button class="btn btn-outline-secondary details d-none" type="button" onclick="$(this).parents().filter('.sciname').find('.details').toggleClass('d-none')">Hide details</button>
+                    <button class="btn btn-outline-danger" type="button" @click="$store.commit('deleteFromSpecifier', {specifier: selectedSpecifierFirstTUnit, scientificName: sciname})">&cross;</button>
                   </div>
                 </div>
                 <ul class="details d-none">
@@ -66,12 +67,12 @@
                   <li>Specific epithet: TODO</li>
                 </ul>
               </div>
-              <input
-                type="text" class="form-control"
-                placeholder="Enter a new scientific name here."
-                v-model.lazy="addNewScientificName"
-              />
             </div>
+            <input
+              type="text" class="form-control"
+              placeholder="Enter a new scientific name here."
+              v-model.lazy="addNewScientificName"
+            />
           </div>
         </div>
 
@@ -84,6 +85,7 @@
               <input type="text" class="form-control" :value="specimen.occurrenceID" />
               <div class="input-group-append">
                 <button class="btn btn-outline-secondary" type="button">Show details</button>
+                <button class="btn btn-outline-danger" type="button" @click="$store.commit('deleteFromSpecifier', {specifier: selectedSpecifierFirstTUnit, specimen})">&cross;</button>
               </div>
             </div>
             <input
@@ -103,6 +105,7 @@
               <input type="text" class="form-control" :value="extref" />
               <div class="input-group-append">
                 <button class="btn btn-outline-secondary" type="button">Show details</button>
+                <button class="btn btn-outline-danger" type="button" @click="$store.commit('deleteFromSpecifier', {specifier: selectedSpecifierFirstTUnit, externalReference: extref})">&cross;</button>
               </div>
             </div>
             <input

@@ -114,5 +114,38 @@ export default {
         payload.specifier.scientificNames.push(payload.scientificName);
       }
     },
+
+    deleteFromSpecifier(state, payload) {
+      if (!has(payload, 'specifier')) {
+        throw new Error('deleteFromSpecifier needs a specifier to modify using the "specifier" argument');
+      }
+      if (has(payload, 'scientificName')) {
+        if (!has(payload.specifier, 'scientificNames')) Vue.set(payload.specifier, 'scientificNames', []);
+        if (payload.specifier.scientificNames.includes(payload.scientificName)) {
+          payload.specifier.scientificNames.splice(
+            payload.specifier.scientificNames.indexOf(payload.scientificName),
+            1,
+          );
+        }
+      }
+      if (has(payload, 'specimen')) {
+        if (!has(payload.specifier, 'includesSpecimens')) Vue.set(payload.specifier, 'includesSpecimens', []);
+        if (payload.specifier.includesSpecimens.includes(payload.specimen)) {
+          payload.specifier.includesSpecimens.splice(
+            payload.specifier.includesSpecimens.indexOf(payload.specimen),
+            1,
+          );
+        }
+      }
+      if (has(payload, 'externalReference')) {
+        if (!has(payload.specifier, 'externalReferences')) Vue.set(payload.specifier, 'externalReferences', []);
+        if (payload.specifier.externalReferences.includes(payload.externalReference)) {
+          payload.specifier.externalReferences.splice(
+            payload.specifier.externalReferences.indexOf(payload.externalReference),
+            1,
+          );
+        }
+      }
+    },
   },
 };
