@@ -19,6 +19,8 @@
 </template>
 
 <script>
+import { uniqueId, has } from 'lodash';
+
 /*
  * Note that this requires the Phylotree Javascript to be loaded in the HTML
  * header: I haven't figured out how to include phylotree.js from within Vue CLI.
@@ -42,24 +44,21 @@ export default {
     },
   },
   data () { return {
-    uniqueId: _.uniqueId('phylotree-svg-'),
-    newickError: undefined
+    uniqueId: uniqueId('phylotree-svg-'),
   }},
   computed: {
     newickAsString () { return this.newick; },
-  },
-  mounted () {
-    // Check to see if the newick could actually be parsed.
-    const parsed = d3.layout.newick_parser(this.newick);
-    if (!_.has(parsed, 'json') || parsed.json === null) {
-      this.newickError = (_.has(parsed, 'error') ? parsed.error : 'unknown error');
-    }
-
-    // Redraw the tree.
-    this.redrawTree();
-  },
-  methods: {
-    redrawTree () {
+    parsedNewick () {
+      return d3.layout.newick_parser(this.newick);
+    },
+    newickErrors () {
+      // Check to see if the newick could actually be parsed.
+      if (!has(this.parsedNewick, 'json') || this.parsedNewick.json === null) {
+        return (has(this.parsedNewick, 'error') ? this.parsedNewick.error : 'unknown error');
+      }
+      return undefined;
+    },
+    tree () {
       // Set up Phylotree.
       const tree = d3.layout.phylotree()
         .svg(d3.select(`#${this.uniqueId}`))
@@ -69,9 +68,18 @@ export default {
           'left-offset': 100, // So we have space to display a long label on the root node.
           'left-right-spacing': 'fit-to-size',
           'top-bottom-spacing': 'fixed-step',
-        })
+        });
       tree(this.newick || '()');
-      tree
+      return tree;
+    },
+  },
+  mounted () {
+    // Redraw the tree.
+    this.redrawTree();
+  },
+  methods: {
+    redrawTree () {
+      this.tree
         .size([
           // height
           0,
