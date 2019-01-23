@@ -125,7 +125,7 @@
             <a
               v-for="(specifier, specifierIndex) of phyloref.externalSpecifiers"
               href="javascript: void(0)"
-              class="list-group-item list-group-item-action border-white"
+              class="list-group-item list-group-item-action"
               :class="{'active border-dark': selectedSpecifier === specifier}"
               @click="$store.commit('changeDisplay', { phyloref, specifier })"
             >
