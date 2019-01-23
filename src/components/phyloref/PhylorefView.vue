@@ -85,7 +85,7 @@
       <template v-if="selectedPhylogeny === undefined || selectedPhylogeny === phylogeny">
         <div class="card mt-2">
           <h5 class="card-header">
-            Expected and actual resolution <span v-if="display.phylogeny">of getPhylorefTitle(phyloref)</span> on getPhylogenyLabel(phylogeny)
+            Expected and actual resolution <span v-if="display.phylogeny">of {{phyloref.label || 'unlabeled phyloreference'}}</span> on {{phylogeny.label || `Phylogeny ${phylogenyIndex + 1}`}}
           </h5>
           <div class="card-body">
             <!-- Node(s) this phyloreference is expected to resolve to -->
