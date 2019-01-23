@@ -116,6 +116,7 @@
           </div>
         </div>
 
+        <a href="javascript: void(0)" class="btn btn-secondary mr-2" @click="$store.commit('changeDisplay', { phyloref: selectedPhyloref })">Close specifier view</a>
         <a href="javascript: void(0)" class="btn btn-danger" @click="$store.commit('deleteSpecifier', { phyloref: selectedPhyloref, specifier: selectedSpecifier })">Delete specifier</a>
       </div>
 
