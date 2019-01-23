@@ -1,10 +1,20 @@
 <template>
-  <div class="phylotreeContainer">
-    <svg
-      :id="uniqueId"
-      class="col-md-12 phylogeny"
-    />
-    <resize-observer @notify="redrawTree()" />
+  <div>
+    <template v-if="newickError">
+      <p>
+        <strong>Error parsing phylogeny.</strong>
+        Please
+        <a href="javascript: void" @click="$store.commit('changeDisplay', {phylogeny})">edit the phylogeny</a>
+        to fix this error.
+      </p>
+    </template>
+    <div v-else class="phylotreeContainer">
+      <svg
+        :id="uniqueId"
+        class="col-md-12 phylogeny"
+      />
+      <resize-observer @notify="redrawTree()" />
+    </div>
   </div>
 </template>
 
@@ -17,6 +27,7 @@
 export default {
   name: 'Phylotree',
   props: {
+    phylogeny: Object,
     newick: {
       type: String,
       default: '()',
@@ -32,11 +43,19 @@ export default {
   },
   data () { return {
     uniqueId: _.uniqueId('phylotree-svg-'),
+    newickError: undefined
   }},
   computed: {
     newickAsString () { return this.newick; },
   },
   mounted () {
+    // Check to see if the newick could actually be parsed.
+    const parsed = d3.layout.newick_parser(this.newick);
+    if (!_.has(parsed, 'json') || parsed.json === null) {
+      this.newickError = (_.has(parsed, 'error') ? parsed.error : 'unknown error');
+    }
+
+    // Redraw the tree.
     this.redrawTree();
   },
   methods: {
