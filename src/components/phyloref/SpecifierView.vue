@@ -115,6 +115,8 @@
             />
           </div>
         </div>
+
+        <a href="javascript: void(0)" class="btn btn-danger" @click="$store.commit('deleteSpecifier', { phyloref: selectedPhyloref, specifier: selectedSpecifier })">Delete specifier</a>
       </div>
 
       <!-- List of taxonomic units
