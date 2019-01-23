@@ -1,6 +1,6 @@
 <template>
   <div>
-    <template v-if="newickError">
+    <template v-if="newickErrors">
       <p>
         <strong>Error parsing phylogeny.</strong>
         Please
@@ -65,9 +65,30 @@ export default {
         .options({
           'internal-names': true,
           transitions: false,
-          'left-offset': 100, // So we have space to display a long label on the root node.
           'left-right-spacing': 'fit-to-size',
           'top-bottom-spacing': 'fixed-step',
+        })
+        .style_nodes((element, data) => {
+          // Instructions used to style nodes in Phylotree
+          // - element: The D3 element of the node being styled
+          // - data: The data associated with the node being styled
+
+          // Make sure we don't already have an internal label node on this SVG node!
+          let textLabel = element.selectAll('text');
+
+          if (has(data, 'name') && data.name !== '' && data.children) {
+            // If the node has a label and has children (i.e. is an internal node),
+            // we display it next to the node by creating a new 'text' element.
+            if (textLabel.empty()) {
+              textLabel = element.append('text');
+
+              // Place internal label to the left of the root node.
+              textLabel.classed('internal-label', true)
+                .text(data.name)
+                .attr('dx', '.3em')
+                .attr('dy', '.3em');
+            }
+          }
         });
       tree(this.newick || '()');
       return tree;
@@ -101,6 +122,15 @@ export default {
 .phylotreeContainer {
   /* Required for Vue-Resize to track its size */
   position: relative;
+}
+
+/* Labels for internal nodes, whether phylorefs or not */
+.internal-label {
+    font-family: serif;
+    font-size: 14pt;
+    font-style: italic;
+
+    text-anchor: start; /* Align text so it ends at the coordinates provided */
 }
 
 /*
