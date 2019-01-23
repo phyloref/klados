@@ -19,6 +19,7 @@
     "bootstrap-vue": "^2.0.0-rc.11",
     "jquery": "^3.3.1",
     "lodash": "^4.17.11",
+    "newick-js": "^1.1.0",
     "popper.js": "^1.14.6",
     "vue": "^2.5.17",
     "vue-resize": "^0.4.5",
