@@ -5,6 +5,7 @@
 import Vue from 'vue';
 import { parse as parseNewick } from 'newick-js';
 import { has } from 'lodash';
+import { TaxonomicUnitMatcher } from 'phyx.js';
 
 export default {
   getters: {
