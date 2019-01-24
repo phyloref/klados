@@ -346,6 +346,9 @@ export default {
       // Reason over all the phyloreferences and store the results on
       // the Vue model at vm.reasoningResults so we can access them.
 
+      // Are we already reasoning? If so, ignore.
+      if(this.reasoningInProgress) return;
+
       // Disable "Reason" buttons so they can't be reused.
       this.reasoningInProgress = true;
       $.post('http://localhost:34214/reason', {
