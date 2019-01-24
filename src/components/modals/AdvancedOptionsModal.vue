@@ -73,6 +73,9 @@
 </template>
 
 <script>
+import { PHYXWrapper } from 'phyx.js';
+import { saveAs } from 'filesaver.js-npm';
+
 export default {
   name: 'AdvancedOptionsPanel',
   data() {
@@ -96,10 +99,17 @@ export default {
       },
     },
   },
+  methods: {
+    downloadAsJSONLD() {
+      // Exports the PHYX file as an OWL/JSON-LD file, which can be opened in
+      // Protege or converted into OWL/XML or other formats.
+      const wrapped = new PHYXWrapper(this.$store.state.phyx.currentPhyx);
+      const content = [JSON.stringify([wrapped.asJSONLD()], undefined, 4)];
+
+      // Save to local hard drive.
+      const jsonldFile = new File(content, 'download.jsonld', { type: 'application/json;charset=utf-8' });
+      saveAs(jsonldFile);
+    },
+  },
 };
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-
-</style>
