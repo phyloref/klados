@@ -71,7 +71,7 @@ export default {
       // Recurse through all children of this node.
       if (has(node, 'children')) {
         node.children.forEach((child) => {
-          nextID = recurseNodes(
+          nextID = this.recurseNodes(
             child,
             func,
             nextID,
@@ -81,6 +81,18 @@ export default {
       }
 
       return nextID;
+    },
+    redrawTree () {
+      this.tree
+        .size([
+          // height
+          0,
+          // width
+          $(`#${this.uniqueId}`).width() - 40 // We need more space because our fonts are bigger than the default.
+        ])
+        .spacing_x(this.spacingX)
+        .spacing_y(this.spacingY)
+        .update();
     },
   },
   computed: {
@@ -197,12 +209,12 @@ export default {
 
             if (tunits.length === 0) {
               element.classed('terminal-node-without-tunits', true);
-            } else if (this.selectedPhyloref !== undefined) {
+            } else if (this.phyloref !== undefined) {
               // If this is a terminal node, we should set its ID to
               // `current_expected_label_phylogeny${phylogenyIndex}` if it is
               // the currently expected node label.
               if (
-                has(this.selectedPhyloref, 'label') &&
+                has(this.phyloref, 'label') &&
                 this.$store.getters.getExpectedNodeLabelsOnPhylogeny(this.phylogeny, this.phyloref)
                   .includes(data.name)
               ) {
@@ -210,20 +222,20 @@ export default {
               }
 
               // We should highlight internal specifiers.
-              if (has(this.selectedPhyloref, 'internalSpecifiers')) {
-                if (this.selectedPhyloref.internalSpecifiers
-                  .some(specifier => this.$store.getters.getNodeLabelsMatchedBySpecifier(this.phylogeny, specifier))
-                    .includes(data.name)
+              if (has(this.phyloref, 'internalSpecifiers')) {
+                if (this.phyloref.internalSpecifiers
+                  .some(specifier => this.$store.getters.getNodeLabelsMatchedBySpecifier(this.phylogeny, specifier)
+                    .includes(data.name))
                 ) {
                   element.classed('node internal-specifier-node', true);
                 }
               }
 
               // We should highlight external specifiers.
-              if (hasProperty(this.selectedPhyloref, 'externalSpecifiers')) {
-                if (this.selectedPhyloref.externalSpecifiers
-                  .some(specifier => this.$store.getters.getNodeLabelsMatchedBySpecifier(this.phylogeny, specifier))
-                    .includes(data.name)
+              if (has(this.phyloref, 'externalSpecifiers')) {
+                if (this.phyloref.externalSpecifiers
+                  .some(specifier => this.$store.getters.getNodeLabelsMatchedBySpecifier(this.phylogeny, specifier)
+                    .includes(data.name))
                 ) {
                   element.classed('node external-specifier-node', true);
                 }
@@ -243,20 +255,6 @@ export default {
   },
   mounted () {
     this.redrawTree();
-  },
-  methods: {
-    redrawTree () {
-      this.tree
-        .size([
-          // height
-          0,
-          // width
-          $(`#${this.uniqueId}`).width()
-        ])
-        .spacing_x(this.spacingX)
-        .spacing_y(this.spacingY)
-        .update();
-    },
   },
 };
 </script>
