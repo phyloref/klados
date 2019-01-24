@@ -30,6 +30,8 @@ export default {
   name: 'Phylotree',
   props: {
     phylogeny: Object,
+    phyloref: Object,
+    specifier: Object,
     newick: {
       type: String,
       default: '()',
@@ -46,10 +48,59 @@ export default {
   data () { return {
     uniqueId: uniqueId('phylotree-svg-'),
   }},
+  methods: {
+    recurseNodes(node, func, nodeCount = 0, parentCount = undefined) {
+      // Recurse through PhyloTree nodes, executing function on each node.
+      //  - node: The node to recurse from. The function will be called on node
+      //          *before* being called on its children.
+      //  - func: The function to call on `node` and all of its children.
+      //  - nodeCount: `node` will be called with this nodeCount. All of its
+      //          children will be called with consecutively increasing nodeCounts.
+      //  - parentCount: The nodeCount associated with the parent of this node
+      //          within this run of recurseNodes. For instance, immediate children
+      //          of `node` will have a parentCount of 0. By default, `node` itself
+      //          will have a parentCount of `undefined`.
+      // When the function `func` is called, it is given three arguments:
+      //  - The current node object (initially: `node`)
+      //  - The count of the current node object (initially: `nodeCount`)
+      //  - The parent count of the current node object (initially: `parentCount`)
+      func(node, nodeCount, parentCount);
+
+      let nextID = nodeCount + 1;
+
+      // Recurse through all children of this node.
+      if (has(node, 'children')) {
+        node.children.forEach((child) => {
+          nextID = recurseNodes(
+            child,
+            func,
+            nextID,
+            nodeCount,
+          );
+        });
+      }
+
+      return nextID;
+    },
+  },
   computed: {
     newickAsString () { return this.newick; },
     parsedNewick () {
-      return d3.layout.newick_parser(this.newick);
+      const parsedNewick = d3.layout.newick_parser(this.newick || '()');
+
+      // Assign '@id's to every node so we can refer to them later.
+      if (has(parsedNewick, 'json')) {
+        this.recurseNodes(parsedNewick.json, (node, nodeCount) => {
+          // Start with the additional node properties.
+          const nodeAsJSONLD = node;
+
+          // Set @id and @type.
+          const nodeURI = `${this.$store.getters.getBaseURIForPhylogeny(this.phylogeny)}_node${nodeCount}`;
+          nodeAsJSONLD['@id'] = nodeURI;
+        });
+      }
+
+      return parsedNewick;
     },
     newickErrors () {
       // Check to see if the newick could actually be parsed.
@@ -59,6 +110,11 @@ export default {
       return undefined;
     },
     tree () {
+      // Once we identify one or more pinning nodes in this phylogeny,
+      // we need to highlight all descendants of that node.
+      const pinningNodes = [];
+      const pinningNodeChildrenIRIs = new Set();
+
       // Set up Phylotree.
       const tree = d3.layout.phylotree()
         .svg(d3.select(`#${this.uniqueId}`))
@@ -88,14 +144,104 @@ export default {
                 .attr('dx', '.3em')
                 .attr('dy', '.3em');
             }
+
+            // If the internal label has the same label as the currently
+            // selected phyloreference, add an 'id' so we can jump to it
+            // and a CSS class to render it differently from other labels.
+            if (
+              this.$store.getters.getExpectedNodeLabelsOnPhylogeny(this.phylogeny, this.phyloref).includes(data.name)
+            ) {
+              textLabel.attr('id', `current_expected_label_phylogeny_${this.uniqueId}`);
+              textLabel.classed('selected-internal-label', true);
+            } else {
+              textLabel.classed('selected-internal-label', false);
+            }
+          }
+
+          // If the internal label has the same IRI as the currently selected
+          // phyloreference's reasoned node, further mark it as the resolved node.
+          //
+          // Note that this node might NOT be labeled, in which case we need to
+          // label it now!
+          if (
+            this.phyloref !== undefined && has(data, '@id') &&
+            this.$store.getters.getResolvedNodesForPhylogeny(this.phyloref, this.phylogeny).includes(data['@id'])
+          ) {
+            // We found another pinning node!
+            pinningNodes.push(data);
+            this.recurseNodes(data, node => pinningNodeChildrenIRIs.add(node['@id']));
+
+            // Mark this node as the pinning node.
+            element.classed('pinning-node', true);
+
+            // Make the pinning node circle larger (twice its usual size of 3).
+            element.select('circle').attr('r', 6);
+
+            // Set its id to 'current_pinning_node_phylogeny{{phylogenyIndex}}'
+            element.attr('id', `current_pinning_node_phylogeny_${this.uniqueId}`);
+          }
+
+          // Maybe this isn't a pinning node, but it is a child of a pinning node.
+          if (
+            has(data, '@id') &&
+            pinningNodeChildrenIRIs.has(data['@id'])
+          ) {
+            // Apply a class.
+            // Note that this applies to the resolved-node too.
+            element.classed('descendant-of-pinning-node-node', true);
+          }
+
+          if (data.name !== undefined && data.children === undefined) {
+            // Labeled leaf node! Look for taxonomic units.
+            const tunits = this.$store.getters.getTaxonomicUnitsForNodeLabel(this.phylogeny, data.name);
+
+            if (tunits.length === 0) {
+              element.classed('terminal-node-without-tunits', true);
+            } else if (this.selectedPhyloref !== undefined) {
+              // If this is a terminal node, we should set its ID to
+              // `current_expected_label_phylogeny${phylogenyIndex}` if it is
+              // the currently expected node label.
+              if (
+                has(this.selectedPhyloref, 'label') &&
+                this.$store.getters.getExpectedNodeLabelsOnPhylogeny(this.phylogeny, this.phyloref)
+                  .includes(data.name)
+              ) {
+                textLabel.attr('id', `current_expected_label_phylogeny_${this.uniqueId}`);
+              }
+
+              // We should highlight internal specifiers.
+              if (has(this.selectedPhyloref, 'internalSpecifiers')) {
+                if (this.selectedPhyloref.internalSpecifiers
+                  .some(specifier => this.$store.getters.getNodeLabelsMatchedBySpecifier(this.phylogeny, specifier))
+                    .includes(data.name)
+                ) {
+                  element.classed('node internal-specifier-node', true);
+                }
+              }
+
+              // We should highlight external specifiers.
+              if (hasProperty(this.selectedPhyloref, 'externalSpecifiers')) {
+                if (this.selectedPhyloref.externalSpecifiers
+                  .some(specifier => this.$store.getters.getNodeLabelsMatchedBySpecifier(this.phylogeny, specifier))
+                    .includes(data.name)
+                ) {
+                  element.classed('node external-specifier-node', true);
+                }
+              }
+            }
           }
         });
-      tree(this.newick || '()');
+      tree(this.parsedNewick);
       return tree;
     },
   },
+  watch: {
+    phyloref(oldValue, newValue) {
+      // We need to redraw the tree when phyloref changes.
+      this.redrawTree();
+    },
+  },
   mounted () {
-    // Redraw the tree.
     this.redrawTree();
   },
   methods: {
