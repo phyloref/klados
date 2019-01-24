@@ -265,7 +265,7 @@
               class="card"
               style="margin-top: 1em"
             >
-              <Phylotree :phylogeny="phylogeny" :newick="phylogeny.newick" />
+              <Phylotree :phylogeny="phylogeny" :phyloref="selectedPhyloref" :newick="phylogeny.newick" />
             </div>
           </div>
         </div>
