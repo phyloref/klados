@@ -12,6 +12,7 @@ export default {
       phylorefs: [],
       phylogenies: [],
     },
+    reasoningResults: undefined,
   },
   getters: {
     // Read as JSON.
@@ -23,6 +24,10 @@ export default {
       // update the loaded Phyx file, so these changes are treated as changes
       // made since the file was last loaded.
       Vue.set(state, 'currentPhyx', phyx);
+
+      // When the current phyx is changed, reasoning results are invalidated,
+      // so let's clear those.
+      Vue.set(state, 'reasoningResults', undefined);
     },
     setLoadedPhyx(state, phyx) {
       // Replace the current loaded Phyx file using an object. This also updates
@@ -44,6 +49,9 @@ export default {
     },
     createEmptyPhylogeny(state) {
       state.currentPhyx.phylogenies.push({});
+    },
+    setReasoningResults(state, payload) {
+      Vue.set(state, 'reasoningResults', payload);
     },
   },
   modules: {
