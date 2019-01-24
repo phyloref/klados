@@ -27,11 +27,14 @@ export default {
     setLoadedPhyx(state, phyx) {
       // Replace the current loaded Phyx file using an object. This also updates
       // the loaded Phyx, so we can check for changes from the loaded file.
-      if (phyx === state.currentPhyx) {
+      //
+      // This can be called without an argument to reset the loaded phyx to be
+      // identical to the current Phyx.
+      if (phyx === undefined || phyx === state.currentPhyx) {
         // A common error is using the same object as the current Phyx and the
         // loaded Phyx. In that case, we deep-copy loaded Phyx so that modifying
         // one won't automatically modify the other.
-        Vue.set(state, 'loadedPhyx', JSON.parse(JSON.stringify(phyx)));
+        Vue.set(state, 'loadedPhyx', JSON.parse(JSON.stringify(state.currentPhyx)));
       } else {
         Vue.set(state, 'loadedPhyx', phyx);
       }
