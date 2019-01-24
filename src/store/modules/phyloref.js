@@ -6,6 +6,53 @@ import Vue from 'vue';
 import { has } from 'lodash';
 
 export default {
+  getters: {
+    getExpectedNodeLabelsOnPhylogeny: (state, getters) => (phylogeny, phyloref) => {
+      // Given a phylogeny, determine which node labels we expect this phyloref to
+      // resolve to. To do this, we:
+      //  1. Find all node labels that are case-sensitively identical
+      //     to the phyloreference.
+      //  2. Find all node labels that have additionalNodeProperties with
+      //     expectedPhyloreferenceNamed case-sensitively identical to
+      //     the phyloreference.
+      const nodeLabels = new Set();
+      const newick = phylogeny.newick || '()';
+
+      // Can't do anything if no phyloref is provided or if it doesn't have a label.
+      if (phyloref === undefined || !has(phyloref, 'label')) return [];
+      const phylorefLabel = phyloref.label;
+
+      getters.getNodeLabelsFromNewick(newick).forEach((nodeLabel) => {
+        // Is this node label identical to the phyloreference name?
+        if (nodeLabel === phylorefLabel) {
+          nodeLabels.add(nodeLabel);
+        } else if (
+          has(phylogeny, 'additionalNodeProperties')
+          && has(phylogeny.additionalNodeProperties, nodeLabel)
+          && has(phylogeny.additionalNodeProperties[nodeLabel], 'expectedPhyloreferenceNamed')
+        ) {
+          // Does this node label have an expectedPhyloreferenceNamed that
+          // includes this phyloreference name?
+
+          const expectedPhylorefs = phylogeny
+            .additionalNodeProperties[nodeLabel]
+            .expectedPhyloreferenceNamed;
+
+          if (expectedPhylorefs.includes(phylorefLabel)) {
+            nodeLabels.add(nodeLabel);
+          }
+        }
+      });
+
+      // Return node labels sorted alphabetically.
+      return Array.from(nodeLabels).sort();
+    },
+
+    getResolvedNodesForPhylogeny: state => (phyloref, phylogeny) => {
+      // TODO implement!
+      return [];
+    },
+  },
   mutations: {
     setPhylorefProps(state, payload) {
       if (!has(payload, 'phyloref')) {
