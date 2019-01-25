@@ -127,8 +127,9 @@ export default {
 
         // Attempt pairwise matches between taxonomic units in the specifier
         // and associated with the node.
-        return specifierTUnits.some(tunit1 =>
-          nodeTUnits.some(tunit2 => new TaxonomicUnitMatcher(tunit1, tunit2).matched));
+        return specifierTUnits.some(
+          tunit1 => nodeTUnits.some(tunit2 => new TaxonomicUnitMatcher(tunit1, tunit2).matched),
+        );
       });
     },
   },
