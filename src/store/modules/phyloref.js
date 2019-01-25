@@ -48,9 +48,29 @@ export default {
       return Array.from(nodeLabels).sort();
     },
 
-    getResolvedNodesForPhylogeny: state => (phyloref, phylogeny) => {
-      // TODO implement!
-      return [];
+    getResolvedNodesForPhylogeny: (state, getters, rootState) => (
+      phylogeny,
+      phyloref,
+      flagReturnShortURIs = false,
+    ) => {
+      // flagReturnNodeURI: if true, the entire URI will be returned, otherwise
+      // just the node number will be returned.
+
+      // Do we have reasoning results for this phyloreference?
+      const phylorefURI = getters.getBaseURIForPhyloref(phyloref);
+      if (
+        !has(rootState.phyx.reasoningResults, 'phylorefs')
+        || !has(rootState.phyx.reasoningResults.phylorefs, phylorefURI)
+      ) return [];
+
+      // Identify the resolved nodes.
+      const nodesResolved = rootState.phyx.reasoningResults.phylorefs[phylorefURI];
+      const phylogenyURI = getters.getBaseURIForPhylogeny(phylogeny);
+      const nodeURIs = nodesResolved.filter(uri => uri.includes(phylogenyURI));
+
+      // Either return the URIs as-is or remove the phylogeny URI (so we return e.g. "node21").
+      if (!flagReturnShortURIs) return nodeURIs;
+      return nodeURIs.map(iri => iri.replace(`${phylogenyURI}_`, ''));
     },
   },
   mutations: {
