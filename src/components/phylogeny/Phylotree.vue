@@ -96,6 +96,7 @@ export default {
     },
   },
   computed: {
+    reasoningResults () { return this.$store.state.phyx.reasoningResults; },
     newickAsString () { return this.newick; },
     parsedNewick () {
       const parsedNewick = d3.layout.newick_parser(this.newick || '()');
@@ -177,7 +178,7 @@ export default {
           // label it now!
           if (
             this.phyloref !== undefined && has(data, '@id') &&
-            this.$store.getters.getResolvedNodesForPhylogeny(this.phyloref, this.phylogeny).includes(data['@id'])
+            this.$store.getters.getResolvedNodesForPhylogeny(this.phylogeny, this.phyloref).includes(data['@id'])
           ) {
             // We found another pinning node!
             pinningNodes.push(data);
@@ -191,6 +192,15 @@ export default {
 
             // Set its id to 'current_pinning_node_phylogeny{{phylogenyIndex}}'
             element.attr('id', `current_pinning_node_phylogeny_${this.uniqueId}`);
+          } else {
+            // unmark this node as the pinning node.
+            element.classed('pinning-node', false);
+
+            // Make the pinning node circle normal sized.
+            element.select('circle').attr('r', 3);
+
+            // Set its id to blank.
+            element.attr('id', '');
           }
 
           // Maybe this isn't a pinning node, but it is a child of a pinning node.
@@ -201,6 +211,8 @@ export default {
             // Apply a class.
             // Note that this applies to the resolved-node too.
             element.classed('descendant-of-pinning-node-node', true);
+          } else {
+            element.classed('descendant-of-pinning-node-node', false);
           }
 
           if (data.name !== undefined && data.children === undefined) {
@@ -210,6 +222,8 @@ export default {
             if (tunits.length === 0) {
               element.classed('terminal-node-without-tunits', true);
             } else if (this.phyloref !== undefined) {
+              element.classed('terminal-node-without-tunits', false);
+
               // If this is a terminal node, we should set its ID to
               // `current_expected_label_phylogeny${phylogenyIndex}` if it is
               // the currently expected node label.
@@ -219,6 +233,8 @@ export default {
                   .includes(data.name)
               ) {
                 textLabel.attr('id', `current_expected_label_phylogeny_${this.uniqueId}`);
+              } else {
+                textLabel.attr('id', '');
               }
 
               // We should highlight internal specifiers.
@@ -228,6 +244,8 @@ export default {
                     .includes(data.name))
                 ) {
                   element.classed('node internal-specifier-node', true);
+                } else {
+                  element.classed('node internal-specifier-node', false);
                 }
               }
 
@@ -238,9 +256,28 @@ export default {
                     .includes(data.name))
                 ) {
                   element.classed('node external-specifier-node', true);
+                } else {
+                  element.classed('node external-specifier-node', false);
                 }
               }
+            } else {
+              element.classed('terminal-node-without-tunits', false);
             }
+          }
+        })
+        .style_edges((element, data) => {
+          // Is the parent a descendant of a pinning node? If so, we need to
+          // select this branch!
+          // console.log('Found an edge with data: ', data);
+          if (
+            has(data, 'source') &&
+            has(data.source, '@id') &&
+            pinningNodeChildrenIRIs.has(data.source['@id'])
+          ) {
+            // Apply a class to this branch.
+            element.classed('descendant-of-pinning-node-branch', true);
+          } else {
+            element.classed('descendant-of-pinning-node-branch', false);
           }
         });
       tree(this.parsedNewick);
@@ -250,6 +287,10 @@ export default {
   watch: {
     phyloref(oldValue, newValue) {
       // We need to redraw the tree when phyloref changes.
+      this.redrawTree();
+    },
+    reasoningResults(oldValue, newValue) {
+      // If reasoning occurs, we'll need to redraw this tree.
       this.redrawTree();
     },
   },
