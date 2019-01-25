@@ -25,6 +25,14 @@
 /* global d3 */ // From https://d3js.org/
 /* global moment */ // From https://momentjs.com/
 
+// Some OWL constants to be used.
+const CDAO_HAS_CHILD = 'obo:CDAO_0000149';
+const CDAO_HAS_DESCENDANT = 'obo:CDAO_0000174';
+const PHYLOREF_EXCLUDES_LINEAGE_TO = 'phyloref:excludes_lineage_to';
+const PHYLOREFERENCE_TEST_CASE = 'testcase:PhyloreferenceTestCase';
+const PHYLOREFERENCE_PHYLOGENY = 'testcase:PhyloreferenceTestPhylogeny';
+const TESTCASE_SPECIFIER = 'testcase:Specifier';
+
 // Our global variables
 // eslint-disable-next-line no-var
 var phyxCacheManager;
@@ -488,7 +496,7 @@ class TaxonomicUnitMatcher {
     this.match();
   }
 
-  asJSON(idURI) {
+  asJSONLD(idURI) {
     // Return this TUMatch as a JSON object for insertion into the PHYX file.
     if (!this.matched) return undefined;
 
@@ -941,17 +949,32 @@ class PhylogenyWrapper {
 
     return nodes;
   }
+
+  asJSONLD(baseURI) {
+    // Export this phylogeny as JSON-LD.
+
+    // Create a copy to export.
+    const phylogenyAsJSONLD = JSON.parse(JSON.stringify(this.phylogeny));
+
+    // Set name and class for phylogeny.
+    phylogenyAsJSONLD['@id'] = baseURI;
+    phylogenyAsJSONLD['@type'] = PHYLOREFERENCE_PHYLOGENY;
+
+    // Translate nodes into JSON-LD objects.
+    phylogenyAsJSONLD.nodes = this.getNodesAsJSONLD(baseURI);
+    if (phylogenyAsJSONLD.nodes.length > 0) {
+      // We don't have a better way to identify the root node, so we just
+      // default to the first one.
+      phylogenyAsJSONLD.hasRootNode = {
+        '@id': phylogenyAsJSONLD.nodes[0]['@id'],
+      };
+    }
+
+    return phylogenyAsJSONLD;
+  }
 }
 
 /* Phyloreference wrapper */
-
-// We need some OWL constants for this.
-const CDAO_HAS_CHILD = 'obo:CDAO_0000149';
-const CDAO_HAS_DESCENDANT = 'obo:CDAO_0000174';
-const PHYLOREF_HAS_SIBLING = 'phyloref:has_Sibling';
-const PHYLOREFERENCE_TEST_CASE = 'testcase:PhyloreferenceTestCase';
-const PHYLOREFERENCE_PHYLOGENY = 'testcase:PhyloreferenceTestPhylogeny';
-const TESTCASE_SPECIFIER = 'testcase:Specifier';
 
 // eslint-disable-next-line no-unused-vars
 class PhylorefWrapper {
@@ -960,6 +983,10 @@ class PhylorefWrapper {
   constructor(phyloref) {
     // Wraps the provided phyloreference
     this.phyloref = phyloref;
+
+    // Reset internal and external specifiers if needed.
+    if (!hasOwnProperty(this.phyloref, 'internalSpecifiers')) Vue.set(this.phyloref, 'internalSpecifiers', []);
+    if (!hasOwnProperty(this.phyloref, 'externalSpecifiers')) Vue.set(this.phyloref, 'externalSpecifiers', []);
   }
 
   get label() {
@@ -971,13 +998,19 @@ class PhylorefWrapper {
     return undefined;
   }
 
+  set label(newLabel) {
+    // Set a label for this phyloreference.
+    if (hasOwnProperty(this.phyloref, 'label')) {
+      this.phyloref.label = newLabel;
+    } else {
+      Vue.set(this.phyloref, 'label', newLabel);
+    }
+  }
+
   get specifiers() {
     // Returns a list of all specifiers by combining the internal and external
     // specifiers into a single list, with internal specifiers before
     // external specifiers.
-    if (!hasOwnProperty(this.phyloref, 'internalSpecifiers')) Vue.set(this.phyloref, 'internalSpecifiers', []);
-    if (!hasOwnProperty(this.phyloref, 'externalSpecifiers')) Vue.set(this.phyloref, 'externalSpecifiers', []);
-
     let specifiers = this.phyloref.internalSpecifiers;
     specifiers = specifiers.concat(this.phyloref.externalSpecifiers);
     return specifiers;
@@ -987,8 +1020,8 @@ class PhylorefWrapper {
     // For a given specifier, return a string indicating whether it is
     // an 'Internal' or 'External' specifier.
 
-    if (hasOwnProperty(this.phyloref, 'internalSpecifiers') && this.phyloref.internalSpecifiers.includes(specifier)) return 'Internal';
-    if (hasOwnProperty(this.phyloref, 'externalSpecifiers') && this.phyloref.externalSpecifiers.includes(specifier)) return 'External';
+    if (this.phyloref.internalSpecifiers.includes(specifier)) return 'Internal';
+    if (this.phyloref.externalSpecifiers.includes(specifier)) return 'External';
     return 'Specifier';
   }
 
@@ -996,9 +1029,6 @@ class PhylorefWrapper {
     // Change the type of a given specifier. To do this, we first need
     // to determine if it was originally an internal or external
     // specifier, then move it into the other list.
-
-    if (!hasOwnProperty(this.phyloref, 'internalSpecifiers')) Vue.set(this.phyloref, 'internalSpecifiers', []);
-    if (!hasOwnProperty(this.phyloref, 'externalSpecifiers')) Vue.set(this.phyloref, 'externalSpecifiers', []);
 
     let index;
     if (specifierType === 'Internal') {
@@ -1031,15 +1061,11 @@ class PhylorefWrapper {
     // it doesn't remember if the specifier to be deleted is internal
     // or external. We delete the intended specifier from both arrays.
 
-    if (hasOwnProperty(this.phyloref, 'internalSpecifiers')) {
-      const index = this.phyloref.internalSpecifiers.indexOf(specifier);
-      if (index !== -1) this.phyloref.internalSpecifiers.splice(index, 1);
-    }
+    let index = this.phyloref.internalSpecifiers.indexOf(specifier);
+    if (index !== -1) this.phyloref.internalSpecifiers.splice(index, 1);
 
-    if (hasOwnProperty(this.phyloref, 'externalSpecifiers')) {
-      const index = this.phyloref.externalSpecifiers.indexOf(specifier);
-      if (index !== -1) this.phyloref.externalSpecifiers.splice(index, 1);
-    }
+    index = this.phyloref.externalSpecifiers.indexOf(specifier);
+    if (index !== -1) this.phyloref.externalSpecifiers.splice(index, 1);
   }
 
   static getSpecifierLabel(specifier) {
@@ -1265,17 +1291,21 @@ class PhylorefWrapper {
     });
   }
 
-  exportAsJSONLD(phylorefURI) {
+  asJSONLD(phylorefURI) {
+    // Export this phyloreference in JSON-LD.
+
     // Keep all currently extant data.
     // - baseURI: the base URI for this phyloreference
     const phylorefAsJSONLD = JSON.parse(JSON.stringify(this.phyloref));
 
     // Set the @id and @type.
     phylorefAsJSONLD['@id'] = phylorefURI;
-    phylorefAsJSONLD['@type'] = [
-      // These classes are phyloreferences, and so should be classified as such.
-      'phyloref:Phyloreference',
 
+    phylorefAsJSONLD['@type'] = [
+      // We pun this as an instance that is a Phyloreference.
+      // (We need this to ensure that the object properties that store
+      // information on specifiers will work correctly)
+      'phyloref:Phyloreference',
       // Since we're writing this in RDF, just adding a '@type' of
       // phyloref:Phyloreference would imply that phylorefURI is a named
       // individual of class phyloref:Phyloreference. We need to explicitly
@@ -1286,15 +1316,6 @@ class PhylorefWrapper {
       // explicit as well!)
       'owl:Class',
     ];
-
-    // What if we're missing either internal or external specifiers?
-    if (!hasOwnProperty(phylorefAsJSONLD, 'internalSpecifiers')) {
-      phylorefAsJSONLD.internalSpecifiers = [];
-    }
-
-    if (!hasOwnProperty(phylorefAsJSONLD, 'externalSpecifiers')) {
-      phylorefAsJSONLD.externalSpecifiers = [];
-    }
 
     // Add identifiers for each internal specifier.
     let internalSpecifierCount = 0;
@@ -1448,8 +1469,9 @@ class PhylorefWrapper {
     // incorporate that in here.
     return {
       '@type': 'owl:Restriction',
-      onProperty: PHYLOREF_HAS_SIBLING,
-      someValuesFrom: PhylorefWrapper.wrapInternalOWLRestriction(restriction),
+      // onProperty: PHYLOREF_HAS_SIBLING,
+      onProperty: PHYLOREF_EXCLUDES_LINEAGE_TO,
+      someValuesFrom: restriction,
     };
   }
 
@@ -1594,38 +1616,15 @@ class PHYXWrapper {
 
     // Add descriptions for individual nodes in each phylogeny.
     if (hasOwnProperty(jsonld, 'phylogenies')) {
-      let countPhylogeny = 0;
-      jsonld.phylogenies.forEach((phylogenyToChange) => {
-        const phylogeny = phylogenyToChange;
-
-        // Set name and class for phylogeny.
-        phylogeny['@id'] = PHYXWrapper.getBaseURIForPhylogeny(countPhylogeny);
-        phylogeny['@type'] = PHYLOREFERENCE_PHYLOGENY;
-
-        // Extract nodes from phylogeny.
-        const wrapper = new PhylogenyWrapper(phylogeny);
-        countPhylogeny += 1;
-
-        // Translate nodes into JSON-LD objects.
-        const nodes = wrapper.getNodesAsJSONLD(PHYXWrapper.getBaseURIForPhylogeny(countPhylogeny));
-
-        phylogeny.nodes = nodes;
-        if (nodes.length > 0) {
-          // We don't have a better way to identify the root node, so we just
-          // default to the first one.
-          [phylogeny.hasRootNode] = nodes;
-        }
-      });
+      jsonld.phylogenies = jsonld.phylogenies.map((phylogeny, countPhylogeny) =>
+        new PhylogenyWrapper(phylogeny)
+          .asJSONLD(PHYXWrapper.getBaseURIForPhylogeny(countPhylogeny)));
     }
 
     // Convert phyloreferences into an OWL class restriction
     if (hasOwnProperty(jsonld, 'phylorefs')) {
-      let countPhyloref = 0;
-      jsonld.phylorefs = jsonld.phylorefs.map((phyloref) => {
-        countPhyloref += 1;
-        return new PhylorefWrapper(phyloref)
-          .exportAsJSONLD(PHYXWrapper.getBaseURIForPhyloref(countPhyloref));
-      });
+      jsonld.phylorefs = jsonld.phylorefs.map((phyloref, countPhyloref) =>
+        new PhylorefWrapper(phyloref).asJSONLD(PHYXWrapper.getBaseURIForPhyloref(countPhyloref)));
     }
 
     // Match all specifiers with nodes.
@@ -1664,7 +1663,7 @@ class PHYXWrapper {
                   const matcher = new TaxonomicUnitMatcher(specifierTU, nodeTU);
                   if (matcher.matched) {
                     const tuMatchAsJSONLD =
-                      matcher.asJSON(PHYXWrapper.getBaseURIForTUMatch(countTaxonomicUnitMatches));
+                      matcher.asJSONLD(PHYXWrapper.getBaseURIForTUMatch(countTaxonomicUnitMatches));
                     jsonld.hasTaxonomicUnitMatches.push(tuMatchAsJSONLD);
                     nodesMatchedCount += 1;
                     countTaxonomicUnitMatches += 1;
@@ -1689,7 +1688,7 @@ class PHYXWrapper {
     jsonld['owl:imports'] = [
       'http://raw.githubusercontent.com/phyloref/curation-workflow/develop/ontologies/phyloref_testcase.owl',
       // - Will become 'http://vocab.phyloref.org/phyloref/testcase.owl'
-      'http://ontology.phyloref.org/phyloref.owl',
+      'http://ontology.phyloref.org/2018-12-04/phyloref.owl',
       // - The Phyloreferencing ontology.
       'http://purl.obolibrary.org/obo/bco.owl',
       // - Contains OWL definitions for Darwin Core terms

@@ -2,7 +2,10 @@
  * Test aspects of the Curation Tool Vue model.
  */
 
-/* eslint-env mocha */
+// Use the Chai library's Expect API for testing.
+const chai = require('chai');
+
+const expect = chai.expect;
 
 // Load d3 as a global variable so it can be accessed by both phylotree.js (which
 // needs to add additional objects to it) and phyx (which needs to call it).
@@ -17,54 +20,60 @@ require('../lib/phylotree.js/phylotree.js');
 
 // Load the Curation Tool code, which exports only the Vue model as 'vm'.
 // Store that in a variable for easy access.
-const ct = require('../js/curation-tool.js');
-const vm = ct.vm;
+const vm = require('../js/curation-tool.js').vm;
 
-const chai = require('chai');
-const phyx = require('../js/phyx');
-
-const assert = chai.assert;
+/*
+ * Vue model tests are not intended to be comprehensive for now, but for tracking
+ * previously identified bugs to ensure that they don't regress. We currently
+ * test:
+ *  - The phylogeny spacing bug (https://github.com/phyloref/curation-tool/pull/100)
+ */
 
 // Test phylogeny spacingX and spacingY.
 describe('Phylogeny spacing', function () {
   describe('spacingX', function () {
-    it('should be modifiable', function () {
-      // getPhylogenySpacing...() doesn't actually need the phylogeny to exist
+    it('should initially be set to vm.DEFAULT_SPACING_X', function () {
+      // getPhylogenySpacing...() doesn't actually need a phylogeny to exist
       // when getting the values. In this test, we use only phylogenySpacingX[0].
-      var spacingX = vm.getPhylogenySpacingX(0);
-      assert.isOk(spacingX);
-      assert.equal(spacingX, vm.DEFAULT_SPACING_X, 'Initial spacingX should be set to the default');
-
-      // To set the phylogeny, we need to update phylogenySpacingX directly.
-      vm.changePhylogenySpacingX(0, 104 - vm.DEFAULT_SPACING_X);
-      assert.equal(vm.getPhylogenySpacingX(0), 104, 'spacingX can be changed by modifying the returned value');
+      const spacingX = vm.getPhylogenySpacingX(0);
+      expect(spacingX).to.equal(vm.DEFAULT_SPACING_X);
     });
 
-    it('should not be shared by all phylogenies', function () {
-      // Set the spacing value for the second phylogeny (phylogenySpacingX[1]).
+    it('should be changeable using .changePhylogenySpacingX', function () {
+      // We change the spacingX so it should equal 104 (an arbitrary number).
+      vm.changePhylogenySpacingX(0, 104 - vm.DEFAULT_SPACING_X);
+      expect(vm.getPhylogenySpacingX(0)).to.equal(104);
+    });
+
+    it('changing spacing for one phylogeny should not change it for another', function () {
+      // We'll set it to 208 (another arbitrary number). We then make sure
+      // that the first phylogeny spacingX remains at 104.
       vm.changePhylogenySpacingX(1, 208 - vm.DEFAULT_SPACING_X);
-      assert.equal(vm.getPhylogenySpacingX(1), 208, 'spacingX[1] has a new value');
-      assert.equal(vm.getPhylogenySpacingX(0), 104, 'spacingX[0] retains its existing value from the previous test');
+      expect(vm.getPhylogenySpacingX(1)).to.equal(208);
+      expect(vm.getPhylogenySpacingX(0)).to.equal(104);
     });
   });
+
   describe('spacingY', function () {
-    it('should be modifiable', function () {
+    it('should initially be set to vm.DEFAULT_SPACING_Y', function () {
       // getPhylogenySpacing...() doesn't actually need the phylogeny to exist
       // when getting the values. In this test, we use only phylogenySpacingY[0].
-      var spacingY = vm.getPhylogenySpacingY(0);
-      assert.isOk(spacingY);
-      assert.equal(spacingY, vm.DEFAULT_SPACING_Y, 'Initial spacingY should be set to the default');
-
-      // To set the phylogeny, we need to update phylogenySpacingY directly.
-      vm.changePhylogenySpacingY(0, 17 - vm.DEFAULT_SPACING_Y);
-      assert.equal(vm.getPhylogenySpacingY(0), 17, 'spacingY can be changed by modifying the returned value');
+      const spacingY = vm.getPhylogenySpacingY(0);
+      expect(spacingY).to.equal(vm.DEFAULT_SPACING_Y);
     });
-    
-    it('should not be shared by all phylogenies', function () {
-      // Set the spacing value for the second phylogeny (phylogenySpacingY[1]).
-      vm.changePhylogenySpacingY(1, 19 - vm.DEFAULT_SPACING_Y);
-      assert.equal(vm.getPhylogenySpacingY(1), 19, 'spacingY[1] has a new value');
-      assert.equal(vm.getPhylogenySpacingY(0), 17, 'spacingY[0] retains its existing value from the previous test');
+
+    it('should be changeable using .changePhylogenySpacingY', function () {
+      // We change the spacingY so it should equal 35 (an arbitrary number).
+      vm.changePhylogenySpacingY(0, 35 - vm.DEFAULT_SPACING_Y);
+      expect(vm.getPhylogenySpacingY(0)).to.equal(35);
+    });
+
+    it('changing spacing for one phylogeny should not change it for another', function () {
+      // We'll set it to 55 (another arbitrary number). We then make sure
+      // that the first phylogeny spacingY remains at 35.
+      vm.changePhylogenySpacingY(1, 55 - vm.DEFAULT_SPACING_Y);
+      expect(vm.getPhylogenySpacingY(1)).to.equal(55);
+      expect(vm.getPhylogenySpacingY(0)).to.equal(35);
     });
   });
 });
