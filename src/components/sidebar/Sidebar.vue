@@ -358,7 +358,11 @@ export default {
         //  jsonld=%7B%5B%7B%22title%22%3A...
         // which translates to:
         //  jsonld={[{"title":...
-        jsonld: JSON.stringify([new PHYXWrapper(this.$store.state.phyx.currentPhyx, d3.layout.newick_parser).asJSONLD()], undefined, 4),
+        jsonld: JSON.stringify([new PHYXWrapper(
+            this.$store.state.phyx.currentPhyx,
+            d3.layout.newick_parser
+          )
+          .asJSONLD()], undefined, 4),
       }).done((data) => {
         this.$store.commit('setReasoningResults', data);
         // console.log('Data retrieved: ', data);
