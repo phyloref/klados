@@ -1,3 +1,10 @@
+/*
+ * Primary store module for the currently loaded Phyx file. We also keep a copy
+ * of the Phyx file as it was loaded, allowing modifications to be noted. This
+ * module also stores and resets the reasoning results provided by the JPhyloRef
+ * server.
+ */
+
 import Vue from 'vue';
 import phylogeny from './phylogeny';
 import phyloref from './phyloref';

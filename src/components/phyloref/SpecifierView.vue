@@ -1,7 +1,6 @@
 <template>
   <div>
-    <!-- Add a warning if this phyloreference has changed -->
-    <!-- TODO: change to be about specifiers -->
+    <!-- Add a warning if this specifier has changed -->
     <ModifiedCard
       message="This specifier has been modified since being loaded! Use 'Save as JSON' to save your changes."
       :compare="selectedSpecifier"
@@ -420,14 +419,12 @@
 <script>
 import { has } from 'lodash';
 import { mapState } from 'vuex';
-import SpecifierDiv from '../phyloref/SpecifierDiv.vue';
 import ModifiedCard from '../cards/ModifiedCard.vue';
 
 export default {
   name: 'SpecifierView',
   components: {
     ModifiedCard,
-    SpecifierDiv,
   },
   computed: {
     loadedSpecifier: function () {

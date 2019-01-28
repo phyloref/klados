@@ -50,6 +50,12 @@
 </template>
 
 <script>
+
+/*
+ * The top navigation bar provides links to Phyloreferencing resources,
+ * the about-us modal, and a link to report bugs.
+ */
+
 export default {
   name: 'TopNavigationBar',
   props: {

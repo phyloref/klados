@@ -19,6 +19,11 @@
 </template>
 
 <script>
+/*
+ * This component can be used to insert a phylogeny. It includes code for highlighing
+ * the expecting and reasoned clade for a particular phyloreference.
+ */
+
 import { uniqueId, has } from 'lodash';
 
 /*
@@ -29,20 +34,11 @@ import { uniqueId, has } from 'lodash';
 export default {
   name: 'Phylotree',
   props: {
-    phylogeny: Object,
-    phyloref: Object,
-    specifier: Object,
-    newick: {
-      type: String,
-      default: '()',
-    },
-    spacingX: {
+    phylogeny: Object, // The phylogeny to render.
+    phyloref: Object, // The phyloreference to highlight.
+    spacingX: { // spacing in the X axis
       type: Number,
       default: 20,
-    },
-    spacingY:  {
-      type: Number,
-      default: 20
     },
   },
   data () { return {
@@ -98,15 +94,14 @@ export default {
           $(`#${this.uniqueId}`).width() - 40 // We need more space because our fonts are bigger than the default.
         ])
         .spacing_x(this.spacingX)
-        .spacing_y(this.spacingY)
         .update();
     },
   },
   computed: {
     reasoningResults () { return this.$store.state.phyx.reasoningResults; },
-    newickAsString () { return this.newick; },
+    newickAsString () { return this.phylogeny.newick || '()'; },
     parsedNewick () {
-      const parsedNewick = d3.layout.newick_parser(this.newick || '()');
+      const parsedNewick = d3.layout.newick_parser(this.phylogeny.newick || '()');
 
       // Assign '@id's to every node so we can refer to them later.
       if (has(parsedNewick, 'json')) {

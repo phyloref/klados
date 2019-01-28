@@ -1,7 +1,8 @@
+// Include Vue and Vuex to set up them up correctly.
 import Vue from 'vue';
 import Vuex from 'vuex';
 
-// Import modules.
+// Import individual store modules.
 import phyx from './modules/phyx';
 import ui from './modules/ui';
 import owlterms from './modules/owlterms';

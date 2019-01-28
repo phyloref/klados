@@ -28,6 +28,10 @@
 </template>
 
 <script>
+/*
+ * Lays out the entire page, including inserting the (hidden) modals so they can be displayed.
+ */
+
 import { mapState } from 'vuex';
 
 // Navigation controls.
@@ -64,12 +68,6 @@ export default {
 </script>
 
 <style>
-/*
- * Curation Tool CSS stylesheet
- *
- * Copyright (C) Phyloreferencing Project, 2018
- */
-
 /*
  * Classes for overall design.
  */

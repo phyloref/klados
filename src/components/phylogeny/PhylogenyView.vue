@@ -100,6 +100,10 @@
 </template>
 
 <script>
+/*
+ * This view displays a phylogeny and changes its title or Newick string.
+ */
+
 import { mapState } from 'vuex';
 import { parse as parseNewick } from 'newick-js';
 
@@ -176,10 +180,7 @@ export default {
     ...mapState({
       currentPhyx: state => state.phyx.currentPhyx,
       loadedPhyx: state => state.phyx.loadedPhyx,
-      phylogenies: state => state.phyx.currentPhyx.phylogenies,
       selectedPhylogeny: state => state.ui.display.phylogeny,
-      selectedPhylogenyIndex: state => state.phyx.currentPhyx.phylogenies.indexOf(state.ui.display.phylogeny),
-        // PLEASE DELETE THIS
     })
   },
 };

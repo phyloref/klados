@@ -73,6 +73,13 @@
 </template>
 
 <script>
+/*
+ * A modal for displaying advanced options, including:
+ *  - An interactive display of the Phyx file as a JSON, allowing it to be edited
+ *    directly.
+ *  - A download button that allows the JSON-LD file to be downloaded for debugging.
+ */
+
 import { PHYXWrapper } from 'phyx.js';
 import { saveAs } from 'filesaver.js-npm';
 
@@ -86,9 +93,13 @@ export default {
   computed: {
     phyxAsJSON: {
       get() {
+        // Return the value of the Phyx file as a JSON string.
         return this.$store.getters.getPhyxAsJSON;
       },
       set(value) {
+        // Attempt to parse the JSON string and replace the current test file
+        // with that. Note that this won't reset the loaded Phyx, so will appear
+        // as a change to the file.
         try {
           const phyx = JSON.parse(value);
           this.$store.commit('setCurrentPhyx', phyx);
