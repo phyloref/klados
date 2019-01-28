@@ -80,7 +80,7 @@
  *  - A download button that allows the JSON-LD file to be downloaded for debugging.
  */
 
-import { PHYXWrapper } from 'phyx.js';
+import { PHYXWrapper } from '@phyloref/phyx';
 import { saveAs } from 'filesaver.js-npm';
 
 export default {
