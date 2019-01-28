@@ -75,12 +75,6 @@ export default {
 
 <style>
 /*
- * Curation Tool CSS stylesheet
- *
- * Copyright (C) Phyloreferencing Project, 2018
- */
-
-/*
  * Classes for overall design.
  */
 

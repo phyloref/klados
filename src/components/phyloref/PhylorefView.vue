@@ -252,11 +252,14 @@
 </template>
 
 <script>
+/*
+ * A view for displaying a phyloreference and how it resolves on all phylogenies.
+ */
+
 import { mapState } from 'vuex';
 import { has } from 'lodash';
 import { PhylogenyWrapper, PhylorefWrapper } from 'phyx.js';
 
-import SpecifierDiv from '../phyloref/SpecifierDiv.vue';
 import ModifiedCard from '../cards/ModifiedCard.vue';
 import Phylotree from '../phylogeny/Phylotree.vue';
 
@@ -264,7 +267,6 @@ export default {
   name: 'PhylorefView',
   components: {
     ModifiedCard,
-    SpecifierDiv,
     Phylotree,
   },
   computed: {

@@ -1,7 +1,4 @@
 <template>
-  <!--
-    Display a summary of the entire PHYX file.
-  -->
   <div class="card border-dark">
     <h5 class="card-header border-dark">
       Phyloreferences in this file
@@ -84,6 +81,9 @@
 </template>
 
 <script>
+/*
+ * Display a summary of the entire Phyx file.
+ */
 import { mapState } from 'vuex';
 
 export default {

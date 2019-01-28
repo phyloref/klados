@@ -195,6 +195,13 @@
 </template>
 
 <script>
+/*
+ * Creates the sidebar that displays:
+ *  - Menu items (save, load, reason)
+ *  - A list of all phyloreferences and a button to add more phylorefs.
+ *  - A list of all phylogenies and a button to add more phylogenies.
+ */
+
 import Vue from 'vue';
 import { has } from 'lodash';
 import { mapState, mapGetters } from 'vuex';
