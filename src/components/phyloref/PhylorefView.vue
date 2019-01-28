@@ -258,7 +258,7 @@
 
 import { mapState } from 'vuex';
 import { has } from 'lodash';
-import { PhylogenyWrapper, PhylorefWrapper } from 'phyx.js';
+import { PhylogenyWrapper, PhylorefWrapper } from '@phyloref/phyx';
 
 import ModifiedCard from '../cards/ModifiedCard.vue';
 import Phylotree from '../phylogeny/Phylotree.vue';
