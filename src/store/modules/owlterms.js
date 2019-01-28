@@ -1,3 +1,8 @@
+/*
+ * Provides access to terms in the generated JSON-LD file, in particular URIs
+ * for the file, phylogenies and phyloreferences.
+ */
+
 export default {
   state: {
     phyxBaseURI: 'http://phyloref.org/curation-tool#',
