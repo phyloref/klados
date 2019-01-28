@@ -20,6 +20,9 @@ npm run serve
 npm run build
 ```
 
+This will store compiled files into the `docs/` folder, allowing it to be
+immediately published on Github Pages.
+
 ### Run your tests
 ```
 npm run test
