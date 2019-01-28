@@ -47,6 +47,8 @@ export default {
   },
   data () { return {
     uniqueId: uniqueId('phylotree-svg-'),
+    pinningNodes: [],
+    pinningNodeChildrenIRIs: new Set(),
   }},
   methods: {
     recurseNodes(node, func, nodeCount = 0, parentCount = undefined) {
@@ -83,6 +85,11 @@ export default {
       return nextID;
     },
     redrawTree () {
+      // Reset the pinning node information.
+      this.pinningNodes = [];
+      this.pinningNodeChildrenIRIs = new Set();
+
+      // Draw the tree.
       this.tree
         .size([
           // height
@@ -123,11 +130,6 @@ export default {
       return undefined;
     },
     tree () {
-      // Once we identify one or more pinning nodes in this phylogeny,
-      // we need to highlight all descendants of that node.
-      const pinningNodes = [];
-      const pinningNodeChildrenIRIs = new Set();
-
       // Set up Phylotree.
       const tree = d3.layout.phylotree()
         .svg(d3.select(`#${this.uniqueId}`))
@@ -166,8 +168,6 @@ export default {
             ) {
               textLabel.attr('id', `current_expected_label_phylogeny_${this.uniqueId}`);
               textLabel.classed('selected-internal-label', true);
-            } else {
-              textLabel.classed('selected-internal-label', false);
             }
           }
 
@@ -181,8 +181,8 @@ export default {
             this.$store.getters.getResolvedNodesForPhylogeny(this.phylogeny, this.phyloref).includes(data['@id'])
           ) {
             // We found another pinning node!
-            pinningNodes.push(data);
-            this.recurseNodes(data, node => pinningNodeChildrenIRIs.add(node['@id']));
+            this.pinningNodes.push(data);
+            this.recurseNodes(data, node => this.pinningNodeChildrenIRIs.add(node['@id']));
 
             // Mark this node as the pinning node.
             element.classed('pinning-node', true);
@@ -192,27 +192,16 @@ export default {
 
             // Set its id to 'current_pinning_node_phylogeny{{phylogenyIndex}}'
             element.attr('id', `current_pinning_node_phylogeny_${this.uniqueId}`);
-          } else {
-            // unmark this node as the pinning node.
-            element.classed('pinning-node', false);
-
-            // Make the pinning node circle normal sized.
-            element.select('circle').attr('r', 3);
-
-            // Set its id to blank.
-            element.attr('id', '');
           }
 
           // Maybe this isn't a pinning node, but it is a child of a pinning node.
           if (
             has(data, '@id') &&
-            pinningNodeChildrenIRIs.has(data['@id'])
+            this.pinningNodeChildrenIRIs.has(data['@id'])
           ) {
             // Apply a class.
             // Note that this applies to the resolved-node too.
             element.classed('descendant-of-pinning-node-node', true);
-          } else {
-            element.classed('descendant-of-pinning-node-node', false);
           }
 
           if (data.name !== undefined && data.children === undefined) {
@@ -222,8 +211,6 @@ export default {
             if (tunits.length === 0) {
               element.classed('terminal-node-without-tunits', true);
             } else if (this.phyloref !== undefined) {
-              element.classed('terminal-node-without-tunits', false);
-
               // If this is a terminal node, we should set its ID to
               // `current_expected_label_phylogeny${phylogenyIndex}` if it is
               // the currently expected node label.
@@ -233,8 +220,6 @@ export default {
                   .includes(data.name)
               ) {
                 textLabel.attr('id', `current_expected_label_phylogeny_${this.uniqueId}`);
-              } else {
-                textLabel.attr('id', '');
               }
 
               // We should highlight internal specifiers.
@@ -243,9 +228,7 @@ export default {
                   .some(specifier => this.$store.getters.getNodeLabelsMatchedBySpecifier(this.phylogeny, specifier)
                     .includes(data.name))
                 ) {
-                  element.classed('node internal-specifier-node', true);
-                } else {
-                  element.classed('node internal-specifier-node', false);
+                  element.classed('internal-specifier-node', true);
                 }
               }
 
@@ -255,13 +238,9 @@ export default {
                   .some(specifier => this.$store.getters.getNodeLabelsMatchedBySpecifier(this.phylogeny, specifier)
                     .includes(data.name))
                 ) {
-                  element.classed('node external-specifier-node', true);
-                } else {
-                  element.classed('node external-specifier-node', false);
+                  element.classed('external-specifier-node', true);
                 }
               }
-            } else {
-              element.classed('terminal-node-without-tunits', false);
             }
           }
         })
@@ -272,7 +251,7 @@ export default {
           if (
             has(data, 'source') &&
             has(data.source, '@id') &&
-            pinningNodeChildrenIRIs.has(data.source['@id'])
+            this.pinningNodeChildrenIRIs.has(data.source['@id'])
           ) {
             // Apply a class to this branch.
             element.classed('descendant-of-pinning-node-branch', true);
