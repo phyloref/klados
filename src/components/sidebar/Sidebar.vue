@@ -218,11 +218,12 @@ export default {
   },
   data() {
     return {
-      reasoningInProgress: false,
+      reasoningInProgress: false, // Set when reasoning is in progress.
     };
   },
   computed: {
     examplePHYXURLs() {
+      // Returns a list of example files to display in the "Examples" menu.
       return [
         {
           url: 'examples/fisher_et_al_2007.json',
@@ -254,6 +255,7 @@ export default {
   },
   methods: {
     getSpecifierLabel(specifier) {
+      // Get the label for a particular specifier.
       return PhylorefWrapper.getSpecifierLabel(specifier);
     },
 
