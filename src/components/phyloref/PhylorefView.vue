@@ -95,14 +95,14 @@
               <div class="input-group col-md-4">
                 <!-- Display the phylogeny where this node is expected to match -->
                 <div class="input-group-prepend">
-                  <button
+                  <a
                     class="btn btn-outline-secondary"
                     :href="'#current_expected_label_phylogeny_' + phylogenyIndex"
                     title="Click here to jump to the expected label"
                     type="button"
                   >
                     Go to node
-                  </button>
+                  </a>
                 </div>
 
                 <!-- Display the matching node(s) -->
