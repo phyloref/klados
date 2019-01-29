@@ -33,11 +33,10 @@ Vue.component('font-awesome-icon', FontAwesomeIcon);
 Vue.use(BootstrapVue);
 Vue.use(VueResize);
 
-// Import JQuery.
-window.$ = require('jquery');
-
+// Turn off the Vue production tip on the console on Vue startup.
 Vue.config.productionTip = false;
 
+// Set up Vue object.
 export default new Vue({
   el: '#app',
   store,
