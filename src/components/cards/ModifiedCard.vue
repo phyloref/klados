@@ -3,9 +3,11 @@
     v-if="dataChanged"
     class="card mb-2 border-dark"
   >
-    <div class="card-header bg-warning">Warning!</div>
+    <div class="card-header bg-warning">
+      Warning!
+    </div>
     <div class="card-body">
-      {{message}}
+      {{ message }}
     </div>
   </div>
 </template>
@@ -26,13 +28,13 @@ export default {
   props: {
     message: {
       type: String,
-      default: "This element has changed! Please remember to save it.",
+      default: 'This element has changed! Please remember to save it.',
     },
     compare: Object, /* Object to check for changes. */
     compareTo: Object, /* Changes will be determined by comparing this to this.compare */
   },
   computed: {
-    dataChanged () { return !isEqual(this.compare, this.compareTo); },
+    dataChanged() { return !isEqual(this.compare, this.compareTo); },
   },
 };
 </script>

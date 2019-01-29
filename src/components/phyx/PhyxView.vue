@@ -20,7 +20,7 @@
             class="bg-white"
           >
             <td :colspan="4 + phylogenies.length">
-              <center><em>No phyloreferences loaded</em></Center>
+              <Center><em>No phyloreferences loaded</em></Center>
             </td>
           </tr>
           <tr v-for="(phyloref, phylorefIndex) of phylorefs">

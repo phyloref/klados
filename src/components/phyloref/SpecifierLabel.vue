@@ -1,6 +1,6 @@
 <template>
   <span>
-    {{specifierAsHTML}}
+    {{ specifierAsHTML }}
   </span>
 </template>
 
@@ -18,7 +18,7 @@ export default {
     specifier: Object,
   },
   computed: {
-    specifierAsHTML () {
+    specifierAsHTML() {
       return PhylorefWrapper.getSpecifierLabel(this.specifier);
     },
   },

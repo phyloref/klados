@@ -101,7 +101,7 @@
             @click="$store.commit('changeDisplay', {phyloref})"
           >
             <span v-if="phyloref.label">
-              {{phyloref.label}}
+              {{ phyloref.label }}
             </span>
             <span v-else>
               {{ 'Phyloreference ' + (phylorefIndex + 1) }}
@@ -111,7 +111,7 @@
             <ModifiedIcon
               message="This phyloreference has been modified since being loaded! Use 'Save as JSON' to save your changes."
               :compare="phyloref"
-              :compareTo="loadedPhyx.phylorefs[phylorefIndex]"
+              :compare-to="loadedPhyx.phylorefs[phylorefIndex]"
             />
           </a>
 
@@ -179,7 +179,7 @@
           <ModifiedIcon
             message="This phylogeny has been modified since being loaded! Use 'Save as JSON' to save your changes."
             :compare="phylogeny"
-            :compareTo="loadedPhyx.phylogenies[phylogenyIndex]"
+            :compare-to="loadedPhyx.phylogenies[phylogenyIndex]"
           />
         </a>
         <a
@@ -218,9 +218,11 @@ export default {
     ModifiedIcon,
     SpecifierLabel,
   },
-  data: function () { return {
-    reasoningInProgress: false,
-  }},
+  data() {
+    return {
+      reasoningInProgress: false,
+    };
+  },
   computed: {
     examplePHYXURLs() {
       return [
@@ -258,8 +260,7 @@ export default {
       // to provide a new value for that dictionary and key. If one is provided,
       // we replace it.
       const response = window.prompt(message, dict[key]);
-      if (response !== undefined && response !== null)
-        Vue.set(dict, key, response);
+      if (response !== undefined && response !== null) Vue.set(dict, key, response);
     },
 
     loadPhyxFromURL(url) {
@@ -314,7 +315,7 @@ export default {
 
       const [file] = $fileInput.prop('files');
       const fr = new FileReader();
-      fr.onload = (e => {
+      fr.onload = ((e) => {
         const lines = e.target.result;
         const phyx = JSON.parse(lines);
 
@@ -354,7 +355,7 @@ export default {
       // the Vue model at vm.reasoningResults so we can access them.
 
       // Are we already reasoning? If so, ignore.
-      if(this.reasoningInProgress) return;
+      if (this.reasoningInProgress) return;
 
       // Disable "Reason" buttons so they can't be reused.
       this.reasoningInProgress = true;
@@ -366,9 +367,9 @@ export default {
         // which translates to:
         //  jsonld={[{"title":...
         jsonld: JSON.stringify([new PHYXWrapper(
-            this.$store.state.phyx.currentPhyx,
-            d3.layout.newick_parser
-          )
+          this.$store.state.phyx.currentPhyx,
+          d3.layout.newick_parser,
+        )
           .asJSONLD()], undefined, 4),
       }).done((data) => {
         this.$store.commit('setReasoningResults', data);

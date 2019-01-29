@@ -4,7 +4,7 @@
     class="float-right"
     :title="message"
   >
-    <font-awesome-icon
+    <FontAwesomeIcon
       size="lg"
       icon="exclamation-circle"
     />
@@ -26,13 +26,13 @@ export default {
   props: {
     message: {
       type: String,
-      default: "This element has changed! Please remember to save it.",
+      default: 'This element has changed! Please remember to save it.',
     },
     compare: Object, /* Object to check for changes. */
     compareTo: Object, /* Changes will be determined by comparing this to this.compare */
   },
   computed: {
-    dataChanged: function () { return !isEqual(this.compare, this.compareTo); },
+    dataChanged() { return !isEqual(this.compare, this.compareTo); },
   },
 };
 </script>
