@@ -25,6 +25,9 @@ import App from './App.vue';
 // Import our Vuex store.
 import store from './store';
 
+// Set up JQuery as a global.
+window.$ = require('jquery');
+
 // Set up FontAwesomeIcon.
 library.add(faExclamationCircle);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
