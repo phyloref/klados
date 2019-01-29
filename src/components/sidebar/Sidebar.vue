@@ -124,7 +124,7 @@
               :class="{'active border-dark': selectedSpecifier === specifier}"
               @click="$store.commit('changeDisplay', { phyloref, specifier })"
             >
-              &#9679; <strong>Internal:</strong> <SpecifierLabel :specifier="specifier" />
+              &#9679; <strong>Internal:</strong> {{getSpecifierLabel(specifier)}}
             </a>
 
             <a
@@ -134,7 +134,7 @@
               :class="{'active border-dark': selectedSpecifier === specifier}"
               @click="$store.commit('changeDisplay', { phyloref, specifier })"
             >
-              &#9679; <strong>External:</strong> <SpecifierLabel :specifier="specifier" />
+              &#9679; <strong>External:</strong> {{getSpecifierLabel(specifier)}}
             </a>
             <a
               href="javascript: void(0)"
@@ -207,16 +207,14 @@ import { has } from 'lodash';
 import { mapState, mapGetters } from 'vuex';
 import { saveAs } from 'filesaver.js-npm';
 
-import { PHYXWrapper } from '@phyloref/phyx';
+import { PHYXWrapper, PhylorefWrapper } from '@phyloref/phyx';
 
-import SpecifierLabel from '../phyloref/SpecifierLabel.vue';
 import ModifiedIcon from '../icons/ModifiedIcon.vue';
 
 export default {
   name: 'Sidebar',
   components: {
     ModifiedIcon,
-    SpecifierLabel,
   },
   data() {
     return {
@@ -255,6 +253,10 @@ export default {
     }),
   },
   methods: {
+    getSpecifierLabel(specifier) {
+      return PhylorefWrapper.getSpecifierLabel(specifier);
+    },
+
     promptAndSetDict(message, dict, key) {
       // Given a dictionary and key, we prompt the user (using window.prompt)
       // to provide a new value for that dictionary and key. If one is provided,
