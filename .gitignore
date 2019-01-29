@@ -1,6 +1,9 @@
 .DS_Store
 node_modules
 
+# Ignore coverage information.
+coverage/
+
 # local env files
 .env.local
 .env.*.local
