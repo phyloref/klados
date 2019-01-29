@@ -347,6 +347,9 @@ export default {
     Phylotree,
   },
   computed: {
+    /*
+     * The following properties allow you to get or set phyloref label, clade definition or curator comments.
+     */
     selectedPhylorefLabel: {
       get() { return this.selectedPhyloref.label; },
       set(label) { this.$store.commit('setPhylorefProps', { phyloref: this.selectedPhyloref, label }); },
@@ -359,8 +362,12 @@ export default {
       get() { return this.selectedPhyloref.curatorComments; },
       set(curatorComments) { this.$store.commit('setPhylorefProps', { phyloref: this.selectedPhyloref, curatorComments }); },
     },
-    phylorefURI() { return this.$store.getters.getBaseURIForPhyloref(this.selectedPhyloref); },
+    phylorefURI() {
+      // Get the base URI of this phyloreference.
+      return this.$store.getters.getBaseURIForPhyloref(this.selectedPhyloref);
+    },
     nodesResolved() {
+      // Get a list of nodes resolved by this phyloreference.
       if (!has(this.$store.state.phyx.reasoningResults, 'phylorefs')) return undefined;
       if (has(this.$store.state.phyx.reasoningResults.phylorefs, this.phylorefURI)) {
         return this.$store.state.phyx.reasoningResults.phylorefs[this.phylorefURI];
@@ -378,22 +385,28 @@ export default {
   },
   methods: {
     getNodeLabels(phylogeny, nodeType) {
+      // Return a list of node labels in a particular phylogeny.
       return new PhylogenyWrapper(phylogeny).getNodeLabels(nodeType).sort();
     },
     getExpectedNodeLabels(phylogeny) {
+      // Return a list of nodes that this phyloreference is expected to resolve to.
       return new PhylorefWrapper(this.selectedPhyloref).getExpectedNodeLabels(phylogeny);
     },
     getSpecifierLabel(specifier) {
+      // Return the specifier label of a particular specifier.
       return PhylorefWrapper.getSpecifierLabel(specifier);
     },
     getResolvedNodes(phylogeny, flagReturnShortURIs = true) {
+      // Return the list of nodes on a particular phylogeny that this phyloreference
+      // has been determined to resolve on by JPhyloRef.
       return this.$store.getters.getResolvedNodesForPhylogeny(phylogeny, this.selectedPhyloref, flagReturnShortURIs);
     },
     getResolvedNodeLabels(phylogeny) {
+      // Converts node IDs to node labels, if present.
       return this.getResolvedNodes(phylogeny)
         .map(nodeId => this.getNodesById(phylogeny, nodeId))
         .reduce((a, b) => a.concat(b), [])
-        .map(node => node.name);
+        .map(node => node.name || '(unlabelled)');
     },
   },
 };
