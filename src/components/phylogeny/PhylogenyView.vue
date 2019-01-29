@@ -117,6 +117,10 @@ export default {
   name: 'PhylogenyView',
   components: { ModifiedCard, Phylotree },
   computed: {
+    /*
+     * The following properties allow you to get or set the phylogeny label,
+     * description or newick string.
+     */
     phylogenyLabel: {
       get() { return this.selectedPhylogeny.label; },
       set(label) { this.$store.commit('setPhylogenyProps', { phylogeny: this.selectedPhylogeny, label }); },
@@ -188,8 +192,3 @@ export default {
   },
 };
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style>
-
-</style>
