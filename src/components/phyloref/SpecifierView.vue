@@ -505,6 +505,8 @@ export default {
   },
   computed: {
     loadedSpecifier() {
+      // Return the loaded version of this specifier (i.e. the version in loadedPhyx
+      // rather than currentPhyx).
       const loadedPhyx = this.loadedPhyx;
       const currentPhyx = this.currentPhyx;
       const loadedPhyloref = loadedPhyx.phylorefs[currentPhyx.phylorefs.indexOf(this.selectedPhyloref)];
@@ -514,6 +516,7 @@ export default {
       return undefined;
     },
     specifierType: {
+      // Allow the type of this specifier (internal or external) to be returned or changed.
       get() {
         if (has(this.selectedPhyloref, 'internalSpecifiers') && this.selectedPhyloref.internalSpecifiers.includes(this.selectedSpecifier)) return 'Internal specifier';
         if (has(this.selectedPhyloref, 'externalSpecifiers') && this.selectedPhyloref.externalSpecifiers.includes(this.selectedSpecifier)) return 'External specifier';
@@ -530,6 +533,7 @@ export default {
       },
     },
     selectedVerbatimSpecifier: {
+      // Allow the verbatim specifier to be retrieved or changed.
       get() { return this.selectedSpecifier.verbatimSpecifier; },
       set(verbatimSpecifier) { this.$store.commit('setSpecifierProps', { specifier: this.selectedSpecifier, verbatimSpecifier }); },
     },
@@ -544,6 +548,7 @@ export default {
       },
     },
     addNewScientificName: {
+      // Add a new scientific name to this specifier.
       get() {
         return '';
       },
@@ -553,6 +558,7 @@ export default {
       },
     },
     addNewSpecimen: {
+      // Add a new specimen occurrence ID to this specifier.
       get() {
         return '';
       },
@@ -562,6 +568,7 @@ export default {
       },
     },
     addNewExternalReference: {
+      // Add a new external reference to this specifier.
       get() {
         return '';
       },
@@ -571,6 +578,7 @@ export default {
       },
     },
     externalReferences () {
+      // Return a list of external references.
       if(!this.selectedSpecifierFirstTUnit) return [];
       if(!this.selectedSpecifierFirstTUnit.externalReferences) return [];
       return this.selectedSpecifierFirstTUnit.externalReferences;
@@ -587,8 +595,3 @@ export default {
   },
 };
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-
-</style>
