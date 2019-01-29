@@ -97,7 +97,7 @@
                 <div class="input-group-prepend">
                   <button
                     class="btn btn-outline-secondary"
-                    :href="'#current_expected_label_phylogeny' + phylogenyIndex"
+                    :href="'#current_expected_label_phylogeny_' + phylogenyIndex"
                     title="Click here to jump to the expected label"
                     type="button"
                   >
@@ -189,7 +189,7 @@
                 <div class="input-group-prepend">
                   <a
                     class="btn btn-outline-secondary"
-                    :href="'#current_pinning_node_phylogeny' + phylogenyIndex"
+                    :href="'#current_pinning_node_phylogeny_' + phylogenyIndex"
                     title="Click here to jump to this node"
                     type="button"
                   >
@@ -242,7 +242,7 @@
             <div
               class="card mt-4 p-2"
             >
-              <Phylotree :phylogeny="phylogeny" :phyloref="selectedPhyloref" :newick="phylogeny.newick" />
+              <Phylotree :phylogenyIndex="phylogenyIndex" :phylogeny="phylogeny" :phyloref="selectedPhyloref" :newick="phylogeny.newick" />
             </div>
           </div>
         </div>
@@ -290,7 +290,6 @@ export default {
       }
       return undefined;
     },
-    phylogenyIndex: () => -1, // TODO implement!
     ...mapState({
       currentPhyx: state => state.phyx.currentPhyx,
       loadedPhyx: state => state.phyx.loadedPhyx,
