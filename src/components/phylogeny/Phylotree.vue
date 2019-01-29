@@ -10,7 +10,7 @@
     </template>
     <div v-else class="phylotreeContainer">
       <svg
-        :id="uniqueId"
+        :id="'phylogeny' + phylogenyIndex"
         class="col-md-12 phylogeny"
       />
       <resize-observer @notify="redrawTree()" />
@@ -40,9 +40,12 @@ export default {
       type: Number,
       default: 20,
     },
+    phylogenyIndex: {
+      type: Number,
+      default: uniqueId(),
+    }
   },
   data () { return {
-    uniqueId: uniqueId('phylotree-svg-'),
     pinningNodes: [],
     pinningNodeChildrenIRIs: new Set(),
   }},
@@ -91,7 +94,7 @@ export default {
           // height
           0,
           // width
-          $(`#${this.uniqueId}`).width() - 40 // We need more space because our fonts are bigger than the default.
+          $(`#phylogeny${this.phylogenyIndex}`).width() - 40 // We need more space because our fonts are bigger than the default.
         ])
         .spacing_x(this.spacingX)
         .update();
@@ -127,7 +130,7 @@ export default {
     tree () {
       // Set up Phylotree.
       const tree = d3.layout.phylotree()
-        .svg(d3.select(`#${this.uniqueId}`))
+        .svg(d3.select(`#phylogeny${this.phylogenyIndex}`))
         .options({
           'internal-names': true,
           transitions: false,
@@ -161,7 +164,7 @@ export default {
             if (
               this.$store.getters.getExpectedNodeLabelsOnPhylogeny(this.phylogeny, this.phyloref).includes(data.name)
             ) {
-              textLabel.attr('id', `current_expected_label_phylogeny_${this.uniqueId}`);
+              textLabel.attr('id', `current_expected_label_phylogeny_${this.phylogenyIndex}`);
               textLabel.classed('selected-internal-label', true);
             } else {
               textLabel.attr('id', '');
@@ -189,7 +192,7 @@ export default {
             element.select('circle').attr('r', 6);
 
             // Set its id to 'current_pinning_node_phylogeny{{phylogenyIndex}}'
-            element.attr('id', `current_pinning_node_phylogeny_${this.uniqueId}`);
+            element.attr('id', `current_pinning_node_phylogeny_${this.phylogenyIndex}`);
           }
 
           // Maybe this isn't a pinning node, but it is a child of a pinning node.
@@ -217,7 +220,7 @@ export default {
                 this.$store.getters.getExpectedNodeLabelsOnPhylogeny(this.phylogeny, this.phyloref)
                   .includes(data.name)
               ) {
-                textLabel.attr('id', `current_expected_label_phylogeny_${this.uniqueId}`);
+                textLabel.attr('id', `current_expected_label_phylogeny_${this.phylogenyIndex}`);
               }
 
               // We should highlight internal specifiers.
