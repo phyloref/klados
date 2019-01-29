@@ -83,6 +83,9 @@
     "transform": {
       "^.*\\.vue$": "vue-jest",
       "^.+\\.js$": "babel-jest"
-    }
+    },
+    "collectCoverage": true,
+    "collectCoverageFrom": ["**/*.{js,vue}", "!**/node_modules/**"],
+    "coverageReporters": ["html", "text-summary"]
   }
 }
