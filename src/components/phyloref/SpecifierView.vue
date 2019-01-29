@@ -509,8 +509,8 @@ export default {
       const currentPhyx = this.currentPhyx;
       const loadedPhyloref = loadedPhyx.phylorefs[currentPhyx.phylorefs.indexOf(this.selectedPhyloref)];
       if (loadedPhyloref === undefined) return undefined;
-      if (has(this.selectedPhyloref, 'internalSpecifiers') && this.selectedPhyloref.internalSpecifiers.includes(this.selectedSpecifier)) return loadedPhyloref.internalSpecifiers[this.selectedPhyloref.internalSpecifiers.indexOf(this.selectedSpecifier)];
-      if (has(this.selectedPhyloref, 'externalSpecifiers') && this.selectedPhyloref.externalSpecifiers.includes(this.selectedSpecifier)) return loadedPhyloref.externalSpecifiers[this.selectedPhyloref.externalSpecifiers.indexOf(this.selectedSpecifier)];
+      if (has(this.selectedPhyloref, 'internalSpecifiers') && has(this.loadedPhyloref, 'internalSpecifiers') && this.selectedPhyloref.internalSpecifiers.includes(this.selectedSpecifier)) return loadedPhyloref.internalSpecifiers[this.selectedPhyloref.internalSpecifiers.indexOf(this.selectedSpecifier)];
+      if (has(this.selectedPhyloref, 'externalSpecifiers') && has(this.loadedPhyloref, 'externalSpecifiers') && this.selectedPhyloref.externalSpecifiers.includes(this.selectedSpecifier)) return loadedPhyloref.externalSpecifiers[this.selectedPhyloref.externalSpecifiers.indexOf(this.selectedSpecifier)];
       return undefined;
     },
     specifierType: {
