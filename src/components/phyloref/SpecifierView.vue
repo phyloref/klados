@@ -147,7 +147,7 @@
           </h6>
           <div class="card-body">
             <div
-              v-for="(extref, index) of selectedSpecifierFirstTUnit.externalReferences"
+              v-for="(extref, index) of externalReferences"
               class="input-group"
             >
               <input
@@ -569,6 +569,11 @@ export default {
         if (extref.trim() === '') return;
         this.$store.commit('addToSpecifier', { specifier: this.selectedSpecifierFirstTUnit, externalReference: extref });
       },
+    },
+    externalReferences () {
+      if(!this.selectedSpecifierFirstTUnit) return [];
+      if(!this.selectedSpecifierFirstTUnit.externalReferences) return [];
+      return this.selectedSpecifierFirstTUnit.externalReferences;
     },
     ...mapState({
       currentPhyx: state => state.phyx.currentPhyx,
