@@ -3,6 +3,8 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 
 // Import individual store modules.
+import phylogeny from './phylogeny';
+import phyloref from './phyloref';
 import phyx from './modules/phyx';
 import ui from './modules/ui';
 import owlterms from './modules/owlterms';
@@ -15,6 +17,6 @@ export default new Vuex.Store({
   state: {
     CURATION_TOOL_VERSION: '0.1',
   },
-  modules: { phyx, ui, owlterms },
+  modules: { phylogeny, phyloref, phyx, ui, owlterms },
   strict: debug,
 });

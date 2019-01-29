@@ -6,8 +6,6 @@
  */
 
 import Vue from 'vue';
-import phylogeny from './phylogeny';
-import phyloref from './phyloref';
 
 export default {
   state: {
@@ -69,9 +67,5 @@ export default {
       // Sets the "reasoning results" -- the results of reasoning returned by JPhyloRef.
       Vue.set(state, 'reasoningResults', payload);
     },
-  },
-  modules: {
-    phylogeny,
-    phyloref,
   },
 };
