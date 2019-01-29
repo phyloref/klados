@@ -163,6 +163,9 @@ export default {
             ) {
               textLabel.attr('id', `current_expected_label_phylogeny_${this.uniqueId}`);
               textLabel.classed('selected-internal-label', true);
+            } else {
+              textLabel.attr('id', '');
+              textLabel.classed('selected-internal-label', false);
             }
           }
 
