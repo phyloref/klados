@@ -182,7 +182,7 @@
 
         <a
           href="javascript: void(0)"
-          class="btn btn-secondary mr-2"
+          class="btn btn-secondary mr-2 float-right"
           @click="$store.commit('changeDisplay', { phyloref: selectedPhyloref })"
         >
           Close specifier view
