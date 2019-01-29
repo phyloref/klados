@@ -6,10 +6,16 @@
       <div id="page-content-wrapper">
         <template v-if="display.phyloref">
           <template v-if="display.specifier">
-            <SpecifierView :phyloref="display.phyloref" :specifier="display.specifier" />
+            <SpecifierView
+              :phyloref="display.phyloref"
+              :specifier="display.specifier"
+            />
           </template>
           <template v-else>
-            <PhylorefView :phyloref="display.phyloref" :specifier="display.specifier" />
+            <PhylorefView
+              :phyloref="display.phyloref"
+              :specifier="display.specifier"
+            />
           </template>
         </template>
         <template v-else-if="display.phylogeny">
@@ -49,7 +55,7 @@ import AboutCurationToolModal from './components/modals/AboutCurationToolModal.v
 import AdvancedOptionsModal from './components/modals/AdvancedOptionsModal.vue';
 
 export default {
-  name: 'app',
+  name: 'App',
   components: {
     TopNavigationBar,
     Sidebar,
@@ -64,7 +70,7 @@ export default {
     CURATION_TOOL_VERSION: state => state.CURATION_TOOL_VERSION,
     display: state => state.ui.display,
   }),
-}
+};
 </script>
 
 <style>
