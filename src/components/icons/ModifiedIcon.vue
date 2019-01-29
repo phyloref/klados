@@ -4,7 +4,7 @@
     class="float-right"
     :title="message"
   >
-    <FontAwesomeIcon
+    <font-awesome-icon
       size="lg"
       icon="exclamation-circle"
     />
