@@ -6,9 +6,6 @@
     "lib": "lib"
   },
   "scripts": {
-    "lint": "eslint \"js/**\" \"examples/**\" \"test/**\" --ext .js,.json",
-    "pretest": "npm run lint",
-    "test": "mocha"
   },
   "repository": {
     "type": "git",
