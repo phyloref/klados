@@ -140,7 +140,7 @@ export default {
         throw new Error('setSpecifierProps needs a specifier to modify using the "specifier" argument');
       }
       if (has(payload, 'verbatimSpecifier')) {
-        Vue.set(payload.specifier, 'label', payload.verbatimSpecifier);
+        Vue.set(payload.specifier, 'verbatimSpecifier', payload.verbatimSpecifier);
       }
     },
 
