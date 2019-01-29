@@ -36,7 +36,7 @@ import { uniqueId, has } from 'lodash';
 
 /*
  * Note that this requires the Phylotree Javascript to be loaded in the HTML
- * header: I haven't figured out how to include phylotree.js from within Vue CLI.
+ * header: I haven't figured out how to include phylotree.js from within Vue CLI yet.
  */
 
 export default {
@@ -44,25 +44,38 @@ export default {
   props: {
     phylogeny: Object, // The phylogeny to render.
     phyloref: Object, // The phyloreference to highlight.
-    spacingX: { // spacing in the X axis
+    spacingX: { // Spacing in the X axis in pixels.
       type: Number,
       default: 20,
     },
-    phylogenyIndex: {
+    phylogenyIndex: { // An index number of the phylogeny. Will be used to set up HTML DOM IDs.
       type: Number,
       default: uniqueId(),
     },
   },
   data() {
     return {
+      // List of pinning nodes to highlight for a particular phylogeny.
       pinningNodes: [],
+      // List of pinning nodes and all their children, so the entire clade can be
+      // highlighted as needed.
       pinningNodeChildrenIRIs: new Set(),
     };
   },
   computed: {
-    reasoningResults() { return this.$store.state.phyx.reasoningResults; },
-    newickAsString() { return this.phylogeny.newick || '()'; },
+    reasoningResults() {
+      // Included so we can watch this for changes, see `watch` below.
+      return this.$store.state.phyx.reasoningResults;
+    },
+    newickAsString() {
+      // Returns the Newick string of this phylogeny.
+      return this.phylogeny.newick || '()';
+    },
     parsedNewick() {
+      // Parses the Newick string into a tree-based representation, in which
+      // every node has a unique identifier. These identifiers must be allocated
+      // in the same order as phyx.js, so that node identifiers returned by
+      // JPhyloRef correspond to the correct node on the phylogeny.
       const parsedNewick = d3.layout.newick_parser(this.phylogeny.newick || '()');
 
       // Assign '@id's to every node so we can refer to them later.
@@ -207,7 +220,6 @@ export default {
         .style_edges((element, data) => {
           // Is the parent a descendant of a pinning node? If so, we need to
           // select this branch!
-          // console.log('Found an edge with data: ', data);
           if (
             has(data, 'source')
             && has(data.source, '@id')
@@ -234,6 +246,7 @@ export default {
     },
   },
   mounted() {
+    // Redraw the tree when this component is loaded for the first time.
     this.redrawTree();
   },
   methods: {
@@ -271,7 +284,7 @@ export default {
       return nextID;
     },
     redrawTree() {
-      // Reset the pinning node information.
+      // Reset the pinning node information before redrawing.
       this.pinningNodes = [];
       this.pinningNodeChildrenIRIs = new Set();
 
