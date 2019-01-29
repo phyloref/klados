@@ -100,6 +100,12 @@
             class="form-control"
             :value="getSpecifierLabel(specifier)"
           >
+          <div class="input-group-append">
+            <button
+              class="btn btn-outline-secondary"
+              @click="$store.commit('changeDisplay', {phyloref: selectedPhyloref, specifier: specifier})"
+            >Edit</button>
+          </div>
         </div>
         <div
           v-for="(specifier, index) of selectedPhyloref.externalSpecifiers"
@@ -118,6 +124,12 @@
             class="form-control"
             :value="getSpecifierLabel(specifier)"
           >
+          <div class="input-group-append">
+            <button
+              class="btn btn-outline-secondary"
+              @click="$store.commit('changeDisplay', {phyloref: selectedPhyloref, specifier: specifier})"
+            >Edit</button>
+          </div>
         </div>
       </div>
     </div>
