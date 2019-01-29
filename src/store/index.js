@@ -3,8 +3,8 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 
 // Import individual store modules.
-import phylogeny from './phylogeny';
-import phyloref from './phyloref';
+import phylogeny from './modules/phylogeny';
+import phyloref from './modules/phyloref';
 import phyx from './modules/phyx';
 import ui from './modules/ui';
 import owlterms from './modules/owlterms';
