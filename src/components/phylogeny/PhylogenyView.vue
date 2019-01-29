@@ -4,7 +4,7 @@
     <ModifiedCard
       message="This phylogeny has been modified since being loaded. Use 'Save as JSON' to save your changes."
       :compare="selectedPhylogeny"
-      :compareTo="loadedPhyx.phylogenies[currentPhyx.phylogenies.indexOf(selectedPhylogeny)]"
+      :compare-to="loadedPhyx.phylogenies[currentPhyx.phylogenies.indexOf(selectedPhylogeny)]"
     />
 
     <div class="card">
@@ -93,7 +93,10 @@
         Phylogeny visualization
       </h5>
       <div class="card-body">
-        <Phylotree :phylogeny="selectedPhylogeny" :newick="phylogenyNewick" />
+        <Phylotree
+          :phylogeny="selectedPhylogeny"
+          :newick="phylogenyNewick"
+        />
       </div>
     </div>
   </div>
@@ -181,7 +184,7 @@ export default {
       currentPhyx: state => state.phyx.currentPhyx,
       loadedPhyx: state => state.phyx.loadedPhyx,
       selectedPhylogeny: state => state.ui.display.phylogeny,
-    })
+    }),
   },
 };
 </script>

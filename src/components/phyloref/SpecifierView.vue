@@ -4,7 +4,7 @@
     <ModifiedCard
       message="This specifier has been modified since being loaded! Use 'Save as JSON' to save your changes."
       :compare="selectedSpecifier"
-      :compareTo="loadedSpecifier"
+      :compare-to="loadedSpecifier"
     />
 
     <div class="card">
@@ -20,7 +20,11 @@
             Specifier type
           </label>
           <div class="col-md-10">
-            <select id="specifier-type" class="form-control" v-model="specifierType">
+            <select
+              id="specifier-type"
+              v-model="specifierType"
+              class="form-control"
+            >
               <option>Internal specifier</option>
               <option>External specifier</option>
             </select>
@@ -41,7 +45,7 @@
               type="text"
               class="form-control"
               placeholder="Enter the verbatim description of this specifier"
-            />
+            >
           </div>
         </div>
 
@@ -53,11 +57,33 @@
             <div v-for="(sciname, index) of selectedSpecifierFirstTUnit.scientificNames">
               <div class="sciname">
                 <div class="input-group">
-                  <input type="text" class="form-control" :value="sciname.scientificName" />
+                  <input
+                    type="text"
+                    class="form-control"
+                    :value="sciname.scientificName"
+                  >
                   <div class="input-group-append">
-                    <button class="btn btn-outline-secondary details" type="button" onclick="$(this).parents().filter('.sciname').find('.details').toggleClass('d-none')">Show details</button>
-                    <button class="btn btn-outline-secondary details d-none" type="button" onclick="$(this).parents().filter('.sciname').find('.details').toggleClass('d-none')">Hide details</button>
-                    <button class="btn btn-outline-danger" type="button" @click="$store.commit('deleteFromSpecifier', {specifier: selectedSpecifierFirstTUnit, scientificName: sciname})">&cross;</button>
+                    <button
+                      class="btn btn-outline-secondary details"
+                      type="button"
+                      onclick="$(this).parents().filter('.sciname').find('.details').toggleClass('d-none')"
+                    >
+                      Show details
+                    </button>
+                    <button
+                      class="btn btn-outline-secondary details d-none"
+                      type="button"
+                      onclick="$(this).parents().filter('.sciname').find('.details').toggleClass('d-none')"
+                    >
+                      Hide details
+                    </button>
+                    <button
+                      class="btn btn-outline-danger"
+                      type="button"
+                      @click="$store.commit('deleteFromSpecifier', {specifier: selectedSpecifierFirstTUnit, scientificName: sciname})"
+                    >
+                      &cross;
+                    </button>
                   </div>
                 </div>
                 <ul class="details d-none">
@@ -68,10 +94,11 @@
               </div>
             </div>
             <input
-              type="text" class="form-control"
-              placeholder="Enter a new scientific name here."
               v-model.lazy="addNewScientificName"
-            />
+              type="text"
+              class="form-control"
+              placeholder="Enter a new scientific name here."
+            >
           </div>
         </div>
 
@@ -80,18 +107,37 @@
             Specimens
           </h6>
           <div class="card-body">
-            <div v-for="(specimen, index) of selectedSpecifierFirstTUnit.includesSpecimens" class="input-group">
-              <input type="text" class="form-control" :value="specimen.occurrenceID" />
+            <div
+              v-for="(specimen, index) of selectedSpecifierFirstTUnit.includesSpecimens"
+              class="input-group"
+            >
+              <input
+                type="text"
+                class="form-control"
+                :value="specimen.occurrenceID"
+              >
               <div class="input-group-append">
-                <button class="btn btn-outline-secondary" type="button">Show details</button>
-                <button class="btn btn-outline-danger" type="button" @click="$store.commit('deleteFromSpecifier', {specifier: selectedSpecifierFirstTUnit, specimen})">&cross;</button>
+                <button
+                  class="btn btn-outline-secondary"
+                  type="button"
+                >
+                  Show details
+                </button>
+                <button
+                  class="btn btn-outline-danger"
+                  type="button"
+                  @click="$store.commit('deleteFromSpecifier', {specifier: selectedSpecifierFirstTUnit, specimen})"
+                >
+                  &cross;
+                </button>
               </div>
             </div>
             <input
-              type="text" class="form-control"
-              placeholder="Enter a new specimen identifier here."
               v-model.lazy="addNewSpecimen"
-            />
+              type="text"
+              class="form-control"
+              placeholder="Enter a new specimen identifier here."
+            >
           </div>
         </div>
 
@@ -100,23 +146,54 @@
             External references
           </h6>
           <div class="card-body">
-            <div v-for="(extref, index) of selectedSpecifierFirstTUnit.externalReferences" class="input-group">
-              <input type="text" class="form-control" :value="extref" />
+            <div
+              v-for="(extref, index) of selectedSpecifierFirstTUnit.externalReferences"
+              class="input-group"
+            >
+              <input
+                type="text"
+                class="form-control"
+                :value="extref"
+              >
               <div class="input-group-append">
-                <button class="btn btn-outline-secondary" type="button">Show details</button>
-                <button class="btn btn-outline-danger" type="button" @click="$store.commit('deleteFromSpecifier', {specifier: selectedSpecifierFirstTUnit, externalReference: extref})">&cross;</button>
+                <button
+                  class="btn btn-outline-secondary"
+                  type="button"
+                >
+                  Show details
+                </button>
+                <button
+                  class="btn btn-outline-danger"
+                  type="button"
+                  @click="$store.commit('deleteFromSpecifier', {specifier: selectedSpecifierFirstTUnit, externalReference: extref})"
+                >
+                  &cross;
+                </button>
               </div>
             </div>
             <input
-              type="text" class="form-control"
-              placeholder="Enter a new external reference URI here."
               v-model.lazy="addNewExternalReference"
-            />
+              type="text"
+              class="form-control"
+              placeholder="Enter a new external reference URI here."
+            >
           </div>
         </div>
 
-        <a href="javascript: void(0)" class="btn btn-secondary mr-2" @click="$store.commit('changeDisplay', { phyloref: selectedPhyloref })">Close specifier view</a>
-        <a href="javascript: void(0)" class="btn btn-danger" @click="$store.commit('deleteSpecifier', { phyloref: selectedPhyloref, specifier: selectedSpecifier })">Delete specifier</a>
+        <a
+          href="javascript: void(0)"
+          class="btn btn-secondary mr-2"
+          @click="$store.commit('changeDisplay', { phyloref: selectedPhyloref })"
+        >
+          Close specifier view
+        </a>
+        <a
+          href="javascript: void(0)"
+          class="btn btn-danger"
+          @click="$store.commit('deleteSpecifier', { phyloref: selectedPhyloref, specifier: selectedSpecifier })"
+        >
+          Delete specifier
+        </a>
       </div>
 
       <!-- List of taxonomic units
@@ -408,9 +485,9 @@
           >
             <strong>Add new taxonomic unit</strong>
           </a>-->
-        </div>
-      </div>
-    </template>
+    </div>
+  </div>
+</template>
 
     <!-- TODO: insert specifier resolution on phylogeny here -->
   </div>
@@ -427,29 +504,25 @@ export default {
     ModifiedCard,
   },
   computed: {
-    loadedSpecifier: function () {
+    loadedSpecifier() {
       const loadedPhyx = this.loadedPhyx;
       const currentPhyx = this.currentPhyx;
       const loadedPhyloref = loadedPhyx.phylorefs[currentPhyx.phylorefs.indexOf(this.selectedPhyloref)];
       if (loadedPhyloref === undefined) return undefined;
-      if (has(this.selectedPhyloref, 'internalSpecifiers') && this.selectedPhyloref.internalSpecifiers.includes(this.selectedSpecifier))
-        return loadedPhyloref.internalSpecifiers[this.selectedPhyloref.internalSpecifiers.indexOf(this.selectedSpecifier)];
-      if (has(this.selectedPhyloref, 'externalSpecifiers') && this.selectedPhyloref.externalSpecifiers.includes(this.selectedSpecifier))
-        return loadedPhyloref.externalSpecifiers[this.selectedPhyloref.externalSpecifiers.indexOf(this.selectedSpecifier)];
+      if (has(this.selectedPhyloref, 'internalSpecifiers') && this.selectedPhyloref.internalSpecifiers.includes(this.selectedSpecifier)) return loadedPhyloref.internalSpecifiers[this.selectedPhyloref.internalSpecifiers.indexOf(this.selectedSpecifier)];
+      if (has(this.selectedPhyloref, 'externalSpecifiers') && this.selectedPhyloref.externalSpecifiers.includes(this.selectedSpecifier)) return loadedPhyloref.externalSpecifiers[this.selectedPhyloref.externalSpecifiers.indexOf(this.selectedSpecifier)];
       return undefined;
     },
     specifierType: {
       get() {
-        if(has(this.selectedPhyloref, 'internalSpecifiers') && this.selectedPhyloref.internalSpecifiers.includes(this.selectedSpecifier))
-          return "Internal specifier";
-        if(has(this.selectedPhyloref, 'externalSpecifiers') && this.selectedPhyloref.externalSpecifiers.includes(this.selectedSpecifier))
-          return "External specifier";
+        if (has(this.selectedPhyloref, 'internalSpecifiers') && this.selectedPhyloref.internalSpecifiers.includes(this.selectedSpecifier)) return 'Internal specifier';
+        if (has(this.selectedPhyloref, 'externalSpecifiers') && this.selectedPhyloref.externalSpecifiers.includes(this.selectedSpecifier)) return 'External specifier';
         return undefined;
       },
       set(type) {
-        if (type == "Internal specifier") {
+        if (type == 'Internal specifier') {
           this.$store.commit('setSpecifierType', { phyloref: this.selectedPhyloref, specifier: this.selectedSpecifier, specifierType: 'internal' });
-        } else if (type == "External specifier") {
+        } else if (type == 'External specifier') {
           this.$store.commit('setSpecifierType', { phyloref: this.selectedPhyloref, specifier: this.selectedSpecifier, specifierType: 'external' });
         } else {
           throw new Error(`Unknown specifier type: ${type}`);
@@ -466,34 +539,34 @@ export default {
       // will return the first tunit and will later be replaced with selectedSpecifier.
       get() {
         // TODO remove hack.
-        if(!has(this.selectedSpecifier, 'referencesTaxonomicUnits')) this.selectedSpecifier.referencesTaxonomicUnits = [{}];
+        if (!has(this.selectedSpecifier, 'referencesTaxonomicUnits')) this.selectedSpecifier.referencesTaxonomicUnits = [{}];
         return this.selectedSpecifier.referencesTaxonomicUnits[0];
-      }
+      },
     },
     addNewScientificName: {
       get() {
-        return "";
+        return '';
       },
       set(scientificName) {
-        if(scientificName.trim() === '') return;
+        if (scientificName.trim() === '') return;
         this.$store.commit('addToSpecifier', { specifier: this.selectedSpecifierFirstTUnit, scientificName: { scientificName } });
       },
     },
     addNewSpecimen: {
       get() {
-        return "";
+        return '';
       },
       set(occurrenceID) {
-        if(occurrenceID.trim() === '') return;
+        if (occurrenceID.trim() === '') return;
         this.$store.commit('addToSpecifier', { specifier: this.selectedSpecifierFirstTUnit, specimen: { occurrenceID } });
       },
     },
     addNewExternalReference: {
       get() {
-        return "";
+        return '';
       },
       set(extref) {
-        if(extref.trim() === '') return;
+        if (extref.trim() === '') return;
         this.$store.commit('addToSpecifier', { specifier: this.selectedSpecifierFirstTUnit, externalReference: extref });
       },
     },

@@ -4,11 +4,14 @@
     <ModifiedCard
       message="This phyloreference has been modified since being loaded! Use 'Save as JSON' to save your changes."
       :compare="selectedPhyloref"
-      :compareTo="currentPhyx.phylorefs[currentPhyx.phylorefs.indexOf(selectedPhyloref)]"
+      :compare-to="currentPhyx.phylorefs[currentPhyx.phylorefs.indexOf(selectedPhyloref)]"
     />
 
     <!-- Phyloreference information -->
-    <div class="card" v-if="!display.phylogeny">
+    <div
+      v-if="!display.phylogeny"
+      class="card"
+    >
       <h5 class="card-header">
         Phyloreference information
       </h5>
@@ -76,9 +79,14 @@
     </div>
 
     <div class="card mt-2">
-      <h5 class="card-header">Specifiers</h5>
+      <h5 class="card-header">
+        Specifiers
+      </h5>
       <div class="card-body">
-        <div class="form-row input-group" v-for="(specifier, index) of selectedPhyloref.internalSpecifiers">
+        <div
+          v-for="(specifier, index) of selectedPhyloref.internalSpecifiers"
+          class="form-row input-group"
+        >
           <div class="input-group-prepend">
             <a
               class="btn btn-outline-secondary"
@@ -93,7 +101,10 @@
             :value="getSpecifierLabel(specifier)"
           >
         </div>
-        <div class="form-row input-group" v-for="(specifier, index) of selectedPhyloref.externalSpecifiers">
+        <div
+          v-for="(specifier, index) of selectedPhyloref.externalSpecifiers"
+          class="form-row input-group"
+        >
           <div class="input-group-prepend">
             <a
               class="btn btn-outline-secondary"
@@ -121,12 +132,19 @@
       <template v-if="selectedPhylogeny === undefined || selectedPhylogeny === phylogeny">
         <div class="card mt-2">
           <h5 class="card-header">
-            Expected and actual resolution <span v-if="display.phylogeny">of {{phyloref.label || 'unlabeled phyloreference'}}</span> on {{phylogeny.label || `Phylogeny ${phylogenyIndex + 1}`}}
+            Expected and actual resolution <span v-if="display.phylogeny">
+              of {{ phyloref.label || 'unlabeled phyloreference' }}
+            </span> on {{ phylogeny.label || `Phylogeny ${phylogenyIndex + 1}` }}
           </h5>
           <div class="card-body">
             <div class="form-row">
               <!-- Node(s) this phyloreference is expected to resolve to -->
-              <label for="expected-nodes" class="col-md-2 col-form-label">Expected nodes</label>
+              <label
+                for="expected-nodes"
+                class="col-md-2 col-form-label"
+              >
+                Expected nodes
+              </label>
 
               <div class="input-group col-md-4">
                 <!-- Display the phylogeny where this node is expected to match -->
@@ -184,8 +202,14 @@
                   >
                     Change <span class="caret" />
                   </button>
-                  <div class="dropdown-menu dropright" aria-labelledby="expected-nodes-dropdown" style="height: 30em; overflow: visible scroll;">
-                    <a class="dropdown-header">Labeled internal nodes in this phylogeny</a>
+                  <div
+                    class="dropdown-menu dropright"
+                    aria-labelledby="expected-nodes-dropdown"
+                    style="height: 30em; overflow: visible scroll;"
+                  >
+                    <a class="dropdown-header">
+                      Labeled internal nodes in this phylogeny
+                    </a>
                     <a
                       v-for="nodeLabel of getNodeLabels(phylogeny, 'internal')"
                       class="dropdown-item"
@@ -195,7 +219,7 @@
                     >
                       {{ nodeLabel }}
                     </a>
-                    <div class="dropdown-divider"></div>
+                    <div class="dropdown-divider" />
                     <a class="dropdown-header">
                       Labeled terminal nodes in this phylogeny
                     </a>
@@ -278,7 +302,12 @@
             <div
               class="card mt-4 p-2"
             >
-              <Phylotree :phylogenyIndex="phylogenyIndex" :phylogeny="phylogeny" :phyloref="selectedPhyloref" :newick="phylogeny.newick" />
+              <Phylotree
+                :phylogeny-index="phylogenyIndex"
+                :phylogeny="phylogeny"
+                :phyloref="selectedPhyloref"
+                :newick="phylogeny.newick"
+              />
             </div>
           </div>
         </div>
@@ -307,16 +336,16 @@ export default {
   },
   computed: {
     selectedPhylorefLabel: {
-      get () { return this.selectedPhyloref['label']; },
-      set (label) { this.$store.commit('setPhylorefProps', { phyloref: this.selectedPhyloref, label }); },
+      get() { return this.selectedPhyloref.label; },
+      set(label) { this.$store.commit('setPhylorefProps', { phyloref: this.selectedPhyloref, label }); },
     },
     selectedCladeDefinition: {
-      get () { return this.selectedPhyloref['cladeDefinition']; },
-      set (cladeDefinition) { this.$store.commit('setPhylorefProps', { phyloref: this.selectedPhyloref, cladeDefinition }); },
+      get() { return this.selectedPhyloref.cladeDefinition; },
+      set(cladeDefinition) { this.$store.commit('setPhylorefProps', { phyloref: this.selectedPhyloref, cladeDefinition }); },
     },
     selectedCuratorComments: {
-      get () { return this.selectedPhyloref['curatorComments']; },
-      set (curatorComments) { this.$store.commit('setPhylorefProps', { phyloref: this.selectedPhyloref, curatorComments }); },
+      get() { return this.selectedPhyloref.curatorComments; },
+      set(curatorComments) { this.$store.commit('setPhylorefProps', { phyloref: this.selectedPhyloref, curatorComments }); },
     },
     phylorefURI() { return this.$store.getters.getBaseURIForPhyloref(this.selectedPhyloref); },
     nodesResolved() {
@@ -333,7 +362,7 @@ export default {
       display: state => state.ui.display,
       selectedPhylogeny: state => state.ui.display.phylogeny,
       selectedPhyloref: state => state.ui.display.phyloref,
-    })
+    }),
   },
   methods: {
     getNodeLabels(phylogeny, nodeType) {
@@ -353,7 +382,7 @@ export default {
         .map(nodeId => this.getNodesById(phylogeny, nodeId))
         .reduce((a, b) => a.concat(b), [])
         .map(node => node.name);
-    }
-  }
+    },
+  },
 };
 </script>

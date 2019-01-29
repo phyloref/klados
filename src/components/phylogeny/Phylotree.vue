@@ -4,16 +4,24 @@
       <p>
         <strong>Error parsing phylogeny.</strong>
         Please
-        <a href="javascript: void" @click="$store.commit('changeDisplay', {phylogeny})">edit the phylogeny</a>
+        <a
+          href="javascript: void"
+          @click="$store.commit('changeDisplay', {phylogeny})"
+        >
+          edit the phylogeny
+        </a>
         to fix this error.
       </p>
     </template>
-    <div v-else class="phylotreeContainer">
+    <div
+      v-else
+      class="phylotreeContainer"
+    >
       <svg
         :id="'phylogeny' + phylogenyIndex"
         class="col-md-12 phylogeny"
       />
-      <resize-observer @notify="redrawTree()" />
+      <ResizeObserver @notify="redrawTree()" />
     </div>
   </div>
 </template>
@@ -43,67 +51,18 @@ export default {
     phylogenyIndex: {
       type: Number,
       default: uniqueId(),
-    }
+    },
   },
-  data () { return {
-    pinningNodes: [],
-    pinningNodeChildrenIRIs: new Set(),
-  }},
-  methods: {
-    recurseNodes(node, func, nodeCount = 0, parentCount = undefined) {
-      // Recurse through PhyloTree nodes, executing function on each node.
-      //  - node: The node to recurse from. The function will be called on node
-      //          *before* being called on its children.
-      //  - func: The function to call on `node` and all of its children.
-      //  - nodeCount: `node` will be called with this nodeCount. All of its
-      //          children will be called with consecutively increasing nodeCounts.
-      //  - parentCount: The nodeCount associated with the parent of this node
-      //          within this run of recurseNodes. For instance, immediate children
-      //          of `node` will have a parentCount of 0. By default, `node` itself
-      //          will have a parentCount of `undefined`.
-      // When the function `func` is called, it is given three arguments:
-      //  - The current node object (initially: `node`)
-      //  - The count of the current node object (initially: `nodeCount`)
-      //  - The parent count of the current node object (initially: `parentCount`)
-      func(node, nodeCount, parentCount);
-
-      let nextID = nodeCount + 1;
-
-      // Recurse through all children of this node.
-      if (has(node, 'children')) {
-        node.children.forEach((child) => {
-          nextID = this.recurseNodes(
-            child,
-            func,
-            nextID,
-            nodeCount,
-          );
-        });
-      }
-
-      return nextID;
-    },
-    redrawTree () {
-      // Reset the pinning node information.
-      this.pinningNodes = [];
-      this.pinningNodeChildrenIRIs = new Set();
-
-      // Draw the tree.
-      this.tree
-        .size([
-          // height
-          0,
-          // width
-          $(`#phylogeny${this.phylogenyIndex}`).width() - 40 // We need more space because our fonts are bigger than the default.
-        ])
-        .spacing_x(this.spacingX)
-        .update();
-    },
+  data() {
+    return {
+      pinningNodes: [],
+      pinningNodeChildrenIRIs: new Set(),
+    };
   },
   computed: {
-    reasoningResults () { return this.$store.state.phyx.reasoningResults; },
-    newickAsString () { return this.phylogeny.newick || '()'; },
-    parsedNewick () {
+    reasoningResults() { return this.$store.state.phyx.reasoningResults; },
+    newickAsString() { return this.phylogeny.newick || '()'; },
+    parsedNewick() {
       const parsedNewick = d3.layout.newick_parser(this.phylogeny.newick || '()');
 
       // Assign '@id's to every node so we can refer to them later.
@@ -120,14 +79,14 @@ export default {
 
       return parsedNewick;
     },
-    newickErrors () {
+    newickErrors() {
       // Check to see if the newick could actually be parsed.
       if (!has(this.parsedNewick, 'json') || this.parsedNewick.json === null) {
         return (has(this.parsedNewick, 'error') ? this.parsedNewick.error : 'unknown error');
       }
       return undefined;
     },
-    tree () {
+    tree() {
       // Set up Phylotree.
       const tree = d3.layout.phylotree()
         .svg(d3.select(`#phylogeny${this.phylogenyIndex}`))
@@ -178,8 +137,8 @@ export default {
           // Note that this node might NOT be labeled, in which case we need to
           // label it now!
           if (
-            this.phyloref !== undefined && has(data, '@id') &&
-            this.$store.getters.getResolvedNodesForPhylogeny(this.phylogeny, this.phyloref).includes(data['@id'])
+            this.phyloref !== undefined && has(data, '@id')
+            && this.$store.getters.getResolvedNodesForPhylogeny(this.phylogeny, this.phyloref).includes(data['@id'])
           ) {
             // We found another pinning node!
             this.pinningNodes.push(data);
@@ -197,8 +156,8 @@ export default {
 
           // Maybe this isn't a pinning node, but it is a child of a pinning node.
           if (
-            has(data, '@id') &&
-            this.pinningNodeChildrenIRIs.has(data['@id'])
+            has(data, '@id')
+            && this.pinningNodeChildrenIRIs.has(data['@id'])
           ) {
             // Apply a class.
             // Note that this applies to the resolved-node too.
@@ -216,8 +175,8 @@ export default {
               // `current_expected_label_phylogeny${phylogenyIndex}` if it is
               // the currently expected node label.
               if (
-                has(this.phyloref, 'label') &&
-                this.$store.getters.getExpectedNodeLabelsOnPhylogeny(this.phylogeny, this.phyloref)
+                has(this.phyloref, 'label')
+                && this.$store.getters.getExpectedNodeLabelsOnPhylogeny(this.phylogeny, this.phyloref)
                   .includes(data.name)
               ) {
                 textLabel.attr('id', `current_expected_label_phylogeny_${this.phylogenyIndex}`);
@@ -250,9 +209,9 @@ export default {
           // select this branch!
           // console.log('Found an edge with data: ', data);
           if (
-            has(data, 'source') &&
-            has(data.source, '@id') &&
-            this.pinningNodeChildrenIRIs.has(data.source['@id'])
+            has(data, 'source')
+            && has(data.source, '@id')
+            && this.pinningNodeChildrenIRIs.has(data.source['@id'])
           ) {
             // Apply a class to this branch.
             element.classed('descendant-of-pinning-node-branch', true);
@@ -274,8 +233,59 @@ export default {
       this.redrawTree();
     },
   },
-  mounted () {
+  mounted() {
     this.redrawTree();
+  },
+  methods: {
+    recurseNodes(node, func, nodeCount = 0, parentCount = undefined) {
+      // Recurse through PhyloTree nodes, executing function on each node.
+      //  - node: The node to recurse from. The function will be called on node
+      //          *before* being called on its children.
+      //  - func: The function to call on `node` and all of its children.
+      //  - nodeCount: `node` will be called with this nodeCount. All of its
+      //          children will be called with consecutively increasing nodeCounts.
+      //  - parentCount: The nodeCount associated with the parent of this node
+      //          within this run of recurseNodes. For instance, immediate children
+      //          of `node` will have a parentCount of 0. By default, `node` itself
+      //          will have a parentCount of `undefined`.
+      // When the function `func` is called, it is given three arguments:
+      //  - The current node object (initially: `node`)
+      //  - The count of the current node object (initially: `nodeCount`)
+      //  - The parent count of the current node object (initially: `parentCount`)
+      func(node, nodeCount, parentCount);
+
+      let nextID = nodeCount + 1;
+
+      // Recurse through all children of this node.
+      if (has(node, 'children')) {
+        node.children.forEach((child) => {
+          nextID = this.recurseNodes(
+            child,
+            func,
+            nextID,
+            nodeCount,
+          );
+        });
+      }
+
+      return nextID;
+    },
+    redrawTree() {
+      // Reset the pinning node information.
+      this.pinningNodes = [];
+      this.pinningNodeChildrenIRIs = new Set();
+
+      // Draw the tree.
+      this.tree
+        .size([
+          // height
+          0,
+          // width
+          $(`#phylogeny${this.phylogenyIndex}`).width() - 40, // We need more space because our fonts are bigger than the default.
+        ])
+        .spacing_x(this.spacingX)
+        .update();
+    },
   },
 };
 </script>
