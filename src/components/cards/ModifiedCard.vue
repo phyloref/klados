@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { _ } from 'underscore';
+import { isEqual } from 'lodash';
 
 export default {
   name: 'ModifiedCard',
@@ -24,7 +24,7 @@ export default {
     compareTo: Object,
   },
   computed: {
-    dataChanged: function () { return !_.isEqual(this.compare, this.compareTo); },
+    dataChanged: function () { return !isEqual(this.compare, this.compareTo); },
   },
 };
 </script>
