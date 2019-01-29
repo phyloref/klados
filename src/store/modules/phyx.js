@@ -11,18 +11,24 @@ import phyloref from './phyloref';
 
 export default {
   state: {
+    // The currently loaded Phyx file. All methods modify and change this variable.
     currentPhyx: {
       phylorefs: [],
       phylogenies: [],
     },
+
+    // A backup copy of the previously loaded Phyx file. Where this differs from
+    // currentPhyx, we know that the user has modified something.
     loadedPhyx: {
       phylorefs: [],
       phylogenies: [],
     },
+
+    // The reasoning results returned by JPhyloRef.
     reasoningResults: undefined,
   },
   getters: {
-    // Read as JSON.
+    // Return the current Phyx file as a JSON string.
     getPhyxAsJSON: state => JSON.stringify(state.currentPhyx, undefined, 4),
   },
   mutations: {
@@ -52,12 +58,15 @@ export default {
       }
     },
     createEmptyPhyloref(state) {
+      // Create a new, empty phyloreference.
       state.currentPhyx.phylorefs.push({});
     },
     createEmptyPhylogeny(state) {
+      // Create a new, empty phylogeny.
       state.currentPhyx.phylogenies.push({});
     },
     setReasoningResults(state, payload) {
+      // Sets the "reasoning results" -- the results of reasoning returned by JPhyloRef.
       Vue.set(state, 'reasoningResults', payload);
     },
   },
