@@ -53,7 +53,9 @@ export default {
       phyloref,
       flagReturnShortURIs = false,
     ) => {
-      // flagReturnNodeURI: if true, the entire URI will be returned, otherwise
+      // Return a list of nodes that were resolved for phyloref `phyloref` on
+      // phylogeny `phylogeny`.
+      // - flagReturnNodeURI: if true, the entire URI will be returned, otherwise
       // just the node number will be returned.
 
       // Do we have reasoning results for this phyloreference?
@@ -75,6 +77,8 @@ export default {
   },
   mutations: {
     setPhylorefProps(state, payload) {
+      // Set one or more properties on a phyloreference.
+
       if (!has(payload, 'phyloref')) {
         throw new Error('setPhylorefProps needs a phyloref to modify using the "phyloref" argument');
       }
@@ -90,6 +94,8 @@ export default {
     },
 
     addSpecifier(state, payload) {
+      // Add an empty specifier to a particular phyloreference.
+
       if (!has(payload, 'phyloref')) {
         throw new Error('addSpecifier needs a phyloref to modify using the "phyloref" argument');
       }
@@ -103,6 +109,8 @@ export default {
     },
 
     deleteSpecifier(state, payload) {
+      // Delete a specifier from a phyloreference.
+
       if (!has(payload, 'phyloref')) {
         throw new Error('deleteSpecifier needs a phyloref to modify using the "phyloref" argument');
       }
@@ -125,8 +133,9 @@ export default {
       }
     },
 
-    // Modify specifier props.
     setSpecifierProps(state, payload) {
+      // Set one or more properties on a specifier.
+
       if (!has(payload, 'specifier')) {
         throw new Error('setSpecifierProps needs a specifier to modify using the "specifier" argument');
       }
@@ -136,6 +145,10 @@ export default {
     },
 
     setSpecifierType(state, payload) {
+      // Change the type of a specifier. Since we maintain separate internalSpecifiers
+      // and externalSpecifiers arrays, we may need to delete the specifier from one
+      // array and add it to the other.
+
       if (!has(payload, 'phyloref')) {
         throw new Error('setSpecifierType needs a phyloref to modify using the "phyloref" argument');
       }
@@ -179,9 +192,13 @@ export default {
     },
 
     addToSpecifier(state, payload) {
+      // Add a new external reference, specimen or scientific name to a phyloreference.
+
       if (!has(payload, 'specifier')) {
         throw new Error('addToSpecifier needs a specifier to modify using the "specifier" argument');
       }
+
+      // Add external reference (if one is provided).
       if (has(payload, 'externalReference')) {
         if (!has(payload.specifier, 'externalReferences')) {
           Vue.set(payload.specifier, 'externalReferences', []);
@@ -189,6 +206,8 @@ export default {
 
         payload.specifier.externalReferences.push(payload.externalReference);
       }
+
+      // Add specimen (if one is provided).
       if (has(payload, 'specimen')) {
         if (!has(payload.specifier, 'includesSpecimens')) {
           Vue.set(payload.specifier, 'includesSpecimens', []);
@@ -196,6 +215,8 @@ export default {
 
         payload.specifier.includesSpecimens.push(payload.specimen);
       }
+
+      // Add scientific name (if one is provided).
       if (has(payload, 'scientificName')) {
         if (!has(payload.specifier, 'scientificNames')) {
           Vue.set(payload.specifier, 'scientificNames', []);
@@ -206,6 +227,8 @@ export default {
     },
 
     deleteFromSpecifier(state, payload) {
+      // Delete a scientific name, specimen or external reference from a given specifier.
+
       if (!has(payload, 'specifier')) {
         throw new Error('deleteFromSpecifier needs a specifier to modify using the "specifier" argument');
       }
