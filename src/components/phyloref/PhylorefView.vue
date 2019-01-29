@@ -75,6 +75,42 @@
       </div>
     </div>
 
+    <div class="card mt-2">
+      <h5 class="card-header">Specifiers</h5>
+      <div class="card-body">
+        <div class="form-row input-group" v-for="(specifier, index) of selectedPhyloref.internalSpecifiers">
+          <div class="input-group-prepend">
+            <a
+              class="btn btn-outline-secondary"
+            >
+              Internal
+            </a>
+          </div>
+          <input
+            readonly
+            type="text"
+            class="form-control"
+            :value="getSpecifierLabel(specifier)"
+          >
+        </div>
+        <div class="form-row input-group" v-for="(specifier, index) of selectedPhyloref.externalSpecifiers">
+          <div class="input-group-prepend">
+            <a
+              class="btn btn-outline-secondary"
+            >
+              External
+            </a>
+          </div>
+          <input
+            readonly
+            type="text"
+            class="form-control"
+            :value="getSpecifierLabel(specifier)"
+          >
+        </div>
+      </div>
+    </div>
+
     <!--
       Panel with information on expected and actual resolution
       We should:
@@ -305,6 +341,9 @@ export default {
     },
     getExpectedNodeLabels(phylogeny) {
       return new PhylorefWrapper(this.selectedPhyloref).getExpectedNodeLabels(phylogeny);
+    },
+    getSpecifierLabel(specifier) {
+      return PhylorefWrapper.getSpecifierLabel(specifier);
     },
     getResolvedNodes(phylogeny, flagReturnShortURIs = true) {
       return this.$store.getters.getResolvedNodesForPhylogeny(phylogeny, this.selectedPhyloref, flagReturnShortURIs);
