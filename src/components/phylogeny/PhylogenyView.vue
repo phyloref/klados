@@ -95,7 +95,6 @@
       <div class="card-body">
         <Phylotree
           :phylogeny="selectedPhylogeny"
-          :newick="phylogenyNewick"
         />
       </div>
     </div>
