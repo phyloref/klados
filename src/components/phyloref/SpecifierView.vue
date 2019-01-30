@@ -88,9 +88,9 @@
                   </div>
                 </div>
                 <ul class="details d-none">
-                  <li>Scientific name: <em>{{wrappedScientificName(sciname).scientificName}}</em></li>
-                  <li>Genus: <em>{{wrappedScientificName(sciname).genus}}</em></li>
-                  <li>Specific epithet: <em>{{wrappedScientificName(sciname).specificEpithet}}</em></li>
+                  <li>Scientific name: <em>{{ wrappedScientificName(sciname).scientificName }}</em></li>
+                  <li>Genus: <em>{{ wrappedScientificName(sciname).genus }}</em></li>
+                  <li>Specific epithet: <em>{{ wrappedScientificName(sciname).specificEpithet }}</em></li>
                 </ul>
               </div>
             </div>
@@ -142,10 +142,10 @@
                   </div>
                 </div>
                 <ul class="details d-none">
-                  <li>Occurrence ID: {{wrappedSpecimen(specimen).occurrenceID}}</li>
-                  <li>Institution code: {{wrappedSpecimen(specimen).institutionCode || '(none)'}}</li>
-                  <li>Collection code: {{wrappedSpecimen(specimen).collectionCode || '(none)'}}</li>
-                  <li>Catalog number: {{wrappedSpecimen(specimen).catalogNumber || '(none)'}}</li>
+                  <li>Occurrence ID: {{ wrappedSpecimen(specimen).occurrenceID }}</li>
+                  <li>Institution code: {{ wrappedSpecimen(specimen).institutionCode || '(none)' }}</li>
+                  <li>Collection code: {{ wrappedSpecimen(specimen).collectionCode || '(none)' }}</li>
+                  <li>Catalog number: {{ wrappedSpecimen(specimen).catalogNumber || '(none)' }}</li>
                 </ul>
               </div>
             </div>
@@ -221,12 +221,12 @@
 <script>
 import { has } from 'lodash';
 import { mapState } from 'vuex';
-import ModifiedCard from '../cards/ModifiedCard.vue';
-
 import {
   ScientificNameWrapper,
-  SpecimenWrapper
+  SpecimenWrapper,
 } from '@phyloref/phyx';
+import ModifiedCard from '../cards/ModifiedCard.vue';
+
 
 export default {
   name: 'SpecifierView',
@@ -307,10 +307,10 @@ export default {
         this.$store.commit('addToSpecifier', { specifier: this.selectedSpecifierFirstTUnit, externalReference: extref });
       },
     },
-    externalReferences () {
+    externalReferences() {
       // Return a list of external references.
-      if(!this.selectedSpecifierFirstTUnit) return [];
-      if(!this.selectedSpecifierFirstTUnit.externalReferences) return [];
+      if (!this.selectedSpecifierFirstTUnit) return [];
+      if (!this.selectedSpecifierFirstTUnit.externalReferences) return [];
       return this.selectedSpecifierFirstTUnit.externalReferences;
     },
     ...mapState({
@@ -326,7 +326,7 @@ export default {
   methods: {
     /* The following methods wrap scientific name and specimens for further processing. */
     wrappedScientificName(sciname) { return new ScientificNameWrapper(sciname); },
-    wrappedSpecimen(specimen) { return new SpecimenWrapper(specimen); }
-  }
+    wrappedSpecimen(specimen) { return new SpecimenWrapper(specimen); },
+  },
 };
 </script>

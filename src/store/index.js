@@ -17,6 +17,8 @@ export default new Vuex.Store({
   state: {
     CURATION_TOOL_VERSION: '0.1',
   },
-  modules: { phylogeny, phyloref, phyx, ui, owlterms },
+  modules: {
+    phylogeny, phyloref, phyx, ui, owlterms,
+  },
   strict: debug,
 });

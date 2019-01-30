@@ -105,26 +105,26 @@ export default {
       // Return all node labels with this nodeId in this phylogeny.
       const parsed = new PhylogenyWrapper(phylogeny).getParsedNewickWithIRIs(
         this.$store.getters.getBaseURIForPhylogeny(phylogeny),
-        d3.layout.newick_parser
+        d3.layout.newick_parser,
       );
 
       function searchNode(node, results = []) {
-        if(has(node, '@id') && node['@id'] === nodeId) {
+        if (has(node, '@id') && node['@id'] === nodeId) {
           results.push(node);
         }
-        if(has(node, 'children')) {
+        if (has(node, 'children')) {
           node.children.forEach(child => searchNode(child, results));
         }
         return results;
       }
 
-      if(!has(parsed, 'json')) return [];
+      if (!has(parsed, 'json')) return [];
       return searchNode(parsed.json);
     },
     getNodeLabelsResolvedByPhyloref(phyloref, phylogeny) {
       // Converts node IDs to node labels, if present.
       const resolvedNodes = this.$store.getters.getResolvedNodesForPhylogeny(
-        phylogeny, phyloref, false
+        phylogeny, phyloref, false,
       );
 
       return resolvedNodes
@@ -132,6 +132,6 @@ export default {
         .reduce((a, b) => a.concat(b), [])
         .map(node => node.name || '(unlabelled)');
     },
-  }
+  },
 };
 </script>

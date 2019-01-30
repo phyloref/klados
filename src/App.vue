@@ -73,7 +73,7 @@ export default {
     currentPhyx: state => state.phyx.currentPhyx,
     loadedPhyx: state => state.phyx.loadedPhyx,
   }),
-  created () {
+  created() {
     // If someone tries to navigate away from the window while the
     // PHYX has been modified, ask users to confirm before leaving.
     // Confirmation message to display to the user. Note that modern
@@ -82,9 +82,9 @@ export default {
     $(window).on('beforeunload', (e) => {
       const confirmationMessage = 'Your modifications have not been saved and will be lost if you close the Curation Tool. Confirm to discard your changes, or cancel to return to the Curation Tool.';
 
-      if(!isEqual(this.loadedPhyx, this.currentPhyx)) return confirmationMessage;
+      if (!isEqual(this.loadedPhyx, this.currentPhyx)) return confirmationMessage;
     });
-  }
+  },
 };
 </script>
 

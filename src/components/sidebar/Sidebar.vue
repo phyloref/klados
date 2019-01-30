@@ -124,7 +124,7 @@
               :class="{'active border-dark': selectedSpecifier === specifier}"
               @click="$store.commit('changeDisplay', { phyloref, specifier })"
             >
-              &#9679; <strong>Internal:</strong> {{getSpecifierLabel(specifier)}}
+              &#9679; <strong>Internal:</strong> {{ getSpecifierLabel(specifier) }}
             </a>
 
             <a
@@ -134,7 +134,7 @@
               :class="{'active border-dark': selectedSpecifier === specifier}"
               @click="$store.commit('changeDisplay', { phyloref, specifier })"
             >
-              &#9679; <strong>External:</strong> {{getSpecifierLabel(specifier)}}
+              &#9679; <strong>External:</strong> {{ getSpecifierLabel(specifier) }}
             </a>
             <a
               href="javascript: void(0)"

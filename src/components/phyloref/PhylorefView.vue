@@ -104,7 +104,9 @@
             <button
               class="btn btn-outline-secondary"
               @click="$store.commit('changeDisplay', {phyloref: selectedPhyloref, specifier: specifier})"
-            >Edit</button>
+            >
+              Edit
+            </button>
           </div>
         </div>
         <div
@@ -128,7 +130,9 @@
             <button
               class="btn btn-outline-secondary"
               @click="$store.commit('changeDisplay', {phyloref: selectedPhyloref, specifier: specifier})"
-            >Edit</button>
+            >
+              Edit
+            </button>
           </div>
         </div>
       </div>
@@ -400,7 +404,7 @@ export default {
       // Return the list of nodes on a particular phylogeny that this phyloreference
       // has been determined to resolve on by JPhyloRef.
       return this.$store.getters.getResolvedNodesForPhylogeny(phylogeny, this.selectedPhyloref, flagReturnShortURIs);
-    }
+    },
   },
 };
 </script>

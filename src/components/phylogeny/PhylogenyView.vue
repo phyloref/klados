@@ -143,7 +143,7 @@ export default {
       //
       // We try to order errors from most helpful ('Unbalanced parentheses in
       // Newick string') to least helpful ('Error parsing phylogeny').
-      if(!has(this.selectedPhylogeny, 'newick')) return [];
+      if (!has(this.selectedPhylogeny, 'newick')) return [];
       const newickTrimmed = this.selectedPhylogeny.newick.trim();
       const errors = [];
 

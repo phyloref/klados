@@ -75,7 +75,7 @@ export default {
     parsedNewick() {
       return new PhylogenyWrapper(this.phylogeny).getParsedNewickWithIRIs(
         this.$store.getters.getBaseURIForPhylogeny(this.phylogeny),
-        d3.layout.newick_parser
+        d3.layout.newick_parser,
       );
     },
     newickErrors() {
@@ -233,7 +233,7 @@ export default {
     phylogeny(oldValue, newValue) {
       // If the phylogeny changed, redraw the tree.
       this.redrawTree();
-    }
+    },
   },
   mounted() {
     // Redraw the tree when this component is loaded for the first time.
