@@ -230,6 +230,10 @@ export default {
       // If reasoning occurs, we'll need to redraw this tree.
       this.redrawTree();
     },
+    phylogeny(oldValue, newValue) {
+      // If the phylogeny changed, redraw the tree.
+      this.redrawTree();
+    }
   },
   mounted() {
     // Redraw the tree when this component is loaded for the first time.
