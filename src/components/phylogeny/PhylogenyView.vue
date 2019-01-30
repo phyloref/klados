@@ -107,6 +107,7 @@
  * This view displays a phylogeny and changes its title or Newick string.
  */
 
+import { has } from 'lodash';
 import { mapState } from 'vuex';
 import { parse as parseNewick } from 'newick-js';
 
@@ -130,7 +131,7 @@ export default {
       set(description) { this.$store.commit('setPhylogenyProps', { phylogeny: this.selectedPhylogeny, description }); },
     },
     phylogenyNewick: {
-      get() { return this.selectedPhylogeny.newick; },
+      get() { return this.selectedPhylogeny.newick || '()'; },
       set(newick) { this.$store.commit('setPhylogenyProps', { phylogeny: this.selectedPhylogeny, newick }); },
     },
     phylogenyNewickErrors() {
@@ -143,6 +144,7 @@ export default {
       //
       // We try to order errors from most helpful ('Unbalanced parentheses in
       // Newick string') to least helpful ('Error parsing phylogeny').
+      if(!has(this.selectedPhylogeny, 'newick')) return [];
       const newickTrimmed = this.selectedPhylogeny.newick.trim();
       const errors = [];
 
