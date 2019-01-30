@@ -33,6 +33,7 @@
  */
 
 import { uniqueId, has } from 'lodash';
+import { PhylogenyWrapper } from '@phyloref/phyx';
 
 /*
  * Note that this requires the Phylotree Javascript to be loaded in the HTML
@@ -72,25 +73,10 @@ export default {
       return this.phylogeny.newick || '()';
     },
     parsedNewick() {
-      // Parses the Newick string into a tree-based representation, in which
-      // every node has a unique identifier. These identifiers must be allocated
-      // in the same order as phyx.js, so that node identifiers returned by
-      // JPhyloRef correspond to the correct node on the phylogeny.
-      const parsedNewick = d3.layout.newick_parser(this.phylogeny.newick || '()');
-
-      // Assign '@id's to every node so we can refer to them later.
-      if (has(parsedNewick, 'json')) {
-        this.recurseNodes(parsedNewick.json, (node, nodeCount) => {
-          // Start with the additional node properties.
-          const nodeAsJSONLD = node;
-
-          // Set @id and @type.
-          const nodeURI = `${this.$store.getters.getBaseURIForPhylogeny(this.phylogeny)}_node${nodeCount}`;
-          nodeAsJSONLD['@id'] = nodeURI;
-        });
-      }
-
-      return parsedNewick;
+      return new PhylogenyWrapper(this.phylogeny).getParsedNewickWithIRIs(
+        this.$store.getters.getBaseURIForPhylogeny(this.phylogeny),
+        d3.layout.newick_parser
+      );
     },
     newickErrors() {
       // Check to see if the newick could actually be parsed.

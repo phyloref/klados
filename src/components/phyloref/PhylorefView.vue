@@ -400,14 +400,7 @@ export default {
       // Return the list of nodes on a particular phylogeny that this phyloreference
       // has been determined to resolve on by JPhyloRef.
       return this.$store.getters.getResolvedNodesForPhylogeny(phylogeny, this.selectedPhyloref, flagReturnShortURIs);
-    },
-    getResolvedNodeLabels(phylogeny) {
-      // Converts node IDs to node labels, if present.
-      return this.getResolvedNodes(phylogeny)
-        .map(nodeId => this.getNodesById(phylogeny, nodeId))
-        .reduce((a, b) => a.concat(b), [])
-        .map(node => node.name || '(unlabelled)');
-    },
+    }
   },
 };
 </script>
