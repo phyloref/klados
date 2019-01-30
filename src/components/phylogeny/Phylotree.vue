@@ -50,7 +50,7 @@ export default {
       default: 20,
     },
     phylogenyIndex: { // An index number of the phylogeny. Will be used to set up HTML DOM IDs.
-      type: Number,
+      type: String,
       default: uniqueId(),
     },
   },
