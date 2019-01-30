@@ -191,6 +191,46 @@ export default {
       }
     },
 
+    setSpecifierPart(state, payload) {
+      // Replaces one or more specifier part with a new value. Note that values
+      // can only be scientific names or occurrence IDs; external references use
+      // updateSpecifierExternalReference().
+      if (!has(payload, 'specifierPart')) {
+        throw new Error('setSpecifierPart needs a specifier part to modify using the "specifierPart" argument');
+      }
+
+      if (has(payload, 'scientificName')) {
+        Vue.set(payload.specifierPart, 'scientificName', payload.scientificName);
+      }
+      if (has(payload, 'occurrenceID')) {
+        Vue.set(payload.specifierPart, 'occurrenceID', payload.occurrenceID);
+      }
+    },
+
+    updateSpecifierExternalReference(state, payload) {
+      // Given a specifier, replace one external reference with another.
+      if (!has(payload, 'specifier')) {
+        throw new Error('updateSpecifierExternalReference needs a specifier to modify using the "specifier" argument');
+      }
+
+      if (!has(payload.specifier, 'externalReferences')) {
+        Vue.set(payload.specifier, 'externalReferences', []);
+      }
+
+      if (has(payload, 'fromExternalReference')) {
+        if (payload.specifier.externalReferences.includes(payload.fromExternalReference)) {
+          payload.specifier.externalReferences.splice(
+            payload.specifier.externalReferences.indexOf(payload.fromExternalReference),
+            1,
+          );
+        }
+      }
+
+      if (has(payload, 'toExternalReference')) {
+        payload.specifier.externalReferences.push(payload.toExternalReference);
+      }
+    },
+
     addToSpecifier(state, payload) {
       // Add a new external reference, specimen or scientific name to a phyloreference.
 

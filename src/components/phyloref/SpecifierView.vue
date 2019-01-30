@@ -55,25 +55,26 @@
           </h6>
           <div class="card-body">
             <div v-for="(sciname, index) of selectedSpecifierFirstTUnit.scientificNames">
-              <div class="sciname">
+              <div id="sciname">
                 <div class="input-group">
                   <input
                     type="text"
                     class="form-control"
                     :value="sciname.scientificName"
+                    @change="$store.commit('setSpecifierPart', { specifierPart: sciname, scientificName: $event.target.value })"
                   >
                   <div class="input-group-append">
                     <button
                       class="btn btn-outline-secondary details"
                       type="button"
-                      onclick="$(this).parents().filter('.sciname').find('.details').toggleClass('d-none')"
+                      onclick="$(this).parents().filter('#sciname').find('.details').toggleClass('d-none')"
                     >
                       Show details
                     </button>
                     <button
                       class="btn btn-outline-secondary details d-none"
                       type="button"
-                      onclick="$(this).parents().filter('.sciname').find('.details').toggleClass('d-none')"
+                      onclick="$(this).parents().filter('#sciname').find('.details').toggleClass('d-none')"
                     >
                       Hide details
                     </button>
@@ -87,9 +88,9 @@
                   </div>
                 </div>
                 <ul class="details d-none">
-                  <li>Scientific name: TODO</li>
-                  <li>Genus: TODO</li>
-                  <li>Specific epithet: TODO</li>
+                  <li>Scientific name: <em>{{wrappedScientificName(sciname).scientificName}}</em></li>
+                  <li>Genus: <em>{{wrappedScientificName(sciname).genus}}</em></li>
+                  <li>Specific epithet: <em>{{wrappedScientificName(sciname).specificEpithet}}</em></li>
                 </ul>
               </div>
             </div>
@@ -107,29 +108,45 @@
             Specimens
           </h6>
           <div class="card-body">
-            <div
-              v-for="(specimen, index) of selectedSpecifierFirstTUnit.includesSpecimens"
-              class="input-group"
-            >
-              <input
-                type="text"
-                class="form-control"
-                :value="specimen.occurrenceID"
-              >
-              <div class="input-group-append">
-                <button
-                  class="btn btn-outline-secondary"
-                  type="button"
-                >
-                  Show details
-                </button>
-                <button
-                  class="btn btn-outline-danger"
-                  type="button"
-                  @click="$store.commit('deleteFromSpecifier', {specifier: selectedSpecifierFirstTUnit, specimen})"
-                >
-                  &cross;
-                </button>
+            <div v-for="(specimen, index) of selectedSpecifierFirstTUnit.includesSpecimens">
+              <div id="specimen">
+                <div class="input-group">
+                  <input
+                    type="text"
+                    class="form-control"
+                    :value="specimen.occurrenceID"
+                    @change="$store.commit('setSpecifierPart', { specifierPart: specimen, occurenceID: $event.target.value })"
+                  >
+                  <div class="input-group-append">
+                    <button
+                      class="btn btn-outline-secondary details"
+                      type="button"
+                      onclick="$(this).parents().filter('#specimen').find('.details').toggleClass('d-none')"
+                    >
+                      Show details
+                    </button>
+                    <button
+                      class="btn btn-outline-secondary details d-none"
+                      type="button"
+                      onclick="$(this).parents().filter('#specimen').find('.details').toggleClass('d-none')"
+                    >
+                      Hide details
+                    </button>
+                    <button
+                      class="btn btn-outline-danger"
+                      type="button"
+                      @click="$store.commit('deleteFromSpecifier', {specifier: selectedSpecifierFirstTUnit, specimen})"
+                    >
+                      &cross;
+                    </button>
+                  </div>
+                </div>
+                <ul class="details d-none">
+                  <li>Occurrence ID: {{wrappedSpecimen(specimen).occurrenceID}}</li>
+                  <li>Institution code: {{wrappedSpecimen(specimen).institutionCode || '(none)'}}</li>
+                  <li>Collection code: {{wrappedSpecimen(specimen).collectionCode || '(none)'}}</li>
+                  <li>Catalog number: {{wrappedSpecimen(specimen).catalogNumber || '(none)'}}</li>
+                </ul>
               </div>
             </div>
             <input
@@ -154,14 +171,16 @@
                 type="text"
                 class="form-control"
                 :value="extref"
+                @change="$store.commit('updateSpecifierExternalReference', { specifier: selectedSpecifierFirstTUnit, fromExternalReference: extref, toExternalReference: $event.target.value })"
               >
               <div class="input-group-append">
-                <button
+                <a
                   class="btn btn-outline-secondary"
-                  type="button"
+                  target="_new"
+                  :href="extref"
                 >
-                  Show details
-                </button>
+                  Go to website
+                </a>
                 <button
                   class="btn btn-outline-danger"
                   type="button"
@@ -498,6 +517,11 @@ import { has } from 'lodash';
 import { mapState } from 'vuex';
 import ModifiedCard from '../cards/ModifiedCard.vue';
 
+import {
+  ScientificNameWrapper,
+  SpecimenWrapper
+} from '@phyloref/phyx';
+
 export default {
   name: 'SpecifierView',
   components: {
@@ -511,8 +535,8 @@ export default {
       const currentPhyx = this.currentPhyx;
       const loadedPhyloref = loadedPhyx.phylorefs[currentPhyx.phylorefs.indexOf(this.selectedPhyloref)];
       if (loadedPhyloref === undefined) return undefined;
-      if (has(this.selectedPhyloref, 'internalSpecifiers') && has(this.loadedPhyloref, 'internalSpecifiers') && this.selectedPhyloref.internalSpecifiers.includes(this.selectedSpecifier)) return loadedPhyloref.internalSpecifiers[this.selectedPhyloref.internalSpecifiers.indexOf(this.selectedSpecifier)];
-      if (has(this.selectedPhyloref, 'externalSpecifiers') && has(this.loadedPhyloref, 'externalSpecifiers') && this.selectedPhyloref.externalSpecifiers.includes(this.selectedSpecifier)) return loadedPhyloref.externalSpecifiers[this.selectedPhyloref.externalSpecifiers.indexOf(this.selectedSpecifier)];
+      if (has(this.selectedPhyloref, 'internalSpecifiers') && has(loadedPhyloref, 'internalSpecifiers') && this.selectedPhyloref.internalSpecifiers.includes(this.selectedSpecifier)) return loadedPhyloref.internalSpecifiers[this.selectedPhyloref.internalSpecifiers.indexOf(this.selectedSpecifier)];
+      if (has(this.selectedPhyloref, 'externalSpecifiers') && has(loadedPhyloref, 'externalSpecifiers') && this.selectedPhyloref.externalSpecifiers.includes(this.selectedSpecifier)) return loadedPhyloref.externalSpecifiers[this.selectedPhyloref.externalSpecifiers.indexOf(this.selectedSpecifier)];
       return undefined;
     },
     specifierType: {
@@ -593,5 +617,10 @@ export default {
       selectedTUnit: state => state.ui.display.tunit,
     }),
   },
+  methods: {
+    /* The following methods wrap scientific name and specimens for further processing. */
+    wrappedScientificName(sciname) { return new ScientificNameWrapper(sciname); },
+    wrappedSpecimen(specimen) { return new SpecimenWrapper(specimen); }
+  }
 };
 </script>
