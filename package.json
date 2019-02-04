@@ -1,41 +1,91 @@
 {
   "name": "curation-tool",
   "version": "0.1.0",
-  "description": "A tool to curate phyloreferences",
-  "directories": {
-    "lib": "lib"
-  },
+  "private": true,
   "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/phyloref/curation-tool.git"
   },
-  "contributors": [
-    "Gaurav Vaidya <gaurav@ggvaidya.com> (http://ggvaidya.com/)"
-  ],
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/phyloref/curation-tool/issues"
-  },
-  "homepage": "https://github.com/phyloref/curation-tool#readme",
-  "devDependencies": {
-    "babel-eslint": "^8.2.3",
-    "chai": "^4.1.2",
-    "eslint": "^4.19.1",
-    "eslint-config-airbnb-base": "^12.1.0",
-    "eslint-plugin-import": "^2.11.0",
-    "eslint-plugin-json": "^1.2.0",
-    "eslint-plugin-mocha": "^5.0.0",
-    "eslint-plugin-vue": "^4.5.0",
-    "mocha": "^5.2.0"
-  },
   "dependencies": {
-    "d3": "^5.5.0",
-    "extend": "^3.0.2",
-    "get-stdin": "^6.0.0",
-    "vue": "^2.5.16",
-    "yargs": "^12.0.2",
-    "moment": "^2.22.2"
+    "@babel/plugin-transform-modules-commonjs": "^7.2.0",
+    "@fortawesome/fontawesome-svg-core": "^1.2.12",
+    "@fortawesome/free-solid-svg-icons": "^5.6.3",
+    "@fortawesome/vue-fontawesome": "^0.1.4",
+    "@phyloref/phyx": "^0.1.0",
+    "bootstrap": "^4.2.1",
+    "bootstrap-vue": "^2.0.0-rc.11",
+    "filesaver.js-npm": "^1.0.1",
+    "jquery": "^3.3.1",
+    "lodash": "^4.17.11",
+    "newick-js": "^1.1.0",
+    "popper.js": "^1.14.6",
+    "vue": "^2.5.17",
+    "vue-resize": "^0.4.5",
+    "vuex": "^3.0.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.2.2",
+    "@babel/preset-env": "^7.3.1",
+    "@vue/cli-plugin-babel": "^3.2.0",
+    "@vue/cli-plugin-eslint": "^3.2.0",
+    "@vue/cli-service": "^3.2.0",
+    "@vue/test-utils": "^1.0.0-beta.28",
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-eslint": "^10.0.1",
+    "babel-jest": "^24.0.0",
+    "eslint": "^5.8.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-json": "^1.3.2",
+    "eslint-plugin-mocha": "^5.2.0",
+    "eslint-plugin-vue": "^5.0.0-0",
+    "jest": "^24.0.0",
+    "vue-jest": "^3.0.2",
+    "vue-template-compiler": "^2.5.17"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "rules": {},
+    "parserOptions": {
+      "parser": "babel-eslint"
+    }
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ],
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "vue"
+    ],
+    "transform": {
+      "^.*\\.vue$": "vue-jest",
+      "^.+\\.js$": "babel-jest"
+    },
+    "collectCoverage": true,
+    "collectCoverageFrom": ["**/*.{js,vue}", "!**/node_modules/**"],
+    "coverageReporters": ["html", "text-summary"]
   }
 }

@@ -1,0 +1,107 @@
+<template>
+  <div id="app">
+    <TopNavigationBar :version="CURATION_TOOL_VERSION" />
+    <div id="wrapper">
+      <Sidebar />
+      <div id="page-content-wrapper">
+        <template v-if="display.phyloref">
+          <template v-if="display.specifier">
+            <SpecifierView
+              :phyloref="display.phyloref"
+              :specifier="display.specifier"
+            />
+          </template>
+          <template v-else>
+            <PhylorefView
+              :phyloref="display.phyloref"
+              :specifier="display.specifier"
+            />
+          </template>
+        </template>
+        <template v-else-if="display.phylogeny">
+          <PhylogenyView :phylogeny="display.phylogeny" />
+        </template>
+        <template v-else>
+          <PhyxView />
+        </template>
+      </div>
+    </div>
+
+    <!-- All modals are included here -->
+    <AboutCurationToolModal />
+    <AdvancedOptionsModal />
+  </div>
+</template>
+
+<script>
+/*
+ * Lays out the entire page, including inserting the (hidden) modals so they can be displayed.
+ */
+
+import { mapState } from 'vuex';
+
+// Navigation controls.
+import TopNavigationBar from './components/TopNavigationBar.vue';
+import Sidebar from './components/sidebar/Sidebar.vue';
+
+// At any point, one of these views will be displayed.
+import PhylogenyView from './components/phylogeny/PhylogenyView.vue';
+import PhylorefView from './components/phyloref/PhylorefView.vue';
+import SpecifierView from './components/phyloref/SpecifierView.vue';
+import PhyxView from './components/phyx/PhyxView.vue';
+
+// Modal dialogs to be displayed above the UI.
+import AboutCurationToolModal from './components/modals/AboutCurationToolModal.vue';
+import AdvancedOptionsModal from './components/modals/AdvancedOptionsModal.vue';
+
+export default {
+  name: 'App',
+  components: {
+    TopNavigationBar,
+    Sidebar,
+    PhyxView,
+    PhylogenyView,
+    PhylorefView,
+    SpecifierView,
+    AboutCurationToolModal,
+    AdvancedOptionsModal,
+  },
+  computed: mapState({
+    CURATION_TOOL_VERSION: state => state.CURATION_TOOL_VERSION,
+    display: state => state.ui.display,
+  }),
+};
+</script>
+
+<style>
+/*
+ * Classes for overall design.
+ */
+
+#wrapper {
+  padding-top: 64px;
+  padding-left: 250px;
+  margin-bottom: 10px;
+  transition: all 0.4s ease 0s;
+}
+
+#sidebar-wrapper {
+  font-size: 80%;
+  margin-left: -250px;
+  padding: 0px 5px;
+  position: fixed;
+  padding-top: 64px;
+  bottom: 0px;
+  left: 250px;
+  width: 250px;
+  height: 100%;
+  overflow-y: auto;
+  z-index: 1000;
+  transition: all 0.4s ease 0s;
+}
+
+#page-content-wrapper {
+  width: 100%;
+  padding: 0px 10px;
+}
+</style>
