@@ -8,13 +8,6 @@ import BootstrapVue from 'bootstrap-vue';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-vue/dist/bootstrap-vue.min.css';
 
-// Use icons from Font Awesome.
-import { library } from '@fortawesome/fontawesome-svg-core';
-import {
-  faExclamationCircle,
-} from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-
 // Use vue-resize to track when phylogenies are resized.
 import VueResize from 'vue-resize';
 import 'vue-resize/dist/vue-resize.css';
@@ -27,10 +20,6 @@ import store from './store';
 
 // Set up JQuery as a global.
 window.$ = require('jquery');
-
-// Set up FontAwesomeIcon.
-library.add(faExclamationCircle);
-Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 // Add additional features to Vue.
 Vue.use(BootstrapVue);

@@ -21,8 +21,21 @@
 
 import { isEqual } from 'lodash';
 
+// Use icons from Font Awesome.
+import { library } from '@fortawesome/fontawesome-svg-core';
+import {
+  faExclamationCircle,
+} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+
+// Set up exclamation circle for FontAwesome.
+library.add(faExclamationCircle);
+
 export default {
   name: 'ModifiedIcon',
+  components: {
+    FontAwesomeIcon,
+  },
   props: {
     message: {
       type: String,
