@@ -41,8 +41,14 @@ export default {
       type: String,
       default: 'This element has changed! Please remember to save it.',
     },
-    compare: Object, /* Object to check for changes. */
-    compareTo: Object, /* Changes will be determined by comparing this to this.compare */
+    compare: { /* Object to check for changes. */
+      type: Object,
+      required: true,
+    },
+    compareTo: { /* Changes will be determined by comparing this to this.compare */
+      type: Object,
+      required: true,
+    },
   },
   computed: {
     dataChanged() { return !isEqual(this.compare, this.compareTo); },

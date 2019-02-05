@@ -165,7 +165,8 @@ export default {
 
           if (data.name !== undefined && data.children === undefined) {
             // Labeled leaf node! Look for taxonomic units.
-            const tunits = this.$store.getters.getTaxonomicUnitsForNodeLabel(this.phylogeny, data.name);
+            const tunits = this.$store.getters
+              .getTaxonomicUnitsForNodeLabel(this.phylogeny, data.name);
 
             if (tunits.length === 0) {
               element.classed('terminal-node-without-tunits', true);
@@ -175,7 +176,8 @@ export default {
               // the currently expected node label.
               if (
                 has(this.phyloref, 'label')
-                && this.$store.getters.getExpectedNodeLabelsOnPhylogeny(this.phylogeny, this.phyloref)
+                && this.$store.getters
+                  .getExpectedNodeLabelsOnPhylogeny(this.phylogeny, this.phyloref)
                   .includes(data.name)
               ) {
                 textLabel.attr('id', `current_expected_label_phylogeny_${this.phylogenyIndex}`);
@@ -184,7 +186,8 @@ export default {
               // We should highlight internal specifiers.
               if (has(this.phyloref, 'internalSpecifiers')) {
                 if (this.phyloref.internalSpecifiers
-                  .some(specifier => this.$store.getters.getNodeLabelsMatchedBySpecifier(this.phylogeny, specifier)
+                  .some(specifier => this.$store.getters
+                    .getNodeLabelsMatchedBySpecifier(this.phylogeny, specifier)
                     .includes(data.name))
                 ) {
                   element.classed('internal-specifier-node', true);
@@ -194,7 +197,8 @@ export default {
               // We should highlight external specifiers.
               if (has(this.phyloref, 'externalSpecifiers')) {
                 if (this.phyloref.externalSpecifiers
-                  .some(specifier => this.$store.getters.getNodeLabelsMatchedBySpecifier(this.phylogeny, specifier)
+                  .some(specifier => this.$store.getters
+                    .getNodeLabelsMatchedBySpecifier(this.phylogeny, specifier)
                     .includes(data.name))
                 ) {
                   element.classed('external-specifier-node', true);
@@ -222,15 +226,15 @@ export default {
     },
   },
   watch: {
-    phyloref(oldValue, newValue) {
+    phyloref() {
       // We need to redraw the tree when phyloref changes.
       this.redrawTree();
     },
-    reasoningResults(oldValue, newValue) {
+    reasoningResults() {
       // If reasoning occurs, we'll need to redraw this tree.
       this.redrawTree();
     },
-    phylogeny(oldValue, newValue) {
+    phylogeny() {
       // If the phylogeny changed, redraw the tree.
       this.redrawTree();
     },
@@ -284,7 +288,8 @@ export default {
           // height
           0,
           // width
-          $(`#phylogeny${this.phylogenyIndex}`).width() - 40, // We need more space because our fonts are bigger than the default.
+          $(`#phylogeny${this.phylogenyIndex}`).width() - 40,
+          // We need more space because our fonts are bigger than the default.
         ])
         .spacing_x(this.spacingX)
         .update();
