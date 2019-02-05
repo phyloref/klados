@@ -164,7 +164,7 @@
           </h6>
           <div class="card-body">
             <div
-              v-for="(extref, index) of externalReferences"
+              v-for="(extref) of externalReferences"
               class="input-group"
             >
               <input
@@ -227,7 +227,6 @@ import {
 } from '@phyloref/phyx';
 import ModifiedCard from '../cards/ModifiedCard.vue';
 
-
 export default {
   name: 'SpecifierView',
   components: {
@@ -239,10 +238,31 @@ export default {
       // rather than currentPhyx).
       const loadedPhyx = this.loadedPhyx;
       const currentPhyx = this.currentPhyx;
-      const loadedPhyloref = loadedPhyx.phylorefs[currentPhyx.phylorefs.indexOf(this.selectedPhyloref)];
+      const loadedPhyloref = loadedPhyx
+        .phylorefs[currentPhyx.phylorefs.indexOf(this.selectedPhyloref)];
+
       if (loadedPhyloref === undefined) return undefined;
-      if (has(this.selectedPhyloref, 'internalSpecifiers') && has(loadedPhyloref, 'internalSpecifiers') && this.selectedPhyloref.internalSpecifiers.includes(this.selectedSpecifier)) return loadedPhyloref.internalSpecifiers[this.selectedPhyloref.internalSpecifiers.indexOf(this.selectedSpecifier)];
-      if (has(this.selectedPhyloref, 'externalSpecifiers') && has(loadedPhyloref, 'externalSpecifiers') && this.selectedPhyloref.externalSpecifiers.includes(this.selectedSpecifier)) return loadedPhyloref.externalSpecifiers[this.selectedPhyloref.externalSpecifiers.indexOf(this.selectedSpecifier)];
+      if (
+        has(this.selectedPhyloref, 'internalSpecifiers')
+        && has(loadedPhyloref, 'internalSpecifiers')
+        && this.selectedPhyloref.internalSpecifiers.includes(this.selectedSpecifier)
+      ) {
+        return loadedPhyloref
+          .internalSpecifiers[this.selectedPhyloref
+            .internalSpecifiers.indexOf(this.selectedSpecifier)];
+      }
+
+      if (
+        has(this.selectedPhyloref, 'externalSpecifiers')
+        && has(loadedPhyloref, 'externalSpecifiers')
+        && this.selectedPhyloref
+          .externalSpecifiers.includes(this.selectedSpecifier)
+      ) {
+        return loadedPhyloref
+          .externalSpecifiers[this.selectedPhyloref
+            .externalSpecifiers.indexOf(this.selectedSpecifier)];
+      }
+
       return undefined;
     },
     specifierType: {
@@ -253,9 +273,9 @@ export default {
         return undefined;
       },
       set(type) {
-        if (type == 'Internal specifier') {
+        if (type === 'Internal specifier') {
           this.$store.commit('setSpecifierType', { phyloref: this.selectedPhyloref, specifier: this.selectedSpecifier, specifierType: 'internal' });
-        } else if (type == 'External specifier') {
+        } else if (type === 'External specifier') {
           this.$store.commit('setSpecifierType', { phyloref: this.selectedPhyloref, specifier: this.selectedSpecifier, specifierType: 'external' });
         } else {
           throw new Error(`Unknown specifier type: ${type}`);
