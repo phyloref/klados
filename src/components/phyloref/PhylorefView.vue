@@ -319,7 +319,7 @@
               class="card mt-4 p-2"
             >
               <Phylotree
-                :phylogeny-index="phylogenyIndex"
+                :phylogeny-index="String(phylogenyIndex)"
                 :phylogeny="phylogeny"
                 :phyloref="selectedPhyloref"
                 :newick="phylogeny.newick"
