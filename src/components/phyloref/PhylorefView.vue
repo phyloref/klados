@@ -1,0 +1,410 @@
+<template>
+  <div>
+    <!-- Add a warning if this phyloreference has changed -->
+    <ModifiedCard
+      message="This phyloreference has been modified since being loaded! Use 'Save as JSON' to save your changes."
+      :compare="selectedPhyloref"
+      :compare-to="currentPhyx.phylorefs[currentPhyx.phylorefs.indexOf(selectedPhyloref)]"
+    />
+
+    <!-- Phyloreference information -->
+    <div
+      v-if="!display.phylogeny"
+      class="card"
+    >
+      <h5 class="card-header">
+        Phyloreference information
+      </h5>
+
+      <div class="card-body">
+        <form>
+          <!-- Phyloreference label -->
+          <div class="form-group row">
+            <label
+              for="label"
+              class="col-form-label col-md-2"
+            >
+              Label
+            </label>
+            <div class="col-md-10">
+              <input
+                id="label"
+                v-model="selectedPhylorefLabel"
+                type="text"
+                class="form-control"
+                placeholder="Phyloreference label"
+              >
+            </div>
+          </div>
+
+          <!-- Phyloreference clade definition -->
+          <div class="form-group row">
+            <label
+              for="definition"
+              class="col-form-label col-md-2"
+            >
+              Clade definition
+            </label>
+            <div class="col-md-10">
+              <textarea
+                id="definition"
+                v-model.lazy="selectedCladeDefinition"
+                class="form-control"
+                rows="6"
+                placeholder="Phylogenetic clade definition"
+              />
+            </div>
+          </div>
+
+          <!-- Phyloreference curator comments -->
+          <div class="form-group row">
+            <label
+              for="curator-comments"
+              class="col-form-label col-md-2"
+            >
+              Curator comments
+            </label>
+            <div class="col-md-10">
+              <textarea
+                id="curator-comments"
+                v-model.lazy="selectedCuratorComments"
+                class="form-control"
+                rows="2"
+                placeholder="Curator notes relating to this phyloreference"
+              />
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="card mt-2">
+      <h5 class="card-header">
+        Specifiers
+      </h5>
+      <div class="card-body">
+        <div
+          v-for="(specifier, index) of selectedPhyloref.internalSpecifiers"
+          class="form-row input-group"
+        >
+          <div class="input-group-prepend">
+            <a
+              class="btn btn-outline-secondary"
+            >
+              Internal
+            </a>
+          </div>
+          <input
+            readonly
+            type="text"
+            class="form-control"
+            :value="getSpecifierLabel(specifier)"
+          >
+          <div class="input-group-append">
+            <button
+              class="btn btn-outline-secondary"
+              @click="$store.commit('changeDisplay', {phyloref: selectedPhyloref, specifier: specifier})"
+            >
+              Edit
+            </button>
+          </div>
+        </div>
+        <div
+          v-for="(specifier, index) of selectedPhyloref.externalSpecifiers"
+          class="form-row input-group"
+        >
+          <div class="input-group-prepend">
+            <a
+              class="btn btn-outline-secondary"
+            >
+              External
+            </a>
+          </div>
+          <input
+            readonly
+            type="text"
+            class="form-control"
+            :value="getSpecifierLabel(specifier)"
+          >
+          <div class="input-group-append">
+            <button
+              class="btn btn-outline-secondary"
+              @click="$store.commit('changeDisplay', {phyloref: selectedPhyloref, specifier: specifier})"
+            >
+              Edit
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--
+      Panel with information on expected and actual resolution
+      We should:
+        - display all phylogenies when looking up a phyloreference or specifiers
+        - display only the selected phylogeny when it's selected
+    -->
+    <template v-for="(phylogeny, phylogenyIndex) of currentPhyx.phylogenies">
+      <template v-if="selectedPhylogeny === undefined || selectedPhylogeny === phylogeny">
+        <div class="card mt-2">
+          <h5 class="card-header">
+            Expected and actual resolution <span v-if="display.phylogeny">
+              of {{ phyloref.label || 'unlabeled phyloreference' }}
+            </span> on {{ phylogeny.label || `Phylogeny ${phylogenyIndex + 1}` }}
+          </h5>
+          <div class="card-body">
+            <div class="form-row">
+              <!-- Node(s) this phyloreference is expected to resolve to -->
+              <label
+                for="expected-nodes"
+                class="col-md-2 col-form-label"
+              >
+                Expected nodes
+              </label>
+
+              <div class="input-group col-md-4">
+                <!-- Display the phylogeny where this node is expected to match -->
+                <div class="input-group-prepend">
+                  <a
+                    class="btn btn-outline-secondary"
+                    :href="'#current_expected_label_phylogeny_' + phylogenyIndex"
+                    title="Click here to jump to the expected label"
+                    type="button"
+                  >
+                    Go to node
+                  </a>
+                </div>
+
+                <!-- Display the matching node(s) -->
+                <template v-if="getExpectedNodeLabels(phylogeny).length === 0">
+                  <!-- We matched no nodes -->
+                  <input
+                    readonly
+                    type="text"
+                    class="form-control"
+                    value="No nodes could be matched"
+                  >
+                </template>
+
+                <template v-if="getExpectedNodeLabels(phylogeny).length === 1">
+                  <!-- We matched exactly one node -->
+                  <input
+                    readonly
+                    type="text"
+                    class="form-control"
+                    :value="getExpectedNodeLabels(phylogeny)[0]"
+                  >
+                </template>
+
+                <template v-if="getExpectedNodeLabels(phylogeny).length > 1">
+                  <!-- We matched more than one node -->
+                  <input
+                    readonly
+                    type="text"
+                    class="form-control"
+                    :value="getExpectedNodeLabels(phylogeny).length + ' nodes matched: ' + getExpectedNodeLabels(phylogeny, selectedPhyloref).join(', ')"
+                  >
+                </template>
+
+                <!-- Display a dropdown menu that allows the modified label to be changed. -->
+                <div class="input-group-append">
+                  <button
+                    id="expected-nodes-dropdown"
+                    type="button"
+                    class="btn btn-outline-secondary dropdown-toggle"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  >
+                    Change <span class="caret" />
+                  </button>
+                  <div
+                    class="dropdown-menu dropright"
+                    aria-labelledby="expected-nodes-dropdown"
+                    style="height: 30em; overflow: visible scroll;"
+                  >
+                    <a class="dropdown-header">
+                      Labeled internal nodes in this phylogeny
+                    </a>
+                    <a
+                      v-for="nodeLabel of getNodeLabels(phylogeny, 'internal')"
+                      class="dropdown-item"
+                      :class="{active: getExpectedNodeLabels(phylogeny).includes(nodeLabel)}"
+                      href="#selected-phyloref"
+                      @click="togglePhylorefExpectedNodeLabel(phylogeny, selectedPhyloref, nodeLabel)"
+                    >
+                      {{ nodeLabel }}
+                    </a>
+                    <div class="dropdown-divider" />
+                    <a class="dropdown-header">
+                      Labeled terminal nodes in this phylogeny
+                    </a>
+                    <a
+                      v-for="nodeLabel of getNodeLabels(phylogeny, 'terminal')"
+                      class="dropdown-item"
+                      :class="{active: getExpectedNodeLabels(phylogeny).includes(nodeLabel)}"
+                      href="#selected-phyloref"
+                      @click="togglePhylorefExpectedNodeLabel(phylogeny, selectedPhyloref, nodeLabel)"
+                    >
+                      {{ nodeLabel }}
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Node(s) this phyloreference actually resolved to -->
+              <label
+                for="actual-nodes"
+                class="col-form-label col-md-2"
+              >
+                Actual resolved nodes
+              </label>
+
+              <div class="input-group col-md-4">
+                <!-- Display the phylogeny where this node is expected to match -->
+                <div class="input-group-prepend">
+                  <a
+                    class="btn btn-outline-secondary"
+                    :href="'#current_pinning_node_phylogeny_' + phylogenyIndex"
+                    title="Click here to jump to this node"
+                    type="button"
+                  >
+                    Go to node
+                  </a>
+                </div>
+
+                <!-- Display the matching node(s) -->
+                <template v-if="!nodesResolved">
+                  <input
+                    readonly
+                    type="text"
+                    class="form-control"
+                    value="Click 'Reason' to reason over all phyloreferences."
+                  >
+                </template>
+                <template v-else>
+                  <template v-if="getResolvedNodes(phylogeny).length === 0">
+                    <!-- We matched no nodes -->
+                    <input
+                      readonly
+                      type="text"
+                      class="form-control"
+                      :value="'No nodes could be matched'"
+                    >
+                  </template>
+                  <template v-if="getResolvedNodes(phylogeny).length === 1">
+                    <!-- We matched exactly one node -->
+                    <input
+                      readonly
+                      type="text"
+                      class="form-control"
+                      :value="getResolvedNodes(phylogeny)[0]"
+                    >
+                  </template>
+                  <template v-if="getResolvedNodes(phylogeny).length > 1">
+                    <!-- We matched more than one node -->
+                    <input
+                      readonly
+                      type="text"
+                      class="form-control"
+                      :value="getResolvedNodes(phylogeny).length + ' nodes matched: ' + getResolvedNodes(phylogeny).join(', ')"
+                    >
+                  </template>
+                </template>
+              </div>
+            </div>
+
+            <!-- Display the phylogeny -->
+            <div
+              class="card mt-4 p-2"
+            >
+              <Phylotree
+                :phylogeny-index="String(phylogenyIndex)"
+                :phylogeny="phylogeny"
+                :phyloref="selectedPhyloref"
+                :newick="phylogeny.newick"
+              />
+            </div>
+          </div>
+        </div>
+      </template>
+    </template>
+  </div>
+</template>
+
+<script>
+/*
+ * A view for displaying a phyloreference and how it resolves on all phylogenies.
+ */
+
+import { mapState } from 'vuex';
+import { has } from 'lodash';
+import { PhylogenyWrapper, PhylorefWrapper } from '@phyloref/phyx';
+
+import ModifiedCard from '../cards/ModifiedCard.vue';
+import Phylotree from '../phylogeny/Phylotree.vue';
+
+export default {
+  name: 'PhylorefView',
+  components: {
+    ModifiedCard,
+    Phylotree,
+  },
+  computed: {
+    /*
+     * The following properties allow you to get or set phyloref label, clade definition or curator comments.
+     */
+    selectedPhylorefLabel: {
+      get() { return this.selectedPhyloref.label; },
+      set(label) { this.$store.commit('setPhylorefProps', { phyloref: this.selectedPhyloref, label }); },
+    },
+    selectedCladeDefinition: {
+      get() { return this.selectedPhyloref.cladeDefinition; },
+      set(cladeDefinition) { this.$store.commit('setPhylorefProps', { phyloref: this.selectedPhyloref, cladeDefinition }); },
+    },
+    selectedCuratorComments: {
+      get() { return this.selectedPhyloref.curatorComments; },
+      set(curatorComments) { this.$store.commit('setPhylorefProps', { phyloref: this.selectedPhyloref, curatorComments }); },
+    },
+    phylorefURI() {
+      // Get the base URI of this phyloreference.
+      return this.$store.getters.getBaseURIForPhyloref(this.selectedPhyloref);
+    },
+    nodesResolved() {
+      // Get a list of nodes resolved by this phyloreference.
+      if (!has(this.$store.state.phyx.reasoningResults, 'phylorefs')) return undefined;
+      if (has(this.$store.state.phyx.reasoningResults.phylorefs, this.phylorefURI)) {
+        return this.$store.state.phyx.reasoningResults.phylorefs[this.phylorefURI];
+      }
+      return undefined;
+    },
+    ...mapState({
+      currentPhyx: state => state.phyx.currentPhyx,
+      loadedPhyx: state => state.phyx.loadedPhyx,
+      phylogenies: state => state.phyx.currentPhyx.phylogenies,
+      display: state => state.ui.display,
+      selectedPhylogeny: state => state.ui.display.phylogeny,
+      selectedPhyloref: state => state.ui.display.phyloref,
+    }),
+  },
+  methods: {
+    getNodeLabels(phylogeny, nodeType) {
+      // Return a list of node labels in a particular phylogeny.
+      return new PhylogenyWrapper(phylogeny).getNodeLabels(nodeType).sort();
+    },
+    getExpectedNodeLabels(phylogeny) {
+      // Return a list of nodes that this phyloreference is expected to resolve to.
+      return new PhylorefWrapper(this.selectedPhyloref).getExpectedNodeLabels(phylogeny);
+    },
+    getSpecifierLabel(specifier) {
+      // Return the specifier label of a particular specifier.
+      return PhylorefWrapper.getSpecifierLabel(specifier);
+    },
+    getResolvedNodes(phylogeny, flagReturnShortURIs = true) {
+      // Return the list of nodes on a particular phylogeny that this phyloreference
+      // has been determined to resolve on by JPhyloRef.
+      return this.$store.getters.getResolvedNodesForPhylogeny(phylogeny, this.selectedPhyloref, flagReturnShortURIs);
+    },
+  },
+};
+</script>

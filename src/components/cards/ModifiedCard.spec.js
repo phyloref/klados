@@ -28,4 +28,13 @@ describe('ModifiedCard', () => {
     });
     expect(wrapper.contains('div')).toBeTruthy();
   });
+  test('becomes visible if one of the comparison value is undefined', () => {
+    const wrapper = mount(ModifiedCard, {
+      propsData: {
+        compare: { key: 'test1' },
+        compareTo: undefined,
+      },
+    });
+    expect(wrapper.contains('div')).toBeTruthy();
+  });
 });

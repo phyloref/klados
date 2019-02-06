@@ -28,4 +28,13 @@ describe('ModifiedIcon', () => {
     });
     expect(wrapper.contains('div')).toBeTruthy();
   });
+  test('becomes visible if one of the comparison values is undefined', () => {
+    const wrapper = mount(ModifiedIcon, {
+      propsData: {
+        compare: { key: 'test1' },
+        compareTo: undefined,
+      },
+    });
+    expect(wrapper.contains('div')).toBeTruthy();
+  });
 });

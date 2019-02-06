@@ -38,6 +38,7 @@
  * Lays out the entire page, including inserting the (hidden) modals so they can be displayed.
  */
 
+import { isEqual } from 'lodash';
 import { mapState } from 'vuex';
 
 // Navigation controls.
@@ -69,7 +70,22 @@ export default {
   computed: mapState({
     CURATION_TOOL_VERSION: state => state.CURATION_TOOL_VERSION,
     display: state => state.ui.display,
+    currentPhyx: state => state.phyx.currentPhyx,
+    loadedPhyx: state => state.phyx.loadedPhyx,
   }),
+  created() {
+    // If someone tries to navigate away from the window while the
+    // PHYX has been modified, ask users to confirm before leaving.
+    // Confirmation message to display to the user. Note that modern
+    // browsers do not display this message, but provide a generic
+    // "content has changed" dialog instead.
+    $(window).on('beforeunload', () => {
+      const confirmationMessage = 'Your modifications have not been saved and will be lost if you close the Curation Tool. Confirm to discard your changes, or cancel to return to the Curation Tool.';
+
+      if (!isEqual(this.loadedPhyx, this.currentPhyx)) return confirmationMessage;
+      return false;
+    });
+  },
 };
 </script>
 
