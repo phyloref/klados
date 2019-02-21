@@ -114,7 +114,7 @@ export default {
     downloadAsJSONLD() {
       // Exports the PHYX file as an OWL/JSON-LD file, which can be opened in
       // Protege or converted into OWL/XML or other formats.
-      const wrapped = new PHYXWrapper(this.$store.state.phyx.currentPhyx);
+      const wrapped = new PHYXWrapper(this.$store.state.phyx.currentPhyx, d3.layout.newick_parser);
       const content = [JSON.stringify([wrapped.asJSONLD()], undefined, 4)];
 
       // Save to local hard drive.
