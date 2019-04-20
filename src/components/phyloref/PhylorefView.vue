@@ -56,6 +56,16 @@
             </div>
           </div>
 
+          <!-- Primary reference phylogeny -->
+          <div class="form-group row">
+            <label class="col-form-label col-md-2">
+              Primary reference phylogeny
+            </label>
+            <div class="col-md-10">
+              <Citation :citations="selectedPhyloref.primaryPhylogenyCitation" />
+            </div>
+          </div>
+
           <!-- Phyloreference curator comments -->
           <div class="form-group row">
             <label
@@ -343,12 +353,14 @@ import { PhylogenyWrapper, PhylorefWrapper } from '@phyloref/phyx';
 
 import ModifiedCard from '../cards/ModifiedCard.vue';
 import Phylotree from '../phylogeny/Phylotree.vue';
+import Citation from '../citations/Citation.vue';
 
 export default {
   name: 'PhylorefView',
   components: {
     ModifiedCard,
     Phylotree,
+    Citation,
   },
   computed: {
     /*
