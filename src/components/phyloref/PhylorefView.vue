@@ -57,14 +57,11 @@
           </div>
 
           <!-- Primary reference phylogeny -->
-          <div class="form-group row">
-            <label class="col-form-label col-md-2">
-              Primary reference phylogeny
-            </label>
-            <div class="col-md-10">
-              <Citation :citations="selectedPhyloref.primaryPhylogenyCitation" />
-            </div>
-          </div>
+          <Citation
+            label="Primary reference phylogeny"
+            :object="selectedPhyloref"
+            citationKey="primaryPhylogenyCitation"
+          />
 
           <!-- Phyloreference curator comments -->
           <div class="form-group row">
