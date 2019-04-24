@@ -9,7 +9,7 @@
       </template>
       <template v-for="(citation, citationIndex) of citations">
         <div class="input-group">
-          <input type="text" class="form-control" placeholder="Citation" :value="asText(citation)">
+          <input type="text" disabled class="form-control" placeholder="Citation" :value="wrappedCitation(citation).toString()">
           <div class="input-group-append">
             <a class="btn btn-secondary" @click="toggleCitationExpanded(citationIndex)" href="javascript:;">Expand</a>
           </div>
@@ -18,18 +18,30 @@
           <div class="card-body">
             <h5 class="card-title">Citation details</h5>
             <div class="form-group row">
-              <label class="col-form-label col-md-2" for="doi">DOIs (one per line)</label>
-              <div class="input-group col-md-10">
-                <textarea id="doi" rows="3" class="form-control"
-                  placeholder="Enter DOIs here"
-                  :value="wrappedCitation(citation).dois.join('\n')"
-                  @change="setDOIs(citation, $event.target.value.split(/\s*\n\s*/))"
+              <label class="col-form-label col-md-2" for="authors">Authors (one per line)</label>
+              <div class="col-md-10">
+                <textarea id="authors" rows="3" class="form-control"
+                  placeholder="Enter authors here"
+                  :value="wrappedCitation(citation).authorsAsStrings.join('\n')"
+                  @change="wrappedCitation(citation).authorsAsStrings = $event.target.value.split(/\s*\n\s*/); updateCitations();"
                 ></textarea>
-                <div class="input-group-append">
-                  <a class="btn btn-outline-secondary" target="_blank"
-                    :href="'http://doi.org/' + wrappedCitation(citation).firstDOI"
-                    :class="{disabled: !wrappedCitation(citation).firstDOI}"
-                    >Open in new window</a>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-form-label col-md-2" for="doi">DOIs (one per line)</label>
+              <div class="col-md-10">
+                <div class="input-group">
+                  <textarea id="doi" rows="1" class="form-control"
+                    placeholder="Enter DOIs here"
+                    :value="wrappedCitation(citation).dois.join('\n')"
+                    @change="setDOIs(citation, $event.target.value.split(/\s*\n\s*/))"
+                  ></textarea>
+                  <div class="input-group-append">
+                    <a class="btn btn-outline-secondary align-middle" target="_blank" style="vertical-align: middle"
+                      :href="'http://doi.org/' + wrappedCitation(citation).firstDOI"
+                      :class="{disabled: !wrappedCitation(citation).firstDOI}"
+                      >Open in new window</a>
+                  </div>
                 </div>
               </div>
             </div>
@@ -78,14 +90,15 @@ export default {
   },
   watch: {
     citations() {
-      console.log('citations()');
-
-      // If our citations change, we should reflect them back to the
-      // original object.
+      this.updateCitations();
+    },
+  },
+  methods: {
+    updateCitations() {
+      // If our citations have changed, update the state of the citation they
+      // point to.
       if (isEmpty(this.citations)) return;
       if (isEqual(this.citations, this.object[this.citationKey])) return;
-
-      console.log('setCitations:', this.object, this.citationKey, this.citations);
 
       this.$store.commit('setCitations', {
         object: this.object,
@@ -93,31 +106,22 @@ export default {
         citations: this.citations,
       })
     },
-  },
-  methods: {
     toggleCitationExpanded(citationIndex) {
-      console.log('Checking', citationIndex, 'against', this.citationsExpanded);
-
+      // Given the index of a citation, either expand it or collapse it.
+      // (The citation is expanded if its index is in the citationsExpanded list)
       if (this.citationsExpanded.includes(citationIndex))
         this.citationsExpanded = this.citationsExpanded.filter(index => index !== citationIndex);
       else
         this.citationsExpanded.push(citationIndex);
-
-      console.log('Now at', this.citationsExpanded);
     },
     wrappedCitation(citation) {
+      // Return the citation
       return this.$store.getters.getWrappedCitation(citation);
-    },
-    asText(citation) {
-      return this.$store.getters.getWrappedCitation(citation).toString();
-    },
-    doisFor(citation) {
-      return this.$store.getters.getWrappedCitation(citation).dois;
     },
     setDOIs(citation, dois) {
       console.log("Setting citation", citation, "to DOIs", dois);
       Vue.set(citation, 'identifier', dois.map(doi => { return { type: 'doi', id: doi }; }));
-      console.log("Citations now at:", this.citations);
+      updateCitations();
     },
   }
 };

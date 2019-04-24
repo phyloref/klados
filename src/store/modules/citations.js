@@ -27,6 +27,35 @@ class CitationWrapper {
     return JSON.stringify(this.citation);
   }
 
+  get authors() {
+    const citation = this.citation;
+
+    if (has(citation, 'authors')) {
+      // Is there more than one author?
+      if (Array.isArray(citation.authors)) {
+        return citation.authors;
+      }
+
+      // If not, make an array out of that one author.
+      return [citation.authors];
+    }
+
+    return [];
+  }
+
+  set authors(authors) {
+    Vue.set(this.citation, 'authors', authors);
+  }
+
+  get authorsAsStrings() {
+    return this.authors.map(author => author.name);
+  }
+
+  set authorsAsStrings(authorsAsStrings) {
+    // TODO parse names back into first and last name.
+    Vue.set(this.citation, 'authors', authorsAsStrings.map(name => ({ name })));
+  }
+
   get identifiers() {
     // Returns a list of identifiers for this citation.
     const citation = this.citation;
