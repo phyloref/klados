@@ -28,6 +28,16 @@
               </div>
             </div>
             <div class="form-group row">
+              <label class="col-form-label col-md-2" for="title">Title</label>
+              <div class="col-md-10">
+                <input id="title" type="text" class="form-control"
+                  placeholder="Enter title here"
+                  v-model="citation.title"
+                  @change="updateCitations()"
+                />
+              </div>
+            </div>
+            <div class="form-group row">
               <label class="col-form-label col-md-2" for="doi">DOIs (one per line)</label>
               <div class="col-md-10">
                 <div class="input-group">
