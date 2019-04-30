@@ -27,13 +27,14 @@ class CitationWrapper {
   }
 
   toString() {
-    if (!this.citation) return '(undefined)';
+    if (!this.citation || isEmpty(this.citation)) return undefined;
 
     // Returns a string representation of this citation.
     // TODO add editors
     let authors = this.authorsAsStrings;
+    if (authors.length === 0) authors = ['Anonymous'];
     if (authors.length > 2) authors = [`${authors[0]} et al`];
-    let authorsAndTitle = `${authors.join(' and ')} (${this.citation.year}) ${this.citation.title}`;
+    let authorsAndTitle = `${authors.join(' and ')} (${this.citation.year || 'n.d.'}) ${this.citation.title || 'Untitled'}`;
     if (has(this.citation, 'section_title')) {
       authorsAndTitle += ` (section: ${this.citation.section_title})`;
     }
@@ -49,9 +50,10 @@ class CitationWrapper {
 
     if (has(this.citation, 'journal')) {
       const journal = this.citation.journal;
-      const journalIssue = (has(journal, 'number')) ? `:${journal.number}` : '';
+      const journalIssue = (has(journal, 'number')) ? `(${journal.number})` : '';
+      const journalPages = (has(journal, 'pages')) ? `:${journal.pages}` : '';
       additionalInfo += this.issns.map(issn => `ISSN: ${issn} `).join('');
-      return `${authorsAndTitle} ${journal.name} ${journal.volume}${journalIssue} ${journal.pages}${additionalInfo}`;
+      return `${authorsAndTitle} ${journal.name || 'Unknown journal'} ${journal.volume || 'Unknown volume'}${journalIssue}${journalPages}${additionalInfo}`;
     }
 
     // Must be a book or book section.
