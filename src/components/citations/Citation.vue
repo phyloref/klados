@@ -159,7 +159,10 @@
             </div>
 
             <!-- Section title -->
-            <div v-if="citation.type === 'book_section'" class="form-group row">
+            <div
+              v-if="citation.type === 'book_section'"
+              class="form-group row"
+            >
               <label
                 class="col-form-label col-md-2"
                 for="section-title"
@@ -528,12 +531,12 @@ export default {
       // Exception: this component will ALWAYS add a 'journal' key to the citation,
       // even if it is empty. We should eliminate that to make the comparison.
       const ourCitations = cloneDeep(this.citations).map(
-        citation => {
+        (citation) => {
           if (has(citation, 'journal') && isEqual(pickBy(citation.journal), {})) {
             delete citation.journal;
           }
           return citation;
-        }
+        },
       );
 
       // Exception: we *always* store citations as an array, but
@@ -542,14 +545,14 @@ export default {
       if (ourCitations.length === 1) {
         if (isEqual(ourCitations[0], this.object[this.citationKey])) return;
 
-        console.log("Updating citations as ", ourCitations[0], " differs from ", this.object[this.citationKey]);
+        console.log('Updating citations as ', ourCitations[0], ' differs from ', this.object[this.citationKey]);
         this.$store.commit('setCitations', {
           object: this.object,
           citationKey: this.citationKey,
           citations: ourCitations[0],
         });
       } else {
-        console.log("Updating citations as ", ourCitations, " differs from ", this.object[this.citationKey]);
+        console.log('Updating citations as ', ourCitations, ' differs from ', this.object[this.citationKey]);
         this.$store.commit('setCitations', {
           object: this.object,
           citationKey: this.citationKey,
