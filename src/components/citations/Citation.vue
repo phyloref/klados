@@ -20,7 +20,7 @@
             readonly
             class="form-control hand-cursor"
             placeholder="Citation"
-            :value="wrappedCitation(citation).toString()"
+            :value="wrappedCitation(citation).toString() || 'Empty citation, click to enter'"
             @click="toggleCitationExpanded(citationIndex)"
           >
           <div class="input-group-append">
@@ -118,6 +118,105 @@
               </div>
             </div>
 
+            <!-- Section title -->
+            <div v-if="citation.type === 'book_section'" class="form-group row">
+              <label
+                class="col-form-label col-md-2"
+                for="section-title"
+              >
+                Section title
+              </label>
+              <div class="col-md-10">
+                <input
+                  id="section-title"
+                  v-model="citation.section_title"
+                  type="text"
+                  class="form-control"
+                  placeholder="Enter section title here"
+                  @change="updateCitations()"
+                >
+              </div>
+            </div>
+
+            <!-- Publication year -->
+            <div class="form-group row">
+              <label
+                class="col-form-label col-md-2"
+                for="year"
+              >
+                Year
+              </label>
+              <div class="col-md-4">
+                <input
+                  id="year"
+                  v-model="citation.year"
+                  type="text"
+                  class="form-control"
+                  placeholder="Enter year here"
+                  @change="updateCitations()"
+                >
+              </div>
+
+              <!-- Edition -->
+              <template v-if="citation.type !== 'journal'">
+                <label
+                  class="col-form-label col-md-2"
+                  for="edition"
+                >
+                  Edition
+                </label>
+                <div class="col-md-4">
+                  <input
+                    id="edition"
+                    v-model="citation.edition"
+                    type="text"
+                    class="form-control"
+                    placeholder="Enter edition here"
+                    @change="updateCitations()"
+                  >
+                </div>
+              </template>
+            </div>
+
+            <!-- Pages and figure -->
+            <div class="form-group row">
+              <!-- Pages -->
+              <label
+                class="col-form-label col-md-2"
+                for="pages"
+              >
+                Pages
+              </label>
+              <div class="col-md-4">
+                <input
+                  id="pages"
+                  v-model="wrappedCitation(citation).journal.pages"
+                  type="text"
+                  class="form-control"
+                  placeholder="Enter pages here"
+                  @change="updateCitations()"
+                >
+              </div>
+
+              <!-- Figure -->
+              <label
+                class="col-form-label col-md-2"
+                for="figure"
+              >
+                Figure
+              </label>
+              <div class="col-md-4">
+                <input
+                  id="figure"
+                  v-model="citation.figure"
+                  type="text"
+                  class="form-control"
+                  placeholder="Enter figure number here"
+                  @change="updateCitations()"
+                >
+              </div>
+            </div>
+
             <!-- Only for journal entries! -->
             <template v-if="citation.type === 'journal'">
               <!-- Journal title -->
@@ -140,15 +239,16 @@
                 </div>
               </div>
 
-              <!-- Journal volume -->
+              <!-- Journal volume and issue -->
               <div class="form-group row">
+                <!-- Journal volume -->
                 <label
                   class="col-form-label col-md-2"
                   for="journal-volume"
                 >
                   Volume
                 </label>
-                <div class="col-md-10">
+                <div class="col-md-4">
                   <input
                     id="journal-volume"
                     v-model="wrappedCitation(citation).journal.volume"
@@ -158,62 +258,27 @@
                     @change="updateCitations()"
                   >
                 </div>
-              </div>
 
-              <!-- Journal pages -->
-              <div class="form-group row">
+                <!-- Journal issue/number -->
                 <label
                   class="col-form-label col-md-2"
-                  for="journal-pages"
+                  for="journal-issue"
                 >
-                  Pages
+                  Issue number
                 </label>
-                <div class="col-md-10">
+                <div class="col-md-4">
                   <input
-                    id="journal-pages"
-                    v-model="wrappedCitation(citation).journal.pages"
+                    id="journal-issue"
+                    v-model="wrappedCitation(citation).journal.number"
                     type="text"
                     class="form-control"
-                    placeholder="Enter journal pages here"
+                    placeholder="Enter journal issue number here"
                     @change="updateCitations()"
                   >
                 </div>
               </div>
 
-              <!-- ISBNs (one per line) -->
-              <div class="form-group row">
-                <label
-                  class="col-form-label col-md-2"
-                  for="isbns"
-                >
-                  ISBNs (one per line)
-                </label>
-                <div class="col-md-10">
-                  <div class="input-group">
-                    <textarea
-                      id="isbns"
-                      rows="1"
-                      class="form-control"
-                      placeholder="Enter ISBNs here"
-                      :value="wrappedCitation(wrappedCitation(citation).journal).isbns.join('\n')"
-                      @change="wrappedCitation(wrappedCitation(citation).journal).isbns = $event.target.value.split(/\s*\n\s*/); updateCitations()"
-                    />
-                    <div class="input-group-append">
-                      <a
-                        class="btn btn-outline-secondary align-middle"
-                        target="_blank"
-                        style="vertical-align: middle"
-                        :href="'https://www.worldcat.org/search?q=bn%3A' + wrappedCitation(wrappedCitation(citation).journal).isbns[0]"
-                        :class="{disabled: (wrappedCitation(wrappedCitation(citation).journal).isbns || []).length === 0}"
-                      >
-                        Open in new window
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- ISBNs (one per line) -->
+              <!-- ISSNs (one per line) -->
               <div class="form-group row">
                 <label
                   class="col-form-label col-md-2"
@@ -246,6 +311,78 @@
                 </div>
               </div>
             </template>
+
+            <!-- ISBNs (one per line) -->
+            <div class="form-group row">
+              <label
+                class="col-form-label col-md-2"
+                for="isbns"
+              >
+                ISBNs (one per line)
+              </label>
+              <div class="col-md-10">
+                <div class="input-group">
+                  <textarea
+                    id="isbns"
+                    rows="1"
+                    class="form-control"
+                    placeholder="Enter ISBNs here"
+                    :value="wrappedCitation(wrappedCitation(citation).journal).isbns.join('\n')"
+                    @change="wrappedCitation(wrappedCitation(citation).journal).isbns = $event.target.value.split(/\s*\n\s*/); updateCitations()"
+                  />
+                  <div class="input-group-append">
+                    <a
+                      class="btn btn-outline-secondary align-middle"
+                      target="_blank"
+                      style="vertical-align: middle"
+                      :href="'https://www.worldcat.org/search?q=bn%3A' + wrappedCitation(wrappedCitation(citation).journal).isbns[0]"
+                      :class="{disabled: (wrappedCitation(wrappedCitation(citation).journal).isbns || []).length === 0}"
+                    >
+                      Open in new window
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Publisher and city -->
+            <div class="form-group row">
+              <!-- Publisher -->
+              <label
+                class="col-form-label col-md-2"
+                for="publisher"
+              >
+                Publisher
+              </label>
+              <div class="col-md-4">
+                <input
+                  id="publisher"
+                  v-model="citation.publisher"
+                  type="text"
+                  class="form-control"
+                  placeholder="Enter publisher here"
+                  @change="updateCitations()"
+                >
+              </div>
+
+              <!-- Publication city -->
+              <label
+                class="col-form-label col-md-2"
+                for="city"
+              >
+                City
+              </label>
+              <div class="col-md-4">
+                <input
+                  id="city"
+                  v-model="citation.city"
+                  type="text"
+                  class="form-control"
+                  placeholder="Enter publication city here"
+                  @change="updateCitations()"
+                >
+              </div>
+            </div>
 
             <!-- DOIs (one per line) -->
             <div class="form-group row">
