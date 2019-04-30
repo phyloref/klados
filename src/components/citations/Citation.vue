@@ -470,7 +470,7 @@
 
 import Vue from 'vue';
 import {
-  has, isEmpty, isEqual, cloneDeep,
+  has, isEmpty, isEqual, cloneDeep, pickBy,
 } from 'lodash';
 
 export default {
@@ -490,16 +490,17 @@ export default {
     },
   },
   data() {
-    // Set up a citations variable that has to be an array. It may actually be
-    // a single object in the JSON file; in that case, we convert it into an
-    // array.
+    // Set up a citations variable that has to be an array. It may actually be a
+    // single object in the JSON file; in that case, we convert it into an array.
+    // In any case, we want to clone it -- changes in this component shouldn't
+    // propagate to the model directly, but should go through this.updateCitations().
     let citations;
     if (Array.isArray(this.object[this.citationKey])) {
-      citations = this.object[this.citationKey];
+      citations = cloneDeep(this.object[this.citationKey]);
     } else if (isEmpty(this.object[this.citationKey])) {
       citations = [];
     } else {
-      citations = [this.object[this.citationKey]];
+      citations = [cloneDeep(this.object[this.citationKey])];
     }
 
     return {
@@ -523,13 +524,38 @@ export default {
       // If our citations have changed, update the state of the citation they
       // point to.
       if (isEmpty(this.citations)) return;
-      if (isEqual(this.citations, this.object[this.citationKey])) return;
 
-      this.$store.commit('setCitations', {
-        object: this.object,
-        citationKey: this.citationKey,
-        citations: this.citations,
-      });
+      // Exception: this component will ALWAYS add a 'journal' key to the citation,
+      // even if it is empty. We should eliminate that to make the comparison.
+      const ourCitations = cloneDeep(this.citations).map(
+        citation => {
+          if (has(citation, 'journal') && isEqual(pickBy(citation.journal), {})) {
+            delete citation.journal;
+          }
+          return citation;
+        }
+      );
+
+      // Exception: we *always* store citations as an array, but
+      // this.object[this.citationKey] might be an object. Let's check for that.
+      if (isEqual(ourCitations, this.object[this.citationKey])) return;
+      if (ourCitations.length === 1) {
+        if (isEqual(ourCitations[0], this.object[this.citationKey])) return;
+
+        console.log("Updating citations as ", ourCitations[0], " differs from ", this.object[this.citationKey]);
+        this.$store.commit('setCitations', {
+          object: this.object,
+          citationKey: this.citationKey,
+          citations: ourCitations[0],
+        });
+      } else {
+        console.log("Updating citations as ", ourCitations, " differs from ", this.object[this.citationKey]);
+        this.$store.commit('setCitations', {
+          object: this.object,
+          citationKey: this.citationKey,
+          citations: ourCitations,
+        });
+      }
     },
     toggleCitationExpanded(citationIndex) {
       // Given the index of a citation, either expand it or collapse it.
