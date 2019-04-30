@@ -89,6 +89,26 @@ class CitationWrapper {
     Vue.set(this.citation, 'authors', authorsAsStrings.map(name => ({ name })));
   }
 
+  get editorsAsStrings() {
+    if (!has(this.citation, 'editors')) return [];
+    return this.citation.editors.map(editor => editor.name);
+  }
+
+  set editorsAsStrings(editors) {
+    // TODO parse names back into first and last name.
+    Vue.set(this.citation, 'editors', editors.map(name => ({ name })));
+  }
+
+  get seriesEditorsAsStrings() {
+    if (!has(this.citation, 'series_editors')) return [];
+    return this.citation.series_editors.map(editor => editor.name);
+  }
+
+  set seriesEditorsAsStrings(editors) {
+    // TODO parse names back into first and last name.
+    Vue.set(this.citation, 'series_editors', editors.map(name => ({ name })));
+  }
+
   get identifiers() {
     // Returns a list of identifiers for this citation.
     const citation = this.citation;

@@ -98,6 +98,46 @@
               </div>
             </div>
 
+            <!-- Editors (one per line) -->
+            <div class="form-group row">
+              <label
+                class="col-form-label col-md-2"
+                for="editors"
+              >
+                Editors (one per line)
+              </label>
+              <div class="col-md-10">
+                <textarea
+                  id="editors"
+                  rows="2"
+                  class="form-control"
+                  placeholder="Enter editors here"
+                  :value="wrappedCitation(citation).editorsAsStrings.join('\n')"
+                  @change="wrappedCitation(citation).editorsAsStrings = $event.target.value.split(/\s*\n\s*/); updateCitations();"
+                />
+              </div>
+            </div>
+
+            <!-- Series editors (one per line) -->
+            <div class="form-group row">
+              <label
+                class="col-form-label col-md-2"
+                for="series-editors"
+              >
+                Series editors (one per line)
+              </label>
+              <div class="col-md-10">
+                <textarea
+                  id="series-editors"
+                  rows="2"
+                  class="form-control"
+                  placeholder="Enter series editors here"
+                  :value="wrappedCitation(citation).seriesEditorsAsStrings.join('\n')"
+                  @change="wrappedCitation(citation).seriesEditorsAsStrings = $event.target.value.split(/\s*\n\s*/); updateCitations();"
+                />
+              </div>
+            </div>
+
             <!-- Title -->
             <div class="form-group row">
               <label
