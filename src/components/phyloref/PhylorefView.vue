@@ -37,6 +37,15 @@
             </div>
           </div>
 
+          <!-- TODO add definition authors here -->
+
+          <!-- Pre-existing definition source -->
+          <Citation
+            label="Pre-existing name definition"
+            :object="selectedPhyloref"
+            citationKey="dwc:namePublishedIn"
+          />
+
           <!-- Phyloreference clade definition -->
           <div class="form-group row">
             <label
@@ -56,11 +65,11 @@
             </div>
           </div>
 
-          <!-- Primary reference phylogeny -->
+          <!-- Phyloref definition source -->
           <Citation
-            label="Primary reference phylogeny"
+            label="Definition source"
             :object="selectedPhyloref"
-            citationKey="primaryPhylogenyCitation"
+            citationKey="obo:IAO_0000119"
           />
 
           <!-- Phyloreference curator comments -->

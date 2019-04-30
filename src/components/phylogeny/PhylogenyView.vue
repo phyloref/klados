@@ -49,6 +49,20 @@
             </div>
           </div>
 
+          <!-- Primary reference phylogeny -->
+          <Citation
+            label="Primary reference phylogeny"
+            :object="selectedPhylogeny"
+            citationKey="primaryPhylogenyCitation"
+          />
+
+          <!-- Other reference phylogeny -->
+          <Citation
+            label="Reference phylogeny"
+            :object="selectedPhylogeny"
+            citationKey="phylogenyCitation"
+          />
+
           <div class="form-group row">
             <label
               for="newick"
@@ -112,10 +126,11 @@ import { parse as parseNewick } from 'newick-js';
 
 import ModifiedCard from '../cards/ModifiedCard.vue';
 import Phylotree from './Phylotree.vue';
+import Citation from '../citations/Citation.vue';
 
 export default {
   name: 'PhylogenyView',
-  components: { ModifiedCard, Phylotree },
+  components: { ModifiedCard, Phylotree, Citation },
   computed: {
     /*
      * The following properties allow you to get or set the phylogeny label,
