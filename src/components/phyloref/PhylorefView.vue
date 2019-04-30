@@ -43,7 +43,7 @@
           <Citation
             label="Pre-existing name definition"
             :object="selectedPhyloref"
-            citationKey="dwc:namePublishedIn"
+            citation-key="dwc:namePublishedIn"
           />
 
           <!-- Phyloreference clade definition -->
@@ -69,7 +69,7 @@
           <Citation
             label="Definition source"
             :object="selectedPhyloref"
-            citationKey="obo:IAO_0000119"
+            citation-key="obo:IAO_0000119"
           />
 
           <!-- Phyloreference curator comments -->

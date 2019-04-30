@@ -53,14 +53,14 @@
           <Citation
             label="Primary reference phylogeny"
             :object="selectedPhylogeny"
-            citationKey="primaryPhylogenyCitation"
+            citation-key="primaryPhylogenyCitation"
           />
 
           <!-- Other reference phylogeny -->
           <Citation
             label="Reference phylogeny"
             :object="selectedPhylogeny"
-            citationKey="phylogenyCitation"
+            citation-key="phylogenyCitation"
           />
 
           <div class="form-group row">
