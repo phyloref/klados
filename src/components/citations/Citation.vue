@@ -65,8 +65,8 @@
                   class="form-control"
                   @change="updateCitations()"
                 >
-                  <option value="journal">
-                    Journal
+                  <option value="article">
+                    Article
                   </option>
                   <option value="book">
                     Book
@@ -201,7 +201,7 @@
               </div>
 
               <!-- Edition -->
-              <template v-if="citation.type !== 'journal'">
+              <template v-if="citation.type !== 'article'">
                 <label
                   class="col-form-label col-md-2"
                   for="edition"
@@ -260,8 +260,8 @@
               </div>
             </div>
 
-            <!-- Only for journal entries! -->
-            <template v-if="citation.type === 'journal'">
+            <!-- Only for article entries! -->
+            <template v-if="citation.type === 'article'">
               <!-- Journal title -->
               <div class="form-group row">
                 <label
