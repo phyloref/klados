@@ -25,10 +25,10 @@
           >
           <div class="input-group-append">
             <a
-              v-if="wrappedCitation(citation).firstURL"
+              v-if="wrappedCitation(citation).url"
               class="btn btn-primary"
               target="_blank"
-              :href="wrappedCitation(citation).firstURL"
+              :href="wrappedCitation(citation).url"
             >
               Open in new window
             </a>
@@ -452,6 +452,39 @@
                       style="vertical-align: middle"
                       :href="'http://doi.org/' + wrappedCitation(citation).firstDOI"
                       :class="{disabled: !wrappedCitation(citation).firstDOI}"
+                    >
+                      Open in new window
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- URLs (one per line) -->
+            <div class="form-group row">
+              <label
+                class="col-form-label col-md-2"
+                for="urls"
+              >
+                URLs (one per line)
+              </label>
+              <div class="col-md-10">
+                <div class="input-group">
+                  <textarea
+                    id="urls"
+                    rows="1"
+                    class="form-control"
+                    placeholder="Enter URLs here"
+                    :value="wrappedCitation(citation).urlsAsStrings.join('\n')"
+                    @change="wrappedCitation(citation).urlsAsStrings = $event.target.value.split(/\s*\n\s*/); updateCitations()"
+                  />
+                  <div class="input-group-append">
+                    <a
+                      class="btn btn-outline-secondary align-middle"
+                      target="_blank"
+                      style="vertical-align: middle"
+                      :href="wrappedCitation(citation).firstURL"
+                      :class="{disabled: !wrappedCitation(citation).firstURL}"
                     >
                       Open in new window
                     </a>

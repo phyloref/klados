@@ -44,7 +44,7 @@ class CitationWrapper {
 
     // Add DOIs and URLs.
     additionalInfo += this.dois.map(doi => ` doi: ${doi}`).join('');
-    additionalInfo += this.urls.map(url => ` URL: ${url}`).join('');
+    additionalInfo += this.urlsAsStrings.map(url => ` URL: ${url}`).join('');
 
     additionalInfo += this.isbns.map(isbn => ` ISBN: ${isbn}`).join('');
 
@@ -179,8 +179,22 @@ class CitationWrapper {
     return undefined;
   }
 
+  get urlsAsStrings() {
+    if (has(this.citation, 'link')) return this.citation.link.map(link => link.url);
+    return [];
+  }
+
+  set urlsAsStrings(urls) {
+    this.citation.link = urls.map(url => ({ url }));
+  }
+
   get firstURL() {
-    if (this.urls.length > 0) return this.urls[0];
+    if (this.urlsAsStrings.length > 0) return this.urlsAsStrings[0];
+    return undefined;
+  }
+
+  get url() {
+    if (this.firstURL) return this.firstURL;
 
     // If we don't have a URL, look for a DOI.
     if (this.firstDOI) return `http://doi.org/${encodeURI(this.firstDOI)}`;
@@ -195,19 +209,6 @@ class CitationWrapper {
     if (has(this.citation, 'journal')) return this.citation.journal;
     Vue.set(this.citation, 'journal', {});
     return this.citation.journal;
-  }
-
-  get urls() {
-    if (has(this.citation, 'link')) {
-      return this.citation.link
-        .filter(link => has(link, 'url'))
-        .map(link => link.url);
-    }
-    return [];
-  }
-
-  set urls(urls) {
-    Vue.set(this.citation, 'link', urls.map(url => ({ url })));
   }
 }
 
