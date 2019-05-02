@@ -233,7 +233,7 @@
               <div class="col-md-4">
                 <input
                   id="pages"
-                  v-model="wrappedCitation(citation).journal.pages"
+                  v-model="citation.pages"
                   type="text"
                   class="form-control"
                   placeholder="Enter pages here"

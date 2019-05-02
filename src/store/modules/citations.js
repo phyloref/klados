@@ -51,10 +51,13 @@ class CitationWrapper {
     if (has(this.citation, 'journal')) {
       const journal = this.citation.journal;
       const journalIssue = (has(journal, 'number')) ? `(${journal.number})` : '';
-      const journalPages = (has(journal, 'pages')) ? `:${journal.pages}` : '';
+      const pages = (has(this.citation, 'pages')) ? `:${this.citation.pages}` : '';
       additionalInfo += this.issns.map(issn => `ISSN: ${issn} `).join('');
-      return `${authorsAndTitle} ${journal.name || 'Unknown journal'} ${journal.volume || 'Unknown volume'}${journalIssue}${journalPages}${additionalInfo}`;
+      return `${authorsAndTitle} ${journal.name || 'Unknown journal'} ${journal.volume || 'Unknown volume'}${journalIssue}${pages}${additionalInfo}`;
     }
+
+    // Must be a book or a book_section.
+    if (has(this.citation, 'pages')) additionalInfo += ` pages: ${this.citation.pages}`;
 
     // Must be a book or book section.
     return `${authorsAndTitle} ${this.citation.publisher}, ${this.citation.city}${additionalInfo}`;
