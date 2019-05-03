@@ -27,9 +27,9 @@ class CitationWrapper {
   }
 
   toString() {
+    // Return this citation in a string representation.
     if (!this.citation || isEmpty(this.citation)) return undefined;
 
-    // Returns a string representation of this citation.
     // TODO add editors
     let authors = this.authorsAsStrings;
     if (authors.length === 0) authors = ['Anonymous'];
@@ -39,6 +39,8 @@ class CitationWrapper {
       authorsAndTitle += ` (section: ${this.citation.section_title})`;
     }
 
+    // Additional info stores details that should be at the end of the figure number,
+    // DOIs, URLs, ISBNs and so on.
     let additionalInfo = ' ';
     if (has(this.citation, 'figure')) additionalInfo += ` fig ${this.citation.figure}`;
 
@@ -48,6 +50,7 @@ class CitationWrapper {
 
     additionalInfo += this.isbns.map(isbn => ` ISBN: ${isbn}`).join('');
 
+    // A citation for a journal article should be different from others.
     if (has(this.citation, 'journal')) {
       const journal = this.citation.journal;
       const journalIssue = (has(journal, 'number')) ? `(${journal.number})` : '';
@@ -56,14 +59,14 @@ class CitationWrapper {
       return `${authorsAndTitle} ${journal.name || 'Unknown journal'} ${journal.volume || 'Unknown volume'}${journalIssue}${pages}${additionalInfo}`;
     }
 
-    // Must be a book or a book_section.
+    // If we are here, this must be a book or a book_section.
     if (has(this.citation, 'pages')) additionalInfo += ` pages: ${this.citation.pages}`;
 
-    // Must be a book or book section.
     return `${authorsAndTitle} ${this.citation.publisher}, ${this.citation.city}${additionalInfo}`;
   }
 
   get authors() {
+    // Return a list of authors (as author objects) for this citation.
     const citation = this.citation;
 
     if (has(citation, 'authors')) {
@@ -80,34 +83,41 @@ class CitationWrapper {
   }
 
   set authors(authors) {
+    // Set the list of authors (as author objects).
     Vue.set(this.citation, 'authors', authors);
   }
 
   get authorsAsStrings() {
+    // Return a list of author names.
     return this.authors.map(author => author.name);
   }
 
   set authorsAsStrings(authorsAsStrings) {
+    // Set a list of author names.
     // TODO parse names back into first and last name.
     Vue.set(this.citation, 'authors', authorsAsStrings.map(name => ({ name })));
   }
 
   get editorsAsStrings() {
+    // Return a list of editor names.
     if (!has(this.citation, 'editors')) return [];
     return this.citation.editors.map(editor => editor.name);
   }
 
   set editorsAsStrings(editors) {
+    // Set a list of editor names.
     // TODO parse names back into first and last name.
     Vue.set(this.citation, 'editors', editors.map(name => ({ name })));
   }
 
   get seriesEditorsAsStrings() {
+    // Return a list of series editor names.
     if (!has(this.citation, 'series_editors')) return [];
     return this.citation.series_editors.map(editor => editor.name);
   }
 
   set seriesEditorsAsStrings(editors) {
+    // Set a list of series editor names.
     // TODO parse names back into first and last name.
     Vue.set(this.citation, 'series_editors', editors.map(name => ({ name })));
   }
@@ -131,10 +141,12 @@ class CitationWrapper {
   }
 
   set identifiers(identifiers) {
+    // Set the list of identifiers for this citation.
     this.citation.identifier = identifiers;
   }
 
   get dois() {
+    // Return a list of DOIs for this citation.
     return this.identifiers.map((identifier) => {
       if (has(identifier, 'type') && identifier.type === 'doi' && has(identifier, 'id') && !isEmpty(identifier.id)) {
         return [identifier.id];
@@ -145,6 +157,7 @@ class CitationWrapper {
   }
 
   get isbns() {
+    // Return a list of ISBNs for this citation.
     return this.identifiers.map((identifier) => {
       if (has(identifier, 'type') && identifier.type === 'isbn' && has(identifier, 'id') && !isEmpty(identifier.id)) {
         return [identifier.id];
@@ -155,12 +168,14 @@ class CitationWrapper {
   }
 
   set isbns(isbns) {
+    // Set a list of ISBNs for this citation.
     this.identifiers = this.identifiers
       .filter(identifier => has(identifier, 'type') && identifier.type !== 'isbn')
       .concat(isbns.map(isbn => ({ type: 'isbn', id: isbn })));
   }
 
   get issns() {
+    // Return a list of ISSNs for this citation.
     return this.identifiers.map((identifier) => {
       if (has(identifier, 'type') && identifier.type === 'issn' && has(identifier, 'id') && !isEmpty(identifier.id)) {
         return [identifier.id];
@@ -171,32 +186,38 @@ class CitationWrapper {
   }
 
   set issns(issns) {
+    // Set a list of ISSNs for this citation.
     this.identifiers = this.identifiers
       .filter(identifier => has(identifier, 'type') && identifier.type !== 'issn')
       .concat(issns.map(issn => ({ type: 'issn', id: issn })));
   }
 
   get firstDOI() {
+    // Return the first DOI of this citation (used to provide a URL to access it).
     const dois = this.dois || [];
     if (dois.length > 0) return dois[0];
     return undefined;
   }
 
   get urlsAsStrings() {
+    // Return a list of URLs in this citation.
     if (has(this.citation, 'link')) return this.citation.link.map(link => link.url);
     return [];
   }
 
   set urlsAsStrings(urls) {
+    // Set the list of URLs in this citation.
     this.citation.link = urls.map(url => ({ url }));
   }
 
   get firstURL() {
+    // Return the first URL in the list of citations (used to provide a URL for buttons).
     if (this.urlsAsStrings.length > 0) return this.urlsAsStrings[0];
     return undefined;
   }
 
   get url() {
+    // Get a URL for this citation, whether from the list of URLs or the list of DOIs.
     if (this.firstURL) return this.firstURL;
 
     // If we don't have a URL, look for a DOI.
@@ -209,6 +230,8 @@ class CitationWrapper {
   }
 
   get journal() {
+    // Return the journal of this citation. If one doesn't exist, create it and
+    // return it.
     if (has(this.citation, 'journal')) return this.citation.journal;
     Vue.set(this.citation, 'journal', {});
     return this.citation.journal;
@@ -217,9 +240,12 @@ class CitationWrapper {
 
 export default {
   getters: {
+    // Get a wrapped citation for a given citation.
     getWrappedCitation: () => citation => new CitationWrapper(citation),
   },
   mutations: {
+    // Update the value of a citation, using object-citationKey so we can change
+    // it anywhere in the Vuex state.
     setCitations(state, payload) {
       Vue.set(
         payload.object,
