@@ -99,7 +99,7 @@
         Specifiers
       </h5>
       <div class="card-body">
-        <template v-if="noSpecifiers">
+        <template v-if="!selectedPhyloref.internalSpecifiers && !selectedPhyloref.externalSpecifiers">
           <p><em>No specifiers in this phyloreference.</em></p>
         </template>
         <div
@@ -124,11 +124,7 @@
         </div>
       </div>
       <div class="card-footer">
-        <div
-          class="btn-group"
-          role="group"
-          area-label="Specifier management"
-        >
+        <div class="btn-group" role="group" area-label="Specifier management">
           <button
             class="btn btn-primary"
             href="javascript:;"

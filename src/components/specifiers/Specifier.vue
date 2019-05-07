@@ -2,84 +2,30 @@
   <div class="col-md-12">
     <div class="input-group mb-1">
       <div class="input-group-prepend">
-        <button
-          class="btn btn-outline-secondary dropdown-toggle"
-          type="button"
-          data-toggle="dropdown"
-          aria-haspopup="true"
-          aria-expanded="false"
-        >
+        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           {{ specifierType }}
         </button>
         <div class="dropdown-menu">
-          <a
-            class="dropdown-item"
-            :class="{active: specifierType === 'Internal'}"
-            href="javascript:;"
-            @click="specifierType = 'Internal'"
-          >
-            Internal
-          </a>
-          <a
-            class="dropdown-item"
-            :class="{active: specifierType === 'External'}"
-            href="javascript:;"
-            @click="specifierType = 'External'"
-          >
-            External
-          </a>
+          <a class="dropdown-item" :class="{active: specifierType === 'Internal'}" href="javascript:;" @click="specifierType = 'Internal'">Internal</a>
+          <a class="dropdown-item" :class="{active: specifierType === 'External'}" href="javascript:;" @click="specifierType = 'External'">External</a>
         </div>
       </div>
       <div class="input-group-prepend">
-        <button
-          class="btn btn-outline-secondary dropdown-toggle"
-          type="button"
-          data-toggle="dropdown"
-          aria-haspopup="true"
-          aria-expanded="false"
-        >
+        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           {{ specifierClassComputed }}
         </button>
         <div class="dropdown-menu">
-          <!-- TODO: remove external reference as a type and add it in as a separate property. -->
-          <a
-            class="dropdown-item"
-            :class="{active: specifierClassComputed === 'Taxon'}"
-            href="javascript:;"
-            @click="specifierClass = 'Taxon'"
-          >
-            Taxon
-          </a>
-          <a
-            class="dropdown-item"
-            :class="{active: specifierClassComputed === 'Specimen'}"
-            href="javascript:;"
-            @click="specifierClass = 'Specimen'"
-          >
-            Specimen
-          </a>
-          <a
-            class="dropdown-item"
-            :class="{active: specifierClassComputed === 'External reference'}"
-            href="javascript:;"
-            @click="specifierClass = 'External reference'"
-          >
-            External reference
-          </a>
-          <a
-            class="dropdown-item"
-            :class="{active: specifierClassComputed === 'Apomorphy'}"
-            href="javascript:;"
-            @click="specifierClass = 'Apomorphy'"
-          >
-            Apomorphy
-          </a>
+          <a class="dropdown-item" :class="{active: specifierClassComputed === 'Taxon'}" href="javascript:;" @click="specifierClass = 'Taxon'">Taxon</a>
+          <a class="dropdown-item" :class="{active: specifierClassComputed === 'Specimen'}"  href="javascript:;" @click="specifierClass = 'Specimen'">Specimen</a>
+          <a class="dropdown-item" :class="{active: specifierClassComputed === 'External reference'}"  href="javascript:;" @click="specifierClass = 'External reference'">External reference</a>
+          <a class="dropdown-item" :class="{active: specifierClassComputed === 'Apomorphy'}"  href="javascript:;" @click="specifierClass = 'Apomorphy'">Apomorphy</a>
         </div>
       </div>
       <input
-        v-model="specifierLabel"
+        readonly
         type="text"
         class="form-control"
+        :value="specifierLabel"
       >
       <div class="input-group-append">
         <button
@@ -116,12 +62,13 @@
           >
             Verbatim specifier
           </label>
-          <div class="col-md-10 input-group">
+          <div class="col-md-10">
             <input
               id="verbatim-specifier"
-              v-model="specifierLabel"
+              v-model="specifier.verbatimSpecifier"
               class="form-control"
-            >
+              @change="updateSpecifier()"
+            />
           </div>
         </div>
 
@@ -138,6 +85,7 @@
               id="specifier-class"
               v-model="specifierClassComputed"
               class="form-control"
+              @change="updateSpecifier()"
             >
               <option value="Taxon">
                 Taxon
