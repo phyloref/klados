@@ -231,8 +231,18 @@ class CitationWrapper {
     // If we don't have a URL, look for a DOI.
     if (this.firstDOI) return `http://doi.org/${encodeURI(this.firstDOI)}`;
 
-    // TODO: Look for ISBN.
-    // TODO: If all else fails, try https://search.crossref.org/?q={title}
+    // If we don't have a DOI, look for an ISBN or ISSN.
+    if (this.isbns.length > 0) return `https://www.worldcat.org/search?q=bn%3A${encodeURI(this.isbns[0])}`;
+    if (this.issns.length > 0) return `https://www.worldcat.org/search?q=n2%3A${encodeURI(this.issns[0])}`;
+
+    // If all else fails, try title searches.
+    if (has(this.citation, 'type') && has(this.citation, 'title')) {
+      // We should check articles against CrossRef.
+      if (this.citation.type === 'article') return `https://search.crossref.org/?q=${encodeURI(this.citation.title)}`;
+
+      // We should search book and book sections against WorldCat.
+      return `https://www.worldcat.org/search?q=${encodeURI(this.citation.title)}`;
+    }
 
     return undefined;
   }
