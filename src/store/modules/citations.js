@@ -167,7 +167,7 @@ class CitationWrapper {
 
   set identifiers(identifiers) {
     // Set the list of identifiers for this citation.
-    this.citation.identifier = identifiers;
+    Vue.set(this.citation, 'identifier', identifiers);
   }
 
   get dois() {
@@ -232,7 +232,7 @@ class CitationWrapper {
 
   set urlsAsStrings(urls) {
     // Set the list of URLs in this citation.
-    this.citation.link = urls.filter(isNonEmptyString).map(url => ({ url }));
+    Vue.set(this.citation, 'link', urls.filter(isNonEmptyString).map(url => ({ url })));
   }
 
   get firstURL() {
