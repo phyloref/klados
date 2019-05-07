@@ -99,57 +99,37 @@
         Specifiers
       </h5>
       <div class="card-body">
+        <template v-if="!selectedPhyloref.internalSpecifiers && !selectedPhyloref.externalSpecifiers">
+          <p><em>No specifiers in this phyloreference.</em></p>
+        </template>
         <div
           v-for="(specifier, index) of selectedPhyloref.internalSpecifiers"
           class="form-row input-group"
         >
-          <div class="input-group-prepend">
-            <a
-              class="btn btn-outline-secondary"
-            >
-              Internal
-            </a>
-          </div>
-          <input
-            readonly
-            type="text"
-            class="form-control"
-            :value="getSpecifierLabel(specifier)"
-          >
-          <div class="input-group-append">
-            <button
-              class="btn btn-outline-secondary"
-              @click="$store.commit('changeDisplay', {phyloref: selectedPhyloref, specifier: specifier})"
-            >
-              Edit
-            </button>
-          </div>
+          <Specifier
+            :phyloref="selectedPhyloref"
+            :remote-specifier="specifier"
+          />
         </div>
         <div
           v-for="(specifier, index) of selectedPhyloref.externalSpecifiers"
           class="form-row input-group"
         >
-          <div class="input-group-prepend">
-            <a
-              class="btn btn-outline-secondary"
-            >
-              External
-            </a>
-          </div>
-          <input
-            readonly
-            type="text"
-            class="form-control"
-            :value="getSpecifierLabel(specifier)"
+          <Specifier
+            :phyloref="selectedPhyloref"
+            :remote-specifier="specifier"
+          />
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="btn-group" role="group" area-label="Specifier management">
+          <button
+            class="btn btn-primary"
+            href="javascript:;"
+            @click="$store.commit('addSpecifier', { phyloref: selectedPhyloref })"
           >
-          <div class="input-group-append">
-            <button
-              class="btn btn-outline-secondary"
-              @click="$store.commit('changeDisplay', {phyloref: selectedPhyloref, specifier: specifier})"
-            >
-              Edit
-            </button>
-          </div>
+            Add specifier
+          </button>
         </div>
       </div>
     </div>
@@ -356,6 +336,7 @@ import { PhylogenyWrapper, PhylorefWrapper } from '@phyloref/phyx';
 import ModifiedCard from '../cards/ModifiedCard.vue';
 import Phylotree from '../phylogeny/Phylotree.vue';
 import Citation from '../citations/Citation.vue';
+import Specifier from '../specifiers/Specifier.vue';
 
 export default {
   name: 'PhylorefView',
@@ -363,6 +344,7 @@ export default {
     ModifiedCard,
     Phylotree,
     Citation,
+    Specifier,
   },
   computed: {
     /*

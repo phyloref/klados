@@ -285,7 +285,7 @@ export default {
     selectedVerbatimSpecifier: {
       // Allow the verbatim specifier to be retrieved or changed.
       get() { return this.selectedSpecifier.verbatimSpecifier; },
-      set(verbatimSpecifier) { this.$store.commit('setSpecifierProps', { specifier: this.selectedSpecifier, verbatimSpecifier }); },
+      set(verbatimSpecifier) { this.$store.commit('setSpecifierProps', { specifier: this.selectedSpecifier, props: { verbatimSpecifier } }); },
     },
     selectedSpecifierFirstTUnit: {
       // This is a temporary hack to reconcile the new single-tunit-to-specifier model
