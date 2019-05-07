@@ -16,7 +16,15 @@
  */
 
 import Vue from 'vue';
-import { has, isEmpty } from 'lodash';
+import { has, isEmpty, isString } from 'lodash';
+
+function isNonEmptyString(str) {
+  // Helper method: checks to see if a provided object (1) is a string, that
+  // (2) is non-empty after trimming.
+  if (!isString(str)) return false;
+  if (str.trim().length === 0) return false;
+  return true;
+}
 
 class CitationWrapper {
   // Wraps a Citation in a Phyx document. Should be moved to phyx.js.
@@ -30,11 +38,20 @@ class CitationWrapper {
     // Return this citation in a string representation.
     if (!this.citation || isEmpty(this.citation)) return undefined;
 
-    // TODO add editors
     let authors = this.authorsAsStrings;
     if (authors.length === 0) authors = ['Anonymous'];
     if (authors.length > 2) authors = [`${authors[0]} et al`];
     let authorsAndTitle = `${authors.join(' and ')} (${this.citation.year || 'n.d.'}) ${this.citation.title || 'Untitled'}`;
+
+    const editorLists = [];
+    const editors = this.editorsAsStrings;
+    if (editors.length > 0) editorLists.push(`eds: ${editors.join(' and ')}`);
+
+    const seriesEditors = this.seriesEditorsAsStrings;
+    if (seriesEditors.length > 0) editorLists.push(`series eds: ${seriesEditors.join(' and ')}`);
+
+    if (editorLists.length > 0) authorsAndTitle += ` [${editorLists.join(', ')}]`;
+
     if (has(this.citation, 'section_title')) {
       authorsAndTitle += ` (section: ${this.citation.section_title})`;
     }
@@ -103,7 +120,7 @@ class CitationWrapper {
   set authorsAsStrings(authorsAsStrings) {
     // Set a list of author names.
     // TODO parse names back into first and last name.
-    Vue.set(this.citation, 'authors', authorsAsStrings.map(name => ({ name })));
+    Vue.set(this.citation, 'authors', authorsAsStrings.filter(isNonEmptyString).map(name => ({ name })));
   }
 
   get editorsAsStrings() {
@@ -115,7 +132,7 @@ class CitationWrapper {
   set editorsAsStrings(editors) {
     // Set a list of editor names.
     // TODO parse names back into first and last name.
-    Vue.set(this.citation, 'editors', editors.map(name => ({ name })));
+    Vue.set(this.citation, 'editors', editors.filter(isNonEmptyString).map(name => ({ name })));
   }
 
   get seriesEditorsAsStrings() {
@@ -127,7 +144,7 @@ class CitationWrapper {
   set seriesEditorsAsStrings(editors) {
     // Set a list of series editor names.
     // TODO parse names back into first and last name.
-    Vue.set(this.citation, 'series_editors', editors.map(name => ({ name })));
+    Vue.set(this.citation, 'series_editors', editors.filter(isNonEmptyString).map(name => ({ name })));
   }
 
   get identifiers() {
@@ -215,7 +232,7 @@ class CitationWrapper {
 
   set urlsAsStrings(urls) {
     // Set the list of URLs in this citation.
-    this.citation.link = urls.map(url => ({ url }));
+    this.citation.link = urls.filter(isNonEmptyString).map(url => ({ url }));
   }
 
   get firstURL() {
