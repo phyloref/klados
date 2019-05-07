@@ -62,7 +62,7 @@ class CitationWrapper {
     if (has(this.citation, 'figure')) additionalInfo += ` fig ${this.citation.figure}`;
 
     // Add DOIs and URLs.
-    additionalInfo += this.dois.map(doi => ` doi: ${doi}`).join('');
+    additionalInfo += this.doisAsStrings.map(doi => ` doi: ${doi}`).join('');
     additionalInfo += this.urlsAsStrings.map(url => ` URL: ${url}`).join('');
 
     additionalInfo += this.isbns.map(isbn => ` ISBN: ${isbn}`).join('');
@@ -170,15 +170,19 @@ class CitationWrapper {
     Vue.set(this.citation, 'identifier', identifiers);
   }
 
-  get dois() {
+  get doisAsStrings() {
     // Return a list of DOIs for this citation.
-    return this.identifiers.map((identifier) => {
-      if (has(identifier, 'type') && identifier.type === 'doi' && has(identifier, 'id') && !isEmpty(identifier.id)) {
-        return [identifier.id];
-      }
+    return this.identifiers
+      .filter(id => has(id, 'type') && id.type === 'doi' && has(id, 'id') && !isEmpty(id.id))
+      .map(id => id.id);
+  }
 
-      return [];
-    }).reduce((acc, val) => acc.concat(val), []);
+  set doisAsStrings(dois) {
+    this.identifiers = this.identifiers
+      // Remove all current DOIs while leaving other identifiers untouched.
+      .filter(id => has(id, 'type') && id.type !== 'doi')
+      // Replace them with the provided DOIs.
+      .concat(dois.filter(isNonEmptyString).map(doi => ({ type: 'doi', id: doi })));
   }
 
   get isbns() {
@@ -196,7 +200,7 @@ class CitationWrapper {
     // Set a list of ISBNs for this citation.
     this.identifiers = this.identifiers
       .filter(identifier => has(identifier, 'type') && identifier.type !== 'isbn')
-      .concat(isbns.map(isbn => ({ type: 'isbn', id: isbn })));
+      .concat(isbns.filter(isNonEmptyString).map(isbn => ({ type: 'isbn', id: isbn })));
   }
 
   get issns() {
@@ -214,12 +218,12 @@ class CitationWrapper {
     // Set a list of ISSNs for this citation.
     this.identifiers = this.identifiers
       .filter(identifier => has(identifier, 'type') && identifier.type !== 'issn')
-      .concat(issns.map(issn => ({ type: 'issn', id: issn })));
+      .concat(issns.filter(isNonEmptyString).map(issn => ({ type: 'issn', id: issn })));
   }
 
   get firstDOI() {
     // Return the first DOI of this citation (used to provide a URL to access it).
-    const dois = this.dois || [];
+    const dois = this.doisAsStrings || [];
     if (dois.length > 0) return dois[0];
     return undefined;
   }

@@ -442,15 +442,15 @@
                     rows="1"
                     class="form-control"
                     placeholder="Enter DOIs here"
-                    :value="wrappedCitation(citation).dois.join('\n')"
-                    @change="setDOIs(citation, $event.target.value.split(/\s*\n\s*/))"
+                    :value="wrappedCitation(citation).doisAsStrings.join('\n')"
+                    @change="wrappedCitation(citation).doisAsStrings = $event.target.value.split(/\s*\n\s*/); updateCitations()"
                   />
                   <div class="input-group-append">
                     <a
                       class="btn btn-outline-secondary align-middle"
                       target="_blank"
                       style="vertical-align: middle"
-                      :href="'http://doi.org/' + wrappedCitation(citation).firstDOI"
+                      :href="wrappedCitation(citation).firstDOI ? 'http://doi.org/' + wrappedCitation(citation).firstDOI : undefined"
                       :class="{disabled: !wrappedCitation(citation).firstDOI}"
                     >
                       Open in new window
@@ -602,11 +602,6 @@ export default {
     wrappedCitation(citation) {
       // Return the citation
       return this.$store.getters.getWrappedCitation(citation);
-    },
-    setDOIs(citation, dois) {
-      console.log('Setting citation', citation, 'to DOIs', dois);
-      Vue.set(citation, 'identifier', dois.map(doi => ({ type: 'doi', id: doi })));
-      updateCitations();
     },
   },
 };
