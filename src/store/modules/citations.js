@@ -51,7 +51,7 @@ class CitationWrapper {
     additionalInfo += this.isbns.map(isbn => ` ISBN: ${isbn}`).join('');
 
     // A citation for a journal article should be different from others.
-    if (has(this.citation, 'journal')) {
+    if (has(this.citation, 'journal') && this.citation.type === 'article') {
       const journal = this.citation.journal;
       const journalIssue = (has(journal, 'number')) ? `(${journal.number})` : '';
       const pages = (has(this.citation, 'pages')) ? `:${this.citation.pages}` : '';
@@ -62,7 +62,15 @@ class CitationWrapper {
     // If we are here, this must be a book or a book_section.
     if (has(this.citation, 'pages')) additionalInfo += ` pages: ${this.citation.pages}`;
 
-    return `${authorsAndTitle} ${this.citation.publisher}, ${this.citation.city}${additionalInfo}`;
+    if (has(this.citation, 'publisher') && has(this.citation, 'city')) {
+      return `${authorsAndTitle} ${this.citation.publisher}, ${this.citation.city}${additionalInfo}`;
+    }
+
+    if (has(this.citation, 'publisher')) {
+      return `${authorsAndTitle} ${this.citation.publisher}${additionalInfo}`;
+    }
+
+    return `${authorsAndTitle}${additionalInfo}`;
   }
 
   get authors() {
