@@ -119,7 +119,7 @@ class CitationWrapper {
 
   set authorsAsStrings(authorsAsStrings) {
     // Set a list of author names.
-    // TODO parse names back into first and last name.
+    // TODO parse names back into first and last name (https://github.com/phyloref/curation-tool/issues/145)
     Vue.set(this.citation, 'authors', authorsAsStrings.filter(isNonEmptyString).map(name => ({ name })));
   }
 
@@ -131,7 +131,7 @@ class CitationWrapper {
 
   set editorsAsStrings(editors) {
     // Set a list of editor names.
-    // TODO parse names back into first and last name.
+    // TODO parse names back into first and last name (https://github.com/phyloref/curation-tool/issues/145)
     Vue.set(this.citation, 'editors', editors.filter(isNonEmptyString).map(name => ({ name })));
   }
 
@@ -143,7 +143,7 @@ class CitationWrapper {
 
   set seriesEditorsAsStrings(editors) {
     // Set a list of series editor names.
-    // TODO parse names back into first and last name.
+    // TODO parse names back into first and last name (https://github.com/phyloref/curation-tool/issues/145)
     Vue.set(this.citation, 'series_editors', editors.filter(isNonEmptyString).map(name => ({ name })));
   }
 
