@@ -22,11 +22,10 @@
         </div>
       </div>
       <input
-        readonly
         type="text"
         class="form-control"
-        :value="specifierLabel"
-      >
+        v-model:lazy="specifierLabel"
+      />
       <div class="input-group-append">
         <button
           class="btn btn-outline-secondary"
@@ -57,9 +56,8 @@
           <div class="col-md-10">
             <input
               id="verbatim-specifier"
-              v-model="specifier.verbatimSpecifier"
+              v-model:lazy="specifier.verbatimSpecifier"
               class="form-control"
-              @change="updateSpecifier()"
             />
           </div>
         </div>
@@ -77,7 +75,6 @@
               id="specifier-class"
               v-model="specifierClassComputed"
               class="form-control"
-              @change="updateSpecifier()"
             >
               <option value="Taxon">
                 Taxon
@@ -106,7 +103,12 @@
  */
 
 import Vue from 'vue';
-import { PhylorefWrapper, TaxonomicUnitWrapper } from '@phyloref/phyx';
+import {
+  PhylorefWrapper,
+  TaxonomicUnitWrapper,
+  ScientificNameWrapper,
+  SpecimenWrapper,
+} from '@phyloref/phyx';
 import {
   has, isEmpty, isEqual, cloneDeep, pickBy,
 } from 'lodash';
@@ -146,7 +148,42 @@ export default {
         );
       },
     },
-    specifierLabel() { return PhylorefWrapper.getSpecifierLabel(this.specifier); },
+    specifierLabel: {
+      get() {
+        // Return the verbatim specifier OR the specifier label.
+        return this.specifier.verbatimSpecifier || PhylorefWrapper.getSpecifierLabel(this.specifier);
+      },
+      set(label) {
+        // 1. Set the verbatim specifier to this.
+        Vue.set(this.specifier, 'verbatimSpecifier', label);
+
+        // 2. Attempt to extract the specifier information from there.
+        switch (this.specifierClassComputed) {
+          case 'Taxon':
+            Vue.set(this.specifier, 'referencesTaxonomicUnits', {
+              scientificNames: [
+                ScientificNameWrapper.createFromVerbatimName(label),
+              ],
+            });
+            break;
+          case 'Specimen':
+            Vue.set(this.specifier, 'referencesTaxonomicUnits', {
+              includesSpecimens: [
+                SpecimenWrapper.createFromOccurrenceID(label),
+              ]
+            });
+            break;
+          case 'External reference':
+            Vue.set(this.specifier, 'referencesTaxonomicUnits', [{
+              externalReferences: [label],
+            }]);
+            break;
+        }
+
+        console.log("Specifier now at", this.specifier);
+        this.updateSpecifier();
+      },
+    },
     specifierClassComputed: {
       get() {
         // Usually, this will be straightforward. However, an input JSON object might
@@ -170,10 +207,14 @@ export default {
       },
       set(type) {
         this.specifierClass = type;
+        this.updateSpecifier();
       }
     },
   },
   watch: {
+    specifier() {
+      this.updateSpecifier();
+    },
   },
   methods: {
     updateSpecifier() {
