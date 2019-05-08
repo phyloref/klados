@@ -3,7 +3,7 @@
  */
 
 import Vue from 'vue';
-import { has, keys } from 'lodash';
+import { has, keys, cloneDeep } from 'lodash';
 
 export default {
   getters: {
@@ -124,7 +124,7 @@ export default {
       keys(specifier).forEach(key => Vue.delete(specifier, key));
 
       // Add all new keys from the payload.
-      keys(props).forEach(key => Vue.set(specifier, key, props[key]));
+      keys(props).forEach(key => Vue.set(specifier, key, cloneDeep(props[key])));
     },
 
     setSpecifierType(state, payload) {
