@@ -24,7 +24,7 @@
       <input
         type="text"
         class="form-control"
-        v-model:lazy="specifierLabel"
+        v-model="specifierLabel"
       />
       <div class="input-group-append">
         <button
