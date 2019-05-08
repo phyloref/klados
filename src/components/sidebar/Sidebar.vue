@@ -269,7 +269,9 @@ export default {
   methods: {
     getSpecifierLabel(specifier) {
       // Get the label for a particular specifier.
-      return PhylorefWrapper.getSpecifierLabel(specifier);
+      // TODO: We need to include verbatimSpecifier first because of
+      // https://github.com/phyloref/phyx.js/issues/14
+      return specifier.verbatimSpecifier || PhylorefWrapper.getSpecifierLabel(specifier) || 'Undefined specifier';
     },
 
     promptAndSetDict(message, dict, key) {
