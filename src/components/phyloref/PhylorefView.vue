@@ -99,7 +99,7 @@
         Specifiers
       </h5>
       <div class="card-body">
-        <template v-if="!selectedPhyloref.internalSpecifiers && !selectedPhyloref.externalSpecifiers">
+        <template v-if="noSpecifiers">
           <p><em>No specifiers in this phyloreference.</em></p>
         </template>
         <div
@@ -378,6 +378,14 @@ export default {
       }
       return undefined;
     },
+    noSpecifiers() {
+      // Return true if no specifiers are present.
+      return (
+        (this.selectedPhyloref.internalSpecifiers || []).length === 0 &&
+        (this.selectedPhyloref.externalSpecifiers || []).length === 0
+      );
+    },
+
     ...mapState({
       currentPhyx: state => state.phyx.currentPhyx,
       loadedPhyx: state => state.phyx.loadedPhyx,
