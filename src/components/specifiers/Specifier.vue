@@ -35,6 +35,14 @@
           {{ (expand) ? 'Collapse' : 'Expand' }}
         </button>
       </div>
+      <div class="input-group-append">
+        <button
+          class="btn btn-danger"
+          @click="deleteSpecifier()"
+        >
+          &times;
+        </button>
+      </div>
     </div>
     <div
       v-if="expand"
@@ -53,13 +61,14 @@
           >
             Verbatim specifier
           </label>
-          <div class="col-md-10">
+          <div class="col-md-10 input-group">
             <input
               id="verbatim-specifier"
               v-model:lazy="specifier.verbatimSpecifier"
               class="form-control"
             />
           </div>
+
         </div>
 
         <!-- Specifier class -->
@@ -91,6 +100,178 @@
             </select>
           </div>
         </div>
+
+        <!--
+          We provide three different possible displays for the three different
+          types here
+        -->
+        <template v-if="specifierClassComputed === 'Taxon'">
+          <div class="form-group row">
+            <label
+              class="col-form-label col-md-2"
+              for="scientific-name"
+            >
+              Scientific name
+            </label>
+            <div class="col-md-10 input-group">
+              <input
+                class="form-control"
+                id="scientific-name"
+                placeholder="Enter the scientific name"
+                v-model="scientificName"
+              />
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label
+              class="col-form-label col-md-2"
+              for="binomial-name"
+            >
+              Binomial name
+            </label>
+            <div class="col-md-10 input-group">
+              <input
+                readonly
+                class="form-control"
+                id="binomial-name"
+                :value="scientificNameWrapper.binomialName"
+              />
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label
+              class="col-form-label col-md-2"
+              for="genus"
+            >
+              Genus
+            </label>
+            <div class="col-md-10 input-group">
+              <input
+                readonly
+                class="form-control"
+                id="genus"
+                :value="scientificNameWrapper.genus"
+              />
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label
+              class="col-form-label col-md-2"
+              for="specific-epithet"
+            >
+              Specific epithet
+            </label>
+            <div class="col-md-10 input-group">
+              <input
+                readonly
+                class="form-control"
+                id="specific-epithet"
+                :value="scientificNameWrapper.specificEpithet"
+              />
+            </div>
+          </div>
+        </template>
+
+        <template v-if="specifierClassComputed === 'Specimen'">
+          <div class="form-group row">
+            <label
+              class="col-form-label col-md-2"
+              for="occurrence-id"
+            >
+              Occurrence ID
+            </label>
+            <div class="col-md-10 input-group">
+              <input
+                readonly
+                class="form-control"
+                id="occurrence-id"
+                placeholder="Enter the occurrence ID of the specimen here"
+                v-model="enteredOccurrenceID"
+              />
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label
+              class="col-form-label col-md-2"
+              for="collection-code"
+            >
+              Collection code
+            </label>
+            <div class="col-md-10 input-group">
+              <input
+                readonly
+                class="form-control"
+                id="collection-code"
+                :value="specimenWrapper.collectionCode"
+              />
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label
+              class="col-form-label col-md-2"
+              for="collection-code"
+            >
+              Institution code
+            </label>
+            <div class="col-md-10 input-group">
+              <input
+                readonly
+                class="form-control"
+                id="collection-code"
+                :value="specimenWrapper.institutionCode"
+              />
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label
+              class="col-form-label col-md-2"
+              for="catalog-number"
+            >
+              Catalog number
+            </label>
+            <div class="col-md-10 input-group">
+              <input
+                readonly
+                class="form-control"
+                id="catalog-number"
+                :value="specimenWrapper.catalogNumber"
+              />
+            </div>
+          </div>
+        </template>
+
+        <template v-if="specifierClassComputed === 'External reference'">
+          <div class="form-group row">
+            <label
+              class="col-form-label col-md-2"
+              for="external-reference"
+            >
+              External reference
+            </label>
+            <div class="col-md-10 input-group">
+              <input
+                class="form-control"
+                id="external-reference"
+                placeholder="Enter URI of external reference here"
+                v-model:lazy="externalReference"
+              />
+              <div class="input-group-append">
+                <a class="btn btn-outline-secondary" target="_blank" :href="externalReference">Open in new window</a>
+              </div>
+            </div>
+          </div>
+        </template>
+
+        <template v-if="specifierClassComputed === 'Apomorphy'">
+          <p>Apomorphy-based specifiers are not currently supported. Please enter
+          them into the verbatim label field for now.</p>
+        </template>
       </div>
     </div>
   </div>
@@ -130,6 +311,9 @@ export default {
       specifier: cloneDeep(this.remoteSpecifier),
       expand: false,
       specifierClass: undefined,
+      enteredOccurrenceID: "",
+      enteredScientificName: "",
+      enteredExternalReference: "",
     };
   },
   computed: {
@@ -160,23 +344,15 @@ export default {
         // 2. Attempt to extract the specifier information from there.
         switch (this.specifierClassComputed) {
           case 'Taxon':
-            Vue.set(this.specifier, 'referencesTaxonomicUnits', {
-              scientificNames: [
-                ScientificNameWrapper.createFromVerbatimName(label),
-              ],
-            });
+            this.enteredScientificName = label;
             break;
+
           case 'Specimen':
-            Vue.set(this.specifier, 'referencesTaxonomicUnits', {
-              includesSpecimens: [
-                SpecimenWrapper.createFromOccurrenceID(label),
-              ]
-            });
+            this.enteredOccurrenceID = label;
             break;
+
           case 'External reference':
-            Vue.set(this.specifier, 'referencesTaxonomicUnits', [{
-              externalReferences: [label],
-            }]);
+            this.enteredExternalReference = label;
             break;
         }
 
@@ -196,7 +372,7 @@ export default {
         if(this.specifierClass) return this.specifierClass;
 
         // TODO: remove hack once we move to Model 2.0.
-        const tunit = new TaxonomicUnitWrapper(this.specifier.referencesTaxonomicUnits || []);
+        const tunit = new TaxonomicUnitWrapper(this.specifier.referencesTaxonomicUnits[0] || {});
 
         if((tunit.externalReferences || []).length > 0) return "External reference";
         if((tunit.includesSpecimens || []).length > 0) return "Specimen";
@@ -210,6 +386,26 @@ export default {
         this.updateSpecifier();
       }
     },
+    scientificName: {
+      get() {
+        return this.enteredScientificName;
+      },
+      set(scname) {
+        Vue.set(this.specifier, 'referencesTaxonomicUnits', [
+          {
+            scientificNames: [ ScientificNameWrapper.createFromVerbatimName(scname) ],
+          }
+        ]);
+        this.updateSpecifier();
+        this.enteredScientificName = scname;
+      }
+    },
+    scientificNameWrapper() {
+      return new ScientificNameWrapper(ScientificNameWrapper.createFromVerbatimName(this.enteredScientificName));
+    },
+    specimenWrapper() {
+      return new SpecimenWrapper(SpecimenWrapper.createFromOccurrenceID(this.enteredOccurrenceID));
+    },
   },
   watch: {
     specifier() {
@@ -217,14 +413,53 @@ export default {
     },
   },
   methods: {
+    deleteSpecifier() {
+      const confirmed = confirm("Are you sure you want to delete this specifier?");
+      if (confirmed) {
+        this.$store.commit('deleteSpecifier', {
+          phyloref: this.phyloref,
+          specifier: this.remoteSpecifier
+        });
+      }
+    },
     updateSpecifier() {
-      // If our local specifier differs from the remoteSpecifier, update it.
-      if (isEqual(this.specifier, this.remoteSpecifier)) return;
+      // Prepare the object to write out. This will depend on the specifierClass.
+      const result = {
+        verbatimSpecifier: this.specifier.verbatimSpecifier,
+      };
 
-      console.log('Updating specifier as ', this.specifier, ' differs from ', this.remoteSpecifier);
+      // TODO fix this when we go to model 2.0.
+      switch(this.specifierClassComputed) {
+        case 'Taxon':
+          result.referencesTaxonomicUnits = [{
+            scientificNames: [
+              ScientificNameWrapper.createFromVerbatimName(this.enteredScientificName),
+            ],
+          }];
+          break;
+
+        case 'Specimen':
+          result.referencesTaxonomicUnits = [{
+            includesSpecimens: [
+              SpecimenWrapper.createFromOccurrenceID(this.enteredOccurrenceID),
+            ]
+          }];
+          break;
+
+        case 'External reference':
+          result.referencesTaxonomicUnits = [{
+            externalReferences: [this.enteredExternalReference],
+          }];
+          break;
+      }
+
+      // If our local specifier differs from the remoteSpecifier, update it.
+      if (isEqual(result, this.remoteSpecifier)) return;
+
+      console.log('Updating specifier as ', result, ' differs from ', this.remoteSpecifier);
       this.$store.commit('setSpecifierProps', {
         specifier: this.remoteSpecifier,
-        props: this.specifier,
+        props: result,
       });
     },
   },
