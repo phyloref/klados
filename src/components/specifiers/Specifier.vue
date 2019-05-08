@@ -407,12 +407,33 @@ export default {
       return new SpecimenWrapper(SpecimenWrapper.createFromOccurrenceID(this.enteredOccurrenceID));
     },
   },
+  mounted() {
+    this.recalculateEntered();
+  },
   watch: {
+    remoteSpecifier() {
+      this.recalculateEntered();
+    },
     specifier() {
       this.updateSpecifier();
     },
   },
   methods: {
+    recalculateEntered() {
+      // Recalculate the entered values.
+      // TODO: remove hack once we move to Model 2.0.
+      const tunit = new TaxonomicUnitWrapper(this.specifier.referencesTaxonomicUnits[0] || {});
+
+      if((tunit.externalReferences || []).length > 0) {
+        this.enteredExternalReference = tunit.externalReferences[0];
+      }
+      if((tunit.includesSpecimens || []).length > 0) {
+        this.enteredOccurrenceID = new SpecimenWrapper(tunit.includesSpecimens[0]).occurrenceID;
+      }
+      if((tunit.scientificNames || []).length > 0) {
+        this.enteredScientificName = new ScientificNameWrapper(tunit.scientificNames[0]).scientificName;
+      }
+    },
     deleteSpecifier() {
       const confirmed = confirm("Are you sure you want to delete this specifier?");
       if (confirmed) {
