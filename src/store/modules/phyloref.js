@@ -124,7 +124,7 @@ export default {
       keys(specifier).forEach(key => Vue.delete(specifier, key));
 
       // Add all new keys from the payload.
-      keys(props).forEach(key => Vue.set(specifier, key, payload[key]));
+      keys(props).forEach(key => Vue.set(specifier, key, props[key]));
     },
 
     setSpecifierType(state, payload) {
