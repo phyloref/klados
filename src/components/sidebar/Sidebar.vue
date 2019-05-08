@@ -365,7 +365,7 @@ export default {
 
       // Disable "Reason" buttons so they can't be reused.
       this.reasoningInProgress = true;
-      $.post('http://localhost:34214/reason', {
+      $.post('http://localhost:12345/reason', {
         // This will convert the JSON-LD file into an application/x-www-form-urlencoded
         // string (see https://api.jquery.com/jquery.ajax/#jQuery-ajax-settings under
         // processData for details). The POST data sent to the server will look like:
