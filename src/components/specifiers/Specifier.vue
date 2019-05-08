@@ -64,7 +64,7 @@
           <div class="col-md-10 input-group">
             <input
               id="verbatim-specifier"
-              v-model:lazy="specifier.verbatimSpecifier"
+              v-model="specifier.verbatimSpecifier"
               class="form-control"
             />
           </div>
@@ -259,7 +259,7 @@
                 class="form-control"
                 id="external-reference"
                 placeholder="Enter URI of external reference here"
-                v-model:lazy="externalReference"
+                v-model="externalReference"
               />
               <div class="input-group-append">
                 <a class="btn btn-outline-secondary" target="_blank" :href="externalReference">Open in new window</a>
