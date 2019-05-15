@@ -8,12 +8,109 @@
             "newick": "(((('Rana luteiventris MVZ225749','Rana luteiventris MVZ191016'),'Rana boylii'),('Rana muscosa',('Rana cascadae','Rana aurora')))Amerana,'Rana temporaria',(((('Rana septentrionales',((('Rana heckscheri',('Rana catesbiana X12841','Rana catesbiana DMH84R2')),('Rana clamitans','Rana okaloosae')),'Rana grylio')),'Rana virgatipes')Aquarana,('Rana sylvatica DMH84R43','Rana sylvatica')),((((('Rana pustulosa','Rana tarahumarae'),('Rana psilonota','Rana zweifelii'))Zweifelia,'Rana sierramadrensis')Torrentirana,((('Rana palustris',('Rana areolata',('Rana capito','Rana sevosa')))Nenirana,((((('Rana magnaocularis','Rana sp7 KU 194492'),('Rana sp8 KU 195346',('Rana onca','Rana yavapaiensis'))),(('Rana sp6 LACM 146810',('Rana sp5 LACM 146764','Rana sp4 AMNH A 124167')),('Rana taylori',('Rana macroglossa','Rana macroglossa b')))),'Rana forreri'),(('Rana spectabilis',('Rana sp3 KU 194559','Rana omiltemana')),(((('Rana tlaloci','Rana neovolcanica'),'Rana berlandieri'),'Rana blairi'),('Rana sphenocephela utricularia','Rana sphenocephela'))))Scurrilirana),(((('Rana chiricahuensis KU 194419',('Rana subaquavocalis','Rana chiricahuensis KU 194442')),'Rana sp2 KU 204420'),('Rana dunni','Rana montezumae'))Lacusirana,('Rana pipiens JSF1119','Rana pipiens Y10945'))Stertirana)Pantherana),(('Rana maculata',('Rana warszewitshii','Rana vibicaria')Trypheropsis)Levirana,(('Rana bwana',('Rana sp1 QCAZ13219',('Rana palmipes KU204425','Rana palmipes AMNHA118801'))),('Rana vaillanti','Rana juliani'))Lithobates)Ranula)Sierrana)Novirana)Laurasiarana;",
             "ot:dataDeposit": "https://treebase.org/treebase-web/search/study/taxa.html?id=1269&treeid=4419",
             "label": "Hillis and Wilcox (2005)",
-            "description": "Hillis DM and Wilcox TP (2005) Phylogeny of the New World true frogs (Rana). Molecular Phylogenetics and Evolution 34(2):299-314. DOI: 10.1016/j.ympev.2004.10.007. Tree downloaded from https://treebase.org/treebase-web/search/study/taxa.html?id=1269&treeid=4419."
+            "description": "",
+            "primaryPhylogenyCitation": {
+                "journal": {
+                    "name": "Molecular Phylogenetics and Evolution",
+                    "volume": "34",
+                    "number": "2"
+                },
+                "type": "article",
+                "authors": [
+                    {
+                        "name": "Hillis DM"
+                    },
+                    {
+                        "name": "Wilcox TP"
+                    }
+                ],
+                "year": "2005",
+                "title": "Phylogeny of the New World true frogs (Rana)",
+                "pages": "299-314",
+                "identifier": [
+                    {
+                        "type": "doi",
+                        "id": "10.1016/j.ympev.2004.10.007"
+                    }
+                ],
+                "link": [
+                    {
+                        "url": "https://treebase.org/treebase-web/search/study/taxa.html?id=1269&treeid=4419"
+                    }
+                ]
+            }
         },
         {
             "newick": "((((((((((((((((('Rana yavapaiensis':0.001197,'Rana onca':0.008537):0.012676,'Rana sp8':0.057414):0.014548,'Rana magnaocularis':0.048864,'Rana sp7':0.080871):0.005547,('Rana forreri':0.056673,'Rana omiltemana':0.058727):0.005313):0.003894,((('Rana sp4':0.011815,'Rana sp5':0.032763):0.004425,'Rana sp6':0.029332):0.008081,'Rana macroglossa':0.037872):0.005271):0.005719,(((('Rana neovolcanica':8.17E-4,'Rana tlaloci':0.001801):0.002183,'Rana berlandieri':0.004731):0.010472,'Rana blairi':0.009903):0.021718,'Rana sphenocephala':0.039359):0.006748):0.002659,('Rana sp3':0.036694,'Rana spectabilis':0.050771):0.004426):0.026088,((('Rana sevosa':0.002869,'Rana capito':0.009806):0.023388,'Rana areolata':0.032069):0.011111,'Rana palustris':0.038324):0.01407):0.015399,((('Rana chiricahuensis':0.028462,'Rana sp2':0.025591):0.006768,('Rana dunni':0.009825,'Rana montezumae':0.011409):0.025069):0.018522,'Rana pipiens':0.031223):0.044519):0.062663,((('Rana tarahumarae':0.036252,'Rana pustulosa':0.077389):0.015097,('Rana psilonota':0.068174,'Rana zweifeli':0.065535):0.014918):0.026597,'Rana sierramadrensis':0.10591):0.016289):0.006547,(((('Rana palmipes':0.026371,'Rana sp1':0.019095):0.012597,'Rana bwana':0.025852):0.024889,('Rana juliani':0.040754,'Rana vaillanti':0.0559):0.016096):0.048958,(('Rana vibicaria':0.051928,'Rana warszewitschii':0.086134):0.062229,'Rana maculata':0.071452):0.010892):0.032264):0.027853,(((('Rana clamitans':0.008623,'Rana okaloosae':0.004658):0.010584,('Rana heckscheri':0.032429,'Rana catesbeiana':0.033944):0.002685):0.005807,'Rana grylio':0.062561):0.009139,'Rana septentrionalis':0.030136):0.055044):0.008141,'Rana sylvatica':0.074317):0.028238,(((((((((((((('Rana culaiensis':0.008142,'Rana zhenhaiensis':0.006547):0.004159,'Rana longicrus':0.012217):0.011558,'Rana jiemuxiensis':0.028948):0.011564,('Rana hanluica':0.022768,'Rana omeimontis':0.029123):0.005633):0.027746,'Rana chaochiaoensis':0.046764):0.007922,'Rana japonica':0.045738):0.025274,(('Rana kobai':0.023514,'Rana ulma':0.04207):0.035354,'Rana tsushimiensis':0.056583):0.042664):0.004951,(('Rana kunyuensis':0.004839,'Rana coreana':0.008932):0.052831,'Rana amurensis':0.045524):0.042613):0.004672,(((('Rana huanrensis':0.016346,'Rana chensinensis':0.01659):0.005398,'Rana kukunoris':0.014144):0.031378,'Rana ornativentris':0.043718):0.006305,(('Rana uenoi':0.034299,'Rana pirica':0.020139):0.012426,'Rana dybowskii':0.042956):0.00817):0.025314):0.005219,(('Rana sakuraii':0.025285,'Rana tagoi':0.020698):0.041656,'Rana sauteri':0.063882):0.014549):0.011609,((('Rana macrocnemis':0.04592,('Rana graeca':0.04471,('Rana latastei':0.055829,'Rana dalmatina':0.029583):0.00506):0.00596):0.007726,((('Rana pyrenaica':0.033358,'Rana temporaria':0.025454):0.014183,'Rana arvalis':0.045446):0.013098,'Rana iberica':0.04184):0.007797):0.004068,'Rana asiatica':0.042089):0.013547):0.016557,('Rana johnsi':0.011479,'Rana zhengi':0.017117):0.072765):0.031224,(((('Rana muscosa':0.004118,'Rana sierrae':0.001163):0.030189,('Rana cascadae':0.023212,'Rana aurora':0.024415):0.017088):0.022392,'Rana boylii':0.063488):0.007994,'Rana luteiventris':0.047104):0.018245):0.009633,'Rana shuchinae':0.065149):0.020339):0.016645,'Rana weiningensis':0.197363):0.018209,'Odorrana versabilis':0.206656):0.013849,('Hylarana guentheri':0.156171,'Rugosa tientaiensis':0.177023):0.014335,'Pelophylax nigromaculata':0.138395);",
-            "description": "Zhi-Yong Yuan, Wei-Wei Zhou, Xin Chen, Nikolay A. Poyarkov, Hong-Man Chen, Nian-Hong Jang-Liaw, Wen-Hao Chou, Nicholas J. Matzke, Koji Iizuka, Mi-Sook Min, Sergius L. Kuzmin, Ya-Ping Zhang, David C. Cannatella, David M. Hillis, Jing Che (2016) Spatiotemporal Diversification of the True Frogs (Genus Rana): A Historical Framework for a Widely Studied Group of Model Organisms, Systematic Biology, p. syw055. BEAST tree from fig 3. As curated by the Open Tree of Life at https://tree.opentreeoflife.org/curator/study/view/ot_750",
-            "label": "Yuan et al 2016 BEAST tree"
+            "description": "",
+            "label": "Yuan et al 2016 BEAST tree",
+            "phylogenyCitation": {
+                "journal": {
+                    "name": "Systematic Biology"
+                },
+                "authors": [
+                    {
+                        "name": "Zhi-Yong Yuan"
+                    },
+                    {
+                        "name": "Wei-Wei Zhou"
+                    },
+                    {
+                        "name": "Xin Chen"
+                    },
+                    {
+                        "name": "Nikolay A. Poyarkov"
+                    },
+                    {
+                        "name": "Hong-Man Chen"
+                    },
+                    {
+                        "name": "Nian-Hong Jang-Liaw"
+                    },
+                    {
+                        "name": "Wen-Hao Chou"
+                    },
+                    {
+                        "name": "Nicholas J. Matzke"
+                    },
+                    {
+                        "name": "Koji Iizuka"
+                    },
+                    {
+                        "name": "Mi-Sook Min"
+                    },
+                    {
+                        "name": "Sergius L. Kuzmin"
+                    },
+                    {
+                        "name": "Ya-Ping Zhang"
+                    },
+                    {
+                        "name": "David C. Cannatella"
+                    },
+                    {
+                        "name": "David M. Hillis"
+                    },
+                    {
+                        "name": "Jing Che"
+                    }
+                ],
+                "year": "2016",
+                "type": "article",
+                "title": "Spatiotemporal Diversification of the True Frogs (Genus Rana): A Historical Framework for a Widely Studied Group of Model Organisms",
+                "figure": "3 (BEAST tree)",
+                "link": [
+                    {
+                        "url": "https://tree.opentreeoflife.org/curator/study/view/ot_750"
+                    }
+                ],
+                "identifier": [
+                    {
+                        "type": "doi",
+                        "id": "10.1093/sysbio/syw055"
+                    }
+                ]
+            }
         }
     ],
     "phylorefs": [
