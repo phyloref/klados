@@ -37,6 +37,15 @@
             </div>
           </div>
 
+          <!-- TODO add definition authors here -->
+
+          <!-- Pre-existing definition source -->
+          <Citation
+            label="Pre-existing name definition"
+            :object="selectedPhyloref"
+            citation-key="dwc:namePublishedIn"
+          />
+
           <!-- Phyloreference clade definition -->
           <div class="form-group row">
             <label
@@ -55,6 +64,13 @@
               />
             </div>
           </div>
+
+          <!-- Phyloref definition source -->
+          <Citation
+            label="Definition source"
+            :object="selectedPhyloref"
+            citation-key="obo:IAO_0000119"
+          />
 
           <!-- Phyloreference curator comments -->
           <div class="form-group row">
@@ -343,12 +359,14 @@ import { PhylogenyWrapper, PhylorefWrapper } from '@phyloref/phyx';
 
 import ModifiedCard from '../cards/ModifiedCard.vue';
 import Phylotree from '../phylogeny/Phylotree.vue';
+import Citation from '../citations/Citation.vue';
 
 export default {
   name: 'PhylorefView',
   components: {
     ModifiedCard,
     Phylotree,
+    Citation,
   },
   computed: {
     /*
