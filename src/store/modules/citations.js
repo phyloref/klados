@@ -1,5 +1,5 @@
 /*
- * Store module for handing citations.
+ * Store module for handling citations.
  *
  * Note that citations are located as keys on objects (for example, a phyloreference
  * can have both a primaryPhylogenyCitation as well as a phylogenyCitation). Thus,
