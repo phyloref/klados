@@ -199,14 +199,14 @@
               class="col-form-label col-md-2"
               for="collection-code"
             >
-              Collection code
+              Institution code
             </label>
             <div class="col-md-10 input-group">
               <input
                 readonly
                 class="form-control"
                 id="collection-code"
-                :value="specimenWrapper.collectionCode"
+                :value="specimenWrapper.institutionCode"
               />
             </div>
           </div>
@@ -216,14 +216,14 @@
               class="col-form-label col-md-2"
               for="collection-code"
             >
-              Institution code
+              Collection code
             </label>
             <div class="col-md-10 input-group">
               <input
                 readonly
                 class="form-control"
                 id="collection-code"
-                :value="specimenWrapper.institutionCode"
+                :value="specimenWrapper.collectionCode"
               />
             </div>
           </div>
