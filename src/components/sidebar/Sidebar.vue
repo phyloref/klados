@@ -271,7 +271,7 @@ export default {
       // Get the label for a particular specifier.
       // TODO: We need to include verbatimSpecifier first because of
       // https://github.com/phyloref/phyx.js/issues/14
-      return specifier.verbatimSpecifier || PhylorefWrapper.getSpecifierLabel(specifier) || 'Undefined specifier';
+      return specifier.verbatimSpecifier || new TaxonomicUnitWrapper(specifier).label || 'Undefined specifier';
     },
 
     promptAndSetDict(message, dict, key) {
