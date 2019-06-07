@@ -80,7 +80,7 @@
  *  - A download button that allows the JSON-LD file to be downloaded for debugging.
  */
 
-import { PHYXWrapper } from '@phyloref/phyx';
+import { PhyxWrapper } from '@phyloref/phyx';
 import { saveAs } from 'filesaver.js-npm';
 
 export default {
@@ -114,7 +114,7 @@ export default {
     downloadAsJSONLD() {
       // Exports the PHYX file as an OWL/JSON-LD file, which can be opened in
       // Protege or converted into OWL/XML or other formats.
-      const wrapped = new PHYXWrapper(this.$store.state.phyx.currentPhyx);
+      const wrapped = new PhyxWrapper(this.$store.state.phyx.currentPhyx);
       const content = [JSON.stringify([wrapped.asJSONLD()], undefined, 4)];
 
       // Save to local hard drive.
