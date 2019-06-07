@@ -1,4 +1,5 @@
 {
+    "@context": "file:///home/vaidyagi/code/phyloref/phyx.js/docs/context/v0.2.0/phyx.json",
     "doi": "10.1146/annurev.earth.31.100901.141308",
     "url": "https://www.annualreviews.org/doi/10.1146/annurev.earth.31.100901.141308",
     "citation": "Brochu (2003) Annual Review of Earth and Planetary Sciences 31:357-397",
@@ -56,48 +57,20 @@
             "cladeDefinition": "Eusuchia (Huxley 1875). Amended definition.\n\nLast common ancestor of Hylaeochampsa vectiana, Crocodylus niloticus, Gavialis gangeticus, and Alligator mississippiensis\t and all of its descendents.",
             "internalSpecifiers": [
                 {
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Alligator mississippiensis"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Alligator mississippiensis"
                 },
                 {
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Gavialis gangeticus"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Gavialis gangeticus"
                 },
                 {
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Crocodylus niloticus"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Crocodylus niloticus"
                 },
                 {
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Hylaeochampsa vectiana"
-                                }
-                            ]
-                        }
-                    ],
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Hylaeochampsa vectiana",
                     "specifierWillNotMatch": "Not present in figure 1"
                 }
             ],
@@ -119,37 +92,16 @@
             "cladeDefinition": "Crocodylia (Gmelin 1789). Amended definition.\n\nLast common ancestor of Gavialis gangeticus, Alligator mississippiensis, and Crocodylus niloticus and all of its\t descendents.",
             "internalSpecifiers": [
                 {
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Crocodylus niloticus"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Crocodylus niloticus"
                 },
                 {
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Alligator mississippiensis"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Alligator mississippiensis"
                 },
                 {
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Gavialis gangeticus"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Gavialis gangeticus"
                 }
             ],
             "externalSpecifiers": [],
@@ -170,39 +122,18 @@
             "cladeDefinition": "Gavialoidea (Case 1930).\n\nGavialis gangeticus and all crocodylians closer to it than to Alligator mississippiensis or Crocodylus niloticus.",
             "internalSpecifiers": [
                 {
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Gavialis gangeticus"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Gavialis gangeticus"
                 }
             ],
             "externalSpecifiers": [
                 {
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Alligator mississippiensis"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Alligator mississippiensis"
                 },
                 {
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Crocodylus niloticus"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Crocodylus niloticus"
                 }
             ],
             "pso:holdsStatusInTime": [
@@ -222,51 +153,23 @@
             "cladeDefinition": "Pristichampsinae (Kuhn 1968)\t. New definition.\n\nPristichampsus rollinati and all crocodylians closer to it than to Gavialis gangeticus, Alligator mississippiensis, or Crocodylus niloticus.",
             "internalSpecifiers": [
                 {
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Pristichampsus rollinati"
-                                }
-                            ]
-                        }
-                    ],
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Pristichampsus rollinati",
                     "specifierWillNotMatch": "Not included in figure 1"
                 }
             ],
             "externalSpecifiers": [
                 {
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Gavialis gangeticus"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Gavialis gangeticus"
                 },
                 {
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Alligator mississippiensis"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Alligator mississippiensis"
                 },
                 {
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Crocodylus niloticus"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Crocodylus niloticus"
                 }
             ],
             "curatorComments": "Not included in figure 1.",
@@ -287,26 +190,12 @@
             "cladeDefinition": "Brevirostres (von Zittel 1890). If Gavialis and Tomistoma are sister taxa, Brevirostres is a junior synonym of Crocodylia.\n\nLast common ancestor of Alligator mississippiensis and Crocodylus niloticus and all of its descendents.\n \t \t ",
             "internalSpecifiers": [
                 {
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Crocodylus niloticus"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Crocodylus niloticus"
                 },
                 {
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Alligator mississippiensis"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Alligator mississippiensis"
                 }
             ],
             "externalSpecifiers": [],
@@ -327,39 +216,18 @@
             "cladeDefinition": "Alligatoroidea (Gray 1844). \n\nAlligator mississippiensis and all crocodylians closer to it than to Crocodylus niloticus or Gavialis gangeticus.",
             "internalSpecifiers": [
                 {
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Alligator mississippiensis"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Alligator mississippiensis"
                 }
             ],
             "externalSpecifiers": [
                 {
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Crocodylus niloticus"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Crocodylus niloticus"
                 },
                 {
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Gavialis gangeticus"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Gavialis gangeticus"
                 }
             ],
             "pso:holdsStatusInTime": [
@@ -381,28 +249,16 @@
             "cladeDefinition": "Diplocynodontinae (Brochu 1999).\n\nDiplocynodon ratelii and all crocodylians closer to it than to Alligator mississippiensis.",
             "internalSpecifiers": [
                 {
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Diplocynodon ratelii"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Diplocynodon ratelii",
+                    "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000107"
                 }
             ],
             "externalSpecifiers": [
                 {
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Alligator mississippiensis"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Alligator mississippiensis",
+                    "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000107"
                 }
             ],
             "pso:holdsStatusInTime": [
@@ -422,28 +278,14 @@
             "cladeDefinition": "Globidonta (Brochu 1999).\n\nAlligator mississippiensis and all crocodylians closer to it than to Diplocynodon ratelii.",
             "internalSpecifiers": [
                 {
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Alligator mississippiensis"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Alligator mississippiensis"
                 }
             ],
             "externalSpecifiers": [
                 {
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Diplocynodon ratelii"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Diplocynodon ratelii"
                 }
             ],
             "pso:holdsStatusInTime": [
@@ -463,26 +305,12 @@
             "cladeDefinition": "Alligatoridae (Cuvier 1807).\n\nLast common ancestor of Alligator mississippiensis and Caiman crocodilus and all of its descendents.",
             "internalSpecifiers": [
                 {
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Caiman crocodilus"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Caiman crocodilus"
                 },
                 {
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Alligator mississippiensis"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Alligator mississippiensis"
                 }
             ],
             "externalSpecifiers": [],
@@ -503,28 +331,14 @@
             "cladeDefinition": "Alligatorinae (Kälin 1940).\n\nAlligator mississippiensis and all crocodylians closer to it than to Caiman crocodilus.",
             "internalSpecifiers": [
                 {
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Alligator mississippiensis"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Alligator mississippiensis"
                 }
             ],
             "externalSpecifiers": [
                 {
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Caiman crocodilus"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Caiman crocodilus"
                 }
             ],
             "pso:holdsStatusInTime": [
@@ -544,28 +358,14 @@
             "cladeDefinition": "Caimaninae (Norell 1988).\n\nCaiman crocodilus and all crocodylians closer to it than to Alligator mississippiensis.",
             "internalSpecifiers": [
                 {
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Caiman crocodilus"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Caiman crocodilus"
                 }
             ],
             "externalSpecifiers": [
                 {
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Alligator mississippiensis"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Alligator mississippiensis"
                 }
             ],
             "pso:holdsStatusInTime": [
@@ -585,39 +385,18 @@
             "cladeDefinition": "Crocodyloidea (Fitzinger 1826).\n\nCrocodylus niloticus and all crocodylians closer to it than to Alligator mississippiensis or Gavialis gangeticus.",
             "internalSpecifiers": [
                 {
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Crocodylus niloticus"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Crocodylus niloticus"
                 }
             ],
             "externalSpecifiers": [
                 {
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Alligator mississippiensis"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Alligator mississippiensis"
                 },
                 {
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Gavialis gangeticus"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Gavialis gangeticus"
                 }
             ],
             "pso:holdsStatusInTime": [
@@ -637,37 +416,16 @@
             "cladeDefinition": "Crocodylidae (Cuvier 1807). Definition dependent on phylogenetic context.\n\nLast common ancestor of Crocodylus niloticus, Osteolaemus tetraspis, and Tomistoma schlegelii and all of its descendents.",
             "internalSpecifiers": [
                 {
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Tomistoma schlegelii"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Tomistoma schlegelii"
                 },
                 {
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Osteolaemus tetraspis"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Osteolaemus tetraspis"
                 },
                 {
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Crocodylus niloticus"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Crocodylus niloticus"
                 }
             ],
             "externalSpecifiers": [],
@@ -688,87 +446,38 @@
             "cladeDefinition": "Mekosuchinae (Balouet & Buffetaut 1987). Definition adapted from Salisbury & Willis 1996.\n\nLast common ancestor of Kambara murgonensis, Australosuchus clarkae, Pallimnarchus pollens, Baru darrowi, Trilophosuchus rackhami, Quinkana\t fortirostrum, and Mekosuchus inexpectatus and all of its descendents.",
             "internalSpecifiers": [
                 {
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Mekosuchus inexpectatus"
-                                }
-                            ]
-                        }
-                    ],
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Mekosuchus inexpectatus",
                     "specifierWillNotMatch": "Not illustrated in fig 1"
                 },
                 {
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Quinkana fortirostrum"
-                                }
-                            ]
-                        }
-                    ],
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Quinkana fortirostrum",
                     "specifierWillNotMatch": "Not illustrated in fig 1"
                 },
                 {
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Trilophosuchus rackhami"
-                                }
-                            ]
-                        }
-                    ],
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Trilophosuchus rackhami",
                     "specifierWillNotMatch": "Not illustrated in fig 1"
                 },
                 {
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Baru darrowi"
-                                }
-                            ]
-                        }
-                    ],
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Baru darrowi",
                     "specifierWillNotMatch": "Not illustrated in fig 1"
                 },
                 {
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Pallimnarchus pollens"
-                                }
-                            ]
-                        }
-                    ],
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Pallimnarchus pollens",
                     "specifierWillNotMatch": "Not illustrated in fig 1"
                 },
                 {
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Australosuchus clarkae"
-                                }
-                            ]
-                        }
-                    ],
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Australosuchus clarkae",
                     "specifierWillNotMatch": "Not illustrated in fig 1"
                 },
                 {
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Kambara murgonensis"
-                                }
-                            ]
-                        }
-                    ],
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Kambara murgonensis",
                     "specifierWillNotMatch": "Not illustrated in fig 1"
                 }
             ],
@@ -791,28 +500,14 @@
             "cladeDefinition": "Tomistominae (Kälin 1955). Definition dependent on phylogenetic context.\n\nTomistoma schlegelii and all crocodylians closer to it than to Crocodylus niloticus.",
             "internalSpecifiers": [
                 {
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Tomistoma schlegelii"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Tomistoma schlegelii"
                 }
             ],
             "externalSpecifiers": [
                 {
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Crocodylus niloticus"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Crocodylus niloticus"
                 }
             ],
             "pso:holdsStatusInTime": [
@@ -832,28 +527,14 @@
             "cladeDefinition": "Crocodylinae (Cuvier 1807). Definition dependent on phylogenetic context.\n\nCrocodylus niloticus and all crocodylians closer to it than to Tomistoma schlegelii.\n \t \t ",
             "internalSpecifiers": [
                 {
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Crocodylus niloticus"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Crocodylus niloticus"
                 }
             ],
             "externalSpecifiers": [
                 {
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Tomistoma schlegelii"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Tomistoma schlegelii"
                 }
             ],
             "pso:holdsStatusInTime": [
@@ -873,28 +554,14 @@
             "cladeDefinition": "Osteolaeminae tax. nov. New definition.\n\nOsteolaemus tetraspis and all crocodylians closer to it than to Crocodylus niloticus.",
             "internalSpecifiers": [
                 {
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Osteolaemus tetraspis"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Osteolaemus tetraspis"
                 }
             ],
             "externalSpecifiers": [
                 {
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Crocodylus niloticus"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Crocodylus niloticus"
                 }
             ],
             "curatorComments": "Not illustrated in fig 1, but it's resolution is pretty unambiguous, so I'm going to assert that it should resolve to \"Osteolaemus tetraspis\"",
@@ -915,26 +582,12 @@
             "cladeDefinition": "Crocodylidae (Cuvier 1807).\n\nLast common ancestor of Crocodylus niloticus and Osteolaemus tetraspis and all of its descendents.",
             "internalSpecifiers": [
                 {
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Osteolaemus tetraspis"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Osteolaemus tetraspis"
                 },
                 {
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Crocodylus niloticus"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Crocodylus niloticus"
                 }
             ],
             "externalSpecifiers": [],
@@ -956,28 +609,14 @@
             "cladeDefinition": "Crocodylinae (Cuvier 1807). At present, this would be redundant with Crocodylus.\n\nCrocodylus niloticus and all crocodylians closer to it than to Osteolaemus tetraspis.",
             "internalSpecifiers": [
                 {
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Crocodylus niloticus"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Crocodylus niloticus"
                 }
             ],
             "externalSpecifiers": [
                 {
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Osteolaemus tetraspis"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Osteolaemus tetraspis"
                 }
             ],
             "curatorComments": "Not illustrated in fig 1.",
@@ -998,26 +637,12 @@
             "cladeDefinition": "Gavialidae (Adams 1854). In a morphological context, Gavialidae would be redundant with Gavialis gangeticus.\n\nLast common ancestor of Gavialis gangeticus and Tomistoma schlegelii and all of its descendents.",
             "internalSpecifiers": [
                 {
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Tomistoma schlegelii"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Tomistoma schlegelii"
                 },
                 {
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Gavialis gangeticus"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Gavialis gangeticus"
                 }
             ],
             "externalSpecifiers": [],
@@ -1039,28 +664,14 @@
             "cladeDefinition": "Tomistominae (Kälin 1955).\n\nTomistoma schlegelii and all crocodylians closer to it than to Gavialis gangeticus.",
             "internalSpecifiers": [
                 {
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Tomistoma schlegelii"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Tomistoma schlegelii"
                 }
             ],
             "externalSpecifiers": [
                 {
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Gavialis gangeticus"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Gavialis gangeticus"
                 }
             ],
             "curatorComments": "Not illustrated in fig 1.",
@@ -1081,28 +692,14 @@
             "cladeDefinition": "Gavialinae (Nopcsa 1923).\n\nGavialis gangeticus and all crocodylians closer to it than to Tomistoma schlegelii.",
             "internalSpecifiers": [
                 {
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Gavialis gangeticus"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Gavialis gangeticus"
                 }
             ],
             "externalSpecifiers": [
                 {
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Tomistoma schlegelii"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Tomistoma schlegelii"
                 }
             ],
             "curatorComments": "Not illustrated in fig 1",
@@ -1119,6 +716,5 @@
             ]
         }
     ],
-    "title": "Phylogenetic Approaches Toward Crocodylian History",
-    "@context": "http://phyloref.org/phyx.js/context/v0.1.0/phyx.json"
+    "title": "Phylogenetic Approaches Toward Crocodylian History"
 }
