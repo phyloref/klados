@@ -15,18 +15,9 @@
                     ],
                     "representsTaxonomicUnits": [
                         {
-                            "includesSpecimens": [
-                                {
-                                    "occurrenceID": "urn:catalog:::Mishler 7/24/98 (5)"
-                                }
-                            ]
-                        },
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Arthrocormus schimperi"
-                                }
-                            ]
+                            "@type": "http://rs.tdwg.org/dwc/terms/Occurrence",
+                            "occurrenceID": "urn:catalog:::Mishler 7/24/98 (5)",
+                            "nameString": "Arthrocormus schimperi"
                         }
                     ]
                 },
@@ -36,19 +27,9 @@
                     ],
                     "representsTaxonomicUnits": [
                         {
-                            "includesSpecimens": [
-                                {
-                                    "occurrenceID": "urn:catalog:::Wall 2527, Fiji (uc)"
-                                }
-                            ],
-                            "scientificNames": []
-                        },
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Exodictyon sp"
-                                }
-                            ]
+                            "@type": "http://rs.tdwg.org/dwc/terms/Occurrence",
+                            "occurrenceID": "urn:catalog:::Wall 2527, Fiji (uc)",
+                            "nameString": "Exodictyon sp"
                         }
                     ]
                 },
@@ -56,26 +37,14 @@
                     "comment": "The paper does not tell us which specimen ID goes with which node, so I've assigned both specmen IDs to both nodes. -- GGV",
                     "representsTaxonomicUnits": [
                         {
-                            "includesSpecimens": [
-                                {
-                                    "occurrenceID": "urn:catalog:::Mishler 7/24/98(3)"
-                                }
-                            ],
-                            "scientificNames": []
+                            "@type": "http://rs.tdwg.org/dwc/terms/Occurrence",
+                            "occurrenceID": "urn:catalog:::Mishler 7/26/98(1)",
+                            "nameString": "Exostratum blumii"
                         },
                         {
-                            "includesSpecimens": [
-                                {
-                                    "occurrenceID": "urn:catalog:::Mishler 7/26/98(1)"
-                                }
-                            ]
-                        },
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Exostratum blumii"
-                                }
-                            ]
+                            "@type": "http://rs.tdwg.org/dwc/terms/Occurrence",
+                            "occurrenceID": "urn:catalog:::Mishler 7/26/98(3)",
+                            "nameString": "Exostratum blumii"
                         }
                     ]
                 },
@@ -83,26 +52,14 @@
                     "comment": "The paper does not tell us which specimen ID goes with which node, so I've assigned both specmen IDs to both nodes. -- GGV",
                     "representsTaxonomicUnits": [
                         {
-                            "includesSpecimens": [
-                                {
-                                    "occurrenceID": "urn:catalog:::Mishler 7/24/98(3)"
-                                }
-                            ],
-                            "scientificNames": []
+                            "@type": "http://rs.tdwg.org/dwc/terms/Occurrence",
+                            "occurrenceID": "urn:catalog:::Mishler 7/26/98(1)",
+                            "nameString": "Exostratum blumii"
                         },
                         {
-                            "includesSpecimens": [
-                                {
-                                    "occurrenceID": "urn:catalog:::Mishler 7/26/98(1)"
-                                }
-                            ]
-                        },
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Exostratum blumii"
-                                }
-                            ]
+                            "@type": "http://rs.tdwg.org/dwc/terms/Occurrence",
+                            "occurrenceID": "urn:catalog:::Mishler 7/26/98(3)",
+                            "nameString": "Exostratum blumii"
                         }
                     ]
                 }
@@ -116,41 +73,20 @@
             "internalSpecifiers": [
                 {
                     "verbatimSpecifier": "Type: Syrrhopodon gardneri (Hook.) Schwägr., Sp. Musc. Frond. Suppl. 2(1): 110, tab. 131, figs. 1–13. (1824)",
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Syrrhopodon gardneri (Hook.) Schwägr., Sp. Musc. Frond. Suppl. 2(1): 110, tab. 131, figs. 1-13 (1824)"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Syrrhopodon gardneri (Hook.) Schwägr., Sp. Musc. Frond. Suppl. 2(1): 110, tab. 131, figs. 1-13 (1824)"
                 },
                 {
                     "verbatimSpecifier": "Type: Leucophanes octoblepharoides Brid., Bryol. Univ. 1: 763. (1826)",
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Leucophanes octoblepharoides Brid., Bryol. Univ. 1: 763. (1826)"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Leucophanes octoblepharoides Brid., Bryol. Univ. 1: 763. (1826)"
                 }
             ],
             "externalSpecifiers": [
                 {
                     "verbatimSpecifier": "Type: Octoblepharum albidum Hedw., Sp. Musc. 50. (1801)",
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Octoblepharum albidum Hedw., Sp. Musc. 50. (1801)"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Octoblepharum albidum Hedw., Sp. Musc. 50. (1801)"
                 }
             ]
         },
@@ -160,41 +96,20 @@
             "internalSpecifiers": [
                 {
                     "verbatimSpecifier": "Type: Calymperes lonchophyllum Schwägr., Tab. Exhib. Calyptr. Opercul. (3). 1814 (1813).",
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Calymperes lonchophyllum Schwägr., Tab. Exhib. Calyptr. Opercul. (3). 1814 (1813)."
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Calymperes lonchophyllum Schwägr., Tab. Exhib. Calyptr. Opercul. (3). 1814 (1813)."
                 },
                 {
                     "verbatimSpecifier": "Type: Syrrhopodon mauritianus Müll. Hal. ex Ångstr., Öfv. Förh. Kongl. Svenska Vet.-Akad. 33(4): 54. (1876)",
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Syrrhopodon mauritianus Müll. Hal. ex Ångstr., Öfv. Förh. Kongl. Svenska Vet.-Akad. 33(4): 54. (1876)"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Syrrhopodon mauritianus Müll. Hal. ex Ångstr., Öfv. Förh. Kongl. Svenska Vet.-Akad. 33(4): 54. (1876)"
                 }
             ],
             "externalSpecifiers": [
                 {
                     "verbatimSpecifier": "Type: Syrrhopodon croceus Mitt., J. Proc. Linn. Soc., Bot. Suppl. 1: 41. (1859)",
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Syrrhopodon croceus Mitt., J. Proc. Linn. Soc., Bot. Suppl. 1: 41. (1859)"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Syrrhopodon croceus Mitt., J. Proc. Linn. Soc., Bot. Suppl. 1: 41. (1859)"
                 }
             ]
         },
@@ -204,41 +119,20 @@
             "internalSpecifiers": [
                 {
                     "verbatimSpecifier": "Type: Syrrhopodon croceus Mitt., J. Proc. Linn. Soc., Bot. Suppl. 1: 41. (1859)",
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Syrrhopodon croceus Mitt., J. Proc. Linn. Soc., Bot. Suppl. 1: 41. (1859)"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Syrrhopodon croceus Mitt., J. Proc. Linn. Soc., Bot. Suppl. 1: 41. (1859)"
                 },
                 {
                     "verbatimSpecifier": "Type: Leucophanes octoblepharoides Brid., Bryol. Univ. 1: 763. (1826)",
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Leucophanes octoblepharoides Brid., Bryol. Univ. 1: 763. (1826)"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Leucophanes octoblepharoides Brid., Bryol. Univ. 1: 763. (1826)"
                 }
             ],
             "externalSpecifiers": [
                 {
                     "verbatimSpecifier": "Type: Syrrhopodon mauritianus Müll. Hal. ex Ångstr., Öfv. Förh. Kongl. Svenska Vet.-Akad. 33(4): 54. (1876)",
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Syrrhopodon mauritianus Müll. Hal. ex Ångstr., Öfv. Förh. Kongl. Svenska Vet.-Akad. 33(4): 54. (1876)"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Syrrhopodon mauritianus Müll. Hal. ex Ångstr., Öfv. Förh. Kongl. Svenska Vet.-Akad. 33(4): 54. (1876)"
                 }
             ]
         },
@@ -248,47 +142,20 @@
             "internalSpecifiers": [
                 {
                     "verbatimSpecifier": "Type: Syrrhopodon fasciculatum Hook. & Grev., Edinb. J. Sci. 3: 225. (1825)",
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Syrrhopodon fasciculatum Hook. & Grev., Edinb. J. Sci. 3: 225. (1825)"
-                                },
-                                {
-                                    "scientificName": "Mitthyridium fasciculatum"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Syrrhopodon fasciculatum Hook. & Grev., Edinb. J. Sci. 3: 225. (1825)"
                 },
                 {
                     "verbatimSpecifier": "Type: Codonoblepharum undulatum Dozy & Molk., Ann. Sci. Nat., Bot., III, 2: 301. (1844)",
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Codonoblepharum undulatum Dozy & Molk., Ann. Sci. Nat., Bot., III, 2: 301. (1844)"
-                                },
-                                {
-                                    "scientificName": "Mitthyridium undulatum"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Codonoblepharum undulatum Dozy & Molk., Ann. Sci. Nat., Bot., III, 2: 301. (1844)"
                 }
             ],
             "externalSpecifiers": [
                 {
                     "verbatimSpecifier": "Type: Syrrhopodon croceus Mitt., J. Proc. Linn. Soc., Bot. Suppl. 1: 41. (1859)",
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Syrrhopodon croceus Mitt., J. Proc. Linn. Soc., Bot. Suppl. 1: 41. (1859)"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Syrrhopodon croceus Mitt., J. Proc. Linn. Soc., Bot. Suppl. 1: 41. (1859)"
                 }
             ]
         },
@@ -298,44 +165,20 @@
             "internalSpecifiers": [
                 {
                     "verbatimSpecifier": "Type: Syrrhopodon croceus Mitt., J. Proc. Linn. Soc., Bot. Suppl. 1: 41. (1859)",
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Weissia ciliata Hook., Musci Exot. 2: 7. 171. (1820)"
-                                },
-                                {
-                                    "scientificName": "Syrrhopodon ciliatus"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Weissia ciliata Hook., Musci Exot. 2: 7. 171. (1820)"
                 },
                 {
                     "verbatimSpecifier": "Type: Syrrhopodon involutus Schwägr., Sp. Musc. Frond. Suppl. 2, 1(2): 117. pl. 132. (1824)",
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Syrrhopodon involutus Schwägr., Sp. Musc. Frond. Suppl. 2, 1(2): 117. pl. 132. (1824)"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Syrrhopodon involutus Schwägr., Sp. Musc. Frond. Suppl. 2, 1(2): 117. pl. 132. (1824)"
                 }
             ],
             "externalSpecifiers": [
                 {
                     "verbatimSpecifier": "Type: Syrrhopodon perarmatus Broth. & Watts, J. & Proc. Roy. Soc. New South Wales 49: 133. (1915)",
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Syrrhopodon perarmatus Broth. & Watts, J. & Proc. Roy. Soc. New South Wales 49: 133. (1915)"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Syrrhopodon perarmatus Broth. & Watts, J. & Proc. Roy. Soc. New South Wales 49: 133. (1915)"
                 }
             ]
         },
@@ -345,54 +188,26 @@
             "internalSpecifiers": [
                 {
                     "verbatimSpecifier": "Type: S. banksii Müll. Hal., Bot. Zeitung (Berlin) 16: 162. (1858)",
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Syrrhopodon banksii Müll. Hal., Bot. Zeitung (Berlin) 16: 162. (1858)"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Syrrhopodon banksii Müll. Hal., Bot. Zeitung (Berlin) 16: 162. (1858)"
                 },
                 {
                     "verbatimSpecifier": "Type: S. banksii Müll. Hal., Bot. Zeitung (Berlin) 16: 162. (1858)",
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Syrrhopodon involutus Schwägr., Sp. Musc. Frond. Suppl. 2, 1(2): 117. pl. 132. (1824)"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Syrrhopodon involutus Schwägr., Sp. Musc. Frond. Suppl. 2, 1(2): 117. pl. 132. (1824)"
                 },
                 {
                     "verbatimSpecifier": "Type: S. revolutus Dozy & Molk.",
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
                     "specifierWillNotMatch": "*Syrrhopodon revolutus* not included in phylogeny",
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Syrrhopodon revolutus Dozy & Molk."
-                                }
-                            ]
-                        }
-                    ]
+                    "nameString": "Syrrhopodon revolutus Dozy & Molk."
                 }
             ],
             "externalSpecifiers": [
                 {
                     "verbatimSpecifier": "S. trachyphyllus Mont., Sylloge Gen. Sp. Cryptog. 47. (1856)",
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Syrrhopodon trachyphyllus Mont., Sylloge Gen. Sp. Cryptog. 47. (1856)"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Syrrhopodon trachyphyllus Mont., Sylloge Gen. Sp. Cryptog. 47. (1856)"
                 }
             ]
         },
@@ -402,41 +217,20 @@
             "internalSpecifiers": [
                 {
                     "verbatimSpecifier": "Type: Arthrocormus schimperi (Dozy & Molk.) Dozy & Molk. (=Mielichhoferia schimperi Dozy & Molk.), Musci Frond. Ined. Archip. Ind. 75. (1846)",
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Arthrocormus schimperi (Dozy & Molk.) Dozy & Molk. (=Mielichhoferia schimperi Dozy & Molk.), Musci Frond. Ined. Archip. Ind. 75. (1846)"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Arthrocormus schimperi (Dozy & Molk.) Dozy & Molk. (=Mielichhoferia schimperi Dozy & Molk.), Musci Frond. Ined. Archip. Ind. 75. (1846)"
                 },
                 {
                     "verbatimSpecifier": "Type: Leucophanes octoblepharoides Brid., Bryol. Univ. 1: 763. (1826)",
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Leucophanes octoblepharoides Brid., Bryol. Univ. 1: 763. (1826)"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Leucophanes octoblepharoides Brid., Bryol. Univ. 1: 763. (1826)"
                 }
             ],
             "externalSpecifiers": [
                 {
                     "verbatimSpecifier": "Type: Syrrhopodon muelleri (Dozy & Molk) Sande Lac., Bryol. Jav. 2: 224. (1870)",
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Syrrhopodon muelleri (Dozy & Molk) Sande Lac., Bryol. Jav. 2: 224. (1870)"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Syrrhopodon muelleri (Dozy & Molk) Sande Lac., Bryol. Jav. 2: 224. (1870)"
                 }
             ]
         },
@@ -446,41 +240,21 @@
             "internalSpecifiers": [
                 {
                     "verbatimSpecifier": "Type: Arthrocormus schimperi (Dozy & Molk.) Dozy & Molk. (= Mielichhoferia schimperi Dozy & Molk.), Musci Frond. Ined. Archip. Ind. 75. (1846)",
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Arthrocormus schimperi (Dozy & Molk.) Dozy & Molk. (= Mielichhoferia schimperi Dozy & Molk.), Musci Frond. Ined. Archip. Ind. 75. (1846)"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Arthrocormus schimperi (Dozy & Molk.) Dozy & Molk. (= Mielichhoferia schimperi Dozy & Molk.), Musci Frond. Ined. Archip. Ind. 75. (1846)"
                 },
                 {
                     "verbatimSpecifier": "Mishler 7/24/98 (5) Queensland, Australia (UC)",
-                    "referencesTaxonomicUnits": [
-                        {
-                            "includesSpecimens": [
-                                {
-                                    "occurrenceID": "urn:catalog:::Mishler 7/24/98 (5)"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/dwc/terms/Occurrence",
+                    "nameString": "Arthrocormus schimperi (Dozy & Molk.) Dozy & Molk. (= Mielichhoferia schimperi Dozy & Molk.), Musci Frond. Ined. Archip. Ind. 75. (1846)",
+                    "occurrenceID": "urn:catalog:::Mishler 7/24/98 (5)"
                 }
             ],
             "externalSpecifiers": [
                 {
                     "verbatimSpecifier": "Type: Exostratum blumii (Nees ex Hampe) L. Ellis, Lindbergia 11: 22. (1985)",
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Exostratum blumii (Nees ex Hampe) L. Ellis, Lindbergia 11: 22. (1985)"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Exostratum blumii (Nees ex Hampe) L. Ellis, Lindbergia 11: 22. (1985)"
                 }
             ]
         },
@@ -490,41 +264,21 @@
             "internalSpecifiers": [
                 {
                     "verbatimSpecifier": "Type: Exostratum blumii (Nees ex Hampe) L. Ellis, Lindbergia 11: 22. (1985)",
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Exostratum blumii (Nees ex Hampe) L. Ellis, Lindbergia 11: 22. (1985)"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Exostratum blumii (Nees ex Hampe) L. Ellis, Lindbergia 11: 22. (1985)"
                 },
                 {
                     "verbatimSpecifier": "Mishler 7/24/98(3), Queensland, Australia (uc)",
-                    "referencesTaxonomicUnits": [
-                        {
-                            "includesSpecimens": [
-                                {
-                                    "occurrenceID": "urn:catalog:::Mishler 7/24/98(3)"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/dwc/terms/Occurrence",
+                    "occurrenceID": "urn:catalog:::Mishler 7/24/98(3)",
+                    "nameString": "Exostratum blumii (Nees ex Hampe) L. Ellis, Lindbergia 11: 22. (1985)"
                 }
             ],
             "externalSpecifiers": [
                 {
                     "verbatimSpecifier": "Type: Arthrocormus schimperi (Dozy & Molk.) Dozy & Molk. (= Mielichhoferia schimperi Dozy & Molk.), Musci Frond. Ined. Archip. Ind. 75. (1846)",
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Arthrocormus schimperi (Dozy & Molk.) Dozy & Molk. (= Mielichhoferia schimperi Dozy & Molk.), Musci Frond. Ined. Archip. Ind. 75. (1846)"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Arthrocormus schimperi (Dozy & Molk.) Dozy & Molk. (= Mielichhoferia schimperi Dozy & Molk.), Musci Frond. Ined. Archip. Ind. 75. (1846)"
                 }
             ]
         },
@@ -534,44 +288,21 @@
             "internalSpecifiers": [
                 {
                     "verbatimSpecifier": "Type: Exodictyon Cardot, Rev. Bryol. Lichénol. 26: 6. (1899), excl. parte, emend Ellis in Lindbergia 11: 16 (1985)",
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Exodictyon Cardot, Rev. Bryol. Lichénol. 26: 6. (1899), excl. parte, emend Ellis in Lindbergia 11: 16 (1985)"
-                                },
-                                {
-                                    "scientificName": "Exodictyon sp"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Exodictyon Cardot, Rev. Bryol. Lichénol. 26: 6. (1899), excl. parte, emend Ellis in Lindbergia 11: 16 (1985)"
                 },
                 {
                     "verbatimSpecifier": "Wall 2527, Fiji (UC)",
-                    "referencesTaxonomicUnits": [
-                        {
-                            "includesSpecimens": [
-                                {
-                                    "occurrenceID": "urn:catalog:::Wall 2527, Fiji (uc)"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/dwc/terms/Occurrence",
+                    "occurrenceID": "urn:catalog:::Wall 2527, Fiji (uc)",
+                    "nameString": "Exodictyon Cardot, Rev. Bryol. Lichénol. 26: 6. (1899), excl. parte, emend Ellis in Lindbergia 11: 16 (1985)"
                 }
             ],
             "externalSpecifiers": [
                 {
                     "verbatimSpecifier": "Type: Leucophanes octoblepharoides Brid., Bryol. Univ. 1: 763. (1826)",
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Leucophanes octoblepharoides Brid., Bryol. Univ. 1: 763. (1826)"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Leucophanes octoblepharoides Brid., Bryol. Univ. 1: 763. (1826)"
                 }
             ]
         },
@@ -581,41 +312,20 @@
             "internalSpecifiers": [
                 {
                     "verbatimSpecifier": "Type: Leucophanes octoblepharoides Brid., Bryol. Univ. 1: 763. (1826)",
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Leucophanes octoblepharoides Brid., Bryol. Univ. 1: 763. (1826)"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Leucophanes octoblepharoides Brid., Bryol. Univ. 1: 763. (1826)"
                 },
                 {
                     "verbatimSpecifier": "Type: Leucophanes seychellarum Besch., Ann. Sci. Nat., Bot., VI, 9: 337. (1880)",
-                    "referencesTaxonomicUnits": [
-                        {
-                            "scientificNames": [
-                                {
-                                    "scientificName": "Leucophanes seychellarum Besch., Ann. Sci. Nat., Bot., VI, 9: 337. (1880)"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Leucophanes seychellarum Besch., Ann. Sci. Nat., Bot., VI, 9: 337. (1880)"
                 }
             ],
             "externalSpecifiers": [
                 {
                     "verbatimSpecifier": "Wall 2527, Fiji (uc)",
-                    "referencesTaxonomicUnits": [
-                        {
-                            "includesSpecimens": [
-                                {
-                                    "occurrenceID": "urn:catalog:::Wall 2527, Fiji (uc)"
-                                }
-                            ]
-                        }
-                    ]
+                    "@type": "http://rs.tdwg.org/dwc/terms/Occurrence",
+                    "occurrenceID": "urn:catalog:::Wall 2527, Fiji (uc)"
                 }
             ]
         }
