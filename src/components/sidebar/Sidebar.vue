@@ -258,7 +258,7 @@ export default {
       // Get the label for a particular specifier.
       // TODO: We need to include verbatimSpecifier first because of
       // https://github.com/phyloref/phyx.js/issues/14
-      return specifier.verbatimSpecifier || PhylorefWrapper.getSpecifierLabel(specifier) || 'Undefined specifier';
+      return specifier.verbatimSpecifier || new TaxonomicUnitWrapper(specifier).label || 'Undefined specifier';
     },
 
     promptAndSetDict(message, dict, key) {
@@ -365,14 +365,14 @@ export default {
 
       // Disable "Reason" buttons so they can't be reused.
       this.reasoningInProgress = true;
-      $.post('http://localhost:12345/reason', {
+      $.post('http://localhost:34214/reason', {
         // This will convert the JSON-LD file into an application/x-www-form-urlencoded
         // string (see https://api.jquery.com/jquery.ajax/#jQuery-ajax-settings under
         // processData for details). The POST data sent to the server will look like:
         //  jsonld=%7B%5B%7B%22title%22%3A...
         // which translates to:
         //  jsonld={[{"title":...
-        jsonld: JSON.stringify([new PHYXWrapper(
+        jsonld: JSON.stringify([new PhyxWrapper(
           this.$store.state.phyx.currentPhyx,
           d3.layout.newick_parser,
         )

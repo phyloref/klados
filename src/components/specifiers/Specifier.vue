@@ -15,6 +15,7 @@
           {{ specifierClassComputed }}
         </button>
         <div class="dropdown-menu">
+          <!-- TODO: remove external reference as a type and add it in as a separate property. -->
           <a class="dropdown-item" :class="{active: specifierClassComputed === 'Taxon'}" href="javascript:;" @click="specifierClass = 'Taxon'">Taxon</a>
           <a class="dropdown-item" :class="{active: specifierClassComputed === 'Specimen'}"  href="javascript:;" @click="specifierClass = 'Specimen'">Specimen</a>
           <a class="dropdown-item" :class="{active: specifierClassComputed === 'External reference'}"  href="javascript:;" @click="specifierClass = 'External reference'">External reference</a>
@@ -287,7 +288,8 @@ import Vue from 'vue';
 import {
   PhylorefWrapper,
   TaxonomicUnitWrapper,
-  ScientificNameWrapper,
+  TaxonConceptWrapper,
+  TaxonNameWrapper,
   SpecimenWrapper,
 } from '@phyloref/phyx';
 import {
@@ -335,7 +337,7 @@ export default {
     specifierLabel: {
       get() {
         // Return the verbatim specifier OR the specifier label.
-        return this.specifier.verbatimSpecifier || PhylorefWrapper.getSpecifierLabel(this.specifier);
+        return this.specifier.verbatimSpecifier || new TaxonomicUnitWrapper(this.specifier).label;
       },
       set(label) {
         // 1. Set the verbatim specifier to this.
@@ -372,7 +374,7 @@ export default {
         if(this.specifierClass) return this.specifierClass;
 
         // TODO: remove hack once we move to Model 2.0.
-        const tunit = new TaxonomicUnitWrapper(this.specifier.referencesTaxonomicUnits[0] || {});
+        const tunit = new TaxonomicUnitWrapper(this.specifier || {});
 
         if((tunit.externalReferences || []).length > 0) return "External reference";
         if((tunit.includesSpecimens || []).length > 0) return "Specimen";
@@ -391,17 +393,13 @@ export default {
         return this.enteredScientificName;
       },
       set(scname) {
-        Vue.set(this.specifier, 'referencesTaxonomicUnits', [
-          {
-            scientificNames: [ ScientificNameWrapper.createFromVerbatimName(scname) ],
-          }
-        ]);
+        Vue.set(this, 'specifier', TaxonConceptWrapper.fromLabel(scname));
         this.updateSpecifier();
         this.enteredScientificName = scname;
       }
     },
     scientificNameWrapper() {
-      return new ScientificNameWrapper(ScientificNameWrapper.createFromVerbatimName(this.enteredScientificName));
+      return new TaxonNameWrapper(TaxonNameWrapper.fromVerbatimName(this.enteredScientificName));
     },
     specimenWrapper() {
       return new SpecimenWrapper(SpecimenWrapper.createFromOccurrenceID(this.enteredOccurrenceID));
@@ -421,17 +419,15 @@ export default {
   methods: {
     recalculateEntered() {
       // Recalculate the entered values.
-      // TODO: remove hack once we move to Model 2.0.
-      const tunit = new TaxonomicUnitWrapper(this.specifier.referencesTaxonomicUnits[0] || {});
+      const tunit = new TaxonomicUnitWrapper(this.specifier || {});
 
-      if((tunit.externalReferences || []).length > 0) {
-        this.enteredExternalReference = tunit.externalReferences[0];
-      }
-      if((tunit.includesSpecimens || []).length > 0) {
-        this.enteredOccurrenceID = new SpecimenWrapper(tunit.includesSpecimens[0]).occurrenceID;
-      }
-      if((tunit.scientificNames || []).length > 0) {
-        this.enteredScientificName = new ScientificNameWrapper(tunit.scientificNames[0]).scientificName;
+      if (tunit.types.includes(TaxonomicUnitWrapper.TYPE_SPECIMEN)) {
+        this.enteredOccurrenceID = tunit.label;
+      } else  if (tunit.types.includes(TaxonomicUnitWrapper.TYPE_TAXON_CONCEPT)) {
+        this.enteredScientificName = tunit.label;
+      } else {
+        // No idea what this is! Let's assume it's a scientific name.
+        this.enteredScientificName = tunit.label;
       }
     },
     deleteSpecifier() {
@@ -444,34 +440,22 @@ export default {
       }
     },
     updateSpecifier() {
-      // Prepare the object to write out. This will depend on the specifierClass.
-      const result = {
-        verbatimSpecifier: this.specifier.verbatimSpecifier,
-      };
-
-      // TODO fix this when we go to model 2.0.
+      // Check the specifierClass before we figure out how to construct the
+      // specifier we might want to overwrite.
+      let result;
       switch(this.specifierClassComputed) {
         case 'Taxon':
-          result.referencesTaxonomicUnits = [{
-            scientificNames: [
-              ScientificNameWrapper.createFromVerbatimName(this.enteredScientificName),
-            ],
-          }];
+          result = TaxonConceptWrapper.fromLabel(this.enteredScientificName);
           break;
 
         case 'Specimen':
-          result.referencesTaxonomicUnits = [{
-            includesSpecimens: [
-              SpecimenWrapper.createFromOccurrenceID(this.enteredOccurrenceID),
-            ]
-          }];
+          result = SpecimenWrapper.fromOccurrenceID(this.enteredOccurrenceID);
           break;
+      }
 
-        case 'External reference':
-          result.referencesTaxonomicUnits = [{
-            externalReferences: [this.enteredExternalReference],
-          }];
-          break;
+      // Add verbatimSpecifier.
+      if (has(this.specifier, 'verbatimSpecifier')) {
+        result.verbatimSpecifier = this.specifier.verbatimSpecifier;
       }
 
       // If our local specifier differs from the remoteSpecifier, update it.
