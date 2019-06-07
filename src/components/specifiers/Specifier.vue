@@ -15,6 +15,7 @@
           {{ specifierClassComputed }}
         </button>
         <div class="dropdown-menu">
+          <!-- TODO: remove external reference as a type and add it in as a separate property. -->
           <a class="dropdown-item" :class="{active: specifierClassComputed === 'Taxon'}" href="javascript:;" @click="specifierClass = 'Taxon'">Taxon</a>
           <a class="dropdown-item" :class="{active: specifierClassComputed === 'Specimen'}"  href="javascript:;" @click="specifierClass = 'Specimen'">Specimen</a>
           <a class="dropdown-item" :class="{active: specifierClassComputed === 'External reference'}"  href="javascript:;" @click="specifierClass = 'External reference'">External reference</a>
@@ -473,13 +474,16 @@ export default {
         return this.taxonNameWrapped.nameComplete;
       },
       set(scname) {
-        // Don't do anything if a scname is not actually set.
-        if (!scname) return;
-
-        // TODO: Add nomen code here.
-        this.taxonNameWrapped = new TaxonNameWrapper(TaxonNameWrapper.fromVerbatimName(scname) || {});
+        Vue.set(this, 'specifier', TaxonConceptWrapper.fromLabel(scname));
         this.updateSpecifier();
-      },
+        this.enteredScientificName = scname;
+      }
+    },
+    scientificNameWrapper() {
+      return new TaxonNameWrapper(TaxonNameWrapper.fromVerbatimName(this.enteredScientificName));
+    },
+    specimenWrapper() {
+      return new SpecimenWrapper(SpecimenWrapper.createFromOccurrenceID(this.enteredOccurrenceID));
     },
     enteredOccurrenceID: {
       get() {
