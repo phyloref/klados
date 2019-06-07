@@ -207,7 +207,7 @@ import { has } from 'lodash';
 import { mapState, mapGetters } from 'vuex';
 import { saveAs } from 'filesaver.js-npm';
 
-import { PHYXWrapper, PhylorefWrapper } from '@phyloref/phyx';
+import { PhyxWrapper, PhylorefWrapper, TaxonomicUnitWrapper } from '@phyloref/phyx';
 
 import ModifiedIcon from '../icons/ModifiedIcon.vue';
 
