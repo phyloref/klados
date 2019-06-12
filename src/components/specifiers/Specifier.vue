@@ -2,31 +2,85 @@
   <div class="col-md-12">
     <div class="input-group mb-1">
       <div class="input-group-prepend">
-        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <button
+          class="btn btn-outline-secondary dropdown-toggle"
+          type="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
           {{ specifierType }}
         </button>
         <div class="dropdown-menu">
-          <a class="dropdown-item" :class="{active: specifierType === 'Internal'}" href="javascript:;" @click="specifierType = 'Internal'">Internal</a>
-          <a class="dropdown-item" :class="{active: specifierType === 'External'}" href="javascript:;" @click="specifierType = 'External'">External</a>
+          <a
+            class="dropdown-item"
+            :class="{active: specifierType === 'Internal'}"
+            href="javascript:;"
+            @click="specifierType = 'Internal'"
+          >
+            Internal
+          </a>
+          <a
+            class="dropdown-item"
+            :class="{active: specifierType === 'External'}"
+            href="javascript:;"
+            @click="specifierType = 'External'"
+          >
+            External
+          </a>
         </div>
       </div>
       <div class="input-group-prepend">
-        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <button
+          class="btn btn-outline-secondary dropdown-toggle"
+          type="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
           {{ specifierClassComputed }}
         </button>
         <div class="dropdown-menu">
           <!-- TODO: remove external reference as a type and add it in as a separate property. -->
-          <a class="dropdown-item" :class="{active: specifierClassComputed === 'Taxon'}" href="javascript:;" @click="specifierClass = 'Taxon'">Taxon</a>
-          <a class="dropdown-item" :class="{active: specifierClassComputed === 'Specimen'}"  href="javascript:;" @click="specifierClass = 'Specimen'">Specimen</a>
-          <a class="dropdown-item" :class="{active: specifierClassComputed === 'External reference'}"  href="javascript:;" @click="specifierClass = 'External reference'">External reference</a>
-          <a class="dropdown-item" :class="{active: specifierClassComputed === 'Apomorphy'}"  href="javascript:;" @click="specifierClass = 'Apomorphy'">Apomorphy</a>
+          <a
+            class="dropdown-item"
+            :class="{active: specifierClassComputed === 'Taxon'}"
+            href="javascript:;"
+            @click="specifierClass = 'Taxon'"
+          >
+            Taxon
+          </a>
+          <a
+            class="dropdown-item"
+            :class="{active: specifierClassComputed === 'Specimen'}"
+            href="javascript:;"
+            @click="specifierClass = 'Specimen'"
+          >
+            Specimen
+          </a>
+          <a
+            class="dropdown-item"
+            :class="{active: specifierClassComputed === 'External reference'}"
+            href="javascript:;"
+            @click="specifierClass = 'External reference'"
+          >
+            External reference
+          </a>
+          <a
+            class="dropdown-item"
+            :class="{active: specifierClassComputed === 'Apomorphy'}"
+            href="javascript:;"
+            @click="specifierClass = 'Apomorphy'"
+          >
+            Apomorphy
+          </a>
         </div>
       </div>
       <input
+        v-model="specifierLabel"
         type="text"
         class="form-control"
-        v-model="specifierLabel"
-      />
+      >
       <div class="input-group-append">
         <button
           class="btn btn-outline-secondary"
@@ -67,9 +121,8 @@
               id="verbatim-specifier"
               v-model="specifier.verbatimSpecifier"
               class="form-control"
-            />
+            >
           </div>
-
         </div>
 
         <!-- Specifier class -->
@@ -116,11 +169,11 @@
             </label>
             <div class="col-md-10 input-group">
               <input
-                class="form-control"
                 id="scientific-name"
-                placeholder="Enter the scientific name"
                 v-model="scientificName"
-              />
+                class="form-control"
+                placeholder="Enter the scientific name"
+              >
             </div>
           </div>
 
@@ -133,11 +186,11 @@
             </label>
             <div class="col-md-10 input-group">
               <input
+                id="binomial-name"
                 readonly
                 class="form-control"
-                id="binomial-name"
                 :value="scientificNameWrapper.binomialName"
-              />
+              >
             </div>
           </div>
 
@@ -150,11 +203,11 @@
             </label>
             <div class="col-md-10 input-group">
               <input
+                id="genus"
                 readonly
                 class="form-control"
-                id="genus"
                 :value="scientificNameWrapper.genus"
-              />
+              >
             </div>
           </div>
 
@@ -167,11 +220,11 @@
             </label>
             <div class="col-md-10 input-group">
               <input
+                id="specific-epithet"
                 readonly
                 class="form-control"
-                id="specific-epithet"
                 :value="scientificNameWrapper.specificEpithet"
-              />
+              >
             </div>
           </div>
         </template>
@@ -186,12 +239,12 @@
             </label>
             <div class="col-md-10 input-group">
               <input
+                id="occurrence-id"
+                v-model="enteredOccurrenceID"
                 readonly
                 class="form-control"
-                id="occurrence-id"
                 placeholder="Enter the occurrence ID of the specimen here"
-                v-model="enteredOccurrenceID"
-              />
+              >
             </div>
           </div>
 
@@ -204,11 +257,11 @@
             </label>
             <div class="col-md-10 input-group">
               <input
+                id="collection-code"
                 readonly
                 class="form-control"
-                id="collection-code"
                 :value="specimenWrapper.institutionCode"
-              />
+              >
             </div>
           </div>
 
@@ -221,11 +274,11 @@
             </label>
             <div class="col-md-10 input-group">
               <input
+                id="collection-code"
                 readonly
                 class="form-control"
-                id="collection-code"
                 :value="specimenWrapper.collectionCode"
-              />
+              >
             </div>
           </div>
 
@@ -238,11 +291,11 @@
             </label>
             <div class="col-md-10 input-group">
               <input
+                id="catalog-number"
                 readonly
                 class="form-control"
-                id="catalog-number"
                 :value="specimenWrapper.catalogNumber"
-              />
+              >
             </div>
           </div>
         </template>
@@ -257,21 +310,29 @@
             </label>
             <div class="col-md-10 input-group">
               <input
-                class="form-control"
                 id="external-reference"
-                placeholder="Enter URI of external reference here"
                 v-model="externalReference"
-              />
+                class="form-control"
+                placeholder="Enter URI of external reference here"
+              >
               <div class="input-group-append">
-                <a class="btn btn-outline-secondary" target="_blank" :href="externalReference">Open in new window</a>
+                <a
+                  class="btn btn-outline-secondary"
+                  target="_blank"
+                  :href="externalReference"
+                >
+                  Open in new window
+                </a>
               </div>
             </div>
           </div>
         </template>
 
         <template v-if="specifierClassComputed === 'Apomorphy'">
-          <p>Apomorphy-based specifiers are not currently supported. Please enter
-          them into the verbatim label field for now.</p>
+          <p>
+            Apomorphy-based specifiers are not currently supported. Please enter
+            them into the verbatim label field for now.
+          </p>
         </template>
       </div>
     </div>
@@ -313,9 +374,9 @@ export default {
       specifier: cloneDeep(this.remoteSpecifier),
       expand: false,
       specifierClass: undefined,
-      enteredOccurrenceID: "",
-      enteredScientificName: "",
-      enteredExternalReference: "",
+      enteredOccurrenceID: '',
+      enteredScientificName: '',
+      enteredExternalReference: '',
     };
   },
   computed: {
@@ -329,8 +390,8 @@ export default {
           {
             phyloref: this.phyloref,
             specifier: this.remoteSpecifier,
-            specifierType: type
-          }
+            specifierType: type,
+          },
         );
       },
     },
@@ -358,7 +419,7 @@ export default {
             break;
         }
 
-        console.log("Specifier now at", this.specifier);
+        console.log('Specifier now at', this.specifier);
         this.updateSpecifier();
       },
     },
@@ -371,22 +432,22 @@ export default {
         //  2. specimen (if a specimen identifier is filled in)
         //  3. taxon (if scientificName is filled in)
 
-        if(this.specifierClass) return this.specifierClass;
+        if (this.specifierClass) return this.specifierClass;
 
         // TODO: remove hack once we move to Model 2.0.
         const tunit = new TaxonomicUnitWrapper(this.specifier || {});
 
-        if((tunit.externalReferences || []).length > 0) return "External reference";
-        if((tunit.includesSpecimens || []).length > 0) return "Specimen";
-        if((tunit.scientificNames || []).length > 0) return "Taxon";
+        if ((tunit.externalReferences || []).length > 0) return 'External reference';
+        if ((tunit.includesSpecimens || []).length > 0) return 'Specimen';
+        if ((tunit.scientificNames || []).length > 0) return 'Taxon';
 
         // If all else fails, be a taxon.
-        return "Taxon";
+        return 'Taxon';
       },
       set(type) {
         this.specifierClass = type;
         this.updateSpecifier();
-      }
+      },
     },
     scientificName: {
       get() {
@@ -396,7 +457,7 @@ export default {
         Vue.set(this, 'specifier', TaxonConceptWrapper.fromLabel(scname));
         this.updateSpecifier();
         this.enteredScientificName = scname;
-      }
+      },
     },
     scientificNameWrapper() {
       return new TaxonNameWrapper(TaxonNameWrapper.fromVerbatimName(this.enteredScientificName));
@@ -404,9 +465,6 @@ export default {
     specimenWrapper() {
       return new SpecimenWrapper(SpecimenWrapper.createFromOccurrenceID(this.enteredOccurrenceID));
     },
-  },
-  mounted() {
-    this.recalculateEntered();
   },
   watch: {
     phyloref() {
@@ -419,6 +477,9 @@ export default {
       this.updateSpecifier();
     },
   },
+  mounted() {
+    this.recalculateEntered();
+  },
   methods: {
     recalculateEntered() {
       // Recalculate the entered values.
@@ -426,7 +487,7 @@ export default {
 
       if (tunit.types.includes(TaxonomicUnitWrapper.TYPE_SPECIMEN)) {
         this.enteredOccurrenceID = tunit.label;
-      } else  if (tunit.types.includes(TaxonomicUnitWrapper.TYPE_TAXON_CONCEPT)) {
+      } else if (tunit.types.includes(TaxonomicUnitWrapper.TYPE_TAXON_CONCEPT)) {
         this.enteredScientificName = tunit.label;
       } else {
         // No idea what this is! Let's assume it's a scientific name.
@@ -434,11 +495,11 @@ export default {
       }
     },
     deleteSpecifier() {
-      const confirmed = confirm("Are you sure you want to delete this specifier?");
+      const confirmed = confirm('Are you sure you want to delete this specifier?');
       if (confirmed) {
         this.$store.commit('deleteSpecifier', {
           phyloref: this.phyloref,
-          specifier: this.remoteSpecifier
+          specifier: this.remoteSpecifier,
         });
       }
     },
@@ -446,7 +507,7 @@ export default {
       // Check the specifierClass before we figure out how to construct the
       // specifier we might want to overwrite.
       let result;
-      switch(this.specifierClassComputed) {
+      switch (this.specifierClassComputed) {
         case 'Taxon':
           result = TaxonConceptWrapper.fromLabel(this.enteredScientificName);
           break;
