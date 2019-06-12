@@ -21,9 +21,6 @@ export default {
       phylorefs: [],
       phylogenies: [],
     },
-
-    // The reasoning results returned by JPhyloRef.
-    reasoningResults: undefined,
   },
   getters: {
     // Return the current Phyx file as a JSON string.
@@ -62,10 +59,6 @@ export default {
     createEmptyPhylogeny(state) {
       // Create a new, empty phylogeny.
       state.currentPhyx.phylogenies.push({});
-    },
-    setReasoningResults(state, payload) {
-      // Sets the "reasoning results" -- the results of reasoning returned by JPhyloRef.
-      Vue.set(state, 'reasoningResults', payload);
     },
   },
 };
