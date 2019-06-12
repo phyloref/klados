@@ -7,31 +7,45 @@ import { has } from 'lodash';
 
 export default {
   getters: {
-    getResolvedNodesForPhylogeny: (state, getters, rootState) => (
-      phylogeny,
-      phyloref,
-      flagReturnShortURIs = false,
-    ) => {
-      // Return a list of nodes that were resolved for phyloref `phyloref` on
-      // phylogeny `phylogeny`.
-      // - flagReturnNodeURI: if true, the entire URI will be returned, otherwise
-      // just the node number will be returned.
+    getExpectedNodeLabelsOnPhylogeny: (state, getters) => (phylogeny, phyloref) => {
+      // Given a phylogeny, determine which node labels we expect this phyloref to
+      // resolve to. To do this, we:
+      //  1. Find all node labels that are case-sensitively identical
+      //     to the phyloreference.
+      //  2. Find all node labels that have additionalNodeProperties with
+      //     expectedPhyloreferenceNamed case-sensitively identical to
+      //     the phyloreference.
+      const nodeLabels = new Set();
+      const newick = phylogeny.newick || '()';
 
-      // Do we have reasoning results for this phyloreference?
-      const phylorefURI = getters.getBaseURIForPhyloref(phyloref);
-      if (
-        !has(rootState.phyx.reasoningResults, 'phylorefs')
-        || !has(rootState.phyx.reasoningResults.phylorefs, phylorefURI)
-      ) return [];
+      // Can't do anything if no phyloref is provided or if it doesn't have a label.
+      if (phyloref === undefined || !has(phyloref, 'label')) return [];
+      const phylorefLabel = phyloref.label;
 
-      // Identify the resolved nodes.
-      const nodesResolved = rootState.phyx.reasoningResults.phylorefs[phylorefURI];
-      const phylogenyURI = getters.getBaseURIForPhylogeny(phylogeny);
-      const nodeURIs = nodesResolved.filter(uri => uri.includes(phylogenyURI));
+      getters.getNodeLabelsFromNewick(newick).forEach((nodeLabel) => {
+        // Is this node label identical to the phyloreference name?
+        if (nodeLabel === phylorefLabel) {
+          nodeLabels.add(nodeLabel);
+        } else if (
+          has(phylogeny, 'additionalNodeProperties')
+          && has(phylogeny.additionalNodeProperties, nodeLabel)
+          && has(phylogeny.additionalNodeProperties[nodeLabel], 'expectedPhyloreferenceNamed')
+        ) {
+          // Does this node label have an expectedPhyloreferenceNamed that
+          // includes this phyloreference name?
 
-      // Either return the URIs as-is or remove the phylogeny URI (so we return e.g. "node21").
-      if (!flagReturnShortURIs) return nodeURIs;
-      return nodeURIs.map(iri => iri.replace(`${phylogenyURI}_`, ''));
+          const expectedPhylorefs = phylogeny
+            .additionalNodeProperties[nodeLabel]
+            .expectedPhyloreferenceNamed;
+
+          if (expectedPhylorefs.includes(phylorefLabel)) {
+            nodeLabels.add(nodeLabel);
+          }
+        }
+      });
+
+      // Return node labels sorted alphabetically.
+      return Array.from(nodeLabels).sort();
     },
   },
   mutations: {
