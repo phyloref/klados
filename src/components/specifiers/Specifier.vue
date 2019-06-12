@@ -409,6 +409,9 @@ export default {
     this.recalculateEntered();
   },
   watch: {
+    phyloref() {
+      this.recalculateEntered();
+    },
     remoteSpecifier() {
       this.recalculateEntered();
     },
