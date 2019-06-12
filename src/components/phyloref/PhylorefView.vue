@@ -122,7 +122,11 @@
         </div>
       </div>
       <div class="card-footer">
-        <div class="btn-group" role="group" area-label="Specifier management">
+        <div
+          class="btn-group"
+          role="group"
+          area-label="Specifier management"
+        >
           <button
             class="btn btn-primary"
             href="javascript:;"
@@ -381,8 +385,8 @@ export default {
     noSpecifiers() {
       // Return true if no specifiers are present.
       return (
-        (this.selectedPhyloref.internalSpecifiers || []).length === 0 &&
-        (this.selectedPhyloref.externalSpecifiers || []).length === 0
+        (this.selectedPhyloref.internalSpecifiers || []).length === 0
+        && (this.selectedPhyloref.externalSpecifiers || []).length === 0
       );
     },
 
