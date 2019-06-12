@@ -120,7 +120,7 @@ export default {
             // selected phyloreference, add an 'id' so we can jump to it
             // and a CSS class to render it differently from other labels.
             if (
-              this.$store.getters.getExpectedNodeLabelsOnPhylogeny(this.phylogeny, this.phyloref).includes(data.name)
+              this.getExpectedNodeLabelsOnPhylogeny(this.phylogeny, this.phyloref).includes(data.name)
             ) {
               textLabel.attr('id', `current_expected_label_phylogeny_${this.phylogenyIndex}`);
               textLabel.classed('selected-internal-label', true);
@@ -163,10 +163,12 @@ export default {
             element.classed('descendant-of-pinning-node-node', true);
           }
 
+          // Wrap the phylogeny so we can call methods on it.
+          const wrappedPhylogeny = new PhylogenyWrapper(this.phylogeny);
+
           if (data.name !== undefined && data.children === undefined) {
             // Labeled leaf node! Look for taxonomic units.
-            const tunits = this.$store.getters
-              .getTaxonomicUnitsForNodeLabel(this.phylogeny, data.name);
+            const tunits = wrappedPhylogeny.getTaxonomicUnitsForNodeLabel(data.name);
 
             if (tunits.length === 0) {
               element.classed('terminal-node-without-tunits', true);
@@ -176,8 +178,7 @@ export default {
               // the currently expected node label.
               if (
                 has(this.phyloref, 'label')
-                && this.$store.getters
-                  .getExpectedNodeLabelsOnPhylogeny(this.phylogeny, this.phyloref)
+                && this.getExpectedNodeLabelsOnPhylogeny(this.phylogeny, this.phyloref)
                   .includes(data.name)
               ) {
                 textLabel.attr('id', `current_expected_label_phylogeny_${this.phylogenyIndex}`);
@@ -186,8 +187,8 @@ export default {
               // We should highlight internal specifiers.
               if (has(this.phyloref, 'internalSpecifiers')) {
                 if (this.phyloref.internalSpecifiers
-                  .some(specifier => this.$store.getters
-                    .getNodeLabelsMatchedBySpecifier(this.phylogeny, specifier)
+                  .some(specifier => wrappedPhylogeny
+                    .getNodeLabelsMatchedBySpecifier(specifier)
                     .includes(data.name))
                 ) {
                   element.classed('internal-specifier-node', true);
@@ -197,8 +198,8 @@ export default {
               // We should highlight external specifiers.
               if (has(this.phyloref, 'externalSpecifiers')) {
                 if (this.phyloref.externalSpecifiers
-                  .some(specifier => this.$store.getters
-                    .getNodeLabelsMatchedBySpecifier(this.phylogeny, specifier)
+                  .some(specifier => wrappedPhylogeny
+                    .getNodeLabelsMatchedBySpecifier(specifier)
                     .includes(data.name))
                 ) {
                   element.classed('external-specifier-node', true);
@@ -244,6 +245,74 @@ export default {
     this.redrawTree();
   },
   methods: {
+    getExpectedNodeLabelsOnPhylogeny(phylogeny, phyloref) {
+      // Given a phylogeny, determine which node labels we expect this phyloref to
+      // resolve to. To do this, we:
+      //  1. Find all node labels that are case-sensitively identical
+      //     to the phyloreference.
+      //  2. Find all node labels that have additionalNodeProperties with
+      //     expectedPhyloreferenceNamed case-sensitively identical to
+      //     the phyloreference.
+      const nodeLabels = new Set();
+      const newick = phylogeny.newick || '()';
+
+      // Can't do anything if no phyloref is provided or if it doesn't have a label.
+      if (phyloref === undefined || !has(phyloref, 'label')) return [];
+      const phylorefLabel = phyloref.label;
+
+      new PhylogenyWrapper(phylogeny).getNodeLabels().forEach((nodeLabel) => {
+        // Is this node label identical to the phyloreference name?
+        if (nodeLabel === phylorefLabel) {
+          nodeLabels.add(nodeLabel);
+        } else if (
+          has(phylogeny, 'additionalNodeProperties')
+          && has(phylogeny.additionalNodeProperties, nodeLabel)
+          && has(phylogeny.additionalNodeProperties[nodeLabel], 'expectedPhyloreferenceNamed')
+        ) {
+          // Does this node label have an expectedPhyloreferenceNamed that
+          // includes this phyloreference name?
+
+          const expectedPhylorefs = phylogeny
+            .additionalNodeProperties[nodeLabel]
+            .expectedPhyloreferenceNamed;
+
+          if (expectedPhylorefs.includes(phylorefLabel)) {
+            nodeLabels.add(nodeLabel);
+          }
+        }
+      });
+
+      // Return node labels sorted alphabetically.
+      return Array.from(nodeLabels).sort();
+    },
+
+    getResolvedNodesForPhylogeny(
+      phylogeny,
+      phyloref,
+      flagReturnShortURIs = false,
+    ) {
+      // Return a list of nodes that were resolved for phyloref `phyloref` on
+      // phylogeny `phylogeny`.
+      // - flagReturnNodeURI: if true, the entire URI will be returned, otherwise
+      // just the node number will be returned.
+
+      // Do we have reasoning results for this phyloreference?
+      const phylorefURI = this.$state.getters.getBaseURIForPhyloref(phyloref);
+      if (
+        !has(rootState.phyx.reasoningResults, 'phylorefs')
+        || !has(rootState.phyx.reasoningResults.phylorefs, phylorefURI)
+      ) return [];
+
+      // Identify the resolved nodes.
+      const nodesResolved = rootState.phyx.reasoningResults.phylorefs[phylorefURI];
+      const phylogenyURI = getters.getBaseURIForPhylogeny(phylogeny);
+      const nodeURIs = nodesResolved.filter(uri => uri.includes(phylogenyURI));
+
+      // Either return the URIs as-is or remove the phylogeny URI (so we return e.g. "node21").
+      if (!flagReturnShortURIs) return nodeURIs;
+      return nodeURIs.map(iri => iri.replace(`${phylogenyURI}_`, ''));
+    },
+
     recurseNodes(node, func, nodeCount = 0, parentCount = undefined) {
       // Recurse through PhyloTree nodes, executing function on each node.
       //  - node: The node to recurse from. The function will be called on node
