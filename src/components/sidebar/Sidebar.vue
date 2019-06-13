@@ -8,14 +8,61 @@
           class="list-group-item list-group-item-action bg-dark text-light disabled"
           href="javascript: void(0)"
         >
-          {{ currentPhyx.title || 'Untitled Phyx file' }}
+          Actions
         </a>
+
         <a
           class="list-group-item list-group-item-action"
           href="javascript: void(0)"
-          @click="promptAndSetDict('Please enter the new title for this Phyx file', currentPhyx, 'title')"
+          onclick="$('#file-input').trigger('click')"
         >
-          Edit title
+          Read from local JSON file
+        </a>
+        <input
+          id="file-input"
+          type="file"
+          class="d-none"
+          @change="loadPhyxFromFileInputById('#file-input')"
+        >
+
+        <a
+          class="list-group-item list-group-item-action"
+          href="javascript: void(0)"
+          onclick="$('.phyx-examples').toggleClass('d-none')"
+        >
+          Read an example file
+        </a>
+
+        <a
+          v-for="example of examplePHYXURLs"
+          href="javascript: void(0)"
+          class="list-group-item list-group-item-action phyx-examples d-none small"
+          @click="loadPhyxFromURL(example.url)"
+        >
+          &#9679; {{ example.title }}
+        </a>
+        <a
+          class="list-group-item list-group-item-action phyx-examples d-none small"
+          href="javascript: void(0)"
+          onclick="$('.phyx-examples').toggleClass('d-none')"
+        >
+          <em>Close list of examples</em>
+        </a>
+
+        <a
+          class="list-group-item list-group-item-action"
+          href="javascript: void(0)"
+          @click="downloadAsJSON()"
+        >
+          Save as a local Phyx file
+        </a>
+
+        <a
+          class="list-group-item list-group-item-action"
+          href="javascript: void(0)"
+          @click="downloadAsJSONLD()"
+        >
+          Save as an ontology in JSON-LD
         </a>
 
         <a
@@ -30,41 +77,7 @@
             Reason
           </span>
         </a>
-        <a
-          class="list-group-item list-group-item-action"
-          href="javascript: void(0)"
-          onclick="$('#file-input').trigger('click')"
-        >
-          Read from local JSON file
-        </a>
-        <input
-          id="file-input"
-          type="file"
-          class="d-none"
-          @change="loadPhyxFromFileInputById('#file-input')"
-        >
-        <a
-          class="list-group-item list-group-item-action"
-          href="javascript: void(0)"
-          @click="downloadAsJSON()"
-        >
-          Save as JSON
-        </a>
-        <a
-          class="list-group-item list-group-item-action"
-          href="javascript: void(0)"
-          onclick="$('.phyx-examples').toggleClass('d-none')"
-        >
-          Examples
-        </a>
-        <a
-          v-for="example of examplePHYXURLs"
-          href="javascript: void(0)"
-          class="list-group-item list-group-item-action phyx-examples d-none"
-          @click="loadPhyxFromURL(example.url)"
-        >
-          &#9679; {{ example.title }}
-        </a>
+
         <a
           class="list-group-item list-group-item-action"
           href="javascript: void(0)"
@@ -352,6 +365,17 @@ export default {
       // model. We deep-compare this.testcase with this.testcaseAsLoaded to
       // determine if the loaded model has been modified.
       this.$store.commit('setLoadedPhyx');
+    },
+
+    downloadAsJSONLD() {
+      // Exports the PHYX file as an OWL/JSON-LD file, which can be opened in
+      // Protege or converted into OWL/XML or other formats.
+      const wrapped = new PhyxWrapper(this.$store.state.phyx.currentPhyx);
+      const content = [JSON.stringify([wrapped.asJSONLD()], undefined, 4)];
+
+      // Save to local hard drive.
+      const jsonldFile = new File(content, 'download.jsonld', { type: 'application/json;charset=utf-8' });
+      saveAs(jsonldFile);
     },
 
     reasonOverPhyloreferences() {
