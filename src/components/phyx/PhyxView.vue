@@ -1,76 +1,134 @@
 <template>
-  <div class="card border-dark">
-    <h5 class="card-header border-dark">
-      Phyloreferences in this file
-    </h5>
-    <div class="card-body p-0">
-      <table class="table table-hover table-flush">
-        <thead>
-          <th>&nbsp;</th>
-          <th>Phyloreference</th>
-          <th>Internal specifiers</th>
-          <th>External specifiers</th>
-          <th v-for="(phylogeny, phylogenyIndex) of phylogenies">
-            {{ phylogeny.label || `Phylogeny ${phylogenyIndex + 1}` }}
-          </th>
-        </thead>
-        <tbody>
-          <tr
-            v-if="phylorefs.length === 0"
-            class="bg-white"
-          >
-            <td :colspan="4 + phylogenies.length">
-              <Center><em>No phyloreferences loaded</em></Center>
-            </td>
-          </tr>
-          <tr v-for="(phyloref, phylorefIndex) of phylorefs">
-            <td>&nbsp;</td>
-            <td>
-              <a
-                href="javascript: void(0)"
-                @click="$store.commit('changeDisplay', { phyloref })"
+  <div>
+    <div class="card border-dark">
+      <h5 class="card-header border-dark">
+        Phyx file information
+      </h5>
+      <div class="card-body">
+        <form>
+          <!-- Phyx file label -->
+          <div class="form-group row">
+            <label
+              for="label"
+              class="col-form-label col-md-2"
+            >
+              Phyx file label
+            </label>
+            <div class="col-md-10">
+              <input
+                id="label"
+                v-model="phyx.title"
+                type="text"
+                class="form-control"
+                placeholder="Phyloreference label"
               >
-                {{ phyloref.label || `Phyloref ${phylorefIndex + 1}` }}
-              </a>
-            </td>
-            <td>{{ (phyloref.internalSpecifiers || []).length }}</td>
-            <td>{{ (phyloref.externalSpecifiers || []).length }}</td>
-            <td v-for="(phylogeny, phylogenyIndex) of phylogenies">
-              <template v-if="getPhylorefExpectedNodeLabels(phyloref, phylogeny).length === 0">
-                <strong>Not matched</strong>
-                <template v-if="hasReasoningResults(phyloref)">
-                  but
-                  <template v-if="getNodeLabelsResolvedByPhyloref(phyloref, phylogeny) > 1">
-                    <strong>resolved to multiple nodes: {{ getNodeLabelsResolvedByPhyloref(phyloref, phylogeny) }}</strong>
-                  </template>
-                  <template v-else>
-                    resolved to {{ getNodeLabelsResolvedByPhyloref(phyloref, phylogeny)[0]||"(none)" }}
-                  </template>
-                </template>
-              </template>
-              <template v-else>
-                Matched
-                <template v-if="hasReasoningResults(phyloref)">
-                  and
-                  <template v-if="getNodeLabelsResolvedByPhyloref(phyloref, phylogeny) > 1">
-                    <strong>resolved to multiple nodes: {{ getNodeLabelsResolvedByPhyloref(phyloref, phylogeny) }}</strong>
-                  </template>
-                  <template v-else>
-                    resolved
-                    <template v-if="getNodeLabelsResolvedByPhyloref(phyloref, phylogeny)[0] === getPhylorefExpectedNodeLabels(phyloref, phylogeny)[0]">
-                      correctly
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="card border-dark mt-2">
+      <h5 class="card-header border-dark">
+        Phyloreferences in this file
+      </h5>
+      <div class="card-body p-0">
+        <table class="table table-hover table-flush">
+          <thead>
+            <th>&nbsp;</th>
+            <th>Phyloreference</th>
+            <th>Internal specifiers</th>
+            <th>External specifiers</th>
+            <th v-for="(phylogeny, phylogenyIndex) of phylogenies">
+              {{ phylogeny.label || `Phylogeny ${phylogenyIndex + 1}` }}
+            </th>
+          </thead>
+          <tbody>
+            <tr
+              v-if="phylorefs.length === 0"
+              class="bg-white"
+            >
+              <td :colspan="4 + phylogenies.length">
+                <Center><em>No phyloreferences loaded</em></Center>
+              </td>
+            </tr>
+            <tr v-for="(phyloref, phylorefIndex) of phylorefs">
+              <td>&nbsp;</td>
+              <td>
+                <a
+                  href="javascript: void(0)"
+                  @click="$store.commit('changeDisplay', { phyloref })"
+                >
+                  {{ phyloref.label || `Phyloref ${phylorefIndex + 1}` }}
+                </a>
+              </td>
+              <td>{{ (phyloref.internalSpecifiers || []).length }}</td>
+              <td>{{ (phyloref.externalSpecifiers || []).length }}</td>
+              <td v-for="(phylogeny, phylogenyIndex) of phylogenies">
+                <template v-if="getPhylorefExpectedNodeLabels(phyloref, phylogeny).length === 0">
+                  <strong>Not matched</strong>
+                  <template v-if="hasReasoningResults(phyloref)">
+                    but
+                    <template v-if="getNodeLabelsResolvedByPhyloref(phyloref, phylogeny) > 1">
+                      <strong>resolved to multiple nodes: {{ getNodeLabelsResolvedByPhyloref(phyloref, phylogeny) }}</strong>
                     </template>
                     <template v-else>
-                      <strong>incorrectly</strong>
+                      resolved to {{ getNodeLabelsResolvedByPhyloref(phyloref, phylogeny)[0]||"(none)" }}
                     </template>
-                    to {{ getNodeLabelsResolvedByPhyloref(phyloref, phylogeny)[0]||"(none)" }}
                   </template>
                 </template>
-              </template>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+                <template v-else>
+                  Matched
+                  <template v-if="hasReasoningResults(phyloref)">
+                    and
+                    <template v-if="getNodeLabelsResolvedByPhyloref(phyloref, phylogeny) > 1">
+                      <strong>resolved to multiple nodes: {{ getNodeLabelsResolvedByPhyloref(phyloref, phylogeny) }}</strong>
+                    </template>
+                    <template v-else>
+                      resolved
+                      <template v-if="getNodeLabelsResolvedByPhyloref(phyloref, phylogeny)[0] === getPhylorefExpectedNodeLabels(phyloref, phylogeny)[0]">
+                        correctly
+                      </template>
+                      <template v-else>
+                        <strong>incorrectly</strong>
+                      </template>
+                      to {{ getNodeLabelsResolvedByPhyloref(phyloref, phylogeny)[0]||"(none)" }}
+                    </template>
+                  </template>
+                </template>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card-footer">
+        <div
+          class="btn-group"
+          role="group"
+          area-label="Phyx file management"
+        >
+          <button
+            class="btn btn-info"
+            href="javascript:;"
+            @click="$store.commit('createEmptyPhyloref')"
+          >
+            Add phyloreference
+          </button>
+          <button
+            class="btn btn-info"
+            href="javascript:;"
+            @click="$store.commit('createEmptyPhylogeny')"
+          >
+            Add phylogeny
+          </button>
+          <button
+            class="btn btn-primary"
+            href="javascript:;"
+            @click="reasonOverPhyloreferences()"
+          >
+            Reason over phyloreferences
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -86,7 +144,7 @@ import { PhylorefWrapper, PhylogenyWrapper } from '@phyloref/phyx';
 export default {
   name: 'PhyxView',
   computed: mapState({
-    phyx: state => state.phyx,
+    phyx: state => state.phyx.currentPhyx,
     phylorefs: state => state.phyx.currentPhyx.phylorefs,
     phylogenies: state => state.phyx.currentPhyx.phylogenies,
   }),
@@ -131,6 +189,47 @@ export default {
         .map(nodeId => this.getNodesById(phylogeny, nodeId))
         .reduce((a, b) => a.concat(b), [])
         .map(node => node.name || '(unlabelled)');
+    },
+    reasonOverPhyloreferences() {
+      // Reason over all the phyloreferences and store the results on
+      // the Vue model at vm.reasoningResults so we can access them.
+
+      // Are we already reasoning? If so, ignore.
+      if (this.reasoningInProgress) return;
+
+      // Disable "Reason" buttons so they can't be reused.
+      this.reasoningInProgress = true;
+      $.post('http://localhost:34214/reason', {
+        // This will convert the JSON-LD file into an application/x-www-form-urlencoded
+        // string (see https://api.jquery.com/jquery.ajax/#jQuery-ajax-settings under
+        // processData for details). The POST data sent to the server will look like:
+        //  jsonld=%7B%5B%7B%22title%22%3A...
+        // which translates to:
+        //  jsonld={[{"title":...
+        jsonld: JSON.stringify([new PhyxWrapper(
+          this.$store.state.phyx.currentPhyx,
+          d3.layout.newick_parser,
+        )
+          .asJSONLD()], undefined, 4),
+      }).done((data) => {
+        this.$store.commit('setReasoningResults', data);
+        // console.log('Data retrieved: ', data);
+      }).fail((jqXHR, textStatus, errorThrown) => {
+        // We can try using the third argument, but it appears to be the
+        // HTTP status (e.g. 'Internal Server Error'). So we default to that,
+        // but look for a better one in the JSON response from the server, if
+        // available.
+        let error = errorThrown;
+        if (has(jqXHR, 'responseJSON') && has(jqXHR.responseJSON, 'error')) {
+          error = jqXHR.responseJSON.error;
+        }
+
+        if (error === undefined || error === '') error = 'unknown error';
+        alert(`Error occurred on server while reasoning: ${error}`);
+      }).always(() => {
+        // Reset "Reasoning" buttons to their usual state.
+        this.reasoningInProgress = false;
+      });
     },
   },
 };
