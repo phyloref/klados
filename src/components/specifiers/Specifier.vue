@@ -119,7 +119,7 @@
           <div class="col-md-10 input-group">
             <input
               id="verbatim-specifier"
-              v-model="specifier.verbatimSpecifier"
+              v-model="specifierLabel"
               class="form-control"
             >
           </div>
@@ -163,16 +163,16 @@
           <div class="form-group row">
             <label
               class="col-form-label col-md-2"
-              for="scientific-name"
+              for="taxon-name"
             >
-              Scientific name
+              Taxon name
             </label>
             <div class="col-md-10 input-group">
               <input
-                id="scientific-name"
-                v-model="scientificName"
+                id="taxon-name"
+                v-model="taxonNameWrapped.label"
                 class="form-control"
-                placeholder="Enter the scientific name"
+                placeholder="Enter the taxon name"
               >
             </div>
           </div>
@@ -180,16 +180,15 @@
           <div class="form-group row">
             <label
               class="col-form-label col-md-2"
-              for="binomial-name"
+              for="name-complete"
             >
-              Binomial name
+              Binomial/trinomial name
             </label>
             <div class="col-md-10 input-group">
               <input
-                id="binomial-name"
-                readonly
+                id="name-complete"
                 class="form-control"
-                :value="taxonNameWrapped.binomialName"
+                :value="taxonNameWrapped.nameComplete"
               >
             </div>
           </div>
@@ -224,6 +223,23 @@
                 readonly
                 class="form-control"
                 :value="taxonNameWrapped.specificEpithet"
+              >
+            </div>
+          </div>
+
+          <div class="form-group row" v-if="taxonNameWrapped.infraspecificEpithet">
+            <label
+              class="col-form-label col-md-2"
+              for="infraspecific-epithet"
+            >
+              Infraspecific epithet
+            </label>
+            <div class="col-md-10 input-group">
+              <input
+                id="infraspecific-epithet"
+                readonly
+                class="form-control"
+                :value="taxonNameWrapped.infraspecificEpithet"
               >
             </div>
           </div>
@@ -431,7 +447,7 @@ export default {
             break;
         }
 
-        console.log('Specifier now at', this.specifier);
+        // console.log('Specifier now at', this.specifier);
         this.updateSpecifier();
       },
     },
@@ -547,7 +563,7 @@ export default {
       // If our local specifier differs from the remoteSpecifier, update it.
       if (isEqual(result, this.remoteSpecifier)) return;
 
-      console.log('Updating specifier as ', result, ' differs from ', this.remoteSpecifier);
+      // console.log('Updating specifier as ', result, ' differs from ', this.remoteSpecifier);
       this.$store.commit('setSpecifierProps', {
         specifier: this.remoteSpecifier,
         props: result,
