@@ -189,7 +189,7 @@
                 id="binomial-name"
                 readonly
                 class="form-control"
-                :value="scientificNameWrapper.binomialName"
+                :value="taxonNameWrapped.binomialName"
               >
             </div>
           </div>
@@ -206,7 +206,7 @@
                 id="genus"
                 readonly
                 class="form-control"
-                :value="scientificNameWrapper.genus"
+                :value="taxonNameWrapped.genusPart"
               >
             </div>
           </div>
@@ -223,7 +223,7 @@
                 id="specific-epithet"
                 readonly
                 class="form-control"
-                :value="scientificNameWrapper.specificEpithet"
+                :value="taxonNameWrapped.specificEpithet"
               >
             </div>
           </div>
@@ -260,7 +260,7 @@
                 id="collection-code"
                 readonly
                 class="form-control"
-                :value="specimenWrapper.institutionCode"
+                :value="specimenWrapped.institutionCode"
               >
             </div>
           </div>
@@ -277,7 +277,7 @@
                 id="collection-code"
                 readonly
                 class="form-control"
-                :value="specimenWrapper.collectionCode"
+                :value="specimenWrapped.collectionCode"
               >
             </div>
           </div>
@@ -294,7 +294,7 @@
                 id="catalog-number"
                 readonly
                 class="form-control"
-                :value="specimenWrapper.catalogNumber"
+                :value="specimenWrapped.catalogNumber"
               >
             </div>
           </div>
@@ -342,7 +342,14 @@
 <script>
 /*
  * Displays a specifier as a textfield/expanded field.
- * Both the textfield and the expanded fields are editable, and will overwrite each other as we go.
+ *
+ * Here is a quick guide to how this is wired together:
+ *  - Individual text fields will update their synthesized field (i.e. editing genus
+ *    will update specifierText).
+ *  - Editing or otherwise updating the synthesized field will overwrite
+ *    locally stored specifier (specifier).
+ *  - If our local specifier falls out of sync with the remoteSpecifier, we
+ *    overwrite it using the specifier.
  */
 
 import Vue from 'vue';
@@ -374,9 +381,8 @@ export default {
       specifier: cloneDeep(this.remoteSpecifier),
       expand: false,
       specifierClass: undefined,
-      enteredOccurrenceID: '',
-      enteredScientificName: '',
-      enteredExternalReference: '',
+      specimenWrapped: new SpecimenWrapper(cloneDeep(this.remoteSpecifier)),
+      taxonNameWrapped: new TaxonNameWrapper(cloneDeep(this.remoteSpecifier)),
     };
   },
   computed: {
@@ -408,14 +414,20 @@ export default {
         switch (this.specifierClassComputed) {
           case 'Taxon':
             this.enteredScientificName = label;
+            this.enteredOccurrenceID = "";
+            this.enteredExternalReference = "";
             break;
 
           case 'Specimen':
             this.enteredOccurrenceID = label;
+            this.enteredScientificName = "";
+            this.enteredExternalReference = "";
             break;
 
           case 'External reference':
             this.enteredExternalReference = label;
+            this.enteredScientificName = "";
+            this.enteredOccurrenceID = "";
             break;
         }
 
@@ -434,7 +446,6 @@ export default {
 
         if (this.specifierClass) return this.specifierClass;
 
-        // TODO: remove hack once we move to Model 2.0.
         const tunit = new TaxonomicUnitWrapper(this.specifier || {});
 
         if ((tunit.externalReferences || []).length > 0) return 'External reference';
@@ -449,22 +460,28 @@ export default {
         this.updateSpecifier();
       },
     },
-    scientificName: {
+    enteredScientificName: {
       get() {
-        return this.enteredScientificName;
+        return this.taxonNameWrapped.nameComplete;
       },
       set(scname) {
-        Vue.set(this, 'specifier', TaxonConceptWrapper.fromLabel(scname));
+        // Don't do anything if a scname is not actually set.
+        if (!scname) return;
+
+        // TODO: Add nomen code here.
+        this.taxonNameWrapped = new TaxonNameWrapper(TaxonNameWrapper.fromVerbatimName(scname) || {});
         this.updateSpecifier();
-        this.enteredScientificName = scname;
       },
     },
-    scientificNameWrapper() {
-      return new TaxonNameWrapper(TaxonNameWrapper.fromVerbatimName(this.enteredScientificName));
-    },
-    specimenWrapper() {
-      return new SpecimenWrapper(SpecimenWrapper.createFromOccurrenceID(this.enteredOccurrenceID));
-    },
+    enteredOccurrenceID: {
+      get() {
+        return this.specimenWrapped.occurrenceID;
+      },
+      set(occurID) {
+        this.specimenWrapped = new SpecimenWrapper(SpecimenWrapper.fromOccurrenceID(occurID));
+        this.updateSpecifier();
+      },
+    }
   },
   watch: {
     phyloref() {
@@ -483,16 +500,18 @@ export default {
   methods: {
     recalculateEntered() {
       // Recalculate the entered values.
-      const tunit = new TaxonomicUnitWrapper(this.specifier || {});
+      const tunit = new TaxonomicUnitWrapper(cloneDeep(this.specifier || {}));
 
-      if (tunit.types.includes(TaxonomicUnitWrapper.TYPE_SPECIMEN)) {
-        this.enteredOccurrenceID = tunit.label;
-      } else if (tunit.types.includes(TaxonomicUnitWrapper.TYPE_TAXON_CONCEPT)) {
-        this.enteredScientificName = tunit.label;
-      } else {
-        // No idea what this is! Let's assume it's a scientific name.
-        this.enteredScientificName = tunit.label;
+      if (tunit.taxonConcept && new TaxonConceptWrapper(tunit.taxonConcept).taxonName) {
+        this.taxonNameWrapped = new TaxonConceptWrapper(tunit.taxonConcept).taxonName;
       }
+
+      if (tunit.specimen) {
+        this.specimenWrapped = new SpecimenWrapper(tunit.specimen);
+      }
+
+      // TODO: handle external references correctly.
+      // TODO: what if all fail?
     },
     deleteSpecifier() {
       const confirmed = confirm('Are you sure you want to delete this specifier?');
@@ -516,6 +535,9 @@ export default {
           result = SpecimenWrapper.fromOccurrenceID(this.enteredOccurrenceID);
           break;
       }
+
+      // Make sure we have a result, even if it's just a blank object.
+      if(!result) result = {};
 
       // Add verbatimSpecifier.
       if (has(this.specifier, 'verbatimSpecifier')) {
