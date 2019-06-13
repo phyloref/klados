@@ -160,20 +160,36 @@
           types here
         -->
         <template v-if="specifierClassComputed === 'Taxon'">
+          <!-- Specifier class -->
           <div class="form-group row">
             <label
               class="col-form-label col-md-2"
-              for="taxon-name"
+              for="nomen-code"
             >
-              Taxon name
+              Nomenclatural code
             </label>
-            <div class="col-md-10 input-group">
-              <input
-                id="taxon-name"
-                v-model="taxonNameWrapped.label"
+            <div class="col-md-10">
+              <select
+                id="nomen-code"
+                v-model="taxonNameWrapped.nomenclaturalCode"
                 class="form-control"
-                placeholder="Enter the taxon name"
               >
+                <option :value="getNomenCodeAsURI('unknown')">
+                  Unknown
+                </option>
+                <option :value="getNomenCodeAsURI('iczn')">
+                  ICZN
+                </option>
+                <option :value="getNomenCodeAsURI('icn')">
+                  ICNafp
+                </option>
+                <option :value="getNomenCodeAsURI('ictv')">
+                  ICTV
+                </option>
+                <option :value="getNomenCodeAsURI('icnp')">
+                  ICNP
+                </option>
+              </select>
             </div>
           </div>
 
@@ -188,7 +204,7 @@
               <input
                 id="name-complete"
                 class="form-control"
-                :value="taxonNameWrapped.nameComplete"
+                v-model="taxonNameWrapped.nameComplete"
               >
             </div>
           </div>
@@ -203,9 +219,8 @@
             <div class="col-md-10 input-group">
               <input
                 id="genus"
-                readonly
                 class="form-control"
-                :value="taxonNameWrapped.genusPart"
+                v-model="taxonNameWrapped.genusPart"
               >
             </div>
           </div>
@@ -220,9 +235,8 @@
             <div class="col-md-10 input-group">
               <input
                 id="specific-epithet"
-                readonly
                 class="form-control"
-                :value="taxonNameWrapped.specificEpithet"
+                v-model="taxonNameWrapped.specificEpithet"
               >
             </div>
           </div>
@@ -237,9 +251,8 @@
             <div class="col-md-10 input-group">
               <input
                 id="infraspecific-epithet"
-                readonly
                 class="form-control"
-                :value="taxonNameWrapped.infraspecificEpithet"
+                v-model="taxonNameWrapped.infraspecificEpithet"
               >
             </div>
           </div>
@@ -544,7 +557,7 @@ export default {
       let result;
       switch (this.specifierClassComputed) {
         case 'Taxon':
-          result = TaxonConceptWrapper.fromLabel(this.enteredScientificName);
+          result = TaxonConceptWrapper.wrapTaxonName(this.taxonNameWrapped.asJSONLD);
           break;
 
         case 'Specimen':
@@ -556,8 +569,8 @@ export default {
       if(!result) result = {};
 
       // Add verbatimSpecifier.
-      if (has(this.specifier, 'verbatimSpecifier')) {
-        result.verbatimSpecifier = this.specifier.verbatimSpecifier;
+      if (has(this.specifier, 'label')) {
+        result.label = this.specifier.label;
       }
 
       // If our local specifier differs from the remoteSpecifier, update it.
@@ -569,6 +582,9 @@ export default {
         props: result,
       });
     },
+    getNomenCodeAsURI(nomenCode) {
+      return TaxonNameWrapper.getNomenCodeAsURI(nomenCode);
+    }
   },
 };
 </script>
