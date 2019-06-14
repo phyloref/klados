@@ -9,19 +9,44 @@
           <!-- Phyx file label -->
           <div class="form-group row">
             <label
-              for="label"
+              for="phyx=label"
               class="col-form-label col-md-2"
             >
               Phyx file label
             </label>
             <div class="col-md-10">
               <input
-                id="label"
+                id="phyx-label"
                 v-model="phyx.title"
                 type="text"
                 class="form-control"
                 placeholder="Phyloreference label"
               >
+            </div>
+          </div>
+
+          <!-- Default nomenclatural code -->
+          <div class="form-group row">
+            <label
+              for="default-nomen-code"
+              class="col-form-label col-md-2"
+            >
+              Default nomenclatural code
+            </label>
+            <div class="col-md-10">
+              <select
+                id="nomen-code"
+                :value="$store.getters.getDefaultNomenCodeURI"
+                @change="$store.commit('setDefaultNomenCodeURI', { defaultNomenclaturalCodeURI: $event.target.value })"
+                class="form-control"
+              >
+                <option
+                  v-for="(nomenCode, nomenCodeIndex) of nomenCodes"
+                  :value="nomenCode.uri"
+                >
+                  {{ nomenCode.label }}
+                </option>
+              </select>
             </div>
           </div>
         </form>
@@ -202,15 +227,18 @@
  */
 import { mapState } from 'vuex';
 import { has } from 'lodash';
-import { PhylorefWrapper, PhylogenyWrapper } from '@phyloref/phyx';
+import { PhylorefWrapper, PhylogenyWrapper, TaxonNameWrapper } from '@phyloref/phyx';
 
 export default {
   name: 'PhyxView',
-  computed: mapState({
-    phyx: state => state.phyx.currentPhyx,
-    phylorefs: state => state.phyx.currentPhyx.phylorefs,
-    phylogenies: state => state.phyx.currentPhyx.phylogenies,
-  }),
+  computed: {
+    nomenCodes: () => TaxonNameWrapper.getNomenclaturalCodes(),
+    ...mapState({
+      phyx: state => state.phyx.currentPhyx,
+      phylorefs: state => state.phyx.currentPhyx.phylorefs,
+      phylogenies: state => state.phyx.currentPhyx.phylogenies,
+    })
+  },
   methods: {
     hasReasoningResults(phyloref) {
       if (!has(this.$store.state.phyx.reasoningResults, 'phylorefs')) return false;
