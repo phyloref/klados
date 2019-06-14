@@ -6,6 +6,8 @@
  */
 
 import Vue from 'vue';
+import { has } from 'lodash';
+import { TaxonNameWrapper } from '@phyloref/phyx';
 
 export default {
   state: {
@@ -51,6 +53,35 @@ export default {
     createEmptyPhylogeny(state) {
       // Create a new, empty phylogeny.
       state.currentPhyx.phylogenies.push({});
+    },
+    deletePhyloref(state, payload) {
+      // Delete a phyloreference.
+      if (!has(payload, 'phyloref')) {
+        throw new Error('deletePhyloref needs a phyloref to modify using the "phyloref" argument');
+      }
+
+      const indexOf = (state.currentPhyx.phylorefs || []).indexOf(payload.phyloref);
+      if (indexOf < 0) throw new Error(`Could not delete unknown phyloref: ${JSON.stringify(payload.phyloref)}`);
+
+      state.currentPhyx.phylorefs.splice(indexOf, 1);
+    },
+    deletePhylogeny(state, payload) {
+      // Delete a phylogeny.
+      if (!has(payload, 'phylogeny')) {
+        throw new Error('deletePhylogeny needs a phylogeny to modify using the "phylogeny" argument');
+      }
+
+      const indexOf = (state.currentPhyx.phylogenies || []).indexOf(payload.phylogeny);
+      if (indexOf < 0) throw new Error(`Could not delete unknown phylogeny: ${JSON.stringify(payload.phylogeny)}`);
+
+      state.currentPhyx.phylogenies.splice(indexOf, 1);
+    },
+    setDefaultNomenCodeURI(state, payload) {
+      if (!has(payload, 'defaultNomenclaturalCodeURI')) {
+        throw new Error('No default nomenclatural code URI provided to setDefaultNomenCodeURI');
+      }
+
+      Vue.set(state.currentPhyx, 'defaultNomenclaturalCodeURI', payload.defaultNomenclaturalCodeURI);
     },
   },
 };

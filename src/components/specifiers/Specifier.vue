@@ -22,6 +22,28 @@
           <a class="dropdown-item" :class="{active: specifierClassComputed === 'Apomorphy'}"  href="javascript:;" @click="specifierClass = 'Apomorphy'">Apomorphy</a>
         </div>
       </div>
+      <div class="input-group-prepend">
+        <button
+          class="btn btn-outline-secondary dropdown-toggle"
+          type="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          {{ nomenclaturalCode }}
+        </button>
+        <div class="dropdown-menu">
+          <a
+            class="dropdown-item"
+            v-for="(nomenCode, nomenCodeIndex) of nomenCodes"
+            :class="{active: nomenclaturalCode === nomenCode.uri }"
+            href="javascript:;"
+            @click="nomenclaturalCode = nomenCode.uri"
+          >
+            {{ nomenCode.label }}
+          </a>
+        </div>
+      </div>
       <input
         readonly
         type="text"
@@ -120,7 +142,7 @@
             <div class="col-md-10">
               <select
                 id="nomen-code"
-                v-model="taxonNameWrapped.nomenclaturalCode"
+                v-model="nomenclaturalCode"
                 class="form-control"
               >
                 <option
