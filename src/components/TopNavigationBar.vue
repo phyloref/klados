@@ -6,7 +6,7 @@
         class="navbar-brand"
         href="index.html"
       >
-        Curation Tool v{{ version }}
+        Phyloref Authoring Tool
       </a>
       <div class="collapse navbar-collapse">
         <ul class="navbar-nav">
