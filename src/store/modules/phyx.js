@@ -7,6 +7,7 @@
 
 import Vue from 'vue';
 import { has } from 'lodash';
+import { TaxonNameWrapper } from '@phyloref/phyx';
 
 export default {
   state: {
@@ -40,6 +41,10 @@ export default {
       const indexOf = (state.currentPhyx.phylorefs || []).indexOf(phyloref);
       if (indexOf >= 0) return `Phyloreference ${indexOf + 1}`;
       return 'Untitled phyloreference';
+    },
+    getDefaultNomenCodeURI(state) {
+      if (has(state.currentPhyx, 'defaultNomenclaturalCodeURI')) return state.currentPhyx.defaultNomenclaturalCodeURI;
+      return TaxonNameWrapper.getNomenCodeAsURI('unknown');
     },
   },
   mutations: {
@@ -97,6 +102,13 @@ export default {
       if (indexOf < 0) throw new Error(`Could not delete unknown phylogeny: ${JSON.stringify(payload.phylogeny)}`);
 
       state.currentPhyx.phylogenies.splice(indexOf, 1);
+    },
+    setDefaultNomenCodeURI(state, payload) {
+      if (!has(payload, 'defaultNomenclaturalCodeURI')) {
+        throw new Error('No default nomenclatural code URI provided to setDefaultNomenCodeURI');
+      }
+
+      Vue.set(state.currentPhyx, 'defaultNomenclaturalCodeURI', payload.defaultNomenclaturalCodeURI);
     },
   },
 };

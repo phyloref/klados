@@ -251,15 +251,18 @@
  */
 import { mapState } from 'vuex';
 import { has } from 'lodash';
-import { PhylorefWrapper, PhylogenyWrapper } from '@phyloref/phyx';
+import { PhylorefWrapper, PhylogenyWrapper, TaxonNameWrapper } from '@phyloref/phyx';
 
 export default {
   name: 'PhyxView',
-  computed: mapState({
-    phyx: state => state.phyx.currentPhyx,
-    phylorefs: state => state.phyx.currentPhyx.phylorefs,
-    phylogenies: state => state.phyx.currentPhyx.phylogenies,
-  }),
+  computed: {
+    nomenCodes: () => TaxonNameWrapper.getNomenclaturalCodes(),
+    ...mapState({
+      phyx: state => state.phyx.currentPhyx,
+      phylorefs: state => state.phyx.currentPhyx.phylorefs,
+      phylogenies: state => state.phyx.currentPhyx.phylogenies,
+    })
+  },
   methods: {
     hasReasoningResults(phyloref) {
       if (!has(this.$store.state.phyx.reasoningResults, 'phylorefs')) return false;

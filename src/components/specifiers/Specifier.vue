@@ -76,6 +76,28 @@
           </a>
         </div>
       </div>
+      <div class="input-group-prepend">
+        <button
+          class="btn btn-outline-secondary dropdown-toggle"
+          type="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          {{ nomenclaturalCode }}
+        </button>
+        <div class="dropdown-menu">
+          <a
+            class="dropdown-item"
+            v-for="(nomenCode, nomenCodeIndex) of nomenCodes"
+            :class="{active: nomenclaturalCode === nomenCode.uri }"
+            href="javascript:;"
+            @click="nomenclaturalCode = nomenCode.uri"
+          >
+            {{ nomenCode.label }}
+          </a>
+        </div>
+      </div>
       <input
         v-model="specifierLabel"
         type="text"
@@ -171,7 +193,7 @@
             <div class="col-md-10">
               <select
                 id="nomen-code"
-                v-model="taxonNameWrapped.nomenclaturalCode"
+                v-model="nomenclaturalCode"
                 class="form-control"
               >
                 <option
@@ -407,6 +429,19 @@ export default {
   },
   computed: {
     nomenCodes: () => TaxonNameWrapper.getNomenclaturalCodes(),
+    nomenclaturalCode: {
+      get() {
+        if (!this.taxonNameWrapped.hasNomenclaturalCode()) {
+          this.taxonNameWrapped.nomenclaturalCode = this.$store.getters.getDefaultNomenCodeURI;
+          // console.log(`Setting default nomenCode to ${this.taxonNameWrapped.nomenclaturalCode}.`);
+        }
+        return this.taxonNameWrapped.nomenclaturalCode;
+      },
+      set(nomenCode) {
+        // console.log(`Setting nomenclatural code to ${nomenCode}.`);
+        this.taxonNameWrapped.nomenclaturalCode = nomenCode;
+      }
+    },
     specifierType: {
       get() {
         return new PhylorefWrapper(this.phyloref).getSpecifierType(this.remoteSpecifier);
