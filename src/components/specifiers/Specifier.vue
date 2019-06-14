@@ -123,20 +123,11 @@
                 v-model="taxonNameWrapped.nomenclaturalCode"
                 class="form-control"
               >
-                <option :value="getNomenCodeAsURI('unknown')">
-                  Unknown
-                </option>
-                <option :value="getNomenCodeAsURI('iczn')">
-                  ICZN
-                </option>
-                <option :value="getNomenCodeAsURI('icn')">
-                  ICNafp
-                </option>
-                <option :value="getNomenCodeAsURI('ictv')">
-                  ICTV
-                </option>
-                <option :value="getNomenCodeAsURI('icnp')">
-                  ICNP
+                <option
+                  v-for="(nomenCode, nomenCodeIndex) of nomenCodes"
+                  :value="nomenCode.uri"
+                >
+                  {{ nomenCode.label }}
                 </option>
               </select>
             </div>
