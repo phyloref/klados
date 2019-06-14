@@ -6,6 +6,7 @@
  */
 
 import Vue from 'vue';
+import { has } from 'lodash';
 
 export default {
   state: {
