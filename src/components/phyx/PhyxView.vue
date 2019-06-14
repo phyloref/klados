@@ -107,14 +107,14 @@
           area-label="Phyx file management"
         >
           <button
-            class="btn btn-info"
+            class="btn btn-primary"
             href="javascript:;"
             @click="$store.commit('createEmptyPhyloref')"
           >
             Add phyloreference
           </button>
           <button
-            class="btn btn-info"
+            class="btn btn-outline-primary"
             href="javascript:;"
             @click="$store.commit('createEmptyPhylogeny')"
           >
