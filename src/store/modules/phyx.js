@@ -6,6 +6,7 @@
  */
 
 import Vue from 'vue';
+import { has } from 'lodash';
 
 export default {
   state: {
@@ -25,6 +26,21 @@ export default {
   getters: {
     // Return the current Phyx file as a JSON string.
     getPhyxAsJSON: state => JSON.stringify(state.currentPhyx, undefined, 4),
+    getPhylogenyLabel: state => (phylogeny) => {
+      // Return a label for the given phylogeny.
+
+      if (phylogeny.label) return phylogeny.label;
+      const indexOf = (state.currentPhyx.phylogenies || []).indexOf(phylogeny);
+      if (indexOf >= 0) return `Phylogeny ${indexOf + 1}`;
+      return 'Untitled phylogeny';
+    },
+    getPhylorefLabel: state => (phyloref) => {
+      // Return a label for the given phyloreference.
+      if (phyloref.label) return phyloref.label;
+      const indexOf = (state.currentPhyx.phylorefs || []).indexOf(phyloref);
+      if (indexOf >= 0) return `Phyloreference ${indexOf + 1}`;
+      return 'Untitled phyloreference';
+    },
   },
   mutations: {
     setCurrentPhyx(state, phyx) {
@@ -59,6 +75,17 @@ export default {
     createEmptyPhylogeny(state) {
       // Create a new, empty phylogeny.
       state.currentPhyx.phylogenies.push({});
+    },
+    deletePhyloref(state, payload) {
+      // Delete a phyloreference.
+      if (!has(payload, 'phyloref')) {
+        throw new Error('deletePhyloref needs a phyloref to modify using the "phyloref" argument');
+      }
+
+      const indexOf = (state.currentPhyx.phylorefs || []).indexOf(payload.phyloref);
+      if (indexOf < 0) throw new Error(`Could not delete unknown phyloref: ${JSON.stringify(payload.phyloref)}`);
+
+      state.currentPhyx.phylorefs.splice(indexOf, 1);
     },
   },
 };
