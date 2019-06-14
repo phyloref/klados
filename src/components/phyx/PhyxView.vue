@@ -39,7 +39,7 @@
             <th>Internal specifiers</th>
             <th>External specifiers</th>
             <th v-for="(phylogeny, phylogenyIndex) of phylogenies">
-              {{ phylogeny.label || `Phylogeny ${phylogenyIndex + 1}` }}
+              {{ $store.getters.getPhylogenyLabel(phylogeny) }}
             </th>
           </thead>
           <tbody>
@@ -48,17 +48,23 @@
               class="bg-white"
             >
               <td :colspan="4 + phylogenies.length">
-                <Center><em>No phyloreferences loaded</em></Center>
+                <Center><em>No phyloreferences in this file</em></Center>
               </td>
             </tr>
             <tr v-for="(phyloref, phylorefIndex) of phylorefs">
-              <td>&nbsp;</td>
+              <td>
+                <button
+                  type="button"
+                  class="btn btn-sm btn-danger"
+                  @click="deletePhyloref(phyloref)"
+                >&#x2715;</button>
+              </td>
               <td>
                 <a
                   href="javascript: void(0)"
                   @click="$store.commit('changeDisplay', { phyloref })"
                 >
-                  {{ phyloref.label || `Phyloref ${phylorefIndex + 1}` }}
+                  {{ $store.getters.getPhylorefLabel(phyloref) }}
                 </a>
               </td>
               <td>{{ (phyloref.internalSpecifiers || []).length }}</td>
@@ -107,18 +113,11 @@
           area-label="Phyx file management"
         >
           <button
-            class="btn btn-info"
+            class="btn btn-outline-primary"
             href="javascript:;"
             @click="$store.commit('createEmptyPhyloref')"
           >
             Add phyloreference
-          </button>
-          <button
-            class="btn btn-info"
-            href="javascript:;"
-            @click="$store.commit('createEmptyPhylogeny')"
-          >
-            Add phylogeny
           </button>
           <button
             class="btn btn-primary"
@@ -126,6 +125,70 @@
             @click="reasonOverPhyloreferences()"
           >
             Reason over phyloreferences
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card border-dark mt-2">
+      <h5 class="card-header border-dark">
+        Phylogenies in this file
+      </h5>
+      <div class="card-body p-0">
+        <table class="table table-hover table-flush">
+          <thead>
+            <th>&nbsp;</th>
+            <th>Phylogeny</th>
+            <th>Description</th>
+            <th>Number of tips</th>
+          </thead>
+          <tbody>
+            <tr
+              v-if="phylogenies.length === 0"
+              class="bg-white"
+            >
+              <td :colspan="3">
+                <Center><em>No phylogenies in this file</em></Center>
+              </td>
+            </tr>
+            <tr v-for="(phylogeny, phylogenyIndex) of phylogenies">
+              <td>
+                <button
+                  type="button"
+                  class="btn btn-sm btn-danger"
+                  @click="deletePhylogeny(phylogeny)"
+                >&#x2715;</button>
+              </td>
+              <td>
+                <a
+                  href="javascript: void(0)"
+                  @click="$store.commit('changeDisplay', { phylogeny })"
+                >
+                  {{ $store.getters.getPhylogenyLabel(phylogeny) }}
+                </a>
+              </td>
+              <td>
+                {{ phylogeny.description }}
+              </td>
+              <td>
+                TODO
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card-footer">
+        <div
+          class="btn-group"
+          role="group"
+          area-label="Phylogeny management"
+        >
+          <button
+            class="btn btn-primary"
+            href="javascript:;"
+            @click="$store.commit('createEmptyPhylogeny')"
+          >
+            Add phylogeny
           </button>
         </div>
       </div>
@@ -231,6 +294,22 @@ export default {
         this.reasoningInProgress = false;
       });
     },
+    deletePhyloref(phyloref) {
+      const warningString = `Are you sure you wish to delete phyloreference '${
+        this.$store.getters.getPhylorefLabel(phyloref)
+      }'?`;
+      if(confirm(warningString)) {
+        this.$store.commit('deletePhyloref', { phyloref });
+      }
+    },
+    deletePhylogeny(phylogeny) {
+      const warningString = `Are you sure you wish to delete phylogeny '${
+        this.$store.getters.getPhylogenyLabel(phylogeny)
+      }'?`;
+      if(confirm(warningString)) {
+        this.$store.commit('deletePhylogeny', { phylogeny });
+      }
+    }
   },
 };
 </script>
