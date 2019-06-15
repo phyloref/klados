@@ -21,7 +21,7 @@
         :id="'phylogeny' + phylogenyIndex"
         class="col-md-12 phylogeny"
       />
-      <ResizeObserver @notify="redrawTree()" />
+      <ResizeObserver @notify="redrawTree" />
     </div>
   </div>
 </template>
@@ -293,10 +293,11 @@ export default {
           // height
           0,
           // width
-          $(`#phylogeny${this.phylogenyIndex}`).width() - 40,
+          $(`#phylogeny${this.phylogenyIndex}`).innerWidth(),
           // We need more space because our fonts are bigger than the default.
         ])
         .spacing_x(this.spacingX)
+        .placenodes()
         .update();
     },
   },
