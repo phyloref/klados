@@ -1,11 +1,11 @@
 {
-    "@context": "file:///home/vaidyagi/code/phyloref/phyx.js/docs/context/v0.2.0/phyx.json",
+    "@context": "file:///Users/ggvaidya/code/phyx.js/docs/context/v0.2.0/phyx.json",
     "doi": "10.1146/annurev.earth.31.100901.141308",
     "url": "https://www.annualreviews.org/doi/10.1146/annurev.earth.31.100901.141308",
     "citation": "Brochu (2003) Annual Review of Earth and Planetary Sciences 31:357-397",
     "phylogenies": [
         {
-            "description": "Fig 1 from the paper",
+            "description": "",
             "newick": "(Parasuchia,(rauisuchians,Aetosauria,(sphenosuchians,(protosuchians,(mesosuchians,(Hylaeochampsa,Aegyptosuchus,Stomatosuchus,(Allodaposuchus,('Gavialis gangeticus',(('Diplocynodon ratelii',('Alligator mississippiensis','Caiman crocodilus')Alligatoridae)Alligatoroidea,('Tomistoma schlegelii',('Osteolaemus tetraspis','Crocodylus niloticus')Crocodylinae)Crocodylidae)Brevirostres)Crocodylia))Eusuchia)Mesoeucrocodylia)Crocodyliformes)Crocodylomorpha))root;",
             "additionalNodeProperties": {
                 "Gavialis gangeticus": {
@@ -48,7 +48,8 @@
                         "Osteolaeminae"
                     ]
                 }
-            }
+            },
+            "label": "Fig 1 from Brochu 2003"
         }
     ],
     "phylorefs": [
@@ -187,7 +188,7 @@
         },
         {
             "label": "Brevirostres",
-            "cladeDefinition": "Brevirostres (von Zittel 1890). If Gavialis and Tomistoma are sister taxa, Brevirostres is a junior synonym of Crocodylia.\n\nLast common ancestor of Alligator mississippiensis and Crocodylus niloticus and all of its descendents.\n \t \t ",
+            "cladeDefinition": "Last common ancestor of Alligator mississippiensis and Crocodylus niloticus and all of its descendents.",
             "internalSpecifiers": [
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
@@ -209,7 +210,46 @@
                         "timeinterval:hasIntervalStartDate": "2018-06-11T22:49:04.648Z"
                     }
                 }
-            ]
+            ],
+            "dwc:namePublishedIn": {
+                "type": "book_section",
+                "authors": [
+                    {
+                        "name": "Zittel, Karl Alfred von"
+                    }
+                ],
+                "title": "Handbuch der Palaeontologie",
+                "section_title": "III. Band. Vertebrata",
+                "year": "1890",
+                "pages": "674",
+                "link": [
+                    {
+                        "url": "http://biodiversitylibrary.org/page/40393898"
+                    }
+                ]
+            },
+            "curatorComments": "If Gavialis and Tomistoma are sister taxa, Brevirostres is a junior synonym of Crocodylia.",
+            "obo:IAO_0000119": {
+                "journal": {
+                    "name": "Annual Review of Earth and Planetary Sciences",
+                    "volume": "31"
+                },
+                "type": "article",
+                "authors": [
+                    {
+                        "name": "Brooch, Christopher A"
+                    }
+                ],
+                "title": "Phylogenetic Approaches Toward Crocodilian History",
+                "year": "2003",
+                "pages": "357-397",
+                "identifier": [
+                    {
+                        "type": "doi",
+                        "id": "10.1146/annurev.earth.31.100901.141308"
+                    }
+                ]
+            }
         },
         {
             "label": "Alligatoroidea",
