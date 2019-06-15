@@ -353,12 +353,12 @@ export default {
 
       // Draw the tree.
       this.tree
-        .font_size(16) // Weirdly enough, this is in px, not pt.
+        .font_size(undefined) // Weirdly enough, this is in px, not pt.
         .size([
           // height
           0,
           // width
-          $(`#phylogeny${this.phylogenyIndex}`).innerWidth(),
+          $(`#phylogeny${this.phylogenyIndex}`).innerWidth() - 70,
           // We need more space because our fonts are bigger than the default.
         ])
         .spacing_x(this.spacingX)
@@ -389,6 +389,9 @@ export default {
  * that includes both the node as well as the label with it, while *-label
  * refers only to the labels next to the nodes.
  */
+.node {
+  font-size: 12pt;
+}
 
 /* Labels for internal nodes, whether phylorefs or not */
 .internal-label {
