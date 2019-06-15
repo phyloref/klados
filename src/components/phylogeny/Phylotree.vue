@@ -90,7 +90,7 @@ export default {
       const tree = d3.layout.phylotree()
         .svg(d3.select(`#phylogeny${this.phylogenyIndex}`))
         .options({
-          'internal-names': true,
+          'internal-names': false,
           transitions: false,
           'left-right-spacing': 'fit-to-size',
           'top-bottom-spacing': 'fixed-step',
@@ -110,10 +110,7 @@ export default {
               textLabel = element.append('text');
 
               // Place internal label to the left of the root node.
-              textLabel.classed('internal-label', true)
-                .text(data.name)
-                .attr('dx', '.3em')
-                .attr('dy', '.3em');
+              // TODO: put it back here with a flag?
             }
 
             // If the internal label has the same label as the currently
@@ -122,6 +119,12 @@ export default {
             if (
               this.getExpectedNodeLabelsOnPhylogeny(this.phylogeny, this.phyloref).includes(data.name)
             ) {
+              textLabel.classed('internal-label', true)
+                .text(data.name)
+                .attr('dx', '-0.2em')
+                // .attr('dy', '.3em');
+                .attr('dy', '0.8em');
+
               textLabel.attr('id', `current_expected_label_phylogeny_${this.phylogenyIndex}`);
               textLabel.classed('selected-internal-label', true);
             } else {
@@ -422,6 +425,7 @@ export default {
 .selected-internal-label {
     font-size: 16pt;
     fill: rgb(0, 24, 168);
+    text-anchor: end;
 }
 
 /*
