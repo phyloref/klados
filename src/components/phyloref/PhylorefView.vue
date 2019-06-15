@@ -173,22 +173,20 @@
               <!-- Node(s) this phyloreference is expected to resolve to -->
               <label
                 for="expected-nodes"
-                class="col-md-2 col-form-label"
+                class="col-form-label col-lg-2 col-md-4"
               >
                 Expected nodes
               </label>
 
-              <div class="input-group col-md-4">
+              <div class="input-group col-lg-4 col-md-8 pb-2">
                 <!-- Display the phylogeny where this node is expected to match -->
                 <div class="input-group-prepend">
                   <a
                     class="btn btn-outline-secondary"
                     :href="'#current_expected_label_phylogeny_' + phylogenyIndex"
                     title="Click here to jump to the expected label"
-                    type="button"
-                  >
-                    Go to node
-                  </a>
+                    role="button"
+                  >Go to node</a>
                 </div>
 
                 <!-- Display the matching node(s) -->
@@ -271,22 +269,20 @@
               <!-- Node(s) this phyloreference actually resolved to -->
               <label
                 for="actual-nodes"
-                class="col-form-label col-md-2"
+                class="col-form-label col-lg-2 col-md-4"
               >
                 Actual resolved nodes
               </label>
 
-              <div class="input-group col-md-4">
+              <div class="input-group col-lg-4 col-md-8">
                 <!-- Display the phylogeny where this node is expected to match -->
                 <div class="input-group-prepend">
                   <a
                     class="btn btn-outline-secondary"
                     :href="'#current_pinning_node_phylogeny_' + phylogenyIndex"
                     title="Click here to jump to this node"
-                    type="button"
-                  >
-                    Go to node
-                  </a>
+                    role="button"
+                  >Go to node</a>
                 </div>
 
                 <!-- Display the matching node(s) -->
@@ -296,7 +292,7 @@
                     type="text"
                     class="form-control"
                     value="Click 'Reason' to reason over all phyloreferences."
-                  >
+                  />
                 </template>
                 <template v-else>
                   <template v-if="getResolvedNodes(phylogeny).length === 0">
@@ -306,7 +302,7 @@
                       type="text"
                       class="form-control"
                       :value="'No nodes could be matched'"
-                    >
+                    />
                   </template>
                   <template v-if="getResolvedNodes(phylogeny).length === 1">
                     <!-- We matched exactly one node -->
@@ -315,7 +311,7 @@
                       type="text"
                       class="form-control"
                       :value="getResolvedNodes(phylogeny)[0]"
-                    >
+                    />
                   </template>
                   <template v-if="getResolvedNodes(phylogeny).length > 1">
                     <!-- We matched more than one node -->
@@ -324,7 +320,7 @@
                       type="text"
                       class="form-control"
                       :value="getResolvedNodes(phylogeny).length + ' nodes matched: ' + getResolvedNodes(phylogeny).join(', ')"
-                    >
+                    />
                   </template>
                 </template>
               </div>
