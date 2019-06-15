@@ -284,6 +284,7 @@ export default {
 
       // Draw the tree.
       this.tree
+        .font_size(16) // Weirdly enough, this is in px, not pt.
         .size([
           // height
           0,
@@ -319,10 +320,6 @@ export default {
  * that includes both the node as well as the label with it, while *-label
  * refers only to the labels next to the nodes.
  */
-.node {
-  /* Phylotree's CSS sets this to 10px; we prefer larger node labels */
-  font-size: 11pt;
-}
 
 /* Labels for internal nodes, whether phylorefs or not */
 .internal-label {
