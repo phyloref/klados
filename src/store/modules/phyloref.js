@@ -35,8 +35,7 @@ export default {
         Vue.set(payload.phyloref, 'externalSpecifiers', []);
       }
 
-      // TODO: remove when the model changes.
-      payload.phyloref.externalSpecifiers.push({ referencesTaxonomicUnits: [{}] });
+      payload.phyloref.externalSpecifiers.push({});
     },
 
     deleteSpecifier(state, payload) {
