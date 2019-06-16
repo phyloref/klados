@@ -44,7 +44,7 @@ export default {
     },
     getDefaultNomenCodeURI(state) {
       if (has(state.currentPhyx, 'defaultNomenclaturalCodeURI')) return state.currentPhyx.defaultNomenclaturalCodeURI;
-      return TaxonNameWrapper.getNomenCodeAsURI('unknown');
+      return TaxonNameWrapper.NAME_IN_UNKNOWN_CODE;
     },
   },
   mutations: {
