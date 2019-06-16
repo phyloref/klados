@@ -90,9 +90,9 @@
           <a
             class="dropdown-item"
             v-for="(nomenCode, nomenCodeIndex) of nomenCodes"
-            :class="{active: nomenclaturalCode === nomenCode.uri }"
+            :class="{active: enteredNomenclaturalCode === nomenCode.uri }"
             href="javascript:;"
-            @click="nomenclaturalCode = nomenCode.uri"
+            @click="enteredNomenclaturalCode = nomenCode.uri"
           >
             {{ nomenCode.label }}
           </a>
@@ -193,7 +193,7 @@
             <div class="col-md-10">
               <select
                 id="nomen-code"
-                v-model="nomenclaturalCode"
+                v-model="enteredNomenclaturalCode"
                 class="form-control"
               >
                 <option
@@ -419,40 +419,23 @@ export default {
     },
   },
   data() {
+    const taxonNameWrapped = new TaxonNameWrapper(cloneDeep(this.remoteSpecifier));
+
     return {
       specifier: cloneDeep(this.remoteSpecifier),
       expand: false,
       specifierClass: undefined,
       specimenWrapped: new SpecimenWrapper(cloneDeep(this.remoteSpecifier)),
-      taxonNameWrapped: new TaxonNameWrapper(cloneDeep(this.remoteSpecifier)),
+      taxonNameWrapped,
+      enteredNomenclaturalCode: taxonNameWrapped.nomenclaturalCode ||
+        this.$store.getters.getDefaultNomenCodeURI,
     };
   },
   computed: {
     nomenCodes: () => TaxonNameWrapper.getNomenclaturalCodes(),
-    nomenclaturalCode: {
-      get() {
-        const nomenCode = this.taxonNameWrapped.nomenclaturalCode;
-        if (nomenCode) return nomenCode;
-
-        // Return the default for this file.
-        this.taxonNameWrapped.nomenclaturalCode = this.$store.getters.getDefaultNomenCodeURI;
-        // console.log(`Setting default nomenCode to ${this.taxonNameWrapped.nomenclaturalCode}.`);
-        return this.taxonNameWrapped.nomenclaturalCode;
-      },
-      set(nomenCode) {
-        // console.log(`Setting nomenclatural code to ${nomenCode}.`);
-        this.taxonNameWrapped.nomenclaturalCode = nomenCode;
-      },
-    },
     nomenclaturalCodeObj() {
-      const nomenCode = this.taxonNameWrapped.nomenclaturalCode;
-      if (nomenCode) return this.taxonNameWrapped.nomenclaturalCodeAsObject;
-
-      // Set the default for this file.
-      this.taxonNameWrapped.nomenclaturalCode = this.$store.getters.getDefaultNomenCodeURI;
-
-      // console.log(`Setting default nomenCode to ${this.taxonNameWrapped.nomenclaturalCode}.`);
-      return this.taxonNameWrapped.nomenclaturalCodeAsObject;
+      return TaxonNameWrapper.getNomenCodeAsObject(this.enteredNomenclaturalCode) ||
+        TaxonNameWrapper.getNomenCodeAsObject(TaxonNameWrapper.NAME_IN_UNKNOWN_CODE);
     },
     specifierType: {
       get() {
@@ -538,7 +521,7 @@ export default {
         // Don't do anything if a scname is not actually set.
         if (!scname) return;
 
-        this.taxonNameWrapped = new TaxonNameWrapper(TaxonNameWrapper.fromVerbatimName(scname, this.nomenclaturalCode) || {});
+        this.taxonNameWrapped = new TaxonNameWrapper(TaxonNameWrapper.fromVerbatimName(scname, this.enteredNomenclaturalCode) || {});
         this.updateSpecifier();
       },
     },
@@ -568,17 +551,22 @@ export default {
   },
   methods: {
     recalculateEntered() {
-      // Recalculate the entered values.
-      const tunit = new TaxonomicUnitWrapper(cloneDeep(this.specifier || {}));
+      console.log("Recalculating entered values: ", this.remoteSpecifier);
 
-      if (tunit.taxonConcept && new TaxonConceptWrapper(tunit.taxonConcept).taxonName) {
-        this.taxonNameWrapped = new TaxonNameWrapper(
-          new TaxonConceptWrapper(tunit.taxonConcept).taxonName
-        );
+      // Recalculate the entered values.
+      const tunit = new TaxonomicUnitWrapper(cloneDeep(this.remoteSpecifier || {}));
+
+      const taxonConceptWrapped = new TaxonConceptWrapper(tunit.taxonConcept)
+      if (taxonConceptWrapped && taxonConceptWrapped.taxonName) {
+        this.taxonNameWrapped = new TaxonNameWrapper(taxonConceptWrapped.taxonName);
+        this.enteredScientificName = this.taxonNameWrapped.nameComplete;
+        this.enteredNomenclaturalCode = this.taxonNameWrapped.nomenclaturalCode ||
+          this.$store.getters.getDefaultNomenCodeURI;
       }
 
       if (tunit.specimen) {
         this.specimenWrapped = new SpecimenWrapper(tunit.specimen);
+        this.enteredOccurrenceID = this.specimenWrapped.occurrenceID;
       }
 
       // TODO: handle external references correctly.
@@ -599,7 +587,10 @@ export default {
       let result;
       switch (this.specifierClassComputed) {
         case 'Taxon':
-          result = TaxonConceptWrapper.wrapTaxonName(this.taxonNameWrapped.asJSONLD);
+          result = TaxonConceptWrapper.fromLabel(
+            this.enteredScientificName,
+            this.enteredNomenclaturalCode
+          );
           break;
 
         case 'Specimen':
