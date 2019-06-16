@@ -76,7 +76,7 @@
           </a>
         </div>
       </div>
-      <div class="input-group-prepend">
+      <div class="input-group-prepend" v-if="specifierClassComputed === 'Taxon'">
         <button
           class="btn btn-outline-secondary dropdown-toggle"
           type="button"
