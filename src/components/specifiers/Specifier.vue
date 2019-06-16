@@ -30,7 +30,7 @@
           aria-haspopup="true"
           aria-expanded="false"
         >
-          {{ nomenclaturalCode }}
+          {{ nomenclaturalCodeObj.shortName }}
         </button>
         <div class="dropdown-menu">
           <a
@@ -381,36 +381,30 @@ export default {
   },
   computed: {
     nomenCodes: () => TaxonNameWrapper.getNomenclaturalCodes(),
-    nomenclaturalCodeObj() {
-      return TaxonNameWrapper.getNomenCodeAsObject(this.enteredNomenclaturalCode) ||
-        TaxonNameWrapper.getNomenCodeAsObject(TaxonNameWrapper.NAME_IN_UNKNOWN_CODE);
+    nomenclaturalCode: {
+      get() {
+        const nomenCode = this.taxonNameWrapped.nomenclaturalCode;
+        if (nomenCode) return nomenCode;
+
+        // Return the default for this file.
+        this.taxonNameWrapped.nomenclaturalCode = this.$store.getters.getDefaultNomenCodeURI;
+        // console.log(`Setting default nomenCode to ${this.taxonNameWrapped.nomenclaturalCode}.`);
+        return this.taxonNameWrapped.nomenclaturalCode;
+      },
+      set(nomenCode) {
+        // console.log(`Setting nomenclatural code to ${nomenCode}.`);
+        this.taxonNameWrapped.nomenclaturalCode = nomenCode;
+      },
     },
-    specifier() {
-      // Check the specifierClass before we figure out how to construct the
-      // specifier we might want to overwrite.
-      let result;
-      switch (this.specifierClassComputed) {
-        case 'Taxon':
-          result = TaxonConceptWrapper.fromLabel(
-            this.enteredScientificName,
-            this.enteredNomenclaturalCode
-          );
-          break;
+    nomenclaturalCodeObj() {
+      const nomenCode = this.taxonNameWrapped.nomenclaturalCode;
+      if (nomenCode) return this.taxonNameWrapped.nomenclaturalCodeAsObject;
 
-        case 'Specimen':
-          result = SpecimenWrapper.fromOccurrenceID(this.enteredOccurrenceID);
-          break;
-      }
+      // Set the default for this file.
+      this.taxonNameWrapped.nomenclaturalCode = this.$store.getters.getDefaultNomenCodeURI;
 
-      // Make sure we have a result, even if it's just a blank object.
-      if(!result) result = {};
-
-      // Add verbatimSpecifier.
-      if (this.enteredVerbatimLabel) {
-        result.label = this.enteredVerbatimLabel;
-      }
-
-      return new TaxonomicUnitWrapper(result);
+      // console.log(`Setting default nomenCode to ${this.taxonNameWrapped.nomenclaturalCode}.`);
+      return this.taxonNameWrapped.nomenclaturalCodeAsObject;
     },
     specifierType: {
       get() {
@@ -486,11 +480,16 @@ export default {
       },
     },
     enteredScientificName: {
+      // TODO: We should want the user if we couldn't parse this; at the moment,
+      // we silently ignore this and no specifier gets written.
       get() {
         return this.taxonNameWrapped.nameComplete;
       },
       set(scname) {
-        Vue.set(this, 'specifier', TaxonConceptWrapper.fromLabel(scname));
+        // Don't do anything if a scname is not actually set.
+        if (!scname) return;
+
+        this.taxonNameWrapped = new TaxonNameWrapper(TaxonNameWrapper.fromVerbatimName(scname, this.nomenclaturalCode) || {});
         this.updateSpecifier();
         this.enteredScientificName = scname;
       }
@@ -581,15 +580,12 @@ export default {
       // If our local specifier differs from the remoteSpecifier, update it.
       if (isEqual(result, this.remoteSpecifier)) return;
 
-      // console.log('Updating specifier as ', result, ' differs from ', this.remoteSpecifier);
+      console.log('Updating specifier as ', result, ' differs from ', this.remoteSpecifier);
       this.$store.commit('setSpecifierProps', {
         specifier: this.remoteSpecifier,
         props: result,
       });
     },
-    getNomenCodeAsURI(nomenCode) {
-      return TaxonNameWrapper.getNomenCodeAsURI(nomenCode);
-    }
   },
 };
 </script>
