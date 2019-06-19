@@ -365,6 +365,7 @@ export default {
  * than as an .internal-specifier-node.
  */
 .pinning-node text {
+    fill: black !important;
     font-weight: bolder;
 }
 
