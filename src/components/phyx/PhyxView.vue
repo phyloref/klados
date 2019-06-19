@@ -92,10 +92,10 @@ export default {
   }),
   methods: {
     hasReasoningResults(phyloref) {
-      if (!has(this.$store.state.phyx.reasoningResults, 'phylorefs')) return false;
+      if (!has(this.$store.state.resolution.reasoningResults, 'phylorefs')) return false;
 
       const phylorefURI = this.$store.getters.getBaseURIForPhyloref(phyloref);
-      return has(this.$store.state.phyx.reasoningResults.phylorefs, phylorefURI);
+      return has(this.$store.state.resolution.reasoningResults.phylorefs, phylorefURI);
     },
     getPhylorefExpectedNodeLabels(phyloref, phylogeny) {
       // Return a list of nodes that a phyloreference is expected to resolve to.
