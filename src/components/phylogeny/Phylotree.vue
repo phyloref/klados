@@ -110,21 +110,13 @@ export default {
           let textLabel = element.selectAll('text');
 
           if (has(data, 'name') && data.name !== '' && data.children) {
-            // If the node has a label and has children (i.e. is an internal node),
-            // we display it next to the node by creating a new 'text' element.
-            if (textLabel.empty()) {
-              textLabel = element.append('text');
-
-              // Place internal label to the left of the root node.
-              // TODO: put it back here with a flag?
-            }
-
             // If the internal label has the same label as the currently
             // selected phyloreference, add an 'id' so we can jump to it
             // and a CSS class to render it differently from other labels.
             if (
               wrappedPhyloref.getExpectedNodeLabels(this.phylogeny).includes(data.name)
             ) {
+              if(textLabel.empty()) textLabel = element.append('text');
               textLabel.classed('internal-label', true)
                 .text(data.name)
                 .attr('dx', '-0.2em')
