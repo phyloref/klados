@@ -365,7 +365,6 @@ export default {
           // We need more space because our fonts are bigger than the default.
         ])
         .spacing_x(this.spacingX)
-        .placenodes()
         .update();
     },
   },
