@@ -1,5 +1,4 @@
 {
-    "@context": "file:///Users/ggvaidya/code/phyx.js/docs/context/v0.2.0/phyx.json",
     "doi": "10.1146/annurev.earth.31.100901.141308",
     "url": "https://www.annualreviews.org/doi/10.1146/annurev.earth.31.100901.141308",
     "citation": "Brochu (2003) Annual Review of Earth and Planetary Sciences 31:357-397",
@@ -59,20 +58,47 @@
             "internalSpecifiers": [
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Alligator mississippiensis"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000107",
+                        "label": "Alligator mississippiensis",
+                        "nameComplete": "Alligator mississippiensis",
+                        "genusPart": "Alligator",
+                        "specificEpithet": "mississippiensis"
+                    }
                 },
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Gavialis gangeticus"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000107",
+                        "label": "Gavialis gangeticus",
+                        "nameComplete": "Gavialis gangeticus",
+                        "genusPart": "Gavialis",
+                        "specificEpithet": "gangeticus"
+                    }
                 },
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Crocodylus niloticus"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000107",
+                        "label": "Crocodylus niloticus",
+                        "nameComplete": "Crocodylus niloticus",
+                        "genusPart": "Crocodylus",
+                        "specificEpithet": "niloticus"
+                    }
                 },
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Hylaeochampsa vectiana",
-                    "specifierWillNotMatch": "Not present in figure 1"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000107",
+                        "label": "Hylaeochampsa vectiana",
+                        "nameComplete": "Hylaeochampsa vectiana",
+                        "genusPart": "Hylaeochampsa",
+                        "specificEpithet": "vectiana"
+                    }
                 }
             ],
             "externalSpecifiers": [],
@@ -94,15 +120,36 @@
             "internalSpecifiers": [
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Crocodylus niloticus"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000107",
+                        "label": "Crocodylus niloticus",
+                        "nameComplete": "Crocodylus niloticus",
+                        "genusPart": "Crocodylus",
+                        "specificEpithet": "niloticus"
+                    }
                 },
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Alligator mississippiensis"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000107",
+                        "label": "Alligator mississippiensis",
+                        "nameComplete": "Alligator mississippiensis",
+                        "genusPart": "Alligator",
+                        "specificEpithet": "mississippiensis"
+                    }
                 },
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Gavialis gangeticus"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000107",
+                        "label": "Gavialis gangeticus",
+                        "nameComplete": "Gavialis gangeticus",
+                        "genusPart": "Gavialis",
+                        "specificEpithet": "gangeticus"
+                    }
                 }
             ],
             "externalSpecifiers": [],
@@ -124,17 +171,38 @@
             "internalSpecifiers": [
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Gavialis gangeticus"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000107",
+                        "label": "Gavialis gangeticus",
+                        "nameComplete": "Gavialis gangeticus",
+                        "genusPart": "Gavialis",
+                        "specificEpithet": "gangeticus"
+                    }
                 }
             ],
             "externalSpecifiers": [
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Alligator mississippiensis"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000107",
+                        "label": "Alligator mississippiensis",
+                        "nameComplete": "Alligator mississippiensis",
+                        "genusPart": "Alligator",
+                        "specificEpithet": "mississippiensis"
+                    }
                 },
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Crocodylus niloticus"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000107",
+                        "label": "Crocodylus niloticus",
+                        "nameComplete": "Crocodylus niloticus",
+                        "genusPart": "Crocodylus",
+                        "specificEpithet": "niloticus"
+                    }
                 }
             ],
             "pso:holdsStatusInTime": [
@@ -155,22 +223,49 @@
             "internalSpecifiers": [
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Pristichampsus rollinati",
-                    "specifierWillNotMatch": "Not included in figure 1"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000107",
+                        "label": "Pristichampsus rollinati",
+                        "nameComplete": "Pristichampsus rollinati",
+                        "genusPart": "Pristichampsus",
+                        "specificEpithet": "rollinati"
+                    }
                 }
             ],
             "externalSpecifiers": [
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Gavialis gangeticus"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000107",
+                        "label": "Gavialis gangeticus",
+                        "nameComplete": "Gavialis gangeticus",
+                        "genusPart": "Gavialis",
+                        "specificEpithet": "gangeticus"
+                    }
                 },
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Alligator mississippiensis"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000107",
+                        "label": "Alligator mississippiensis",
+                        "nameComplete": "Alligator mississippiensis",
+                        "genusPart": "Alligator",
+                        "specificEpithet": "mississippiensis"
+                    }
                 },
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Crocodylus niloticus"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000107",
+                        "label": "Crocodylus niloticus",
+                        "nameComplete": "Crocodylus niloticus",
+                        "genusPart": "Crocodylus",
+                        "specificEpithet": "niloticus"
+                    }
                 }
             ],
             "curatorComments": "Not included in figure 1.",
@@ -192,11 +287,25 @@
             "internalSpecifiers": [
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Crocodylus niloticus"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000107",
+                        "label": "Crocodylus niloticus",
+                        "nameComplete": "Crocodylus niloticus",
+                        "genusPart": "Crocodylus",
+                        "specificEpithet": "niloticus"
+                    }
                 },
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Alligator mississippiensis"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000107",
+                        "label": "Alligator mississippiensis",
+                        "nameComplete": "Alligator mississippiensis",
+                        "genusPart": "Alligator",
+                        "specificEpithet": "mississippiensis"
+                    }
                 }
             ],
             "externalSpecifiers": [],
@@ -257,17 +366,38 @@
             "internalSpecifiers": [
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Alligator mississippiensis"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000107",
+                        "label": "Alligator mississippiensis",
+                        "nameComplete": "Alligator mississippiensis",
+                        "genusPart": "Alligator",
+                        "specificEpithet": "mississippiensis"
+                    }
                 }
             ],
             "externalSpecifiers": [
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Crocodylus niloticus"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000107",
+                        "label": "Crocodylus niloticus",
+                        "nameComplete": "Crocodylus niloticus",
+                        "genusPart": "Crocodylus",
+                        "specificEpithet": "niloticus"
+                    }
                 },
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Gavialis gangeticus"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000107",
+                        "label": "Gavialis gangeticus",
+                        "nameComplete": "Gavialis gangeticus",
+                        "genusPart": "Gavialis",
+                        "specificEpithet": "gangeticus"
+                    }
                 }
             ],
             "pso:holdsStatusInTime": [
@@ -290,15 +420,27 @@
             "internalSpecifiers": [
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Diplocynodon ratelii",
-                    "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000107"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000107",
+                        "label": "Diplocynodon ratelii",
+                        "nameComplete": "Diplocynodon ratelii",
+                        "genusPart": "Diplocynodon",
+                        "specificEpithet": "ratelii"
+                    }
                 }
             ],
             "externalSpecifiers": [
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Alligator mississippiensis",
-                    "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000107"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000107",
+                        "label": "Alligator mississippiensis",
+                        "nameComplete": "Alligator mississippiensis",
+                        "genusPart": "Alligator",
+                        "specificEpithet": "mississippiensis"
+                    }
                 }
             ],
             "pso:holdsStatusInTime": [
@@ -319,13 +461,27 @@
             "internalSpecifiers": [
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Alligator mississippiensis"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000107",
+                        "label": "Alligator mississippiensis",
+                        "nameComplete": "Alligator mississippiensis",
+                        "genusPart": "Alligator",
+                        "specificEpithet": "mississippiensis"
+                    }
                 }
             ],
             "externalSpecifiers": [
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Diplocynodon ratelii"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000107",
+                        "label": "Diplocynodon ratelii",
+                        "nameComplete": "Diplocynodon ratelii",
+                        "genusPart": "Diplocynodon",
+                        "specificEpithet": "ratelii"
+                    }
                 }
             ],
             "pso:holdsStatusInTime": [
@@ -346,11 +502,25 @@
             "internalSpecifiers": [
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Caiman crocodilus"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000107",
+                        "label": "Caiman crocodilus",
+                        "nameComplete": "Caiman crocodilus",
+                        "genusPart": "Caiman",
+                        "specificEpithet": "crocodilus"
+                    }
                 },
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Alligator mississippiensis"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000107",
+                        "label": "Alligator mississippiensis",
+                        "nameComplete": "Alligator mississippiensis",
+                        "genusPart": "Alligator",
+                        "specificEpithet": "mississippiensis"
+                    }
                 }
             ],
             "externalSpecifiers": [],
@@ -372,13 +542,27 @@
             "internalSpecifiers": [
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Alligator mississippiensis"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000107",
+                        "label": "Alligator mississippiensis",
+                        "nameComplete": "Alligator mississippiensis",
+                        "genusPart": "Alligator",
+                        "specificEpithet": "mississippiensis"
+                    }
                 }
             ],
             "externalSpecifiers": [
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Caiman crocodilus"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000107",
+                        "label": "Caiman crocodilus",
+                        "nameComplete": "Caiman crocodilus",
+                        "genusPart": "Caiman",
+                        "specificEpithet": "crocodilus"
+                    }
                 }
             ],
             "pso:holdsStatusInTime": [
@@ -399,13 +583,27 @@
             "internalSpecifiers": [
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Caiman crocodilus"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000107",
+                        "label": "Caiman crocodilus",
+                        "nameComplete": "Caiman crocodilus",
+                        "genusPart": "Caiman",
+                        "specificEpithet": "crocodilus"
+                    }
                 }
             ],
             "externalSpecifiers": [
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Alligator mississippiensis"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000107",
+                        "label": "Alligator mississippiensis",
+                        "nameComplete": "Alligator mississippiensis",
+                        "genusPart": "Alligator",
+                        "specificEpithet": "mississippiensis"
+                    }
                 }
             ],
             "pso:holdsStatusInTime": [
@@ -426,17 +624,38 @@
             "internalSpecifiers": [
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Crocodylus niloticus"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000107",
+                        "label": "Crocodylus niloticus",
+                        "nameComplete": "Crocodylus niloticus",
+                        "genusPart": "Crocodylus",
+                        "specificEpithet": "niloticus"
+                    }
                 }
             ],
             "externalSpecifiers": [
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Alligator mississippiensis"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000107",
+                        "label": "Alligator mississippiensis",
+                        "nameComplete": "Alligator mississippiensis",
+                        "genusPart": "Alligator",
+                        "specificEpithet": "mississippiensis"
+                    }
                 },
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Gavialis gangeticus"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000107",
+                        "label": "Gavialis gangeticus",
+                        "nameComplete": "Gavialis gangeticus",
+                        "genusPart": "Gavialis",
+                        "specificEpithet": "gangeticus"
+                    }
                 }
             ],
             "pso:holdsStatusInTime": [
@@ -457,15 +676,36 @@
             "internalSpecifiers": [
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Tomistoma schlegelii"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000107",
+                        "label": "Tomistoma schlegelii",
+                        "nameComplete": "Tomistoma schlegelii",
+                        "genusPart": "Tomistoma",
+                        "specificEpithet": "schlegelii"
+                    }
                 },
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Osteolaemus tetraspis"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000107",
+                        "label": "Osteolaemus tetraspis",
+                        "nameComplete": "Osteolaemus tetraspis",
+                        "genusPart": "Osteolaemus",
+                        "specificEpithet": "tetraspis"
+                    }
                 },
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Crocodylus niloticus"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000107",
+                        "label": "Crocodylus niloticus",
+                        "nameComplete": "Crocodylus niloticus",
+                        "genusPart": "Crocodylus",
+                        "specificEpithet": "niloticus"
+                    }
                 }
             ],
             "externalSpecifiers": [],
@@ -487,38 +727,80 @@
             "internalSpecifiers": [
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Mekosuchus inexpectatus",
-                    "specifierWillNotMatch": "Not illustrated in fig 1"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000107",
+                        "label": "Mekosuchus inexpectatus",
+                        "nameComplete": "Mekosuchus inexpectatus",
+                        "genusPart": "Mekosuchus",
+                        "specificEpithet": "inexpectatus"
+                    }
                 },
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Quinkana fortirostrum",
-                    "specifierWillNotMatch": "Not illustrated in fig 1"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000107",
+                        "label": "Quinkana fortirostrum",
+                        "nameComplete": "Quinkana fortirostrum",
+                        "genusPart": "Quinkana",
+                        "specificEpithet": "fortirostrum"
+                    }
                 },
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Trilophosuchus rackhami",
-                    "specifierWillNotMatch": "Not illustrated in fig 1"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000107",
+                        "label": "Trilophosuchus rackhami",
+                        "nameComplete": "Trilophosuchus rackhami",
+                        "genusPart": "Trilophosuchus",
+                        "specificEpithet": "rackhami"
+                    }
                 },
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Baru darrowi",
-                    "specifierWillNotMatch": "Not illustrated in fig 1"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000107",
+                        "label": "Baru darrowi",
+                        "nameComplete": "Baru darrowi",
+                        "genusPart": "Baru",
+                        "specificEpithet": "darrowi"
+                    }
                 },
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Pallimnarchus pollens",
-                    "specifierWillNotMatch": "Not illustrated in fig 1"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000107",
+                        "label": "Pallimnarchus pollens",
+                        "nameComplete": "Pallimnarchus pollens",
+                        "genusPart": "Pallimnarchus",
+                        "specificEpithet": "pollens"
+                    }
                 },
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Australosuchus clarkae",
-                    "specifierWillNotMatch": "Not illustrated in fig 1"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000107",
+                        "label": "Australosuchus clarkae",
+                        "nameComplete": "Australosuchus clarkae",
+                        "genusPart": "Australosuchus",
+                        "specificEpithet": "clarkae"
+                    }
                 },
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Kambara murgonensis",
-                    "specifierWillNotMatch": "Not illustrated in fig 1"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000107",
+                        "label": "Kambara murgonensis",
+                        "nameComplete": "Kambara murgonensis",
+                        "genusPart": "Kambara",
+                        "specificEpithet": "murgonensis"
+                    }
                 }
             ],
             "externalSpecifiers": [],
@@ -541,13 +823,27 @@
             "internalSpecifiers": [
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Tomistoma schlegelii"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000107",
+                        "label": "Tomistoma schlegelii",
+                        "nameComplete": "Tomistoma schlegelii",
+                        "genusPart": "Tomistoma",
+                        "specificEpithet": "schlegelii"
+                    }
                 }
             ],
             "externalSpecifiers": [
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Crocodylus niloticus"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000107",
+                        "label": "Crocodylus niloticus",
+                        "nameComplete": "Crocodylus niloticus",
+                        "genusPart": "Crocodylus",
+                        "specificEpithet": "niloticus"
+                    }
                 }
             ],
             "pso:holdsStatusInTime": [
@@ -568,13 +864,27 @@
             "internalSpecifiers": [
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Crocodylus niloticus"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000107",
+                        "label": "Crocodylus niloticus",
+                        "nameComplete": "Crocodylus niloticus",
+                        "genusPart": "Crocodylus",
+                        "specificEpithet": "niloticus"
+                    }
                 }
             ],
             "externalSpecifiers": [
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Tomistoma schlegelii"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000107",
+                        "label": "Tomistoma schlegelii",
+                        "nameComplete": "Tomistoma schlegelii",
+                        "genusPart": "Tomistoma",
+                        "specificEpithet": "schlegelii"
+                    }
                 }
             ],
             "pso:holdsStatusInTime": [
@@ -595,13 +905,27 @@
             "internalSpecifiers": [
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Osteolaemus tetraspis"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000107",
+                        "label": "Osteolaemus tetraspis",
+                        "nameComplete": "Osteolaemus tetraspis",
+                        "genusPart": "Osteolaemus",
+                        "specificEpithet": "tetraspis"
+                    }
                 }
             ],
             "externalSpecifiers": [
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Crocodylus niloticus"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000107",
+                        "label": "Crocodylus niloticus",
+                        "nameComplete": "Crocodylus niloticus",
+                        "genusPart": "Crocodylus",
+                        "specificEpithet": "niloticus"
+                    }
                 }
             ],
             "curatorComments": "Not illustrated in fig 1, but it's resolution is pretty unambiguous, so I'm going to assert that it should resolve to \"Osteolaemus tetraspis\"",
@@ -623,11 +947,25 @@
             "internalSpecifiers": [
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Osteolaemus tetraspis"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000107",
+                        "label": "Osteolaemus tetraspis",
+                        "nameComplete": "Osteolaemus tetraspis",
+                        "genusPart": "Osteolaemus",
+                        "specificEpithet": "tetraspis"
+                    }
                 },
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Crocodylus niloticus"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000107",
+                        "label": "Crocodylus niloticus",
+                        "nameComplete": "Crocodylus niloticus",
+                        "genusPart": "Crocodylus",
+                        "specificEpithet": "niloticus"
+                    }
                 }
             ],
             "externalSpecifiers": [],
@@ -650,13 +988,27 @@
             "internalSpecifiers": [
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Crocodylus niloticus"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000107",
+                        "label": "Crocodylus niloticus",
+                        "nameComplete": "Crocodylus niloticus",
+                        "genusPart": "Crocodylus",
+                        "specificEpithet": "niloticus"
+                    }
                 }
             ],
             "externalSpecifiers": [
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Osteolaemus tetraspis"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000107",
+                        "label": "Osteolaemus tetraspis",
+                        "nameComplete": "Osteolaemus tetraspis",
+                        "genusPart": "Osteolaemus",
+                        "specificEpithet": "tetraspis"
+                    }
                 }
             ],
             "curatorComments": "Not illustrated in fig 1.",
@@ -678,11 +1030,25 @@
             "internalSpecifiers": [
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Tomistoma schlegelii"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000107",
+                        "label": "Tomistoma schlegelii",
+                        "nameComplete": "Tomistoma schlegelii",
+                        "genusPart": "Tomistoma",
+                        "specificEpithet": "schlegelii"
+                    }
                 },
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Gavialis gangeticus"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000107",
+                        "label": "Gavialis gangeticus",
+                        "nameComplete": "Gavialis gangeticus",
+                        "genusPart": "Gavialis",
+                        "specificEpithet": "gangeticus"
+                    }
                 }
             ],
             "externalSpecifiers": [],
@@ -705,13 +1071,27 @@
             "internalSpecifiers": [
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Tomistoma schlegelii"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000107",
+                        "label": "Tomistoma schlegelii",
+                        "nameComplete": "Tomistoma schlegelii",
+                        "genusPart": "Tomistoma",
+                        "specificEpithet": "schlegelii"
+                    }
                 }
             ],
             "externalSpecifiers": [
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Gavialis gangeticus"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000107",
+                        "label": "Gavialis gangeticus",
+                        "nameComplete": "Gavialis gangeticus",
+                        "genusPart": "Gavialis",
+                        "specificEpithet": "gangeticus"
+                    }
                 }
             ],
             "curatorComments": "Not illustrated in fig 1.",
@@ -733,13 +1113,27 @@
             "internalSpecifiers": [
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Gavialis gangeticus"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000107",
+                        "label": "Gavialis gangeticus",
+                        "nameComplete": "Gavialis gangeticus",
+                        "genusPart": "Gavialis",
+                        "specificEpithet": "gangeticus"
+                    }
                 }
             ],
             "externalSpecifiers": [
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Tomistoma schlegelii"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000107",
+                        "label": "Tomistoma schlegelii",
+                        "nameComplete": "Tomistoma schlegelii",
+                        "genusPart": "Tomistoma",
+                        "specificEpithet": "schlegelii"
+                    }
                 }
             ],
             "curatorComments": "Not illustrated in fig 1",
@@ -756,5 +1150,6 @@
             ]
         }
     ],
-    "title": "Phylogenetic Approaches Toward Crocodylian History"
+    "title": "Phylogenetic Approaches Toward Crocodylian History",
+    "defaultNomenclaturalCodeURI": "http://purl.obolibrary.org/obo/NOMEN_0000107"
 }
