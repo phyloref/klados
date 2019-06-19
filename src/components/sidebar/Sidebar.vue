@@ -392,36 +392,42 @@ export default {
 
       // Disable "Reason" buttons so they can't be reused.
       this.reasoningInProgress = true;
-      $.post('http://localhost:34214/reason', {
-        // This will convert the JSON-LD file into an application/x-www-form-urlencoded
-        // string (see https://api.jquery.com/jquery.ajax/#jQuery-ajax-settings under
-        // processData for details). The POST data sent to the server will look like:
-        //  jsonld=%7B%5B%7B%22title%22%3A...
-        // which translates to:
-        //  jsonld={[{"title":...
-        jsonld: JSON.stringify([new PhyxWrapper(
-          this.$store.state.phyx.currentPhyx,
-          d3.layout.newick_parser,
-        )
-          .asJSONLD()]),
-      }).done((data) => {
-        this.$store.commit('setReasoningResults', data);
-        // console.log('Data retrieved: ', data);
-      }).fail((jqXHR, textStatus, errorThrown) => {
-        // We can try using the third argument, but it appears to be the
-        // HTTP status (e.g. 'Internal Server Error'). So we default to that,
-        // but look for a better one in the JSON response from the server, if
-        // available.
-        let error = errorThrown;
-        if (has(jqXHR, 'responseJSON') && has(jqXHR.responseJSON, 'error')) {
-          error = jqXHR.responseJSON.error;
-        }
 
-        if (error === undefined || error === '') error = 'unknown error';
-        alert(`Error occurred on server while reasoning: ${error}`);
-      }).always(() => {
-        // Reset "Reasoning" buttons to their usual state.
-        this.reasoningInProgress = false;
+      // Make sure that the Reason button is updated before we convert the Phyx
+      // file into JSON-LD.
+      const outerThis = this;
+      Vue.nextTick(function () {
+        $.post('http://localhost:34214/reason', {
+          // This will convert the JSON-LD file into an application/x-www-form-urlencoded
+          // string (see https://api.jquery.com/jquery.ajax/#jQuery-ajax-settings under
+          // processData for details). The POST data sent to the server will look like:
+          //  jsonld=%7B%5B%7B%22title%22%3A...
+          // which translates to:
+          //  jsonld={[{"title":...
+          jsonld: JSON.stringify([new PhyxWrapper(
+            outerThis.$store.state.phyx.currentPhyx,
+            d3.layout.newick_parser,
+          )
+            .asJSONLD()], undefined, 4),
+        }).done((data) => {
+          outerThis.$store.commit('setReasoningResults', data);
+          // console.log('Data retrieved: ', data);
+        }).fail((jqXHR, textStatus, errorThrown) => {
+          // We can try using the third argument, but it appears to be the
+          // HTTP status (e.g. 'Internal Server Error'). So we default to that,
+          // but look for a better one in the JSON response from the server, if
+          // available.
+          let error = errorThrown;
+          if (has(jqXHR, 'responseJSON') && has(jqXHR.responseJSON, 'error')) {
+            error = jqXHR.responseJSON.error;
+          }
+
+          if (error === undefined || error === '') error = 'unknown error';
+          alert(`Error occurred on server while reasoning: ${error}`);
+        }).always(() => {
+          // Reset "Reasoning" buttons to their usual state.
+          outerThis.reasoningInProgress = false;
+        });
       });
     },
   },
