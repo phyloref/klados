@@ -274,7 +274,7 @@
                 </div>
 
                 <!-- Display the matching node(s) -->
-                <template v-if="!nodesResolved">
+                <template v-if="!$store.state.resolution.reasoningResults">
                   <input
                     readonly
                     type="text"
@@ -373,14 +373,6 @@ export default {
     phylorefURI() {
       // Get the base URI of this phyloreference.
       return this.$store.getters.getBaseURIForPhyloref(this.selectedPhyloref);
-    },
-    nodesResolved() {
-      // Get a list of nodes resolved by this phyloreference.
-      if (!has(this.$store.state.phyx.reasoningResults, 'phylorefs')) return undefined;
-      if (has(this.$store.state.phyx.reasoningResults.phylorefs, this.phylorefURI)) {
-        return this.$store.state.phyx.reasoningResults.phylorefs[this.phylorefURI];
-      }
-      return undefined;
     },
     noSpecifiers() {
       // Return true if no specifiers are present.
