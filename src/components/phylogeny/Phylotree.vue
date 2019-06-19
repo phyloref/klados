@@ -120,8 +120,7 @@ export default {
               textLabel.attr('id', `current_expected_label_phylogeny_${this.phylogenyIndex}`);
               textLabel.classed('selected-internal-label', true);
             } else {
-              textLabel.attr('id', '');
-              textLabel.classed('selected-internal-label', false);
+              if(!textLabel.empty()) textLabel.remove();
             }
           }
 
