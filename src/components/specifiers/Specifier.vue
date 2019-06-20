@@ -389,6 +389,33 @@ export default {
       return TaxonNameWrapper.getNomenCodeAsObject(this.enteredNomenclaturalCode) ||
         TaxonNameWrapper.getNomenCodeAsObject(TaxonNameWrapper.NAME_IN_UNKNOWN_CODE);
     },
+    specifier() {
+      // Check the specifierClass before we figure out how to construct the
+      // specifier we might want to overwrite.
+      let result;
+      switch (this.specifierClassComputed) {
+        case 'Taxon':
+          result = TaxonConceptWrapper.fromLabel(
+            this.enteredScientificName,
+            this.enteredNomenclaturalCode
+          );
+          break;
+
+        case 'Specimen':
+          result = SpecimenWrapper.fromOccurrenceID(this.enteredOccurrenceID);
+          break;
+      }
+
+      // Make sure we have a result, even if it's just a blank object.
+      if(!result) result = {};
+
+      // Add verbatimSpecifier.
+      if (this.enteredVerbatimLabel) {
+        result.label = this.enteredVerbatimLabel;
+      }
+
+      return new TaxonomicUnitWrapper(result);
+    },
     specifierType: {
       get() {
         return new PhylorefWrapper(this.phyloref).getSpecifierType(this.remoteSpecifier);
@@ -541,29 +568,7 @@ export default {
       }
     },
     updateSpecifier() {
-      // Check the specifierClass before we figure out how to construct the
-      // specifier we might want to overwrite.
-      let result;
-      switch (this.specifierClassComputed) {
-        case 'Taxon':
-          result = TaxonConceptWrapper.fromLabel(
-            this.enteredScientificName,
-            this.enteredNomenclaturalCode
-          );
-          break;
-
-        case 'Specimen':
-          result = SpecimenWrapper.fromOccurrenceID(this.enteredOccurrenceID);
-          break;
-      }
-
-      // Make sure we have a result, even if it's just a blank object.
-      if(!result) result = {};
-
-      // Add verbatimSpecifier.
-      if (has(this.specifier, 'label')) {
-        result.label = this.specifier.label;
-      }
+      const result = this.specifier;
 
       // If our local specifier differs from the remoteSpecifier, update it.
       if (isEqual(result, this.remoteSpecifier)) return;
