@@ -422,7 +422,13 @@ export default {
     },
   },
   data() {
-    const taxonNameWrapped = new TaxonNameWrapper(cloneDeep(this.remoteSpecifier));
+    const taxonConceptWrapped = new TaxonConceptWrapper(cloneDeep(this.remoteSpecifier));
+    let taxonNameWrapped;
+    if (taxonConceptWrapped.taxonName) {
+      taxonNameWrapped = new TaxonNameWrapper(taxonConceptWrapped.taxonName);
+    } else {
+      taxonNameWrapped = new TaxonNameWrapper({});
+    }
 
     return {
       expand: false,
@@ -619,7 +625,7 @@ export default {
       console.log('Updating specifier as ', result, ' differs from ', this.remoteSpecifier);
       this.$store.commit('setSpecifierProps', {
         specifier: this.remoteSpecifier,
-        props: result,
+        props: result.asJSON,
       });
     },
   },
