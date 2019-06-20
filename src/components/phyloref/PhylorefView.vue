@@ -109,6 +109,7 @@
           <Specifier
             :phyloref="selectedPhyloref"
             :remote-specifier="specifier"
+            :specifier-index="index"
           />
         </div>
         <div
@@ -118,6 +119,7 @@
           <Specifier
             :phyloref="selectedPhyloref"
             :remote-specifier="specifier"
+            :specifier-index="index+(selectedPhyloref.internalSpecifiers||0)"
           />
         </div>
       </div>
