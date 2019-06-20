@@ -403,12 +403,15 @@ import {
   SpecimenWrapper,
 } from '@phyloref/phyx';
 import {
-  has, isEmpty, isEqual, cloneDeep, pickBy,
+  has, isEmpty, isEqual, cloneDeep, pickBy, uniqueId,
 } from 'lodash';
 
 export default {
   name: 'Specifier',
   props: {
+    specifierIndex: {
+      default: () => uniqueId(),
+    },
     remoteSpecifier: { /* The specifier to display and edit */
       type: Object,
       required: true,
@@ -566,6 +569,9 @@ export default {
       this.recalculateEntered();
     },
     remoteSpecifier() {
+      this.recalculateEntered();
+    },
+    specifierIndex() {
       this.recalculateEntered();
     },
   },
