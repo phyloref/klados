@@ -557,10 +557,14 @@ export default {
   methods: {
     recalculateEntered() {
       // Recalculate the entered values.
-      const tunit = new TaxonomicUnitWrapper(cloneDeep(this.specifier || {}));
+      const tunit = new TaxonomicUnitWrapper(cloneDeep(this.remoteSpecifier || {}));
+      this.enteredVerbatimLabel = tunit.label;
 
-      if (tunit.taxonConcept && new TaxonConceptWrapper(tunit.taxonConcept).taxonName) {
-        this.taxonNameWrapped = new TaxonConceptWrapper(tunit.taxonConcept).taxonName;
+      const taxonConceptWrapped = new TaxonConceptWrapper(tunit.taxonConcept)
+      if (taxonConceptWrapped && taxonConceptWrapped.taxonName) {
+        this.taxonNameWrapped = new TaxonNameWrapper(taxonConceptWrapped.taxonName);
+        this.enteredNomenclaturalCode = this.taxonNameWrapped.nomenclaturalCode ||
+          this.$store.getters.getDefaultNomenCodeURI;
       }
 
       if (tunit.specimen) {
@@ -571,8 +575,10 @@ export default {
       // TODO: what if all fail?
     },
     deleteSpecifier() {
+      // Update remoteSpecifier to what we've got currently entered.
       const confirmed = confirm('Are you sure you want to delete this specifier?');
       if (confirmed) {
+        console.log("Deleting specifier: ", this.phyloref, this.remoteSpecifier);
         this.$store.commit('deleteSpecifier', {
           phyloref: this.phyloref,
           specifier: this.remoteSpecifier,
