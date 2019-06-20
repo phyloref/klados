@@ -407,14 +407,46 @@ export default {
   },
   data() {
     return {
-      specifier: cloneDeep(this.remoteSpecifier),
       expand: false,
       specifierClass: undefined,
+      enteredVerbatimLabel: "",
       specimenWrapped: new SpecimenWrapper(cloneDeep(this.remoteSpecifier)),
       taxonNameWrapped: new TaxonNameWrapper(cloneDeep(this.remoteSpecifier)),
     };
   },
   computed: {
+    nomenCodes: () => TaxonNameWrapper.getNomenclaturalCodes(),
+    nomenclaturalCodeObj() {
+      return TaxonNameWrapper.getNomenCodeAsObject(this.enteredNomenclaturalCode) ||
+        TaxonNameWrapper.getNomenCodeAsObject(TaxonNameWrapper.NAME_IN_UNKNOWN_CODE);
+    },
+    specifier() {
+      // Check the specifierClass before we figure out how to construct the
+      // specifier we might want to overwrite.
+      let result;
+      switch (this.specifierClassComputed) {
+        case 'Taxon':
+          result = TaxonConceptWrapper.fromLabel(
+            this.enteredScientificName,
+            this.enteredNomenclaturalCode
+          );
+          break;
+
+        case 'Specimen':
+          result = SpecimenWrapper.fromOccurrenceID(this.enteredOccurrenceID);
+          break;
+      }
+
+      // Make sure we have a result, even if it's just a blank object.
+      if(!result) result = {};
+
+      // Add verbatimSpecifier.
+      if (this.enteredVerbatimLabel) {
+        result.label = this.enteredVerbatimLabel;
+      }
+
+      return new TaxonomicUnitWrapper(result);
+    },
     specifierType: {
       get() {
         return new PhylorefWrapper(this.phyloref).getSpecifierType(this.remoteSpecifier);
@@ -432,12 +464,11 @@ export default {
     },
     specifierLabel: {
       get() {
-        // Return the verbatim specifier OR the specifier label.
-        return this.specifier.verbatimSpecifier || new TaxonomicUnitWrapper(this.specifier).label;
+        return this.specifier.label;
       },
       set(label) {
         // 1. Set the verbatim specifier to this.
-        Vue.set(this.specifier, 'verbatimSpecifier', label);
+        this.enteredVerbatimLabel = label;
 
         // 2. Attempt to extract the specifier information from there.
         switch (this.specifierClassComputed) {
@@ -475,7 +506,7 @@ export default {
 
         if (this.specifierClass) return this.specifierClass;
 
-        const tunit = new TaxonomicUnitWrapper(this.specifier || {});
+        const tunit = new TaxonomicUnitWrapper(this.remoteSpecifier);
 
         if ((tunit.externalReferences || []).length > 0) return 'External reference';
         if ((tunit.includesSpecimens || []).length > 0) return 'Specimen';
@@ -518,9 +549,6 @@ export default {
     },
     remoteSpecifier() {
       this.recalculateEntered();
-    },
-    specifier() {
-      this.updateSpecifier();
     },
   },
   mounted() {
