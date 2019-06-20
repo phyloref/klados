@@ -590,26 +590,27 @@ export default {
 
       // Recalculate the entered values.
       const tunit = new TaxonomicUnitWrapper(cloneDeep(this.remoteSpecifier || {}));
+      this.enteredVerbatimLabel = tunit.label;
 
       const taxonConceptWrapped = new TaxonConceptWrapper(tunit.taxonConcept)
       if (taxonConceptWrapped && taxonConceptWrapped.taxonName) {
         this.taxonNameWrapped = new TaxonNameWrapper(taxonConceptWrapped.taxonName);
-        this.enteredScientificName = this.taxonNameWrapped.nameComplete;
         this.enteredNomenclaturalCode = this.taxonNameWrapped.nomenclaturalCode ||
           this.$store.getters.getDefaultNomenCodeURI;
       }
 
       if (tunit.specimen) {
         this.specimenWrapped = new SpecimenWrapper(tunit.specimen);
-        this.enteredOccurrenceID = this.specimenWrapped.occurrenceID;
       }
 
       // TODO: handle external references correctly.
       // TODO: what if all fail?
     },
     deleteSpecifier() {
+      // Update remoteSpecifier to what we've got currently entered.
       const confirmed = confirm('Are you sure you want to delete this specifier?');
       if (confirmed) {
+        console.log("Deleting specifier: ", this.phyloref, this.remoteSpecifier);
         this.$store.commit('deleteSpecifier', {
           phyloref: this.phyloref,
           specifier: this.remoteSpecifier,
