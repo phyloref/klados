@@ -543,14 +543,12 @@ export default {
       const taxonConceptWrapped = new TaxonConceptWrapper(tunit.taxonConcept)
       if (taxonConceptWrapped && taxonConceptWrapped.taxonName) {
         this.taxonNameWrapped = new TaxonNameWrapper(taxonConceptWrapped.taxonName);
-        this.enteredScientificName = this.taxonNameWrapped.nameComplete;
         this.enteredNomenclaturalCode = this.taxonNameWrapped.nomenclaturalCode ||
           this.$store.getters.getDefaultNomenCodeURI;
       }
 
       if (tunit.specimen) {
         this.specimenWrapped = new SpecimenWrapper(tunit.specimen);
-        this.enteredOccurrenceID = this.specimenWrapped.occurrenceID;
       }
 
       // TODO: handle external references correctly.
