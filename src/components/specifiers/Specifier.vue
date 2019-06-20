@@ -356,6 +356,9 @@ import {
 export default {
   name: 'Specifier',
   props: {
+    specifierIndex: {
+      default: () => uniqueId(),
+    },
     remoteSpecifier: { /* The specifier to display and edit */
       type: Object,
       required: true,
