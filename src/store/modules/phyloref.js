@@ -3,6 +3,7 @@
  */
 
 import Vue from 'vue';
+import { PhylorefWrapper } from '@phyloref/phyx';
 import { has, keys, cloneDeep } from 'lodash';
 
 export default {
@@ -90,19 +91,7 @@ export default {
         throw new Error('deleteSpecifier needs a specifier to delete using the "specifier" argument');
       }
 
-      if (has(payload.phyloref, 'internalSpecifiers') && payload.phyloref.internalSpecifiers.includes(payload.specifier)) {
-        payload.phyloref.internalSpecifiers.splice(
-          payload.phyloref.internalSpecifiers.indexOf(payload.specifier),
-          1,
-        );
-      }
-
-      if (has(payload.phyloref, 'externalSpecifiers') && payload.phyloref.externalSpecifiers.includes(payload.specifier)) {
-        payload.phyloref.externalSpecifiers.splice(
-          payload.phyloref.externalSpecifiers.indexOf(payload.specifier),
-          1,
-        );
-      }
+      new PhylorefWrapper(payload.phyloref).deleteSpecifier(payload.specifier);
     },
 
     setSpecifierProps(state, payload) {
