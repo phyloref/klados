@@ -24,6 +24,59 @@
               >
             </div>
           </div>
+
+          <!-- Curated by information -->
+          <div class="form-group row">
+            <label
+              for="curator-name"
+              class="col-form-label col-md-2"
+            >
+              Curated by
+            </label>
+            <div class="col-md-5">
+              <input
+                id="curator-name"
+                v-model="phyx.curator"
+                type="text"
+                class="form-control"
+                placeholder="Curator name"
+              >
+            </div>
+            <div class="col-md-5">
+              <input
+                id="curator-email"
+                v-model="phyx.curatorEmail"
+                type="email"
+                class="form-control"
+                placeholder="Curator e-mail address"
+              >
+            </div>
+          </div>
+
+          <!-- Default nomenclatural code -->
+          <div class="form-group row">
+            <label
+              for="default-nomen-code"
+              class="col-form-label col-md-2"
+            >
+              Default nomenclatural code
+            </label>
+            <div class="col-md-10">
+              <select
+                id="nomen-code"
+                :value="$store.getters.getDefaultNomenCodeURI"
+                @change="$store.commit('setDefaultNomenCodeURI', { defaultNomenclaturalCodeURI: $event.target.value })"
+                class="form-control"
+              >
+                <option
+                  v-for="(nomenCode, nomenCodeIndex) of nomenCodes"
+                  :value="nomenCode.uri"
+                >
+                  {{ nomenCode.label }}
+                </option>
+              </select>
+            </div>
+          </div>
         </form>
       </div>
     </div>
