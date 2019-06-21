@@ -193,7 +193,6 @@
             <th>&nbsp;</th>
             <th>Phylogeny</th>
             <th>Description</th>
-            <th>Number of tips</th>
           </thead>
           <tbody>
             <tr
@@ -222,9 +221,6 @@
               </td>
               <td>
                 {{ phylogeny.description }}
-              </td>
-              <td>
-                TODO
               </td>
             </tr>
           </tbody>
