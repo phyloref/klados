@@ -6,17 +6,17 @@
       </h5>
       <div class="card-body">
         <form>
-          <!-- Phyx file label -->
+          <!-- Phyx file title -->
           <div class="form-group row">
             <label
-              for="label"
+              for="phyx-label"
               class="col-form-label col-md-2"
             >
-              Phyx file label
+              Phyx file title
             </label>
             <div class="col-md-10">
               <input
-                id="label"
+                id="phyx-label"
                 v-model="phyx.title"
                 type="text"
                 class="form-control"
