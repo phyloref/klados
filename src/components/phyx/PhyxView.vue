@@ -53,6 +53,34 @@
             </div>
           </div>
 
+          <!-- Curated by information -->
+          <div class="form-group row">
+            <label
+              for="curator-name"
+              class="col-form-label col-md-2"
+            >
+              Curated by
+            </label>
+            <div class="col-md-5">
+              <input
+                id="curator-name"
+                v-model="phyx.curator"
+                type="text"
+                class="form-control"
+                placeholder="Curator name"
+              >
+            </div>
+            <div class="col-md-5">
+              <input
+                id="curator-email"
+                v-model="phyx.curatorEmail"
+                type="email"
+                class="form-control"
+                placeholder="Curator e-mail address"
+              >
+            </div>
+          </div>
+
           <!-- Default nomenclatural code -->
           <div class="form-group row">
             <label
