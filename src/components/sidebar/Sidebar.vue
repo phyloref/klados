@@ -54,7 +54,7 @@
           href="javascript: void(0)"
           @click="downloadAsJSON()"
         >
-          Save as a local Phyx file
+          Save
         </a>
 
         <a
@@ -62,7 +62,7 @@
           href="javascript: void(0)"
           @click="downloadAsJSONLD()"
         >
-          Save as an ontology in JSON-LD
+          Export as ontology
         </a>
 
         <a
@@ -74,7 +74,7 @@
             (Reasoning in progress)
           </span>
           <span v-else>
-            Reason
+            Resolve against phylogenies
           </span>
         </a>
 
@@ -237,7 +237,7 @@ export default {
   computed: {
     examplePHYXURLs() {
       // Returns a list of example files to display in the "Examples" menu.
-      return [
+      return [/*
         {
           url: 'examples/fisher_et_al_2007.json',
           title: 'Fisher et al, 2007',
@@ -245,7 +245,7 @@ export default {
         {
           url: 'examples/hillis_and_wilcox_2005.json',
           title: 'Hillis and Wilcox, 2005',
-        },
+        },*/
         {
           url: 'examples/brochu_2003.json',
           title: 'Brochu 2003',
