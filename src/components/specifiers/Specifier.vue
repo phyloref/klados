@@ -407,6 +407,18 @@ export default {
         case 'Specimen':
           result = SpecimenWrapper.fromOccurrenceID(this.enteredOccurrenceID);
           break;
+
+        case 'Apomorphy':
+          result = {
+            '@type': TaxonomicUnitWrapper.TYPE_APOMORPHY,
+          };
+          break;
+
+        case 'External reference':
+          result = {
+            '@type': TaxonomicUnitWrapper.TYPE_EXTERNAL_REFERENCE,
+          };
+          break;
       }
 
       // Make sure we have a result, even if it's just a blank object.
@@ -447,21 +459,16 @@ export default {
           case 'Taxon':
             this.enteredScientificName = label;
             this.enteredOccurrenceID = "";
-            this.enteredExternalReference = "";
             break;
 
           case 'Specimen':
             this.enteredOccurrenceID = label;
             this.enteredScientificName = "";
-            this.enteredExternalReference = "";
-            break;
-
-          case 'External reference':
-            this.enteredExternalReference = label;
-            this.enteredScientificName = "";
-            this.enteredOccurrenceID = "";
             break;
         }
+
+        // TODO: For now, we just write external references and apormorphies
+        // into the verbatim label. We should fix that!
 
         // console.log('Specifier now at', this.specifier);
         this.updateSpecifier();
@@ -539,6 +546,24 @@ export default {
       // Recalculate the entered values.
       const tunit = new TaxonomicUnitWrapper(cloneDeep(this.remoteSpecifier || {}));
       this.enteredVerbatimLabel = tunit.label;
+      if (tunit.types.length > 0) {
+        switch (tunit.types[0]) {
+          case TaxonomicUnitWrapper.TYPE_TAXON_CONCEPT:
+            this.specifierClass = 'Taxon';
+            break;
+
+          case TaxonomicUnitWrapper.TYPE_SPECIMEN:
+            this.specifierClass = 'Specimen';
+            break;
+
+          case TaxonomicUnitWrapper.TYPE_APOMORPHY:
+            this.specifierClass = 'Apomorphy';
+            break;
+
+          case TaxonomicUnitWrapper.TYPE_EXTERNAL_REFERENCE:
+            this.specifierClass = 'External reference';
+        }
+      }
 
       const taxonConceptWrapped = new TaxonConceptWrapper(tunit.taxonConcept)
       if (taxonConceptWrapped && taxonConceptWrapped.taxonName) {
