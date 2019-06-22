@@ -1,10 +1,8 @@
 {
-    "doi": "10.1146/annurev.earth.31.100901.141308",
-    "url": "https://www.annualreviews.org/doi/10.1146/annurev.earth.31.100901.141308",
-    "citation": "Brochu (2003) Annual Review of Earth and Planetary Sciences 31:357-397",
+    "curator": "Gaurav Vaidya",
+    "curatorEmail": "gaurav@ggvaidya.com",
     "phylogenies": [
         {
-            "description": "",
             "newick": "(Parasuchia,(rauisuchians,Aetosauria,(sphenosuchians,(protosuchians,(mesosuchians,(Hylaeochampsa,Aegyptosuchus,Stomatosuchus,(Allodaposuchus,('Gavialis gangeticus',(('Diplocynodon ratelii',('Alligator mississippiensis','Caiman crocodilus')Alligatoridae)Alligatoroidea,('Tomistoma schlegelii',('Osteolaemus tetraspis','Crocodylus niloticus')Crocodylinae)Crocodylidae)Brevirostres)Crocodylia))Eusuchia)Mesoeucrocodylia)Crocodyliformes)Crocodylomorpha))root;",
             "additionalNodeProperties": {
                 "Gavialis gangeticus": {
@@ -48,12 +46,54 @@
                     ]
                 }
             },
-            "label": "Fig 1 from Brochu 2003"
+            "label": "Fig 1 from Brochu 2003",
+            "primaryPhylogenyCitation": {
+                "journal": {
+                    "name": "Annual Review of Earth and Planetary Sciences",
+                    "volume": "31"
+                },
+                "type": "article",
+                "authors": [
+                    {
+                        "name": "Brochu, Christopher A"
+                    }
+                ],
+                "title": "Phylogenetic Approaches Toward Crocodilian History",
+                "year": "2003",
+                "pages": "357-397",
+                "identifier": [
+                    {
+                        "type": "doi",
+                        "id": "10.1146/annurev.earth.31.100901.141308"
+                    }
+                ]
+            }
         }
     ],
     "phylorefs": [
         {
             "label": "Eusuchia",
+            "obo:IAO_0000119": {
+                "journal": {
+                    "name": "Annual Review of Earth and Planetary Sciences",
+                    "volume": "31"
+                },
+                "type": "article",
+                "authors": [
+                    {
+                        "name": "Brochu, Christopher A"
+                    }
+                ],
+                "title": "Phylogenetic Approaches Toward Crocodilian History",
+                "year": "2003",
+                "pages": "357-397",
+                "identifier": [
+                    {
+                        "type": "doi",
+                        "id": "10.1146/annurev.earth.31.100901.141308"
+                    }
+                ]
+            },
             "cladeDefinition": "Eusuchia (Huxley 1875). Amended definition.\n\nLast common ancestor of Hylaeochampsa vectiana, Crocodylus niloticus, Gavialis gangeticus, and Alligator mississippiensis\t and all of its descendents.",
             "internalSpecifiers": [
                 {
@@ -116,6 +156,27 @@
         },
         {
             "label": "Crocodylia",
+            "obo:IAO_0000119": {
+                "journal": {
+                    "name": "Annual Review of Earth and Planetary Sciences",
+                    "volume": "31"
+                },
+                "type": "article",
+                "authors": [
+                    {
+                        "name": "Brochu, Christopher A"
+                    }
+                ],
+                "title": "Phylogenetic Approaches Toward Crocodilian History",
+                "year": "2003",
+                "pages": "357-397",
+                "identifier": [
+                    {
+                        "type": "doi",
+                        "id": "10.1146/annurev.earth.31.100901.141308"
+                    }
+                ]
+            },
             "cladeDefinition": "Crocodylia (Gmelin 1789). Amended definition.\n\nLast common ancestor of Gavialis gangeticus, Alligator mississippiensis, and Crocodylus niloticus and all of its\t descendents.",
             "internalSpecifiers": [
                 {
@@ -167,6 +228,27 @@
         },
         {
             "label": "Gavialoidea",
+            "obo:IAO_0000119": {
+                "journal": {
+                    "name": "Annual Review of Earth and Planetary Sciences",
+                    "volume": "31"
+                },
+                "type": "article",
+                "authors": [
+                    {
+                        "name": "Brochu, Christopher A"
+                    }
+                ],
+                "title": "Phylogenetic Approaches Toward Crocodilian History",
+                "year": "2003",
+                "pages": "357-397",
+                "identifier": [
+                    {
+                        "type": "doi",
+                        "id": "10.1146/annurev.earth.31.100901.141308"
+                    }
+                ]
+            },
             "cladeDefinition": "Gavialoidea (Case 1930).\n\nGavialis gangeticus and all crocodylians closer to it than to Alligator mississippiensis or Crocodylus niloticus.",
             "internalSpecifiers": [
                 {
@@ -219,6 +301,27 @@
         },
         {
             "label": "Pristichampsinae",
+            "obo:IAO_0000119": {
+                "journal": {
+                    "name": "Annual Review of Earth and Planetary Sciences",
+                    "volume": "31"
+                },
+                "type": "article",
+                "authors": [
+                    {
+                        "name": "Brochu, Christopher A"
+                    }
+                ],
+                "title": "Phylogenetic Approaches Toward Crocodilian History",
+                "year": "2003",
+                "pages": "357-397",
+                "identifier": [
+                    {
+                        "type": "doi",
+                        "id": "10.1146/annurev.earth.31.100901.141308"
+                    }
+                ]
+            },
             "cladeDefinition": "Pristichampsinae (Kuhn 1968)\t. New definition.\n\nPristichampsus rollinati and all crocodylians closer to it than to Gavialis gangeticus, Alligator mississippiensis, or Crocodylus niloticus.",
             "internalSpecifiers": [
                 {
@@ -283,6 +386,27 @@
         },
         {
             "label": "Brevirostres",
+            "obo:IAO_0000119": {
+                "journal": {
+                    "name": "Annual Review of Earth and Planetary Sciences",
+                    "volume": "31"
+                },
+                "type": "article",
+                "authors": [
+                    {
+                        "name": "Brochu, Christopher A"
+                    }
+                ],
+                "title": "Phylogenetic Approaches Toward Crocodilian History",
+                "year": "2003",
+                "pages": "357-397",
+                "identifier": [
+                    {
+                        "type": "doi",
+                        "id": "10.1146/annurev.earth.31.100901.141308"
+                    }
+                ]
+            },
             "cladeDefinition": "Last common ancestor of Alligator mississippiensis and Crocodylus niloticus and all of its descendents.",
             "internalSpecifiers": [
                 {
@@ -337,7 +461,10 @@
                     }
                 ]
             },
-            "curatorComments": "If Gavialis and Tomistoma are sister taxa, Brevirostres is a junior synonym of Crocodylia.",
+            "curatorComments": "If Gavialis and Tomistoma are sister taxa, Brevirostres is a junior synonym of Crocodylia."
+        },
+        {
+            "label": "Alligatoroidea",
             "obo:IAO_0000119": {
                 "journal": {
                     "name": "Annual Review of Earth and Planetary Sciences",
@@ -346,7 +473,7 @@
                 "type": "article",
                 "authors": [
                     {
-                        "name": "Brooch, Christopher A"
+                        "name": "Brochu, Christopher A"
                     }
                 ],
                 "title": "Phylogenetic Approaches Toward Crocodilian History",
@@ -358,10 +485,7 @@
                         "id": "10.1146/annurev.earth.31.100901.141308"
                     }
                 ]
-            }
-        },
-        {
-            "label": "Alligatoroidea",
+            },
             "cladeDefinition": "Alligatoroidea (Gray 1844). \n\nAlligator mississippiensis and all crocodylians closer to it than to Crocodylus niloticus or Gavialis gangeticus.",
             "internalSpecifiers": [
                 {
@@ -416,6 +540,27 @@
         },
         {
             "label": "Diplocynodontinae",
+            "obo:IAO_0000119": {
+                "journal": {
+                    "name": "Annual Review of Earth and Planetary Sciences",
+                    "volume": "31"
+                },
+                "type": "article",
+                "authors": [
+                    {
+                        "name": "Brochu, Christopher A"
+                    }
+                ],
+                "title": "Phylogenetic Approaches Toward Crocodilian History",
+                "year": "2003",
+                "pages": "357-397",
+                "identifier": [
+                    {
+                        "type": "doi",
+                        "id": "10.1146/annurev.earth.31.100901.141308"
+                    }
+                ]
+            },
             "cladeDefinition": "Diplocynodontinae (Brochu 1999).\n\nDiplocynodon ratelii and all crocodylians closer to it than to Alligator mississippiensis.",
             "internalSpecifiers": [
                 {
@@ -457,6 +602,27 @@
         },
         {
             "label": "Globidonta",
+            "obo:IAO_0000119": {
+                "journal": {
+                    "name": "Annual Review of Earth and Planetary Sciences",
+                    "volume": "31"
+                },
+                "type": "article",
+                "authors": [
+                    {
+                        "name": "Brochu, Christopher A"
+                    }
+                ],
+                "title": "Phylogenetic Approaches Toward Crocodilian History",
+                "year": "2003",
+                "pages": "357-397",
+                "identifier": [
+                    {
+                        "type": "doi",
+                        "id": "10.1146/annurev.earth.31.100901.141308"
+                    }
+                ]
+            },
             "cladeDefinition": "Globidonta (Brochu 1999).\n\nAlligator mississippiensis and all crocodylians closer to it than to Diplocynodon ratelii.",
             "internalSpecifiers": [
                 {
@@ -498,6 +664,27 @@
         },
         {
             "label": "Alligatoridae",
+            "obo:IAO_0000119": {
+                "journal": {
+                    "name": "Annual Review of Earth and Planetary Sciences",
+                    "volume": "31"
+                },
+                "type": "article",
+                "authors": [
+                    {
+                        "name": "Brochu, Christopher A"
+                    }
+                ],
+                "title": "Phylogenetic Approaches Toward Crocodilian History",
+                "year": "2003",
+                "pages": "357-397",
+                "identifier": [
+                    {
+                        "type": "doi",
+                        "id": "10.1146/annurev.earth.31.100901.141308"
+                    }
+                ]
+            },
             "cladeDefinition": "Alligatoridae (Cuvier 1807).\n\nLast common ancestor of Alligator mississippiensis and Caiman crocodilus and all of its descendents.",
             "internalSpecifiers": [
                 {
@@ -538,6 +725,27 @@
         },
         {
             "label": "Alligatorinae",
+            "obo:IAO_0000119": {
+                "journal": {
+                    "name": "Annual Review of Earth and Planetary Sciences",
+                    "volume": "31"
+                },
+                "type": "article",
+                "authors": [
+                    {
+                        "name": "Brochu, Christopher A"
+                    }
+                ],
+                "title": "Phylogenetic Approaches Toward Crocodilian History",
+                "year": "2003",
+                "pages": "357-397",
+                "identifier": [
+                    {
+                        "type": "doi",
+                        "id": "10.1146/annurev.earth.31.100901.141308"
+                    }
+                ]
+            },
             "cladeDefinition": "Alligatorinae (Kälin 1940).\n\nAlligator mississippiensis and all crocodylians closer to it than to Caiman crocodilus.",
             "internalSpecifiers": [
                 {
@@ -579,6 +787,27 @@
         },
         {
             "label": "Caimaninae",
+            "obo:IAO_0000119": {
+                "journal": {
+                    "name": "Annual Review of Earth and Planetary Sciences",
+                    "volume": "31"
+                },
+                "type": "article",
+                "authors": [
+                    {
+                        "name": "Brochu, Christopher A"
+                    }
+                ],
+                "title": "Phylogenetic Approaches Toward Crocodilian History",
+                "year": "2003",
+                "pages": "357-397",
+                "identifier": [
+                    {
+                        "type": "doi",
+                        "id": "10.1146/annurev.earth.31.100901.141308"
+                    }
+                ]
+            },
             "cladeDefinition": "Caimaninae (Norell 1988).\n\nCaiman crocodilus and all crocodylians closer to it than to Alligator mississippiensis.",
             "internalSpecifiers": [
                 {
@@ -620,6 +849,27 @@
         },
         {
             "label": "Crocodyloidea",
+            "obo:IAO_0000119": {
+                "journal": {
+                    "name": "Annual Review of Earth and Planetary Sciences",
+                    "volume": "31"
+                },
+                "type": "article",
+                "authors": [
+                    {
+                        "name": "Brochu, Christopher A"
+                    }
+                ],
+                "title": "Phylogenetic Approaches Toward Crocodilian History",
+                "year": "2003",
+                "pages": "357-397",
+                "identifier": [
+                    {
+                        "type": "doi",
+                        "id": "10.1146/annurev.earth.31.100901.141308"
+                    }
+                ]
+            },
             "cladeDefinition": "Crocodyloidea (Fitzinger 1826).\n\nCrocodylus niloticus and all crocodylians closer to it than to Alligator mississippiensis or Gavialis gangeticus.",
             "internalSpecifiers": [
                 {
@@ -672,6 +922,27 @@
         },
         {
             "label": "Crocodylidae",
+            "obo:IAO_0000119": {
+                "journal": {
+                    "name": "Annual Review of Earth and Planetary Sciences",
+                    "volume": "31"
+                },
+                "type": "article",
+                "authors": [
+                    {
+                        "name": "Brochu, Christopher A"
+                    }
+                ],
+                "title": "Phylogenetic Approaches Toward Crocodilian History",
+                "year": "2003",
+                "pages": "357-397",
+                "identifier": [
+                    {
+                        "type": "doi",
+                        "id": "10.1146/annurev.earth.31.100901.141308"
+                    }
+                ]
+            },
             "cladeDefinition": "Crocodylidae (Cuvier 1807). Definition dependent on phylogenetic context.\n\nLast common ancestor of Crocodylus niloticus, Osteolaemus tetraspis, and Tomistoma schlegelii and all of its descendents.",
             "internalSpecifiers": [
                 {
@@ -723,6 +994,27 @@
         },
         {
             "label": "Mekosuchinae",
+            "obo:IAO_0000119": {
+                "journal": {
+                    "name": "Annual Review of Earth and Planetary Sciences",
+                    "volume": "31"
+                },
+                "type": "article",
+                "authors": [
+                    {
+                        "name": "Brochu, Christopher A"
+                    }
+                ],
+                "title": "Phylogenetic Approaches Toward Crocodilian History",
+                "year": "2003",
+                "pages": "357-397",
+                "identifier": [
+                    {
+                        "type": "doi",
+                        "id": "10.1146/annurev.earth.31.100901.141308"
+                    }
+                ]
+            },
             "cladeDefinition": "Mekosuchinae (Balouet & Buffetaut 1987). Definition adapted from Salisbury & Willis 1996.\n\nLast common ancestor of Kambara murgonensis, Australosuchus clarkae, Pallimnarchus pollens, Baru darrowi, Trilophosuchus rackhami, Quinkana\t fortirostrum, and Mekosuchus inexpectatus and all of its descendents.",
             "internalSpecifiers": [
                 {
@@ -819,6 +1111,27 @@
         },
         {
             "label": "Tomistominae",
+            "obo:IAO_0000119": {
+                "journal": {
+                    "name": "Annual Review of Earth and Planetary Sciences",
+                    "volume": "31"
+                },
+                "type": "article",
+                "authors": [
+                    {
+                        "name": "Brochu, Christopher A"
+                    }
+                ],
+                "title": "Phylogenetic Approaches Toward Crocodilian History",
+                "year": "2003",
+                "pages": "357-397",
+                "identifier": [
+                    {
+                        "type": "doi",
+                        "id": "10.1146/annurev.earth.31.100901.141308"
+                    }
+                ]
+            },
             "cladeDefinition": "Tomistominae (Kälin 1955). Definition dependent on phylogenetic context.\n\nTomistoma schlegelii and all crocodylians closer to it than to Crocodylus niloticus.",
             "internalSpecifiers": [
                 {
@@ -860,6 +1173,27 @@
         },
         {
             "label": "Crocodylinae",
+            "obo:IAO_0000119": {
+                "journal": {
+                    "name": "Annual Review of Earth and Planetary Sciences",
+                    "volume": "31"
+                },
+                "type": "article",
+                "authors": [
+                    {
+                        "name": "Brochu, Christopher A"
+                    }
+                ],
+                "title": "Phylogenetic Approaches Toward Crocodilian History",
+                "year": "2003",
+                "pages": "357-397",
+                "identifier": [
+                    {
+                        "type": "doi",
+                        "id": "10.1146/annurev.earth.31.100901.141308"
+                    }
+                ]
+            },
             "cladeDefinition": "Crocodylinae (Cuvier 1807). Definition dependent on phylogenetic context.\n\nCrocodylus niloticus and all crocodylians closer to it than to Tomistoma schlegelii.\n \t \t ",
             "internalSpecifiers": [
                 {
@@ -901,6 +1235,27 @@
         },
         {
             "label": "Osteolaeminae",
+            "obo:IAO_0000119": {
+                "journal": {
+                    "name": "Annual Review of Earth and Planetary Sciences",
+                    "volume": "31"
+                },
+                "type": "article",
+                "authors": [
+                    {
+                        "name": "Brochu, Christopher A"
+                    }
+                ],
+                "title": "Phylogenetic Approaches Toward Crocodilian History",
+                "year": "2003",
+                "pages": "357-397",
+                "identifier": [
+                    {
+                        "type": "doi",
+                        "id": "10.1146/annurev.earth.31.100901.141308"
+                    }
+                ]
+            },
             "cladeDefinition": "Osteolaeminae tax. nov. New definition.\n\nOsteolaemus tetraspis and all crocodylians closer to it than to Crocodylus niloticus.",
             "internalSpecifiers": [
                 {
@@ -943,6 +1298,27 @@
         },
         {
             "label": "Crocodylidae (alt)",
+            "obo:IAO_0000119": {
+                "journal": {
+                    "name": "Annual Review of Earth and Planetary Sciences",
+                    "volume": "31"
+                },
+                "type": "article",
+                "authors": [
+                    {
+                        "name": "Brochu, Christopher A"
+                    }
+                ],
+                "title": "Phylogenetic Approaches Toward Crocodilian History",
+                "year": "2003",
+                "pages": "357-397",
+                "identifier": [
+                    {
+                        "type": "doi",
+                        "id": "10.1146/annurev.earth.31.100901.141308"
+                    }
+                ]
+            },
             "cladeDefinition": "Crocodylidae (Cuvier 1807).\n\nLast common ancestor of Crocodylus niloticus and Osteolaemus tetraspis and all of its descendents.",
             "internalSpecifiers": [
                 {
@@ -984,6 +1360,27 @@
         },
         {
             "label": "Crocodylinae (alt)",
+            "obo:IAO_0000119": {
+                "journal": {
+                    "name": "Annual Review of Earth and Planetary Sciences",
+                    "volume": "31"
+                },
+                "type": "article",
+                "authors": [
+                    {
+                        "name": "Brochu, Christopher A"
+                    }
+                ],
+                "title": "Phylogenetic Approaches Toward Crocodilian History",
+                "year": "2003",
+                "pages": "357-397",
+                "identifier": [
+                    {
+                        "type": "doi",
+                        "id": "10.1146/annurev.earth.31.100901.141308"
+                    }
+                ]
+            },
             "cladeDefinition": "Crocodylinae (Cuvier 1807). At present, this would be redundant with Crocodylus.\n\nCrocodylus niloticus and all crocodylians closer to it than to Osteolaemus tetraspis.",
             "internalSpecifiers": [
                 {
@@ -1026,6 +1423,27 @@
         },
         {
             "label": "Gavialidae (alt)",
+            "obo:IAO_0000119": {
+                "journal": {
+                    "name": "Annual Review of Earth and Planetary Sciences",
+                    "volume": "31"
+                },
+                "type": "article",
+                "authors": [
+                    {
+                        "name": "Brochu, Christopher A"
+                    }
+                ],
+                "title": "Phylogenetic Approaches Toward Crocodilian History",
+                "year": "2003",
+                "pages": "357-397",
+                "identifier": [
+                    {
+                        "type": "doi",
+                        "id": "10.1146/annurev.earth.31.100901.141308"
+                    }
+                ]
+            },
             "cladeDefinition": "Gavialidae (Adams 1854). In a morphological context, Gavialidae would be redundant with Gavialis gangeticus.\n\nLast common ancestor of Gavialis gangeticus and Tomistoma schlegelii and all of its descendents.",
             "internalSpecifiers": [
                 {
@@ -1067,6 +1485,27 @@
         },
         {
             "label": "Tomistominae (alt)",
+            "obo:IAO_0000119": {
+                "journal": {
+                    "name": "Annual Review of Earth and Planetary Sciences",
+                    "volume": "31"
+                },
+                "type": "article",
+                "authors": [
+                    {
+                        "name": "Brochu, Christopher A"
+                    }
+                ],
+                "title": "Phylogenetic Approaches Toward Crocodilian History",
+                "year": "2003",
+                "pages": "357-397",
+                "identifier": [
+                    {
+                        "type": "doi",
+                        "id": "10.1146/annurev.earth.31.100901.141308"
+                    }
+                ]
+            },
             "cladeDefinition": "Tomistominae (Kälin 1955).\n\nTomistoma schlegelii and all crocodylians closer to it than to Gavialis gangeticus.",
             "internalSpecifiers": [
                 {
@@ -1109,6 +1548,27 @@
         },
         {
             "label": "Gavialinae (alt)",
+            "obo:IAO_0000119": {
+                "journal": {
+                    "name": "Annual Review of Earth and Planetary Sciences",
+                    "volume": "31"
+                },
+                "type": "article",
+                "authors": [
+                    {
+                        "name": "Brochu, Christopher A"
+                    }
+                ],
+                "title": "Phylogenetic Approaches Toward Crocodilian History",
+                "year": "2003",
+                "pages": "357-397",
+                "identifier": [
+                    {
+                        "type": "doi",
+                        "id": "10.1146/annurev.earth.31.100901.141308"
+                    }
+                ]
+            },
             "cladeDefinition": "Gavialinae (Nopcsa 1923).\n\nGavialis gangeticus and all crocodylians closer to it than to Tomistoma schlegelii.",
             "internalSpecifiers": [
                 {
