@@ -2,7 +2,7 @@
   <div>
     <div class="card border-dark">
       <h5 class="card-header border-dark">
-        Phyx file information
+        Phyloreference collection
       </h5>
       <div class="card-body">
         <form>
@@ -12,7 +12,7 @@
               for="phyx-label"
               class="col-form-label col-md-2"
             >
-              Phyx file title
+              Collection name
             </label>
             <div class="col-md-10">
               <input
@@ -20,7 +20,7 @@
                 v-model="phyx.title"
                 type="text"
                 class="form-control"
-                placeholder="Phyloreference label"
+                placeholder="Enter title here"
               >
             </div>
           </div>

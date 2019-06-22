@@ -41,7 +41,7 @@
 
           <!-- Pre-existing definition source -->
           <Citation
-            label="Pre-existing name definition"
+            label="Name published in"
             :object="selectedPhyloref"
             citation-key="dwc:namePublishedIn"
           />
@@ -52,7 +52,7 @@
               for="definition"
               class="col-form-label col-md-2"
             >
-              Clade definition
+              Free-text definition
             </label>
             <div class="col-md-10">
               <textarea
@@ -67,7 +67,7 @@
 
           <!-- Phyloref definition source -->
           <Citation
-            label="Definition source"
+            label="Definition published in"
             :object="selectedPhyloref"
             citation-key="obo:IAO_0000119"
           />
@@ -86,7 +86,7 @@
                 v-model.lazy="selectedCuratorComments"
                 class="form-control"
                 rows="2"
-                placeholder="Curator notes relating to this phyloreference"
+                placeholder="e.g. 'Specifier X not included in reference phylogeny'"
               />
             </div>
           </div>
@@ -269,7 +269,7 @@
               <!-- Node(s) this phyloreference actually resolved to -->
               <label
                 for="actual-nodes"
-                class="col-form-label col-lg-2 col-md-4"
+                class="col-form-label col-lg-2 col-md-4 pb-2"
               >
                 Actual resolved nodes
               </label>
