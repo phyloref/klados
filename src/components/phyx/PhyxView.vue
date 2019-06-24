@@ -6,8 +6,8 @@
       </h5>
       <div class="card-body">
         <form>
-          <!-- Phyx file title -->
-          <div class="form-group row">
+          <!-- Phyx collection name (if we have more than one phyloref!) -->
+          <div class="form-group row" v-if="phylorefs.length > 1 || phyx.title">
             <label
               for="phyx-label"
               class="col-form-label col-md-2"
