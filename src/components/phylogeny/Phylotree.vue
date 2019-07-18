@@ -33,7 +33,7 @@
  */
 
 import { uniqueId, has } from 'lodash';
-import { PhylogenyWrapper } from '@phyloref/phyx';
+import { PhylogenyWrapper, PhylorefWrapper } from '@phyloref/phyx';
 
 /*
  * Note that this requires the Phylotree Javascript to be loaded in the HTML
