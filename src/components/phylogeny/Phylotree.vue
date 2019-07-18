@@ -100,6 +100,12 @@ export default {
           // - element: The D3 element of the node being styled
           // - data: The data associated with the node being styled
 
+          // Wrap the phylogeny so we can call methods on it.
+          const wrappedPhylogeny = new PhylogenyWrapper(this.phylogeny || {});
+
+          // Wrap the phyloref is there is one.
+          const wrappedPhyloref = new PhylorefWrapper(this.phyloref || {});
+
           // Make sure we don't already have an internal label node on this SVG node!
           let textLabel = element.selectAll('text');
 
@@ -120,7 +126,7 @@ export default {
             // selected phyloreference, add an 'id' so we can jump to it
             // and a CSS class to render it differently from other labels.
             if (
-              this.getExpectedNodeLabelsOnPhylogeny(this.phylogeny, this.phyloref).includes(data.name)
+              wrappedPhyloref.getExpectedNodeLabels(this.phylogeny).includes(data.name)
             ) {
               textLabel.attr('id', `current_expected_label_phylogeny_${this.phylogenyIndex}`);
               textLabel.classed('selected-internal-label', true);
@@ -163,9 +169,6 @@ export default {
             element.classed('descendant-of-pinning-node-node', true);
           }
 
-          // Wrap the phylogeny so we can call methods on it.
-          const wrappedPhylogeny = new PhylogenyWrapper(this.phylogeny);
-
           if (data.name !== undefined && data.children === undefined) {
             // Labeled leaf node! Look for taxonomic units.
             const tunits = wrappedPhylogeny.getTaxonomicUnitsForNodeLabel(data.name);
@@ -178,7 +181,7 @@ export default {
               // the currently expected node label.
               if (
                 has(this.phyloref, 'label')
-                && this.getExpectedNodeLabelsOnPhylogeny(this.phylogeny, this.phyloref)
+                && wrappedPhyloref.getExpectedNodeLabels(this.phylogeny)
                   .includes(data.name)
               ) {
                 textLabel.attr('id', `current_expected_label_phylogeny_${this.phylogenyIndex}`);
@@ -245,47 +248,6 @@ export default {
     this.redrawTree();
   },
   methods: {
-    getExpectedNodeLabelsOnPhylogeny(phylogeny, phyloref) {
-      // Given a phylogeny, determine which node labels we expect this phyloref to
-      // resolve to. To do this, we:
-      //  1. Find all node labels that are case-sensitively identical
-      //     to the phyloreference.
-      //  2. Find all node labels that have additionalNodeProperties with
-      //     expectedPhyloreferenceNamed case-sensitively identical to
-      //     the phyloreference.
-      const nodeLabels = new Set();
-      const newick = phylogeny.newick || '()';
-
-      // Can't do anything if no phyloref is provided or if it doesn't have a label.
-      if (phyloref === undefined || !has(phyloref, 'label')) return [];
-      const phylorefLabel = phyloref.label;
-
-      new PhylogenyWrapper(phylogeny).getNodeLabels().forEach((nodeLabel) => {
-        // Is this node label identical to the phyloreference name?
-        if (nodeLabel === phylorefLabel) {
-          nodeLabels.add(nodeLabel);
-        } else if (
-          has(phylogeny, 'additionalNodeProperties')
-          && has(phylogeny.additionalNodeProperties, nodeLabel)
-          && has(phylogeny.additionalNodeProperties[nodeLabel], 'expectedPhyloreferenceNamed')
-        ) {
-          // Does this node label have an expectedPhyloreferenceNamed that
-          // includes this phyloreference name?
-
-          const expectedPhylorefs = phylogeny
-            .additionalNodeProperties[nodeLabel]
-            .expectedPhyloreferenceNamed;
-
-          if (expectedPhylorefs.includes(phylorefLabel)) {
-            nodeLabels.add(nodeLabel);
-          }
-        }
-      });
-
-      // Return node labels sorted alphabetically.
-      return Array.from(nodeLabels).sort();
-    },
-
     getResolvedNodesForPhylogeny(
       phylogeny,
       phyloref,
