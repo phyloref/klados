@@ -94,7 +94,7 @@ export default {
     phyxAsJSON: {
       get() {
         // Return the value of the Phyx file as a JSON string.
-        return this.$store.getters.getPhyxAsJSON;
+        return JSON.stringify(this.$store.state.phyx.currentPhyx, undefined, 4);
       },
       set(value) {
         // Attempt to parse the JSON string and replace the current test file

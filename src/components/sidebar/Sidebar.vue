@@ -334,7 +334,7 @@ export default {
 
     downloadAsJSON() {
       // Provide the JSON file as a download to the browser.
-      const content = [this.$store.getters.getPhyxAsJSON];
+      const content = [JSON.stringify(this.$store.state.phyx.currentPhyx, undefined, 4)];
 
       // Save to local hard drive.
       const jsonFile = new File(content, 'download.json', { type: 'application/json;charset=utf-8' });

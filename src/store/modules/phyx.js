@@ -22,10 +22,6 @@ export default {
       phylogenies: [],
     },
   },
-  getters: {
-    // Return the current Phyx file as a JSON string.
-    getPhyxAsJSON: state => JSON.stringify(state.currentPhyx, undefined, 4),
-  },
   mutations: {
     setCurrentPhyx(state, phyx) {
       // Replace the current Phyx file using an object. This method does NOT
