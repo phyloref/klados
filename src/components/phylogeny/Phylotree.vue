@@ -248,33 +248,6 @@ export default {
     this.redrawTree();
   },
   methods: {
-    getResolvedNodesForPhylogeny(
-      phylogeny,
-      phyloref,
-      flagReturnShortURIs = false,
-    ) {
-      // Return a list of nodes that were resolved for phyloref `phyloref` on
-      // phylogeny `phylogeny`.
-      // - flagReturnNodeURI: if true, the entire URI will be returned, otherwise
-      // just the node number will be returned.
-
-      // Do we have reasoning results for this phyloreference?
-      const phylorefURI = this.$state.getters.getBaseURIForPhyloref(phyloref);
-      if (
-        !has(rootState.phyx.reasoningResults, 'phylorefs')
-        || !has(rootState.phyx.reasoningResults.phylorefs, phylorefURI)
-      ) return [];
-
-      // Identify the resolved nodes.
-      const nodesResolved = rootState.phyx.reasoningResults.phylorefs[phylorefURI];
-      const phylogenyURI = getters.getBaseURIForPhylogeny(phylogeny);
-      const nodeURIs = nodesResolved.filter(uri => uri.includes(phylogenyURI));
-
-      // Either return the URIs as-is or remove the phylogeny URI (so we return e.g. "node21").
-      if (!flagReturnShortURIs) return nodeURIs;
-      return nodeURIs.map(iri => iri.replace(`${phylogenyURI}_`, ''));
-    },
-
     recurseNodes(node, func, nodeCount = 0, parentCount = undefined) {
       // Recurse through PhyloTree nodes, executing function on each node.
       //  - node: The node to recurse from. The function will be called on node
