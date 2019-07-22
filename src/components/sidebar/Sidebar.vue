@@ -376,7 +376,7 @@ export default {
           this.$store.state.phyx.currentPhyx,
           d3.layout.newick_parser,
         )
-          .asJSONLD()], undefined, 4),
+          .asJSONLD()]),
       }).done((data) => {
         this.$store.commit('setReasoningResults', data);
         // console.log('Data retrieved: ', data);
