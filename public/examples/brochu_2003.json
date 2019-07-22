@@ -1,5 +1,5 @@
 {
-    "@context": "file:///home/vaidyagi/code/phyloref/phyx.js/docs/context/v0.2.0/phyx.json",
+    "@context": "http://www.phyloref.org/phyx.js/context/v0.2.0/phyx.json",
     "doi": "10.1146/annurev.earth.31.100901.141308",
     "url": "https://www.annualreviews.org/doi/10.1146/annurev.earth.31.100901.141308",
     "citation": "Brochu (2003) Annual Review of Earth and Planetary Sciences 31:357-397",
