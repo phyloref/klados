@@ -373,7 +373,7 @@ export default {
       // file into JSON-LD.
       const outerThis = this;
       Vue.nextTick(function () {
-        $.post('http://localhost:34214/reason', {
+        $.post('https://phyloref.rc.ufl.edu/hooks/reason', {
           // This will convert the JSON-LD file into an application/x-www-form-urlencoded
           // string (see https://api.jquery.com/jquery.ajax/#jQuery-ajax-settings under
           // processData for details). The POST data sent to the server will look like:
