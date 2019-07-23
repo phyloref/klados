@@ -363,6 +363,9 @@ export default {
       // Are we already reasoning? If so, ignore.
       if (this.reasoningInProgress) return;
 
+      // Reset the existing reasoning information.
+      this.$store.commit('setReasoningResults', undefined);
+
       // Disable "Reason" buttons so they can't be reused.
       this.reasoningInProgress = true;
       $.post('http://localhost:34214/reason', {
