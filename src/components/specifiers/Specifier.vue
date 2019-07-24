@@ -479,7 +479,8 @@ export default {
       // TODO: We should want the user if we couldn't parse this; at the moment,
       // we silently ignore this and no specifier gets written.
       get() {
-        return this.taxonNameWrapped.nameComplete;
+        if(this.taxonNameWrapped) return this.taxonNameWrapped.nameComplete;
+        return "";
       },
       set(scname) {
         // Don't do anything if a scname is not actually set.
@@ -492,7 +493,8 @@ export default {
     },
     enteredOccurrenceID: {
       get() {
-        return this.specimenWrapped.occurrenceID;
+        if(this.specimenWrapped) return this.specimenWrapped.occurrenceID;
+        return "";
       },
       set(occurID) {
         this.specimenWrapped = new SpecimenWrapper(SpecimenWrapper.fromOccurrenceID(occurID));
