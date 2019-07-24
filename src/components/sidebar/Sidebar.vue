@@ -206,6 +206,7 @@ import Vue from 'vue';
 import { has } from 'lodash';
 import { mapState, mapGetters } from 'vuex';
 import { saveAs } from 'filesaver.js-npm';
+import { signer } from 'x-hub-signature';
 
 import { PhyxWrapper, PhylorefWrapper, TaxonomicUnitWrapper } from '@phyloref/phyx';
 
@@ -373,18 +374,32 @@ export default {
       // file into JSON-LD.
       const outerThis = this;
       Vue.nextTick(function () {
-        $.post('https://phyloref.rc.ufl.edu/hooks/reason', {
-          // This will convert the JSON-LD file into an application/x-www-form-urlencoded
-          // string (see https://api.jquery.com/jquery.ajax/#jQuery-ajax-settings under
-          // processData for details). The POST data sent to the server will look like:
-          //  jsonld=%7B%5B%7B%22title%22%3A...
-          // which translates to:
-          //  jsonld={[{"title":...
+        // Prepare request for submission.
+        const query = $.param({
           jsonld: JSON.stringify([new PhyxWrapper(
             outerThis.$store.state.phyx.currentPhyx,
             d3.layout.newick_parser,
-          )
-            .asJSONLD()], undefined, 4),
+          ).asJSONLD()])
+        }).replace(/%20/g, '+');  // $.post will do this automatically,
+                                  // but we need to do this here so our
+                                  // signature works.
+
+        // Sign it with an X-Hub-Signature.
+        const sign = signer({
+            algorithm: 'sha1',
+            secret: 'an-obvious-public-secret'
+        });
+        const signature = sign(new Buffer(query));
+
+        console.log('Query: ', query);
+        console.log('Signature: ', signature);
+
+        $.post({
+          url: 'https://phyloref.rc.ufl.edu/hooks/reason',
+          data: query,
+          headers: {
+            'X-Hub-Signature': signature,
+          },
         }).done((data) => {
           outerThis.$store.commit('setReasoningResults', data);
           // console.log('Data retrieved: ', data);
