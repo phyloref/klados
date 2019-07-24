@@ -371,22 +371,14 @@ export default {
     },
   },
   data() {
-    const taxonConceptWrapped = new TaxonConceptWrapper(cloneDeep(this.remoteSpecifier));
-    let taxonNameWrapped;
-    if (taxonConceptWrapped.taxonName) {
-      taxonNameWrapped = new TaxonNameWrapper(taxonConceptWrapped.taxonName);
-    } else {
-      taxonNameWrapped = new TaxonNameWrapper({});
-    }
-
+    // All of this will be filled in by mounted().
     return {
       expand: false,
       specifierClass: undefined,
-      enteredVerbatimLabel: "",
-      specimenWrapped: new SpecimenWrapper(cloneDeep(this.remoteSpecifier)),
-      taxonNameWrapped,
-      enteredNomenclaturalCode: taxonNameWrapped.nomenclaturalCode ||
-        this.$store.getters.getDefaultNomenCodeURI,
+      specimenWrapped: undefined,
+      taxonNameWrapped: undefined,
+      enteredNomenclaturalCode: undefined,
+      enteredVerbatimLabel: undefined,
     };
   },
   computed: {
