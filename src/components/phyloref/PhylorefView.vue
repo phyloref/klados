@@ -107,6 +107,7 @@
           class="form-row input-group"
         >
           <Specifier
+            v-bind:key="'internal' + index"
             :phyloref="selectedPhyloref"
             :remote-specifier="specifier"
             :remote-specifier-id="'internal' + index"
@@ -117,6 +118,7 @@
           class="form-row input-group"
         >
           <Specifier
+            v-bind:key="'external' + index"
             :phyloref="selectedPhyloref"
             :remote-specifier="specifier"
             :remote-specifier-id="'external' + index"
