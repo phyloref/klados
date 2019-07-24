@@ -513,12 +513,6 @@ export default {
         this.enteredScientificName = scname;
       }
     },
-    scientificNameWrapper() {
-      return new TaxonNameWrapper(TaxonNameWrapper.fromVerbatimName(this.enteredScientificName));
-    },
-    specimenWrapper() {
-      return new SpecimenWrapper(SpecimenWrapper.createFromOccurrenceID(this.enteredOccurrenceID));
-    },
     enteredOccurrenceID: {
       get() {
         return this.specimenWrapped.occurrenceID;
