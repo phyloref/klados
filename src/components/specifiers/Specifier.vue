@@ -384,8 +384,7 @@ export default {
   computed: {
     nomenCodes: () => TaxonNameWrapper.getNomenclaturalCodes(),
     nomenclaturalCodeObj() {
-      return TaxonNameWrapper.getNomenCodeAsObject(this.enteredNomenclaturalCode) ||
-        TaxonNameWrapper.getNomenCodeAsObject(TaxonNameWrapper.NAME_IN_UNKNOWN_CODE);
+      return TaxonNameWrapper.getNomenCodeAsObject(this.enteredNomenclaturalCode || TaxonNameWrapper.NAME_IN_UNKNOWN_CODE);
     },
     specifier() {
       // Check the specifierClass before we figure out how to construct the
