@@ -428,7 +428,7 @@ export default {
         result.label = this.enteredVerbatimLabel;
       }
 
-      return new TaxonomicUnitWrapper(result);
+      return result;
     },
     specifierType: {
       get() {
@@ -603,7 +603,7 @@ export default {
       console.log('Updating specifier as ', result, ' differs from ', this.remoteSpecifier);
       this.$store.commit('setSpecifierProps', {
         specifier: this.remoteSpecifier,
-        props: result.asJSON,
+        props: result,
       });
     },
   },
