@@ -45,10 +45,9 @@
         </div>
       </div>
       <input
-        readonly
         type="text"
         class="form-control"
-        :value="specifierLabel"
+        v-model="specifierLabel"
       >
       <div class="input-group-append">
         <button
@@ -88,7 +87,7 @@
           <div class="col-md-10">
             <input
               id="verbatim-specifier"
-              v-model="specifier.verbatimSpecifier"
+              v-model="enteredVerbatimLabel"
               class="form-control"
               @change="updateSpecifier()"
             />
@@ -447,22 +446,29 @@ export default {
     },
     specifierLabel: {
       get() {
-        return this.specifier.label;
+        // TODO: get labels from taxonNameWrapped or specimenWrapped as appropriate.
+        return this.enteredVerbatimLabel;
       },
       set(label) {
-        // 1. Set the verbatim specifier to this.
+        // 1. Set the verbatim label to this.
         this.enteredVerbatimLabel = label;
 
         // 2. Attempt to extract the specifier information from there.
         switch (this.specifierClass) {
           case 'Taxon':
-            this.enteredScientificName = label;
-            this.enteredOccurrenceID = "";
+            // Try to extract a taxon name from this.
+            const taxonNameWrapped = TaxonNameWrapper.fromVerbatimName(
+              label,
+              this.enteredNomenclaturalCode
+            );
+            if (taxonNameWrapped) this.taxonNameWrapped = taxonNameWrapped;
             break;
 
           case 'Specimen':
-            this.enteredOccurrenceID = label;
-            this.enteredScientificName = "";
+            const specimenWrapped = SpecimenWrapper.fromOccurrenceID(
+              label
+            );
+            if (specimenWrapped) this.specimenWrapped = specimenWrapped;
             break;
         }
 
