@@ -12,17 +12,17 @@
       </div>
       <div class="input-group-prepend">
         <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          {{ specifierClassComputed }}
+          {{ specifierClass }}
         </button>
         <div class="dropdown-menu">
           <!-- TODO: remove external reference as a type and add it in as a separate property. -->
-          <a class="dropdown-item" :class="{active: specifierClassComputed === 'Taxon'}" href="javascript:;" @click="specifierClass = 'Taxon'">Taxon</a>
-          <a class="dropdown-item" :class="{active: specifierClassComputed === 'Specimen'}"  href="javascript:;" @click="specifierClass = 'Specimen'">Specimen</a>
-          <a class="dropdown-item" :class="{active: specifierClassComputed === 'External reference'}"  href="javascript:;" @click="specifierClass = 'External reference'">External reference</a>
-          <a class="dropdown-item" :class="{active: specifierClassComputed === 'Apomorphy'}"  href="javascript:;" @click="specifierClass = 'Apomorphy'">Apomorphy</a>
+          <a class="dropdown-item" :class="{active: specifierClass === 'Taxon'}" href="javascript:;" @click="specifierClass = 'Taxon'">Taxon</a>
+          <a class="dropdown-item" :class="{active: specifierClass === 'Specimen'}"  href="javascript:;" @click="specifierClass = 'Specimen'">Specimen</a>
+          <a class="dropdown-item" :class="{active: specifierClass === 'External reference'}"  href="javascript:;" @click="specifierClass = 'External reference'">External reference</a>
+          <a class="dropdown-item" :class="{active: specifierClass === 'Apomorphy'}"  href="javascript:;" @click="specifierClass = 'Apomorphy'">Apomorphy</a>
         </div>
       </div>
-      <div class="input-group-prepend" v-if="specifierClassComputed === 'Taxon'">
+      <div class="input-group-prepend" v-if="specifierClass === 'Taxon'">
         <button
           class="btn btn-outline-secondary dropdown-toggle"
           type="button"
@@ -106,7 +106,7 @@
           <div class="col-md-10">
             <select
               id="specifier-class"
-              v-model="specifierClassComputed"
+              v-model="specifierClass"
               class="form-control"
               @change="updateSpecifier()"
             >
@@ -130,7 +130,7 @@
           We provide three different possible displays for the three different
           types here
         -->
-        <template v-if="specifierClassComputed === 'Taxon'">
+        <template v-if="specifierClass === 'Taxon'">
           <!-- Specifier class -->
           <div class="form-group row">
             <label
@@ -220,7 +220,7 @@
           </div>
         </template>
 
-        <template v-if="specifierClassComputed === 'Specimen'">
+        <template v-if="specifierClass === 'Specimen'">
           <div class="form-group row">
             <label
               class="col-form-label col-md-2"
@@ -291,7 +291,7 @@
           </div>
         </template>
 
-        <template v-if="specifierClassComputed === 'External reference'">
+        <template v-if="specifierClass === 'External reference'">
           <div class="form-group row">
             <label
               class="col-form-label col-md-2"
@@ -319,7 +319,7 @@
           </div>
         </template>
 
-        <template v-if="specifierClassComputed === 'Apomorphy'">
+        <template v-if="specifierClass === 'Apomorphy'">
           <p>
             Apomorphy-based specifiers are not currently supported. Please enter
             them into the verbatim label field for now.
@@ -396,7 +396,7 @@ export default {
       // Check the specifierClass before we figure out how to construct the
       // specifier we might want to overwrite.
       let result;
-      switch (this.specifierClassComputed) {
+      switch (this.specifierClass) {
         case 'Taxon':
           result = TaxonConceptWrapper.fromLabel(
             this.enteredScientificName,
@@ -455,7 +455,7 @@ export default {
         this.enteredVerbatimLabel = label;
 
         // 2. Attempt to extract the specifier information from there.
-        switch (this.specifierClassComputed) {
+        switch (this.specifierClass) {
           case 'Taxon':
             this.enteredScientificName = label;
             this.enteredOccurrenceID = "";
@@ -542,28 +542,33 @@ export default {
     this.recalculateEntered();
   },
   methods: {
-    recalculateEntered() {
-      // Recalculate the entered values.
-      const tunit = new TaxonomicUnitWrapper(cloneDeep(this.remoteSpecifier || {}));
-      this.enteredVerbatimLabel = tunit.label;
+    getSpecifierClass(tunit) {
+      // Return the specifier class for a tunit.
       if (tunit.types.length > 0) {
         switch (tunit.types[0]) {
           case TaxonomicUnitWrapper.TYPE_TAXON_CONCEPT:
-            this.specifierClass = 'Taxon';
-            break;
+            return 'Taxon';
 
           case TaxonomicUnitWrapper.TYPE_SPECIMEN:
-            this.specifierClass = 'Specimen';
-            break;
+            return 'Specimen';
 
           case TaxonomicUnitWrapper.TYPE_APOMORPHY:
-            this.specifierClass = 'Apomorphy';
-            break;
+            return 'Apomorphy';
 
           case TaxonomicUnitWrapper.TYPE_EXTERNAL_REFERENCE:
-            this.specifierClass = 'External reference';
+            return 'External reference';
         }
       }
+
+      return undefined;
+    },
+    recalculateEntered() {
+      console.log("Recalculating entered values from: ", this.remoteSpecifier);
+
+      // Recalculate the entered values.
+      const tunit = new TaxonomicUnitWrapper(cloneDeep(this.remoteSpecifier || {}));
+      this.enteredVerbatimLabel = tunit.label;
+      this.specifierClass = this.getSpecifierClass(tunit) || 'Taxon';
 
       const taxonConceptWrapped = new TaxonConceptWrapper(tunit.taxonConcept)
       if (taxonConceptWrapped && taxonConceptWrapped.taxonName) {
