@@ -472,32 +472,6 @@ export default {
         // TODO: For now, we just write external references and apormorphies
         // into the verbatim label. We should fix that!
 
-        // console.log('Specifier now at', this.specifier);
-        this.updateSpecifier();
-      },
-    },
-    specifierClassComputed: {
-      get() {
-        // Usually, this will be straightforward. However, an input JSON object might
-        // be confused by having multiple kinds of specifier data. In that case, we
-        // will pick the type in the following order:
-        //  1. external reference (if external reference is filled in)
-        //  2. specimen (if a specimen identifier is filled in)
-        //  3. taxon (if scientificName is filled in)
-
-        if (this.specifierClass) return this.specifierClass;
-
-        const tunit = new TaxonomicUnitWrapper(this.remoteSpecifier);
-
-        if ((tunit.externalReferences || []).length > 0) return 'External reference';
-        if ((tunit.includesSpecimens || []).length > 0) return 'Specimen';
-        if ((tunit.scientificNames || []).length > 0) return 'Taxon';
-
-        // If all else fails, be a taxon.
-        return 'Taxon';
-      },
-      set(type) {
-        this.specifierClass = type;
         this.updateSpecifier();
       },
     },
