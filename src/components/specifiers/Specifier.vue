@@ -350,7 +350,7 @@ import {
   SpecimenWrapper,
 } from '@phyloref/phyx';
 import {
-  has, isEmpty, isEqual, cloneDeep, pickBy,
+  has, isEmpty, isEqual, cloneDeep, pickBy, uniqueId,
 } from 'lodash';
 
 export default {
@@ -359,6 +359,11 @@ export default {
     remoteSpecifier: { /* The specifier to display and edit */
       type: Object,
       required: true,
+    },
+    remoteSpecifierId: { /* An ID for this specifier. We recalculate if this ID changes. */
+      type: String,
+      required: false,
+      default: () => uniqueId('remoteSpecifierId'),
     },
     phyloref: { /* The phyloreference containing this specifier */
       type: Object,
@@ -536,6 +541,9 @@ export default {
     remoteSpecifier() {
       this.recalculateEntered();
     },
+    remoteSpecifierId() {
+      this.recalculateEntered();
+    }
   },
   mounted() {
     this.recalculateEntered();
