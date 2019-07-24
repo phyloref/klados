@@ -232,7 +232,6 @@
               <input
                 id="occurrence-id"
                 v-model="enteredOccurrenceID"
-                readonly
                 class="form-control"
                 placeholder="Enter the occurrence ID of the specimen here"
               >
