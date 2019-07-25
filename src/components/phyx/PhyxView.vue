@@ -92,7 +92,7 @@
             <th>Internal specifiers</th>
             <th>External specifiers</th>
             <th v-for="(phylogeny, phylogenyIndex) of phylogenies">
-              {{ $store.getters.getPhylogenyLabel(phylogeny) }}
+              {{ getPhylogenyLabel(phylogeny) }}
             </th>
           </thead>
           <tbody>
@@ -117,7 +117,7 @@
                   href="javascript: void(0)"
                   @click="$store.commit('changeDisplay', { phyloref })"
                 >
-                  {{ $store.getters.getPhylorefLabel(phyloref) }}
+                  {{ getPhylorefLabel(phyloref) }}
                 </a>
               </td>
               <td>{{ (phyloref.internalSpecifiers || []).length }}</td>
@@ -216,7 +216,7 @@
                   href="javascript: void(0)"
                   @click="$store.commit('changeDisplay', { phylogeny })"
                 >
-                  {{ $store.getters.getPhylogenyLabel(phylogeny) }}
+                  {{ getPhylogenyLabel(phylogeny) }}
                 </a>
               </td>
               <td>
@@ -264,6 +264,14 @@ export default {
     })
   },
   methods: {
+    getPhylogenyLabel(phylogeny) {
+      return new PhylogenyWrapper(phylogeny).label ||
+        `Phylogeny ${this.phylogenies.indexOf(phylogeny) + 1}`;
+    },
+    getPhylorefLabel(phyloref) {
+      return new PhylorefWrapper(phyloref).label ||
+        `Phyloref ${this.phylogenies.indexOf(phyloref) + 1}`;
+    },
     hasReasoningResults(phyloref) {
       if (!has(this.$store.state.resolution.reasoningResults, 'phylorefs')) return false;
 
@@ -348,7 +356,7 @@ export default {
     },
     deletePhyloref(phyloref) {
       const warningString = `Are you sure you wish to delete phyloreference '${
-        this.$store.getters.getPhylorefLabel(phyloref)
+        this.getPhylorefLabel(phyloref)
       }'?`;
       if(confirm(warningString)) {
         this.$store.commit('deletePhyloref', { phyloref });
@@ -356,12 +364,12 @@ export default {
     },
     deletePhylogeny(phylogeny) {
       const warningString = `Are you sure you wish to delete phylogeny '${
-        this.$store.getters.getPhylogenyLabel(phylogeny)
+        this.getPhylogenyLabel(phylogeny)
       }'?`;
       if(confirm(warningString)) {
         this.$store.commit('deletePhylogeny', { phylogeny });
       }
-    }
+    },
   },
 };
 </script>
