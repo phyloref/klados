@@ -127,7 +127,7 @@
 
             <!-- Add a warning if this phyloreference has changed -->
             <ModifiedIcon
-              message="This phyloreference has been modified since being loaded! Use 'Save as JSON' to save your changes."
+              message="This phyloreference has been modified since being loaded! Use 'Save' to save your changes."
               :compare="phyloref"
               :compare-to="loadedPhyx.phylorefs[phylorefIndex]"
             />
@@ -195,7 +195,7 @@
 
           <!-- Add a warning if this phylogeny has changed -->
           <ModifiedIcon
-            message="This phylogeny has been modified since being loaded! Use 'Save as JSON' to save your changes."
+            message="This phylogeny has been modified since being loaded! Use 'Save' to save your changes."
             :compare="phylogeny"
             :compare-to="loadedPhyx.phylogenies[phylogenyIndex]"
           />

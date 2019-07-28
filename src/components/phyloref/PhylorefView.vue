@@ -2,7 +2,7 @@
   <div>
     <!-- Add a warning if this phyloreference has changed -->
     <ModifiedCard
-      message="This phyloreference has been modified since being loaded! Use 'Save as JSON' to save your changes."
+      message="This phyloreference has been modified since being loaded! Use 'Save' to save your changes."
       :compare="selectedPhyloref"
       :compare-to="currentPhyx.phylorefs[currentPhyx.phylorefs.indexOf(selectedPhyloref)]"
     />
