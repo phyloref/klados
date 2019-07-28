@@ -285,7 +285,13 @@ export default {
 
     loadPhyxFromURL(url) {
       // Change the current PHYX to that in the provided URL.
-      // Will ask the user to confirm before replacing it.
+
+      // Is the user sure that they want to do this?
+      if(this.$store.getters.loadedPhyxChanged) {
+        if(!confirm('The current Phyx file has been modified! Are you sure you want to discard these changes by loading another file?')) {
+          return;
+        }
+      }
 
       $.getJSON(url)
         .done((data) => {
@@ -331,6 +337,13 @@ export default {
       if (!$fileInput.prop('files')[0]) {
         alert('Please select a file before attempting to load it.');
         return;
+      }
+
+      // Is the user sure that they want to do this?
+      if(this.$store.getters.loadedPhyxChanged) {
+        if(!confirm('The current Phyx file has been modified! Are you sure you want to discard these changes by loading another file?')) {
+          return;
+        }
       }
 
       const [file] = $fileInput.prop('files');

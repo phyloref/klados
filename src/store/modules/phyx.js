@@ -6,7 +6,7 @@
  */
 
 import Vue from 'vue';
-import { has, cloneDeep } from 'lodash';
+import { has, cloneDeep, isEqual } from 'lodash';
 
 export default {
   state: {
@@ -27,6 +27,9 @@ export default {
     getDefaultNomenCodeURI(state) {
       return state.currentPhyx.defaultNomenclaturalCodeURI
         || 'http://purl.obolibrary.org/obo/NOMEN_0000036'; // NOMEN:scientific name.
+    },
+    loadedPhyxChanged(state) {
+      return !isEqual(state.currentPhyx, state.loadedPhyx);
     },
   },
   mutations: {
