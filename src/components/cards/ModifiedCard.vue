@@ -31,7 +31,10 @@ export default {
     compareTo: Object, /* Changes will be determined by comparing this to this.compare */
   },
   computed: {
-    dataChanged() { return !isEqual(this.compare, this.compareTo); },
+    dataChanged() {
+      return false;
+      // return !isEqual(this.compare, this.compareTo);
+    },
   },
 };
 </script>
