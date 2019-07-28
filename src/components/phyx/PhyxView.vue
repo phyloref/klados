@@ -294,7 +294,7 @@ export default {
     },
     getPhylorefLabel(phyloref) {
       return new PhylorefWrapper(phyloref).label ||
-        `Phyloref ${this.phylogenies.indexOf(phyloref) + 1}`;
+        `Phyloref ${this.phylorefs.indexOf(phyloref) + 1}`;
     },
     hasReasoningResults(phyloref) {
       if (!has(this.$store.state.resolution.reasoningResults, 'phylorefs')) return false;
