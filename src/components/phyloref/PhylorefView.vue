@@ -4,7 +4,7 @@
     <ModifiedCard
       message="This phyloreference has been modified since being loaded! Use 'Save' to save your changes."
       :compare="selectedPhyloref"
-      :compare-to="currentPhyx.phylorefs[currentPhyx.phylorefs.indexOf(selectedPhyloref)]"
+      :compare-to="loadedPhyx.phylorefs[currentPhyx.phylorefs.indexOf(selectedPhyloref)]"
     />
 
     <!-- Phyloreference information -->
