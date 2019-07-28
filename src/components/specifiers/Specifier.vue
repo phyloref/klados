@@ -165,7 +165,7 @@
               <input
                 id="name-complete"
                 class="form-control"
-                v-model="taxonNameWrapped.nameComplete"
+                v-model.lazy="taxonNameWrapped.nameComplete"
               >
             </div>
           </div>
