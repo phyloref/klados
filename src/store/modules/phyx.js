@@ -23,6 +23,12 @@ export default {
       phylogenies: [],
     },
   },
+  getters: {
+    getDefaultNomenCodeURI(state) {
+      return state.currentPhyx.defaultNomenclaturalCodeURI
+        || 'http://purl.obolibrary.org/obo/NOMEN_0000036'; // NOMEN:scientific name.
+    },
+  },
   mutations: {
     setCurrentPhyx(state, phyx) {
       // Replace the current Phyx file using an object. This method does NOT
