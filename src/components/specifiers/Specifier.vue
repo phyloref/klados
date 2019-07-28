@@ -399,7 +399,7 @@ export default {
       specifierClass: undefined,
       specimenWrapped: undefined,
       taxonNameWrapped: undefined,
-      enteredNomenclaturalCode: undefined,
+      enteredNomenclaturalCode: this.$store.getters.getDefaultNomenCodeURI,
       enteredVerbatimLabel: undefined,
       externalReference: undefined,
     };
@@ -576,9 +576,6 @@ export default {
     recalculateEntered() {
       console.log("Recalculating entered values from: ", this.remoteSpecifier);
 
-      // Set some defaults.
-      this.enteredNomenclaturalCode = this.$store.getters.getDefaultNomenCodeURI;
-
       // Recalculate the entered values.
       const tunit = new TaxonomicUnitWrapper(cloneDeep(this.remoteSpecifier || {}));
 
@@ -597,7 +594,8 @@ export default {
       const taxonConceptWrapped = new TaxonConceptWrapper(tunit.taxonConcept)
       if (taxonConceptWrapped && taxonConceptWrapped.taxonName) {
         this.taxonNameWrapped = new TaxonNameWrapper(taxonConceptWrapped.taxonName);
-        this.enteredNomenclaturalCode = this.taxonNameWrapped.nomenclaturalCode;
+        this.enteredNomenclaturalCode = this.taxonNameWrapped.nomenclaturalCode ||
+          this.enteredNomenclaturalCode;
       }
 
       if (tunit.specimen) {
