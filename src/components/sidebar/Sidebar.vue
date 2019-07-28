@@ -55,6 +55,11 @@
           @click="downloadAsJSON()"
         >
           Save
+          <ModifiedIcon
+            message="This Phyx file has been modified since it was loaded! Use 'Save' to save your changes."
+            :compare="currentPhyx"
+            :compare-to="loadedPhyx"
+          />
         </a>
 
         <a
