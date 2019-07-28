@@ -442,9 +442,10 @@ export default {
     },
     specifierLabel: {
       get() {
+        if (this.enteredVerbatimLabel) return this.enteredVerbatimLabel;
         if (this.specimenWrapped) return this.specimenWrapped.label;
         if (this.taxonNameWrapped) return this.taxonNameWrapped.label;
-        return this.enteredVerbatimLabel;
+        return "";
       },
       set(label) {
         // 1. Set the verbatim label to this.
