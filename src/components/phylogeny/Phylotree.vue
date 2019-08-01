@@ -33,7 +33,7 @@
  */
 
 import { uniqueId, has } from 'lodash';
-import { PhylogenyWrapper } from '@phyloref/phyx';
+import { PhylogenyWrapper, PhylorefWrapper } from '@phyloref/phyx';
 
 /*
  * Note that this requires the Phylotree Javascript to be loaded in the HTML
@@ -100,6 +100,12 @@ export default {
           // - element: The D3 element of the node being styled
           // - data: The data associated with the node being styled
 
+          // Wrap the phylogeny so we can call methods on it.
+          const wrappedPhylogeny = new PhylogenyWrapper(this.phylogeny || {});
+
+          // Wrap the phyloref is there is one.
+          const wrappedPhyloref = new PhylorefWrapper(this.phyloref || {});
+
           // Make sure we don't already have an internal label node on this SVG node!
           let textLabel = element.selectAll('text');
 
@@ -120,7 +126,7 @@ export default {
             // selected phyloreference, add an 'id' so we can jump to it
             // and a CSS class to render it differently from other labels.
             if (
-              this.$store.getters.getExpectedNodeLabelsOnPhylogeny(this.phylogeny, this.phyloref).includes(data.name)
+              wrappedPhyloref.getExpectedNodeLabels(this.phylogeny).includes(data.name)
             ) {
               textLabel.attr('id', `current_expected_label_phylogeny_${this.phylogenyIndex}`);
               textLabel.classed('selected-internal-label', true);
@@ -165,8 +171,7 @@ export default {
 
           if (data.name !== undefined && data.children === undefined) {
             // Labeled leaf node! Look for taxonomic units.
-            const tunits = this.$store.getters
-              .getTaxonomicUnitsForNodeLabel(this.phylogeny, data.name);
+            const tunits = wrappedPhylogeny.getTaxonomicUnitsForNodeLabel(data.name);
 
             if (tunits.length === 0) {
               element.classed('terminal-node-without-tunits', true);
@@ -176,8 +181,7 @@ export default {
               // the currently expected node label.
               if (
                 has(this.phyloref, 'label')
-                && this.$store.getters
-                  .getExpectedNodeLabelsOnPhylogeny(this.phylogeny, this.phyloref)
+                && wrappedPhyloref.getExpectedNodeLabels(this.phylogeny)
                   .includes(data.name)
               ) {
                 textLabel.attr('id', `current_expected_label_phylogeny_${this.phylogenyIndex}`);
@@ -186,8 +190,8 @@ export default {
               // We should highlight internal specifiers.
               if (has(this.phyloref, 'internalSpecifiers')) {
                 if (this.phyloref.internalSpecifiers
-                  .some(specifier => this.$store.getters
-                    .getNodeLabelsMatchedBySpecifier(this.phylogeny, specifier)
+                  .some(specifier => wrappedPhylogeny
+                    .getNodeLabelsMatchedBySpecifier(specifier)
                     .includes(data.name))
                 ) {
                   element.classed('internal-specifier-node', true);
@@ -197,8 +201,8 @@ export default {
               // We should highlight external specifiers.
               if (has(this.phyloref, 'externalSpecifiers')) {
                 if (this.phyloref.externalSpecifiers
-                  .some(specifier => this.$store.getters
-                    .getNodeLabelsMatchedBySpecifier(this.phylogeny, specifier)
+                  .some(specifier => wrappedPhylogeny
+                    .getNodeLabelsMatchedBySpecifier(specifier)
                     .includes(data.name))
                 ) {
                   element.classed('external-specifier-node', true);
