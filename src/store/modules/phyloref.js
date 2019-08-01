@@ -3,7 +3,8 @@
  */
 
 import Vue from 'vue';
-import { has } from 'lodash';
+import { PhylorefWrapper } from '@phyloref/phyx';
+import { has, keys, cloneDeep } from 'lodash';
 
 export default {
   mutations: {
@@ -35,8 +36,7 @@ export default {
         Vue.set(payload.phyloref, 'externalSpecifiers', []);
       }
 
-      // TODO: remove when the model changes.
-      payload.phyloref.externalSpecifiers.push({ referencesTaxonomicUnits: [{}] });
+      payload.phyloref.externalSpecifiers.push({});
     },
 
     deleteSpecifier(state, payload) {
@@ -49,19 +49,7 @@ export default {
         throw new Error('deleteSpecifier needs a specifier to delete using the "specifier" argument');
       }
 
-      if (has(payload.phyloref, 'internalSpecifiers') && payload.phyloref.internalSpecifiers.includes(payload.specifier)) {
-        payload.phyloref.internalSpecifiers.splice(
-          payload.phyloref.internalSpecifiers.indexOf(payload.specifier),
-          1,
-        );
-      }
-
-      if (has(payload.phyloref, 'externalSpecifiers') && payload.phyloref.externalSpecifiers.includes(payload.specifier)) {
-        payload.phyloref.externalSpecifiers.splice(
-          payload.phyloref.externalSpecifiers.indexOf(payload.specifier),
-          1,
-        );
-      }
+      new PhylorefWrapper(payload.phyloref).deleteSpecifier(payload.specifier);
     },
 
     setSpecifierProps(state, payload) {
@@ -70,9 +58,19 @@ export default {
       if (!has(payload, 'specifier')) {
         throw new Error('setSpecifierProps needs a specifier to modify using the "specifier" argument');
       }
-      if (has(payload, 'verbatimSpecifier')) {
-        Vue.set(payload.specifier, 'verbatimSpecifier', payload.verbatimSpecifier);
+
+      if (!has(payload, 'props')) {
+        throw new Error('setSpecifierProps needs properties to set this specifier to using the "props" argument');
       }
+
+      const specifier = payload.specifier;
+      const props = payload.props;
+
+      // Delete all existing keys in this specifier.
+      keys(specifier).forEach(key => Vue.delete(specifier, key));
+
+      // Add all new keys from the payload.
+      keys(props).forEach(key => Vue.set(specifier, key, cloneDeep(props[key])));
     },
 
     setSpecifierType(state, payload) {
@@ -105,13 +103,13 @@ export default {
       }
 
       // Reinsert it into the correct place.
-      if (payload.specifierType === 'internal') {
+      if (payload.specifierType === 'Internal') {
         if (has(payload.phyloref, 'internalSpecifiers')) {
           payload.phyloref.internalSpecifiers.push(payload.specifier);
         } else {
           Vue.set(payload.phyloref, 'internalSpecifiers', [payload.specifier]);
         }
-      } else if (payload.specifierType === 'external') {
+      } else if (payload.specifierType === 'External') {
         if (has(payload.phyloref, 'externalSpecifiers')) {
           payload.phyloref.externalSpecifiers.push(payload.specifier);
         } else {

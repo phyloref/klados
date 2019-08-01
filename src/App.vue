@@ -73,6 +73,14 @@ export default {
     currentPhyx: state => state.phyx.currentPhyx,
     loadedPhyx: state => state.phyx.loadedPhyx,
   }),
+  watch: {
+    currentPhyx: function() {
+      // If currentPhyx changes, reasoning results can no longer be trusted.
+      // So reset them!
+      console.log("currentPhyx changed; resetting resolution results.");
+      this.$store.commit('setReasoningResults', undefined);
+    }
+  },
   created() {
     // If someone tries to navigate away from the window while the
     // PHYX has been modified, ask users to confirm before leaving.

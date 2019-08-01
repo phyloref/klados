@@ -81,21 +81,24 @@
  */
 import { mapState } from 'vuex';
 import { has } from 'lodash';
-import { PhylorefWrapper, PhylogenyWrapper } from '@phyloref/phyx';
+import { PhylorefWrapper, PhylogenyWrapper, TaxonNameWrapper } from '@phyloref/phyx';
 
 export default {
   name: 'PhyxView',
-  computed: mapState({
-    phyx: state => state.phyx,
-    phylorefs: state => state.phyx.currentPhyx.phylorefs,
-    phylogenies: state => state.phyx.currentPhyx.phylogenies,
-  }),
+  computed: {
+    nomenCodes: () => TaxonNameWrapper.getNomenclaturalCodes(),
+    ...mapState({
+      phyx: state => state.phyx.currentPhyx,
+      phylorefs: state => state.phyx.currentPhyx.phylorefs,
+      phylogenies: state => state.phyx.currentPhyx.phylogenies,
+    })
+  },
   methods: {
     hasReasoningResults(phyloref) {
-      if (!has(this.$store.state.phyx.reasoningResults, 'phylorefs')) return false;
+      if (!has(this.$store.state.resolution.reasoningResults, 'phylorefs')) return false;
 
       const phylorefURI = this.$store.getters.getBaseURIForPhyloref(phyloref);
-      return has(this.$store.state.phyx.reasoningResults.phylorefs, phylorefURI);
+      return has(this.$store.state.resolution.reasoningResults.phylorefs, phylorefURI);
     },
     getPhylorefExpectedNodeLabels(phyloref, phylogeny) {
       // Return a list of nodes that a phyloreference is expected to resolve to.

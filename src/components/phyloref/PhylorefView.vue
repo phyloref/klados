@@ -99,57 +99,41 @@
         Specifiers
       </h5>
       <div class="card-body">
+        <template v-if="!selectedPhyloref.internalSpecifiers && !selectedPhyloref.externalSpecifiers">
+          <p><em>No specifiers in this phyloreference.</em></p>
+        </template>
         <div
           v-for="(specifier, index) of selectedPhyloref.internalSpecifiers"
           class="form-row input-group"
         >
-          <div class="input-group-prepend">
-            <a
-              class="btn btn-outline-secondary"
-            >
-              Internal
-            </a>
-          </div>
-          <input
-            readonly
-            type="text"
-            class="form-control"
-            :value="getSpecifierLabel(specifier)"
-          >
-          <div class="input-group-append">
-            <button
-              class="btn btn-outline-secondary"
-              @click="$store.commit('changeDisplay', {phyloref: selectedPhyloref, specifier: specifier})"
-            >
-              Edit
-            </button>
-          </div>
+          <Specifier
+            v-bind:key="'internal' + index"
+            :phyloref="selectedPhyloref"
+            :remote-specifier="specifier"
+            :remote-specifier-id="'internal' + index"
+          />
         </div>
         <div
           v-for="(specifier, index) of selectedPhyloref.externalSpecifiers"
           class="form-row input-group"
         >
-          <div class="input-group-prepend">
-            <a
-              class="btn btn-outline-secondary"
-            >
-              External
-            </a>
-          </div>
-          <input
-            readonly
-            type="text"
-            class="form-control"
-            :value="getSpecifierLabel(specifier)"
+          <Specifier
+            v-bind:key="'external' + index"
+            :phyloref="selectedPhyloref"
+            :remote-specifier="specifier"
+            :remote-specifier-id="'external' + index"
+          />
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="btn-group" role="group" area-label="Specifier management">
+          <button
+            class="btn btn-primary"
+            href="javascript:;"
+            @click="$store.commit('addSpecifier', { phyloref: selectedPhyloref })"
           >
-          <div class="input-group-append">
-            <button
-              class="btn btn-outline-secondary"
-              @click="$store.commit('changeDisplay', {phyloref: selectedPhyloref, specifier: specifier})"
-            >
-              Edit
-            </button>
-          </div>
+            Add specifier
+          </button>
         </div>
       </div>
     </div>
@@ -290,7 +274,7 @@
                 </div>
 
                 <!-- Display the matching node(s) -->
-                <template v-if="!nodesResolved">
+                <template v-if="!$store.state.resolution.reasoningResults">
                   <input
                     readonly
                     type="text"
@@ -360,6 +344,7 @@ import { PhylogenyWrapper, PhylorefWrapper } from '@phyloref/phyx';
 import ModifiedCard from '../cards/ModifiedCard.vue';
 import Phylotree from '../phylogeny/Phylotree.vue';
 import Citation from '../citations/Citation.vue';
+import Specifier from '../specifiers/Specifier.vue';
 
 export default {
   name: 'PhylorefView',
@@ -367,6 +352,7 @@ export default {
     ModifiedCard,
     Phylotree,
     Citation,
+    Specifier,
   },
   computed: {
     /*
@@ -388,14 +374,14 @@ export default {
       // Get the base URI of this phyloreference.
       return this.$store.getters.getBaseURIForPhyloref(this.selectedPhyloref);
     },
-    nodesResolved() {
-      // Get a list of nodes resolved by this phyloreference.
-      if (!has(this.$store.state.phyx.reasoningResults, 'phylorefs')) return undefined;
-      if (has(this.$store.state.phyx.reasoningResults.phylorefs, this.phylorefURI)) {
-        return this.$store.state.phyx.reasoningResults.phylorefs[this.phylorefURI];
-      }
-      return undefined;
+    noSpecifiers() {
+      // Return true if no specifiers are present.
+      return (
+        (this.selectedPhyloref.internalSpecifiers || []).length === 0
+        && (this.selectedPhyloref.externalSpecifiers || []).length === 0
+      );
     },
+
     ...mapState({
       currentPhyx: state => state.phyx.currentPhyx,
       loadedPhyx: state => state.phyx.loadedPhyx,

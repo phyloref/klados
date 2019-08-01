@@ -207,7 +207,7 @@ import { has } from 'lodash';
 import { mapState, mapGetters } from 'vuex';
 import { saveAs } from 'filesaver.js-npm';
 
-import { PHYXWrapper, PhylorefWrapper } from '@phyloref/phyx';
+import { PhyxWrapper, PhylorefWrapper, TaxonomicUnitWrapper } from '@phyloref/phyx';
 
 import ModifiedIcon from '../icons/ModifiedIcon.vue';
 
@@ -256,7 +256,9 @@ export default {
   methods: {
     getSpecifierLabel(specifier) {
       // Get the label for a particular specifier.
-      return PhylorefWrapper.getSpecifierLabel(specifier);
+      // TODO: We need to include verbatimSpecifier first because of
+      // https://github.com/phyloref/phyx.js/issues/14
+      return specifier.verbatimSpecifier || new TaxonomicUnitWrapper(specifier).label || 'Undefined specifier';
     },
 
     promptAndSetDict(message, dict, key) {
@@ -361,6 +363,9 @@ export default {
       // Are we already reasoning? If so, ignore.
       if (this.reasoningInProgress) return;
 
+      // Reset the existing reasoning information.
+      this.$store.commit('setReasoningResults', undefined);
+
       // Disable "Reason" buttons so they can't be reused.
       this.reasoningInProgress = true;
       $.post('http://localhost:34214/reason', {
@@ -370,11 +375,11 @@ export default {
         //  jsonld=%7B%5B%7B%22title%22%3A...
         // which translates to:
         //  jsonld={[{"title":...
-        jsonld: JSON.stringify([new PHYXWrapper(
+        jsonld: JSON.stringify([new PhyxWrapper(
           this.$store.state.phyx.currentPhyx,
           d3.layout.newick_parser,
         )
-          .asJSONLD()], undefined, 4),
+          .asJSONLD()]),
       }).done((data) => {
         this.$store.commit('setReasoningResults', data);
         // console.log('Data retrieved: ', data);

@@ -1,5 +1,5 @@
 {
-    "@context": "http://www.phyloref.org/phyx.js/context/v0.1.0/phyx.json",
+    "@context": "http://www.phyloref.org/phyx.js/context/v0.2.0/phyx.json",
     "title": "Phylogeny of the New World true frogs (Rana)",
     "citation": "Hillis DM and Wilcox TP (2005) Molecular Phylogenetics and Evolution 34(2):299-314",
     "url": "https://doi.org/10.1016/j.ympev.2004.10.007",

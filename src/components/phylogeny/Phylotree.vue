@@ -66,7 +66,7 @@ export default {
   computed: {
     reasoningResults() {
       // Included so we can watch this for changes, see `watch` below.
-      return this.$store.state.phyx.reasoningResults;
+      return this.$store.state.resolution.reasoningResults;
     },
     newickAsString() {
       // Returns the Newick string of this phylogeny.

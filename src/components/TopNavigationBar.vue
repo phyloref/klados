@@ -22,6 +22,7 @@
           <li class="nav-item">
             <a
               class="nav-link"
+              target="_blank"
               href="https://www.phyloref.org/"
             >
               Phyloreferencing website
@@ -30,6 +31,7 @@
           <li class="nav-item">
             <a
               class="nav-link"
+              target="_blank"
               href="https://github.com/phyloref/curation-tool"
             >
               Github repository
@@ -38,6 +40,7 @@
           <li class="nav-item">
             <a
               class="nav-link"
+              target="_blank"
               href="https://github.com/phyloref/curation-tool/issues"
             >
               Report bug
