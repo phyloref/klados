@@ -96,11 +96,11 @@
 
     <div class="card mt-2">
       <h5 class="card-header">
-        Specifiers
+        Internal specifiers
       </h5>
       <div class="card-body">
-        <template v-if="!selectedPhyloref.internalSpecifiers && !selectedPhyloref.externalSpecifiers">
-          <p><em>No specifiers in this phyloreference.</em></p>
+        <template v-if="!selectedPhyloref.internalSpecifiers">
+          <p><em>No internal specifiers in this phyloreference.</em></p>
         </template>
         <div
           v-for="(specifier, index) of selectedPhyloref.internalSpecifiers"
@@ -113,6 +113,28 @@
             :remote-specifier-id="'internal' + index"
           />
         </div>
+      </div>
+      <div class="card-footer">
+        <div class="btn-group" role="group" area-label="Internal specifier management">
+          <button
+            class="btn btn-primary"
+            href="javascript:;"
+            @click="$store.commit('addInternalSpecifier', { phyloref: selectedPhyloref })"
+          >
+            Add internal specifier
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card mt-2">
+      <h5 class="card-header">
+        External specifiers
+      </h5>
+      <div class="card-body">
+        <template v-if="!selectedPhyloref.externalSpecifiers">
+          <p><em>No external specifiers in this phyloreference.</em></p>
+        </template>
         <div
           v-for="(specifier, index) of selectedPhyloref.externalSpecifiers"
           class="form-row input-group"
@@ -126,13 +148,13 @@
         </div>
       </div>
       <div class="card-footer">
-        <div class="btn-group" role="group" area-label="Specifier management">
+        <div class="btn-group" role="group" area-label="External specifier management">
           <button
             class="btn btn-primary"
             href="javascript:;"
-            @click="$store.commit('addSpecifier', { phyloref: selectedPhyloref })"
+            @click="$store.commit('addExternalSpecifier', { phyloref: selectedPhyloref })"
           >
-            Add specifier
+            Add external specifier
           </button>
         </div>
       </div>

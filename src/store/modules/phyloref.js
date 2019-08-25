@@ -25,8 +25,8 @@ export default {
       }
     },
 
-    addSpecifier(state, payload) {
-      // Add an empty specifier to a particular phyloreference.
+    addExternalSpecifier(state, payload) {
+      // Add an empty specifier to a particular phyloreference as an external specifier.
 
       if (!has(payload, 'phyloref')) {
         throw new Error('addSpecifier needs a phyloref to modify using the "phyloref" argument');
@@ -37,6 +37,20 @@ export default {
       }
 
       payload.phyloref.externalSpecifiers.push({});
+    },
+
+    addInternalSpecifier(state, payload) {
+      // Add an empty specifier to a particular phyloreference as an internal specifier.
+
+      if (!has(payload, 'phyloref')) {
+        throw new Error('addSpecifier needs a phyloref to modify using the "phyloref" argument');
+      }
+
+      if (!has(payload.phyloref, 'internalSpecifiers')) {
+        Vue.set(payload.phyloref, 'internalSpecifiers', []);
+      }
+
+      payload.phyloref.internalSpecifiers.push({});
     },
 
     deleteSpecifier(state, payload) {
