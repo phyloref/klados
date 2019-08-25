@@ -332,7 +332,7 @@
                       readonly
                       type="text"
                       class="form-control"
-                      :value="'No nodes could be matched'"
+                      :value="'No nodes could be resolved'"
                     />
                   </template>
                   <template v-if="getResolvedNodes(phylogeny).length === 1">
