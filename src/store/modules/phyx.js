@@ -91,6 +91,11 @@ export default {
       let indexOf = (state.currentPhyx.phylorefs || []).indexOf(payload.phyloref);
       if (indexOf < 0) indexOf = state.currentPhyx.phylorefs.length;
       state.currentPhyx.phylorefs.splice(indexOf, 0, cloneDeep(payload.phyloref));
-    }
+    },
+    setCurator(state, payload) {
+      // Set the curator name, e-mail address or (eventually) ORCID.
+      if (has(payload, 'name')) Vue.set(state.currentPhyx, 'curator', payload.name);
+      if (has(payload, 'email')) Vue.set(state.currentPhyx, 'curatorEmail', payload.email);
+    },
   },
 };

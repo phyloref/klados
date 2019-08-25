@@ -36,7 +36,7 @@
             <div class="col-md-5">
               <input
                 id="curator-name"
-                v-model="phyx.curator"
+                v-model="phyxCurator"
                 type="text"
                 class="form-control"
                 placeholder="Curator name"
@@ -45,7 +45,7 @@
             <div class="col-md-5">
               <input
                 id="curator-email"
-                v-model="phyx.curatorEmail"
+                v-model="phyxCuratorEmail"
                 type="email"
                 class="form-control"
                 placeholder="Curator e-mail address"
@@ -250,6 +250,14 @@ export default {
   name: 'PhyxView',
   computed: {
     nomenCodes: () => TaxonNameWrapper.getNomenclaturalCodes(),
+    phyxCurator: {
+      get() { return this.phyx.curator; },
+      set(name) { this.$store.commit('setCurator', { name }); },
+    },
+    phyxCuratorEmail: {
+      get() { return this.phyx.curatorEmail; },
+      set(email) { this.$store.commit('setCurator', { email }); },
+    },
     ...mapState({
       phyx: state => state.phyx.currentPhyx,
       phylorefs: state => state.phyx.currentPhyx.phylorefs,
