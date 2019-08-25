@@ -204,12 +204,12 @@
               <!-- Node(s) this phyloreference is expected to resolve to -->
               <label
                 for="expected-nodes"
-                class="col-form-label col-lg-2 col-md-4"
+                class="col-form-label col-md-2"
               >
                 Expected nodes
               </label>
 
-              <div class="input-group col-lg-4 col-md-8 pb-2">
+              <div class="input-group col-md-10 pb-2">
                 <!-- Display the phylogeny where this node is expected to match -->
                 <div class="input-group-prepend">
                   <a
@@ -300,12 +300,12 @@
               <!-- Node(s) this phyloreference actually resolved to -->
               <label
                 for="actual-nodes"
-                class="col-form-label col-lg-2 col-md-4 pb-2"
+                class="col-form-label col-md-2 pb-2"
               >
                 Actual resolved nodes
               </label>
 
-              <div class="input-group col-lg-4 col-md-8">
+              <div class="input-group col-md-10 pb-2">
                 <!-- Display the phylogeny where this node is expected to match -->
                 <div class="input-group-prepend">
                   <a
