@@ -227,7 +227,7 @@
                     readonly
                     type="text"
                     class="form-control"
-                    value="No nodes could be matched"
+                    :value="'No node labeled \'' + selectedPhylorefLabel + '\' found in phylogeny'"
                   >
                 </template>
 
