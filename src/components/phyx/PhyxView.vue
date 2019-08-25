@@ -106,6 +106,7 @@
           <thead>
             <th>&nbsp;</th>
             <th>Phyloreference</th>
+            <th>Type</th>
             <th>Internal specifiers</th>
             <th>External specifiers</th>
             <th v-for="(phylogeny, phylogenyIndex) of phylogenies">
@@ -137,6 +138,7 @@
                   {{ getPhylorefLabel(phyloref) }}
                 </a>
               </td>
+              <td>{{ $store.getters.getPhylorefType(phyloref) }}</td>
               <td>{{ (phyloref.internalSpecifiers || []).length }}</td>
               <td>{{ (phyloref.externalSpecifiers || []).length }}</td>
               <td v-for="(phylogeny, phylogenyIndex) of phylogenies">

@@ -7,6 +7,21 @@ import { PhylorefWrapper } from '@phyloref/phyx';
 import { has, keys, cloneDeep } from 'lodash';
 
 export default {
+  getters: {
+    getPhylorefType: () => (phyloref) => {
+      const internalSpecifierCount = (phyloref.internalSpecifiers || []).length;
+      const externalSpecifierCount = (phyloref.externalSpecifiers || []).length;
+
+      if (externalSpecifierCount > 0) {
+        if (internalSpecifierCount > 0) return 'Maximum clade definition';
+      } else if (internalSpecifierCount > 0) {
+        if (internalSpecifierCount > 1) return 'Minimum clade definition';
+        return 'Invalid definition (single internal specifier cannot be resolved)';
+      }
+
+      return 'Invalid definition (must have at least one internal specifier)';
+    },
+  },
   mutations: {
     setPhylorefProps(state, payload) {
       // Set one or more properties on a phyloreference.

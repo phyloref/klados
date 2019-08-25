@@ -108,7 +108,26 @@
         Specifiers
       </h5>
       <div class="card-body">
-        <template v-if="!selectedPhyloref.internalSpecifiers">
+        <form>
+          <!-- Phyx collection name (if we have more than one phyloref!) -->
+          <div class="form-group row">
+            <label
+              for="phyloref-type"
+              class="col-form-label col-md-2"
+            >
+              Phyloreference type
+            </label>
+            <div class="col-md-10">
+              <input
+                id="phyloref-type"
+                v-model="computedPhylorefType"
+                type="text"
+                readonly
+                class="form-control"
+              >
+            </div>
+          </div>
+        </form>
 
         <h6>Internal specifiers</h6>
 
@@ -393,6 +412,9 @@ export default {
     selectedCuratorComments: {
       get() { return this.selectedPhyloref.curatorComments; },
       set(curatorComments) { this.$store.commit('setPhylorefProps', { phyloref: this.selectedPhyloref, curatorComments }); },
+    },
+    computedPhylorefType() {
+      return this.$store.getters.getPhylorefType(this.selectedPhyloref);
     },
     phylorefURI() {
       // Get the base URI of this phyloreference.
