@@ -353,6 +353,10 @@ import {
   has, isEmpty, isEqual, cloneDeep, pickBy, uniqueId,
 } from 'lodash';
 
+// TaxonomicUnitWrapper doesn't yet set a type for apormophies, so
+// we'll set one up ourselves.
+TaxonomicUnitWrapper.TYPE_APOMORPHY = 'http://purl.obolibrary.org/obo/CDAO_0000071';
+
 export default {
   name: 'Specifier',
   props: {
@@ -515,6 +519,10 @@ export default {
     },
     remoteSpecifierId() {
       this.recalculateEntered();
+    },
+    specifierClass() {
+      // If this changes we need to update the specifier!
+      this.updateSpecifier();
     }
   },
   mounted() {
