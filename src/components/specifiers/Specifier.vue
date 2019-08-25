@@ -3,15 +3,6 @@
     <div class="input-group mb-1">
       <div class="input-group-prepend">
         <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          {{ specifierType }}
-        </button>
-        <div class="dropdown-menu">
-          <a class="dropdown-item" :class="{active: specifierType === 'Internal'}" href="javascript:;" @click="specifierType = 'Internal'">Internal</a>
-          <a class="dropdown-item" :class="{active: specifierType === 'External'}" href="javascript:;" @click="specifierType = 'External'">External</a>
-        </div>
-      </div>
-      <div class="input-group-prepend">
-        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           {{ specifierClass }}
         </button>
         <div class="dropdown-menu">
@@ -75,6 +66,30 @@
         <h5 class="card-title">
           Specifier details
         </h5>
+
+        <!-- Specifier type: internal or external -->
+        <div class="form-group row">
+          <label
+            class="col-form-label col-md-2"
+            for="specifier-type"
+          >
+            Specifier type
+          </label>
+          <div class="col-md-10">
+            <select
+              id="specifier-type"
+              v-model="specifierType"
+              class="form-control"
+            >
+              <option value="Internal">
+                Internal specifier
+              </option>
+              <option value="External">
+                External specifier
+              </option>
+            </select>
+          </div>
+        </div>
 
         <!-- Verbatim specifier -->
         <div class="form-group row">
