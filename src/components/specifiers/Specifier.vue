@@ -386,6 +386,7 @@ export default {
       taxonNameWrapped: undefined,
       enteredNomenclaturalCode: undefined,
       enteredVerbatimLabel: undefined,
+      externalReference: undefined,
     };
   },
   computed: {
@@ -417,15 +418,17 @@ export default {
 
         case 'External reference':
           result = {
-            '@type': TaxonomicUnitWrapper.TYPE_EXTERNAL_REFERENCE,
+            // We store the external reference in the '@id' field.
+            '@id': this.externalReference || this.enteredVerbatimLabel || "",
           };
           break;
+
+        default:
+          // Make sure we have a result, even if it's just a blank object.
+          result = {};
       }
 
-      // Make sure we have a result, even if it's just a blank object.
-      if(!result) result = {};
-
-      // Add verbatimSpecifier.
+      // Add the entered verbatim label.
       if (this.enteredVerbatimLabel) {
         result.label = this.enteredVerbatimLabel;
       }
@@ -450,6 +453,7 @@ export default {
     specifierLabel: {
       get() {
         if (this.enteredVerbatimLabel) return this.enteredVerbatimLabel;
+        if (this.externalReference) return this.externalReference;
         if (this.specimenWrapped) return this.specimenWrapped.label;
         if (this.taxonNameWrapped) return this.taxonNameWrapped.label;
         return "";
@@ -475,10 +479,15 @@ export default {
             );
             if (specimenWrapped) this.specimenWrapped = specimenWrapped;
             break;
-        }
 
-        // TODO: For now, we just write external references and apormorphies
-        // into the verbatim label. We should fix that!
+          case 'Apomorphy':
+            // For now, we just write apormorphies into the verbatim label.
+            break;
+
+          case 'External reference':
+            this.externalReference = label;
+            break;
+        }
 
         this.updateSpecifier();
       },
@@ -541,9 +550,11 @@ export default {
 
           case TaxonomicUnitWrapper.TYPE_APOMORPHY:
             return 'Apomorphy';
+        }
 
-          case TaxonomicUnitWrapper.TYPE_EXTERNAL_REFERENCE:
-            return 'External reference';
+        // If it has an '@id', it is an external reference to that '@id'.
+        if (has(tunit, '@id')) {
+          return 'External reference';
         }
       }
 
@@ -554,8 +565,18 @@ export default {
 
       // Recalculate the entered values.
       const tunit = new TaxonomicUnitWrapper(cloneDeep(this.remoteSpecifier || {}));
-      this.enteredVerbatimLabel = tunit.label;
-      this.specifierClass = this.getSpecifierClass(tunit) || 'Taxon';
+
+      // If it has an '@id', it is an external reference to that '@id'.
+      if (has(this.remoteSpecifier, '@id')) {
+        this.specifierClass = 'External reference';
+        this.externalReference = this.remoteSpecifier['@id'];
+        // tunit.label adds '<>s' around the @id. We work around that by trying
+        // to read the label directly.
+        this.enteredVerbatimLabel = this.remoteSpecifier['label'] || tunit.label;
+      } else {
+        this.enteredVerbatimLabel = tunit.label;
+        this.specifierClass = this.getSpecifierClass(tunit) || 'Taxon';
+      }
 
       const taxonConceptWrapped = new TaxonConceptWrapper(tunit.taxonConcept)
       if (taxonConceptWrapped && taxonConceptWrapped.taxonName) {
@@ -568,7 +589,6 @@ export default {
         this.specimenWrapped = new SpecimenWrapper(tunit.specimen);
       }
 
-      // TODO: handle external references correctly.
       // TODO: what if all fail?
     },
     deleteSpecifier() {
