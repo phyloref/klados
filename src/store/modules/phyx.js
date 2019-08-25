@@ -96,6 +96,7 @@ export default {
       // Set the curator name, e-mail address or (eventually) ORCID.
       if (has(payload, 'name')) Vue.set(state.currentPhyx, 'curator', payload.name);
       if (has(payload, 'email')) Vue.set(state.currentPhyx, 'curatorEmail', payload.email);
+      if (has(payload, 'orcid')) Vue.set(state.currentPhyx, 'curatorORCID', payload.orcid);
     },
   },
 };

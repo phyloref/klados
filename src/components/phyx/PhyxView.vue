@@ -33,7 +33,7 @@
             >
               Curated by
             </label>
-            <div class="col-md-5">
+            <div class="col-md-4">
               <input
                 id="curator-name"
                 v-model="phyxCurator"
@@ -42,7 +42,7 @@
                 placeholder="Curator name"
               >
             </div>
-            <div class="col-md-5">
+            <div class="col-md-3">
               <input
                 id="curator-email"
                 v-model="phyxCuratorEmail"
@@ -50,6 +50,23 @@
                 class="form-control"
                 placeholder="Curator e-mail address"
               >
+            </div>
+            <div class="col-md-3 input-group">
+              <input
+                id="external-reference"
+                v-model="phyxCuratorORCID"
+                class="form-control"
+                placeholder="Curator ORCID"
+              >
+              <div class="input-group-append">
+                <a
+                  class="btn btn-outline-secondary"
+                  target="_blank"
+                  :href="'https://orcid.org/' + phyxCuratorORCID"
+                >
+                  Open in new window
+                </a>
+              </div>
             </div>
           </div>
 
@@ -257,6 +274,10 @@ export default {
     phyxCuratorEmail: {
       get() { return this.phyx.curatorEmail; },
       set(email) { this.$store.commit('setCurator', { email }); },
+    },
+    phyxCuratorORCID: {
+      get() { return this.phyx.curatorORCID; },
+      set(orcid) { this.$store.commit('setCurator', { orcid }); },
     },
     ...mapState({
       phyx: state => state.phyx.currentPhyx,
