@@ -6,7 +6,7 @@
  */
 
 import Vue from 'vue';
-import { has } from 'lodash';
+import { has, cloneDeep } from 'lodash';
 import { TaxonNameWrapper } from '@phyloref/phyx';
 
 export default {
@@ -83,5 +83,14 @@ export default {
 
       Vue.set(state.currentPhyx, 'defaultNomenclaturalCodeURI', payload.defaultNomenclaturalCodeURI);
     },
+    duplicatePhyloref(state, payload) {
+      if (!has(payload, 'phyloref')) {
+        throw new Error('duplicatePhyloref needs a phyloref to duplicate using the "phyloref" argument');
+      }
+
+      let indexOf = (state.currentPhyx.phylorefs || []).indexOf(payload.phyloref);
+      if (indexOf < 0) indexOf = state.currentPhyx.phylorefs.length;
+      state.currentPhyx.phylorefs.splice(indexOf, 0, cloneDeep(payload.phyloref));
+    }
   },
 };

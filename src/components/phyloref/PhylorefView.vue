@@ -92,6 +92,15 @@
           </div>
         </form>
       </div>
+
+      <div class="card-footer">
+        <div class="btn-group" role="group" area-label="Phyloreference management">
+          <button
+            class="btn btn-primary"
+            @click="$store.commit('duplicatePhyloref', { phyloref: selectedPhyloref })"
+          >Duplicate phyloreference</button>
+        </div>
+      </div>
     </div>
 
     <div class="card mt-2">
