@@ -105,10 +105,14 @@
 
     <div class="card mt-2">
       <h5 class="card-header">
-        Internal specifiers
+        Specifiers
       </h5>
       <div class="card-body">
         <template v-if="!selectedPhyloref.internalSpecifiers">
+
+        <h6>Internal specifiers</h6>
+
+        <template v-if="!selectedPhyloref.internalSpecifiers || selectedPhyloref.internalSpecifiers.length === 0">
           <p><em>No internal specifiers in this phyloreference.</em></p>
         </template>
         <div
@@ -122,26 +126,10 @@
             :remote-specifier-id="'internal' + index"
           />
         </div>
-      </div>
-      <div class="card-footer">
-        <div class="btn-group" role="group" area-label="Internal specifier management">
-          <button
-            class="btn btn-primary"
-            href="javascript:;"
-            @click="$store.commit('addInternalSpecifier', { phyloref: selectedPhyloref })"
-          >
-            Add internal specifier
-          </button>
-        </div>
-      </div>
-    </div>
 
-    <div class="card mt-2">
-      <h5 class="card-header">
-        External specifiers
-      </h5>
-      <div class="card-body">
-        <template v-if="!selectedPhyloref.externalSpecifiers">
+        <h6 class="mt-2">External specifiers</h6>
+
+        <template v-if="!selectedPhyloref.externalSpecifiers  || selectedPhyloref.externalSpecifiers.length === 0">
           <p><em>No external specifiers in this phyloreference.</em></p>
         </template>
         <div
@@ -157,7 +145,16 @@
         </div>
       </div>
       <div class="card-footer">
-        <div class="btn-group" role="group" area-label="External specifier management">
+        <div class="btn-group" role="group" area-label="Internal specifier management">
+          <button
+            class="btn btn-primary"
+            href="javascript:;"
+            @click="$store.commit('addInternalSpecifier', { phyloref: selectedPhyloref })"
+          >
+            Add internal specifier
+          </button>
+        </div>
+        <div class="btn-group ml-2" role="group" area-label="External specifier management">
           <button
             class="btn btn-primary"
             href="javascript:;"
