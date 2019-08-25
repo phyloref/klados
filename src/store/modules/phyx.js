@@ -7,7 +7,6 @@
 
 import Vue from 'vue';
 import { has, cloneDeep } from 'lodash';
-import { TaxonNameWrapper } from '@phyloref/phyx';
 
 export default {
   state: {
