@@ -1,4 +1,4 @@
-# Change log for the Curation tool
+# Change log for the Phyloref Authoring Tool
 
 Based on the suggestion at https://keepachangelog.com/en/1.0.0/.
 
@@ -9,4 +9,4 @@ Based on the suggestion at https://keepachangelog.com/en/1.0.0/.
 - Initial release, with support for reading PHYX files, displaying phylogenies
   and editing expectations for phyloreferences.
 
-[Unreleased]: https://github.com/phyloref/curation-tool/compare/v0.1...HEAD
+[Unreleased]: https://github.com/phyloref/authoring-tool/compare/v0.1...HEAD

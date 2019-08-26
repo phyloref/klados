@@ -14,7 +14,7 @@
             <a
               class="nav-link"
               href="#"
-              onclick="$('#about-curation-tool').modal()"
+              onclick="$('#about-authoring-tool').modal()"
             >
               About this tool
             </a>
@@ -32,7 +32,7 @@
             <a
               class="nav-link"
               target="_blank"
-              href="https://github.com/phyloref/curation-tool"
+              href="https://github.com/phyloref/authoring-tool"
             >
               Github repository
             </a>
@@ -41,7 +41,7 @@
             <a
               class="nav-link"
               target="_blank"
-              href="https://github.com/phyloref/curation-tool/issues"
+              href="https://github.com/phyloref/authoring-tool/issues"
             >
               Report bug
             </a>

@@ -1,5 +1,5 @@
 {
-  "name": "curation-tool",
+  "name": "Phyloreference Authoring Tool",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/phyloref/curation-tool.git"
+    "url": "git+https://github.com/phyloref/authoring-tool.git"
   },
   "dependencies": {
     "@babel/plugin-transform-modules-commonjs": "^7.5.0",
