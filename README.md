@@ -1,6 +1,6 @@
-# Phyloreferencing Curation Tool
+# Phyloreferencing Authoring Tool
 
-The Phyloreferencing Curation Tool is designed to allow users to curate [phyloreferences]
+The Phyloreferencing Authoring Tool is designed to allow users to author [phyloreferences]
 side-by-side with the phylogenies they were originally defined on. The curated phylogenies
 are stored in the [Phyx format], which can be downloaded as an [OWL 2 ontology]
 in the [JSON-LD format]. Phyx files can be incorporated into the [Clade Ontology].

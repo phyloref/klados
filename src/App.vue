@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <TopNavigationBar :version="CURATION_TOOL_VERSION" />
+    <TopNavigationBar :version="AUTHORING_TOOL_VERSION" />
     <div id="wrapper">
       <Sidebar />
       <div id="page-content-wrapper">
@@ -20,7 +20,7 @@
     </div>
 
     <!-- All modals are included here -->
-    <AboutCurationToolModal />
+    <AboutAuthoringToolModal />
     <AdvancedOptionsModal />
   </div>
 </template>
@@ -43,7 +43,7 @@ import PhylorefView from './components/phyloref/PhylorefView.vue';
 import PhyxView from './components/phyx/PhyxView.vue';
 
 // Modal dialogs to be displayed above the UI.
-import AboutCurationToolModal from './components/modals/AboutCurationToolModal.vue';
+import AboutAuthoringToolModal from './components/modals/AboutAuthoringToolModal.vue';
 import AdvancedOptionsModal from './components/modals/AdvancedOptionsModal.vue';
 
 export default {
@@ -54,11 +54,11 @@ export default {
     PhyxView,
     PhylogenyView,
     PhylorefView,
-    AboutCurationToolModal,
+    AboutAuthoringToolModal,
     AdvancedOptionsModal,
   },
   computed: mapState({
-    CURATION_TOOL_VERSION: state => state.CURATION_TOOL_VERSION,
+    AUTHORING_TOOL_VERSION: state => state.AUTHORING_TOOL_VERSION,
     display: state => state.ui.display,
     currentPhyx: state => state.phyx.currentPhyx,
     loadedPhyx: state => state.phyx.loadedPhyx,
@@ -78,7 +78,7 @@ export default {
     // browsers do not display this message, but provide a generic
     // "content has changed" dialog instead.
     $(window).on('beforeunload', () => {
-      const confirmationMessage = 'Your modifications have not been saved and will be lost if you close the Curation Tool. Confirm to discard your changes, or cancel to return to the Curation Tool.';
+      const confirmationMessage = 'Your modifications have not been saved and will be lost if you close the Authoring Tool. Confirm to discard your changes, or cancel to return to the Authoring Tool.';
 
       if (!isEqual(this.loadedPhyx, this.currentPhyx)) return confirmationMessage;
       return false;

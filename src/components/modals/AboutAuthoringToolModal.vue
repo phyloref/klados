@@ -117,6 +117,6 @@
  */
 
 export default {
-  name: 'AboutCurationToolModal',
+  name: 'AboutAuthoringToolModal',
 };
 </script>

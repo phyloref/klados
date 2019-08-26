@@ -17,7 +17,7 @@ const debug = process.env.NODE_ENV !== 'production';
 
 export default new Vuex.Store({
   state: {
-    CURATION_TOOL_VERSION: '0.1',
+    AUTHORING_TOOL_VERSION: '0.1',
   },
   modules: {
     phylogeny, phyloref, phyx, ui, owlterms, citations, resolution,
