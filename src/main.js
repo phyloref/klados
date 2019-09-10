@@ -21,6 +21,9 @@ import store from './store';
 // Set up JQuery as a global.
 window.$ = require('jquery');
 
+// Load configuration from the 'src/config.js' file included with the source.
+Vue.prototype.$config = require('./config.js');
+
 // Add additional features to Vue.
 Vue.use(BootstrapVue);
 Vue.use(VueResize);

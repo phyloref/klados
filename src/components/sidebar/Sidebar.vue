@@ -212,10 +212,6 @@ import { PhyxWrapper, PhylorefWrapper, TaxonomicUnitWrapper } from '@phyloref/ph
 
 import ModifiedIcon from '../icons/ModifiedIcon.vue';
 
-// Some constants for us to use.
-const JPHYLOREF_SUBMISSION_URL = 'https://phyloref.rc.ufl.edu/hooks/reason';
-const JPHYLOREF_X_HUB_SIGNATURE_SECRET = 'undefined';
-
 export default {
   name: 'Sidebar',
   components: {
@@ -391,7 +387,7 @@ export default {
         // Sign it with an X-Hub-Signature.
         const sign = signer({
             algorithm: 'sha1',
-            secret: JPHYLOREF_X_HUB_SIGNATURE_SECRET,
+            secret: outerThis.$config.JPHYLOREF_X_HUB_SIGNATURE_SECRET,
         });
         const signature = sign(new Buffer(query));
 
@@ -399,7 +395,7 @@ export default {
         console.log('Signature: ', signature);
 
         $.post({
-          url: JPHYLOREF_SUBMISSION_URL,
+          url: outerThis.$config.JPHYLOREF_SUBMISSION_URL,
           data: query,
           headers: {
             'X-Hub-Signature': signature,
