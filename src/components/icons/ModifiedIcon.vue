@@ -7,6 +7,7 @@
     <FontAwesomeIcon
       size="lg"
       icon="exclamation-circle"
+      :style="{ color: '#FF8200' }"
     />
   </div>
 </template>

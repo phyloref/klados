@@ -3,15 +3,6 @@
     <div class="input-group mb-1">
       <div class="input-group-prepend">
         <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          {{ specifierType }}
-        </button>
-        <div class="dropdown-menu">
-          <a class="dropdown-item" :class="{active: specifierType === 'Internal'}" href="javascript:;" @click="specifierType = 'Internal'">Internal</a>
-          <a class="dropdown-item" :class="{active: specifierType === 'External'}" href="javascript:;" @click="specifierType = 'External'">External</a>
-        </div>
-      </div>
-      <div class="input-group-prepend">
-        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           {{ specifierClass }}
         </button>
         <div class="dropdown-menu">
@@ -75,6 +66,30 @@
         <h5 class="card-title">
           Specifier details
         </h5>
+
+        <!-- Specifier type: internal or external -->
+        <div class="form-group row">
+          <label
+            class="col-form-label col-md-2"
+            for="specifier-type"
+          >
+            Specifier type
+          </label>
+          <div class="col-md-10">
+            <select
+              id="specifier-type"
+              v-model="specifierType"
+              class="form-control"
+            >
+              <option value="Internal">
+                Internal specifier
+              </option>
+              <option value="External">
+                External specifier
+              </option>
+            </select>
+          </div>
+        </div>
 
         <!-- Verbatim specifier -->
         <div class="form-group row">
@@ -165,7 +180,7 @@
               <input
                 id="name-complete"
                 class="form-control"
-                v-model="taxonNameWrapped.nameComplete"
+                v-model.lazy="taxonNameWrapped.nameComplete"
               >
             </div>
           </div>
@@ -353,9 +368,16 @@ import {
   has, isEmpty, isEqual, cloneDeep, pickBy, uniqueId,
 } from 'lodash';
 
+// TaxonomicUnitWrapper doesn't yet set a type for apomophies, so
+// we'll set one up ourselves.
+TaxonomicUnitWrapper.TYPE_APOMORPHY = 'http://purl.obolibrary.org/obo/CDAO_0000071';
+
 export default {
   name: 'Specifier',
   props: {
+    specifierIndex: {
+      default: () => uniqueId(),
+    },
     remoteSpecifier: { /* The specifier to display and edit */
       type: Object,
       required: true,
@@ -379,6 +401,7 @@ export default {
       taxonNameWrapped: undefined,
       enteredNomenclaturalCode: undefined,
       enteredVerbatimLabel: undefined,
+      externalReference: undefined,
     };
   },
   computed: {
@@ -410,15 +433,17 @@ export default {
 
         case 'External reference':
           result = {
-            '@type': TaxonomicUnitWrapper.TYPE_EXTERNAL_REFERENCE,
+            // We store the external reference in the '@id' field.
+            '@id': this.externalReference || this.enteredVerbatimLabel || "",
           };
           break;
+
+        default:
+          // Make sure we have a result, even if it's just a blank object.
+          result = {};
       }
 
-      // Make sure we have a result, even if it's just a blank object.
-      if(!result) result = {};
-
-      // Add verbatimSpecifier.
+      // Add the entered verbatim label.
       if (this.enteredVerbatimLabel) {
         result.label = this.enteredVerbatimLabel;
       }
@@ -442,9 +467,11 @@ export default {
     },
     specifierLabel: {
       get() {
+        if (this.enteredVerbatimLabel) return this.enteredVerbatimLabel;
+        if (this.externalReference) return this.externalReference;
         if (this.specimenWrapped) return this.specimenWrapped.label;
         if (this.taxonNameWrapped) return this.taxonNameWrapped.label;
-        return this.enteredVerbatimLabel;
+        return "";
       },
       set(label) {
         // 1. Set the verbatim label to this.
@@ -467,10 +494,15 @@ export default {
             );
             if (specimenWrapped) this.specimenWrapped = specimenWrapped;
             break;
-        }
 
-        // TODO: For now, we just write external references and apormorphies
-        // into the verbatim label. We should fix that!
+          case 'Apomorphy':
+            // For now, we just write apomorphies into the verbatim label.
+            break;
+
+          case 'External reference':
+            this.externalReference = label;
+            break;
+        }
 
         this.updateSpecifier();
       },
@@ -511,6 +543,10 @@ export default {
     },
     remoteSpecifierId() {
       this.recalculateEntered();
+    },
+    specifierClass() {
+      // If this changes we need to update the specifier!
+      this.updateSpecifier();
     }
   },
   mounted() {
@@ -529,9 +565,11 @@ export default {
 
           case TaxonomicUnitWrapper.TYPE_APOMORPHY:
             return 'Apomorphy';
+        }
 
-          case TaxonomicUnitWrapper.TYPE_EXTERNAL_REFERENCE:
-            return 'External reference';
+        // If it has an '@id', it is an external reference to that '@id'.
+        if (has(tunit, '@id')) {
+          return 'External reference';
         }
       }
 
@@ -542,8 +580,18 @@ export default {
 
       // Recalculate the entered values.
       const tunit = new TaxonomicUnitWrapper(cloneDeep(this.remoteSpecifier || {}));
-      this.enteredVerbatimLabel = tunit.label;
-      this.specifierClass = this.getSpecifierClass(tunit) || 'Taxon';
+
+      // If it has an '@id', it is an external reference to that '@id'.
+      if (has(this.remoteSpecifier, '@id')) {
+        this.specifierClass = 'External reference';
+        this.externalReference = this.remoteSpecifier['@id'];
+        // tunit.label adds '<>s' around the @id. We work around that by trying
+        // to read the label directly.
+        this.enteredVerbatimLabel = this.remoteSpecifier['label'] || tunit.label;
+      } else {
+        this.enteredVerbatimLabel = tunit.label;
+        this.specifierClass = this.getSpecifierClass(tunit) || 'Taxon';
+      }
 
       const taxonConceptWrapped = new TaxonConceptWrapper(tunit.taxonConcept)
       if (taxonConceptWrapped && taxonConceptWrapped.taxonName) {
@@ -556,7 +604,6 @@ export default {
         this.specimenWrapped = new SpecimenWrapper(tunit.specimen);
       }
 
-      // TODO: handle external references correctly.
       // TODO: what if all fail?
     },
     deleteSpecifier() {

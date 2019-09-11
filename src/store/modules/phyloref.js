@@ -7,6 +7,21 @@ import { PhylorefWrapper } from '@phyloref/phyx';
 import { has, keys, cloneDeep } from 'lodash';
 
 export default {
+  getters: {
+    getPhylorefType: () => (phyloref) => {
+      const internalSpecifierCount = (phyloref.internalSpecifiers || []).length;
+      const externalSpecifierCount = (phyloref.externalSpecifiers || []).length;
+
+      if (externalSpecifierCount > 0) {
+        if (internalSpecifierCount > 0) return 'Maximum clade definition';
+      } else if (internalSpecifierCount > 0) {
+        if (internalSpecifierCount > 1) return 'Minimum clade definition';
+        return 'Invalid definition (single internal specifier cannot be resolved)';
+      }
+
+      return 'Invalid definition (must have at least one internal specifier)';
+    },
+  },
   mutations: {
     setPhylorefProps(state, payload) {
       // Set one or more properties on a phyloreference.
@@ -25,8 +40,8 @@ export default {
       }
     },
 
-    addSpecifier(state, payload) {
-      // Add an empty specifier to a particular phyloreference.
+    addExternalSpecifier(state, payload) {
+      // Add an empty specifier to a particular phyloreference as an external specifier.
 
       if (!has(payload, 'phyloref')) {
         throw new Error('addSpecifier needs a phyloref to modify using the "phyloref" argument');
@@ -37,6 +52,20 @@ export default {
       }
 
       payload.phyloref.externalSpecifiers.push({});
+    },
+
+    addInternalSpecifier(state, payload) {
+      // Add an empty specifier to a particular phyloreference as an internal specifier.
+
+      if (!has(payload, 'phyloref')) {
+        throw new Error('addSpecifier needs a phyloref to modify using the "phyloref" argument');
+      }
+
+      if (!has(payload.phyloref, 'internalSpecifiers')) {
+        Vue.set(payload.phyloref, 'internalSpecifiers', []);
+      }
+
+      payload.phyloref.internalSpecifiers.push({});
     },
 
     deleteSpecifier(state, payload) {

@@ -41,7 +41,7 @@
 
           <!-- Pre-existing definition source -->
           <Citation
-            label="Pre-existing name definition"
+            label="Name published in"
             :object="selectedPhyloref"
             citation-key="dwc:namePublishedIn"
           />
@@ -52,7 +52,7 @@
               for="definition"
               class="col-form-label col-md-2"
             >
-              Clade definition
+              Definition in free-form text
             </label>
             <div class="col-md-10">
               <textarea
@@ -67,7 +67,7 @@
 
           <!-- Phyloref definition source -->
           <Citation
-            label="Definition source"
+            label="Definition published in"
             :object="selectedPhyloref"
             citation-key="obo:IAO_0000119"
           />
@@ -86,11 +86,20 @@
                 v-model.lazy="selectedCuratorComments"
                 class="form-control"
                 rows="2"
-                placeholder="Curator notes relating to this phyloreference"
+                placeholder="e.g. 'Specifier X not included in reference phylogeny'"
               />
             </div>
           </div>
         </form>
+      </div>
+
+      <div class="card-footer">
+        <div class="btn-group" role="group" area-label="Phyloreference management">
+          <button
+            class="btn btn-primary"
+            @click="$store.commit('duplicatePhyloref', { phyloref: selectedPhyloref })"
+          >Duplicate phyloreference</button>
+        </div>
       </div>
     </div>
 
@@ -99,8 +108,31 @@
         Specifiers
       </h5>
       <div class="card-body">
-        <template v-if="!selectedPhyloref.internalSpecifiers && !selectedPhyloref.externalSpecifiers">
-          <p><em>No specifiers in this phyloreference.</em></p>
+        <form>
+          <!-- Phyx collection name (if we have more than one phyloref!) -->
+          <div class="form-group row">
+            <label
+              for="phyloref-type"
+              class="col-form-label col-md-2"
+            >
+              Phyloreference type
+            </label>
+            <div class="col-md-10">
+              <input
+                id="phyloref-type"
+                v-model="computedPhylorefType"
+                type="text"
+                readonly
+                class="form-control"
+              >
+            </div>
+          </div>
+        </form>
+
+        <h6>Internal specifiers</h6>
+
+        <template v-if="!selectedPhyloref.internalSpecifiers || selectedPhyloref.internalSpecifiers.length === 0">
+          <p><em>No internal specifiers in this phyloreference.</em></p>
         </template>
         <div
           v-for="(specifier, index) of selectedPhyloref.internalSpecifiers"
@@ -113,6 +145,12 @@
             :remote-specifier-id="'internal' + index"
           />
         </div>
+
+        <h6 class="mt-2">External specifiers</h6>
+
+        <template v-if="!selectedPhyloref.externalSpecifiers  || selectedPhyloref.externalSpecifiers.length === 0">
+          <p><em>No external specifiers in this phyloreference.</em></p>
+        </template>
         <div
           v-for="(specifier, index) of selectedPhyloref.externalSpecifiers"
           class="form-row input-group"
@@ -126,13 +164,22 @@
         </div>
       </div>
       <div class="card-footer">
-        <div class="btn-group" role="group" area-label="Specifier management">
+        <div class="btn-group" role="group" area-label="Internal specifier management">
           <button
             class="btn btn-primary"
             href="javascript:;"
-            @click="$store.commit('addSpecifier', { phyloref: selectedPhyloref })"
+            @click="$store.commit('addInternalSpecifier', { phyloref: selectedPhyloref })"
           >
-            Add specifier
+            Add internal specifier
+          </button>
+        </div>
+        <div class="btn-group ml-2" role="group" area-label="External specifier management">
+          <button
+            class="btn btn-primary"
+            href="javascript:;"
+            @click="$store.commit('addExternalSpecifier', { phyloref: selectedPhyloref })"
+          >
+            Add external specifier
           </button>
         </div>
       </div>
@@ -157,22 +204,20 @@
               <!-- Node(s) this phyloreference is expected to resolve to -->
               <label
                 for="expected-nodes"
-                class="col-md-2 col-form-label"
+                class="col-form-label col-md-2"
               >
                 Expected nodes
               </label>
 
-              <div class="input-group col-md-4">
+              <div class="input-group col-md-10 pb-2">
                 <!-- Display the phylogeny where this node is expected to match -->
                 <div class="input-group-prepend">
                   <a
                     class="btn btn-outline-secondary"
                     :href="'#current_expected_label_phylogeny_' + phylogenyIndex"
                     title="Click here to jump to the expected label"
-                    type="button"
-                  >
-                    Go to node
-                  </a>
+                    role="button"
+                  >Go to node</a>
                 </div>
 
                 <!-- Display the matching node(s) -->
@@ -182,7 +227,7 @@
                     readonly
                     type="text"
                     class="form-control"
-                    value="No nodes could be matched"
+                    :value="'No node labeled \'' + selectedPhylorefLabel + '\' found in phylogeny'"
                   >
                 </template>
 
@@ -255,22 +300,20 @@
               <!-- Node(s) this phyloreference actually resolved to -->
               <label
                 for="actual-nodes"
-                class="col-form-label col-md-2"
+                class="col-form-label col-md-2 pb-2"
               >
                 Actual resolved nodes
               </label>
 
-              <div class="input-group col-md-4">
+              <div class="input-group col-md-10 pb-2">
                 <!-- Display the phylogeny where this node is expected to match -->
                 <div class="input-group-prepend">
                   <a
                     class="btn btn-outline-secondary"
                     :href="'#current_pinning_node_phylogeny_' + phylogenyIndex"
                     title="Click here to jump to this node"
-                    type="button"
-                  >
-                    Go to node
-                  </a>
+                    role="button"
+                  >Go to node</a>
                 </div>
 
                 <!-- Display the matching node(s) -->
@@ -280,7 +323,7 @@
                     type="text"
                     class="form-control"
                     value="Click 'Reason' to reason over all phyloreferences."
-                  >
+                  />
                 </template>
                 <template v-else>
                   <template v-if="getResolvedNodes(phylogeny).length === 0">
@@ -289,8 +332,8 @@
                       readonly
                       type="text"
                       class="form-control"
-                      :value="'No nodes could be matched'"
-                    >
+                      :value="'No nodes could be resolved'"
+                    />
                   </template>
                   <template v-if="getResolvedNodes(phylogeny).length === 1">
                     <!-- We matched exactly one node -->
@@ -299,7 +342,7 @@
                       type="text"
                       class="form-control"
                       :value="getResolvedNodes(phylogeny)[0]"
-                    >
+                    />
                   </template>
                   <template v-if="getResolvedNodes(phylogeny).length > 1">
                     <!-- We matched more than one node -->
@@ -308,7 +351,7 @@
                       type="text"
                       class="form-control"
                       :value="getResolvedNodes(phylogeny).length + ' nodes matched: ' + getResolvedNodes(phylogeny).join(', ')"
-                    >
+                    />
                   </template>
                 </template>
               </div>
@@ -369,6 +412,9 @@ export default {
     selectedCuratorComments: {
       get() { return this.selectedPhyloref.curatorComments; },
       set(curatorComments) { this.$store.commit('setPhylorefProps', { phyloref: this.selectedPhyloref, curatorComments }); },
+    },
+    computedPhylorefType() {
+      return this.$store.getters.getPhylorefType(this.selectedPhyloref);
     },
     phylorefURI() {
       // Get the base URI of this phyloreference.

@@ -6,8 +6,7 @@
  */
 
 import Vue from 'vue';
-import { has } from 'lodash';
-import { TaxonNameWrapper } from '@phyloref/phyx';
+import { has, cloneDeep } from 'lodash';
 
 export default {
   state: {
@@ -82,6 +81,21 @@ export default {
       }
 
       Vue.set(state.currentPhyx, 'defaultNomenclaturalCodeURI', payload.defaultNomenclaturalCodeURI);
+    },
+    duplicatePhyloref(state, payload) {
+      if (!has(payload, 'phyloref')) {
+        throw new Error('duplicatePhyloref needs a phyloref to duplicate using the "phyloref" argument');
+      }
+
+      let indexOf = (state.currentPhyx.phylorefs || []).indexOf(payload.phyloref);
+      if (indexOf < 0) indexOf = state.currentPhyx.phylorefs.length;
+      state.currentPhyx.phylorefs.splice(indexOf, 0, cloneDeep(payload.phyloref));
+    },
+    setCurator(state, payload) {
+      // Set the curator name, e-mail address or (eventually) ORCID.
+      if (has(payload, 'name')) Vue.set(state.currentPhyx, 'curator', payload.name);
+      if (has(payload, 'email')) Vue.set(state.currentPhyx, 'curatorEmail', payload.email);
+      if (has(payload, 'orcid')) Vue.set(state.currentPhyx, 'curatorORCID', payload.orcid);
     },
   },
 };
