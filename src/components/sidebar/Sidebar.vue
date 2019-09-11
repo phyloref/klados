@@ -8,28 +8,9 @@
           class="list-group-item list-group-item-action bg-dark text-light disabled"
           href="javascript: void(0)"
         >
-          {{ currentPhyx.title || 'Untitled Phyx file' }}
-        </a>
-        <a
-          class="list-group-item list-group-item-action"
-          href="javascript: void(0)"
-          @click="promptAndSetDict('Please enter the new title for this Phyx file', currentPhyx, 'title')"
-        >
-          Edit title
+          Actions
         </a>
 
-        <a
-          class="list-group-item list-group-item-action start-reasoning"
-          href="javascript: void(0)"
-          @click="reasonOverPhyloreferences()"
-        >
-          <span v-if="reasoningInProgress">
-            (Reasoning in progress)
-          </span>
-          <span v-else>
-            Reason
-          </span>
-        </a>
         <a
           class="list-group-item list-group-item-action"
           href="javascript: void(0)"
@@ -43,28 +24,60 @@
           class="d-none"
           @change="loadPhyxFromFileInputById('#file-input')"
         >
-        <a
-          class="list-group-item list-group-item-action"
-          href="javascript: void(0)"
-          @click="downloadAsJSON()"
-        >
-          Save as JSON
-        </a>
+
         <a
           class="list-group-item list-group-item-action"
           href="javascript: void(0)"
           onclick="$('.phyx-examples').toggleClass('d-none')"
         >
-          Examples
+          Read an example file
         </a>
+
         <a
           v-for="example of examplePHYXURLs"
           href="javascript: void(0)"
-          class="list-group-item list-group-item-action phyx-examples d-none"
+          class="list-group-item list-group-item-action phyx-examples d-none small"
           @click="loadPhyxFromURL(example.url)"
         >
           &#9679; {{ example.title }}
         </a>
+        <a
+          class="list-group-item list-group-item-action phyx-examples d-none small"
+          href="javascript: void(0)"
+          onclick="$('.phyx-examples').toggleClass('d-none')"
+        >
+          <em>Close list of examples</em>
+        </a>
+
+        <a
+          class="list-group-item list-group-item-action"
+          href="javascript: void(0)"
+          @click="downloadAsJSON()"
+        >
+          Save
+        </a>
+
+        <a
+          class="list-group-item list-group-item-action"
+          href="javascript: void(0)"
+          @click="downloadAsJSONLD()"
+        >
+          Export as ontology
+        </a>
+
+        <a
+          class="list-group-item list-group-item-action start-reasoning"
+          href="javascript: void(0)"
+          @click="reasonOverPhyloreferences()"
+        >
+          <span v-if="reasoningInProgress">
+            (Reasoning in progress)
+          </span>
+          <span v-else>
+            Resolve against phylogenies
+          </span>
+        </a>
+
         <a
           class="list-group-item list-group-item-action"
           href="javascript: void(0)"
@@ -355,6 +368,17 @@ export default {
       // model. We deep-compare this.testcase with this.testcaseAsLoaded to
       // determine if the loaded model has been modified.
       this.$store.commit('setLoadedPhyx');
+    },
+
+    downloadAsJSONLD() {
+      // Exports the PHYX file as an OWL/JSON-LD file, which can be opened in
+      // Protege or converted into OWL/XML or other formats.
+      const wrapped = new PhyxWrapper(this.$store.state.phyx.currentPhyx);
+      const content = [JSON.stringify([wrapped.asJSONLD()], undefined, 4)];
+
+      // Save to local hard drive.
+      const jsonldFile = new File(content, 'download.jsonld', { type: 'application/json;charset=utf-8' });
+      saveAs(jsonldFile);
     },
 
     reasonOverPhyloreferences() {

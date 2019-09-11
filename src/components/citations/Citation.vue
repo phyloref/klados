@@ -530,14 +530,7 @@ export default {
     // single object in the JSON file; in that case, we convert it into an array.
     // In any case, we want to clone it -- changes in this component shouldn't
     // propagate to the model directly, but should go through this.updateCitations().
-    let citations;
-    if (Array.isArray(this.object[this.citationKey])) {
-      citations = cloneDeep(this.object[this.citationKey]);
-    } else if (isEmpty(this.object[this.citationKey])) {
-      citations = [];
-    } else {
-      citations = [cloneDeep(this.object[this.citationKey])];
-    }
+    let citations = this.getCitationsFromProps();
 
     return {
       // Which citations have been expanded (by index).
@@ -554,8 +547,28 @@ export default {
     citations() {
       this.updateCitations();
     },
+    object() {
+      this.citations = this.getCitationsFromProps();
+    },
+    citationKey() {
+      this.citations = this.getCitationsFromProps();
+    }
   },
   methods: {
+    getCitationsFromProps() {
+      // Returns the citations from the properties provided to this object.
+      //
+      // The trick is that this needs to always be an array, so we turn it into
+      // an array of a single element if we need to.
+
+      if (Array.isArray(this.object[this.citationKey])) {
+        return cloneDeep(this.object[this.citationKey]);
+      } else if (isEmpty(this.object[this.citationKey])) {
+        return [];
+      }
+
+      return [cloneDeep(this.object[this.citationKey])];
+    },
     updateCitations() {
       // If our citations have changed, update the state of the citation they
       // point to.

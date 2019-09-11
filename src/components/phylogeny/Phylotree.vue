@@ -21,7 +21,7 @@
         :id="'phylogeny' + phylogenyIndex"
         class="col-md-12 phylogeny"
       />
-      <ResizeObserver @notify="redrawTree()" />
+      <ResizeObserver @notify="redrawTree" />
     </div>
   </div>
 </template>
@@ -90,7 +90,7 @@ export default {
       const tree = d3.layout.phylotree()
         .svg(d3.select(`#phylogeny${this.phylogenyIndex}`))
         .options({
-          'internal-names': true,
+          'internal-names': false,
           transitions: false,
           'left-right-spacing': 'fit-to-size',
           'top-bottom-spacing': 'fixed-step',
@@ -110,29 +110,23 @@ export default {
           let textLabel = element.selectAll('text');
 
           if (has(data, 'name') && data.name !== '' && data.children) {
-            // If the node has a label and has children (i.e. is an internal node),
-            // we display it next to the node by creating a new 'text' element.
-            if (textLabel.empty()) {
-              textLabel = element.append('text');
-
-              // Place internal label to the left of the root node.
-              textLabel.classed('internal-label', true)
-                .text(data.name)
-                .attr('dx', '.3em')
-                .attr('dy', '.3em');
-            }
-
             // If the internal label has the same label as the currently
             // selected phyloreference, add an 'id' so we can jump to it
             // and a CSS class to render it differently from other labels.
             if (
               wrappedPhyloref.getExpectedNodeLabels(this.phylogeny).includes(data.name)
             ) {
+              if(textLabel.empty()) textLabel = element.append('text');
+              textLabel.classed('internal-label', true)
+                .text(data.name)
+                .attr('dx', '-0.2em')
+                // .attr('dy', '.3em');
+                .attr('dy', '0.8em');
+
               textLabel.attr('id', `current_expected_label_phylogeny_${this.phylogenyIndex}`);
               textLabel.classed('selected-internal-label', true);
             } else {
-              textLabel.attr('id', '');
-              textLabel.classed('selected-internal-label', false);
+              if(!textLabel.empty()) textLabel.remove();
             }
           }
 
@@ -288,11 +282,12 @@ export default {
 
       // Draw the tree.
       this.tree
+        .font_size(16) // Weirdly enough, this is in px, not pt.
         .size([
           // height
           0,
           // width
-          $(`#phylogeny${this.phylogenyIndex}`).width() - 40,
+          $(`#phylogeny${this.phylogenyIndex}`).innerWidth(),
           // We need more space because our fonts are bigger than the default.
         ])
         .spacing_x(this.spacingX)
@@ -323,8 +318,7 @@ export default {
  * refers only to the labels next to the nodes.
  */
 .node {
-  /* Phylotree's CSS sets this to 10px; we prefer larger node labels */
-  font-size: 11pt;
+  font-size: 12pt !important;
 }
 
 /* Labels for internal nodes, whether phylorefs or not */
@@ -356,6 +350,7 @@ export default {
 .selected-internal-label {
     font-size: 16pt;
     fill: rgb(0, 24, 168);
+    text-anchor: end;
 }
 
 /*
@@ -364,6 +359,7 @@ export default {
  * than as an .internal-specifier-node.
  */
 .pinning-node text {
+    fill: black !important;
     font-weight: bolder;
 }
 
