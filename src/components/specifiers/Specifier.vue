@@ -368,7 +368,7 @@ import {
   has, isEmpty, isEqual, cloneDeep, pickBy, uniqueId,
 } from 'lodash';
 
-// TaxonomicUnitWrapper doesn't yet set a type for apormophies, so
+// TaxonomicUnitWrapper doesn't yet set a type for apomophies, so
 // we'll set one up ourselves.
 TaxonomicUnitWrapper.TYPE_APOMORPHY = 'http://purl.obolibrary.org/obo/CDAO_0000071';
 
@@ -496,7 +496,7 @@ export default {
             break;
 
           case 'Apomorphy':
-            // For now, we just write apormorphies into the verbatim label.
+            // For now, we just write apomorphies into the verbatim label.
             break;
 
           case 'External reference':

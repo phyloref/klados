@@ -52,7 +52,7 @@
               for="definition"
               class="col-form-label col-md-2"
             >
-              Free-text definition
+              Definition in free-form text
             </label>
             <div class="col-md-10">
               <textarea
