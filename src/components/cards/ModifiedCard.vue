@@ -3,10 +3,7 @@
     v-if="dataChanged"
     class="card mb-2 border-dark"
   >
-    <div class="card-header bg-warning">
-      Warning!
-    </div>
-    <div class="card-body">
+    <div class="card-body bg-warning">
       {{ message }}
     </div>
   </div>

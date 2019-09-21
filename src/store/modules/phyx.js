@@ -6,7 +6,7 @@
  */
 
 import Vue from 'vue';
-import { has, cloneDeep } from 'lodash';
+import { has, cloneDeep, isEqual } from 'lodash';
 
 export default {
   state: {
@@ -21,6 +21,11 @@ export default {
     loadedPhyx: {
       phylorefs: [],
       phylogenies: [],
+    },
+  },
+  getters: {
+    loadedPhyxChanged(state) {
+      return !isEqual(state.currentPhyx, state.loadedPhyx);
     },
   },
   mutations: {

@@ -55,6 +55,11 @@
           @click="downloadAsJSON()"
         >
           Save
+          <ModifiedIcon
+            message="This Phyx file has been modified after it was loaded! Use 'Save' to save your changes."
+            :compare="currentPhyx"
+            :compare-to="loadedPhyx"
+          />
         </a>
 
         <a
@@ -122,7 +127,7 @@
 
             <!-- Add a warning if this phyloreference has changed -->
             <ModifiedIcon
-              message="This phyloreference has been modified since being loaded! Use 'Save as JSON' to save your changes."
+              message="This phyloreference has been modified after it was loaded! Use 'Save' to save your changes."
               :compare="phyloref"
               :compare-to="loadedPhyx.phylorefs[phylorefIndex]"
             />
@@ -190,7 +195,7 @@
 
           <!-- Add a warning if this phylogeny has changed -->
           <ModifiedIcon
-            message="This phylogeny has been modified since being loaded! Use 'Save as JSON' to save your changes."
+            message="This phylogeny has been modified after it was loaded! Use 'Save' to save your changes."
             :compare="phylogeny"
             :compare-to="loadedPhyx.phylogenies[phylogenyIndex]"
           />
@@ -285,7 +290,13 @@ export default {
 
     loadPhyxFromURL(url) {
       // Change the current PHYX to that in the provided URL.
-      // Will ask the user to confirm before replacing it.
+
+      // Is the user sure that they want to do this?
+      if(this.$store.getters.loadedPhyxChanged) {
+        if(!confirm('The current Phyx file has been modified! Are you sure you want to discard these changes by loading another file?')) {
+          return;
+        }
+      }
 
       $.getJSON(url)
         .done((data) => {
@@ -331,6 +342,13 @@ export default {
       if (!$fileInput.prop('files')[0]) {
         alert('Please select a file before attempting to load it.');
         return;
+      }
+
+      // Is the user sure that they want to do this?
+      if(this.$store.getters.loadedPhyxChanged) {
+        if(!confirm('The current Phyx file has been modified! Are you sure you want to discard these changes by loading another file?')) {
+          return;
+        }
       }
 
       const [file] = $fileInput.prop('files');
