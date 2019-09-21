@@ -109,7 +109,7 @@
       </h5>
       <div class="card-body">
         <form>
-          <!-- Phyx collection name (if we have more than one phyloref!) -->
+          <!-- Phyloreference type -->
           <div class="form-group row">
             <label
               for="phyloref-type"
@@ -129,7 +129,7 @@
           </div>
         </form>
 
-        <h6>Internal specifiers</h6>
+        <h5>Internal specifiers</h5>
 
         <template v-if="!selectedPhyloref.internalSpecifiers || selectedPhyloref.internalSpecifiers.length === 0">
           <p><em>No internal specifiers in this phyloreference.</em></p>
@@ -146,7 +146,7 @@
           />
         </div>
 
-        <h6 class="mt-2">External specifiers</h6>
+        <h5 class="mt-2">External specifiers</h5>
 
         <template v-if="!selectedPhyloref.externalSpecifiers  || selectedPhyloref.externalSpecifiers.length === 0">
           <p><em>No external specifiers in this phyloreference.</em></p>
