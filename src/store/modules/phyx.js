@@ -6,6 +6,7 @@
  */
 
 import Vue from 'vue';
+import { TaxonNameWrapper } from '@phyloref/phyx';
 import { has, cloneDeep } from 'lodash';
 
 export default {
@@ -26,7 +27,7 @@ export default {
   getters: {
     getDefaultNomenCodeURI(state) {
       return state.currentPhyx.defaultNomenclaturalCodeURI
-        || 'http://purl.obolibrary.org/obo/NOMEN_0000036'; // NOMEN:scientific name.
+        || TaxonNameWrapper.NAME_IN_UNKNOWN_CODE;
     },
   },
   mutations: {
