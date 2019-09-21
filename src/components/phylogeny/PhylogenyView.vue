@@ -2,7 +2,7 @@
   <div>
     <!-- Add a warning if this phylogeny has changed -->
     <ModifiedCard
-      message="This phylogeny has been modified since being loaded. Use 'Save as JSON' to save your changes."
+      message="This phylogeny has been modified since being loaded. Use 'Save' to save your changes."
       :compare="selectedPhylogeny"
       :compare-to="loadedPhyx.phylogenies[currentPhyx.phylogenies.indexOf(selectedPhylogeny)]"
     />
