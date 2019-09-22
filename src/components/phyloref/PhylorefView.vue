@@ -241,7 +241,7 @@
                 </div>
 
                 <!-- Display the matching node(s) -->
-                <template v-if="getExpectedNodeLabels(phylogeny).length === 0">
+                <template v-if="!getExpectedNodeLabel(phylogeny)">
                   <!-- We matched no nodes -->
                   <input
                     readonly
@@ -251,23 +251,13 @@
                   >
                 </template>
 
-                <template v-if="getExpectedNodeLabels(phylogeny).length === 1">
+                <template v-if="getExpectedNodeLabel(phylogeny)">
                   <!-- We matched exactly one node -->
                   <input
                     readonly
                     type="text"
                     class="form-control"
-                    :value="getExpectedNodeLabels(phylogeny)[0]"
-                  >
-                </template>
-
-                <template v-if="getExpectedNodeLabels(phylogeny).length > 1">
-                  <!-- We matched more than one node -->
-                  <input
-                    readonly
-                    type="text"
-                    class="form-control"
-                    :value="getExpectedNodeLabels(phylogeny).length + ' nodes matched: ' + getExpectedNodeLabels(phylogeny, selectedPhyloref).join(', ')"
+                    :value="getExpectedNodeLabel(phylogeny)"
                   >
                 </template>
 
@@ -294,9 +284,9 @@
                     <a
                       v-for="nodeLabel of getNodeLabels(phylogeny, 'internal')"
                       class="dropdown-item"
-                      :class="{active: getExpectedNodeLabels(phylogeny).includes(nodeLabel)}"
+                      :class="{active: getExpectedNodeLabel(phylogeny) === nodeLabel}"
                       href="#selected-phyloref"
-                      @click="setExpectedResolution(phylogeny, {'action': 'toggle', nodeLabel})"
+                      @click="setExpectedResolution(phylogeny, {nodeLabel})"
                     >
                       {{ nodeLabel }}
                     </a>
@@ -307,9 +297,9 @@
                     <a
                       v-for="nodeLabel of getNodeLabels(phylogeny, 'terminal')"
                       class="dropdown-item"
-                      :class="{active: getExpectedNodeLabels(phylogeny).includes(nodeLabel)}"
+                      :class="{active: getExpectedNodeLabel(phylogeny) === nodeLabel}"
                       href="#selected-phyloref"
-                      @click="setExpectedResolution(phylogeny, {'action': 'toggle', nodeLabel})"
+                      @click="setExpectedResolution(phylogeny, {nodeLabel})"
                     >
                       {{ nodeLabel }}
                     </a>
@@ -386,6 +376,7 @@
                 :phylogeny="phylogeny"
                 :phyloref="selectedPhyloref"
                 :newick="phylogeny.newick"
+                :selectedNodeLabel="getExpectedNodeLabel(phylogeny)"
               />
             </div>
           </div>
@@ -491,23 +482,10 @@ export default {
         expectedResolutionForPhylogeny.description = payload.description;
       }
 
-      if (has(payload, 'action')) {
-        if (payload.action === 'toggle') {
-          // We need to toggle a node label as included or excluded from the
-          // expected resolution.
-          if (!has(expectedResolutionForPhylogeny, 'nodeLabels')) {
-            Vue.set(expectedResolutionForPhylogeny, 'nodeLabels', []);
-          }
-
-          const nodeLabelIndex = expectedResolutionForPhylogeny.nodeLabels.indexOf(payload.nodeLabel);
-          if (nodeLabelIndex !== -1) {
-            expectedResolutionForPhylogeny.nodeLabels.splice(nodeLabelIndex, 1);
-          } else {
-            expectedResolutionForPhylogeny.nodeLabels.push(payload.nodeLabel);
-          }
-        } else {
-          throw new Error('Unknown action: ' + expectedResolution.action);
-        }
+      if (has(payload, 'nodeLabel')) {
+        // We need to toggle a node label as included or excluded from the
+        // expected resolution.
+        expectedResolutionForPhylogeny.nodeLabel = payload.nodeLabel;
       }
 
       // Replace the current expected resolution.
@@ -521,22 +499,22 @@ export default {
       // Return a list of node labels in a particular phylogeny.
       return new PhylogenyWrapper(phylogeny).getNodeLabels(nodeType).sort();
     },
-    getExpectedNodeLabels(phylogeny) {
+    getExpectedNodeLabel(phylogeny) {
       // Return a list of nodes that this phyloreference is expected to resolve to.
       const expectedResolution = this.getExpectedResolution(phylogeny);
 
-      if (has(expectedResolution, 'nodeLabels')) {
-        return expectedResolution.nodeLabels;
+      if (has(expectedResolution, 'nodeLabel')) {
+        return expectedResolution.nodeLabel;
       }
 
       // Is there a node on the phylogeny with the same label as this phyloreference?
       const allNodeLabels = new PhylogenyWrapper(phylogeny).getNodeLabels();
       if (allNodeLabels.includes(this.selectedPhylorefLabel)) {
-        return [this.selectedPhylorefLabel];
+        return this.selectedPhylorefLabel;
       }
 
       // No expected node labels!
-      return [];
+      return undefined;
     },
     getSpecifierLabel(specifier) {
       // Return the specifier label of a particular specifier.
