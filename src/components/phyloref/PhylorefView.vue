@@ -200,7 +200,27 @@
             </span> on {{ phylogeny.label || `Phylogeny ${phylogenyIndex + 1}` }}
           </h5>
           <div class="card-body">
-            <div class="form-row">
+            <!-- Reference phylogeny information -->
+            <div class="form-group row">
+              <label
+                :for="'expected-resolution-' + phylogenyIndex"
+                class="col-form-label col-md-2"
+              >
+                Expected resolution in free-form text
+              </label>
+              <div class="col-md-10">
+                <textarea
+                  :id="'expected-resolution-' + phylogenyIndex"
+                  :value="getExpectedResolution(phylogeny).description"
+                  @change="setExpectedResolution(phylogeny, {'description': $event.target.value})"
+                  rows="3"
+                  class="form-control"
+                  placeholder="e.g. 'Should resolve to clade X in fig 3 of Smith 2003'"
+                />
+              </div>
+            </div>
+
+            <div class="form-group row">
               <!-- Node(s) this phyloreference is expected to resolve to -->
               <label
                 for="expected-nodes"
@@ -276,7 +296,7 @@
                       class="dropdown-item"
                       :class="{active: getExpectedNodeLabels(phylogeny).includes(nodeLabel)}"
                       href="#selected-phyloref"
-                      @click="togglePhylorefExpectedNodeLabel(phylogeny, selectedPhyloref, nodeLabel)"
+                      @click="setExpectedResolution(phylogeny, {'action': 'toggle', nodeLabel})"
                     >
                       {{ nodeLabel }}
                     </a>
@@ -289,7 +309,7 @@
                       class="dropdown-item"
                       :class="{active: getExpectedNodeLabels(phylogeny).includes(nodeLabel)}"
                       href="#selected-phyloref"
-                      @click="togglePhylorefExpectedNodeLabel(phylogeny, selectedPhyloref, nodeLabel)"
+                      @click="setExpectedResolution(phylogeny, {'action': 'toggle', nodeLabel})"
                     >
                       {{ nodeLabel }}
                     </a>
@@ -380,8 +400,9 @@
  * A view for displaying a phyloreference and how it resolves on all phylogenies.
  */
 
+import Vue from 'vue';
 import { mapState } from 'vuex';
-import { has } from 'lodash';
+import { has, cloneDeep } from 'lodash';
 import { PhylogenyWrapper, PhylorefWrapper } from '@phyloref/phyx';
 
 import ModifiedCard from '../cards/ModifiedCard.vue';
@@ -438,13 +459,84 @@ export default {
     }),
   },
   methods: {
+    getExpectedResolution(phylogeny) {
+      if (!has(this.selectedPhyloref, 'expectedResolution')) return "";
+      if (has(phylogeny, '@id') && has(this.selectedPhyloref.expectedResolution, phylogeny['@id'])) {
+        return this.selectedPhyloref.expectedResolution[phylogeny['@id']];
+      }
+
+      const phylogenyURI = this.$store.getters.getBaseURIForPhylogeny(phylogeny);
+      if (has(this.selectedPhyloref.expectedResolution, phylogenyURI)) {
+        return this.selectedPhyloref.expectedResolution[phylogenyURI];
+      }
+
+      return {};
+    },
+    setExpectedResolution(phylogeny, payload) {
+      let phylogenyID = phylogeny['@id'];
+      if(!phylogenyID) {
+        phylogenyID = this.$store.getters.getBaseURIForPhylogeny(phylogeny);
+        this.$store.commit('setPhylogenyProps', {
+          phylogeny,
+          '@id': phylogenyID,
+        });
+      }
+
+      // What is the current expectedResolution look like?
+      const currentExpectedResolution = cloneDeep(this.selectedPhyloref.expectedResolution || {});
+      const expectedResolutionForPhylogeny = currentExpectedResolution[phylogenyID] || {};
+
+      // What needs to change?
+      if (has(payload, 'description')) {
+        expectedResolutionForPhylogeny.description = payload.description;
+      }
+
+      if (has(payload, 'action')) {
+        if (payload.action === 'toggle') {
+          // We need to toggle a node label as included or excluded from the
+          // expected resolution.
+          if (!has(expectedResolutionForPhylogeny, 'nodeLabels')) {
+            Vue.set(expectedResolutionForPhylogeny, 'nodeLabels', []);
+          }
+
+          const nodeLabelIndex = expectedResolutionForPhylogeny.nodeLabels.indexOf(payload.nodeLabel);
+          if (nodeLabelIndex !== -1) {
+            expectedResolutionForPhylogeny.nodeLabels.splice(nodeLabelIndex, 1);
+          } else {
+            expectedResolutionForPhylogeny.nodeLabels.push(payload.nodeLabel);
+          }
+        } else {
+          throw new Error('Unknown action: ' + expectedResolution.action);
+        }
+      }
+
+      // Replace the current expected resolution.
+      this.$store.commit('setPhylorefProps', {
+        phyloref: this.selectedPhyloref,
+        expectedResolution: expectedResolutionForPhylogeny,
+        phylogenyID,
+      });
+    },
     getNodeLabels(phylogeny, nodeType) {
       // Return a list of node labels in a particular phylogeny.
       return new PhylogenyWrapper(phylogeny).getNodeLabels(nodeType).sort();
     },
     getExpectedNodeLabels(phylogeny) {
       // Return a list of nodes that this phyloreference is expected to resolve to.
-      return new PhylorefWrapper(this.selectedPhyloref).getExpectedNodeLabels(phylogeny);
+      const expectedResolution = this.getExpectedResolution(phylogeny);
+
+      if (has(expectedResolution, 'nodeLabels')) {
+        return expectedResolution.nodeLabels;
+      }
+
+      // Is there a node on the phylogeny with the same label as this phyloreference?
+      const allNodeLabels = new PhylogenyWrapper(phylogeny).getNodeLabels();
+      if (allNodeLabels.includes(this.selectedPhylorefLabel)) {
+        return [this.selectedPhylorefLabel];
+      }
+
+      // No expected node labels!
+      return [];
     },
     getSpecifierLabel(specifier) {
       // Return the specifier label of a particular specifier.
