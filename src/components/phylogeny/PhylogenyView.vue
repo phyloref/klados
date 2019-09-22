@@ -15,6 +15,26 @@
         <form>
           <div class="form-group row">
             <label
+              for="phylogenyID"
+              class="col-md-2 col-form-label"
+            >
+              Identifier
+            </label>
+            <div class="col-md-10">
+              <input
+                id="phylogenyID"
+                v-model="phylogenyID"
+                type="text"
+                class="form-control"
+                :class="{'border-danger': phylogenyIDError}"
+                placeholder="A global or local identifier for this phylogeny, e.g. 'http://doi.org/10.13/49#12' or '#phylogeny1'"
+              >
+              <p v-if="phylogenyIDError" class="form-text text-danger">{{phylogenyIDError}}</p>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label
               for="phylogenyLabel"
               class="col-md-2 col-form-label"
             >
@@ -131,11 +151,29 @@ import Citation from '../citations/Citation.vue';
 export default {
   name: 'PhylogenyView',
   components: { ModifiedCard, Phylotree, Citation },
+  data() {
+    return {
+      phylogenyIDError: undefined,
+    };
+  },
   computed: {
     /*
      * The following properties allow you to get or set the phylogeny label,
      * description or newick string.
      */
+    phylogenyID: {
+      get() { return this.selectedPhylogeny['@id'] || this.$store.getters.getBaseURIForPhylogeny(this.selectedPhylogeny)},
+      set(id) {
+        try {
+          this.$store.dispatch('changePhylogenyID', { phylogeny: this.selectedPhylogeny, 'phylogenyID': id })
+        } catch(err) {
+          this.phylogenyIDError = err;
+          return false;
+        }
+        this.phylogenyIDError = undefined;
+        return true;
+      },
+    },
     phylogenyLabel: {
       get() { return this.selectedPhylogeny.label; },
       set(label) { this.$store.commit('setPhylogenyProps', { phylogeny: this.selectedPhylogeny, label }); },
