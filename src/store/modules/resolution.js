@@ -6,12 +6,16 @@
 import Vue from 'vue';
 import { has } from 'lodash';
 
+import { PhylogenyWrapper } from '@phyloref/phyx';
+
 export default {
   state: {
     // The reasoning results returned by JPhyloRef.
     reasoningResults: undefined,
   },
   getters: {
+    getBaseURIForPhylogeny: (state, getters, rootState) => phylogeny => `#phylogeny${rootState.phyx.currentPhyx.phylogenies.indexOf(phylogeny)}`,
+    getBaseURIForPhyloref: (state, getters, rootState) => phyloref => `#phyloref${rootState.phyx.currentPhyx.phylorefs.indexOf(phyloref)}`,
     getResolvedNodesForPhylogeny: (state, getters) => (
       phylogeny,
       phyloref,
@@ -37,6 +41,36 @@ export default {
       // Either return the URIs as-is or remove the phylogeny URI (so we return e.g. "node21").
       if (!flagReturnShortURIs) return nodeURIs;
       return nodeURIs.map(iri => iri.replace(`${phylogenyURI}_`, ''));
+    },
+    getExpectedResolutionData: (state, getters) => (phyloref, phylogeny) => {
+      if (!has(phyloref, 'expectedResolution')) return {};
+      if (has(phylogeny, '@id') && has(phyloref.expectedResolution, phylogeny['@id'])) {
+        return phyloref.expectedResolution[phylogeny['@id']];
+      }
+
+      const phylogenyURI = getters.getBaseURIForPhylogeny(phylogeny);
+      if (has(phyloref.expectedResolution, phylogenyURI)) {
+        return phyloref.expectedResolution[phylogenyURI];
+      }
+
+      return {};
+    },
+    getExpectedNodeLabel: (state, getters) => (phyloref, phylogeny) => {
+      // Return a list of nodes that this phyloreference is expected to resolve to.
+      const expectedResolution = getters.getExpectedResolutionData(phyloref, phylogeny);
+
+      if (has(expectedResolution, 'nodeLabel')) {
+        return expectedResolution.nodeLabel;
+      }
+
+      // Is there a node on the phylogeny with the same label as this phyloreference?
+      const allNodeLabels = new PhylogenyWrapper(phylogeny).getNodeLabels();
+      if (phyloref.label && allNodeLabels.includes(phyloref.label)) {
+        return phyloref.label;
+      }
+
+      // No expected node labels!
+      return undefined;
     },
   },
   mutations: {

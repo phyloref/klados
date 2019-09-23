@@ -142,20 +142,20 @@
               <td>{{ (phyloref.internalSpecifiers || []).length }}</td>
               <td>{{ (phyloref.externalSpecifiers || []).length }}</td>
               <td v-for="(phylogeny, phylogenyIndex) of phylogenies">
-                <template v-if="getPhylorefExpectedNodeLabels(phyloref, phylogeny).length === 0">
-                  <strong>Not matched</strong>
+                <template v-if="!getPhylorefExpectedNodeLabel(phyloref, phylogeny)">
+                  <strong>No expected node</strong>
                   <template v-if="hasReasoningResults(phyloref)">
                     but
                     <template v-if="getNodeLabelsResolvedByPhyloref(phyloref, phylogeny) > 1">
                       <strong>resolved to multiple nodes: {{ getNodeLabelsResolvedByPhyloref(phyloref, phylogeny) }}</strong>
                     </template>
                     <template v-else>
-                      resolved to {{ getNodeLabelsResolvedByPhyloref(phyloref, phylogeny)[0]||"(none)" }}
+                      resolved to {{ getNodeLabelsResolvedByPhyloref(phyloref, phylogeny)[0]||"an unlabeled node" }}
                     </template>
                   </template>
                 </template>
                 <template v-else>
-                  Matched
+                  Expected to resolve to node {{getPhylorefExpectedNodeLabel(phyloref, phylogeny)}}
                   <template v-if="hasReasoningResults(phyloref)">
                     and
                     <template v-if="getNodeLabelsResolvedByPhyloref(phyloref, phylogeny) > 1">
@@ -163,13 +163,13 @@
                     </template>
                     <template v-else>
                       resolved
-                      <template v-if="getNodeLabelsResolvedByPhyloref(phyloref, phylogeny)[0] === getPhylorefExpectedNodeLabels(phyloref, phylogeny)[0]">
+                      <template v-if="getNodeLabelsResolvedByPhyloref(phyloref, phylogeny)[0] === getPhylorefExpectedNodeLabel(phyloref, phylogeny)">
                         correctly
                       </template>
                       <template v-else>
                         <strong>incorrectly</strong>
                       </template>
-                      to {{ getNodeLabelsResolvedByPhyloref(phyloref, phylogeny)[0]||"(none)" }}
+                      to {{ getNodeLabelsResolvedByPhyloref(phyloref, phylogeny)[0]||"an unlabeled node" }}
                     </template>
                   </template>
                 </template>
@@ -302,9 +302,12 @@ export default {
       const phylorefURI = this.$store.getters.getBaseURIForPhyloref(phyloref);
       return has(this.$store.state.resolution.reasoningResults.phylorefs, phylorefURI);
     },
-    getPhylorefExpectedNodeLabels(phyloref, phylogeny) {
+    getPhylorefExpectedNodeLabel(phyloref, phylogeny) {
       // Return a list of nodes that a phyloreference is expected to resolve to.
-      return new PhylorefWrapper(phyloref).getExpectedNodeLabels(phylogeny);
+      return this.$store.getters.getExpectedNodeLabel(
+        phyloref,
+        phylogeny
+      );
     },
     getNodesById(phylogeny, nodeId) {
       // Return all node labels with this nodeId in this phylogeny.

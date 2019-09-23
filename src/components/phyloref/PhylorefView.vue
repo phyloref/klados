@@ -451,17 +451,10 @@ export default {
   },
   methods: {
     getExpectedResolution(phylogeny) {
-      if (!has(this.selectedPhyloref, 'expectedResolution')) return "";
-      if (has(phylogeny, '@id') && has(this.selectedPhyloref.expectedResolution, phylogeny['@id'])) {
-        return this.selectedPhyloref.expectedResolution[phylogeny['@id']];
-      }
-
-      const phylogenyURI = this.$store.getters.getBaseURIForPhylogeny(phylogeny);
-      if (has(this.selectedPhyloref.expectedResolution, phylogenyURI)) {
-        return this.selectedPhyloref.expectedResolution[phylogenyURI];
-      }
-
-      return {};
+      return this.$store.getters.getExpectedResolutionData(
+        this.selectedPhyloref,
+        phylogeny,
+      );
     },
     setExpectedResolution(phylogeny, payload) {
       let phylogenyID = phylogeny['@id'];
@@ -500,21 +493,10 @@ export default {
       return new PhylogenyWrapper(phylogeny).getNodeLabels(nodeType).sort();
     },
     getExpectedNodeLabel(phylogeny) {
-      // Return a list of nodes that this phyloreference is expected to resolve to.
-      const expectedResolution = this.getExpectedResolution(phylogeny);
-
-      if (has(expectedResolution, 'nodeLabel')) {
-        return expectedResolution.nodeLabel;
-      }
-
-      // Is there a node on the phylogeny with the same label as this phyloreference?
-      const allNodeLabels = new PhylogenyWrapper(phylogeny).getNodeLabels();
-      if (allNodeLabels.includes(this.selectedPhylorefLabel)) {
-        return this.selectedPhylorefLabel;
-      }
-
-      // No expected node labels!
-      return undefined;
+      return this.$store.getters.getExpectedNodeLabel(
+        this.selectedPhyloref,
+        phylogeny,
+      );
     },
     getSpecifierLabel(specifier) {
       // Return the specifier label of a particular specifier.
