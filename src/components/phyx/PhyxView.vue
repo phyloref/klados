@@ -145,24 +145,28 @@
                 <template v-if="!getPhylorefExpectedNodeLabel(phyloref, phylogeny)">
                   <strong>No expected node</strong>
                   <template v-if="hasReasoningResults(phyloref)">
-                    but
-                    <template v-if="getNodeLabelsResolvedByPhyloref(phyloref, phylogeny) > 1">
-                      <strong>resolved to multiple nodes: {{ getNodeLabelsResolvedByPhyloref(phyloref, phylogeny) }}</strong>
+                    <template v-if="getNodeLabelsResolvedByPhyloref(phyloref, phylogeny).length === 0">
+                      but <strong>did not resolve to any node</strong>
+                    </template>
+                    <template v-else-if="getNodeLabelsResolvedByPhyloref(phyloref, phylogeny).length > 1">
+                      but <strong>resolved to multiple nodes: {{ getNodeLabelsResolvedByPhyloref(phyloref, phylogeny) }}</strong>
                     </template>
                     <template v-else>
-                      resolved to {{ getNodeLabelsResolvedByPhyloref(phyloref, phylogeny)[0]||"an unlabeled node" }}
+                      and resolved to {{ getNodeLabelsResolvedByPhyloref(phyloref, phylogeny)[0]||"an unlabeled node" }}
                     </template>
                   </template>
                 </template>
                 <template v-else>
                   Expected to resolve to node {{getPhylorefExpectedNodeLabel(phyloref, phylogeny)}}
                   <template v-if="hasReasoningResults(phyloref)">
-                    and
-                    <template v-if="getNodeLabelsResolvedByPhyloref(phyloref, phylogeny) > 1">
-                      <strong>resolved to multiple nodes: {{ getNodeLabelsResolvedByPhyloref(phyloref, phylogeny) }}</strong>
+                    <template v-if="getNodeLabelsResolvedByPhyloref(phyloref, phylogeny).length === 0">
+                      but <strong>did not resolve to any node</strong>
+                    </template>
+                    <template v-else-if="getNodeLabelsResolvedByPhyloref(phyloref, phylogeny).length > 1">
+                      but <strong>resolved to multiple nodes: {{ getNodeLabelsResolvedByPhyloref(phyloref, phylogeny) }}</strong>
                     </template>
                     <template v-else>
-                      resolved
+                      and resolved
                       <template v-if="getNodeLabelsResolvedByPhyloref(phyloref, phylogeny)[0] === getPhylorefExpectedNodeLabel(phyloref, phylogeny)">
                         correctly
                       </template>
@@ -299,7 +303,7 @@ export default {
     hasReasoningResults(phyloref) {
       if (!has(this.$store.state.resolution.reasoningResults, 'phylorefs')) return false;
 
-      const phylorefURI = this.$store.getters.getBaseURIForPhyloref(phyloref);
+      const phylorefURI = this.$store.getters.getPhylorefId(phyloref);
       return has(this.$store.state.resolution.reasoningResults.phylorefs, phylorefURI);
     },
     getPhylorefExpectedNodeLabel(phyloref, phylogeny) {
@@ -312,7 +316,7 @@ export default {
     getNodesById(phylogeny, nodeId) {
       // Return all node labels with this nodeId in this phylogeny.
       const parsed = new PhylogenyWrapper(phylogeny).getParsedNewickWithIRIs(
-        this.$store.getters.getBaseURIForPhylogeny(phylogeny),
+        this.$store.getters.getPhylogenyId(phylogeny),
         d3.layout.newick_parser,
       );
 
