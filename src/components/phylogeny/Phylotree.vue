@@ -78,7 +78,7 @@ export default {
     },
     parsedNewick() {
       return new PhylogenyWrapper(this.phylogeny).getParsedNewickWithIRIs(
-        this.$store.getters.getBaseURIForPhylogeny(this.phylogeny),
+        this.$store.getters.getPhylogenyId(this.phylogeny),
         d3.layout.newick_parser,
       );
     },

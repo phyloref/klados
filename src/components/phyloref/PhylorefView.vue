@@ -430,7 +430,7 @@ export default {
     },
     phylorefURI() {
       // Get the base URI of this phyloreference.
-      return this.$store.getters.getBaseURIForPhyloref(this.selectedPhyloref);
+      return this.$store.getters.getPhylorefId(this.selectedPhyloref);
     },
     noSpecifiers() {
       // Return true if no specifiers are present.
@@ -459,7 +459,7 @@ export default {
     setExpectedResolution(phylogeny, payload) {
       let phylogenyID = phylogeny['@id'];
       if(!phylogenyID) {
-        phylogenyID = this.$store.getters.getBaseURIForPhylogeny(phylogeny);
+        phylogenyID = this.$store.getters.getPhylogenyId(phylogeny);
         this.$store.commit('setPhylogenyProps', {
           phylogeny,
           '@id': phylogenyID,

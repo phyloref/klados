@@ -162,7 +162,7 @@ export default {
      * description or newick string.
      */
     phylogenyID: {
-      get() { return this.selectedPhylogeny['@id'] || this.$store.getters.getBaseURIForPhylogeny(this.selectedPhylogeny)},
+      get() { return this.$store.getters.getPhylogenyId(this.selectedPhylogeny); },
       set(id) {
         try {
           this.$store.dispatch('changePhylogenyID', { phylogeny: this.selectedPhylogeny, 'phylogenyID': id })

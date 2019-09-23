@@ -16,6 +16,14 @@ export default {
   getters: {
     getBaseURIForPhylogeny: (state, getters, rootState) => phylogeny => `#phylogeny${rootState.phyx.currentPhyx.phylogenies.indexOf(phylogeny)}`,
     getBaseURIForPhyloref: (state, getters, rootState) => phyloref => `#phyloref${rootState.phyx.currentPhyx.phylorefs.indexOf(phyloref)}`,
+    getPhylogenyId: (state, getters) => (phylogeny) => {
+      if (has(phylogeny, '@id')) return phylogeny['@id'];
+      return getters.getBaseURIForPhylogeny(phylogeny);
+    },
+    getPhylorefId: (state, getters) => (phyloref) => {
+      if (has(phyloref, '@id')) return phyloref['@id'];
+      return getters.getBaseURIForPhyloref(phyloref);
+    },
     getResolvedNodesForPhylogeny: (state, getters) => (
       phylogeny,
       phyloref,
@@ -27,7 +35,7 @@ export default {
       // just the node number will be returned.
 
       // Do we have reasoning results for this phyloreference?
-      const phylorefURI = getters.getBaseURIForPhyloref(phyloref);
+      const phylorefURI = getters.getPhylorefId(phyloref);
       if (
         !has(state.reasoningResults, 'phylorefs')
          || !has(state.reasoningResults.phylorefs, phylorefURI)
@@ -35,22 +43,27 @@ export default {
 
       // Identify the resolved nodes.
       const nodesResolved = state.reasoningResults.phylorefs[phylorefURI];
-      const phylogenyURI = getters.getBaseURIForPhylogeny(phylogeny);
-      const nodeURIs = nodesResolved.filter(uri => uri.includes(phylogenyURI));
+      const phylogenyURI = getters.getPhylogenyId(phylogeny);
+
+      // We look for the phylogeny URI (e.g. "#phylogeny1") in the node resolved
+      // URI. To make sure that we don't accidentally match "#phylogeny12", we
+      // also look for the '_' after the phylogeny URI.
+      const nodeURIs = nodesResolved.filter(uri => uri.includes(`${phylogenyURI}_`));
 
       // Either return the URIs as-is or remove the phylogeny URI (so we return e.g. "node21").
       if (!flagReturnShortURIs) return nodeURIs;
-      return nodeURIs.map(iri => iri.replace(`${phylogenyURI}_`, ''));
+      const results = nodeURIs.map(iri => iri.replace(`${phylogenyURI}_`, ''));
+
+      // console.log('getResolvedNodesForPhylogeny:', phylogeny, phyloref, results);
+
+      return results;
     },
     getExpectedResolutionData: (state, getters) => (phyloref, phylogeny) => {
       if (!has(phyloref, 'expectedResolution')) return {};
-      if (has(phylogeny, '@id') && has(phyloref.expectedResolution, phylogeny['@id'])) {
-        return phyloref.expectedResolution[phylogeny['@id']];
-      }
 
-      const phylogenyURI = getters.getBaseURIForPhylogeny(phylogeny);
-      if (has(phyloref.expectedResolution, phylogenyURI)) {
-        return phyloref.expectedResolution[phylogenyURI];
+      const phylogenyId = getters.getPhylogenyId(phylogeny);
+      if (has(phyloref.expectedResolution, phylogenyId)) {
+        return phyloref.expectedResolution[phylogenyId];
       }
 
       return {};

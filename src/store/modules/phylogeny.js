@@ -41,7 +41,7 @@ export default {
       }
 
       // What was the previous phylogeny ID?
-      const oldPhylogenyID = payload.phylogeny['@id'] || context.rootGetters.getBaseURIForPhylogeny(payload.phylogeny);
+      const oldPhylogenyID = context.rootGetters.getPhylogenyId(payload.phylogeny);
 
       // No need to do anything if they haven't changed.
       if (oldPhylogenyID === payload.phylogenyID) return;
