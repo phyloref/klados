@@ -5,51 +5,9 @@
     "citation": "Brochu (2003) Annual Review of Earth and Planetary Sciences 31:357-397",
     "phylogenies": [
         {
-            "description": "",
             "newick": "(Parasuchia,(rauisuchians,Aetosauria,(sphenosuchians,(protosuchians,(mesosuchians,(Hylaeochampsa,Aegyptosuchus,Stomatosuchus,(Allodaposuchus,('Gavialis gangeticus',(('Diplocynodon ratelii',('Alligator mississippiensis','Caiman crocodilus')Alligatoridae)Alligatoroidea,('Tomistoma schlegelii',('Osteolaemus tetraspis','Crocodylus niloticus')Crocodylinae)Crocodylidae)Brevirostres)Crocodylia))Eusuchia)Mesoeucrocodylia)Crocodyliformes)Crocodylomorpha))root;",
-            "additionalNodeProperties": {
-                "Gavialis gangeticus": {
-                    "expectedPhyloreferenceNamed": [
-                        "Gavialoidea"
-                    ]
-                },
-                "Diplocynodon ratelii": {
-                    "expectedPhyloreferenceNamed": [
-                        "Diplocynodontinae"
-                    ]
-                },
-                "Tomistoma schlegelii": {
-                    "expectedPhyloreferenceNamed": [
-                        "Tomistominae"
-                    ]
-                },
-                "Alligatoridae": {
-                    "expectedPhyloreferenceNamed": [
-                        "Globidonta"
-                    ]
-                },
-                "Alligator mississippiensis": {
-                    "expectedPhyloreferenceNamed": [
-                        "Alligatorinae"
-                    ]
-                },
-                "Caiman crocodilus": {
-                    "expectedPhyloreferenceNamed": [
-                        "Caimaninae"
-                    ]
-                },
-                "Crocodylidae": {
-                    "expectedPhyloreferenceNamed": [
-                        "Crocodyloidea"
-                    ]
-                },
-                "Osteolaemus tetraspis": {
-                    "expectedPhyloreferenceNamed": [
-                        "Osteolaeminae"
-                    ]
-                }
-            },
-            "label": "Fig 1 from Brochu 2003"
+            "label": "Fig 1 from Brochu 2003",
+            "@id": "#phylogeny0"
         }
     ],
     "phylorefs": [
@@ -77,7 +35,8 @@
                         "nameComplete": "Gavialis gangeticus",
                         "genusPart": "Gavialis",
                         "specificEpithet": "gangeticus"
-                    }
+                    },
+                    "label": "Gavialis gangeticus"
                 },
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
@@ -88,7 +47,8 @@
                         "nameComplete": "Crocodylus niloticus",
                         "genusPart": "Crocodylus",
                         "specificEpithet": "niloticus"
-                    }
+                    },
+                    "label": "Crocodylus niloticus"
                 },
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
@@ -99,7 +59,8 @@
                         "nameComplete": "Hylaeochampsa vectiana",
                         "genusPart": "Hylaeochampsa",
                         "specificEpithet": "vectiana"
-                    }
+                    },
+                    "label": "Hylaeochampsa vectiana"
                 }
             ],
             "externalSpecifiers": [],
@@ -179,7 +140,8 @@
                         "nameComplete": "Gavialis gangeticus",
                         "genusPart": "Gavialis",
                         "specificEpithet": "gangeticus"
-                    }
+                    },
+                    "label": "Gavialis gangeticus"
                 }
             ],
             "externalSpecifiers": [
@@ -192,7 +154,8 @@
                         "nameComplete": "Alligator mississippiensis",
                         "genusPart": "Alligator",
                         "specificEpithet": "mississippiensis"
-                    }
+                    },
+                    "label": "Alligator mississippiensis"
                 },
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
@@ -203,7 +166,8 @@
                         "nameComplete": "Crocodylus niloticus",
                         "genusPart": "Crocodylus",
                         "specificEpithet": "niloticus"
-                    }
+                    },
+                    "label": "Crocodylus niloticus"
                 }
             ],
             "pso:holdsStatusInTime": [
@@ -216,7 +180,12 @@
                         "timeinterval:hasIntervalStartDate": "2018-06-11T22:48:48.903Z"
                     }
                 }
-            ]
+            ],
+            "expectedResolution": {
+                "#phylogeny0": {
+                    "nodeLabel": "Gavialis gangeticus"
+                }
+            }
         },
         {
             "label": "Pristichampsinae",
@@ -266,7 +235,8 @@
                         "nameComplete": "Crocodylus niloticus",
                         "genusPart": "Crocodylus",
                         "specificEpithet": "niloticus"
-                    }
+                    },
+                    "label": "Crocodylus niloticus"
                 }
             ],
             "curatorComments": "Not included in figure 1.",
@@ -306,7 +276,8 @@
                         "nameComplete": "Alligator mississippiensis",
                         "genusPart": "Alligator",
                         "specificEpithet": "mississippiensis"
-                    }
+                    },
+                    "label": "Alligator mississippiensis"
                 }
             ],
             "externalSpecifiers": [],
@@ -387,7 +358,8 @@
                         "nameComplete": "Crocodylus niloticus",
                         "genusPart": "Crocodylus",
                         "specificEpithet": "niloticus"
-                    }
+                    },
+                    "label": "Crocodylus niloticus"
                 },
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
@@ -398,7 +370,8 @@
                         "nameComplete": "Gavialis gangeticus",
                         "genusPart": "Gavialis",
                         "specificEpithet": "gangeticus"
-                    }
+                    },
+                    "label": "Gavialis gangeticus"
                 }
             ],
             "pso:holdsStatusInTime": [
@@ -454,7 +427,12 @@
                         "timeinterval:hasIntervalStartDate": "2018-06-11T22:49:22.452Z"
                     }
                 }
-            ]
+            ],
+            "expectedResolution": {
+                "#phylogeny0": {
+                    "nodeLabel": "Diplocynodon ratelii"
+                }
+            }
         },
         {
             "label": "Globidonta",
@@ -482,7 +460,8 @@
                         "nameComplete": "Diplocynodon ratelii",
                         "genusPart": "Diplocynodon",
                         "specificEpithet": "ratelii"
-                    }
+                    },
+                    "label": "Diplocynodon ratelii"
                 }
             ],
             "pso:holdsStatusInTime": [
@@ -495,7 +474,12 @@
                         "timeinterval:hasIntervalStartDate": "2018-06-11T22:49:26.424Z"
                     }
                 }
-            ]
+            ],
+            "expectedResolution": {
+                "#phylogeny0": {
+                    "nodeLabel": "Alligatoridae"
+                }
+            }
         },
         {
             "label": "Alligatoridae",
@@ -521,7 +505,8 @@
                         "nameComplete": "Alligator mississippiensis",
                         "genusPart": "Alligator",
                         "specificEpithet": "mississippiensis"
-                    }
+                    },
+                    "label": "Alligator mississippiensis"
                 }
             ],
             "externalSpecifiers": [],
@@ -563,7 +548,8 @@
                         "nameComplete": "Caiman crocodilus",
                         "genusPart": "Caiman",
                         "specificEpithet": "crocodilus"
-                    }
+                    },
+                    "label": "Caiman crocodilus"
                 }
             ],
             "pso:holdsStatusInTime": [
@@ -576,7 +562,12 @@
                         "timeinterval:hasIntervalStartDate": "2018-06-11T22:49:36.063Z"
                     }
                 }
-            ]
+            ],
+            "expectedResolution": {
+                "#phylogeny0": {
+                    "nodeLabel": "Alligator mississippiensis"
+                }
+            }
         },
         {
             "label": "Caimaninae",
@@ -617,7 +608,12 @@
                         "timeinterval:hasIntervalStartDate": "2018-06-11T22:49:42.007Z"
                     }
                 }
-            ]
+            ],
+            "expectedResolution": {
+                "#phylogeny0": {
+                    "nodeLabel": "Caiman crocodilus"
+                }
+            }
         },
         {
             "label": "Crocodyloidea",
@@ -645,7 +641,8 @@
                         "nameComplete": "Alligator mississippiensis",
                         "genusPart": "Alligator",
                         "specificEpithet": "mississippiensis"
-                    }
+                    },
+                    "label": "Alligator mississippiensis"
                 },
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
@@ -656,7 +653,8 @@
                         "nameComplete": "Gavialis gangeticus",
                         "genusPart": "Gavialis",
                         "specificEpithet": "gangeticus"
-                    }
+                    },
+                    "label": "Gavialis gangeticus"
                 }
             ],
             "pso:holdsStatusInTime": [
@@ -669,7 +667,12 @@
                         "timeinterval:hasIntervalStartDate": "2018-06-11T22:49:48.240Z"
                     }
                 }
-            ]
+            ],
+            "expectedResolution": {
+                "#phylogeny0": {
+                    "nodeLabel": "Crocodylidae"
+                }
+            }
         },
         {
             "label": "Crocodylidae",
@@ -695,7 +698,8 @@
                         "nameComplete": "Osteolaemus tetraspis",
                         "genusPart": "Osteolaemus",
                         "specificEpithet": "tetraspis"
-                    }
+                    },
+                    "label": "Osteolaemus tetraspis"
                 },
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
@@ -706,7 +710,8 @@
                         "nameComplete": "Crocodylus niloticus",
                         "genusPart": "Crocodylus",
                         "specificEpithet": "niloticus"
-                    }
+                    },
+                    "label": "Crocodylus niloticus"
                 }
             ],
             "externalSpecifiers": [],
@@ -768,7 +773,8 @@
                         "nameComplete": "Baru darrowi",
                         "genusPart": "Baru",
                         "specificEpithet": "darrowi"
-                    }
+                    },
+                    "label": "Baru darrowi"
                 },
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
@@ -779,7 +785,8 @@
                         "nameComplete": "Pallimnarchus pollens",
                         "genusPart": "Pallimnarchus",
                         "specificEpithet": "pollens"
-                    }
+                    },
+                    "label": "Pallimnarchus pollens"
                 },
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
@@ -790,7 +797,8 @@
                         "nameComplete": "Australosuchus clarkae",
                         "genusPart": "Australosuchus",
                         "specificEpithet": "clarkae"
-                    }
+                    },
+                    "label": "Australosuchus clarkae"
                 },
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
@@ -801,7 +809,8 @@
                         "nameComplete": "Kambara murgonensis",
                         "genusPart": "Kambara",
                         "specificEpithet": "murgonensis"
-                    }
+                    },
+                    "label": "Kambara murgonensis"
                 }
             ],
             "externalSpecifiers": [],
@@ -844,7 +853,8 @@
                         "nameComplete": "Crocodylus niloticus",
                         "genusPart": "Crocodylus",
                         "specificEpithet": "niloticus"
-                    }
+                    },
+                    "label": "Crocodylus niloticus"
                 }
             ],
             "pso:holdsStatusInTime": [
@@ -857,7 +867,12 @@
                         "timeinterval:hasIntervalStartDate": "2018-06-11T22:50:16.649Z"
                     }
                 }
-            ]
+            ],
+            "expectedResolution": {
+                "#phylogeny0": {
+                    "nodeLabel": "Tomistoma schlegelii"
+                }
+            }
         },
         {
             "label": "Crocodylinae",
@@ -940,7 +955,12 @@
                         "timeinterval:hasIntervalStartDate": "2018-06-11T21:47:47.495Z"
                     }
                 }
-            ]
+            ],
+            "expectedResolution": {
+                "#phylogeny0": {
+                    "nodeLabel": "Osteolaemus tetraspis"
+                }
+            }
         },
         {
             "label": "Crocodylidae (alt)",
@@ -966,7 +986,8 @@
                         "nameComplete": "Crocodylus niloticus",
                         "genusPart": "Crocodylus",
                         "specificEpithet": "niloticus"
-                    }
+                    },
+                    "label": "Crocodylus niloticus"
                 }
             ],
             "externalSpecifiers": [],
@@ -1009,7 +1030,8 @@
                         "nameComplete": "Osteolaemus tetraspis",
                         "genusPart": "Osteolaemus",
                         "specificEpithet": "tetraspis"
-                    }
+                    },
+                    "label": "Osteolaemus tetraspis"
                 }
             ],
             "curatorComments": "Not illustrated in fig 1.",
@@ -1049,7 +1071,8 @@
                         "nameComplete": "Gavialis gangeticus",
                         "genusPart": "Gavialis",
                         "specificEpithet": "gangeticus"
-                    }
+                    },
+                    "label": "Gavialis gangeticus"
                 }
             ],
             "externalSpecifiers": [],
@@ -1092,7 +1115,8 @@
                         "nameComplete": "Gavialis gangeticus",
                         "genusPart": "Gavialis",
                         "specificEpithet": "gangeticus"
-                    }
+                    },
+                    "label": "Gavialis gangeticus"
                 }
             ],
             "curatorComments": "Not illustrated in fig 1.",
