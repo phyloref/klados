@@ -4,7 +4,7 @@
  */
 
 import Vue from 'vue';
-import { has } from 'lodash';
+import { has, cloneDeep } from 'lodash';
 
 import { PhylogenyWrapper } from '@phyloref/phyx';
 
@@ -90,6 +90,48 @@ export default {
     setReasoningResults(state, payload) {
       // Sets the "reasoning results" -- the results of reasoning returned by JPhyloRef.
       Vue.set(state, 'reasoningResults', payload);
+    },
+  },
+  actions: {
+    setExpectedResolutionData(context, payload) {
+      const {
+        phylogeny,
+        phyloref,
+        expectedResolutionData,
+      } = payload;
+
+      // If this phylogeny does not already have an '@id', we should set it
+      // so we don't lose track of the connection between these entities.
+      let phylogenyID = phylogeny['@id'];
+      if (!phylogenyID) {
+        phylogenyID = context.getters.getPhylogenyId(phylogeny);
+        context.commit('setPhylogenyProps', {
+          phylogeny,
+          '@id': phylogenyID,
+        });
+      }
+
+      // What is the current expectedResolution look like?
+      const currentExpectedResolution = cloneDeep(phyloref.expectedResolution || {});
+      const currentExpectedResolutionForPhylogeny = currentExpectedResolution[phylogenyID] || {};
+
+      // What needs to change?
+      if (has(expectedResolutionData, 'description')) {
+        currentExpectedResolutionForPhylogeny.description = expectedResolutionData.description;
+      }
+
+      if (has(expectedResolutionData, 'nodeLabel')) {
+        // We need to toggle a node label as included or excluded from the
+        // expected resolution.
+        currentExpectedResolutionForPhylogeny.nodeLabel = expectedResolutionData.nodeLabel;
+      }
+
+      // Replace the current expected resolution.
+      context.commit('setPhylorefProps', {
+        phyloref,
+        expectedResolution: currentExpectedResolutionForPhylogeny,
+        phylogenyID,
+      });
     },
   },
 };

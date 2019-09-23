@@ -457,35 +457,10 @@ export default {
       );
     },
     setExpectedResolution(phylogeny, payload) {
-      let phylogenyID = phylogeny['@id'];
-      if(!phylogenyID) {
-        phylogenyID = this.$store.getters.getPhylogenyId(phylogeny);
-        this.$store.commit('setPhylogenyProps', {
-          phylogeny,
-          '@id': phylogenyID,
-        });
-      }
-
-      // What is the current expectedResolution look like?
-      const currentExpectedResolution = cloneDeep(this.selectedPhyloref.expectedResolution || {});
-      const expectedResolutionForPhylogeny = currentExpectedResolution[phylogenyID] || {};
-
-      // What needs to change?
-      if (has(payload, 'description')) {
-        expectedResolutionForPhylogeny.description = payload.description;
-      }
-
-      if (has(payload, 'nodeLabel')) {
-        // We need to toggle a node label as included or excluded from the
-        // expected resolution.
-        expectedResolutionForPhylogeny.nodeLabel = payload.nodeLabel;
-      }
-
-      // Replace the current expected resolution.
-      this.$store.commit('setPhylorefProps', {
+      this.$store.dispatch('setExpectedResolutionData', {
         phyloref: this.selectedPhyloref,
-        expectedResolution: expectedResolutionForPhylogeny,
-        phylogenyID,
+        phylogeny,
+        expectedResolutionData: payload,
       });
     },
     getNodeLabels(phylogeny, nodeType) {
