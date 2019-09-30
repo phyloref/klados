@@ -481,18 +481,16 @@ export default {
         switch (this.specifierClass) {
           case 'Taxon':
             // Try to extract a taxon name from this.
-            const taxonNameWrapped = TaxonNameWrapper.fromVerbatimName(
+            this.taxonNameWrapped = TaxonNameWrapper.fromVerbatimName(
               label,
               this.enteredNomenclaturalCode
             );
-            if (taxonNameWrapped) this.taxonNameWrapped = taxonNameWrapped;
             break;
 
           case 'Specimen':
-            const specimenWrapped = SpecimenWrapper.fromOccurrenceID(
+            this.specimenWrapped = SpecimenWrapper.fromOccurrenceID(
               label
             );
-            if (specimenWrapped) this.specimenWrapped = specimenWrapped;
             break;
 
           case 'Apomorphy':
