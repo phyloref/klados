@@ -14,12 +14,18 @@ export default {
     reasoningResults: undefined,
   },
   getters: {
+    // Return a base URI for a given phylogeny.
     getBaseURIForPhylogeny: (state, getters, rootState) => phylogeny => `#phylogeny${rootState.phyx.currentPhyx.phylogenies.indexOf(phylogeny) + 1}`,
+    // Return a base URI for a given phyloreference.
     getBaseURIForPhyloref: (state, getters, rootState) => phyloref => `#phyloref${rootState.phyx.currentPhyx.phylorefs.indexOf(phyloref) + 1}`,
+    // Return the identifier for a given phylogeny. We will use getBaseURIForPhylogeny()
+    // unless one has already been set.
     getPhylogenyId: (state, getters) => (phylogeny) => {
       if (has(phylogeny, '@id')) return phylogeny['@id'];
       return getters.getBaseURIForPhylogeny(phylogeny);
     },
+    // Return the identifier for a given phyloref. We will use getBaseURIForPhyloref()
+    // unless one has already been set.
     getPhylorefId: (state, getters) => (phyloref) => {
       if (has(phyloref, '@id')) return phyloref['@id'];
       return getters.getBaseURIForPhyloref(phyloref);
