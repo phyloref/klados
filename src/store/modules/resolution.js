@@ -126,6 +126,10 @@ export default {
         currentExpectedResolutionForPhylogeny.nodeLabel = expectedResolutionData.nodeLabel;
       }
 
+      // Because JSON-LD won't be able to interpret an object whose keys are not
+      // properties, we need to add a reference to the phylogenyId in the object itself.
+      expectedResolutionData.phylogenyId = phylogenyId;
+
       // Replace the current expected resolution.
       context.commit('setPhylorefProps', {
         phyloref,
