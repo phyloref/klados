@@ -14,8 +14,8 @@ export default {
     reasoningResults: undefined,
   },
   getters: {
-    getBaseURIForPhylogeny: (state, getters, rootState) => phylogeny => `#phylogeny${rootState.phyx.currentPhyx.phylogenies.indexOf(phylogeny)}`,
-    getBaseURIForPhyloref: (state, getters, rootState) => phyloref => `#phyloref${rootState.phyx.currentPhyx.phylorefs.indexOf(phyloref)}`,
+    getBaseURIForPhylogeny: (state, getters, rootState) => phylogeny => `#phylogeny${rootState.phyx.currentPhyx.phylogenies.indexOf(phylogeny) + 1}`,
+    getBaseURIForPhyloref: (state, getters, rootState) => phyloref => `#phyloref${rootState.phyx.currentPhyx.phylorefs.indexOf(phyloref) + 1}`,
     getPhylogenyId: (state, getters) => (phylogeny) => {
       if (has(phylogeny, '@id')) return phylogeny['@id'];
       return getters.getBaseURIForPhylogeny(phylogeny);
