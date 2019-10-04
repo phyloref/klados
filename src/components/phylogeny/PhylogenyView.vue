@@ -15,21 +15,21 @@
         <form>
           <div class="form-group row">
             <label
-              for="phylogenyID"
+              for="phylogenyId"
               class="col-md-2 col-form-label"
             >
               Identifier
             </label>
             <div class="col-md-10">
               <input
-                id="phylogenyID"
-                v-model="phylogenyID"
+                id="phylogenyId"
+                v-model="phylogenyId"
                 type="text"
                 class="form-control"
-                :class="{'border-danger': phylogenyIDError}"
+                :class="{'border-danger': phylogenyIdError}"
                 placeholder="A global or local identifier for this phylogeny, e.g. 'http://doi.org/10.13/49#12' or '#phylogeny1'"
               >
-              <p v-if="phylogenyIDError" class="form-text text-danger">{{phylogenyIDError}}</p>
+              <p v-if="phylogenyIdError" class="form-text text-danger">{{phylogenyIdError}}</p>
             </div>
           </div>
 
@@ -153,7 +153,7 @@ export default {
   components: { ModifiedCard, Phylotree, Citation },
   data() {
     return {
-      phylogenyIDError: undefined,
+      phylogenyIdError: undefined,
     };
   },
   computed: {
@@ -161,16 +161,16 @@ export default {
      * The following properties allow you to get or set the phylogeny label,
      * description or newick string.
      */
-    phylogenyID: {
+    phylogenyId: {
       get() { return this.$store.getters.getPhylogenyId(this.selectedPhylogeny); },
       set(id) {
         try {
-          this.$store.dispatch('changePhylogenyID', { phylogeny: this.selectedPhylogeny, 'phylogenyID': id })
+          this.$store.dispatch('changePhylogenyID', { phylogeny: this.selectedPhylogeny, 'phylogenyId': id })
         } catch(err) {
-          this.phylogenyIDError = err;
+          this.phylogenyIdError = err;
           return false;
         }
-        this.phylogenyIDError = undefined;
+        this.phylogenyIdError = undefined;
         return true;
       },
     },

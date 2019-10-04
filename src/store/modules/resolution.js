@@ -102,18 +102,18 @@ export default {
 
       // If this phylogeny does not already have an '@id', we should set it
       // so we don't lose track of the connection between these entities.
-      let phylogenyID = phylogeny['@id'];
-      if (!phylogenyID) {
-        phylogenyID = context.getters.getPhylogenyId(phylogeny);
+      let phylogenyId = phylogeny['@id'];
+      if (!phylogenyId) {
+        phylogenyId = context.getters.getPhylogenyId(phylogeny);
         context.commit('setPhylogenyProps', {
           phylogeny,
-          '@id': phylogenyID,
+          '@id': phylogenyId,
         });
       }
 
       // What is the current expectedResolution look like?
       const currentExpectedResolution = cloneDeep(phyloref.expectedResolution || {});
-      const currentExpectedResolutionForPhylogeny = currentExpectedResolution[phylogenyID] || {};
+      const currentExpectedResolutionForPhylogeny = currentExpectedResolution[phylogenyId] || {};
 
       // What needs to change?
       if (has(expectedResolutionData, 'description')) {
@@ -134,7 +134,7 @@ export default {
       context.commit('setPhylorefProps', {
         phyloref,
         expectedResolution: currentExpectedResolutionForPhylogeny,
-        phylogenyID,
+        phylogenyId,
       });
     },
   },
