@@ -426,6 +426,7 @@ export default {
       set(curatorComments) { this.$store.commit('setPhylorefProps', { phyloref: this.selectedPhyloref, curatorComments }); },
     },
     computedPhylorefType() {
+      // Return the type of phyloreference based on internal/external specifier structure.
       return this.$store.getters.getPhylorefType(this.selectedPhyloref);
     },
     phylorefURI() {
@@ -451,12 +452,16 @@ export default {
   },
   methods: {
     getExpectedResolution(phylogeny) {
+      // Get the expected resolution information for this phyloreference on
+      // a particular phylogeny.
       return this.$store.getters.getExpectedResolutionData(
         this.selectedPhyloref,
         phylogeny,
       );
     },
     setExpectedResolution(phylogeny, payload) {
+      // Set the expected resolution information for this phyloreference on
+      // a particular phylogeny.
       this.$store.dispatch('setExpectedResolutionData', {
         phyloref: this.selectedPhyloref,
         phylogeny,
@@ -468,6 +473,8 @@ export default {
       return new PhylogenyWrapper(phylogeny).getNodeLabels(nodeType).sort();
     },
     getExpectedNodeLabel(phylogeny) {
+      // Return the node label we expect this phyloref to resolve to on the
+      // specified phylogeny.
       return this.$store.getters.getExpectedNodeLabel(
         this.selectedPhyloref,
         phylogeny,
