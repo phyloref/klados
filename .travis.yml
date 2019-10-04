@@ -23,4 +23,4 @@ deploy:
   keep_history: true
   local_dir: docs
   on:
-    branch: master
+    branch: deploy-to-github-pages-via-travis
