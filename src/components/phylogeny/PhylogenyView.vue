@@ -153,6 +153,7 @@ export default {
   components: { ModifiedCard, Phylotree, Citation },
   data() {
     return {
+      // Errors in the phylogenyId field.
       phylogenyIdError: undefined,
     };
   },
@@ -162,14 +163,18 @@ export default {
      * description or newick string.
      */
     phylogenyId: {
+      // The phylogeny identifier; either a global identifier like http://doi.org/10.3014/3
+      // or a local identifier like #phylogeny1.
       get() { return this.$store.getters.getPhylogenyId(this.selectedPhylogeny); },
       set(id) {
         try {
           this.$store.dispatch('changePhylogenyId', { phylogeny: this.selectedPhylogeny, 'phylogenyId': id })
         } catch(err) {
+          // If there was an error in setting phylogeny id, report that to the user.
           this.phylogenyIdError = err;
           return false;
         }
+        // Clear previous phylogeny id errors.
         this.phylogenyIdError = undefined;
         return true;
       },
