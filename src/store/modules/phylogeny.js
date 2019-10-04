@@ -26,30 +26,30 @@ export default {
     },
   },
   actions: {
-    changePhylogenyID(context, payload) {
+    changePhylogenyId(context, payload) {
       // When changing a phylogeny ID, care needs to be taken to ensure that:
       //  (1) duplicate phylogeny IDs are not created within the same file, and
       //  (2) all current references to this phylogeny continue to make sense.
 
       // Check arguments.
       if (!has(payload, 'phylogeny')) {
-        throw new Error('changePhylogenyID needs a phylogeny to modify using the "phylogeny" argument');
+        throw new Error('changePhylogenyId needs a phylogeny to modify using the "phylogeny" argument');
       }
 
-      if (!has(payload, 'phylogenyID')) {
-        throw new Error('changePhylogenyID needs a new phylogeny ID using the "phylogenyID" argument');
+      if (!has(payload, 'phylogenyId')) {
+        throw new Error('changePhylogenyId needs a new phylogeny ID using the "phylogenyId" argument');
       }
 
       // What was the previous phylogeny ID?
-      const oldPhylogenyID = context.rootGetters.getPhylogenyId(payload.phylogeny);
+      const oldPhylogenyId = context.rootGetters.getPhylogenyId(payload.phylogeny);
 
       // No need to do anything if they haven't changed.
-      if (oldPhylogenyID === payload.phylogenyID) return;
+      if (oldPhylogenyId === payload.phylogenyId) return;
 
       // Do any of our current phylogenies have this ID?
-      const phylogenyWithDuplicateID = context.rootState.phyx.currentPhyx.phylogenies.find(phylogeny => has(phylogeny, '@id') && phylogeny['@id'] === payload.phylogenyID);
+      const phylogenyWithDuplicateID = context.rootState.phyx.currentPhyx.phylogenies.find(phylogeny => has(phylogeny, '@id') && phylogeny['@id'] === payload.phylogenyId);
       if (phylogenyWithDuplicateID) {
-        throw new Error(`Attempt to change ${oldPhylogenyID} to ${payload.phylogenyID} failed: duplicate phylogeny ID detected.`);
+        throw new Error(`Attempt to change ${oldPhylogenyId} to ${payload.phylogenyId} failed: duplicate phylogeny ID detected.`);
       }
 
       // TODO: update all internal references.
@@ -57,7 +57,7 @@ export default {
       // Change the phylogeny.
       context.commit('setPhylogenyProps', {
         phylogeny: payload.phylogeny,
-        '@id': payload.phylogenyID,
+        '@id': payload.phylogenyId,
       });
     },
   },

@@ -165,7 +165,7 @@ export default {
       get() { return this.$store.getters.getPhylogenyId(this.selectedPhylogeny); },
       set(id) {
         try {
-          this.$store.dispatch('changePhylogenyID', { phylogeny: this.selectedPhylogeny, 'phylogenyId': id })
+          this.$store.dispatch('changePhylogenyId', { phylogeny: this.selectedPhylogeny, 'phylogenyId': id })
         } catch(err) {
           this.phylogenyIdError = err;
           return false;
