@@ -22,5 +22,6 @@ deploy:
   github_token: $PHYLOREFBOT_GITHUB_TOKEN
   keep_history: true
   local_dir: docs
+  committer_from_gh: true
   on:
     branch: master
