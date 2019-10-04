@@ -64,7 +64,9 @@ export default {
 
       return results;
     },
-    getExpectedResolutionData: (state, getters) => (phyloref, phylogeny) => {
+    getExpectedResolution: (state, getters) => (phyloref, phylogeny) => {
+      // Return the expected resolution information for a particular phyloref on
+      // a particular phylogeny.
       if (!has(phyloref, 'expectedResolution')) return {};
 
       const phylogenyId = getters.getPhylogenyId(phylogeny);
@@ -76,7 +78,7 @@ export default {
     },
     getExpectedNodeLabel: (state, getters) => (phyloref, phylogeny) => {
       // Return a list of nodes that this phyloreference is expected to resolve to.
-      const expectedResolution = getters.getExpectedResolutionData(phyloref, phylogeny);
+      const expectedResolution = getters.getExpectedResolution(phyloref, phylogeny);
 
       if (has(expectedResolution, 'nodeLabel')) {
         return expectedResolution.nodeLabel;
@@ -99,7 +101,7 @@ export default {
     },
   },
   actions: {
-    setExpectedResolutionData(context, payload) {
+    setExpectedResolution(context, payload) {
       const {
         phylogeny,
         phyloref,

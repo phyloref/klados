@@ -454,7 +454,7 @@ export default {
     getExpectedResolution(phylogeny) {
       // Get the expected resolution information for this phyloreference on
       // a particular phylogeny.
-      return this.$store.getters.getExpectedResolutionData(
+      return this.$store.getters.getExpectedResolution(
         this.selectedPhyloref,
         phylogeny,
       );
@@ -462,7 +462,7 @@ export default {
     setExpectedResolution(phylogeny, payload) {
       // Set the expected resolution information for this phyloreference on
       // a particular phylogeny.
-      this.$store.dispatch('setExpectedResolutionData', {
+      this.$store.dispatch('setExpectedResolution', {
         phyloref: this.selectedPhyloref,
         phylogeny,
         expectedResolutionData: payload,
