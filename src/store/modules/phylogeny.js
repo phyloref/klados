@@ -3,7 +3,7 @@
  */
 
 import Vue from 'vue';
-import { has } from 'lodash';
+import { has, keys, cloneDeep } from 'lodash';
 
 export default {
   mutations: {
@@ -52,7 +52,24 @@ export default {
         throw new Error(`Attempt to change ${oldPhylogenyId} to ${payload.phylogenyId} failed: duplicate phylogeny ID detected.`);
       }
 
-      // TODO: update all internal references.
+      // If any phyloreferences refer to oldPhylogenyId, replace it with
+      // references to the new phylogenyId.
+      context.rootState.phyx.currentPhyx.phylorefs.forEach((phyloref) => {
+        if (has(phyloref.expectedResolution || {}, oldPhylogenyId)) {
+          // Copy the expected resolution of oldPhylogenyId into the new phylogenyId.
+          context.commit('setPhylorefProps', {
+            phyloref,
+            phylogenyId: payload.phylogenyId,
+            expectedResolution: phyloref.expectedResolution[oldPhylogenyId],
+          });
+          // Delete the expected resolution of oldPhylogenyId.
+          context.commit('setPhylorefProps', {
+            phyloref,
+            phylogenyId: oldPhylogenyId,
+            expectedResolution: undefined,
+          });
+        }
+      });
 
       // Change the phylogeny.
       context.commit('setPhylogenyProps', {
