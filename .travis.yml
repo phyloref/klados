@@ -14,3 +14,14 @@ cache:
     - node_modules
 
 sudo: false
+
+script: npm run build
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $PHYLOREFBOT_GITHUB_TOKEN
+  keep_history: true
+  local_dir: docs
+  committer_from_gh: true
+  on:
+    branch: master
