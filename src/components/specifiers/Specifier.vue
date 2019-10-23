@@ -399,7 +399,7 @@ export default {
       specifierClass: undefined,
       specimenWrapped: undefined,
       taxonNameWrapped: undefined,
-      enteredNomenclaturalCode: undefined,
+      enteredNomenclaturalCode: this.$store.getters.getDefaultNomenCodeURI,
       enteredVerbatimLabel: undefined,
       externalReference: undefined,
     };
@@ -407,7 +407,7 @@ export default {
   computed: {
     nomenCodes: () => TaxonNameWrapper.getNomenclaturalCodes(),
     nomenclaturalCodeObj() {
-      return TaxonNameWrapper.getNomenCodeAsObject(this.enteredNomenclaturalCode || TaxonNameWrapper.NAME_IN_UNKNOWN_CODE);
+      return TaxonNameWrapper.getNomenCodeAsObject(this.enteredNomenclaturalCode);
     },
     specifier() {
       // Check the specifierClass before we figure out how to construct the
@@ -595,7 +595,7 @@ export default {
       if (taxonConceptWrapped && taxonConceptWrapped.taxonName) {
         this.taxonNameWrapped = new TaxonNameWrapper(taxonConceptWrapped.taxonName);
         this.enteredNomenclaturalCode = this.taxonNameWrapped.nomenclaturalCode ||
-          this.$store.getters.getDefaultNomenCodeURI;
+          this.enteredNomenclaturalCode;
       }
 
       if (tunit.specimen) {

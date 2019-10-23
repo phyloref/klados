@@ -6,6 +6,7 @@
  */
 
 import Vue from 'vue';
+import { TaxonNameWrapper } from '@phyloref/phyx';
 import { has, cloneDeep, isEqual } from 'lodash';
 
 export default {
@@ -26,6 +27,10 @@ export default {
   getters: {
     loadedPhyxChanged(state) {
       return !isEqual(state.currentPhyx, state.loadedPhyx);
+    },
+    getDefaultNomenCodeURI(state) {
+      return state.currentPhyx.defaultNomenclaturalCodeURI
+        || TaxonNameWrapper.NAME_IN_UNKNOWN_CODE;
     },
   },
   mutations: {
