@@ -187,7 +187,7 @@
         <a
           v-for="(phylogeny, phylogenyIndex) of phylogenies"
           href="javascript: void(0)"
-          class="list-group-item list-group-item-action border-dark"
+          class="h6 list-group-item list-group-item-action border-dark"
           :class="{active: selectedPhylogeny === phylogeny}"
           @click="$store.commit('changeDisplay', {phylogeny})"
         >

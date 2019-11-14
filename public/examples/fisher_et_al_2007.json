@@ -10,9 +10,6 @@
             "ot:dataDeposit": "https://treebase.org/treebase-web/search/study/taxa.html?id=1624&treeid=748",
             "additionalNodeProperties": {
                 "Arthrocormus schimperi": {
-                    "expectedPhyloreferenceNamed": [
-                        "Arthrocormus"
-                    ],
                     "representsTaxonomicUnits": [
                         {
                             "@type": "http://rs.tdwg.org/dwc/terms/Occurrence",
@@ -23,9 +20,6 @@
                     ]
                 },
                 "Exodictyon incrassatum": {
-                    "expectedPhyloreferenceNamed": [
-                        "Exodictyon"
-                    ],
                     "representsTaxonomicUnits": [
                         {
                             "@type": "http://rs.tdwg.org/dwc/terms/Occurrence",
@@ -64,7 +58,8 @@
                         }
                     ]
                 }
-            }
+            },
+            "@id": "#phylogeny0"
         }
     ],
     "phylorefs": [
@@ -76,17 +71,21 @@
                     "label": "Type: Syrrhopodon gardneri (Hook.) Schwägr., Sp. Musc. Frond. Suppl. 2(1): 110, tab. 131, figs. 1–13. (1824)",
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
                     "hasName": {
-                      "nameComplete": "Syrrhopodon gardneri",
-                      "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000109"
+                        "nameComplete": "Syrrhopodon gardneri",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000109"
                     }
                 },
                 {
-                    "label": "Type: Leucophanes octoblepharoides Brid., Bryol. Univ. 1: 763. (1826)",
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
                     "hasName": {
-                      "nameComplete": "Leucophanes octoblepharoides",
-                      "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000109"
-                    }
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000109",
+                        "label": "Leucophanes octoblepharoides",
+                        "nameComplete": "Leucophanes octoblepharoides",
+                        "genusPart": "Leucophanes",
+                        "specificEpithet": "octoblepharoides"
+                    },
+                    "label": "Type: Leucophanes octoblepharoides Brid., Bryol. Univ. 1: 763. (1826)"
                 }
             ],
             "externalSpecifiers": [
@@ -94,8 +93,8 @@
                     "label": "Type: Octoblepharum albidum Hedw., Sp. Musc. 50. (1801)",
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
                     "hasName": {
-                      "nameComplete": "Octoblepharum albidum",
-                      "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000109"
+                        "nameComplete": "Octoblepharum albidum",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000109"
                     }
                 }
             ]
@@ -133,9 +132,16 @@
                     "nameString": "Syrrhopodon croceus Mitt., J. Proc. Linn. Soc., Bot. Suppl. 1: 41. (1859)"
                 },
                 {
-                    "label": "Type: Leucophanes octoblepharoides Brid., Bryol. Univ. 1: 763. (1826)",
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Leucophanes octoblepharoides Brid., Bryol. Univ. 1: 763. (1826)"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000036",
+                        "label": "Leucophanes octoblepharoides",
+                        "nameComplete": "Leucophanes octoblepharoides",
+                        "genusPart": "Leucophanes",
+                        "specificEpithet": "octoblepharoides"
+                    },
+                    "label": "Type: Leucophanes octoblepharoides Brid., Bryol. Univ. 1: 763. (1826)"
                 }
             ],
             "externalSpecifiers": [
@@ -207,10 +213,16 @@
                     "nameString": "Syrrhopodon involutus Schwägr., Sp. Musc. Frond. Suppl. 2, 1(2): 117. pl. 132. (1824)"
                 },
                 {
-                    "label": "Type: S. revolutus Dozy & Molk.",
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "specifierWillNotMatch": "*Syrrhopodon revolutus* not included in phylogeny",
-                    "nameString": "Syrrhopodon revolutus Dozy & Molk."
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000036",
+                        "label": "Syrrhopodon revolutus",
+                        "nameComplete": "Syrrhopodon revolutus",
+                        "genusPart": "Syrrhopodon",
+                        "specificEpithet": "revolutus"
+                    },
+                    "label": "Type: S. revolutus Dozy & Molk."
                 }
             ],
             "externalSpecifiers": [
@@ -249,24 +261,46 @@
             "cladeDefinition": "nomen cladi conversum, Arthrocormus schimperi (Dozy & Molk.) Dozy & Molk. (= Mielichhoferia schimperi Dozy & Molk.), Musci Frond. Ined. Archip. Ind. 75. (1846)\nStem-based definition:\n\ninternal specifier: Type: Arthrocormus schimperi (Dozy & Molk.) Dozy & Molk. (= Mielichhoferia schimperi Dozy & Molk.), Musci Frond. Ined. Archip. Ind. 75. (1846)\ninternal specifier: Mishler 7/24/98 (5) Queensland, Australia (UC)\nexternal specifier: Type: Exostratum blumii (Nees ex Hampe) L. Ellis, Lindbergia 11: 22. (1985)\nIncluded terminal clade:\n\nschimperi",
             "internalSpecifiers": [
                 {
-                    "label": "Type: Arthrocormus schimperi (Dozy & Molk.) Dozy & Molk. (= Mielichhoferia schimperi Dozy & Molk.), Musci Frond. Ined. Archip. Ind. 75. (1846)",
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Arthrocormus schimperi (Dozy & Molk.) Dozy & Molk. (= Mielichhoferia schimperi Dozy & Molk.), Musci Frond. Ined. Archip. Ind. 75. (1846)"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000036",
+                        "label": "Arthrocormus schimperi",
+                        "nameComplete": "Arthrocormus schimperi",
+                        "genusPart": "Arthrocormus",
+                        "specificEpithet": "schimperi"
+                    },
+                    "label": "Type: Arthrocormus schimperi (Dozy & Molk.) Dozy & Molk. (= Mielichhoferia schimperi Dozy & Molk.), Musci Frond. Ined. Archip. Ind. 75. (1846)"
                 },
                 {
-                    "label": "Mishler 7/24/98 (5) Queensland, Australia (UC)",
                     "@type": "http://rs.tdwg.org/dwc/terms/Occurrence",
-                    "nameString": "Arthrocormus schimperi (Dozy & Molk.) Dozy & Molk. (= Mielichhoferia schimperi Dozy & Molk.), Musci Frond. Ined. Archip. Ind. 75. (1846)",
-                    "occurrenceID": "urn:catalog:::Mishler 7/24/98 (5)"
+                    "dwc:basisOfRecord": "PreservedSpecimen",
+                    "occurrenceID": "::Mishler 7/24/98 (5)",
+                    "institutionCode": "",
+                    "collectionCode": "",
+                    "catalogNumber": "Mishler 7/24/98 (5)",
+                    "label": "Mishler 7/24/98 (5) Queensland, Australia (UC)"
                 }
             ],
             "externalSpecifiers": [
                 {
-                    "label": "Type: Exostratum blumii (Nees ex Hampe) L. Ellis, Lindbergia 11: 22. (1985)",
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Exostratum blumii (Nees ex Hampe) L. Ellis, Lindbergia 11: 22. (1985)"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000036",
+                        "label": "Exostratum blumii",
+                        "nameComplete": "Exostratum blumii",
+                        "genusPart": "Exostratum",
+                        "specificEpithet": "blumii"
+                    },
+                    "label": "Type: Exostratum blumii (Nees ex Hampe) L. Ellis, Lindbergia 11: 22. (1985)"
                 }
-            ]
+            ],
+            "expectedResolution": {
+                "#phylogeny0": {
+                    "nodeLabel": "Arthrocormus schimperi"
+                }
+            }
         },
         {
             "label": "Exostratum",
@@ -278,17 +312,27 @@
                     "nameString": "Exostratum blumii (Nees ex Hampe) L. Ellis, Lindbergia 11: 22. (1985)"
                 },
                 {
-                    "label": "Mishler 7/24/98(3), Queensland, Australia (uc)",
                     "@type": "http://rs.tdwg.org/dwc/terms/Occurrence",
-                    "occurrenceID": "urn:catalog:::Mishler 7/24/98(3)",
-                    "nameString": "Exostratum blumii (Nees ex Hampe) L. Ellis, Lindbergia 11: 22. (1985)"
+                    "dwc:basisOfRecord": "PreservedSpecimen",
+                    "occurrenceID": "::Mishler 7/24/98(3)",
+                    "institutionCode": "",
+                    "collectionCode": "",
+                    "catalogNumber": "Mishler 7/24/98(3)",
+                    "label": "Mishler 7/24/98(3), Queensland, Australia (uc)"
                 }
             ],
             "externalSpecifiers": [
                 {
-                    "label": "Type: Arthrocormus schimperi (Dozy & Molk.) Dozy & Molk. (= Mielichhoferia schimperi Dozy & Molk.), Musci Frond. Ined. Archip. Ind. 75. (1846)",
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Arthrocormus schimperi (Dozy & Molk.) Dozy & Molk. (= Mielichhoferia schimperi Dozy & Molk.), Musci Frond. Ined. Archip. Ind. 75. (1846)"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000036",
+                        "label": "Arthrocormus schimperi",
+                        "nameComplete": "Arthrocormus schimperi",
+                        "genusPart": "Arthrocormus",
+                        "specificEpithet": "schimperi"
+                    },
+                    "label": "Type: Arthrocormus schimperi (Dozy & Molk.) Dozy & Molk. (= Mielichhoferia schimperi Dozy & Molk.), Musci Frond. Ined. Archip. Ind. 75. (1846)"
                 }
             ]
         },
@@ -314,7 +358,12 @@
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
                     "nameString": "Leucophanes octoblepharoides Brid., Bryol. Univ. 1: 763. (1826)"
                 }
-            ]
+            ],
+            "expectedResolution": {
+                "#phylogeny0": {
+                    "nodeLabel": "Exodictyon incrassatum"
+                }
+            }
         },
         {
             "label": "Leucophanes",
@@ -326,16 +375,27 @@
                     "nameString": "Leucophanes octoblepharoides Brid., Bryol. Univ. 1: 763. (1826)"
                 },
                 {
-                    "label": "Type: Leucophanes seychellarum Besch., Ann. Sci. Nat., Bot., VI, 9: 337. (1880)",
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Leucophanes seychellarum Besch., Ann. Sci. Nat., Bot., VI, 9: 337. (1880)"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000036",
+                        "label": "Leucophanes seychellarum",
+                        "nameComplete": "Leucophanes seychellarum",
+                        "genusPart": "Leucophanes",
+                        "specificEpithet": "seychellarum"
+                    },
+                    "label": "Type: Leucophanes seychellarum Besch., Ann. Sci. Nat., Bot., VI, 9: 337. (1880)"
                 }
             ],
             "externalSpecifiers": [
                 {
-                    "label": "Wall 2527, Fiji (uc)",
                     "@type": "http://rs.tdwg.org/dwc/terms/Occurrence",
-                    "occurrenceID": "urn:catalog:::Wall 2527, Fiji (uc)"
+                    "dwc:basisOfRecord": "PreservedSpecimen",
+                    "occurrenceID": "::Wall 2527, Fiji (uc)",
+                    "institutionCode": "",
+                    "collectionCode": "",
+                    "catalogNumber": "Wall 2527, Fiji (uc)",
+                    "label": "Wall 2527, Fiji (uc)"
                 }
             ]
         }

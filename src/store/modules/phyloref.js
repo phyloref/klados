@@ -38,6 +38,14 @@ export default {
       if (has(payload, 'curatorComments')) {
         Vue.set(payload.phyloref, 'curatorComments', payload.curatorComments);
       }
+      if (has(payload, 'expectedResolution')) {
+        if (!has(payload, 'phylogenyId')) {
+          throw new Error('setPhylorefProps used to set expectedResolution needs a phylogeny ID to set using the "phylogenyId" argument');
+        }
+
+        if (!has(payload.phyloref, 'expectedResolution')) Vue.set(payload.phyloref, 'expectedResolution', {});
+        Vue.set(payload.phyloref.expectedResolution, payload.phylogenyId, payload.expectedResolution);
+      }
     },
 
     addExternalSpecifier(state, payload) {

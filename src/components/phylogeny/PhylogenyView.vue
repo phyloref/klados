@@ -15,6 +15,26 @@
         <form>
           <div class="form-group row">
             <label
+              for="phylogenyId"
+              class="col-md-2 col-form-label"
+            >
+              Identifier
+            </label>
+            <div class="col-md-10">
+              <input
+                id="phylogenyId"
+                v-model="phylogenyId"
+                type="text"
+                class="form-control"
+                :class="{'border-danger': phylogenyIdError}"
+                placeholder="A global or local identifier for this phylogeny, e.g. 'http://doi.org/10.13/49#12' or '#phylogeny1'"
+              >
+              <p v-if="phylogenyIdError" class="form-text text-danger">{{phylogenyIdError}}</p>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label
               for="phylogenyLabel"
               class="col-md-2 col-form-label"
             >
@@ -131,11 +151,34 @@ import Citation from '../citations/Citation.vue';
 export default {
   name: 'PhylogenyView',
   components: { ModifiedCard, Phylotree, Citation },
+  data() {
+    return {
+      // Errors in the phylogenyId field.
+      phylogenyIdError: undefined,
+    };
+  },
   computed: {
     /*
      * The following properties allow you to get or set the phylogeny label,
      * description or newick string.
      */
+    phylogenyId: {
+      // The phylogeny identifier; either a global identifier like http://doi.org/10.3014/3
+      // or a local identifier like #phylogeny1.
+      get() { return this.$store.getters.getPhylogenyId(this.selectedPhylogeny); },
+      set(id) {
+        try {
+          this.$store.dispatch('changePhylogenyId', { phylogeny: this.selectedPhylogeny, 'phylogenyId': id })
+        } catch(err) {
+          // If there was an error in setting phylogeny id, report that to the user.
+          this.phylogenyIdError = err;
+          return false;
+        }
+        // Clear previous phylogeny id errors.
+        this.phylogenyIdError = undefined;
+        return true;
+      },
+    },
     phylogenyLabel: {
       get() { return this.selectedPhylogeny.label; },
       set(label) { this.$store.commit('setPhylogenyProps', { phylogeny: this.selectedPhylogeny, label }); },

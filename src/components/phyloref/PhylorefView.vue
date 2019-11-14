@@ -200,7 +200,27 @@
             </span> on {{ phylogeny.label || `Phylogeny ${phylogenyIndex + 1}` }}
           </h5>
           <div class="card-body">
-            <div class="form-row">
+            <!-- Reference phylogeny information -->
+            <div class="form-group row">
+              <label
+                :for="'expected-resolution-' + phylogenyIndex"
+                class="col-form-label col-md-2"
+              >
+                Expected resolution in free-form text
+              </label>
+              <div class="col-md-10">
+                <textarea
+                  :id="'expected-resolution-' + phylogenyIndex"
+                  :value="getExpectedResolution(phylogeny).description"
+                  @change="setExpectedResolution(phylogeny, {'description': $event.target.value})"
+                  rows="3"
+                  class="form-control"
+                  placeholder="e.g. 'Should resolve to clade X in fig 3 of Smith 2003'"
+                />
+              </div>
+            </div>
+
+            <div class="form-group row">
               <!-- Node(s) this phyloreference is expected to resolve to -->
               <label
                 for="expected-nodes"
@@ -221,7 +241,7 @@
                 </div>
 
                 <!-- Display the matching node(s) -->
-                <template v-if="getExpectedNodeLabels(phylogeny).length === 0">
+                <template v-if="!getExpectedNodeLabel(phylogeny)">
                   <!-- We matched no nodes -->
                   <input
                     readonly
@@ -231,23 +251,13 @@
                   >
                 </template>
 
-                <template v-if="getExpectedNodeLabels(phylogeny).length === 1">
+                <template v-if="getExpectedNodeLabel(phylogeny)">
                   <!-- We matched exactly one node -->
                   <input
                     readonly
                     type="text"
                     class="form-control"
-                    :value="getExpectedNodeLabels(phylogeny)[0]"
-                  >
-                </template>
-
-                <template v-if="getExpectedNodeLabels(phylogeny).length > 1">
-                  <!-- We matched more than one node -->
-                  <input
-                    readonly
-                    type="text"
-                    class="form-control"
-                    :value="getExpectedNodeLabels(phylogeny).length + ' nodes matched: ' + getExpectedNodeLabels(phylogeny, selectedPhyloref).join(', ')"
+                    :value="getExpectedNodeLabel(phylogeny)"
                   >
                 </template>
 
@@ -274,9 +284,9 @@
                     <a
                       v-for="nodeLabel of getNodeLabels(phylogeny, 'internal')"
                       class="dropdown-item"
-                      :class="{active: getExpectedNodeLabels(phylogeny).includes(nodeLabel)}"
+                      :class="{active: getExpectedNodeLabel(phylogeny) === nodeLabel}"
                       href="#selected-phyloref"
-                      @click="togglePhylorefExpectedNodeLabel(phylogeny, selectedPhyloref, nodeLabel)"
+                      @click="setExpectedResolution(phylogeny, {nodeLabel})"
                     >
                       {{ nodeLabel }}
                     </a>
@@ -287,9 +297,9 @@
                     <a
                       v-for="nodeLabel of getNodeLabels(phylogeny, 'terminal')"
                       class="dropdown-item"
-                      :class="{active: getExpectedNodeLabels(phylogeny).includes(nodeLabel)}"
+                      :class="{active: getExpectedNodeLabel(phylogeny) === nodeLabel}"
                       href="#selected-phyloref"
-                      @click="togglePhylorefExpectedNodeLabel(phylogeny, selectedPhyloref, nodeLabel)"
+                      @click="setExpectedResolution(phylogeny, {nodeLabel})"
                     >
                       {{ nodeLabel }}
                     </a>
@@ -366,6 +376,7 @@
                 :phylogeny="phylogeny"
                 :phyloref="selectedPhyloref"
                 :newick="phylogeny.newick"
+                :selectedNodeLabel="getExpectedNodeLabel(phylogeny)"
               />
             </div>
           </div>
@@ -380,8 +391,9 @@
  * A view for displaying a phyloreference and how it resolves on all phylogenies.
  */
 
+import Vue from 'vue';
 import { mapState } from 'vuex';
-import { has } from 'lodash';
+import { has, cloneDeep } from 'lodash';
 import { PhylogenyWrapper, PhylorefWrapper } from '@phyloref/phyx';
 
 import ModifiedCard from '../cards/ModifiedCard.vue';
@@ -414,11 +426,12 @@ export default {
       set(curatorComments) { this.$store.commit('setPhylorefProps', { phyloref: this.selectedPhyloref, curatorComments }); },
     },
     computedPhylorefType() {
+      // Return the type of phyloreference based on internal/external specifier structure.
       return this.$store.getters.getPhylorefType(this.selectedPhyloref);
     },
     phylorefURI() {
       // Get the base URI of this phyloreference.
-      return this.$store.getters.getBaseURIForPhyloref(this.selectedPhyloref);
+      return this.$store.getters.getPhylorefId(this.selectedPhyloref);
     },
     noSpecifiers() {
       // Return true if no specifiers are present.
@@ -438,13 +451,34 @@ export default {
     }),
   },
   methods: {
+    getExpectedResolution(phylogeny) {
+      // Get the expected resolution information for this phyloreference on
+      // a particular phylogeny.
+      return this.$store.getters.getExpectedResolution(
+        this.selectedPhyloref,
+        phylogeny,
+      );
+    },
+    setExpectedResolution(phylogeny, payload) {
+      // Set the expected resolution information for this phyloreference on
+      // a particular phylogeny.
+      this.$store.dispatch('setExpectedResolution', {
+        phyloref: this.selectedPhyloref,
+        phylogeny,
+        expectedResolutionData: payload,
+      });
+    },
     getNodeLabels(phylogeny, nodeType) {
       // Return a list of node labels in a particular phylogeny.
       return new PhylogenyWrapper(phylogeny).getNodeLabels(nodeType).sort();
     },
-    getExpectedNodeLabels(phylogeny) {
-      // Return a list of nodes that this phyloreference is expected to resolve to.
-      return new PhylorefWrapper(this.selectedPhyloref).getExpectedNodeLabels(phylogeny);
+    getExpectedNodeLabel(phylogeny) {
+      // Return the node label we expect this phyloref to resolve to on the
+      // specified phylogeny.
+      return this.$store.getters.getExpectedNodeLabel(
+        this.selectedPhyloref,
+        phylogeny,
+      );
     },
     getSpecifierLabel(specifier) {
       // Return the specifier label of a particular specifier.

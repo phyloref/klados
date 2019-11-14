@@ -8,7 +8,6 @@ import phyloref from './modules/phyloref';
 import phyx from './modules/phyx';
 import resolution from './modules/resolution';
 import ui from './modules/ui';
-import owlterms from './modules/owlterms';
 import citations from './modules/citations';
 
 Vue.use(Vuex);
@@ -20,7 +19,7 @@ export default new Vuex.Store({
     CURATION_TOOL_VERSION: '0.1',
   },
   modules: {
-    phylogeny, phyloref, phyx, ui, owlterms, citations, resolution,
+    phylogeny, phyloref, phyx, ui, citations, resolution,
   },
   strict: debug,
 });

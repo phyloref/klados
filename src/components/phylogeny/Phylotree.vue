@@ -53,6 +53,10 @@ export default {
       type: String,
       default: uniqueId(),
     },
+    selectedNodeLabel: { // The selected node label. If not set, we display all node labels.
+      type: String,
+      required: false,
+    },
   },
   data() {
     return {
@@ -74,7 +78,7 @@ export default {
     },
     parsedNewick() {
       return new PhylogenyWrapper(this.phylogeny).getParsedNewickWithIRIs(
-        this.$store.getters.getBaseURIForPhylogeny(this.phylogeny),
+        this.$store.getters.getPhylogenyId(this.phylogeny),
         d3.layout.newick_parser,
       );
     },
@@ -114,17 +118,23 @@ export default {
             // selected phyloreference, add an 'id' so we can jump to it
             // and a CSS class to render it differently from other labels.
             if (
-              wrappedPhyloref.getExpectedNodeLabels(this.phylogeny).includes(data.name)
+              // Display a label if:
+              //  (1) No selectedNodeLabel was provided to us (i.e. display all node labels), or
+              //  (2) We are currently rendering the selectedNodeLabel.
+              !this.selectedNodeLabel ||
+              this.selectedNodeLabel.toLowerCase() === data.name.toLowerCase()
             ) {
               if(textLabel.empty()) textLabel = element.append('text');
               textLabel.classed('internal-label', true)
                 .text(data.name)
-                .attr('dx', '-0.2em')
-                // .attr('dy', '.3em');
-                .attr('dy', '0.8em');
+                .attr('dx', '0.3em')
+                .attr('dy', '0.35em');
 
-              textLabel.attr('id', `current_expected_label_phylogeny_${this.phylogenyIndex}`);
-              textLabel.classed('selected-internal-label', true);
+              // Is this the currently selected internal label?
+              if (this.selectedNodeLabel && this.selectedNodeLabel.toLowerCase() === data.name.toLowerCase()) {
+                textLabel.attr('id', `current_expected_label_phylogeny_${this.phylogenyIndex}`);
+                textLabel.classed('selected-internal-label', true);
+              }
             } else {
               if(!textLabel.empty()) textLabel.remove();
             }
@@ -175,8 +185,7 @@ export default {
               // the currently expected node label.
               if (
                 has(this.phyloref, 'label')
-                && wrappedPhyloref.getExpectedNodeLabels(this.phylogeny)
-                  .includes(data.name)
+                && this.selectedNodeLabel && this.selectedNodeLabel.toLowerCase() === data.name.toLowerCase()
               ) {
                 textLabel.attr('id', `current_expected_label_phylogeny_${this.phylogenyIndex}`);
               }
@@ -236,6 +245,10 @@ export default {
       // If the phylogeny changed, redraw the tree.
       this.redrawTree();
     },
+    selectedNodeLabel() {
+      // If the selected node label changed, redraw the tree.
+      this.redrawTree();
+    }
   },
   mounted() {
     // Redraw the tree when this component is loaded for the first time.
@@ -328,6 +341,7 @@ export default {
   font-style: italic;
 
   text-anchor: start; /* Align text so it starts at the coordinates provided */
+  alignment-baseline: middle;
 }
 
 /* Node label for an internal specifier */
@@ -350,7 +364,6 @@ export default {
 .selected-internal-label {
     font-size: 16pt;
     fill: rgb(0, 24, 168);
-    text-anchor: end;
 }
 
 /*
