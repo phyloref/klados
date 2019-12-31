@@ -6,7 +6,7 @@
 import Vue from 'vue';
 import { has, cloneDeep } from 'lodash';
 
-import { PhylogenyWrapper } from '@phyloref/phyx';
+import { PhyxWrapper, PhylogenyWrapper } from '@phyloref/phyx';
 
 export default {
   state: {
@@ -15,9 +15,9 @@ export default {
   },
   getters: {
     // Return a base URI for a given phylogeny.
-    getBaseURIForPhylogeny: (state, getters, rootState) => phylogeny => `#phylogeny${rootState.phyx.currentPhyx.phylogenies.indexOf(phylogeny) + 1}`,
+    getBaseURIForPhylogeny: (state, getters, rootState) => phylogeny => PhyxWrapper.getBaseURIForPhylogeny(rootState.phyx.currentPhyx.phylogenies.indexOf(phylogeny)),
     // Return a base URI for a given phyloreference.
-    getBaseURIForPhyloref: (state, getters, rootState) => phyloref => `#phyloref${rootState.phyx.currentPhyx.phylorefs.indexOf(phyloref) + 1}`,
+    getBaseURIForPhyloref: (state, getters, rootState) => phyloref => PhyxWrapper.getBaseURIForPhyloref(rootState.phyx.currentPhyx.phylorefs.indexOf(phyloref)),
     // Return the identifier for a given phylogeny. We will use getBaseURIForPhylogeny()
     // unless one has already been set.
     getPhylogenyId: (state, getters) => (phylogeny) => {
