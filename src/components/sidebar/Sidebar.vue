@@ -225,6 +225,7 @@ import { has } from 'lodash';
 import { mapState, mapGetters } from 'vuex';
 import { saveAs } from 'filesaver.js-npm';
 import { signer } from 'x-hub-signature';
+import zlib from 'zlib';
 
 import { PhyxWrapper, PhylorefWrapper, TaxonomicUnitWrapper } from '@phyloref/phyx';
 
@@ -416,12 +417,19 @@ export default {
       // file into JSON-LD.
       const outerThis = this;
       Vue.nextTick(function () {
+        // Prepare JSON-LD file for submission.
+        const jsonld = JSON.stringify([new PhyxWrapper(
+          outerThis.$store.state.phyx.currentPhyx,
+          d3.layout.newick_parser,
+        ).asJSONLD()]);
+
+        // To improve upload speed, let's Gzip the file before upload.
+        const jsonldGzipped = zlib.gzipSync(jsonld);
+
         // Prepare request for submission.
         const query = $.param({
-          jsonld: JSON.stringify([new PhyxWrapper(
-            outerThis.$store.state.phyx.currentPhyx,
-            d3.layout.newick_parser,
-          ).asJSONLD()])
+          // Convert Gzipped data into a string in Base64.
+          jsonldGzipped: Buffer.from(jsonldGzipped).toString('base64')
         }).replace(/%20/g, '+');  // $.post will do this automatically,
                                   // but we need to do this here so our
                                   // signature works.
