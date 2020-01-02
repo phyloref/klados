@@ -104,7 +104,7 @@
           Phyloreferences
         </a>
         <a
-          class="list-group-item list-group-item-action"
+          class="border-dark list-group-item list-group-item-action"
           href="javascript: void(0)"
           :class="{active: !selectedPhyloref && !selectedPhylogeny}"
           @click="$store.commit('changeDisplay', {})"
@@ -114,7 +114,7 @@
         <template v-for="(phyloref, phylorefIndex) of phylorefs">
           <a
             href="javascript: void(0)"
-            class="h6 list-group-item list-group-item-action border-dark"
+            class="h6 by-0 my-0 list-group-item list-group-item-action border-dark"
             :class="{active: selectedPhyloref === phyloref}"
             @click="$store.commit('changeDisplay', {phyloref})"
           >
@@ -188,7 +188,7 @@
         <a
           v-for="(phylogeny, phylogenyIndex) of phylogenies"
           href="javascript: void(0)"
-          class="h6 list-group-item list-group-item-action border-dark"
+          class="h6 by-0 my-0 list-group-item list-group-item-action border-dark"
           :class="{active: selectedPhylogeny === phylogeny}"
           @click="$store.commit('changeDisplay', {phylogeny})"
         >
