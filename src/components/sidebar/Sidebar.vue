@@ -154,13 +154,14 @@
             >
               &#9679; <strong>External:</strong> {{ getSpecifierLabel(specifier) }}
             </a>
+            <!--
             <a
               href="javascript: void(0)"
               class="list-group-item list-group-item-action"
               @click="$store.commit('addSpecifier', { phyloref })"
             >
               &#9679; <em>Add specifier</em>
-            </a>
+            </a> -->
           </template>
         </template>
 
