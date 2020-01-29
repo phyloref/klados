@@ -8,6 +8,7 @@
       >
         Phyloref Authoring Tool
       </a>
+      <small class="text-white">{{version}}</small>
       <div class="collapse navbar-collapse">
         <ul class="navbar-nav">
           <li class="nav-item">
@@ -64,7 +65,7 @@ export default {
   props: {
     version: {
       type: String,
-      default: 'UNKNOWN',
+      default: '(unversioned)',
     },
   },
 };
