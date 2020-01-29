@@ -1,5 +1,16 @@
 name: Deploy to GitHub Pages
 
+# This workflow will be triggered when:
+#   - A new release is published, whether as a full release or a
+#     pre-release. Draft releases will not trigger this workflow
+#     until they are published.
+#
+# This workflow will:
+#   - Check out the code that is being published.
+#   - Build the HTML and JS using Vue CLI.
+#   - Deploy that code to the gh-pages branch using an SSH deploy
+#     key. This key is stored as an encrypted secret in the repository.
+
 on:
   release:
     types: [published]
