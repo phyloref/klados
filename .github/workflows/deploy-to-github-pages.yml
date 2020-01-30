@@ -1,0 +1,44 @@
+name: Deploy to GitHub Pages
+
+# This workflow will be triggered when:
+#   - A new release is published, whether as a full release or a
+#     pre-release. Draft releases will not trigger this workflow
+#     until they are published.
+#
+# This workflow will:
+#   - Check out the code that is being published.
+#   - Build the HTML and JS using Vue CLI.
+#   - Deploy that code to the gh-pages branch using an SSH deploy
+#     key. This key is stored as an encrypted secret in the repository.
+
+on:
+  release:
+    types: [published]
+
+# Based on https://github.com/marketplace/actions/deploy-to-github-pages#using-an-ssh-deploy-key-
+jobs:  
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+        
+      - name: Build Vue page in /docs
+        run: |
+          npm install
+          npm run build
+          
+      - name: Install SSH Client
+        uses: webfactory/ssh-agent@v0.2.0 # This step installs the ssh client into the workflow run. There's many options available for this on the action marketplace.
+        with:
+          ssh-private-key: ${{ secrets.DEPLOY_KEY }}
+
+      - name: Deploy /docs to branch gh-pages
+        uses: JamesIves/github-pages-deploy-action@releases/v3-test
+        with:
+          BRANCH: gh-pages
+          FOLDER: docs
+          CLEAN: true
+          SSH: true # SSH must be set to true so the deploy action knows which protocol to deploy with.
