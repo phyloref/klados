@@ -31,7 +31,7 @@
         <!-- Body of the about-us modal dialog -->
         <div class="modal-body col-md-12">
           <p>
-            The Phyloreferencing Curation Tool was built as part of the
+            Klados was built as part of the
             <a href="https://www.phyloref.org">
               Phyloreferencing project
             </a>,
@@ -47,7 +47,7 @@
             </a> for details.
           </p>
 
-          <p>The Curation Tool uses a number of open-source libraries, including:</p>
+          <p>Klados uses a number of open-source libraries, including:</p>
 
           <ul>
             <li>
@@ -113,7 +113,7 @@
 
 <script>
 /*
- * A modal for displaying information about the Curation Tool
+ * A modal for displaying information about Klados
  */
 
 export default {
