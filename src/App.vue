@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <TopNavigationBar :version="CURATION_TOOL_VERSION" />
+    <TopNavigationBar :version="version" />
     <div id="wrapper">
       <Sidebar />
       <div id="page-content-wrapper">
@@ -57,8 +57,10 @@ export default {
     AboutCurationToolModal,
     AdvancedOptionsModal,
   },
+  data: () => { return {
+    version: process.env.VUE_APP_VERSION,
+  } },
   computed: mapState({
-    CURATION_TOOL_VERSION: state => state.CURATION_TOOL_VERSION,
     display: state => state.ui.display,
     currentPhyx: state => state.phyx.currentPhyx,
     loadedPhyx: state => state.phyx.loadedPhyx,
