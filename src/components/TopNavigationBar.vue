@@ -6,7 +6,7 @@
         class="navbar-brand"
         href="index.html"
       >
-        Phyloref Authoring Tool
+        Klados
       </a>
       <small class="text-white">{{version}}</small>
       <div class="collapse navbar-collapse">

@@ -5,6 +5,7 @@ Based on the suggestion at https://keepachangelog.com/en/1.0.0/.
 ## [Unreleased]
 
 ## [0.3.0] - 2020-05-19
+- Changed top navigation bar title from "Phyloref Authoring Tool" to "Klados".
 - Upgraded all NPM packages.
 
 ## [0.2.2] - 2020-04-22
