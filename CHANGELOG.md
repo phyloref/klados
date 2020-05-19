@@ -4,6 +4,16 @@ Based on the suggestion at https://keepachangelog.com/en/1.0.0/.
 
 ## [Unreleased]
 
+## [0.3.0] - 2020-05-19
+- Upgraded all NPM packages.
+
+## [0.2.2] - 2020-04-22
+- Contains some fixes to Github Actions that were causing problems in
+  automated deployment.
+
+## [0.2.1] - 2020-04-22
+- Contains a failed attempt to fix Github Actions that were causing
+  problems in automated deployment.
 
 ## [0.2] - 2020-04-12
 - Rename Curation Tool to Klados ([#161](https://github.com/phyloref/curation-tool/issues/161))
@@ -15,4 +25,7 @@ Based on the suggestion at https://keepachangelog.com/en/1.0.0/.
 
 [0.1]: https://github.com/phyloref/klados/releases/tag/v0.1
 [0.2]: https://github.com/phyloref/klados/releases/tag/v0.2
-[Unreleased]: https://github.com/phyloref/curation-tool/compare/v0.2...HEAD
+[0.2.1]: https://github.com/phyloref/klados/releases/tag/v0.2.1
+[0.2.2]: https://github.com/phyloref/klados/releases/tag/v0.2.2
+[0.3.0]: https://github.com/phyloref/klados/releases/tag/v0.3.0
+[Unreleased]: https://github.com/phyloref/curation-tool/compare/v0.3.0...HEAD
