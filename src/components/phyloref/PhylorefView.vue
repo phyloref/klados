@@ -201,6 +201,13 @@
           </h5>
           <div class="card-body">
             <!-- Reference phylogeny information -->
+            <Citation
+              label="Reference phylogeny"
+              :object="phylogeny"
+              citation-key="primaryPhylogenyCitation"
+            />
+
+            <!-- Expected resolution information -->
             <div class="form-group row">
               <label
                 :for="'expected-resolution-' + phylogenyIndex"
