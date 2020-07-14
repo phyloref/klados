@@ -248,7 +248,11 @@ export default {
     selectedNodeLabel() {
       // If the selected node label changed, redraw the tree.
       this.redrawTree();
-    }
+    },
+    newickAsString() {
+      // If the newick changes, redraw the tree.
+      this.redrawTree();
+    },
   },
   mounted() {
     // Redraw the tree when this component is loaded for the first time.
