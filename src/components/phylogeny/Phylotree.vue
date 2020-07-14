@@ -140,6 +140,43 @@ export default {
             }
           }
 
+          // Remove any previously added custom menu items.
+          data["menu_items"] = [];
+
+          // Add a custom menu item to allow us to rename this node.
+          d3.layout.phylotree.add_custom_menu(data,
+            (node) => "Rename this node",
+            () => {
+              const node = data;
+              const existingName = node.name || "(none)";
+              const newName = window.prompt(`Rename node named '${existingName}' to:`);
+              // Apparently IE7 and IE8 will return the string 'undefined' if the user doesn't
+              // enter anything.
+              if (!newName || newName == 'undefined') {
+                // Remove the current label.
+                node.name = "";
+              } else {
+                // Set the new label.
+                node.name = newName;
+              }
+
+              // Export the entire phylogeny as a Newick string, and store that
+              // in the phylogeny object.
+              this.$store.commit('setPhylogenyProps', {
+                phylogeny: this.phylogeny,
+                newick: tree.get_newick((n) => {
+                  // There appears to be a bug in the version of Phylotree.js we
+                  // use in which leaf nodes are duplicated if we just return n.name
+                  // here. So we return undefined for leaf nodes and n.name for
+                  // everything else.
+                  if (!tree.is_leafnode(n)) return n.name
+                  else return undefined;
+                }),
+              });
+            },
+            (node) => true, // We can replace this with a condition that indicates whether this node should be displayed.
+          );
+
           // If the internal label has the same IRI as the currently selected
           // phyloreference's reasoned node, further mark it as the resolved node.
           //
