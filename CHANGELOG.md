@@ -6,6 +6,7 @@ Based on the suggestion at https://keepachangelog.com/en/1.0.0/.
 
 ## [0.3.1] - 2020-07-27
 - Added menu item allowing curators to rename nodes on phylogenies.
+- Added primary phylogeny citation to Phyloref view.
 
 ## [0.3.0] - 2020-05-19
 - Changed top navigation bar title from "Phyloref Authoring Tool" to "Klados".
