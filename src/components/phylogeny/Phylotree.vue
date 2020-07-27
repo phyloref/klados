@@ -168,7 +168,8 @@ export default {
                   // There appears to be a bug in the version of Phylotree.js we
                   // use in which leaf nodes are duplicated if we just return n.name
                   // here. So we return undefined for leaf nodes and n.name for
-                  // everything else.
+                  // everything else. I'll investigate this more deeply in
+                  // https://github.com/phyloref/klados/issues/200.
                   if (!tree.is_leafnode(n)) return n.name
                   else return undefined;
                 }),
