@@ -386,6 +386,36 @@
                 :selectedNodeLabel="getExpectedNodeLabel(phylogeny)"
               />
             </div>
+
+            <!-- Display which taxa include other taxa -->
+            <!-- Expected resolution information -->
+            <div class="form-group row">
+              <label
+                class="col-form-label col-md-2"
+              >
+                Taxa included in taxa
+              </label>
+              <div class="col-md-10">
+                <!-- Expected resolution information -->
+                <div class="form-group row" v-for="(nodeLabel, index) of getNodeLabels(phylogeny)">
+                  <label
+                    class="col-form-label col-md-2"
+                  >
+                    {{ nodeLabel }}
+                  </label>
+                  <div class="col-md-10">
+                    <textarea
+                      :id="'expected-resolution-' + phylogenyIndex"
+                      :value="getRepresentedTaxonomicUnits(phylogeny, nodeLabel)"
+                      @change="setRepresentedTaxonomicUnits(phylogeny, nodeLabel, $event.target.value)"
+                      rows="3"
+                      class="form-control"
+                      placeholder="e.g. 'Should resolve to clade X in fig 3 of Smith 2003'"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </template>
@@ -495,6 +525,18 @@ export default {
       // Return the list of nodes on a particular phylogeny that this phyloreference
       // has been determined to resolve on by JPhyloRef.
       return this.$store.getters.getResolvedNodesForPhylogeny(phylogeny, this.selectedPhyloref, flagReturnShortURIs);
+    },
+    getRepresentedTaxonomicUnits(phylogeny, nodeLabel) {
+      const obj = (phylogeny.additionalNodeProperties || {})[nodeLabel];
+      if (!obj) return "";
+      return JSON.stringify(obj);
+    },
+    setRepresentedTaxonomicUnits(phylogeny, nodeLabel, content) {
+      this.$store.commit('setPhylogenyAdditionalProps', {
+        phylogeny,
+        nodeLabel,
+        content: JSON.parse(content),
+      });
     },
   },
 };
