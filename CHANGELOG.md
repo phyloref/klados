@@ -3,6 +3,7 @@
 Based on the suggestion at https://keepachangelog.com/en/1.0.0/.
 
 ## [Unreleased]
+- Upgraded NPM packages with `npm upgrade`.
 
 ## [0.3.1] - 2020-07-27
 - Added menu item allowing curators to rename nodes on phylogenies.
