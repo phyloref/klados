@@ -98,6 +98,7 @@ export default {
           transitions: false,
           'left-right-spacing': 'fit-to-size',
           'top-bottom-spacing': 'fixed-step',
+          'left-offset': 20,
         })
         .style_nodes((element, data) => {
           // Instructions used to style nodes in Phylotree
@@ -127,8 +128,8 @@ export default {
               if(textLabel.empty()) textLabel = element.append('text');
               textLabel.classed('internal-label', true)
                 .text(data.name)
-                .attr('dx', '0.3em')
-                .attr('dy', '0.35em');
+                .attr('dx', '-0.2em')
+                .attr('dy', '0.5em');
 
               // Is this the currently selected internal label?
               if (this.selectedNodeLabel && this.selectedNodeLabel.toLowerCase() === data.name.toLowerCase()) {
@@ -382,8 +383,8 @@ export default {
   font-size: 16pt;
   font-style: italic;
 
-  text-anchor: start; /* Align text so it starts at the coordinates provided */
-  alignment-baseline: middle;
+  text-anchor: end; /* Align text so it starts at the coordinates provided */
+  dominant-baseline: central;
 }
 
 /* Node label for an internal specifier */

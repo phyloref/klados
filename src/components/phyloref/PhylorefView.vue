@@ -319,7 +319,7 @@
                 for="actual-nodes"
                 class="col-form-label col-md-2 pb-2"
               >
-                Actual resolved nodes
+                Resolved nodes
               </label>
 
               <div class="input-group col-md-10 pb-2">
