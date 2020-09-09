@@ -386,6 +386,75 @@
                 :selectedNodeLabel="getExpectedNodeLabel(phylogeny)"
               />
             </div>
+
+            <!-- Display and edit phylogenies that include other taxa -->
+            <div class="form-group row">
+              <label
+                class="col-form-label col-md-2"
+              >
+                Taxonomic units in phylogeny
+              </label>
+              <div class="col-md-10">
+                <!-- This part of the interface needs to do two things:
+                  1. Display all the taxonomic mappings in this phylogeny,
+                     allowing the user to delete or edit an existing mapping.
+                  2. Allow the user to add additional mappings.
+                -->
+
+                <!-- Display existing mappings -->
+                <div
+                  class="form-group row"
+                  v-for="(nodeLabel, index) of getNodeLabels(phylogeny)"
+                  :key="'existing_tunit_' + selectedPhyloref['@id'] + '_' + phylogeny['@id'] + '_' + nodeLabel"
+                  v-if="getRepresentedTaxonomicUnits(phylogeny, nodeLabel) != '[]'"
+                >
+                  <label
+                    class="col-form-label col-md-2"
+                  >
+                    {{nodeLabel}}
+                  </label>
+                  <div class="col-md-10">
+                    <textarea
+                      :value="getRepresentedTaxonomicUnits(phylogeny, nodeLabel)"
+                      @change.lazy="setRepresentedTaxonomicUnits(phylogeny, nodeLabel, $event.target.value)"
+                      rows="3"
+                      class="form-control"
+                    />
+                  </div>
+                </div>
+
+                <!-- Create a new mapping -->
+                <div class="form-group row">
+                  <select class="col-md-2">
+                    <option
+                      v-for="(nodeLabel, index) of getNodeLabels(phylogeny)"
+                      :key="'new_tunit_' + selectedPhyloref['@id'] + '_' + phylogeny['@id'] + '_' + nodeLabel"
+                      @click="newTUnitNodeLabel = nodeLabel"
+                    >{{nodeLabel}}</option>
+                  </select>
+
+                  <div class="col-md-10">
+                    <textarea
+                      :value="getRepresentedTaxonomicUnits(phylogeny, newTUnitNodeLabel)"
+                      @change.lazy="setRepresentedTaxonomicUnits(phylogeny, newTUnitNodeLabel, $event.target.value)"
+                      rows="3"
+                      class="form-control"
+                    />
+                  </div>
+                  <!--
+                  <div class="col-md-2">
+                    <div class="btn-group float-right" role="group" aria-label="Actions for taxonomic unit mapping">
+                      <button
+                        class="btn btn-danger"
+                      >
+                        &times;
+                      </button>
+                    </div>
+                  </div>
+                -->
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </template>
@@ -415,6 +484,11 @@ export default {
     Phylotree,
     Citation,
     Specifier,
+  },
+  data() {
+    return {
+      newTUnitNodeLabel: "",
+    };
   },
   computed: {
     /*
@@ -495,6 +569,26 @@ export default {
       // Return the list of nodes on a particular phylogeny that this phyloreference
       // has been determined to resolve on by JPhyloRef.
       return this.$store.getters.getResolvedNodesForPhylogeny(phylogeny, this.selectedPhyloref, flagReturnShortURIs);
+    },
+    getAdditionalProperties(phylogeny, nodeLabel) {
+      const obj = (phylogeny.additionalNodeProperties || {})[nodeLabel];
+      if (!obj) return {};
+      return obj;
+    },
+    getRepresentedTaxonomicUnits(phylogeny, nodeLabel) {
+      return JSON.stringify(
+        this.getAdditionalProperties(phylogeny, nodeLabel).representsTaxonomicUnits || []
+      );
+    },
+    setRepresentedTaxonomicUnits(phylogeny, nodeLabel, content) {
+      this.$store.commit('setPhylogenyAdditionalProps', {
+        phylogeny,
+        nodeLabel,
+        content: {
+          ...this.getAdditionalProperties(phylogeny, nodeLabel),
+          representsTaxonomicUnits: JSON.parse(content),
+        },
+      });
     },
   },
 };
