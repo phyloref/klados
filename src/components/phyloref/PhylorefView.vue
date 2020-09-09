@@ -387,32 +387,71 @@
               />
             </div>
 
-            <!-- Display which taxa include other taxa -->
-            <!-- Expected resolution information -->
+            <!-- Display and edit phylogenies that include other taxa -->
             <div class="form-group row">
               <label
                 class="col-form-label col-md-2"
               >
-                Taxa included in taxa
+                Taxonomic units in phylogeny
               </label>
               <div class="col-md-10">
-                <!-- Expected resolution information -->
-                <div class="form-group row" v-for="(nodeLabel, index) of getNodeLabels(phylogeny)">
+                <!-- This part of the interface needs to do two things:
+                  1. Display all the taxonomic mappings in this phylogeny,
+                     allowing the user to delete or edit an existing mapping.
+                  2. Allow the user to add additional mappings.
+                -->
+
+                <!-- Display existing mappings -->
+                <div
+                  class="form-group row"
+                  v-for="(nodeLabel, index) of getNodeLabels(phylogeny)"
+                  :key="'existing_tunit_' + selectedPhyloref['@id'] + '_' + phylogeny['@id'] + '_' + nodeLabel"
+                  v-if="getRepresentedTaxonomicUnits(phylogeny, nodeLabel) != '[]'"
+                >
                   <label
                     class="col-form-label col-md-2"
                   >
-                    {{ nodeLabel }}
+                    {{nodeLabel}}
                   </label>
                   <div class="col-md-10">
                     <textarea
-                      :id="'expected-resolution-' + phylogenyIndex"
                       :value="getRepresentedTaxonomicUnits(phylogeny, nodeLabel)"
-                      @change="setRepresentedTaxonomicUnits(phylogeny, nodeLabel, $event.target.value)"
+                      @change.lazy="setRepresentedTaxonomicUnits(phylogeny, nodeLabel, $event.target.value)"
                       rows="3"
                       class="form-control"
-                      placeholder="e.g. 'Should resolve to clade X in fig 3 of Smith 2003'"
                     />
                   </div>
+                </div>
+
+                <!-- Create a new mapping -->
+                <div class="form-group row">
+                  <select class="col-md-2">
+                    <option
+                      v-for="(nodeLabel, index) of getNodeLabels(phylogeny)"
+                      :key="'new_tunit_' + selectedPhyloref['@id'] + '_' + phylogeny['@id'] + '_' + nodeLabel"
+                      @click="newTUnitNodeLabel = nodeLabel"
+                    >{{nodeLabel}}</option>
+                  </select>
+
+                  <div class="col-md-10">
+                    <textarea
+                      :value="getRepresentedTaxonomicUnits(phylogeny, newTUnitNodeLabel)"
+                      @change.lazy="setRepresentedTaxonomicUnits(phylogeny, newTUnitNodeLabel, $event.target.value)"
+                      rows="3"
+                      class="form-control"
+                    />
+                  </div>
+                  <!--
+                  <div class="col-md-2">
+                    <div class="btn-group float-right" role="group" aria-label="Actions for taxonomic unit mapping">
+                      <button
+                        class="btn btn-danger"
+                      >
+                        &times;
+                      </button>
+                    </div>
+                  </div>
+                -->
                 </div>
               </div>
             </div>
@@ -445,6 +484,11 @@ export default {
     Phylotree,
     Citation,
     Specifier,
+  },
+  data() {
+    return {
+      newTUnitNodeLabel: "",
+    };
   },
   computed: {
     /*
@@ -526,16 +570,24 @@ export default {
       // has been determined to resolve on by JPhyloRef.
       return this.$store.getters.getResolvedNodesForPhylogeny(phylogeny, this.selectedPhyloref, flagReturnShortURIs);
     },
-    getRepresentedTaxonomicUnits(phylogeny, nodeLabel) {
+    getAdditionalProperties(phylogeny, nodeLabel) {
       const obj = (phylogeny.additionalNodeProperties || {})[nodeLabel];
-      if (!obj) return "";
-      return JSON.stringify(obj);
+      if (!obj) return {};
+      return obj;
+    },
+    getRepresentedTaxonomicUnits(phylogeny, nodeLabel) {
+      return JSON.stringify(
+        this.getAdditionalProperties(phylogeny, nodeLabel).representsTaxonomicUnits || []
+      );
     },
     setRepresentedTaxonomicUnits(phylogeny, nodeLabel, content) {
       this.$store.commit('setPhylogenyAdditionalProps', {
         phylogeny,
         nodeLabel,
-        content: JSON.parse(content),
+        content: {
+          ...this.getAdditionalProperties(phylogeny, nodeLabel),
+          representsTaxonomicUnits: JSON.parse(content),
+        },
       });
     },
   },
