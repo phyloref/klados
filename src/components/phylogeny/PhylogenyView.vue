@@ -69,12 +69,12 @@
             </div>
           </div>
 
-          <!-- Primary reference phylogeny -->
+          <!-- Primary reference phylogeny
           <Citation
             label="Primary reference phylogeny"
             :object="selectedPhylogeny"
             citation-key="primaryPhylogenyCitation"
-          />
+          /> -->
 
           <!-- Other reference phylogeny -->
           <Citation

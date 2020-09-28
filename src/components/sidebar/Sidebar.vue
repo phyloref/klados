@@ -104,7 +104,7 @@
           Phyloreferences
         </a>
         <a
-          class="list-group-item list-group-item-action"
+          class="border-dark list-group-item list-group-item-action"
           href="javascript: void(0)"
           :class="{active: !selectedPhyloref && !selectedPhylogeny}"
           @click="$store.commit('changeDisplay', {})"
@@ -114,7 +114,7 @@
         <template v-for="(phyloref, phylorefIndex) of phylorefs">
           <a
             href="javascript: void(0)"
-            class="h6 list-group-item list-group-item-action border-dark"
+            class="h6 by-0 my-0 list-group-item list-group-item-action border-dark"
             :class="{active: selectedPhyloref === phyloref}"
             @click="$store.commit('changeDisplay', {phyloref})"
           >
@@ -154,13 +154,6 @@
             >
               &#9679; <strong>External:</strong> {{ getSpecifierLabel(specifier) }}
             </a>
-            <a
-              href="javascript: void(0)"
-              class="list-group-item list-group-item-action"
-              @click="$store.commit('addSpecifier', { phyloref })"
-            >
-              &#9679; <em>Add specifier</em>
-            </a>
           </template>
         </template>
 
@@ -187,7 +180,7 @@
         <a
           v-for="(phylogeny, phylogenyIndex) of phylogenies"
           href="javascript: void(0)"
-          class="h6 list-group-item list-group-item-action border-dark"
+          class="h6 by-0 my-0 list-group-item list-group-item-action border-dark"
           :class="{active: selectedPhylogeny === phylogeny}"
           @click="$store.commit('changeDisplay', {phylogeny})"
         >
@@ -248,11 +241,11 @@ export default {
         {
           url: 'examples/fisher_et_al_2007.json',
           title: 'Fisher et al, 2007',
-        },
+        },/*
         {
           url: 'examples/hillis_and_wilcox_2005.json',
           title: 'Hillis and Wilcox, 2005',
-        },
+        },*/
         {
           url: 'examples/brochu_2003.json',
           title: 'Brochu 2003',
