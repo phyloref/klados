@@ -12,6 +12,9 @@ import 'bootstrap-vue/dist/bootstrap-vue.min.css';
 import VueResize from 'vue-resize';
 import 'vue-resize/dist/vue-resize.css';
 
+// Import phylotree.js
+import 'phylotree/dist/phylotree.css';
+
 // Import the main Vue file.
 import App from './App.vue';
 

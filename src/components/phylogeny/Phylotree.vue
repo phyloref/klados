@@ -35,6 +35,8 @@
 import { uniqueId, has } from 'lodash';
 import { PhylogenyWrapper, PhylorefWrapper } from '@phyloref/phyx';
 
+import { phylotree, TreeRender } from 'phylotree';
+
 /*
  * Note that this requires the Phylotree Javascript to be loaded in the HTML
  * header: I haven't figured out how to include phylotree.js from within Vue CLI yet.
@@ -79,7 +81,7 @@ export default {
     parsedNewick() {
       return new PhylogenyWrapper(this.phylogeny).getParsedNewickWithIRIs(
         this.$store.getters.getPhylogenyId(this.phylogeny),
-        d3.layout.newick_parser,
+        // d3.layout.newick_parser, -- TODO FIX
       );
     },
     newickErrors() {
@@ -91,167 +93,172 @@ export default {
     },
     tree() {
       // Set up Phylotree.
-      const tree = d3.layout.phylotree()
-        .svg(d3.select(`#phylogeny${this.phylogenyIndex}`))
-        .options({
-          'internal-names': false,
-          transitions: false,
-          'left-right-spacing': 'fit-to-size',
-          'top-bottom-spacing': 'fixed-step',
-        })
-        .style_nodes((element, data) => {
-          // Instructions used to style nodes in Phylotree
-          // - element: The D3 element of the node being styled
-          // - data: The data associated with the node being styled
+      const tree = new phylotree(this.newickAsString);
+      tree.render({
+        // svg: d3.select(`#phylogeny${this.phylogenyIndex}`),
+        container: `#phylogeny${this.phylogenyIndex}`,
+        'internal-names': false,
+        transitions: false,
+        'left-right-spacing': 'fit-to-size',
+        'top-bottom-spacing': 'fixed-step',
+      });
 
-          // Wrap the phylogeny so we can call methods on it.
-          const wrappedPhylogeny = new PhylogenyWrapper(this.phylogeny || {});
+      const treeRender = tree.display;
 
-          // Wrap the phyloref is there is one.
-          const wrappedPhyloref = new PhylorefWrapper(this.phyloref || {});
+      treeRender.style_nodes((element, data) => {
+        // Instructions used to style nodes in Phylotree
+        // - element: The D3 element of the node being styled
+        // - data: The data associated with the node being styled
 
-          // Make sure we don't already have an internal label node on this SVG node!
-          let textLabel = element.selectAll('text');
+        // Wrap the phylogeny so we can call methods on it.
+        const wrappedPhylogeny = new PhylogenyWrapper(this.phylogeny || {});
 
-          if (has(data, 'name') && data.name !== '' && data.children) {
-            // If the internal label has the same label as the currently
-            // selected phyloreference, add an 'id' so we can jump to it
-            // and a CSS class to render it differently from other labels.
-            if (
-              // Display a label if:
-              //  (1) No selectedNodeLabel was provided to us (i.e. display all node labels), or
-              //  (2) We are currently rendering the selectedNodeLabel.
-              !this.selectedNodeLabel ||
-              this.selectedNodeLabel.toLowerCase() === data.name.toLowerCase()
-            ) {
-              if(textLabel.empty()) textLabel = element.append('text');
-              textLabel.classed('internal-label', true)
-                .text(data.name)
-                .attr('dx', '0.3em')
-                .attr('dy', '0.35em');
+        // Wrap the phyloref is there is one.
+        const wrappedPhyloref = new PhylorefWrapper(this.phyloref || {});
 
-              // Is this the currently selected internal label?
-              if (this.selectedNodeLabel && this.selectedNodeLabel.toLowerCase() === data.name.toLowerCase()) {
-                textLabel.attr('id', `current_expected_label_phylogeny_${this.phylogenyIndex}`);
-                textLabel.classed('selected-internal-label', true);
-              }
+        // Make sure we don't already have an internal label node on this SVG node!
+        let textLabel = element.selectAll('text');
+
+        if (has(data, 'name') && data.name !== '' && data.children) {
+          // If the internal label has the same label as the currently
+          // selected phyloreference, add an 'id' so we can jump to it
+          // and a CSS class to render it differently from other labels.
+          if (
+            // Display a label if:
+            //  (1) No selectedNodeLabel was provided to us (i.e. display all node labels), or
+            //  (2) We are currently rendering the selectedNodeLabel.
+            !this.selectedNodeLabel ||
+            this.selectedNodeLabel.toLowerCase() === data.name.toLowerCase()
+          ) {
+            if(textLabel.empty()) textLabel = element.append('text');
+            textLabel.classed('internal-label', true)
+              .text(data.name)
+              .attr('dx', '0.3em')
+              .attr('dy', '0.35em');
+
+            // Is this the currently selected internal label?
+            if (this.selectedNodeLabel && this.selectedNodeLabel.toLowerCase() === data.name.toLowerCase()) {
+              textLabel.attr('id', `current_expected_label_phylogeny_${this.phylogenyIndex}`);
+              textLabel.classed('selected-internal-label', true);
+            }
+          } else {
+            if(!textLabel.empty()) textLabel.remove();
+          }
+        }
+
+        // Remove any previously added custom menu items.
+        data["menu_items"] = [];
+
+        // Add a custom menu item to allow us to rename this node.
+        /*
+        tree.add_custom_menu(data,
+          (node) => "Rename this node",
+          () => {
+            const node = data;
+            const existingName = node.name || "(none)";
+            const newName = window.prompt(`Rename node named '${existingName}' to:`);
+            // Apparently IE7 and IE8 will return the string 'undefined' if the user doesn't
+            // enter anything.
+            if (!newName || newName == 'undefined') {
+              // Remove the current label.
+              node.name = "";
             } else {
-              if(!textLabel.empty()) textLabel.remove();
+              // Set the new label.
+              node.name = newName;
             }
-          }
 
-          // Remove any previously added custom menu items.
-          data["menu_items"] = [];
+            // Export the entire phylogeny as a Newick string, and store that
+            // in the phylogeny object.
+            this.$store.commit('setPhylogenyProps', {
+              phylogeny: this.phylogeny,
+              newick: tree.get_newick((n) => {
+                // There appears to be a bug in the version of Phylotree.js we
+                // use in which leaf nodes are duplicated if we just return n.name
+                // here. So we return undefined for leaf nodes and n.name for
+                // everything else. I'll investigate this more deeply in
+                // https://github.com/phyloref/klados/issues/200.
+                if (!tree.is_leafnode(n)) return n.name
+                else return undefined;
+              }),
+            });
+          },
+          (node) => true, // We can replace this with a condition that indicates whether this node should be displayed.
+        );*/
 
-          // Add a custom menu item to allow us to rename this node.
-          d3.layout.phylotree.add_custom_menu(data,
-            (node) => "Rename this node",
-            () => {
-              const node = data;
-              const existingName = node.name || "(none)";
-              const newName = window.prompt(`Rename node named '${existingName}' to:`);
-              // Apparently IE7 and IE8 will return the string 'undefined' if the user doesn't
-              // enter anything.
-              if (!newName || newName == 'undefined') {
-                // Remove the current label.
-                node.name = "";
-              } else {
-                // Set the new label.
-                node.name = newName;
-              }
+        // If the internal label has the same IRI as the currently selected
+        // phyloreference's reasoned node, further mark it as the resolved node.
+        //
+        // Note that this node might NOT be labeled, in which case we need to
+        // label it now!
+        if (
+          this.phyloref !== undefined && has(data, '@id')
+          && this.$store.getters.getResolvedNodesForPhylogeny(this.phylogeny, this.phyloref).includes(data['@id'])
+        ) {
+          // We found another pinning node!
+          this.pinningNodes.push(data);
+          this.recurseNodes(data, node => this.pinningNodeChildrenIRIs.add(node['@id']));
 
-              // Export the entire phylogeny as a Newick string, and store that
-              // in the phylogeny object.
-              this.$store.commit('setPhylogenyProps', {
-                phylogeny: this.phylogeny,
-                newick: tree.get_newick((n) => {
-                  // There appears to be a bug in the version of Phylotree.js we
-                  // use in which leaf nodes are duplicated if we just return n.name
-                  // here. So we return undefined for leaf nodes and n.name for
-                  // everything else. I'll investigate this more deeply in
-                  // https://github.com/phyloref/klados/issues/200.
-                  if (!tree.is_leafnode(n)) return n.name
-                  else return undefined;
-                }),
-              });
-            },
-            (node) => true, // We can replace this with a condition that indicates whether this node should be displayed.
-          );
+          // Mark this node as the pinning node.
+          element.classed('pinning-node', true);
 
-          // If the internal label has the same IRI as the currently selected
-          // phyloreference's reasoned node, further mark it as the resolved node.
-          //
-          // Note that this node might NOT be labeled, in which case we need to
-          // label it now!
-          if (
-            this.phyloref !== undefined && has(data, '@id')
-            && this.$store.getters.getResolvedNodesForPhylogeny(this.phylogeny, this.phyloref).includes(data['@id'])
-          ) {
-            // We found another pinning node!
-            this.pinningNodes.push(data);
-            this.recurseNodes(data, node => this.pinningNodeChildrenIRIs.add(node['@id']));
+          // Make the pinning node circle larger (twice its usual size of 3).
+          element.select('circle').attr('r', 6);
 
-            // Mark this node as the pinning node.
-            element.classed('pinning-node', true);
+          // Set its id to 'current_pinning_node_phylogeny{{phylogenyIndex}}'
+          element.attr('id', `current_pinning_node_phylogeny_${this.phylogenyIndex}`);
+        }
 
-            // Make the pinning node circle larger (twice its usual size of 3).
-            element.select('circle').attr('r', 6);
+        // Maybe this isn't a pinning node, but it is a child of a pinning node.
+        if (
+          has(data, '@id')
+          && this.pinningNodeChildrenIRIs.has(data['@id'])
+        ) {
+          // Apply a class.
+          // Note that this applies to the resolved-node too.
+          element.classed('descendant-of-pinning-node-node', true);
+        }
 
-            // Set its id to 'current_pinning_node_phylogeny{{phylogenyIndex}}'
-            element.attr('id', `current_pinning_node_phylogeny_${this.phylogenyIndex}`);
-          }
+        if (data.name !== undefined && data.children === undefined) {
+          // Labeled leaf node! Look for taxonomic units.
+          const tunits = wrappedPhylogeny.getTaxonomicUnitsForNodeLabel(data.name);
 
-          // Maybe this isn't a pinning node, but it is a child of a pinning node.
-          if (
-            has(data, '@id')
-            && this.pinningNodeChildrenIRIs.has(data['@id'])
-          ) {
-            // Apply a class.
-            // Note that this applies to the resolved-node too.
-            element.classed('descendant-of-pinning-node-node', true);
-          }
+          if (tunits.length === 0) {
+            element.classed('terminal-node-without-tunits', true);
+          } else if (this.phyloref !== undefined) {
+            // If this is a terminal node, we should set its ID to
+            // `current_expected_label_phylogeny${phylogenyIndex}` if it is
+            // the currently expected node label.
+            if (
+              has(this.phyloref, 'label')
+              && this.selectedNodeLabel && this.selectedNodeLabel.toLowerCase() === data.name.toLowerCase()
+            ) {
+              textLabel.attr('id', `current_expected_label_phylogeny_${this.phylogenyIndex}`);
+            }
 
-          if (data.name !== undefined && data.children === undefined) {
-            // Labeled leaf node! Look for taxonomic units.
-            const tunits = wrappedPhylogeny.getTaxonomicUnitsForNodeLabel(data.name);
-
-            if (tunits.length === 0) {
-              element.classed('terminal-node-without-tunits', true);
-            } else if (this.phyloref !== undefined) {
-              // If this is a terminal node, we should set its ID to
-              // `current_expected_label_phylogeny${phylogenyIndex}` if it is
-              // the currently expected node label.
-              if (
-                has(this.phyloref, 'label')
-                && this.selectedNodeLabel && this.selectedNodeLabel.toLowerCase() === data.name.toLowerCase()
+            // We should highlight internal specifiers.
+            if (has(this.phyloref, 'internalSpecifiers')) {
+              if (this.phyloref.internalSpecifiers
+                .some(specifier => wrappedPhylogeny
+                  .getNodeLabelsMatchedBySpecifier(specifier)
+                  .includes(data.name))
               ) {
-                textLabel.attr('id', `current_expected_label_phylogeny_${this.phylogenyIndex}`);
+                element.classed('internal-specifier-node', true);
               }
+            }
 
-              // We should highlight internal specifiers.
-              if (has(this.phyloref, 'internalSpecifiers')) {
-                if (this.phyloref.internalSpecifiers
-                  .some(specifier => wrappedPhylogeny
-                    .getNodeLabelsMatchedBySpecifier(specifier)
-                    .includes(data.name))
-                ) {
-                  element.classed('internal-specifier-node', true);
-                }
-              }
-
-              // We should highlight external specifiers.
-              if (has(this.phyloref, 'externalSpecifiers')) {
-                if (this.phyloref.externalSpecifiers
-                  .some(specifier => wrappedPhylogeny
-                    .getNodeLabelsMatchedBySpecifier(specifier)
-                    .includes(data.name))
-                ) {
-                  element.classed('external-specifier-node', true);
-                }
+            // We should highlight external specifiers.
+            if (has(this.phyloref, 'externalSpecifiers')) {
+              if (this.phyloref.externalSpecifiers
+                .some(specifier => wrappedPhylogeny
+                  .getNodeLabelsMatchedBySpecifier(specifier)
+                  .includes(data.name))
+              ) {
+                element.classed('external-specifier-node', true);
               }
             }
           }
-        })
+        }
+      })
         .style_edges((element, data) => {
           // Is the parent a descendant of a pinning node? If so, we need to
           // select this branch!
@@ -266,7 +273,19 @@ export default {
             element.classed('descendant-of-pinning-node-branch', false);
           }
         });
-      tree(this.parsedNewick);
+
+      treeRender.set_size([
+        // height
+        0,
+        // width
+        $(`#phylogeny${this.phylogenyIndex}`).innerWidth(),
+        // We need more space because our fonts are bigger than the default.
+      ]);
+
+      treeRender.spacing_x(this.spacingX);
+
+      console.log('Rendering tree', tree, 'with treeRender', treeRender);
+
       return tree;
     },
   },
@@ -336,17 +355,7 @@ export default {
       this.pinningNodeChildrenIRIs = new Set();
 
       // Draw the tree.
-      this.tree
-        .font_size(16) // Weirdly enough, this is in px, not pt.
-        .size([
-          // height
-          0,
-          // width
-          $(`#phylogeny${this.phylogenyIndex}`).innerWidth(),
-          // We need more space because our fonts are bigger than the default.
-        ])
-        .spacing_x(this.spacingX)
-        .update();
+      this.tree.render();
     },
   },
 };
