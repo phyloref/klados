@@ -407,7 +407,7 @@ export default {
   computed: {
     nomenCodes: () => TaxonNameWrapper.getNomenclaturalCodes(),
     nomenclaturalCodeObj() {
-      return TaxonNameWrapper.getNomenCodeAsObject(this.enteredNomenclaturalCode);
+      return TaxonNameWrapper.getNomenCodeDetails(this.enteredNomenclaturalCode);
     },
     specifier() {
       // Check the specifierClass before we figure out how to construct the
