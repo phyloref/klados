@@ -251,7 +251,7 @@ export default {
       }
 
       // Determine all phyloref labels in this document.
-      const phylorefLabels = this.phylorefs.flatMap((p, index) => (has(p, 'label') ? [p.label.replaceAll(/\W/g, '_')] : [`Phyloref_${index+1}`]));
+      const phylorefLabels = this.phylorefs.map((p, index) => (has(p, 'label') ? p.label.replaceAll(/\W/g, '_') : `Phyloref_${index + 1}`));
 
       if (phylorefLabels.length === 0) return DEFAULT_DOWNLOAD_FILENAME;
 
