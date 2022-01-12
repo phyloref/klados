@@ -244,17 +244,26 @@ export default {
   computed: {
     downloadFilenameForPhyx() {
       // Return a filename to be used to name downloads of this Phyx document.
+
+      // The default download filename to use if no phylorefs are present.
       const DEFAULT_DOWNLOAD_FILENAME = 'download';
 
       if (!this.currentPhyx || !this.phylorefs) {
         return DEFAULT_DOWNLOAD_FILENAME;
       }
 
-      // Determine all phyloref labels in this document.
+      // Determine all phyloref labels in this document. Non-Latin characters will be replaced with '_' to avoid
+      // creating filenames using non-ASCII Unicode characters. As per the UI, unlabeled phylorefs will be referred
+      // to as 'Phyloref 1', 'Phyloref 2', and so on.
       const phylorefLabels = this.phylorefs.map((p, index) => (has(p, 'label') ? p.label.replaceAll(/\W/g, '_') : `Phyloref_${index + 1}`));
 
+      // Construct a download filename depending on the number of phylorefs, which is one of:
+      // - Phyloref_1
+      // - Phyloref_1_and_Phyloref_2
+      // - Phyloref_1_Phyloref_2_and_Phyloref_3
+      // - Phyloref_1_Phyloref_2_and_2_others
+      // - ...
       if (phylorefLabels.length === 0) return DEFAULT_DOWNLOAD_FILENAME;
-
       if (phylorefLabels.length === 1) return phylorefLabels[0];
       if (phylorefLabels.length === 2) return `${phylorefLabels[0]}_and_${phylorefLabels[1]}`;
       if (phylorefLabels.length === 3) return `${phylorefLabels[0]}_${phylorefLabels[1]}_and_${phylorefLabels[2]}`;
