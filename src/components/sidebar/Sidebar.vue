@@ -67,6 +67,14 @@
           href="javascript: void(0)"
           @click="downloadAsJSONLD()"
         >
+          Export as JSON-LD
+        </a>
+
+        <a
+          class="list-group-item list-group-item-action"
+          href="javascript: void(0)"
+          @click="downloadAsNQuads()"
+        >
           Export as ontology
         </a>
 
@@ -425,6 +433,17 @@ export default {
       // Save to local hard drive.
       const jsonldFile = new File(content, `${this.downloadFilenameForPhyx}.jsonld`, { type: 'application/json;charset=utf-8' });
       saveAs(jsonldFile, `${this.downloadFilenameForPhyx}.jsonld`);
+    },
+
+    downloadAsNQuads() {
+      // Exports the PHYX file as an OWL/N-Quads file, which can be opened in
+      // Protege or converted into other RDF formats.
+      const wrapped = new PhyxWrapper(this.$store.state.phyx.currentPhyx);
+      wrapped.toRDF().then((content) => {
+        // Save to local hard drive.
+        const nqFile = new File([content], `${this.downloadFilenameForPhyx}.owl`, { type: 'application/n-quads;charset=utf-8' });
+        saveAs(nqFile, `${this.downloadFilenameForPhyx}.owl`);
+      });
     },
 
     reasonOverPhyloreferences() {
