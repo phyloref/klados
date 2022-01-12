@@ -242,6 +242,24 @@ export default {
     };
   },
   computed: {
+    downloadFilenameForPhyx() {
+      // Return a filename to be used to name downloads of this Phyx document.
+      const DEFAULT_DOWNLOAD_FILENAME = 'download';
+
+      if (!this.currentPhyx || !this.phylorefs) {
+        return DEFAULT_DOWNLOAD_FILENAME;
+      }
+
+      // Determine all phyloref labels in this document.
+      const phylorefLabels = this.phylorefs.flatMap((p, index) => (has(p, 'label') ? [p.label.replaceAll(/\W/g, '_')] : [`Phyloref_${index+1}`]));
+
+      if (phylorefLabels.length === 0) return DEFAULT_DOWNLOAD_FILENAME;
+
+      if (phylorefLabels.length === 1) return phylorefLabels[0];
+      if (phylorefLabels.length === 2) return `${phylorefLabels[0]}_and_${phylorefLabels[1]}`;
+      if (phylorefLabels.length === 3) return `${phylorefLabels[0]}_${phylorefLabels[1]}_and_${phylorefLabels[2]}`;
+      return `${phylorefLabels[0]}_${phylorefLabels[1]}_and_${phylorefLabels.length - 2}_others`;
+    },
     examplePHYXURLs() {
       // Returns a list of example files to display in the "Examples" menu.
       return [
@@ -372,8 +390,8 @@ export default {
       const content = [JSON.stringify(this.$store.state.phyx.currentPhyx, undefined, 4)];
 
       // Save to local hard drive.
-      const jsonFile = new File(content, 'download.json', { type: 'application/json;charset=utf-8' });
-      saveAs(jsonFile);
+      const jsonFile = new File(content, `${this.downloadFilenameForPhyx}.json`, { type: 'application/json;charset=utf-8' });
+      saveAs(jsonFile, `${this.downloadFilenameForPhyx}.json`);
 
       // saveAs(jsonFile) doesn't report on whether the user acceped the download
       // or not. We assume, possibly incorrectly, that they did and that the
@@ -396,8 +414,8 @@ export default {
       const content = [JSON.stringify([wrapped.asJSONLD()], undefined, 4)];
 
       // Save to local hard drive.
-      const jsonldFile = new File(content, 'download.jsonld', { type: 'application/json;charset=utf-8' });
-      saveAs(jsonldFile);
+      const jsonldFile = new File(content, `${this.downloadFilenameForPhyx}.jsonld`, { type: 'application/json;charset=utf-8' });
+      saveAs(jsonldFile, `${this.downloadFilenameForPhyx}.jsonld`);
     },
 
     reasonOverPhyloreferences() {
