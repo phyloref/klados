@@ -257,7 +257,7 @@ export default {
       // to as 'Phyloref 1', 'Phyloref 2', and so on.
       const phylorefLabels = this.phylorefs.map((p, index) => (has(p, 'label') ? p.label.replaceAll(/\W/g, '_') : `Phyloref_${index + 1}`));
 
-      // Construct a download filename depending on the number of phylorefs, which is one of:
+      // Construct a download filename depending on the number of phylorefs, which is in the form:
       // - Phyloref_1
       // - Phyloref_1_and_Phyloref_2
       // - Phyloref_1_Phyloref_2_and_Phyloref_3
