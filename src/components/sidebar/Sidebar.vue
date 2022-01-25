@@ -439,7 +439,10 @@ export default {
       // Exports the PHYX file as an OWL/N-Quads file, which can be opened in
       // Protege or converted into other RDF formats.
       const wrapped = new PhyxWrapper(this.$store.state.phyx.currentPhyx);
-      wrapped.toRDF().then((content) => {
+
+      // TODO: we need a baseIRI here because of https://github.com/phyloref/phyx.js/issues/113
+      // Once that is fixed in phyx.js, we can remove it here.
+      wrapped.toRDF('https://example.org/phyx#').then((content) => {
         // Save to local hard drive.
         const nqFile = new File([content], `${this.downloadFilenameForPhyx}.owl`, { type: 'application/n-quads;charset=utf-8' });
         saveAs(nqFile, `${this.downloadFilenameForPhyx}.owl`);
