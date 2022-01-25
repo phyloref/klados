@@ -39,6 +39,13 @@
             >
               Expand
             </a>
+            <a
+              class="btn btn-danger"
+              href="javascript:;"
+              @click="deleteCitation(citationIndex)"
+            >
+              &times;
+            </a>
           </div>
         </div>
         <div
@@ -555,6 +562,14 @@ export default {
     }
   },
   methods: {
+    deleteCitation(index) {
+      // Remove the citation at a particular index from the input citations.
+      if (Array.isArray(this.object[this.citationKey])) {
+        this.object[this.citationKey].splice(index, 1);
+      } else {
+        Vue.delete(this.object, this.citationKey);
+      }
+    },
     getCitationsFromProps() {
       // Returns the citations from the properties provided to this object.
       //
