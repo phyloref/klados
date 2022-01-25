@@ -6,8 +6,9 @@
  */
 
 import Vue from 'vue';
+import jQuery from 'jquery';
 import { TaxonNameWrapper, PhylorefWrapper, TaxonConceptWrapper } from '@phyloref/phyx';
-import { has, cloneDeep, isEqual } from 'lodash';
+import {has, cloneDeep, isEqual, keys} from 'lodash';
 
 export default {
   state: {
@@ -63,6 +64,9 @@ export default {
       // Create a new, empty phylogeny.
       state.currentPhyx.phylogenies.push({});
     },
+    // The following method sometimes returns a Promise and sometimes returns nothing, so it's not a
+    // consistent return.
+    // eslint-disable-next-line consistent-return
     createPhylogenyFromOpenTree(state) {
       // Create a new, empty phylogeny from the Open Tree of Life.
 
@@ -74,16 +78,88 @@ export default {
         .map(wrappedTC => wrappedTC.nameComplete)
         .filter(name => name); // Eliminate blank and undefined names
 
-      let newick = '';
-      if (taxonConceptNames.length === 0) newick = '()';
-      else {
-        newick = `(${taxonConceptNames.join(',')})`;
+      if (taxonConceptNames.length === 0) {
+        state.currentPhyx.phylogenies.push({
+          label: 'Open Tree of Life',
+          description: 'Attempt to load Open Tree of Life tree failed: no taxon name specifiers present.',
+          newick: '()',
+        });
+      } else {
+        const namesToQuery = Array.from(new Set(taxonConceptNames));
+
+        return jQuery.ajax({
+          type: 'POST',
+          url: 'https://api.opentreeoflife.org/v3/tnrs/match_names',
+          data: JSON.stringify({names: namesToQuery}),
+          contentType: 'application/json; charset=utf-8',
+          dataType: 'json',
+          success: (data) => {
+            const ottIds = (data.results || []).flatMap(r => (r.matches || []).flatMap(m => {
+              if ('taxon' in m && 'ott_id' in m.taxon) return [m.taxon.ott_id];
+              return [];
+            }));
+
+            return jQuery.ajax({
+              type: 'POST',
+              url: 'https://api.opentreeoflife.org/v3/tree_of_life/induced_subtree',
+              data: JSON.stringify({
+                ott_ids: ottIds,
+              }),
+              contentType: 'application/json; charset=utf-8',
+              dataType: 'json',
+              success: (innerData) => {
+                state.currentPhyx.phylogenies.push({
+                  label: 'Open Tree of Life',
+                  description: `This phylogeny was generated from the Open Tree of Life based on the following studies: ${innerData.supporting_studies}`,
+                  newick: innerData.newick,
+                });
+              },
+            }).fail((x) => {
+              // If some OTT ids were not found on the synthetic tree, the OTT API
+              // will return a list of nodes that could not be matched. We can remove
+              // these OTT ids from our list of queries and trying again.
+              const regexErrorMessage = /^\[\/v3\/tree_of_life\/induced_subtree\] Error: node_id '\w+' was not found!/;
+              if (regexErrorMessage.test(x.responseJSON.message)) {
+                const unknownOttIdReasons = x.responseJSON.unknown;
+                console.log('The Open Tree synthetic tree does not contain the following nodes: ', unknownOttIdReasons);
+                this.unknownOttIdReasons = unknownOttIdReasons;
+                this.unknownOttIds = keys(unknownOttIdReasons);
+                // Remove the unknown OTT ids from the list of OTT ids to be queried.
+                const knownOttIds = ottIds.filter(id => !has(unknownOttIdReasons, "ott" + id));
+                console.log('Query has been reduced to the following nodes: ', knownOttIds);
+
+                if (knownOttIds.length === 0) {
+                  state.currentPhyx.phylogenies.push({
+                    label: 'Open Tree of Life',
+                    description: `Attempt to load Open Tree of Life tree failed, as no OTT Ids were present on the synthetic tree: ${unknownOttIdReasons}`,
+                    newick: '()',
+                  });
+                } else {
+                  // Redo query without unknown OTT Ids.
+                  jQuery.ajax({
+                    type: 'POST',
+                    url: 'https://api.opentreeoflife.org/v3/tree_of_life/induced_subtree',
+                    data: JSON.stringify({
+                      ott_ids: knownOttIds,
+                    }),
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    success: (innerData) => {
+                      state.currentPhyx.phylogenies.push({
+                        label: 'Open Tree of Life',
+                        description: `This phylogeny was generated from the Open Tree of Life based on the following studies: ${innerData.supporting_studies}`,
+                        newick: innerData.newick,
+                      });
+                    },
+                  }).fail(err => console.log('Error accessing Open Tree induced_subtree: ', err));
+                }
+              } else {
+                console.log('Error accessing Open Tree induced_subtree: ', x);
+              }
+            });
+          },
+        }).fail(x => console.log('Error accessing Open Tree Taxonomy match_names: ', x));
       }
-      state.currentPhyx.phylogenies.push({
-        label: 'Open Tree of Life',
-        description: 'This phylogeny was generated from the Open Tree of Life.',
-        newick,
-      });
     },
     deletePhyloref(state, payload) {
       // Delete a phyloreference.
