@@ -215,6 +215,13 @@
         >
           <em>Add phylogeny</em>
         </a>
+        <a
+          class="list-group-item list-group-item-action"
+          href="javascript: void(0)"
+          @click="$store.commit('createPhylogenyFromOpenTree')"
+        >
+          <em>Add Open Tree of Life phylogeny</em>
+        </a>
       </div>
     </div>
   </div><!-- End of sidebar -->

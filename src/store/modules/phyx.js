@@ -6,7 +6,7 @@
  */
 
 import Vue from 'vue';
-import { TaxonNameWrapper } from '@phyloref/phyx';
+import { TaxonNameWrapper, PhylorefWrapper, TaxonConceptWrapper } from '@phyloref/phyx';
 import { has, cloneDeep, isEqual } from 'lodash';
 
 export default {
@@ -62,6 +62,28 @@ export default {
     createEmptyPhylogeny(state) {
       // Create a new, empty phylogeny.
       state.currentPhyx.phylogenies.push({});
+    },
+    createPhylogenyFromOpenTree(state) {
+      // Create a new, empty phylogeny from the Open Tree of Life.
+
+      // Step 1. Get a list of all taxon names used across all phyloreferences.
+      const taxonConceptNames = state.currentPhyx.phylorefs
+        .map(phyloref => new PhylorefWrapper(phyloref))
+        .flatMap(wrappedPhyloref => wrappedPhyloref.specifiers)
+        .map(specifier => new TaxonConceptWrapper(specifier))
+        .map(wrappedTC => wrappedTC.nameComplete)
+        .filter(name => name); // Eliminate blank and undefined names
+
+      let newick = '';
+      if (taxonConceptNames.length === 0) newick = '()';
+      else {
+        newick = `(${taxonConceptNames.join(',')})`;
+      }
+      state.currentPhyx.phylogenies.push({
+        label: 'Open Tree of Life',
+        description: 'This phylogeny was generated from the Open Tree of Life.',
+        newick,
+      });
     },
     deletePhyloref(state, payload) {
       // Delete a phyloreference.
