@@ -434,7 +434,7 @@ export default {
 
       // TODO: we need a baseIRI here because of https://github.com/phyloref/phyx.js/issues/113
       // Once that is fixed in phyx.js, we can remove it here.
-      wrapped.toRDF('https://example.org/phyx#').then((content) => {
+      wrapped.toRDF('https://example.phyloref.org/phyx#').then((content) => {
         // Save to local hard drive.
         const nqFile = new File([content], `${this.downloadFilenameForPhyx}.owl`, { type: 'application/n-quads;charset=utf-8' });
         saveAs(nqFile, `${this.downloadFilenameForPhyx}.owl`);
