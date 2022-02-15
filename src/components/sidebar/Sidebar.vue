@@ -402,7 +402,7 @@ export default {
       const jsonFile = new File(content, `${this.downloadFilenameForPhyx}.json`, { type: 'application/json;charset=utf-8' });
       saveAs(jsonFile, `${this.downloadFilenameForPhyx}.json`);
 
-      // saveAs(jsonFile) doesn't report on whether the user acceped the download
+      // saveAs(jsonFile) doesn't report on whether the user accepted the download
       // or not. We assume, possibly incorrectly, that they did and that the
       // current JSON content has been saved. We therefore reset testcaseAsLoaded
       // so we can watch for other changes.
