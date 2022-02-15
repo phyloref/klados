@@ -67,6 +67,14 @@
           href="javascript: void(0)"
           @click="downloadAsJSONLD()"
         >
+          Export as JSON-LD
+        </a>
+
+        <a
+          class="list-group-item list-group-item-action"
+          href="javascript: void(0)"
+          @click="downloadAsNQuads()"
+        >
           Export as ontology
         </a>
 
@@ -273,14 +281,6 @@ export default {
       // Returns a list of example files to display in the "Examples" menu.
       return [
         {
-          url: 'examples/fisher_et_al_2007.json',
-          title: 'Fisher et al, 2007',
-        },
-        {
-          url: 'examples/hillis_and_wilcox_2005.json',
-          title: 'Hillis and Wilcox, 2005',
-        },
-        {
           url: 'examples/brochu_2003.json',
           title: 'Brochu 2003',
         },
@@ -425,6 +425,20 @@ export default {
       // Save to local hard drive.
       const jsonldFile = new File(content, `${this.downloadFilenameForPhyx}.jsonld`, { type: 'application/json;charset=utf-8' });
       saveAs(jsonldFile, `${this.downloadFilenameForPhyx}.jsonld`);
+    },
+
+    downloadAsNQuads() {
+      // Exports the PHYX file as an OWL/N-Quads file, which can be opened in
+      // Protege or converted into other RDF formats.
+      const wrapped = new PhyxWrapper(this.$store.state.phyx.currentPhyx);
+
+      // TODO: we need a baseIRI here because of https://github.com/phyloref/phyx.js/issues/113
+      // Once that is fixed in phyx.js, we can remove it here.
+      wrapped.toRDF('https://example.phyloref.org/phyx#').then((content) => {
+        // Save to local hard drive.
+        const nqFile = new File([content], `${this.downloadFilenameForPhyx}.owl`, { type: 'application/n-quads;charset=utf-8' });
+        saveAs(nqFile, `${this.downloadFilenameForPhyx}.owl`);
+      });
     },
 
     reasonOverPhyloreferences() {
