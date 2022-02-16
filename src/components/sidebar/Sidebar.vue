@@ -218,7 +218,7 @@
         <a
           class="list-group-item list-group-item-action"
           href="javascript: void(0)"
-          @click="$store.commit('createPhylogenyFromOpenTree')"
+          @click="$store.dispatch('createPhylogenyFromOpenTree')"
         >
           <em>Add Open Tree of Life phylogeny</em>
         </a>
