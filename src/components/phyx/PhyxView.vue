@@ -276,6 +276,7 @@
 import { mapState } from 'vuex';
 import { has, max, range } from 'lodash';
 import { stringify } from 'csv-stringify';
+import { saveAs } from 'filesaver.js-npm';
 import {PhylorefWrapper, PhylogenyWrapper, TaxonNameWrapper, TaxonConceptWrapper} from '@phyloref/phyx';
 
 export default {
@@ -382,7 +383,11 @@ export default {
         'Phyloreference',
         'Type',
         ...range(0, maxInternalSpecifiers).map((_, i) => `Internal specifier ${i + 1}`),
-        ...range(0, maxExternalSpecifiers).map((_, i) => `External specifier ${i + 1}`)
+        ...range(0, maxExternalSpecifiers).map((_, i) => `External specifier ${i + 1}`),
+        ...this.phylogenies.flatMap((phylogeny) => {
+          const label = this.getPhylogenyLabel(phylogeny);
+          return [`${label} expected`, `${label} actual`];
+        }),
       ];
 
       const rows = phylorefs.map((phyloref) => {
@@ -398,64 +403,43 @@ export default {
           // Write out the external specifier labels
           ...(wrappedPhyloref.externalSpecifiers.map(sp => new TaxonConceptWrapper(sp).label)),
           // Write out blank cells for the remaining external specifiers
-          ...range(wrappedPhyloref.externalSpecifiers.length, maxExternalSpecifiers).map(() => '')
+          ...range(wrappedPhyloref.externalSpecifiers.length, maxExternalSpecifiers).map(() => ''),
+          // Export phyloref expectation information.
+          ...this.phylogenies.map((phylogeny) => {
+            const expectedNodeLabel = this.getPhylorefExpectedNodeLabel(phyloref, phylogeny);
+            if (!expectedNodeLabel) {
+              return '';
+            } else {
+              return expectedNodeLabel;
+            }
+          }),
+          // Export phyloref resolution information.
+          ...this.phylogenies.map((phylogeny) => {
+            if (!this.hasReasoningResults(phyloref)) return 'Resolution not yet run';
+
+            const resolvedNodes = this.getNodeLabelsResolvedByPhyloref(phyloref, phylogeny);
+            return resolvedNodes.map(nl => (nl === '' ? 'an unlabeled node' : nl)).join('|');
+          }),
         ];
       });
-
-      console.log(header);
-      console.log(rows);
 
       // Convert to CSV.
       stringify([
         header,
         ...rows,
       ], (err, csv) => {
-        if (err) console.log('Error occurred while producing CSV:', err);
-        console.log(csv);
-      });
+        if (err) {
+          console.log('Error occurred while producing CSV:', err);
+          return;
+        }
 
-      /*
-              <td v-for="(phylogeny, phylogenyIndex) of phylogenies">
-                <template v-if="!getPhylorefExpectedNodeLabel(phyloref, phylogeny)">
-                  <strong>No expected node</strong>
-                  <template v-if="hasReasoningResults(phyloref)">
-                    <template v-if="getNodeLabelsResolvedByPhyloref(phyloref, phylogeny).length === 0">
-                      but <strong>did not resolve to any node</strong>
-                    </template>
-                    <template v-else-if="getNodeLabelsResolvedByPhyloref(phyloref, phylogeny).length > 1">
-                      but <strong>resolved to multiple nodes: {{ getNodeLabelsResolvedByPhyloref(phyloref, phylogeny) }}</strong>
-                    </template>
-                    <template v-else>
-                      and resolved to {{ getNodeLabelsResolvedByPhyloref(phyloref, phylogeny)[0]||"an unlabeled node" }}
-                    </template>
-                  </template>
-                </template>
-                <template v-else>
-                  Expected to resolve to node {{getPhylorefExpectedNodeLabel(phyloref, phylogeny)}}
-                  <template v-if="hasReasoningResults(phyloref)">
-                    <template v-if="getNodeLabelsResolvedByPhyloref(phyloref, phylogeny).length === 0">
-                      but <strong>did not resolve to any node</strong>
-                    </template>
-                    <template v-else-if="getNodeLabelsResolvedByPhyloref(phyloref, phylogeny).length > 1">
-                      but <strong>resolved to multiple nodes: {{ getNodeLabelsResolvedByPhyloref(phyloref, phylogeny) }}</strong>
-                    </template>
-                    <template v-else>
-                      and resolved
-                      <template v-if="getNodeLabelsResolvedByPhyloref(phyloref, phylogeny)[0] === getPhylorefExpectedNodeLabel(phyloref, phylogeny)">
-                        correctly
-                      </template>
-                      <template v-else>
-                        <strong>incorrectly</strong>
-                      </template>
-                      to {{ getNodeLabelsResolvedByPhyloref(phyloref, phylogeny)[0]||"an unlabeled node" }}
-                    </template>
-                  </template>
-                </template>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div> */
+        const content = [csv];
+
+        // Save to local hard drive.
+        const filename = `${this.$store.getters.getDownloadFilenameForPhyx}.csv`;
+        const csvFile = new File(content, filename, {type: 'text/csv;charset=utf-8'});
+        saveAs(csvFile, filename);
+      });
     },
   },
 };
