@@ -175,7 +175,8 @@ export default {
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
             success: (innerData) => {
-              // Create a new phylogeny using the induced tree as a Newick string.
+              // If successful, we get back the induced tree as a Newick string.
+              // We use that to create a new phylogeny labeled "Open Tree of Life".
               commit('createPhylogeny', {
                 phylogeny: {
                   label: 'Open Tree of Life',
@@ -190,8 +191,9 @@ export default {
             // these OTT ids from our list of queries and try again.
             const regexErrorMessage = /^\[\/v3\/tree_of_life\/induced_subtree\] Error: node_id '\w+' was not found!/;
             if (regexErrorMessage.test(err.responseJSON.message)) {
-              // The response includes an object that lists failed OTT IDs and the reason they failed.
-              // We report this to the user on the console.
+              // Step 3. If the response includes node-not-found errors, we can re-run the query without
+              // the not-found nodes. The response includes an object that lists failed OTT IDs and the
+              // reason they failed. We report this to the user on the console.
               const unknownOttIdReasons = err.responseJSON.unknown;
               console.log('The Open Tree synthetic tree does not contain the following nodes: ', unknownOttIdReasons);
 
@@ -200,15 +202,16 @@ export default {
               console.log('Query has been reduced to the following nodes: ', knownOttIds);
 
               if (knownOttIds.length === 0) {
-                // It may that ALL the OTT IDs are filtered out,
+                // It may turn out that ALL the OTT IDs are filtered out, in which case we should produce
+                // a phylogeny for the user with a description that explains what happened.
                 state.currentPhyx.phylogenies.push({
                   label: 'Open Tree of Life',
-                  description: 'Attempt to load Open Tree of Life tree failed, as no OTT Ids were present on the synthetic tree: '
-                      + JSON.stringify(unknownOttIdReasons, undefined, 4),
+                  description: 'Attempt to load Open Tree of Life tree failed, as none of the Open Tree taxonomy IDs' +
+                      ` were present on the synthetic tree: ${JSON.stringify(unknownOttIdReasons, undefined, 4)}`,
                   newick: '()',
                 });
               } else {
-                // Redo query without unknown OTT Ids.
+                // We have a filtered list of OTT IDs to query. Re-POST the request.
                 jQuery.ajax({
                   type: 'POST',
                   url: 'https://api.opentreeoflife.org/v3/tree_of_life/induced_subtree',
@@ -219,6 +222,7 @@ export default {
                   dataType: 'json',
                   error: innerErr => console.log('Error accessing Open Tree induced_subtree: ', innerErr),
                   success: (innerData) => {
+                    // If we get an induced phylogeny as a Newick string, create a phylogeny with that Newick string.
                     commit('createPhylogeny', {
                       phylogeny: {
                         label: 'Open Tree of Life',
@@ -230,6 +234,7 @@ export default {
                 });
               }
             } else {
+              // If we got a different error, record it to the Console for future debugging.
               console.log('Error accessing Open Tree induced_subtree: ', err);
             }
           });
