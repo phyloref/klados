@@ -195,6 +195,14 @@
           >
             Add phyloreference
           </button>
+
+          <button
+            class="btn btn-secondary"
+            href="javascript:;"
+            @click="exportAsCSV()"
+          >
+            Export as CSV
+          </button>
         </div>
       </div>
     </div>
@@ -266,8 +274,9 @@
  * Display a summary of the entire Phyx file.
  */
 import { mapState } from 'vuex';
-import { has } from 'lodash';
-import { PhylorefWrapper, PhylogenyWrapper, TaxonNameWrapper } from '@phyloref/phyx';
+import { has, max, range } from 'lodash';
+import { stringify } from 'csv-stringify';
+import {PhylorefWrapper, PhylogenyWrapper, TaxonNameWrapper, TaxonConceptWrapper} from '@phyloref/phyx';
 
 export default {
   name: 'PhyxView',
@@ -293,7 +302,7 @@ export default {
   },
   methods: {
     getPhylogenyLabel(phylogeny) {
-      return new PhylogenyWrapper(phylogeny).label ||
+      return phylogeny.label ||
         `Phylogeny ${this.phylogenies.indexOf(phylogeny) + 1}`;
     },
     getPhylorefLabel(phyloref) {
@@ -359,6 +368,94 @@ export default {
       if(confirm(warningString)) {
         this.$store.commit('deletePhylogeny', { phylogeny });
       }
+    },
+    exportAsCSV() {
+      // Export the phyloref summary as CSV.
+
+      // Determine the maximum number of internal and external specifiers we will need to export.
+      const phylorefs = this.phylorefs;
+      const maxInternalSpecifiers = max(phylorefs.map(phyloref => phyloref.internalSpecifiers.length));
+      const maxExternalSpecifiers = max(phylorefs.map(phyloref => phyloref.externalSpecifiers.length));
+
+      // Create file header.
+      const header = [
+        'Phyloreference',
+        'Type',
+        ...range(0, maxInternalSpecifiers).map((_, i) => `Internal specifier ${i + 1}`),
+        ...range(0, maxExternalSpecifiers).map((_, i) => `External specifier ${i + 1}`)
+      ];
+
+      const rows = phylorefs.map((phyloref) => {
+        const wrappedPhyloref = new PhylorefWrapper(phyloref);
+
+        return [
+          wrappedPhyloref.label,
+          this.$store.getters.getPhylorefType(phyloref),
+          // Write out the internal specifier labels
+          ...(wrappedPhyloref.internalSpecifiers.map(sp => new TaxonConceptWrapper(sp).label)),
+          // Write out blank cells for the remaining internal specifiers
+          ...range(wrappedPhyloref.internalSpecifiers.length, maxInternalSpecifiers).map(() => ''),
+          // Write out the external specifier labels
+          ...(wrappedPhyloref.externalSpecifiers.map(sp => new TaxonConceptWrapper(sp).label)),
+          // Write out blank cells for the remaining external specifiers
+          ...range(wrappedPhyloref.externalSpecifiers.length, maxExternalSpecifiers).map(() => '')
+        ];
+      });
+
+      console.log(header);
+      console.log(rows);
+
+      // Convert to CSV.
+      stringify([
+        header,
+        ...rows,
+      ], (err, csv) => {
+        if (err) console.log('Error occurred while producing CSV:', err);
+        console.log(csv);
+      });
+
+      /*
+              <td v-for="(phylogeny, phylogenyIndex) of phylogenies">
+                <template v-if="!getPhylorefExpectedNodeLabel(phyloref, phylogeny)">
+                  <strong>No expected node</strong>
+                  <template v-if="hasReasoningResults(phyloref)">
+                    <template v-if="getNodeLabelsResolvedByPhyloref(phyloref, phylogeny).length === 0">
+                      but <strong>did not resolve to any node</strong>
+                    </template>
+                    <template v-else-if="getNodeLabelsResolvedByPhyloref(phyloref, phylogeny).length > 1">
+                      but <strong>resolved to multiple nodes: {{ getNodeLabelsResolvedByPhyloref(phyloref, phylogeny) }}</strong>
+                    </template>
+                    <template v-else>
+                      and resolved to {{ getNodeLabelsResolvedByPhyloref(phyloref, phylogeny)[0]||"an unlabeled node" }}
+                    </template>
+                  </template>
+                </template>
+                <template v-else>
+                  Expected to resolve to node {{getPhylorefExpectedNodeLabel(phyloref, phylogeny)}}
+                  <template v-if="hasReasoningResults(phyloref)">
+                    <template v-if="getNodeLabelsResolvedByPhyloref(phyloref, phylogeny).length === 0">
+                      but <strong>did not resolve to any node</strong>
+                    </template>
+                    <template v-else-if="getNodeLabelsResolvedByPhyloref(phyloref, phylogeny).length > 1">
+                      but <strong>resolved to multiple nodes: {{ getNodeLabelsResolvedByPhyloref(phyloref, phylogeny) }}</strong>
+                    </template>
+                    <template v-else>
+                      and resolved
+                      <template v-if="getNodeLabelsResolvedByPhyloref(phyloref, phylogeny)[0] === getPhylorefExpectedNodeLabel(phyloref, phylogeny)">
+                        correctly
+                      </template>
+                      <template v-else>
+                        <strong>incorrectly</strong>
+                      </template>
+                      to {{ getNodeLabelsResolvedByPhyloref(phyloref, phylogeny)[0]||"an unlabeled node" }}
+                    </template>
+                  </template>
+                </template>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div> */
     },
   },
 };
