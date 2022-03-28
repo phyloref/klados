@@ -482,10 +482,14 @@ export default {
     getExpectedNodeLabel(phylogeny) {
       // Return the node label we expect this phyloref to resolve to on the
       // specified phylogeny.
-      return this.$store.getters.getExpectedNodeLabel(
-        this.selectedPhyloref,
-        phylogeny,
-      );
+      try {
+        return this.$store.getters.getExpectedNodeLabel(
+          this.selectedPhyloref,
+          phylogeny,
+        );
+      } catch {
+        return undefined;
+      }
     },
     getSpecifierLabel(specifier) {
       // Return the specifier label of a particular specifier.
