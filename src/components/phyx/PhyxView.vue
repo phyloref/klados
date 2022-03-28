@@ -424,6 +424,7 @@ export default {
       });
 
       // Convert to CSV.
+      // console.log('Output:', [header, ...rows]);
       stringify([
         header,
         ...rows,
@@ -434,11 +435,14 @@ export default {
         }
 
         const content = [csv];
+        // console.log('Content:', content);
 
         // Save to local hard drive.
         const filename = `${this.$store.getters.getDownloadFilenameForPhyx}.csv`;
-        const csvFile = new File(content, filename, {type: 'text/csv;charset=utf-8'});
-        saveAs(csvFile, filename);
+        const csvFile = new Blob(content, { type: 'text/csv;charset=utf-8' });
+        // Neither Numbers.app nor Excel can read the UTF-8 BOM correctly, so we explicitly
+        // turn it off.
+        saveAs(csvFile, filename, { autoBom: false });
       });
     },
   },
