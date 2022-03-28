@@ -303,12 +303,12 @@ export default {
   },
   methods: {
     getPhylogenyLabel(phylogeny) {
-      return phylogeny.label ||
-        `Phylogeny ${this.phylogenies.indexOf(phylogeny) + 1}`;
+      return phylogeny.label
+        || `Phylogeny ${this.phylogenies.indexOf(phylogeny) + 1}`;
     },
     getPhylorefLabel(phyloref) {
-      return new PhylorefWrapper(phyloref).label ||
-        `Phyloref ${this.phylorefs.indexOf(phyloref) + 1}`;
+      return new PhylorefWrapper(phyloref).label
+        || `Phyloref ${this.phylorefs.indexOf(phyloref) + 1}`;
     },
     hasReasoningResults(phyloref) {
       if (!has(this.$store.state.resolution.reasoningResults, 'phylorefs')) return false;
