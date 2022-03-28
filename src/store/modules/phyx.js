@@ -115,7 +115,8 @@ export default {
   },
   actions: {
     createPhylogenyFromOpenTree({ commit, state }) {
-      // Create a new, empty phylogeny from the Open Tree of Life.
+      // Create a new, empty phylogeny from the Open Tree of Life using the /induced_subtree endpoint
+      // at https://github.com/OpenTreeOfLife/germinator/wiki/Synthetic-tree-API-v3#induced_subtree
 
       // Step 1. Get a list of all taxon names used across all phyloreferences.
       const taxonConceptNames = (state.currentPhyx.phylorefs || [])
