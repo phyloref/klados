@@ -319,10 +319,15 @@ export default {
     },
     getNodesById(phylogeny, nodeId) {
       // Return all node labels with this nodeId in this phylogeny.
-      const parsed = new PhylogenyWrapper(phylogeny).getParsedNewickWithIRIs(
-        this.$store.getters.getPhylogenyId(phylogeny),
-        d3.layout.newick_parser,
-      );
+      let parsed;
+      try {
+        parsed = new PhylogenyWrapper(phylogeny).getParsedNewickWithIRIs(
+            this.$store.getters.getPhylogenyId(phylogeny),
+            d3.layout.newick_parser,
+        );
+      } catch {
+        return [];
+      }
 
       function searchNode(node, results = []) {
         if (has(node, '@id') && node['@id'] === nodeId) {
