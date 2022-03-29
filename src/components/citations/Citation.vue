@@ -37,7 +37,12 @@
               href="javascript:;"
               @click="toggleCitationExpanded(citationIndex)"
             >
-              Expand
+              <template v-if="citationsExpanded.includes(citationIndex)">
+                Close
+              </template>
+              <template v-else>
+                Expand
+              </template>
             </a>
             <a
               class="btn btn-danger"
