@@ -30,7 +30,7 @@
               target="_blank"
               :href="wrappedCitation(citation).url"
             >
-              Open in new window
+              Open cited work
             </a>
             <a
               class="btn btn-secondary"
