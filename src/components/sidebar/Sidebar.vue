@@ -294,7 +294,7 @@ export default {
     },
     wrappedPhyxAsJSONLD() {
       try {
-        return this.wrappedPhyx.toJSONLD();
+        return this.wrappedPhyx.asJSONLD();
       } catch (err) {
         alert(`Could not convert Phyx to JSON-LD: ${err}`);
         return undefined;
@@ -433,7 +433,9 @@ export default {
     downloadAsJSONLD() {
       // Exports the PHYX file as an OWL/JSON-LD file, which can be opened in
       // Protege or converted into OWL/XML or other formats.
-      const content = [JSON.stringify([this.wrappedPhyxAsJSONLD], undefined, 4)];
+      const jsonld = this.wrappedPhyxAsJSONLD;
+      if (!jsonld) return;
+      const content = [JSON.stringify([jsonld], undefined, 4)];
 
       // Save to local hard drive.
       const jsonldFile = new File(content, `${this.downloadFilenameForPhyx}.jsonld`, { type: 'application/json;charset=utf-8' });
@@ -476,10 +478,15 @@ export default {
       const outerThis = this;
       Vue.nextTick(function () {
         // Prepare JSON-LD file for submission.
-        const jsonld = JSON.stringify([outerThis.wrappedPhyxAsJSONLD]);
+        const jsonld = outerThis.wrappedPhyxAsJSONLD;
+        if (!jsonld) {
+          outerThis.reasoningInProgress = false;
+          return;
+        }
+        const jsonldAsStr = JSON.stringify([jsonld]);
 
         // To improve upload speed, let's Gzip the file before upload.
-        const jsonldGzipped = zlib.gzipSync(jsonld);
+        const jsonldGzipped = zlib.gzipSync(jsonldAsStr);
 
         // Prepare request for submission.
         const query = $.param({
