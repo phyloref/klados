@@ -134,8 +134,8 @@ export default {
                   name: 'OpenTree et al',
                 },
               ],
-              year: new Date().getFullYear(),
-              title: `Open Tree of Life synthetic tree, release ${data['synth_id'] || 'Unknown synthetic tree version'}`,
+              year: data.date_created.substr(0, 4) || new Date().getFullYear(),
+              title: `Open Tree of Life synthetic tree ${data.synth_id || '(unknown synthetic tree version)'} using taxonomy ${data.taxonomy_version || '(unknown taxonomy version)'}`,
               link: [
                 {
                   url: 'https://doi.org/10.5281/zenodo.3937741'
