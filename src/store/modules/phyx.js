@@ -118,6 +118,43 @@ export default {
       // Create a new, empty phylogeny from the Open Tree of Life using the /induced_subtree endpoint
       // at https://github.com/OpenTreeOfLife/germinator/wiki/Synthetic-tree-API-v3#induced_subtree
 
+      function createOTTPhylogenyWithCitation(phylogeny) {
+        // Create an OTT phylogeny after querying for the synthetic tree ID.
+        jQuery.ajax({
+          type: 'POST',
+          url: 'https://api.opentreeoflife.org/v3/tree_of_life/about',
+          dataType: 'json',
+          error: err => console.log('Could not retrieve Open Tree of Life /about information: ', err),
+          success: (data) => {
+            // Citation as per https://tree.opentreeoflife.org/about/open-tree-of-life, retrieved March 30, 2022.
+            const citation = {
+              type: 'misc',
+              authors: [
+                {
+                  name: 'OpenTree et al',
+                },
+              ],
+              year: new Date().getFullYear(),
+              title: `Open Tree of Life synthetic tree, release ${data['synth_id'] || 'Unknown synthetic tree version'}`,
+              link: [
+                {
+                  url: 'https://doi.org/10.5281/zenodo.3937741'
+                },
+              ],
+            };
+
+            // Add the citation to the provided phylogeny.
+            const citedPhylogeny = {
+              phylogenyCitation: citation,
+              ...phylogeny,
+            };
+
+            // Now create this phylogeny via Vue.
+            commit('createPhylogeny', { phylogeny: citedPhylogeny });
+          },
+        });
+      }
+
       // Step 1. Get a list of all taxon names used across all phyloreferences.
       const taxonConceptNames = (state.currentPhyx.phylorefs || [])
         .map(phyloref => new PhylorefWrapper(phyloref))
@@ -134,12 +171,10 @@ export default {
         // If no taxon names are used in any phyloreferences -- if they use non-taxon-name
         // identifiers or if there are no phyloreferences, say -- we create a new phylogeny
         // named "Open Tree of Life" with a description that tells the user what happened.
-        commit('createPhylogeny', {
-          phylogeny: {
-            label: 'Open Tree of Life',
-            description: 'Attempt to load Open Tree of Life tree failed: no taxon name specifiers present.',
-            newick: '()',
-          },
+        createOTTPhylogenyWithCitation({
+          label: 'Open Tree of Life',
+          description: 'Attempt to load Open Tree of Life tree failed: no taxon name specifiers present.',
+          newick: '()',
         });
         return;
       }
@@ -178,12 +213,10 @@ export default {
             success: (innerData) => {
               // If successful, we get back the induced tree as a Newick string.
               // We use that to create a new phylogeny labeled "Open Tree of Life".
-              commit('createPhylogeny', {
-                phylogeny: {
-                  label: 'Open Tree of Life',
-                  description: `This phylogeny was generated from the Open Tree of Life based on the following studies: ${innerData.supporting_studies}`,
-                  newick: innerData.newick,
-                },
+              createOTTPhylogenyWithCitation({
+                label: 'Open Tree of Life',
+                description: `This phylogeny was generated from the Open Tree of Life based on the following studies: ${innerData.supporting_studies}`,
+                newick: innerData.newick,
               });
             },
           }).fail((err) => {
@@ -205,7 +238,7 @@ export default {
               if (knownOttIds.length === 0) {
                 // It may turn out that ALL the OTT IDs are filtered out, in which case we should produce
                 // a phylogeny for the user with a description that explains what happened.
-                state.currentPhyx.phylogenies.push({
+                createOTTPhylogenyWithCitation({
                   label: 'Open Tree of Life',
                   description: 'Attempt to load Open Tree of Life tree failed, as none of the Open Tree taxonomy IDs' +
                       ` were present on the synthetic tree: ${JSON.stringify(unknownOttIdReasons, undefined, 4)}`,
@@ -224,12 +257,10 @@ export default {
                   error: innerErr => console.log('Error accessing Open Tree induced_subtree: ', innerErr),
                   success: (innerData) => {
                     // If we get an induced phylogeny as a Newick string, create a phylogeny with that Newick string.
-                    commit('createPhylogeny', {
-                      phylogeny: {
-                        label: 'Open Tree of Life',
-                        description: `This phylogeny was generated from the Open Tree of Life based on the following studies: ${innerData.supporting_studies}`,
-                        newick: innerData.newick,
-                      },
+                    createOTTPhylogenyWithCitation({
+                      label: 'Open Tree of Life',
+                      description: `This phylogeny was generated from the Open Tree of Life based on the following studies: ${innerData.supporting_studies}`,
+                      newick: innerData.newick,
                     });
                   },
                 });

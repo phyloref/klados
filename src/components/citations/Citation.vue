@@ -74,6 +74,9 @@
                   <option value="book_section">
                     Book section
                   </option>
+                  <option value="misc">
+                    Miscellaneous
+                  </option>
                 </select>
               </div>
             </div>
