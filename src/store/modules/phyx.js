@@ -141,11 +141,11 @@ export default {
                   name: 'OpenTree et al',
                 },
               ],
-              year: data.date_created.substr(0, 4) || new Date().getFullYear(),
+              year: data.date_created.substring(0, 4) || new Date().getFullYear(),
               title: `Open Tree of Life synthetic tree ${data.synth_id || '(unknown synthetic tree version)'} using taxonomy ${data.taxonomy_version || '(unknown taxonomy version)'}`,
               link: [
                 {
-                  url: 'https://doi.org/10.5281/zenodo.3937741'
+                  url: 'https://doi.org/10.5281/zenodo.3937741',
                 },
               ],
             };
