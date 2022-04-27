@@ -30,14 +30,26 @@
               target="_blank"
               :href="wrappedCitation(citation).url"
             >
-              Open in new window
+              Open cited work
             </a>
             <a
               class="btn btn-secondary"
               href="javascript:;"
               @click="toggleCitationExpanded(citationIndex)"
             >
-              Expand
+              <template v-if="citationsExpanded.includes(citationIndex)">
+                Close
+              </template>
+              <template v-else>
+                Expand
+              </template>
+            </a>
+            <a
+              class="btn btn-danger"
+              href="javascript:;"
+              @click="deleteCitation(citationIndex)"
+            >
+              <b-icon icon="trash"></b-icon>
             </a>
           </div>
         </div>
@@ -508,12 +520,17 @@
  */
 
 import Vue from 'vue';
+import { BIcon, BIconTrash } from 'bootstrap-vue';
 import {
   has, isEmpty, isEqual, cloneDeep, pickBy,
 } from 'lodash';
 
 export default {
   name: 'Citation',
+  components: {
+    BIcon,
+    BIconTrash,
+  },
   props: {
     label: { /* The label for this citation */
       type: String,
@@ -558,6 +575,17 @@ export default {
     }
   },
   methods: {
+    deleteCitation(index) {
+      // Remove the citation at a particular index from the input citations.
+      // eslint-disable-next-line no-restricted-globals
+      if (confirm('Are you sure you wish to delete this citation?')) {
+        if (Array.isArray(this.object[this.citationKey])) {
+          this.object[this.citationKey].splice(index, 1);
+        } else {
+          Vue.delete(this.object, this.citationKey);
+        }
+      }
+    },
     getCitationsFromProps() {
       // Returns the citations from the properties provided to this object.
       //
