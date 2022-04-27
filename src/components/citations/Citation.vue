@@ -49,7 +49,7 @@
               href="javascript:;"
               @click="deleteCitation(citationIndex)"
             >
-              &times;
+              <b-icon icon="trash"></b-icon>
             </a>
           </div>
         </div>
@@ -517,12 +517,17 @@
  */
 
 import Vue from 'vue';
+import { BIcon, BIconTrash } from 'bootstrap-vue';
 import {
   has, isEmpty, isEqual, cloneDeep, pickBy,
 } from 'lodash';
 
 export default {
   name: 'Citation',
+  components: {
+    BIcon,
+    BIconTrash,
+  },
   props: {
     label: { /* The label for this citation */
       type: String,
