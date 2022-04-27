@@ -10,6 +10,13 @@ import jQuery from 'jquery';
 import { TaxonNameWrapper, PhylorefWrapper, TaxonConceptWrapper } from '@phyloref/phyx';
 import { has, cloneDeep, isEqual, keys } from 'lodash';
 
+// Get some configuration settings.
+import {
+  OPEN_TREE_ABOUT_URL,
+  OPEN_TREE_TNRS_MATCH_NAMES_URL,
+  OPEN_TREE_INDUCED_SUBTREE_URL,
+} from '../../config';
+
 export default {
   state: {
     // The currently loaded Phyx file. All methods modify and change this variable.
@@ -122,7 +129,7 @@ export default {
         // Create an OTT phylogeny after querying for the synthetic tree ID.
         jQuery.ajax({
           type: 'POST',
-          url: 'https://api.opentreeoflife.org/v3/tree_of_life/about',
+          url: OPEN_TREE_ABOUT_URL,
           dataType: 'json',
           error: err => console.log('Could not retrieve Open Tree of Life /about information: ', err),
           success: (data) => {
@@ -187,7 +194,7 @@ export default {
       // eslint-disable-next-line consistent-return
       return jQuery.ajax({
         type: 'POST',
-        url: 'https://api.opentreeoflife.org/v3/tnrs/match_names',
+        url: OPEN_TREE_TNRS_MATCH_NAMES_URL,
         data: JSON.stringify({ names: namesToQuery }),
         contentType: 'application/json; charset=utf-8',
         dataType: 'json',
@@ -204,7 +211,7 @@ export default {
           // Try to retrieve the induced subtree including these OTT IDs.
           return jQuery.ajax({
             type: 'POST',
-            url: 'https://api.opentreeoflife.org/v3/tree_of_life/induced_subtree',
+            url: OPEN_TREE_INDUCED_SUBTREE_URL,
             data: JSON.stringify({
               ott_ids: ottIds,
             }),
@@ -248,7 +255,7 @@ export default {
                 // We have a filtered list of OTT IDs to query. Re-POST the request.
                 jQuery.ajax({
                   type: 'POST',
-                  url: 'https://api.opentreeoflife.org/v3/tree_of_life/induced_subtree',
+                  url: OPEN_TREE_INDUCED_SUBTREE_URL,
                   data: JSON.stringify({
                     ott_ids: knownOttIds,
                   }),
