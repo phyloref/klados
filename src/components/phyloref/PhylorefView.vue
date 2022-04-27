@@ -69,7 +69,7 @@
           <Citation
             label="Definition published in"
             :object="selectedPhyloref"
-            citation-key="obo:IAO_0000119"
+            citation-key="definitionSource"
           />
 
           <!-- Phyloreference curator comments -->
