@@ -1,13 +1,13 @@
 import { mount } from '@vue/test-utils';
-import ModifiedCard from './ModifiedCard.vue';
+import ModifiedIcon from '../components/icons/ModifiedIcon.vue';
 
-describe('ModifiedCard', () => {
+describe('ModifiedIcon', () => {
   test('is initially invisible', () => {
-    const wrapper = mount(ModifiedCard);
+    const wrapper = mount(ModifiedIcon);
     expect(wrapper.findComponent("div").exists()).toBeFalsy();
   });
   test('remains invisible if the comparison values provided are identical', () => {
-    const wrapper = mount(ModifiedCard, {
+    const wrapper = mount(ModifiedIcon, {
       propsData: {
         compare: { key: 'test1' },
         compareTo: { key: 'test1' },
@@ -16,7 +16,7 @@ describe('ModifiedCard', () => {
     expect(wrapper.findComponent("div").exists()).toBeFalsy();
   });
   test('becomes visible if the comparison values provided are different', () => {
-    const wrapper = mount(ModifiedCard, {
+    const wrapper = mount(ModifiedIcon, {
       propsData: {
         compare: { key: 'test1' },
         compareTo: { key: 'test2' },
@@ -24,8 +24,8 @@ describe('ModifiedCard', () => {
     });
     expect(wrapper.findComponent("div").exists()).toBeTruthy();
   });
-  test('becomes visible if one of the comparison value is undefined', () => {
-    const wrapper = mount(ModifiedCard, {
+  test('becomes visible if one of the comparison values is undefined', () => {
+    const wrapper = mount(ModifiedIcon, {
       propsData: {
         compare: { key: 'test1' },
         compareTo: undefined,
