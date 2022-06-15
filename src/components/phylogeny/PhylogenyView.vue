@@ -29,7 +29,12 @@
                 :class="{'border-danger': phylogenyIdError}"
                 placeholder="A global or local identifier for this phylogeny, e.g. 'http://doi.org/10.13/49#12' or '#phylogeny1'"
               >
-              <p v-if="phylogenyIdError" class="form-text text-danger">{{phylogenyIdError}}</p>
+              <p
+                v-if="phylogenyIdError"
+                class="form-text text-danger"
+              >
+                {{ phylogenyIdError }}
+              </p>
             </div>
           </div>
 
@@ -168,8 +173,8 @@ export default {
       get() { return this.$store.getters.getPhylogenyId(this.selectedPhylogeny); },
       set(id) {
         try {
-          this.$store.dispatch('changePhylogenyId', { phylogeny: this.selectedPhylogeny, 'phylogenyId': id })
-        } catch(err) {
+          this.$store.dispatch('changePhylogenyId', { phylogeny: this.selectedPhylogeny, phylogenyId: id });
+        } catch (err) {
           // If there was an error in setting phylogeny id, report that to the user.
           this.phylogenyIdError = err;
           return false;

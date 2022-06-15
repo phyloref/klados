@@ -121,10 +121,10 @@ export default {
               // Display a label if:
               //  (1) No selectedNodeLabel was provided to us (i.e. display all node labels), or
               //  (2) We are currently rendering the selectedNodeLabel.
-              !this.selectedNodeLabel ||
-              this.selectedNodeLabel.toLowerCase() === data.name.toLowerCase()
+              !this.selectedNodeLabel
+              || this.selectedNodeLabel.toLowerCase() === data.name.toLowerCase()
             ) {
-              if(textLabel.empty()) textLabel = element.append('text');
+              if (textLabel.empty()) textLabel = element.append('text');
               textLabel.classed('internal-label', true)
                 .text(data.name)
                 .attr('dx', '0.3em')
@@ -135,26 +135,24 @@ export default {
                 textLabel.attr('id', `current_expected_label_phylogeny_${this.phylogenyIndex}`);
                 textLabel.classed('selected-internal-label', true);
               }
-            } else {
-              if(!textLabel.empty()) textLabel.remove();
-            }
+            } else if (!textLabel.empty()) textLabel.remove();
           }
 
           // Remove any previously added custom menu items.
-          data["menu_items"] = [];
+          data.menu_items = [];
 
           // Add a custom menu item to allow us to rename this node.
           d3.layout.phylotree.add_custom_menu(data,
-            (node) => "Rename this node",
+            node => 'Rename this node',
             () => {
               const node = data;
-              const existingName = node.name || "(none)";
+              const existingName = node.name || '(none)';
               const newName = window.prompt(`Rename node named '${existingName}' to:`);
               // Apparently IE7 and IE8 will return the string 'undefined' if the user doesn't
               // enter anything.
               if (!newName || newName == 'undefined') {
                 // Remove the current label.
-                node.name = "";
+                node.name = '';
               } else {
                 // Set the new label.
                 node.name = newName;
@@ -170,12 +168,12 @@ export default {
                   // here. So we return undefined for leaf nodes and n.name for
                   // everything else. I'll investigate this more deeply in
                   // https://github.com/phyloref/klados/issues/200.
-                  if (!tree.is_leafnode(n)) return n.name
-                  else return undefined;
+                  if (!tree.is_leafnode(n)) return n.name;
+                  return undefined;
                 }),
               });
             },
-            (node) => true, // We can replace this with a condition that indicates whether this node should be displayed.
+            node => true, // We can replace this with a condition that indicates whether this node should be displayed.
           );
 
           // If the internal label has the same IRI as the currently selected

@@ -7,7 +7,10 @@
       <div class="card-body">
         <form>
           <!-- Phyx collection name (if we have more than one phyloref!) -->
-          <div class="form-group row" v-if="phylorefs.length > 1 || phyx.title">
+          <div
+            v-if="phylorefs.length > 1 || phyx.title"
+            class="form-group row"
+          >
             <label
               for="phyx-label"
               class="col-form-label col-md-2"
@@ -82,8 +85,8 @@
               <select
                 id="nomen-code"
                 :value="$store.getters.getDefaultNomenCodeURI"
-                @change="$store.commit('setDefaultNomenCodeURI', { defaultNomenclaturalCodeURI: $event.target.value })"
                 class="form-control"
+                @change="$store.commit('setDefaultNomenCodeURI', { defaultNomenclaturalCodeURI: $event.target.value })"
               >
                 <option
                   v-for="(nomenCode, nomenCodeIndex) of nomenCodes"
@@ -128,7 +131,9 @@
                   type="button"
                   class="btn btn-sm btn-danger"
                   @click="deletePhyloref(phyloref)"
-                >&#x2715;</button>
+                >
+                  &#x2715;
+                </button>
               </td>
               <td>
                 <a
@@ -157,7 +162,7 @@
                   </template>
                 </template>
                 <template v-else>
-                  Expected to resolve to node {{getPhylorefExpectedNodeLabel(phyloref, phylogeny)}}
+                  Expected to resolve to node {{ getPhylorefExpectedNodeLabel(phyloref, phylogeny) }}
                   <template v-if="hasReasoningResults(phyloref)">
                     <template v-if="getNodeLabelsResolvedByPhyloref(phyloref, phylogeny).length === 0">
                       but <strong>did not resolve to any node</strong>
@@ -225,7 +230,9 @@
                   type="button"
                   class="btn btn-sm btn-danger"
                   @click="deletePhylogeny(phylogeny)"
-                >&#x2715;</button>
+                >
+                  &#x2715;
+                </button>
               </td>
               <td>
                 <a
@@ -289,16 +296,16 @@ export default {
       phyx: state => state.phyx.currentPhyx,
       phylorefs: state => state.phyx.currentPhyx.phylorefs,
       phylogenies: state => state.phyx.currentPhyx.phylogenies,
-    })
+    }),
   },
   methods: {
     getPhylogenyLabel(phylogeny) {
-      return new PhylogenyWrapper(phylogeny).label ||
-        `Phylogeny ${this.phylogenies.indexOf(phylogeny) + 1}`;
+      return new PhylogenyWrapper(phylogeny).label
+        || `Phylogeny ${this.phylogenies.indexOf(phylogeny) + 1}`;
     },
     getPhylorefLabel(phyloref) {
-      return new PhylorefWrapper(phyloref).label ||
-        `Phyloref ${this.phylorefs.indexOf(phyloref) + 1}`;
+      return new PhylorefWrapper(phyloref).label
+        || `Phyloref ${this.phylorefs.indexOf(phyloref) + 1}`;
     },
     hasReasoningResults(phyloref) {
       if (!has(this.$store.state.resolution.reasoningResults, 'phylorefs')) return false;
@@ -310,7 +317,7 @@ export default {
       // Return a list of nodes that a phyloreference is expected to resolve to.
       return this.$store.getters.getExpectedNodeLabel(
         phyloref,
-        phylogeny
+        phylogeny,
       );
     },
     getNodesById(phylogeny, nodeId) {
@@ -348,7 +355,7 @@ export default {
       const warningString = `Are you sure you wish to delete phyloreference '${
         this.getPhylorefLabel(phyloref)
       }'?`;
-      if(confirm(warningString)) {
+      if (confirm(warningString)) {
         this.$store.commit('deletePhyloref', { phyloref });
       }
     },
@@ -356,7 +363,7 @@ export default {
       const warningString = `Are you sure you wish to delete phylogeny '${
         this.getPhylogenyLabel(phylogeny)
       }'?`;
-      if(confirm(warningString)) {
+      if (confirm(warningString)) {
         this.$store.commit('deletePhylogeny', { phylogeny });
       }
     },

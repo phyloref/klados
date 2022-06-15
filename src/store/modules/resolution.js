@@ -17,7 +17,7 @@ export default {
     // TODO: the following base URIs need to be in this form because that's how they are rendered in the Phyx file.
     // We previously used methods in phyx.js to coordinate these, but they were removed during a previous cleanup.
     // So we should probably put them back.
-    
+
     // Return a base URI for a given phylogeny.
     getBaseURIForPhylogeny: (state, getters, rootState) => phylogeny => `#phylogeny${rootState.phyx.currentPhyx.phylogenies.indexOf(phylogeny)}`,
     // Return a base URI for a given phyloreference.

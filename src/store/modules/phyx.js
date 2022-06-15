@@ -8,7 +8,9 @@
 import Vue from 'vue';
 import jQuery from 'jquery';
 import { TaxonNameWrapper, PhylorefWrapper, TaxonConceptWrapper } from '@phyloref/phyx';
-import { has, cloneDeep, isEqual, keys } from 'lodash';
+import {
+  has, cloneDeep, isEqual, keys,
+} from 'lodash';
 
 // Get some configuration settings.
 import {
@@ -239,7 +241,7 @@ export default {
               console.log('The Open Tree synthetic tree does not contain the following nodes: ', unknownOttIdReasons);
 
               // Remove the unknown OTT ids from the list of OTT ids to be queried.
-              const knownOttIds = ottIds.filter(id => !has(unknownOttIdReasons, "ott" + id));
+              const knownOttIds = ottIds.filter(id => !has(unknownOttIdReasons, `ott${id}`));
               console.log('Query has been reduced to the following nodes: ', knownOttIds);
 
               if (knownOttIds.length === 0) {
@@ -247,8 +249,8 @@ export default {
                 // a phylogeny for the user with a description that explains what happened.
                 createOTTPhylogenyWithCitation({
                   label: 'Open Tree of Life',
-                  description: 'Attempt to load Open Tree of Life tree failed, as none of the Open Tree taxonomy IDs' +
-                      ` were present on the synthetic tree: ${JSON.stringify(unknownOttIdReasons, undefined, 4)}`,
+                  description: 'Attempt to load Open Tree of Life tree failed, as none of the Open Tree taxonomy IDs'
+                      + ` were present on the synthetic tree: ${JSON.stringify(unknownOttIdReasons, undefined, 4)}`,
                   newick: '()',
                 });
               } else {

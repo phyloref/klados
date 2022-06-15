@@ -94,11 +94,17 @@
       </div>
 
       <div class="card-footer">
-        <div class="btn-group" role="group" area-label="Phyloreference management">
+        <div
+          class="btn-group"
+          role="group"
+          area-label="Phyloreference management"
+        >
           <button
             class="btn btn-primary"
             @click="$store.commit('duplicatePhyloref', { phyloref: selectedPhyloref })"
-          >Duplicate phyloreference</button>
+          >
+            Duplicate phyloreference
+          </button>
         </div>
       </div>
     </div>
@@ -139,16 +145,18 @@
           class="form-row input-group"
         >
           <Specifier
-            v-bind:key="'internal' + index"
+            :key="'internal' + index"
             :phyloref="selectedPhyloref"
             :remote-specifier="specifier"
             :remote-specifier-id="'internal' + index"
           />
         </div>
 
-        <h5 class="mt-2">External specifiers</h5>
+        <h5 class="mt-2">
+          External specifiers
+        </h5>
 
-        <template v-if="!selectedPhyloref.externalSpecifiers  || selectedPhyloref.externalSpecifiers.length === 0">
+        <template v-if="!selectedPhyloref.externalSpecifiers || selectedPhyloref.externalSpecifiers.length === 0">
           <p><em>No external specifiers in this phyloreference.</em></p>
         </template>
         <div
@@ -156,7 +164,7 @@
           class="form-row input-group"
         >
           <Specifier
-            v-bind:key="'external' + index"
+            :key="'external' + index"
             :phyloref="selectedPhyloref"
             :remote-specifier="specifier"
             :remote-specifier-id="'external' + index"
@@ -164,7 +172,11 @@
         </div>
       </div>
       <div class="card-footer">
-        <div class="btn-group" role="group" area-label="Internal specifier management">
+        <div
+          class="btn-group"
+          role="group"
+          area-label="Internal specifier management"
+        >
           <button
             class="btn btn-primary"
             href="javascript:;"
@@ -173,7 +185,11 @@
             Add internal specifier
           </button>
         </div>
-        <div class="btn-group ml-2" role="group" area-label="External specifier management">
+        <div
+          class="btn-group ml-2"
+          role="group"
+          area-label="External specifier management"
+        >
           <button
             class="btn btn-primary"
             href="javascript:;"
@@ -219,10 +235,10 @@
                 <textarea
                   :id="'expected-resolution-' + phylogenyIndex"
                   :value="getExpectedResolution(phylogeny).description"
-                  @change="setExpectedResolution(phylogeny, {'description': $event.target.value})"
                   rows="3"
                   class="form-control"
                   placeholder="e.g. 'Should resolve to clade X in fig 3 of Smith 2003'"
+                  @change="setExpectedResolution(phylogeny, {'description': $event.target.value})"
                 />
               </div>
             </div>
@@ -340,7 +356,7 @@
                     type="text"
                     class="form-control"
                     value="Click 'Reason' to reason over all phyloreferences."
-                  />
+                  >
                 </template>
                 <template v-else>
                   <template v-if="getResolvedNodes(phylogeny).length === 0">
@@ -350,7 +366,7 @@
                       type="text"
                       class="form-control"
                       :value="'No nodes could be resolved'"
-                    />
+                    >
                   </template>
                   <template v-if="getResolvedNodes(phylogeny).length === 1">
                     <!-- We matched exactly one node -->
@@ -359,7 +375,7 @@
                       type="text"
                       class="form-control"
                       :value="getResolvedNodes(phylogeny)[0]"
-                    />
+                    >
                   </template>
                   <template v-if="getResolvedNodes(phylogeny).length > 1">
                     <!-- We matched more than one node -->
@@ -368,7 +384,7 @@
                       type="text"
                       class="form-control"
                       :value="getResolvedNodes(phylogeny).length + ' nodes matched: ' + getResolvedNodes(phylogeny).join(', ')"
-                    />
+                    >
                   </template>
                 </template>
               </div>
@@ -383,7 +399,7 @@
                 :phylogeny="phylogeny"
                 :phyloref="selectedPhyloref"
                 :newick="phylogeny.newick"
-                :selectedNodeLabel="getExpectedNodeLabel(phylogeny)"
+                :selected-node-label="getExpectedNodeLabel(phylogeny)"
               />
             </div>
           </div>
