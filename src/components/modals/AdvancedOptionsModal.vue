@@ -81,7 +81,7 @@
  */
 
 import { PhyxWrapper } from '@phyloref/phyx';
-import { saveAs } from 'filesaver.js-npm';
+import { saveAs } from 'file-saver';
 
 export default {
   name: 'AdvancedOptionsPanel',

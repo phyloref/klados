@@ -238,7 +238,7 @@
 import Vue from 'vue';
 import { has } from 'lodash';
 import { mapState, mapGetters } from 'vuex';
-import { saveAs } from 'filesaver.js-npm';
+import { saveAs } from 'file-saver';
 import { signer } from 'x-hub-signature';
 import zlib from 'zlib';
 
