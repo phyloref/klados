@@ -68,6 +68,7 @@
   ],
   "phylorefs": [
     {
+      "@id": "#Alligatoridae",
       "label": "Alligatoridae",
       "scientificNameAuthorship": {
         "bibliographicCitation": "(Cuvier 1807)"
@@ -141,6 +142,7 @@
       "externalSpecifiers": []
     },
     {
+      "@id": "#Alligatorinae",
       "label": "Alligatorinae",
       "scientificNameAuthorship": {
         "bibliographicCitation": "(Kälin 1940)"
@@ -220,6 +222,7 @@
       }
     },
     {
+      "@id": "#Caimaninae",
       "label": "Caimaninae",
       "scientificNameAuthorship": {
         "bibliographicCitation": "(Norell 1988)"
@@ -298,6 +301,7 @@
       }
     },
     {
+      "@id": "#Crocodyloidae",
       "label": "Crocodyloidea",
       "scientificNameAuthorship": {
         "bibliographicCitation": "(Fitzinger 1826)"
@@ -350,6 +354,7 @@
       }
     },
     {
+      "@id": "#Crocodylidae",
       "label": "Crocodylidae",
       "scientificNameAuthorship": {
         "bibliographicCitation": "(Cuvier 1807)"
@@ -435,6 +440,7 @@
       "externalSpecifiers": []
     },
     {
+      "@id": "#Diplocynodontinae",
       "label": "Diplocynodontinae",
       "scientificNameAuthorship": {
         "bibliographicCitation": "(Brochu 1999)"
