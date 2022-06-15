@@ -40,6 +40,7 @@
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^27.0.6",
+    "buffer": "^6.0.3",
     "eslint": "^5.16.0",
     "eslint-config-airbnb-base": "^13.2.0",
     "eslint-plugin-import": "^2.22.0",
@@ -95,8 +96,11 @@
       "^.*\\.vue$": "@vue/vue2-jest",
       "^.+\\.js$": "babel-jest"
     },
+    "setupFiles": [
+      "<rootDir>/src/jest-setup.js"
+    ],
     "transformIgnorePatterns": [
-      "/node_modules/"
+      "<rootDir>/node_modules/(?!ky-universal)"
     ],
     "collectCoverage": true,
     "collectCoverageFrom": [
