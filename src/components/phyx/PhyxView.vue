@@ -380,7 +380,8 @@ export default {
 
       // Create file header.
       const header = [
-        'Phyloreference',
+        'Phyloreference ID',
+        'Label',
         'Type',
         ...range(0, maxInternalSpecifiers).map((_, i) => `Internal specifier ${i + 1}`),
         ...range(0, maxExternalSpecifiers).map((_, i) => `External specifier ${i + 1}`),
@@ -394,6 +395,7 @@ export default {
         const wrappedPhyloref = new PhylorefWrapper(phyloref);
 
         return [
+          this.$store.getters.getPhylorefId(phyloref),
           wrappedPhyloref.label,
           this.$store.getters.getPhylorefType(phyloref),
           // Write out the internal specifier labels
