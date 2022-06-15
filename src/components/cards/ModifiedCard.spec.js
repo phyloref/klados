@@ -1,14 +1,10 @@
 import { mount } from '@vue/test-utils';
-import ModifiedCard from './ModifiedCard';
+import ModifiedCard from './ModifiedCard.vue';
 
 describe('ModifiedCard', () => {
-  test('should be accessible as a Vue instance', () => {
-    const wrapper = mount(ModifiedCard);
-    expect(wrapper.isVueInstance()).toBeTruthy();
-  });
   test('is initially invisible', () => {
     const wrapper = mount(ModifiedCard);
-    expect(wrapper.contains('div')).toBeFalsy();
+    expect(wrapper.findComponent("div").exists()).toBeFalsy();
   });
   test('remains invisible if the comparison values provided are identical', () => {
     const wrapper = mount(ModifiedCard, {
@@ -17,7 +13,7 @@ describe('ModifiedCard', () => {
         compareTo: { key: 'test1' },
       },
     });
-    expect(wrapper.contains('div')).toBeFalsy();
+    expect(wrapper.findComponent("div").exists()).toBeFalsy();
   });
   test('becomes visible if the comparison values provided are different', () => {
     const wrapper = mount(ModifiedCard, {
@@ -26,7 +22,7 @@ describe('ModifiedCard', () => {
         compareTo: { key: 'test2' },
       },
     });
-    expect(wrapper.contains('div')).toBeTruthy();
+    expect(wrapper.findComponent("div").exists()).toBeTruthy();
   });
   test('becomes visible if one of the comparison value is undefined', () => {
     const wrapper = mount(ModifiedCard, {
@@ -35,6 +31,6 @@ describe('ModifiedCard', () => {
         compareTo: undefined,
       },
     });
-    expect(wrapper.contains('div')).toBeTruthy();
+    expect(wrapper.findComponent("div").exists()).toBeTruthy();
   });
 });
