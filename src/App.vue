@@ -57,21 +57,21 @@ export default {
     AboutCurationToolModal,
     AdvancedOptionsModal,
   },
-  data: () => { return {
+  data: () => ({
     version: process.env.VUE_APP_VERSION,
-  } },
+  }),
   computed: mapState({
     display: state => state.ui.display,
     currentPhyx: state => state.phyx.currentPhyx,
     loadedPhyx: state => state.phyx.loadedPhyx,
   }),
   watch: {
-    currentPhyx: function() {
+    currentPhyx() {
       // If currentPhyx changes, reasoning results can no longer be trusted.
       // So reset them!
-      console.log("currentPhyx changed; resetting resolution results.");
+      console.log('currentPhyx changed; resetting resolution results.');
       this.$store.commit('setReasoningResults', undefined);
-    }
+    },
   },
   created() {
     // If someone tries to navigate away from the window while the

@@ -49,7 +49,7 @@
               href="javascript:;"
               @click="deleteCitation(citationIndex)"
             >
-              <b-icon icon="trash"></b-icon>
+              <b-icon icon="trash" />
             </a>
           </div>
         </div>
@@ -550,7 +550,7 @@ export default {
     // single object in the JSON file; in that case, we convert it into an array.
     // In any case, we want to clone it -- changes in this component shouldn't
     // propagate to the model directly, but should go through this.updateCitations().
-    let citations = this.getCitationsFromProps();
+    const citations = this.getCitationsFromProps();
 
     return {
       // Which citations have been expanded (by index).
@@ -572,7 +572,7 @@ export default {
     },
     citationKey() {
       this.citations = this.getCitationsFromProps();
-    }
+    },
   },
   methods: {
     deleteCitation(index) {
@@ -594,7 +594,7 @@ export default {
 
       if (Array.isArray(this.object[this.citationKey])) {
         return cloneDeep(this.object[this.citationKey]);
-      } else if (isEmpty(this.object[this.citationKey])) {
+      } if (isEmpty(this.object[this.citationKey])) {
         return [];
       }
 
