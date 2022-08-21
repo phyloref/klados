@@ -195,6 +195,14 @@
           >
             Add phyloreference
           </button>
+
+          <button
+            class="btn btn-secondary"
+            href="javascript:;"
+            @click="exportAsCSV()"
+          >
+            Export as CSV
+          </button>
         </div>
       </div>
     </div>
@@ -266,8 +274,10 @@
  * Display a summary of the entire Phyx file.
  */
 import { mapState } from 'vuex';
-import { has } from 'lodash';
-import { PhylorefWrapper, PhylogenyWrapper, TaxonNameWrapper } from '@phyloref/phyx';
+import { has, max, range } from 'lodash';
+import { stringify } from 'csv-stringify';
+import { saveAs } from 'filesaver.js-npm';
+import {PhylorefWrapper, PhylogenyWrapper, TaxonNameWrapper, TaxonomicUnitWrapper} from '@phyloref/phyx';
 
 export default {
   name: 'PhyxView',
@@ -293,12 +303,12 @@ export default {
   },
   methods: {
     getPhylogenyLabel(phylogeny) {
-      return new PhylogenyWrapper(phylogeny).label ||
-        `Phylogeny ${this.phylogenies.indexOf(phylogeny) + 1}`;
+      return phylogeny.label
+        || `Phylogeny ${this.phylogenies.indexOf(phylogeny) + 1}`;
     },
     getPhylorefLabel(phyloref) {
-      return new PhylorefWrapper(phyloref).label ||
-        `Phyloref ${this.phylorefs.indexOf(phyloref) + 1}`;
+      return new PhylorefWrapper(phyloref).label
+        || `Phyloref ${this.phylorefs.indexOf(phyloref) + 1}`;
     },
     hasReasoningResults(phyloref) {
       if (!has(this.$store.state.resolution.reasoningResults, 'phylorefs')) return false;
@@ -359,6 +369,83 @@ export default {
       if(confirm(warningString)) {
         this.$store.commit('deletePhylogeny', { phylogeny });
       }
+    },
+    exportAsCSV() {
+      // Export the phyloref summary as CSV.
+
+      // Determine the maximum number of internal and external specifiers we will need to export.
+      const phylorefs = this.phylorefs;
+      const maxInternalSpecifiers = max(phylorefs.map(phyloref => phyloref.internalSpecifiers.length));
+      const maxExternalSpecifiers = max(phylorefs.map(phyloref => phyloref.externalSpecifiers.length));
+
+      // Create file header.
+      const header = [
+        'Phyloreference ID',
+        'Label',
+        'Type',
+        ...range(0, maxInternalSpecifiers).map((_, i) => `Internal specifier ${i + 1}`),
+        ...range(0, maxExternalSpecifiers).map((_, i) => `External specifier ${i + 1}`),
+        ...this.phylogenies.flatMap((phylogeny) => {
+          const label = this.getPhylogenyLabel(phylogeny);
+          return [`${label} expected`, `${label} actual`];
+        }),
+      ];
+
+      const rows = phylorefs.map((phyloref) => {
+        const wrappedPhyloref = new PhylorefWrapper(phyloref);
+
+        return [
+          this.$store.getters.getPhylorefId(phyloref),
+          wrappedPhyloref.label,
+          this.$store.getters.getPhylorefType(phyloref),
+          // Write out the internal specifier labels
+          ...(wrappedPhyloref.internalSpecifiers.map(sp => new TaxonomicUnitWrapper(sp).label)),
+          // Write out blank cells for the remaining internal specifiers
+          ...range(wrappedPhyloref.internalSpecifiers.length, maxInternalSpecifiers).map(() => ''),
+          // Write out the external specifier labels
+          ...(wrappedPhyloref.externalSpecifiers.map(sp => new TaxonomicUnitWrapper(sp).label)),
+          // Write out blank cells for the remaining external specifiers
+          ...range(wrappedPhyloref.externalSpecifiers.length, maxExternalSpecifiers).map(() => ''),
+          // Export phyloref expectation information.
+          ...this.phylogenies.map((phylogeny) => {
+            const expectedNodeLabel = this.getPhylorefExpectedNodeLabel(phyloref, phylogeny);
+            if (!expectedNodeLabel) {
+              return '';
+            } else {
+              return expectedNodeLabel;
+            }
+          }),
+          // Export phyloref resolution information.
+          ...this.phylogenies.map((phylogeny) => {
+            if (!this.hasReasoningResults(phyloref)) return 'Resolution not yet run';
+
+            const resolvedNodes = this.getNodeLabelsResolvedByPhyloref(phyloref, phylogeny);
+            return resolvedNodes.map(nl => (nl === '' ? 'an unlabeled node' : nl)).join('|');
+          }),
+        ];
+      });
+
+      // Convert to CSV.
+      // console.log('Output:', [header, ...rows]);
+      stringify([
+        header,
+        ...rows,
+      ], (err, csv) => {
+        if (err) {
+          console.log('Error occurred while producing CSV:', err);
+          return;
+        }
+
+        const content = [csv];
+        // console.log('Content:', content);
+
+        // Save to local hard drive.
+        const filename = `${this.$store.getters.getDownloadFilenameForPhyx}.csv`;
+        const csvFile = new Blob(content, { type: 'text/csv;charset=utf-8' });
+        // Neither Numbers.app nor Excel can read the UTF-8 BOM correctly, so we explicitly
+        // turn it off.
+        saveAs(csvFile, filename, { autoBom: false });
+      });
     },
   },
 };
