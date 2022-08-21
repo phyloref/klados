@@ -277,7 +277,7 @@ import { mapState } from 'vuex';
 import { has, max, range } from 'lodash';
 import { stringify } from 'csv-stringify';
 import { saveAs } from 'filesaver.js-npm';
-import {PhylorefWrapper, PhylogenyWrapper, TaxonNameWrapper, TaxonConceptWrapper} from '@phyloref/phyx';
+import {PhylorefWrapper, PhylogenyWrapper, TaxonNameWrapper, TaxonomicUnitWrapper} from '@phyloref/phyx';
 
 export default {
   name: 'PhyxView',
@@ -399,11 +399,11 @@ export default {
           wrappedPhyloref.label,
           this.$store.getters.getPhylorefType(phyloref),
           // Write out the internal specifier labels
-          ...(wrappedPhyloref.internalSpecifiers.map(sp => new TaxonConceptWrapper(sp).label)),
+          ...(wrappedPhyloref.internalSpecifiers.map(sp => new TaxonomicUnitWrapper(sp).label)),
           // Write out blank cells for the remaining internal specifiers
           ...range(wrappedPhyloref.internalSpecifiers.length, maxInternalSpecifiers).map(() => ''),
           // Write out the external specifier labels
-          ...(wrappedPhyloref.externalSpecifiers.map(sp => new TaxonConceptWrapper(sp).label)),
+          ...(wrappedPhyloref.externalSpecifiers.map(sp => new TaxonomicUnitWrapper(sp).label)),
           // Write out blank cells for the remaining external specifiers
           ...range(wrappedPhyloref.externalSpecifiers.length, maxExternalSpecifiers).map(() => ''),
           // Export phyloref expectation information.
