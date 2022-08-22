@@ -8,7 +8,7 @@
       >
         Klados
       </a>
-      <small class="text-white">{{version}}</small>
+      <small class="text-white">{{ version }}</small>
       <div class="collapse navbar-collapse">
         <ul class="navbar-nav">
           <li class="nav-item">

@@ -303,8 +303,8 @@ export default {
       // Change the current PHYX to that in the provided URL.
 
       // Is the user sure that they want to do this?
-      if(this.$store.getters.loadedPhyxChanged) {
-        if(!confirm('The current Phyx file has been modified! Are you sure you want to discard these changes by loading another file?')) {
+      if (this.$store.getters.loadedPhyxChanged) {
+        if (!confirm('The current Phyx file has been modified! Are you sure you want to discard these changes by loading another file?')) {
           return;
         }
       }
@@ -356,8 +356,8 @@ export default {
       }
 
       // Is the user sure that they want to do this?
-      if(this.$store.getters.loadedPhyxChanged) {
-        if(!confirm('The current Phyx file has been modified! Are you sure you want to discard these changes by loading another file?')) {
+      if (this.$store.getters.loadedPhyxChanged) {
+        if (!confirm('The current Phyx file has been modified! Are you sure you want to discard these changes by loading another file?')) {
           return;
         }
       }
@@ -440,7 +440,7 @@ export default {
       // Make sure that the Reason button is updated before we convert the Phyx
       // file into JSON-LD.
       const outerThis = this;
-      Vue.nextTick(function () {
+      Vue.nextTick(() => {
         // Prepare JSON-LD file for submission.
         const jsonld = JSON.stringify([new PhyxWrapper(
           outerThis.$store.state.phyx.currentPhyx,
@@ -453,15 +453,15 @@ export default {
         // Prepare request for submission.
         const query = $.param({
           // Convert Gzipped data into a string in Base64.
-          jsonldGzipped: Buffer.from(jsonldGzipped).toString('base64')
-        }).replace(/%20/g, '+');  // $.post will do this automatically,
-                                  // but we need to do this here so our
-                                  // signature works.
+          jsonldGzipped: Buffer.from(jsonldGzipped).toString('base64'),
+        }).replace(/%20/g, '+'); // $.post will do this automatically,
+        // but we need to do this here so our
+        // signature works.
 
         // Sign it with an X-Hub-Signature.
         const sign = signer({
-            algorithm: 'sha1',
-            secret: outerThis.$config.JPHYLOREF_X_HUB_SIGNATURE_SECRET,
+          algorithm: 'sha1',
+          secret: outerThis.$config.JPHYLOREF_X_HUB_SIGNATURE_SECRET,
         });
         const signature = sign(new Buffer(query));
 

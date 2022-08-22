@@ -2,18 +2,47 @@
   <div class="col-md-12">
     <div class="input-group mb-1">
       <div class="input-group-prepend">
-        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <button
+          class="btn btn-outline-secondary dropdown-toggle"
+          type="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
           {{ specifierClass }}
         </button>
         <div class="dropdown-menu">
           <!-- TODO: remove external reference as a type and add it in as a separate property. -->
-          <a class="dropdown-item" :class="{active: specifierClass === 'Taxon'}" href="javascript:;" @click="specifierClass = 'Taxon'">Taxon</a>
-          <a class="dropdown-item" :class="{active: specifierClass === 'Specimen'}"  href="javascript:;" @click="specifierClass = 'Specimen'">Specimen</a>
-          <a class="dropdown-item" :class="{active: specifierClass === 'External reference'}"  href="javascript:;" @click="specifierClass = 'External reference'">External reference</a>
-          <a class="dropdown-item" :class="{active: specifierClass === 'Apomorphy'}"  href="javascript:;" @click="specifierClass = 'Apomorphy'">Apomorphy</a>
+          <a
+            class="dropdown-item"
+            :class="{active: specifierClass === 'Taxon'}"
+            href="javascript:;"
+            @click="specifierClass = 'Taxon'"
+          >Taxon</a>
+          <a
+            class="dropdown-item"
+            :class="{active: specifierClass === 'Specimen'}"
+            href="javascript:;"
+            @click="specifierClass = 'Specimen'"
+          >Specimen</a>
+          <a
+            class="dropdown-item"
+            :class="{active: specifierClass === 'External reference'}"
+            href="javascript:;"
+            @click="specifierClass = 'External reference'"
+          >External reference</a>
+          <a
+            class="dropdown-item"
+            :class="{active: specifierClass === 'Apomorphy'}"
+            href="javascript:;"
+            @click="specifierClass = 'Apomorphy'"
+          >Apomorphy</a>
         </div>
       </div>
-      <div class="input-group-prepend" v-if="specifierClass === 'Taxon'">
+      <div
+        v-if="specifierClass === 'Taxon'"
+        class="input-group-prepend"
+      >
         <button
           class="btn btn-outline-secondary dropdown-toggle"
           type="button"
@@ -25,8 +54,8 @@
         </button>
         <div class="dropdown-menu">
           <a
-            class="dropdown-item"
             v-for="(nomenCode, nomenCodeIndex) of nomenCodes"
+            class="dropdown-item"
             :class="{active: enteredNomenclaturalCode === nomenCode.uri }"
             href="javascript:;"
             @click="enteredNomenclaturalCode = nomenCode.uri"
@@ -36,9 +65,9 @@
         </div>
       </div>
       <input
+        v-model="specifierLabel"
         type="text"
         class="form-control"
-        v-model="specifierLabel"
       >
       <div class="input-group-append">
         <button
@@ -105,7 +134,7 @@
               v-model="enteredVerbatimLabel"
               class="form-control"
               @change="updateSpecifier()"
-            />
+            >
           </div>
         </div>
 
@@ -179,8 +208,8 @@
             <div class="col-md-10 input-group">
               <input
                 id="name-complete"
-                class="form-control"
                 v-model.lazy="taxonNameWrapped.nameComplete"
+                class="form-control"
               >
             </div>
           </div>
@@ -195,8 +224,8 @@
             <div class="col-md-10 input-group">
               <input
                 id="genus"
-                class="form-control"
                 v-model="taxonNameWrapped.genusPart"
+                class="form-control"
               >
             </div>
           </div>
@@ -211,13 +240,16 @@
             <div class="col-md-10 input-group">
               <input
                 id="specific-epithet"
-                class="form-control"
                 v-model="taxonNameWrapped.specificEpithet"
+                class="form-control"
               >
             </div>
           </div>
 
-          <div class="form-group row" v-if="taxonNameWrapped.infraspecificEpithet">
+          <div
+            v-if="taxonNameWrapped.infraspecificEpithet"
+            class="form-group row"
+          >
             <label
               class="col-form-label col-md-2"
               for="infraspecific-epithet"
@@ -227,8 +259,8 @@
             <div class="col-md-10 input-group">
               <input
                 id="infraspecific-epithet"
-                class="form-control"
                 v-model="taxonNameWrapped.infraspecificEpithet"
+                class="form-control"
               >
             </div>
           </div>
@@ -417,7 +449,7 @@ export default {
         case 'Taxon':
           result = TaxonConceptWrapper.fromLabel(
             this.enteredScientificName,
-            this.enteredNomenclaturalCode
+            this.enteredNomenclaturalCode,
           );
           break;
 
@@ -434,7 +466,7 @@ export default {
         case 'External reference':
           result = {
             // We store the external reference in the '@id' field.
-            '@id': this.externalReference || this.enteredVerbatimLabel || "",
+            '@id': this.externalReference || this.enteredVerbatimLabel || '',
           };
           break;
 
@@ -471,7 +503,7 @@ export default {
         if (this.externalReference) return this.externalReference;
         if (this.specimenWrapped) return this.specimenWrapped.label;
         if (this.taxonNameWrapped) return this.taxonNameWrapped.label;
-        return "";
+        return '';
       },
       set(label) {
         // 1. Set the verbatim label to this.
@@ -483,13 +515,13 @@ export default {
             // Try to extract a taxon name from this.
             this.taxonNameWrapped = TaxonNameWrapper.fromVerbatimName(
               label,
-              this.enteredNomenclaturalCode
+              this.enteredNomenclaturalCode,
             );
             break;
 
           case 'Specimen':
             this.specimenWrapped = SpecimenWrapper.fromOccurrenceID(
-              label
+              label,
             );
             break;
 
@@ -509,8 +541,8 @@ export default {
       // TODO: We should want the user if we couldn't parse this; at the moment,
       // we silently ignore this and no specifier gets written.
       get() {
-        if(this.taxonNameWrapped) return this.taxonNameWrapped.nameComplete;
-        return "";
+        if (this.taxonNameWrapped) return this.taxonNameWrapped.nameComplete;
+        return '';
       },
       set(scname) {
         // Don't do anything if a scname is not actually set.
@@ -519,18 +551,18 @@ export default {
         this.taxonNameWrapped = new TaxonNameWrapper(TaxonNameWrapper.fromVerbatimName(scname, this.enteredNomenclaturalCode) || {});
         this.updateSpecifier();
         this.enteredScientificName = scname;
-      }
+      },
     },
     enteredOccurrenceID: {
       get() {
-        if(this.specimenWrapped) return this.specimenWrapped.occurrenceID;
-        return "";
+        if (this.specimenWrapped) return this.specimenWrapped.occurrenceID;
+        return '';
       },
       set(occurID) {
         this.specimenWrapped = new SpecimenWrapper(SpecimenWrapper.fromOccurrenceID(occurID));
         this.updateSpecifier();
       },
-    }
+    },
   },
   watch: {
     phyloref() {
@@ -545,7 +577,7 @@ export default {
     specifierClass() {
       // If this changes we need to update the specifier!
       this.updateSpecifier();
-    }
+    },
   },
   mounted() {
     this.recalculateEntered();
@@ -574,7 +606,7 @@ export default {
       return undefined;
     },
     recalculateEntered() {
-      console.log("Recalculating entered values from: ", this.remoteSpecifier);
+      console.log('Recalculating entered values from: ', this.remoteSpecifier);
 
       // Recalculate the entered values.
       const tunit = new TaxonomicUnitWrapper(cloneDeep(this.remoteSpecifier || {}));
@@ -585,17 +617,17 @@ export default {
         this.externalReference = this.remoteSpecifier['@id'];
         // tunit.label adds '<>s' around the @id. We work around that by trying
         // to read the label directly.
-        this.enteredVerbatimLabel = this.remoteSpecifier['label'] || tunit.label;
+        this.enteredVerbatimLabel = this.remoteSpecifier.label || tunit.label;
       } else {
         this.enteredVerbatimLabel = tunit.label;
         this.specifierClass = this.getSpecifierClass(tunit) || 'Taxon';
       }
 
-      const taxonConceptWrapped = new TaxonConceptWrapper(tunit.taxonConcept)
+      const taxonConceptWrapped = new TaxonConceptWrapper(tunit.taxonConcept);
       if (taxonConceptWrapped && taxonConceptWrapped.taxonName) {
         this.taxonNameWrapped = new TaxonNameWrapper(taxonConceptWrapped.taxonName);
-        this.enteredNomenclaturalCode = this.taxonNameWrapped.nomenclaturalCode ||
-          this.enteredNomenclaturalCode;
+        this.enteredNomenclaturalCode = this.taxonNameWrapped.nomenclaturalCode
+          || this.enteredNomenclaturalCode;
       }
 
       if (tunit.specimen) {
@@ -608,7 +640,7 @@ export default {
       // Update remoteSpecifier to what we've got currently entered.
       const confirmed = confirm('Are you sure you want to delete this specifier?');
       if (confirmed) {
-        console.log("Deleting specifier: ", this.phyloref, this.remoteSpecifier);
+        console.log('Deleting specifier: ', this.phyloref, this.remoteSpecifier);
         this.$store.commit('deleteSpecifier', {
           phyloref: this.phyloref,
           specifier: this.remoteSpecifier,
