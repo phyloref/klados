@@ -65,8 +65,8 @@
                 @change="$store.commit('setDefaultNomenCodeURI', { defaultNomenclaturalCodeURI: $event.target.value })"
               >
                 <option
-                  v-for="(nomenCode, nomenCodeIndex) of nomenCodes"
-                  :value="nomenCode.uri"
+                  v-for="nomenCode of nomenCodes"
+                  :value="nomenCode.iri"
                 >
                   {{ nomenCode.label }}
                 </option>

@@ -17,7 +17,22 @@ import {
   OPEN_TREE_ABOUT_URL,
   OPEN_TREE_TNRS_MATCH_NAMES_URL,
   OPEN_TREE_INDUCED_SUBTREE_URL,
+
+  COOKIE_EXPIRY,
+  COOKIE_DEFAULT_NOMEN_CODE_URI,
 } from '../../config';
+
+// Shared code for reading and writing cookies.
+
+/** Get a cookie from the browser. */
+function getKladosCookie($cookies, keyName, valueIfNotSet = undefined) {
+  return $cookies.get(keyName) || valueIfNotSet;
+}
+
+/** Set a cookie on the browser. */
+function setKladosCookie($cookies, keyName, value, expiry = COOKIE_EXPIRY) {
+  $cookies.set(keyName, value, expiry);
+}
 
 export default {
   state: {
@@ -39,8 +54,10 @@ export default {
       return !isEqual(state.currentPhyx, state.loadedPhyx);
     },
     getDefaultNomenCodeURI(state) {
+      // If no default nomenclatural code is set in the Phyx file, we will attempt to look up that information
+      // using a cookie.
       return state.currentPhyx.defaultNomenclaturalCodeURI
-        || TaxonNameWrapper.UNKNOWN_CODE;
+          || getKladosCookie(Vue.$cookies, COOKIE_DEFAULT_NOMEN_CODE_URI, TaxonNameWrapper.UNKNOWN_CODE);
     },
     getDownloadFilenameForPhyx(state) {
       // Return a filename to be used to name downloads of this Phyx document.
@@ -130,6 +147,9 @@ export default {
       if (!has(payload, 'defaultNomenclaturalCodeURI')) {
         throw new Error('No default nomenclatural code URI provided to setDefaultNomenCodeURI');
       }
+
+      // Overwrite the current default nomenclatural code cookie.
+      setKladosCookie(Vue.$cookies, COOKIE_DEFAULT_NOMEN_CODE_URI, payload.defaultNomenclaturalCodeURI);
 
       Vue.set(state.currentPhyx, 'defaultNomenclaturalCodeURI', payload.defaultNomenclaturalCodeURI);
     },

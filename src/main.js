@@ -27,6 +27,7 @@ Vue.prototype.$config = require('./config.js');
 // Add additional features to Vue.
 Vue.use(BootstrapVue);
 Vue.use(VueResize);
+Vue.use(require('vue-cookies')); // Use https://www.npmjs.com/package/vue-cookies
 
 // Turn off the Vue production tip on the console on Vue startup.
 Vue.config.productionTip = false;
