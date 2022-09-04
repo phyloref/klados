@@ -6,27 +6,6 @@
       </h5>
       <div class="card-body">
         <form>
-          <!-- Phyx file title -->
-          <div
-            class="form-group row"
-          >
-            <label
-              for="phyx-label"
-              class="col-form-label col-md-2"
-            >
-              Collection name
-            </label>
-            <div class="col-md-10">
-              <input
-                id="phyx-label"
-                v-model="phyx.title"
-                type="text"
-                class="form-control"
-                placeholder="Enter title here"
-              >
-            </div>
-          </div>
-
           <!-- Curated by information -->
           <div class="form-group row">
             <label
