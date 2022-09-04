@@ -27,6 +27,7 @@
     "newick-js": "^1.1.1",
     "popper.js": "^1.16.1",
     "vue": "^2.6.11",
+    "vue-cookies": "^1.8.1",
     "vue-resize": "^0.4.5",
     "vuex": "^3.5.1",
     "x-hub-signature": "^1.2.0"
