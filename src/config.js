@@ -25,4 +25,10 @@ module.exports = {
   // Cookie names to use for:
   // - the default nomenclatural code
   COOKIE_DEFAULT_NOMEN_CODE_URI: 'kladosDefaultNomenclaturalCodeURI',
+  // - curator name
+  COOKIE_CURATOR_NAME: 'kladosCuratorName',
+  // - curator e-mail address
+  COOKIE_CURATOR_EMAIL: 'kladosCuratorEmail',
+  // - curator ORCID
+  COOKIE_CURATOR_ORCID: 'kladosCuratorORCID',
 };

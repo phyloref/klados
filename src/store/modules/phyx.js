@@ -19,7 +19,7 @@ import {
   OPEN_TREE_INDUCED_SUBTREE_URL,
 
   COOKIE_EXPIRY,
-  COOKIE_DEFAULT_NOMEN_CODE_URI,
+  COOKIE_DEFAULT_NOMEN_CODE_URI, COOKIE_CURATOR_NAME, COOKIE_CURATOR_EMAIL, COOKIE_CURATOR_ORCID,
 } from '../../config';
 
 // Shared code for reading and writing cookies.
@@ -164,9 +164,18 @@ export default {
     },
     setCurator(state, payload) {
       // Set the curator name, e-mail address or (eventually) ORCID.
-      if (has(payload, 'name')) Vue.set(state.currentPhyx, 'curator', payload.name);
-      if (has(payload, 'email')) Vue.set(state.currentPhyx, 'curatorEmail', payload.email);
-      if (has(payload, 'orcid')) Vue.set(state.currentPhyx, 'curatorORCID', payload.orcid);
+      if (has(payload, 'name')) {
+        setKladosCookie(Vue.$cookies, COOKIE_CURATOR_NAME, payload.name);
+        Vue.set(state.currentPhyx, 'curator', payload.name);
+      }
+      if (has(payload, 'email')) {
+        setKladosCookie(Vue.$cookies, COOKIE_CURATOR_EMAIL, payload.email);
+        Vue.set(state.currentPhyx, 'curatorEmail', payload.email);
+      }
+      if (has(payload, 'orcid')) {
+        setKladosCookie(Vue.$cookies, COOKIE_CURATOR_ORCID, payload.orcid);
+        Vue.set(state.currentPhyx, 'curatorORCID', payload.orcid);
+      }
     },
   },
   actions: {
