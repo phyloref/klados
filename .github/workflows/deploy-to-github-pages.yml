@@ -12,6 +12,9 @@ name: Deploy to GitHub Pages
 #     key. This key is stored as an encrypted secret in the repository.
 
 on:
+  push:
+    branches:
+      - 'release/v0.4.0'
   release:
     types: [published]
 
