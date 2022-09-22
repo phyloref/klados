@@ -15,7 +15,11 @@ on:
   release:
     types: [published]
 
-# Based on https://github.com/marketplace/actions/deploy-to-github-pages#using-an-ssh-deploy-key-
+# Give this workflow permission to write to the gh-pages branch.
+permissions:
+  contents: write
+
+# Based on https://github.com/marketplace/actions/deploy-to-github-pages
 jobs:  
   deploy:
     runs-on: ubuntu-latest
@@ -30,15 +34,9 @@ jobs:
           npm install
           VUE_APP_VERSION=$GITHUB_REF npm run build
           
-      - name: Install SSH Client
-        uses: webfactory/ssh-agent@v0.2.0 # This step installs the ssh client into the workflow run. There's many options available for this on the action marketplace.
-        with:
-          ssh-private-key: ${{ secrets.DEPLOY_KEY }}
-
       - name: Deploy /docs to branch gh-pages
-        uses: JamesIves/github-pages-deploy-action@releases/v3
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
           BRANCH: gh-pages
           FOLDER: docs
           CLEAN: true
-          SSH: true # SSH must be set to true so the deploy action knows which protocol to deploy with.
