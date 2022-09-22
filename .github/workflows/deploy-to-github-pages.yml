@@ -35,7 +35,7 @@ jobs:
       - name: Build Vue page in /docs
         run: |
           npm install
-          VUE_APP_VERSION=$GITHUB_REF npm run build
+          VUE_APP_VERSION=$GITHUB_REF_NAME npm run build
           
       - name: Deploy /docs to branch gh-pages
         uses: JamesIves/github-pages-deploy-action@v4
