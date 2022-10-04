@@ -468,28 +468,32 @@ export default {
         console.log('Query: ', query);
         console.log('Signature: ', signature);
 
-        $.post({
-          url: outerThis.$config.JPHYLOREF_SUBMISSION_URL,
-          data: query,
+        fetch(outerThis.$config.JPHYLOREF_SUBMISSION_URL, {
+          method: 'POST',
           headers: {
             'X-Hub-Signature': signature,
           },
-        }).done((data) => {
-          outerThis.$store.commit('setReasoningResults', data);
-          // console.log('Data retrieved: ', data);
-        }).fail((jqXHR, textStatus, errorThrown) => {
+          body: query,
+        }).catch((error) => {
           // We can try using the third argument, but it appears to be the
           // HTTP status (e.g. 'Internal Server Error'). So we default to that,
           // but look for a better one in the JSON response from the server, if
           // available.
-          let error = errorThrown;
           if (has(jqXHR, 'responseJSON') && has(jqXHR.responseJSON, 'error')) {
             error = jqXHR.responseJSON.error;
           }
 
           if (error === undefined || error === '') error = 'unknown error';
+
+          console.error('Error occurred on server while reasoning', error);
           alert(`Error occurred on server while reasoning: ${error}`);
-        }).always(() => {
+
+          // Reset "Reasoning" buttons to their usual state.
+          outerThis.reasoningInProgress = false;
+        }).then((data) => {
+          outerThis.$store.commit('setReasoningResults', data);
+          // console.log('Data retrieved: ', data);
+
           // Reset "Reasoning" buttons to their usual state.
           outerThis.reasoningInProgress = false;
         });
