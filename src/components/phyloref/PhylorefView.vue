@@ -355,7 +355,7 @@
                     readonly
                     type="text"
                     class="form-control"
-                    value="Click 'Reason' to reason over all phyloreferences."
+                    value="Click 'Resolve against phylogenies' to reason over all phyloreferences."
                   >
                 </template>
                 <template v-else>
