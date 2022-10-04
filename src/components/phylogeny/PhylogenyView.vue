@@ -180,10 +180,12 @@ export default {
   methods: {
     deleteThisPhylogeny() {
       // Delete this phylogeny, and unset the selected phylogeny so we return to the summary page.
-      this.$store.commit('deletePhylogeny', {
-        phylogeny: this.selectedPhylogeny,
-      });
-      this.$store.commit('changeDisplay', {});
+      if(confirm('Are you sure you wish to delete this phylogeny? This cannot be undone!')) {
+        this.$store.commit('deletePhylogeny', {
+          phylogeny: this.selectedPhylogeny,
+        });
+        this.$store.commit('changeDisplay', {});
+      }
     },
   },
   computed: {

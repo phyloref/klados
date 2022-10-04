@@ -521,10 +521,12 @@ export default {
     },
     deleteThisPhyloref() {
       // Delete this phyloreference, and unset the selected phyloref so we return to the summary page.
-      this.$store.commit('deletePhyloref', {
-        phyloref: this.selectedPhyloref,
-      });
-      this.$store.commit('changeDisplay', {});
+      if(confirm('Are you sure you wish to delete this phyloreference? This cannot be undone!')) {
+        this.$store.commit('deletePhyloref', {
+          phyloref: this.selectedPhyloref,
+        });
+        this.$store.commit('changeDisplay', {});
+      }
     },
   },
 };
