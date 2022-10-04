@@ -56,9 +56,10 @@
           <a
             v-for="(nomenCode, nomenCodeIndex) of nomenCodes"
             class="dropdown-item"
-            :class="{active: enteredNomenclaturalCode === nomenCode.uri }"
+            :class="{active: enteredNomenclaturalCode === nomenCode.iri }"
             href="javascript:;"
-            @click="enteredNomenclaturalCode = nomenCode.uri"
+            @click="enteredNomenclaturalCode = nomenCode.iri"
+            :key="nomenCode.iri"
           >
             {{ nomenCode.label }}
           </a>
@@ -190,7 +191,8 @@
               >
                 <option
                   v-for="(nomenCode, nomenCodeIndex) of nomenCodes"
-                  :value="nomenCode.uri"
+                  :key="nomenCode.iri"
+                  :value="nomenCode.iri"
                 >
                   {{ nomenCode.label }}
                 </option>
