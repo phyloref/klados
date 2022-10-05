@@ -66,6 +66,8 @@ export default {
       // List of pinning nodes and all their children, so the entire clade can be
       // highlighted as needed.
       pinningNodeChildrenIRIs: new Set(),
+      // The TreeRender object.
+      treeRender: null,
     };
   },
   computed: {
@@ -92,9 +94,8 @@ export default {
     },
     tree() {
       // Set up Phylotree.
-      return new phylotree(this.parsedNewick, {
-        svg: `#phylogeny${this.phylogenyIndex}`,
-      });
+      // this.parsedNewick.json
+      return new phylotree('((A, B_C), D_E)');
     },
   },
   watch: {
@@ -163,11 +164,18 @@ export default {
       this.pinningNodeChildrenIRIs = new Set();
 
       // Draw the tree.
-      this.tree
+      this.treeRender = this.tree
         .render({
           'left-right-spacing': 'fit-to-size',
-          'top-bottom-spacing': 'fit-to-size'
+          'top-bottom-spacing': 'fit-to-size',
+          container: `#phylogeny${this.phylogenyIndex}`,
         });
+
+      this.treeRender.show();
+      this.treeRender.layout();
+      this.treeRender.update();
+
+      console.log(this.treeRender);
     },
   },
 };
