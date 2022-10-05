@@ -36,7 +36,7 @@
     "@babel/core": "^7.10.5",
     "@babel/preset-env": "^7.10.4",
     "@vue/cli-plugin-babel": "^3.12.1",
-    "@vue/cli-plugin-eslint": "^3.12.1",
+    "@vue/cli-plugin-eslint": "^5.0.8",
     "@vue/cli-service": "^3.12.1",
     "@vue/test-utils": "^1.0.3",
     "babel-core": "^7.0.0-bridge.0",
