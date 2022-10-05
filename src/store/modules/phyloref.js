@@ -32,8 +32,8 @@ export default {
       if (has(payload, 'label')) {
         Vue.set(payload.phyloref, 'label', payload.label);
       }
-      if (has(payload, 'cladeDefinition')) {
-        Vue.set(payload.phyloref, 'cladeDefinition', payload.cladeDefinition);
+      if (has(payload, 'definition')) {
+        Vue.set(payload.phyloref, 'definition', payload.definition);
       }
       if (has(payload, 'curatorComments')) {
         Vue.set(payload.phyloref, 'curatorComments', payload.curatorComments);
