@@ -124,7 +124,8 @@
             "nameComplete": "Caiman crocodilus",
             "genusPart": "Caiman",
             "specificEpithet": "crocodilus"
-          }
+          },
+          "label": "Caiman crocodilus"
         },
         {
           "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
@@ -198,7 +199,8 @@
             "nameComplete": "Alligator mississippiensis",
             "genusPart": "Alligator",
             "specificEpithet": "mississippiensis"
-          }
+          },
+          "label": "Alligator mississippiensis"
         }
       ],
       "externalSpecifiers": [
@@ -278,7 +280,8 @@
             "nameComplete": "Caiman crocodilus",
             "genusPart": "Caiman",
             "specificEpithet": "crocodilus"
-          }
+          },
+          "label": "Caiman crocodilus"
         }
       ],
       "externalSpecifiers": [
@@ -291,7 +294,8 @@
             "nameComplete": "Alligator mississippiensis",
             "genusPart": "Alligator",
             "specificEpithet": "mississippiensis"
-          }
+          },
+          "label": "Alligator mississippiensis"
         }
       ],
       "expectedResolution": {
@@ -318,7 +322,8 @@
             "nameComplete": "Crocodylus niloticus",
             "genusPart": "Crocodylus",
             "specificEpithet": "niloticus"
-          }
+          },
+          "label": "Crocodylus niloticus"
         }
       ],
       "externalSpecifiers": [
@@ -410,7 +415,8 @@
             "nameComplete": "Tomistoma schlegelii",
             "genusPart": "Tomistoma",
             "specificEpithet": "schlegelii"
-          }
+          },
+          "label": "Tomistoma schlegelii"
         },
         {
           "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
@@ -496,7 +502,8 @@
             "nameComplete": "Diplocynodon ratelii",
             "genusPart": "Diplocynodon",
             "specificEpithet": "ratelii"
-          }
+          },
+          "label": "Diplocynodon ratelii"
         }
       ],
       "externalSpecifiers": [
@@ -509,7 +516,8 @@
             "nameComplete": "Alligator mississippiensis",
             "genusPart": "Alligator",
             "specificEpithet": "mississippiensis"
-          }
+          },
+          "label": "Alligator mississippiensis"
         }
       ],
       "expectedResolution": {
