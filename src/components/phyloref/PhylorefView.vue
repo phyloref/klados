@@ -441,8 +441,8 @@ export default {
       set(label) { this.$store.commit('setPhylorefProps', { phyloref: this.selectedPhyloref, label }); },
     },
     selectedCladeDefinition: {
-      get() { return this.selectedPhyloref.cladeDefinition; },
-      set(cladeDefinition) { this.$store.commit('setPhylorefProps', { phyloref: this.selectedPhyloref, cladeDefinition }); },
+      get() { return this.selectedPhyloref.definition; },
+      set(definition) { this.$store.commit('setPhylorefProps', { phyloref: this.selectedPhyloref, definition }); },
     },
     selectedCuratorComments: {
       get() { return this.selectedPhyloref.curatorComments; },
