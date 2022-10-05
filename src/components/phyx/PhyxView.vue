@@ -6,28 +6,6 @@
       </h5>
       <div class="card-body">
         <form>
-          <!-- Phyx collection name (if we have more than one phyloref!) -->
-          <div
-            v-if="phylorefs.length > 1 || phyx.title"
-            class="form-group row"
-          >
-            <label
-              for="phyx-label"
-              class="col-form-label col-md-2"
-            >
-              Collection name
-            </label>
-            <div class="col-md-10">
-              <input
-                id="phyx-label"
-                v-model="phyx.title"
-                type="text"
-                class="form-control"
-                placeholder="Enter title here"
-              >
-            </div>
-          </div>
-
           <!-- Curated by information -->
           <div class="form-group row">
             <label
@@ -36,7 +14,7 @@
             >
               Curated by
             </label>
-            <div class="col-md-4">
+            <div class="col-md-10">
               <input
                 id="curator-name"
                 v-model="phyxCurator"
@@ -44,8 +22,6 @@
                 class="form-control"
                 placeholder="Curator name"
               >
-            </div>
-            <div class="col-md-3">
               <input
                 id="curator-email"
                 v-model="phyxCuratorEmail"
@@ -53,22 +29,22 @@
                 class="form-control"
                 placeholder="Curator e-mail address"
               >
-            </div>
-            <div class="col-md-3 input-group">
-              <input
-                id="external-reference"
-                v-model="phyxCuratorORCID"
-                class="form-control"
-                placeholder="Curator ORCID"
-              >
-              <div class="input-group-append">
-                <a
-                  class="btn btn-outline-secondary"
-                  target="_blank"
-                  :href="'https://orcid.org/' + phyxCuratorORCID"
+              <div class="input-group">
+                <input
+                  id="external-reference"
+                  v-model="phyxCuratorORCID"
+                  class="form-control"
+                  placeholder="Curator ORCID"
                 >
-                  Open in new window
-                </a>
+                <div class="input-group-append">
+                  <a
+                    class="btn btn-outline-secondary"
+                    target="_blank"
+                    :href="'https://orcid.org/' + phyxCuratorORCID"
+                  >
+                    Open in new window
+                  </a>
+                </div>
               </div>
             </div>
           </div>

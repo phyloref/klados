@@ -33,7 +33,7 @@
             <a
               class="nav-link"
               target="_blank"
-              href="https://github.com/phyloref/curation-tool"
+              href="https://github.com/phyloref/klados"
             >
               Github repository
             </a>
@@ -42,7 +42,7 @@
             <a
               class="nav-link"
               target="_blank"
-              href="https://github.com/phyloref/curation-tool/issues"
+              href="https://github.com/phyloref/klados/issues"
             >
               Report bug
             </a>
