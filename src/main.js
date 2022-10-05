@@ -8,6 +8,9 @@ import BootstrapVue from 'bootstrap-vue';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-vue/dist/bootstrap-vue.min.css';
 
+// Import Phylotree CSS file.
+import 'phylotree/dist/phylotree.css';
+
 // Use vue-resize to track when phylogenies are resized.
 import VueResize from 'vue-resize';
 import 'vue-resize/dist/vue-resize.css';
