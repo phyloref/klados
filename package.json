@@ -1,6 +1,6 @@
 {
   "name": "klados",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/phyloref/curation-tool.git"
+    "url": "git+https://github.com/phyloref/klados.git"
   },
   "dependencies": {
     "@babel/plugin-transform-modules-commonjs": "^7.10.4",
