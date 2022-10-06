@@ -105,6 +105,13 @@
           >
             Duplicate phyloreference
           </button>
+
+          <button
+            class="btn btn-danger"
+            @click="deleteThisPhyloref()"
+          >
+            Delete phyloreference
+          </button>
         </div>
       </div>
     </div>
@@ -511,6 +518,15 @@ export default {
       // Return the list of nodes on a particular phylogeny that this phyloreference
       // has been determined to resolve on by JPhyloRef.
       return this.$store.getters.getResolvedNodesForPhylogeny(phylogeny, this.selectedPhyloref, flagReturnShortURIs);
+    },
+    deleteThisPhyloref() {
+      // Delete this phyloreference, and unset the selected phyloref so we return to the summary page.
+      if(confirm('Are you sure you wish to delete this phyloreference? This cannot be undone!')) {
+        this.$store.commit('deletePhyloref', {
+          phyloref: this.selectedPhyloref,
+        });
+        this.$store.commit('changeDisplay', {});
+      }
     },
   },
 };

@@ -106,6 +106,21 @@
           </div>
         </form>
       </div>
+
+      <div class="card-footer">
+        <div
+            class="btn-group"
+            role="group"
+            area-label="Phylogeny management"
+        >
+          <button
+              class="btn btn-danger"
+              @click="deleteThisPhylogeny()"
+          >
+            Delete phylogeny
+          </button>
+        </div>
+      </div>
     </div>
 
     <!-- Display the list of errors encountered when parsing this Newick string -->
@@ -161,6 +176,17 @@ export default {
       // Errors in the phylogenyId field.
       phylogenyIdError: undefined,
     };
+  },
+  methods: {
+    deleteThisPhylogeny() {
+      // Delete this phylogeny, and unset the selected phylogeny so we return to the summary page.
+      if(confirm('Are you sure you wish to delete this phylogeny? This cannot be undone!')) {
+        this.$store.commit('deletePhylogeny', {
+          phylogeny: this.selectedPhylogeny,
+        });
+        this.$store.commit('changeDisplay', {});
+      }
+    },
   },
   computed: {
     /*
