@@ -17,7 +17,7 @@
       v-else
       class="phylotreeContainer"
     >
-      <svg
+      <div
         :id="'phylogeny' + phylogenyIndex"
         class="col-md-12 phylogeny"
       />
@@ -35,6 +35,7 @@
 import { uniqueId, has } from 'lodash';
 import { phylotree, newickParser } from 'phylotree';
 import { PhylogenyWrapper, PhylorefWrapper } from '@phyloref/phyx';
+import jQuery from 'jquery';
 
 /*
  * Note that this requires the Phylotree Javascript to be loaded in the HTML
@@ -94,8 +95,7 @@ export default {
     },
     tree() {
       // Set up Phylotree.
-      // this.parsedNewick.json
-      return new phylotree('((A, B_C), D_E)');
+      return new phylotree(this.parsedNewick.json);
     },
   },
   watch: {
@@ -164,18 +164,15 @@ export default {
       this.pinningNodeChildrenIRIs = new Set();
 
       // Draw the tree.
-      this.treeRender = this.tree
+      this.tree
         .render({
           'left-right-spacing': 'fit-to-size',
           'top-bottom-spacing': 'fit-to-size',
           container: `#phylogeny${this.phylogenyIndex}`,
         });
 
-      this.treeRender.show();
-      this.treeRender.layout();
-      this.treeRender.update();
-
-      console.log(this.treeRender);
+      jQuery(this.tree.display.container).empty();
+      jQuery(this.tree.display.container).html(this.tree.display.show());
     },
   },
 };
