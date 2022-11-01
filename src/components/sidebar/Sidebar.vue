@@ -243,6 +243,7 @@ import { signer } from 'x-hub-signature';
 import zlib from 'zlib';
 
 import { PhyxWrapper, PhylorefWrapper, TaxonomicUnitWrapper } from '@phyloref/phyx';
+import { newickParser } from 'phylotree';
 
 import ModifiedIcon from '../icons/ModifiedIcon.vue';
 
@@ -444,7 +445,7 @@ export default {
         // Prepare JSON-LD file for submission.
         const jsonld = JSON.stringify([new PhyxWrapper(
           outerThis.$store.state.phyx.currentPhyx,
-          d3.layout.newick_parser,
+          newickParser,
         ).asJSONLD()]);
 
         // To improve upload speed, let's Gzip the file before upload.

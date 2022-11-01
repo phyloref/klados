@@ -64,7 +64,7 @@ export default {
       if (!flagReturnShortURIs) return nodeURIs;
       const results = nodeURIs.map(iri => iri.replace(`${phylogenyURI}_`, ''));
 
-      // console.log('getResolvedNodesForPhylogeny:', phylogeny, phyloref, results);
+      console.log('getResolvedNodesForPhylogeny:', phylogeny, phyloref, results);
 
       return results;
     },
