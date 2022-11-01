@@ -168,6 +168,7 @@ export default {
         .render({
           'left-right-spacing': 'fit-to-size',
           'top-bottom-spacing': 'fit-to-size',
+          'align-tips': 'right',
           container: `#phylogeny${this.phylogenyIndex}`,
         });
 
