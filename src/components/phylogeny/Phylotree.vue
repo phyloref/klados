@@ -163,14 +163,25 @@ export default {
       this.pinningNodes = [];
       this.pinningNodeChildrenIRIs = new Set();
 
+      const container = jQuery(`#phylogeny${this.phylogenyIndex}`);
+
       // Draw the tree.
-      this.tree
+      const display = this.tree
         .render({
           'left-right-spacing': 'fit-to-size',
           'top-bottom-spacing': 'fit-to-size',
           'align-tips': 'right',
           container: `#phylogeny${this.phylogenyIndex}`,
         });
+
+      display.font_size = 16;
+      display.size = [
+        // height
+        container.innerHeight(),
+        // width
+        container.innerWidth(),
+        // We need more space because our fonts are bigger than the default.
+      ];
 
       jQuery(this.tree.display.container).empty();
       jQuery(this.tree.display.container).html(this.tree.display.show());
