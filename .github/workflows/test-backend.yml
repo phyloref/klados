@@ -1,9 +1,14 @@
-name: Test Klados backend
+name: Test Klados reasoner backend
 
 # This workflow tests whether the backend is up and running. It does this by sending it a POST request, then
 # checking to see if we get back the expected JSON output.
 
-on: workflow_dispatch
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'add-scheduled-test-for-backend'
+
 
 # Based on https://github.com/marketplace/actions/deploy-to-github-pages
 jobs:  
