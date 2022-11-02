@@ -26,4 +26,6 @@ jobs:
           timeout: 30000
       - name: Check reasoner response
         if: steps.backendReasonerJob.outputs.response == '{"phylorefs":{"#Alligatoridae":["#phylogeny0_node22"]}}'
-        run: echo "::error Klados reasoner backend failed"
+        run:
+        - echo "::error::Klados reasoner backend failed"
+        - exit 1
