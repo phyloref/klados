@@ -4,10 +4,9 @@ name: Test Klados reasoner backend
 # checking to see if we get back the expected JSON output.
 
 on:
-  workflow_dispatch:
-  push:
-    branches:
-      - 'add-scheduled-test-for-backend'
+  schedule:
+    # Run this job at 3am and 3pm UTC, which corresponds to 11am and 11pm EDT
+    - cron: '0 3,15 * * *'
 
 
 # Based on https://github.com/marketplace/actions/deploy-to-github-pages
