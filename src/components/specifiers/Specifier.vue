@@ -84,7 +84,7 @@
           class="btn btn-danger"
           @click="deleteSpecifier()"
         >
-          &times;
+          <b-icon icon="trash"></b-icon>
         </button>
       </div>
     </div>
@@ -390,7 +390,7 @@
  *    overwrite it using the specifier.
  */
 
-import Vue from 'vue';
+import { BIcon, BIconTrash } from 'bootstrap-vue';
 import {
   PhylorefWrapper,
   TaxonomicUnitWrapper,
@@ -402,12 +402,17 @@ import {
   has, isEmpty, isEqual, cloneDeep, pickBy, uniqueId,
 } from 'lodash';
 
+
 // TaxonomicUnitWrapper doesn't yet set a type for apomophies, so
 // we'll set one up ourselves.
 TaxonomicUnitWrapper.TYPE_APOMORPHY = 'http://purl.obolibrary.org/obo/CDAO_0000071';
 
 export default {
   name: 'Specifier',
+  components: {
+    BIcon,
+    BIconTrash,
+  },
   props: {
     specifierIndex: {
       default: () => uniqueId(),
