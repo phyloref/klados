@@ -353,8 +353,8 @@ export default {
         // We need more space because our fonts are bigger than the default.
       ];
 
-      jQuery(this.tree.display.container).empty();
-      jQuery(this.tree.display.container).html(this.tree.display.show());
+      jQuery(display.container).empty();
+      jQuery(display.container).html(display.show());
     },
   },
 };
