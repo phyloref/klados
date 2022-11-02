@@ -108,7 +108,7 @@
                   class="btn btn-sm btn-danger"
                   @click="deletePhyloref(phyloref)"
                 >
-                  &#x2715;
+                  <b-icon-trash></b-icon-trash>
                 </button>
               </td>
               <td>
@@ -215,7 +215,7 @@
                   class="btn btn-sm btn-danger"
                   @click="deletePhylogeny(phylogeny)"
                 >
-                  &#x2715;
+                  <b-icon-trash></b-icon-trash>
                 </button>
               </td>
               <td>
@@ -260,12 +260,16 @@ import { mapState } from 'vuex';
 import { has, max, range } from 'lodash';
 import { stringify } from 'csv-stringify';
 import { saveAs } from 'filesaver.js-npm';
+import { BIconTrash } from 'bootstrap-vue';
 import {
   PhylorefWrapper, PhylogenyWrapper, TaxonNameWrapper, TaxonomicUnitWrapper,
 } from '@phyloref/phyx';
 
 export default {
   name: 'PhyxView',
+  components: {
+    BIconTrash,
+  },
   computed: {
     nomenCodes: () => TaxonNameWrapper.getNomenclaturalCodes(),
     phyxCurator: {
