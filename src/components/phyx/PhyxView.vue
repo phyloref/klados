@@ -73,6 +73,20 @@
               </select>
             </div>
           </div>
+
+          <!-- Checkbox for permission to save this information to browser -->
+          <div class="form-group row">
+            <div class="col-md-2">&nbsp;</div>
+            <div class="col-md-10">
+              <input type="checkbox"
+                     :checked="cookieCheckbox"
+                     @click="$store.commit('toggleCookieAllowed')"
+              />
+              Click this checkbox if you would like Klados to save your curator information and
+              default nomenclatural code as a browser cookie for the next month, or uncheck it to
+              delete all Klados cookies from your browsers.
+            </div>
+          </div>
         </form>
       </div>
     </div>
@@ -279,6 +293,9 @@ export default {
     phyxCuratorORCID: {
       get() { return this.phyx.curatorORCID; },
       set(orcid) { this.$store.commit('setCurator', { orcid }); },
+    },
+    cookieCheckbox() {
+      return this.$store.getters.isCookieAllowed;
     },
     ...mapState({
       phyx: state => state.phyx.currentPhyx,
