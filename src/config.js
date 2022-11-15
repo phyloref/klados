@@ -23,6 +23,9 @@ module.exports = {
   COOKIE_EXPIRY: '30d', // Expire cookies in 30 days
 
   // Cookie names to use for:
+  // - the 'allowed' cookie -- if set to 'true', this means that the user has granted us permission
+  //   to store their information in cookies.
+  COOKIE_ALLOWED: 'kladosCookieAllowed',
   // - the default nomenclatural code
   COOKIE_DEFAULT_NOMEN_CODE_URI: 'kladosDefaultNomenclaturalCodeURI',
   // - curator name

@@ -48,7 +48,7 @@ import AdvancedOptionsModal from './components/modals/AdvancedOptionsModal.vue';
 
 // Load some configuration options.
 import {
-  COOKIE_EXPIRY,
+  COOKIE_ALLOWED,
   COOKIE_CURATOR_NAME,
   COOKIE_CURATOR_EMAIL,
   COOKIE_CURATOR_ORCID,
@@ -83,18 +83,22 @@ export default {
   },
   created() {
     // We store some information as browser cookies so that users don't need to re-enter them
-    // every time. One of these (the default nomenclatural code) is entirely handled in modules/phyx.js.
+    // every time. One of these (the default nomenclatural code) is entirely handled in
+    // modules/phyx.js.
+    //
     // Three of them need to be set on the default empty Phyx file here:
-    if (this.$cookies.get(COOKIE_CURATOR_NAME)) {
-      this.$store.commit('setCurator', { name: this.$cookies.get(COOKIE_CURATOR_NAME) });
-    }
+    if (this.$cookies.get(COOKIE_ALLOWED) === 'true') {
+      if (this.$cookies.get(COOKIE_CURATOR_NAME)) {
+        this.$store.commit('setCurator', {name: this.$cookies.get(COOKIE_CURATOR_NAME)});
+      }
 
-    if (this.$cookies.get(COOKIE_CURATOR_EMAIL)) {
-      this.$store.commit('setCurator', { email: this.$cookies.get(COOKIE_CURATOR_EMAIL) });
-    }
+      if (this.$cookies.get(COOKIE_CURATOR_EMAIL)) {
+        this.$store.commit('setCurator', {email: this.$cookies.get(COOKIE_CURATOR_EMAIL)});
+      }
 
-    if (this.$cookies.get(COOKIE_CURATOR_ORCID)) {
-      this.$store.commit('setCurator', { orcid: this.$cookies.get(COOKIE_CURATOR_ORCID) });
+      if (this.$cookies.get(COOKIE_CURATOR_ORCID)) {
+        this.$store.commit('setCurator', {orcid: this.$cookies.get(COOKIE_CURATOR_ORCID)});
+      }
     }
 
     // Reset the "changed" flags (in case the above code changed the Phyx file)
