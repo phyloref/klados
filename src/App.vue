@@ -112,8 +112,13 @@ export default {
     $(window).on('beforeunload', () => {
       const confirmationMessage = 'Your modifications have not been saved and will be lost if you close Klados. Confirm to discard your changes, or cancel to return to Klados.';
 
-      if (!isEqual(this.loadedPhyx, this.currentPhyx)) return confirmationMessage;
-      return false;
+      console.info('beforeUnload() called!');
+
+      if (!isEqual(this.loadedPhyx, this.currentPhyx)) {
+        console.warn('Difference in loadedPhyx and currentPhyx detected, warning user before closing window:', this.loadedPhyx, this.currentPhyx);
+        return confirmationMessage;
+      }
+      return undefined;
     });
   },
 };
