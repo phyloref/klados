@@ -1,0 +1,404 @@
+{
+    "@context": "http://www.phyloref.org/phyx.js/context/v0.2.0/phyx.json",
+    "title": "Phylogeny of the Calymperaceae with a rank-free systematic treatment",
+    "citation": "Fisher KM, Wall DP, Yip KL, Mishler BD (2007) The Bryologist 110(1):46-73.",
+    "url": "https://doi.org/10.1639/0007-2745%282007%29110%5B46%3APOTCWA%5D2.0.CO%3B2",
+    "year": 2007,
+    "phylogenies": [
+        {
+            "newick": "((((((((((('Arthrocormus schimperi',('Exostratum blumii 243','Exostratum blumii 245')Exostratum),('Exodictyon incrassatum',(('Leucophanes seychellarum',('Leucophanes octoblepharoides','Leucophanes albescens'),'Leucophanes glaucum'),'Syrrhopodon confertus')Leucophanes))Albifolium,'Syrrhopodon muelleri'),'Syrrhopodon perarmatus'),(('Syrrhopodon ciliatus',('Syrrhopodon albovaginatus 446','Syrrhopodon albovaginatus 162')),((('Syrrhopodon tortillis','Syrrhopodon leprieurii'),'Syrrhopodon prolifer'),('Syrrhopodon parasiticus','Syrrhopodon trachyphyllus',('Syrrhopodon banksii','Syrrhopodon involutus')Leucophanella)))Trachymitrium),('Syrrhopodon armatus','Syrrhopodon fimbriatulus')),((((('Mitthyridium obtusifolium','Mitthyridium constrictum'),'Mitthyridium fasciculatum'),('Mitthyridium undulatum','Mitthyridium jungquilianum'))Mitthyridium_as_per_paper,'Syrrhopodon mahensis')Mitthyridium,('Syrrhopodon tristichus',('Syrrhopodon croceus','Syrrhopodon apertus','Syrrhopodon fissipapillatus'))))Syrrhopodon,(('Syrrhopodon incompletus',((((('Calymperes palisotii 159','Calymperes palisotii 180'),'Calymperes motleyi'),('Calymperes erosum','Calymperes robinsonii')),(('Calymperes tenerum','Calymperes subintegrum',('Calymperes tuatomuense','Calymperes pseudopodianum'),'Calymperes hispidium'),'Calymperes moluccense')),((('Calymperes tahitense 320','Calymperes tahitense 115'),'Calymperes lonchophyllum'),(('Calymperes afzelii 179','Calymperes afzelii 165'),'Calymperes graffeanum')))),'Syrrhopodon mauritianus')Calymperes),'Syrrhopodon japonicus'),'Syrrhopodon gardneri')Calymperaceae,('Octoblepharum Moorea 445','Octoblepharum albidum')Octoblepharum);",
+            "ot:dataDeposit": "https://treebase.org/treebase-web/search/study/taxa.html?id=1624&treeid=748",
+            "additionalNodeProperties": {
+                "Arthrocormus schimperi": {
+                    "representsTaxonomicUnits": [
+                        {
+                            "@type": "http://rs.tdwg.org/dwc/terms/Occurrence",
+                            "occurrenceID": "urn:catalog:::Mishler 7/24/98 (5)",
+                            "nameString": "Arthrocormus schimperi",
+                            "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000109"
+                        }
+                    ]
+                },
+                "Exodictyon incrassatum": {
+                    "representsTaxonomicUnits": [
+                        {
+                            "@type": "http://rs.tdwg.org/dwc/terms/Occurrence",
+                            "occurrenceID": "urn:catalog:::Wall 2527, Fiji (uc)",
+                            "nameString": "Exodictyon sp"
+                        }
+                    ]
+                },
+                "Exostratum blumii 243": {
+                    "comment": "The paper does not tell us which specimen ID goes with which node, so I've assigned both specmen IDs to both nodes. -- GGV",
+                    "representsTaxonomicUnits": [
+                        {
+                            "@type": "http://rs.tdwg.org/dwc/terms/Occurrence",
+                            "occurrenceID": "urn:catalog:::Mishler 7/26/98(1)",
+                            "nameString": "Exostratum blumii"
+                        },
+                        {
+                            "@type": "http://rs.tdwg.org/dwc/terms/Occurrence",
+                            "occurrenceID": "urn:catalog:::Mishler 7/26/98(3)",
+                            "nameString": "Exostratum blumii"
+                        }
+                    ]
+                },
+                "Exostratum blumii 245": {
+                    "comment": "The paper does not tell us which specimen ID goes with which node, so I've assigned both specmen IDs to both nodes. -- GGV",
+                    "representsTaxonomicUnits": [
+                        {
+                            "@type": "http://rs.tdwg.org/dwc/terms/Occurrence",
+                            "occurrenceID": "urn:catalog:::Mishler 7/26/98(1)",
+                            "nameString": "Exostratum blumii"
+                        },
+                        {
+                            "@type": "http://rs.tdwg.org/dwc/terms/Occurrence",
+                            "occurrenceID": "urn:catalog:::Mishler 7/26/98(3)",
+                            "nameString": "Exostratum blumii"
+                        }
+                    ]
+                }
+            },
+            "@id": "#phylogeny0"
+        }
+    ],
+    "phylorefs": [
+        {
+            "label": "Calymperaceae",
+            "cladeDefinition": "nomen cladi conversum, Calymperaceae Müll. Hal., Synop. Musc. Frond. 1. (1849)\n\tStem-based definition:\n\tinternal specifier: Type: Syrrhopodon gardneri (Hook.) Schwägr., Sp. Musc. Frond. Suppl. 2(1): 110, tab. 131, figs. 1-13. (1824)\n\tinternal specifier: Type: Leucophanes octoblepharoides Brid., Bryol. Univ. 1: 763. (1826)\n\texternal specifier: Type: Octoblepharum albidum Hedw., Sp. Musc. 50. (1801)\n\tImportant synapomorphies: cancellinae, central strand absent from stem\n\tIncluded terminal clades: gardneri, japonicus",
+            "internalSpecifiers": [
+                {
+                    "label": "Type: Syrrhopodon gardneri (Hook.) Schwägr., Sp. Musc. Frond. Suppl. 2(1): 110, tab. 131, figs. 1–13. (1824)",
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "hasName": {
+                        "nameComplete": "Syrrhopodon gardneri",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000109"
+                    }
+                },
+                {
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000109",
+                        "label": "Leucophanes octoblepharoides",
+                        "nameComplete": "Leucophanes octoblepharoides",
+                        "genusPart": "Leucophanes",
+                        "specificEpithet": "octoblepharoides"
+                    },
+                    "label": "Type: Leucophanes octoblepharoides Brid., Bryol. Univ. 1: 763. (1826)"
+                }
+            ],
+            "externalSpecifiers": [
+                {
+                    "label": "Type: Octoblepharum albidum Hedw., Sp. Musc. 50. (1801)",
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "hasName": {
+                        "nameComplete": "Octoblepharum albidum",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000109"
+                    }
+                }
+            ]
+        },
+        {
+            "label": "Calymperes",
+            "cladeDefinition": "nomen cladi conversum, Calymperes lonchophyllum Schwägr., Tab. Exhib. Calyptr. Opercul. (3). 1814 (1813).\nStem-based definition:\ninternal specifier: Type: Calymperes lonchophyllum Schwägr., Tab. Exhib. Calyptr. Opercul. (3). 1814 (1813).\ninternal specifier: Type: Syrrhopodon mauritianus Müll. Hal. ex Ångstr., Öfv. Förh. Kongl. Svenska Vet.-Akad. 33(4): 54. (1876)\nexternal specifier: Type: Syrrhopodon croceus Mitt., J. Proc. Linn. Soc., Bot. Suppl. 1: 41. (1859) Important synapomorphies:\nperistome greatly reduced or absent\nsheathed or intramarginal elongate border cells\ncampanulate calyptrae\nspecialized gemmiferous leaves\nIncluded terminal clades: afzelii, dozyanum, erosum, hispidum, incompletum, lonchophyllum, mauritianus, moluccense, motleyi, palisotii, pseudopodianum, robinsonii, subintegrum, tahitense, tenerum, tuamotuense",
+            "internalSpecifiers": [
+                {
+                    "label": "Type: Calymperes lonchophyllum Schwägr., Tab. Exhib. Calyptr. Opercul. (3). 1814 (1813).",
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Calymperes lonchophyllum Schwägr., Tab. Exhib. Calyptr. Opercul. (3). 1814 (1813)."
+                },
+                {
+                    "label": "Type: Syrrhopodon mauritianus Müll. Hal. ex Ångstr., Öfv. Förh. Kongl. Svenska Vet.-Akad. 33(4): 54. (1876)",
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Syrrhopodon mauritianus Müll. Hal. ex Ångstr., Öfv. Förh. Kongl. Svenska Vet.-Akad. 33(4): 54. (1876)"
+                }
+            ],
+            "externalSpecifiers": [
+                {
+                    "label": "Type: Syrrhopodon croceus Mitt., J. Proc. Linn. Soc., Bot. Suppl. 1: 41. (1859)",
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Syrrhopodon croceus Mitt., J. Proc. Linn. Soc., Bot. Suppl. 1: 41. (1859)"
+                }
+            ]
+        },
+        {
+            "label": "Syrrhopodon",
+            "cladeDefinition": "nomen cladi conversum, Syrrhopodon gardneri (Hook.) Schwägr., Sp. Musc. Frond. Suppl. 2(1): 110, tab. 131, figs. 1–13. (1824)\nStem-based definition:\n\ninternal specifier: Type: Syrrhopodon croceus Mitt., J. Proc. Linn. Soc., Bot. Suppl. 1: 41. (1859)\ninternal specifier: Type: Leucophanes octoblepharoides Brid., Bryol. Univ. 1: 763. (1826)\nexternal specifier: Type: Syrrhopodon mauritianus Müll. Hal. ex Ångstr., Öfv. Förh. Kongl. Svenska Vet.-Akad. 33(4): 54. (1876)\nImportant synapomorphies:\n\ncucullate calyptrae\nmarginal border of elongate hyaline cells (sterome)\nIncluded terminal clades:\n\napertus, armatus, croceus, fimbriatulus, loreus, tristichus, mahensis, muelleri, perarmatus",
+            "internalSpecifiers": [
+                {
+                    "label": "Type: Syrrhopodon croceus Mitt., J. Proc. Linn. Soc., Bot. Suppl. 1: 41. (1859)",
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Syrrhopodon croceus Mitt., J. Proc. Linn. Soc., Bot. Suppl. 1: 41. (1859)"
+                },
+                {
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000036",
+                        "label": "Leucophanes octoblepharoides",
+                        "nameComplete": "Leucophanes octoblepharoides",
+                        "genusPart": "Leucophanes",
+                        "specificEpithet": "octoblepharoides"
+                    },
+                    "label": "Type: Leucophanes octoblepharoides Brid., Bryol. Univ. 1: 763. (1826)"
+                }
+            ],
+            "externalSpecifiers": [
+                {
+                    "label": "Type: Syrrhopodon mauritianus Müll. Hal. ex Ångstr., Öfv. Förh. Kongl. Svenska Vet.-Akad. 33(4): 54. (1876)",
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Syrrhopodon mauritianus Müll. Hal. ex Ångstr., Öfv. Förh. Kongl. Svenska Vet.-Akad. 33(4): 54. (1876)"
+                }
+            ]
+        },
+        {
+            "label": "Mitthyridium",
+            "cladeDefinition": "nomen cladi conversum, Mitthyridium fasciculatum (Hook. & Grev.) H. Rob., Phytologia 32: 432. (1975)\nStem-based definition:\n\ninternal specifier: Type: Syrrhopodon fasciculatum Hook. & Grev., Edinb. J. Sci. 3: 225. (1825)\ninternal specifier: Type: Codonoblepharum undulatum Dozy & Molk., Ann. Sci. Nat., Bot., III, 2: 301. (1844)\nexternal specifier: Type: Syrrhopodon croceus Mitt., J. Proc. Linn. Soc., Bot. Suppl. 1: 41. (1859)\nImportant synapomorphies:\n\ncladocarpy\nmany cancellinar columns\nvery wide sterome\ncreeping habit\nIncluded terminal clades:\n\nundulatum, jungquilianum, fasciculatum, constrictum, obtusifolium",
+            "internalSpecifiers": [
+                {
+                    "label": "Type: Syrrhopodon fasciculatum Hook. & Grev., Edinb. J. Sci. 3: 225. (1825)",
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Syrrhopodon fasciculatum Hook. & Grev., Edinb. J. Sci. 3: 225. (1825)"
+                },
+                {
+                    "label": "Type: Codonoblepharum undulatum Dozy & Molk., Ann. Sci. Nat., Bot., III, 2: 301. (1844)",
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Codonoblepharum undulatum Dozy & Molk., Ann. Sci. Nat., Bot., III, 2: 301. (1844)"
+                }
+            ],
+            "externalSpecifiers": [
+                {
+                    "label": "Type: Syrrhopodon croceus Mitt., J. Proc. Linn. Soc., Bot. Suppl. 1: 41. (1859)",
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Syrrhopodon croceus Mitt., J. Proc. Linn. Soc., Bot. Suppl. 1: 41. (1859)"
+                }
+            ]
+        },
+        {
+            "label": "Trachymitrium",
+            "cladeDefinition": "nomen cladi conversum, T. ciliatum (Hook.) Brid. (= Weissia ciliata Hook.), Bryol. Univ. 1: 159. (1826)\nStem-based definition:\n\ninternal specifier: Type: Weissia ciliata Hook., Musci Exot. 2: 7. 171. (1820)\ninternal specifier: Type: Syrrhopodon involutus Schwägr., Sp. Musc. Frond. Suppl. 2, 1(2): 117. pl. 132. (1824)\nexternal specifier: Type: Syrrhopodon perarmatus Broth. & Watts, J. & Proc. Roy. Soc. New South Wales 49: 133. (1915)\nIncluded terminal clades:\n\nalbovaginatus, ciliatus, leprieurii, parasiticus, prolifer, tortilis, trachyphyllus",
+            "internalSpecifiers": [
+                {
+                    "label": "Type: Syrrhopodon croceus Mitt., J. Proc. Linn. Soc., Bot. Suppl. 1: 41. (1859)",
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Weissia ciliata Hook., Musci Exot. 2: 7. 171. (1820)"
+                },
+                {
+                    "label": "Type: Syrrhopodon involutus Schwägr., Sp. Musc. Frond. Suppl. 2, 1(2): 117. pl. 132. (1824)",
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Syrrhopodon involutus Schwägr., Sp. Musc. Frond. Suppl. 2, 1(2): 117. pl. 132. (1824)"
+                }
+            ],
+            "externalSpecifiers": [
+                {
+                    "label": "Type: Syrrhopodon perarmatus Broth. & Watts, J. & Proc. Roy. Soc. New South Wales 49: 133. (1915)",
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Syrrhopodon perarmatus Broth. & Watts, J. & Proc. Roy. Soc. New South Wales 49: 133. (1915)"
+                }
+            ]
+        },
+        {
+            "label": "Leucophanella",
+            "cladeDefinition": "nomen cladi conversum, Syrrhopodon sect. Leucophanella Besch., Bull. Soc. Bot. France 45: 60. (1898)\nStem-based definition:\n\ninternal Specifier: Type: S. banksii Müll. Hal., Bot. Zeitung (Berlin) 16: 162. (1858)\ninternal Specifier: Type: S. involutus Schwägr., Sp. Musc. Frond. Suppl. 2, 1(2): 117. pl. 132. (1824)\ninternal Specifier: Type: S. revolutus Dozy & Molk.\nexternal Specifier: S. trachyphyllus Mont., Sylloge Gen. Sp. Cryptog. 47. (1856)\nImportant synapomorphies:\n\nCancellinae comprising 60–>90% of leaf area\nIncluded terminal clades:\n\ninvolutus, banksii",
+            "internalSpecifiers": [
+                {
+                    "label": "Type: S. banksii Müll. Hal., Bot. Zeitung (Berlin) 16: 162. (1858)",
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Syrrhopodon banksii Müll. Hal., Bot. Zeitung (Berlin) 16: 162. (1858)"
+                },
+                {
+                    "label": "Type: S. banksii Müll. Hal., Bot. Zeitung (Berlin) 16: 162. (1858)",
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Syrrhopodon involutus Schwägr., Sp. Musc. Frond. Suppl. 2, 1(2): 117. pl. 132. (1824)"
+                },
+                {
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000036",
+                        "label": "Syrrhopodon revolutus",
+                        "nameComplete": "Syrrhopodon revolutus",
+                        "genusPart": "Syrrhopodon",
+                        "specificEpithet": "revolutus"
+                    },
+                    "label": "Type: S. revolutus Dozy & Molk."
+                }
+            ],
+            "externalSpecifiers": [
+                {
+                    "label": "S. trachyphyllus Mont., Sylloge Gen. Sp. Cryptog. 47. (1856)",
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Syrrhopodon trachyphyllus Mont., Sylloge Gen. Sp. Cryptog. 47. (1856)"
+                }
+            ]
+        },
+        {
+            "label": "Albifolium",
+            "cladeDefinition": "nomen cladi novum\n\nStem-based definition:\n\ninternal specifier: Type: Arthrocormus schimperi (Dozy & Molk.) Dozy & Molk. (=Mielichhoferia schimperi Dozy & Molk.), Musci Frond. Ined. Archip. Ind. 75. (1846)\ninternal specifier: Type: Leucophanes octoblepharoides Brid., Bryol. Univ. 1: 763. (1826)\nexternal specifier: Type: Syrrhopodon muelleri (Dozy & Molk) Sande Lac., Bryol. Jav. 2: 224. (1870)\nImportant synapomorphies:\n\nLeaf architecture / chlorocysts and hyalocysts\ncircular depressions on peristome\nIncluded clades:\n\nArthrocormus, Exodictyon, Exostratum, Leucophanes",
+            "internalSpecifiers": [
+                {
+                    "label": "Type: Arthrocormus schimperi (Dozy & Molk.) Dozy & Molk. (=Mielichhoferia schimperi Dozy & Molk.), Musci Frond. Ined. Archip. Ind. 75. (1846)",
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Arthrocormus schimperi (Dozy & Molk.) Dozy & Molk. (=Mielichhoferia schimperi Dozy & Molk.), Musci Frond. Ined. Archip. Ind. 75. (1846)"
+                },
+                {
+                    "label": "Type: Leucophanes octoblepharoides Brid., Bryol. Univ. 1: 763. (1826)",
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Leucophanes octoblepharoides Brid., Bryol. Univ. 1: 763. (1826)"
+                }
+            ],
+            "externalSpecifiers": [
+                {
+                    "label": "Type: Syrrhopodon muelleri (Dozy & Molk) Sande Lac., Bryol. Jav. 2: 224. (1870)",
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Syrrhopodon muelleri (Dozy & Molk) Sande Lac., Bryol. Jav. 2: 224. (1870)"
+                }
+            ]
+        },
+        {
+            "label": "Arthrocormus",
+            "cladeDefinition": "nomen cladi conversum, Arthrocormus schimperi (Dozy & Molk.) Dozy & Molk. (= Mielichhoferia schimperi Dozy & Molk.), Musci Frond. Ined. Archip. Ind. 75. (1846)\nStem-based definition:\n\ninternal specifier: Type: Arthrocormus schimperi (Dozy & Molk.) Dozy & Molk. (= Mielichhoferia schimperi Dozy & Molk.), Musci Frond. Ined. Archip. Ind. 75. (1846)\ninternal specifier: Mishler 7/24/98 (5) Queensland, Australia (UC)\nexternal specifier: Type: Exostratum blumii (Nees ex Hampe) L. Ellis, Lindbergia 11: 22. (1985)\nIncluded terminal clade:\n\nschimperi",
+            "internalSpecifiers": [
+                {
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000036",
+                        "label": "Arthrocormus schimperi",
+                        "nameComplete": "Arthrocormus schimperi",
+                        "genusPart": "Arthrocormus",
+                        "specificEpithet": "schimperi"
+                    },
+                    "label": "Type: Arthrocormus schimperi (Dozy & Molk.) Dozy & Molk. (= Mielichhoferia schimperi Dozy & Molk.), Musci Frond. Ined. Archip. Ind. 75. (1846)"
+                },
+                {
+                    "@type": "http://rs.tdwg.org/dwc/terms/Occurrence",
+                    "dwc:basisOfRecord": "PreservedSpecimen",
+                    "occurrenceID": "::Mishler 7/24/98 (5)",
+                    "institutionCode": "",
+                    "collectionCode": "",
+                    "catalogNumber": "Mishler 7/24/98 (5)",
+                    "label": "Mishler 7/24/98 (5) Queensland, Australia (UC)"
+                }
+            ],
+            "externalSpecifiers": [
+                {
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000036",
+                        "label": "Exostratum blumii",
+                        "nameComplete": "Exostratum blumii",
+                        "genusPart": "Exostratum",
+                        "specificEpithet": "blumii"
+                    },
+                    "label": "Type: Exostratum blumii (Nees ex Hampe) L. Ellis, Lindbergia 11: 22. (1985)"
+                }
+            ],
+            "expectedResolution": {
+                "#phylogeny0": {
+                    "nodeLabel": "Arthrocormus schimperi"
+                }
+            }
+        },
+        {
+            "label": "Exostratum",
+            "cladeDefinition": "nomen cladi conversum, Exostratum blumii (Nees ex Hampe) L. Ellis, Lindbergia 11: 22. (1985)\nStem-based definition:\n\ninternal specifier: Type: Exostratum blumii (Nees ex Hampe) L. Ellis, Lindbergia 11: 22. (1985)\ninternal specifier: Mishler 7/24/98(3), Queensland, Australia (uc)\nexternal specifier: Type: Arthrocormus schimperi (Dozy & Molk.) Dozy & Molk. (= Mielichhoferia schimperi Dozy & Molk.), Musci Frond. Ined. Archip. Ind. 75. (1846)\nIncluded terminal clade:\n\nblumii",
+            "internalSpecifiers": [
+                {
+                    "label": "Type: Exostratum blumii (Nees ex Hampe) L. Ellis, Lindbergia 11: 22. (1985)",
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Exostratum blumii (Nees ex Hampe) L. Ellis, Lindbergia 11: 22. (1985)"
+                },
+                {
+                    "@type": "http://rs.tdwg.org/dwc/terms/Occurrence",
+                    "dwc:basisOfRecord": "PreservedSpecimen",
+                    "occurrenceID": "::Mishler 7/24/98(3)",
+                    "institutionCode": "",
+                    "collectionCode": "",
+                    "catalogNumber": "Mishler 7/24/98(3)",
+                    "label": "Mishler 7/24/98(3), Queensland, Australia (uc)"
+                }
+            ],
+            "externalSpecifiers": [
+                {
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000036",
+                        "label": "Arthrocormus schimperi",
+                        "nameComplete": "Arthrocormus schimperi",
+                        "genusPart": "Arthrocormus",
+                        "specificEpithet": "schimperi"
+                    },
+                    "label": "Type: Arthrocormus schimperi (Dozy & Molk.) Dozy & Molk. (= Mielichhoferia schimperi Dozy & Molk.), Musci Frond. Ined. Archip. Ind. 75. (1846)"
+                }
+            ]
+        },
+        {
+            "label": "Exodictyon",
+            "cladeDefinition": "nomen cladi conversum, Exodictyon Cardot, Rev. Bryol. Lichénol. 26: 6. (1899), excl. parte, emend Ellis in Lindbergia 11: 16 (1985)\n\nStem-based definition:\n\ninternal specifier: Type: Exodictyon Cardot, Rev. Bryol. Lichénol. 26: 6. (1899), excl. parte, emend Ellis in Lindbergia 11: 16 (1985)\ninternal specifier: Wall 2527, Fiji (uc)\nexternal specifier: Type: Leucophanes octoblepharoides Brid., Bryol. Univ. 1: 763. (1826)\nIncluded terminal clade:\n\nincrassatum",
+            "internalSpecifiers": [
+                {
+                    "label": "Type: Exodictyon Cardot, Rev. Bryol. Lichénol. 26: 6. (1899), excl. parte, emend Ellis in Lindbergia 11: 16 (1985)",
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Exodictyon Cardot, Rev. Bryol. Lichénol. 26: 6. (1899), excl. parte, emend Ellis in Lindbergia 11: 16 (1985)"
+                },
+                {
+                    "label": "Wall 2527, Fiji (UC)",
+                    "@type": "http://rs.tdwg.org/dwc/terms/Occurrence",
+                    "occurrenceID": "urn:catalog:::Wall 2527, Fiji (uc)",
+                    "nameString": "Exodictyon Cardot, Rev. Bryol. Lichénol. 26: 6. (1899), excl. parte, emend Ellis in Lindbergia 11: 16 (1985)"
+                }
+            ],
+            "externalSpecifiers": [
+                {
+                    "label": "Type: Leucophanes octoblepharoides Brid., Bryol. Univ. 1: 763. (1826)",
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Leucophanes octoblepharoides Brid., Bryol. Univ. 1: 763. (1826)"
+                }
+            ],
+            "expectedResolution": {
+                "#phylogeny0": {
+                    "nodeLabel": "Exodictyon incrassatum"
+                }
+            }
+        },
+        {
+            "label": "Leucophanes",
+            "cladeDefinition": "nomen cladi conversum, Leucophanes octoblepharoides Brid., Bryol. Univ. 1: 763. (1826)\n\nStem-based definition:\n\ninternal specifier: Type: Leucophanes octoblepharoides Brid., Bryol. Univ. 1: 763. (1826)\ninternal specifier: Type: Leucophanes seychellarum Besch., Ann. Sci. Nat., Bot., VI, 9: 337. (1880)\nexternal specifier: Wall 2527, Fiji (uc)\nIncluded terminal clades:\n\nconfertus, glaucum, octoblepharoides, seychellarum",
+            "internalSpecifiers": [
+                {
+                    "label": "Type: Leucophanes octoblepharoides Brid., Bryol. Univ. 1: 763. (1826)",
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Leucophanes octoblepharoides Brid., Bryol. Univ. 1: 763. (1826)"
+                },
+                {
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000036",
+                        "label": "Leucophanes seychellarum",
+                        "nameComplete": "Leucophanes seychellarum",
+                        "genusPart": "Leucophanes",
+                        "specificEpithet": "seychellarum"
+                    },
+                    "label": "Type: Leucophanes seychellarum Besch., Ann. Sci. Nat., Bot., VI, 9: 337. (1880)"
+                }
+            ],
+            "externalSpecifiers": [
+                {
+                    "@type": "http://rs.tdwg.org/dwc/terms/Occurrence",
+                    "dwc:basisOfRecord": "PreservedSpecimen",
+                    "occurrenceID": "::Wall 2527, Fiji (uc)",
+                    "institutionCode": "",
+                    "collectionCode": "",
+                    "catalogNumber": "Wall 2527, Fiji (uc)",
+                    "label": "Wall 2527, Fiji (uc)"
+                }
+            ]
+        }
+    ],
+    "doi": "10.1639/0007-2745%282007%29110%5B46%3APOTCWA%5D2.0.CO%3B2"
+}
