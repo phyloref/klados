@@ -82,7 +82,7 @@
                      :checked="cookieCheckbox"
                      @click="$store.commit('toggleCookieAllowed')"
               />
-              Click this checkbox if you would like Klados to save your curator information and
+              Save curator information and
               default nomenclatural code as a browser cookie for the next month, or uncheck it to
               delete all Klados cookies from your browsers.
             </div>
