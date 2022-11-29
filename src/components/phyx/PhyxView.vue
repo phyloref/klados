@@ -84,7 +84,7 @@
               />
               Save curator information and
               default nomenclatural code as a browser cookie for the next month, or uncheck it to
-              delete all Klados cookies from your browsers.
+              Klados cookies will be deleted from your browser.
             </div>
           </div>
         </form>
