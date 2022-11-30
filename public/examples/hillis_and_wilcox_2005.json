@@ -803,17 +803,11 @@
             "cladeDefinition": "Laurasiarana, new clade name. Definition: The clade stemming from the most recent common ancestor of Rana temporaria Linne 1758 and Rana aurora Baird and Girard 1852.",
             "curatorComments": "The Laurasiarana expected node is not found in the TreeBase tree, so I've placed it where I think it should go.",
             "internalSpecifiers": [{
-                "referencesTaxonomicUnits": [{
-                    "scientificNames": [{
-                        "scientificName": "Rana temporaria Linne 1758"
-                    }]
-                }]
+                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                "nameString": "Rana temporaria Linne 1758"
             }, {
-                "referencesTaxonomicUnits": [{
-                    "scientificNames": [{
-                        "scientificName": "Rana aurora Baird and Girard 1852"
-                    }]
-                }]
+                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                "nameString": "Rana aurora Baird and Girard 1852"
             }]
         },
         {
@@ -821,40 +815,24 @@
             "cladeDefinition": "Amerana Dubois 1992 (converted clade name). Definition: The clade stemming from the most recent common ancestor of Rana aurora Baird and Girard 1852, Rana boylii Baird 1854, Rana cascadae Slater 1939, Rana muscosa Camp 1917, and Rana pretiosa Baird and Girard 1853.",
             "internalSpecifiers": [
                 {
-                    "referencesTaxonomicUnits": [{
-                        "scientificNames": [{
-                            "scientificName": "Rana aurora Baird and Girard 1852"
-                        }]
-                    }]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Rana aurora Baird and Girard 1852"
                 },
                 {
-                    "referencesTaxonomicUnits": [{
-                        "scientificNames": [{
-                            "scientificName": "Rana boylii Baird 1854"
-                        }]
-                    }]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Rana boylii Baird 1854"
                 },
                 {
-                    "referencesTaxonomicUnits": [{
-                        "scientificNames": [{
-                            "scientificName": "Rana cascadae Slater 1939"
-                        }]
-                    }]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Rana cascadae Slater 1939"
                 },
                 {
-                    "referencesTaxonomicUnits": [{
-                        "scientificNames": [{
-                            "scientificName": "Rana muscosa Camp 1917"
-                        }]
-                    }]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Rana muscosa Camp 1917"
                 },
                 {
-                    "specifierWillNotMatch": "*Rana pretiosa* not present in this phylogeny",
-                    "referencesTaxonomicUnits": [{
-                        "scientificNames": [{
-                            "scientificName": "Rana pretiosa Baird and Girard 1853"
-                        }]
-                    }]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Rana pretiosa Baird and Girard 1853"
                 }
             ]
         },
@@ -863,18 +841,12 @@
             "cladeDefinition": "Novirana, new clade name. Definition: The clade stemming from the most recent common ancestor of Rana catesbeiana Shaw 1802 and Rana pipiens Schreber 1782.",
             "internalSpecifiers": [
                 {
-                    "referencesTaxonomicUnits": [{
-                        "scientificNames": [{
-                            "scientificName": "Rana catesbeiana Shaw 1802"
-                        }]
-                    }]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Rana catesbeiana Shaw 1802"
                 },
                 {
-                    "referencesTaxonomicUnits": [{
-                        "scientificNames": [{
-                            "scientificName": "Rana pipiens Schreber 1782"
-                        }]
-                    }]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Rana pipiens Schreber 1782"
                 }
             ]
         },
@@ -882,311 +854,184 @@
             "label": "Aquarana",
             "cladeDefinition": "Aquarana Dubois 1992 (converted clade name). Definition: The clade stemming from the most recent common ancestor of Rana catesbeiana Shaw 1802, Rana clamitans Latreille 1802, Rana grylio Stejneger 1901, Rana heckscheri Wright 1924, Rana okaloosae Moler 1985, Rana septentrionalis Baird 1854, and Rana virgatipes Cope1891. The species used in the definition are those species that were included by Dubois within this group.",
             "internalSpecifiers": [{
-                "referencesTaxonomicUnits": [{
-                    "scientificNames": [{
-                        "scientificName": "Rana catesbeiana Shaw 1802"
-                    }]
-                }]
+                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                "nameString": "Rana catesbeiana Shaw 1802"
             }, {
-                "referencesTaxonomicUnits": [{
-                    "scientificNames": [{
-                        "scientificName": "Rana clamitans Latreille 1802"
-                    }]
-                }]
+                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                "nameString": "Rana clamitans Latreille 1802"
             }, {
-                "referencesTaxonomicUnits": [{
-                    "scientificNames": [{
-                        "scientificName": "Rana grylio Stejneger 1901"
-                    }]
-                }]
+                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                "nameString": "Rana grylio Stejneger 1901"
             }, {
-                "referencesTaxonomicUnits": [{
-                    "scientificNames": [{
-                        "scientificName": "Rana heckscheri Wright 1924"
-                    }]
-                }]
+                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                "nameString": "Rana heckscheri Wright 1924"
             }, {
-                "referencesTaxonomicUnits": [{
-                    "scientificNames": [{
-                        "scientificName": "Rana okaloosae Moler 1985"
-                    }]
-                }]
+                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                "nameString": "Rana okaloosae Moler 1985"
             }, {
-                "referencesTaxonomicUnits": [{
-                    "scientificNames": [{
-                        "scientificName": "Rana septentrionalis Baird 1854"
-                    }]
-                }]
+                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                "nameString": "Rana septentrionalis Baird 1854"
             }, {
-                "referencesTaxonomicUnits": [{
-                    "scientificNames": [{
-                        "scientificName": "Rana virgatipes Cope1891"
-                    }]
-                }]
+                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                "nameString": "Rana virgatipes Cope 1891"
             }]
         },
         {
             "label": "Sierrana",
             "cladeDefinition": "Sierrana Dubois 1992 (converted clade name). Definition: The clade stemming from the most recent common ancestor of Rana julianiHillis and de Sá, 1988, Rana maculata Brocchi 1877, and Rana sierramadrensis Taylor 1939.",
             "internalSpecifiers": [{
-                "referencesTaxonomicUnits": [{
-                    "scientificNames": [{
-                        "scientificName": "Rana juliani Hillis and de Sá, 1988"
-                    }]
-                }]
+                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                "nameString": "Rana juliani Hillis and de Sá, 1988"
             }, {
-                "referencesTaxonomicUnits": [{
-                    "scientificNames": [{
-                        "scientificName": "Rana maculata Brocchi 1877"
-                    }]
-                }]
+                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                "nameString": "Rana maculata Brocchi 1877"
             }, {
-                "referencesTaxonomicUnits": [{
-                    "scientificNames": [{
-                        "scientificName": "Rana sierramadrensis Taylor 1939"
-                    }]
-                }]
+                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                "nameString": "Rana sierramadrensis Taylor 1939"
             }]
         },
         {
             "label": "Ranula",
             "cladeDefinition": "Ranula Peters 1859 (converted clade name). Definition: The clade stemming from the most recent common ancestor of Rana palmipes Spix 1824 and Rana warszewitschii (Schmidt) 1857.",
             "internalSpecifiers": [{
-                "referencesTaxonomicUnits": [{
-                    "scientificNames": [{
-                        "scientificName": "Rana palmipes Spix 1824"
-                    }]
-                }]
+                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                "nameString": "Rana palmipes Spix 1824"
             }, {
-                "referencesTaxonomicUnits": [{
-                    "scientificNames": [{
-                        "scientificName": "Rana warszewitschii (Schmidt) 1857"
-                    }]
-                }]
+                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                "nameString": "Rana warszewitschii (Schmidt) 1857"
             }]
         },
         {
             "label": "Levirana",
             "cladeDefinition": "Levirana Cope 1894 (converted clade name). Definition: The clade stemming from the most recent common ancestor of Rana maculata Brocchi 1877 and Rana vibicaria (Cope) 1894.",
             "internalSpecifiers": [{
-                "referencesTaxonomicUnits": [{
-                    "scientificNames": [{
-                        "scientificName": "Rana maculata Brocchi 1877"
-                    }]
-                }]
+                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                "nameString": "Rana maculata Brocchi 1877"
             }, {
-                "referencesTaxonomicUnits": [{
-                    "scientificNames": [{
-                        "scientificName": "Rana vibicaria (Cope) 1894"
-                    }]
-                }]
+                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                "nameString": "Rana vibicaria (Cope) 1894"
             }]
         },
         {
             "label": "Trypheropsis",
             "cladeDefinition": "Trypheropsis Cope 1868 (converted clade name). Definition: The clade stemming from the most recent common ancestor of Rana warszewitschii (Schmidt) 1857 and Rana vibicaria (Cope) 1894.",
             "internalSpecifiers": [{
-                "referencesTaxonomicUnits": [{
-                    "scientificNames": [{
-                        "scientificName": "Rana warszewitschii (Schmidt) 1857"
-                    }]
-                }]
+                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                "nameString": "Rana warszewitschii (Schmidt) 1857"
             }, {
-                "referencesTaxonomicUnits": [{
-                    "scientificNames": [{
-                        "scientificName": "Rana vibicaria (Cope) 1894"
-                    }]
-                }]
+                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                "nameString": "Rana vibicaria (Cope) 1894"
             }]
         }, {
             "label": "Lithobates",
             "cladeDefinition": "Lithobates Fitzinger 1843 (converted clade name). Definition: The clade stemming from the most recent common ancestor of Rana palmipes Spix 1824, Rana vaillanti Brocchi 1877, Rana bwanaHillis and de Sá 1988, and Rana julianiHillis and de Sá 1988.",
             "internalSpecifiers": [{
-                "referencesTaxonomicUnits": [{
-                    "scientificNames": [{
-                        "scientificName": "Rana palmipes Spix 1824"
-                    }]
-                }]
+                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                "nameString": "Rana palmipes Spix 1824"
             }, {
-                "referencesTaxonomicUnits": [{
-                    "scientificNames": [{
-                        "scientificName": "Rana vaillanti Brocchi 1877"
-                    }]
-                }]
+                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                "nameString": "Rana vaillanti Brocchi 1877"
             }, {
-                "referencesTaxonomicUnits": [{
-                    "scientificNames": [{
-                        "scientificName": "Rana bwana Hillis and de Sá 1988"
-                    }]
-                }]
+                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                "nameString": "Rana bwana Hillis and de Sá 1988"
             }, {
-                "referencesTaxonomicUnits": [{
-                    "scientificNames": [{
-                        "scientificName": "Rana juliani Hillis and de Sá 1988"
-                    }]
-                }]
+                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                "nameString": "Rana juliani Hillis and de Sá 1988"
             }]
         }, {
             "label": "Torrentirana",
             "cladeDefinition": "Torrentirana, new clade name. Definition: The clade stemming from the most recent common ancestor of Rana tarahumarae Boulenger 1917 and Rana sierramadrensis Taylor 1939",
             "internalSpecifiers": [{
-                "referencesTaxonomicUnits": [{
-                    "scientificNames": [{
-                        "scientificName": "Rana tarahumarae Boulenger 1917"
-                    }]
-                }]
+                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                "nameString": "Rana tarahumarae Boulenger 1917"
             }, {
-                "referencesTaxonomicUnits": [{
-                    "scientificNames": [{
-                        "scientificName": "Rana sierramadrensis Taylor 1939"
-                    }]
-                }]
+                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                "nameString": "Rana sierramadrensis Taylor 1939"
             }]
         }, {
             "label": "Zweifelia",
             "cladeDefinition": "Zweifelia Dubois 1992 (converted clade name). Definition: The clade stemming from the most recent common ancestor of Rana tarahumarae Boulenger 1917 and Rana zweifeli Hillis, Frost and Webb 1984.",
             "internalSpecifiers": [{
-                "referencesTaxonomicUnits": [{
-                    "scientificNames": [{
-                        "scientificName": "Rana tarahumarae Boulenger 1917"
-                    }]
-                }]
+                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                "nameString": "Rana tarahumarae Boulenger 1917"
             }, {
-                "referencesTaxonomicUnits": [{
-                    "scientificNames": [{
-                        "scientificName": "Rana zweifeli Hillis, Frost and Webb 1984"
-                    }]
-                }]
+                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                "nameString": "Rana zweifeli Hillis, Frost and Webb 1984"
             }]
         }, {
             "label": "Pantherana",
             "cladeDefinition": "Pantherana Dubois 1992 (converted clade name). Definition: The clade stemming from the most recent common ancestor of Rana pipiens Schreber 1782, Rana montezumae Baird 1854, Rana palustris LeConte 1825, and Rana berlandieri Baird 1854.",
             "internalSpecifiers": [{
-                "referencesTaxonomicUnits": [{
-                    "scientificNames": [{
-                        "scientificName": "Rana pipiens Schreber 1782"
-                    }]
-                }]
+                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                "nameString": "Rana pipiens Schreber 1782"
             }, {
-                "referencesTaxonomicUnits": [{
-                    "scientificNames": [{
-                        "scientificName": "Rana montezumae Baird 1854"
-                    }]
-                }]
+                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                "nameString": "Rana montezumae Baird 1854"
             }, {
-                "referencesTaxonomicUnits": [{
-                    "scientificNames": [{
-                        "scientificName": "Rana palustris LeConte 1825"
-                    }]
-                }]
+                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                "nameString": "Rana palustris LeConte 1825"
             }, {
-                "referencesTaxonomicUnits": [{
-                    "scientificNames": [{
-                        "scientificName": "Rana berlandieri Baird 1854"
-                    }]
-                }]
+                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                "nameString": "Rana berlandieri Baird 1854"
             }]
         }, {
             "label": "Stertirana",
             "cladeDefinition": "Stertirana, new clade name. Definition: The clade stemming from the most recent common ancestor of Rana pipiens Schreber 1782 and Rana montezumae Baird 1854. Etymology: From the Latin words sterto, meaning ``snore,'' and rana, meaning ``frog,'' in reference to the snore-like element of the advertisement call of the frogs in this group. Content: Includes R. pipiens and the species in Lacusirana (see below). Type species: Rana montezumae Baird 1854.",
             "internalSpecifiers": [{
-                "referencesTaxonomicUnits": [{
-                    "scientificNames": [{
-                        "scientificName": "Rana pipiens Schreber 1782"
-                    }]
-                }]
+                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                "nameString": "Rana pipiens Schreber 1782"
             }, {
-                "referencesTaxonomicUnits": [{
-                    "scientificNames": [{
-                        "scientificName": "Rana montezumae Baird 1854"
-                    }]
-                }]
+                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                "nameString": "Rana montezumae Baird 1854"
             }]
         }, {
             "label": "Lacusirana",
             "cladeDefinition": "Lacusirana, new clade name. Definition: The clade stemming from the most recent common ancestor of Rana montezumae Baird 1854, R. megapoda Taylor 1942, and Rana chiricahuensis Platz and Mecham 1979. Etymology: From the Latin words lacus, meaning ``lake,'' and rana, meaning ``frog,'' in reference to the habitat of most of the species in this group. Content: In addition to the species named in the definition, this clade contains Rana dunni Zweifel 1957, Rana megapoda Taylor 1942, Rana subaquavocalis Platz 1993, Rana lemosespinaliSmith and Chiszar 2003, and a least one undescribed species from the Mexican Plateau (species 2 in Figs. 1, 2). In addition, we place Rana fisheri Stejneger 1893 in this clade based on morphological similarity. Type species: R. megapoda Taylor 1942.",
             "internalSpecifiers": [{
-                "referencesTaxonomicUnits": [{
-                    "scientificNames": [{
-                        "scientificName": "Rana montezumae Baird 1854"
-                    }]
-                }]
+                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                "nameString": "Rana montezumae Baird 1854"
             }, {
-                "specifierWillNotMatch": "*Rana megapoda* not present in the current phylogeny",
-                "referencesTaxonomicUnits": [{
-                    "scientificNames": [{
-                        "scientificName": "Rana megapoda Taylor 1942"
-                    }]
-                }]
+                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                "nameString": "Rana megapoda Taylor 1942"
             }, {
-                "referencesTaxonomicUnits": [{
-                    "scientificNames": [{
-                        "scientificName": "Rana chiricahuensis Platz and Mecham 1979"
-                    }]
-                }]
+                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                "nameString": "Rana chiricahuensis Platz and Mecham 1979"
             }]
         }, {
             "label": "Nenirana",
             "cladeDefinition": "Nenirana, new clade name. Definition: The clade stemming from the most recent common ancestor of Rana areolata Baird and Girard 1852 and Rana palustris Le Conte 1825. Etymology: From the Latin words nenia, meaning ``a funeral song,'' and rana, meaning ``frog,'' in reference to the low, mournful advertisement call of the species in this clade. Content: In addition to the species specified in the definition, this clade includes Rana capito LeConte 1855 and Rana sevosa Goin and Netting 1940. Hillis et al. (1983) informally termed this clade the R. areolata group. Type species: Rana areolata Baird and Girard 1852.",
             "internalSpecifiers": [{
-                "referencesTaxonomicUnits": [{
-                    "scientificNames": [{
-                        "scientificName": "Rana areolata Baird and Girard 1852"
-                    }]
-                }]
+                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                "nameString": "Rana areolata Baird and Girard 1852"
             }, {
-                "referencesTaxonomicUnits": [{
-                    "scientificNames": [{
-                        "scientificName": "Rana palustris Le Conte 1825"
-                    }]
-                }]
+                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                "nameString": "Rana palustris Le Conte 1825"
             }]
         }, {
             "label": "Scurrilirana",
             "cladeDefinition": "Scurrilirana, new clade name. Definition: The clade stemming from the most recent common ancestor of Rana berlandieri Baird 1854, Rana sphenocephala Cope 1886, Rana forreri Boulenger 1883, R. spectabilisHillis and Frost 1985, Rana omiltemana Gunther 1900, Rana taylori Smith 1959, and Rana magnaocularis Frost and Bagnara 1976. Etymology: From the Latin words scurrilis, meaning ``jesting,'' and rana, meaning ``frog,'' in reference to the advertisement calls of most of the species in this clade, which sound like chuckling laughter. Content: In addition to the species specified in the definition, this clade includes Rana blairi Mecham, Littlejohn, Oldham, Brown, and Brown 1973, Rana chichicuahutlaCuellar et al., 1996, Rana macroglossa Brocchi 1877, Rana miadis Barbour and Loveridge 1929, Rana neovolcanicaHillis and Frost, 1985, Rana onca Cope in Yarrow 1875, Rana tlalociHillis and Frost, 1985, Rana yavapaiensis Platz and Frost 1984, and several undescribed species (species 3–8) in Mexico and Central America. Hillis et al. (1983) informally termed this clade the beta division of the R. pipiens complex. Type species: Rana berlandieri Baird 1854.",
             "internalSpecifiers": [
                 {
-                    "referencesTaxonomicUnits": [{
-                        "scientificNames": [{
-                            "scientificName": "Rana berlandieri Baird 1854"
-                        }]
-                    }]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Rana berlandieri Baird 1854"
                 }, {
-                    "referencesTaxonomicUnits": [{
-                        "scientificNames": [{
-                            "scientificName": "Rana sphenocephala Cope 1886"
-                        }]
-                    }]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Rana sphenocephala Cope 1886"
                 }, {
-                    "referencesTaxonomicUnits": [{
-                        "scientificNames": [{
-                            "scientificName": "Rana forreri Boulenger 1883"
-                        }]
-                    }]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Rana forreri Boulenger 1883"
                 }, {
-                    "referencesTaxonomicUnits": [{
-                        "scientificNames": [{
-                            "scientificName": "Rana spectabilis Hillis and Frost 1985"
-                        }]
-                    }]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Rana spectabilis Hillis and Frost 1985"
                 }, {
-                    "referencesTaxonomicUnits": [{
-                        "scientificNames": [{
-                            "scientificName": "Rana omiltemana Gunther 1900"
-                        }]
-                    }]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Rana omiltemana Gunther 1900"
                 }, {
-                    "referencesTaxonomicUnits": [{
-                        "scientificNames": [{
-                            "scientificName": "Rana taylori Smith 1959"
-                        }]
-                    }]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Rana taylori Smith 1959"
                 }, {
-                    "referencesTaxonomicUnits": [{
-                        "scientificNames": [{
-                            "scientificName": "Rana magnaocularis Frost and Bagnara 1976"
-                        }]
-                    }]
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "nameString": "Rana magnaocularis Frost and Bagnara 1976"
                 }
             ]
         }
