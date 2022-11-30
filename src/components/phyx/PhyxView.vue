@@ -83,7 +83,7 @@
                      @click="$store.commit('toggleCookieAllowed')"
               />
               Save curator information and
-              default nomenclatural code as a browser cookie (currently for thirty days), or uncheck it to
+              default nomenclatural code as a browser cookie (currently for thirty days). If changed to unchecked,
               delete Klados cookies from your browser.
             </div>
           </div>
