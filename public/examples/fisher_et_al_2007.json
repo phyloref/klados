@@ -249,7 +249,8 @@
                         "label": "Syrrhopodon fasciculatum",
                         "nameComplete": "Syrrhopodon fasciculatum",
                         "genusPart": "Syrrhopodon",
-                        "specificEpithet": "fasciculatum"
+                        "specificEpithet": "fasciculatum",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICBN"
                     },
                     "label": "Type: Syrrhopodon fasciculatum Hook. & Grev., Edinb. J. Sci. 3: 225. (1825)"
                 },
@@ -260,7 +261,8 @@
                         "label": "Codonoblepharum undulatum",
                         "nameComplete": "Codonoblepharum undulatum",
                         "genusPart": "Codonoblepharum",
-                        "specificEpithet": "undulatum"
+                        "specificEpithet": "undulatum",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICBN"
                     },
                     "label": "Type: Codonoblepharum undulatum Dozy & Molk., Ann. Sci. Nat., Bot., III, 2: 301. (1844)"
                 }
@@ -273,7 +275,8 @@
                         "label": "Syrrhopodon croceus",
                         "nameComplete": "Syrrhopodon croceus",
                         "genusPart": "Syrrhopodon",
-                        "specificEpithet": "croceus"
+                        "specificEpithet": "croceus",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICBN"
                     },
                     "label": "Type: Syrrhopodon croceus Mitt., J. Proc. Linn. Soc., Bot. Suppl. 1: 41. (1859)"
                 }
@@ -325,14 +328,28 @@
             "cladeDefinition": "nomen cladi conversum, Syrrhopodon sect. Leucophanella Besch., Bull. Soc. Bot. France 45: 60. (1898)\nStem-based definition:\n\ninternal Specifier: Type: S. banksii Müll. Hal., Bot. Zeitung (Berlin) 16: 162. (1858)\ninternal Specifier: Type: S. involutus Schwägr., Sp. Musc. Frond. Suppl. 2, 1(2): 117. pl. 132. (1824)\ninternal Specifier: Type: S. revolutus Dozy & Molk.\nexternal Specifier: S. trachyphyllus Mont., Sylloge Gen. Sp. Cryptog. 47. (1856)\nImportant synapomorphies:\n\nCancellinae comprising 60–>90% of leaf area\nIncluded terminal clades:\n\ninvolutus, banksii",
             "internalSpecifiers": [
                 {
-                    "label": "Type: S. banksii Müll. Hal., Bot. Zeitung (Berlin) 16: 162. (1858)",
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Syrrhopodon banksii Müll. Hal., Bot. Zeitung (Berlin) 16: 162. (1858)"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "label": "Syrrhopodon banksii",
+                        "nameComplete": "Syrrhopodon banksii",
+                        "genusPart": "Syrrhopodon",
+                        "specificEpithet": "banksii",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICBN"
+                    },
+                    "label": "Type: S. banksii Müll. Hal., Bot. Zeitung (Berlin) 16: 162. (1858)"
                 },
                 {
-                    "label": "Type: S. banksii Müll. Hal., Bot. Zeitung (Berlin) 16: 162. (1858)",
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Syrrhopodon involutus Schwägr., Sp. Musc. Frond. Suppl. 2, 1(2): 117. pl. 132. (1824)"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "label": "Syrrhopodon involutus",
+                        "nameComplete": "Syrrhopodon involutus",
+                        "genusPart": "Syrrhopodon",
+                        "specificEpithet": "involutus",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICBN"
+                    },
+                    "label": "Type: S. banksii Müll. Hal., Bot. Zeitung (Berlin) 16: 162. (1858)"
                 },
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
@@ -349,9 +366,16 @@
             ],
             "externalSpecifiers": [
                 {
-                    "label": "S. trachyphyllus Mont., Sylloge Gen. Sp. Cryptog. 47. (1856)",
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Syrrhopodon trachyphyllus Mont., Sylloge Gen. Sp. Cryptog. 47. (1856)"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "label": "Syrrhopodon trachyphyllus",
+                        "nameComplete": "Syrrhopodon trachyphyllus",
+                        "genusPart": "Syrrhopodon",
+                        "specificEpithet": "trachyphyllus",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICBN"
+                    },
+                    "label": "S. trachyphyllus Mont., Sylloge Gen. Sp. Cryptog. 47. (1856)"
                 }
             ]
         },
@@ -366,7 +390,8 @@
                         "label": "Arthrocormus schimperi",
                         "nameComplete": "Arthrocormus schimperi",
                         "genusPart": "Arthrocormus",
-                        "specificEpithet": "schimperi"
+                        "specificEpithet": "schimperi",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICBN"
                     },
                     "label": "Type: Arthrocormus schimperi (Dozy & Molk.) Dozy & Molk. (=Mielichhoferia schimperi Dozy & Molk.), Musci Frond. Ined. Archip. Ind. 75. (1846)"
                 },
@@ -377,7 +402,8 @@
                         "label": "Leucophanes octoblepharoides",
                         "nameComplete": "Leucophanes octoblepharoides",
                         "genusPart": "Leucophanes",
-                        "specificEpithet": "octoblepharoides"
+                        "specificEpithet": "octoblepharoides",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICBN"
                     },
                     "label": "Type: Leucophanes octoblepharoides Brid., Bryol. Univ. 1: 763. (1826)"
                 }
@@ -390,7 +416,8 @@
                         "label": "Syrrhopodon muelleri",
                         "nameComplete": "Syrrhopodon muelleri",
                         "genusPart": "Syrrhopodon",
-                        "specificEpithet": "muelleri"
+                        "specificEpithet": "muelleri",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICBN"
                     },
                     "label": "Type: Syrrhopodon muelleri (Dozy & Molk) Sande Lac., Bryol. Jav. 2: 224. (1870)"
                 }
@@ -560,6 +587,5 @@
                 }
             ]
         }
-    ],
-    "doi": "10.1639/0007-2745%282007%29110%5B46%3APOTCWA%5D2.0.CO%3B2"
+    ]
 }
