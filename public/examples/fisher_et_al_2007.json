@@ -116,12 +116,16 @@
             "cladeDefinition": "nomen cladi conversum, Calymperaceae Müll. Hal., Synop. Musc. Frond. 1. (1849)\n\tStem-based definition:\n\tinternal specifier: Type: Syrrhopodon gardneri (Hook.) Schwägr., Sp. Musc. Frond. Suppl. 2(1): 110, tab. 131, figs. 1-13. (1824)\n\tinternal specifier: Type: Leucophanes octoblepharoides Brid., Bryol. Univ. 1: 763. (1826)\n\texternal specifier: Type: Octoblepharum albidum Hedw., Sp. Musc. 50. (1801)\n\tImportant synapomorphies: cancellinae, central strand absent from stem\n\tIncluded terminal clades: gardneri, japonicus",
             "internalSpecifiers": [
                 {
-                    "label": "Type: Syrrhopodon gardneri (Hook.) Schwägr., Sp. Musc. Frond. Suppl. 2(1): 110, tab. 131, figs. 1–13. (1824)",
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
                     "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "label": "Syrrhopodon gardneri",
                         "nameComplete": "Syrrhopodon gardneri",
+                        "genusPart": "Syrrhopodon",
+                        "specificEpithet": "gardneri",
                         "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000109"
-                    }
+                    },
+                    "label": "Type: Syrrhopodon gardneri (Hook.) Schwägr., Sp. Musc. Frond. Suppl. 2(1): 110, tab. 131, figs. 1–13. (1824)"
                 },
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
@@ -138,12 +142,16 @@
             ],
             "externalSpecifiers": [
                 {
-                    "label": "Type: Octoblepharum albidum Hedw., Sp. Musc. 50. (1801)",
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
                     "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "label": "Octoblepharum albidum",
                         "nameComplete": "Octoblepharum albidum",
+                        "genusPart": "Octoblepharum",
+                        "specificEpithet": "albidum",
                         "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000109"
-                    }
+                    },
+                    "label": "Type: Octoblepharum albidum Hedw., Sp. Musc. 50. (1801)"
                 }
             ]
         },
