@@ -6,7 +6,8 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "test": "jest"
+    "test": "jest",
+    "test-examples": "ajv validate -s src/tests/json-schema/schema.v1.0.0.json -d 'public/examples/*.json' -c ajv-formats --spec=draft7"
   },
   "repository": {
     "type": "git",
