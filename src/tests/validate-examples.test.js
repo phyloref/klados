@@ -9,7 +9,9 @@ const Ajv = require('ajv');
 /* Load JSON Schema for validation. */
 // const phyxJsonSchemaURI = 'https://www.phyloref.org/phyx.js/context/v1.0.0/schema.json';
 const phyxJsonSchema = JSON.parse(fs.readFileSync('./json-schema/schema.v1.0.0.json'));
-const validator = new Ajv().compile(phyxJsonSchema);
+const validator = new Ajv({
+  allErrors: true, // Display all error messages, not just the first.
+}).compile(phyxJsonSchema);
 
 /* Get a list of all the files to validate. */
 const exampleFileDir = path.resolve(__dirname, '..', '..', 'public', 'examples');
