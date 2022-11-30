@@ -84,7 +84,7 @@
               />
               Save curator information and
               default nomenclatural code as a browser cookie (currently for thirty days), or uncheck it to
-              Klados cookies will be deleted from your browser.
+              delete Klados cookies from your browser.
             </div>
           </div>
         </form>
