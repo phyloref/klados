@@ -267,6 +267,14 @@ export default {
           url: 'examples/brochu_2003.json',
           title: 'Brochu 2003',
         },
+        {
+          url: 'examples/fisher_et_al_2007.json',
+          title: 'Fisher et al, 2007',
+        },
+        {
+          url: 'examples/hillis_and_wilcox_2005.json',
+          title: 'Hillis and Wilcox, 2005',
+        },
       ];
     },
     ...mapGetters([

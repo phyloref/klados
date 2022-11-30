@@ -74,18 +74,11 @@
             </div>
           </div>
 
-          <!-- Primary reference phylogeny -->
+          <!-- Source -->
           <Citation
-            label="Primary reference phylogeny"
+            label="Source"
             :object="selectedPhylogeny"
-            citation-key="primaryPhylogenyCitation"
-          />
-
-          <!-- Other reference phylogeny -->
-          <Citation
-            label="Reference phylogeny"
-            :object="selectedPhylogeny"
-            citation-key="phylogenyCitation"
+            citation-key="source"
           />
 
           <div class="form-group row">

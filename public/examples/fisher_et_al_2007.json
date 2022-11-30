@@ -1,13 +1,62 @@
 {
-    "@context": "http://www.phyloref.org/phyx.js/context/v0.2.0/phyx.json",
+    "@context": "http://www.phyloref.org/phyx.js/context/v1.0.0/phyx.json",
     "title": "Phylogeny of the Calymperaceae with a rank-free systematic treatment",
     "citation": "Fisher KM, Wall DP, Yip KL, Mishler BD (2007) The Bryologist 110(1):46-73.",
     "url": "https://doi.org/10.1639/0007-2745%282007%29110%5B46%3APOTCWA%5D2.0.CO%3B2",
     "year": 2007,
     "phylogenies": [
         {
+            "@id": "#phylogeny0",
             "newick": "((((((((((('Arthrocormus schimperi',('Exostratum blumii 243','Exostratum blumii 245')Exostratum),('Exodictyon incrassatum',(('Leucophanes seychellarum',('Leucophanes octoblepharoides','Leucophanes albescens'),'Leucophanes glaucum'),'Syrrhopodon confertus')Leucophanes))Albifolium,'Syrrhopodon muelleri'),'Syrrhopodon perarmatus'),(('Syrrhopodon ciliatus',('Syrrhopodon albovaginatus 446','Syrrhopodon albovaginatus 162')),((('Syrrhopodon tortillis','Syrrhopodon leprieurii'),'Syrrhopodon prolifer'),('Syrrhopodon parasiticus','Syrrhopodon trachyphyllus',('Syrrhopodon banksii','Syrrhopodon involutus')Leucophanella)))Trachymitrium),('Syrrhopodon armatus','Syrrhopodon fimbriatulus')),((((('Mitthyridium obtusifolium','Mitthyridium constrictum'),'Mitthyridium fasciculatum'),('Mitthyridium undulatum','Mitthyridium jungquilianum'))Mitthyridium_as_per_paper,'Syrrhopodon mahensis')Mitthyridium,('Syrrhopodon tristichus',('Syrrhopodon croceus','Syrrhopodon apertus','Syrrhopodon fissipapillatus'))))Syrrhopodon,(('Syrrhopodon incompletus',((((('Calymperes palisotii 159','Calymperes palisotii 180'),'Calymperes motleyi'),('Calymperes erosum','Calymperes robinsonii')),(('Calymperes tenerum','Calymperes subintegrum',('Calymperes tuatomuense','Calymperes pseudopodianum'),'Calymperes hispidium'),'Calymperes moluccense')),((('Calymperes tahitense 320','Calymperes tahitense 115'),'Calymperes lonchophyllum'),(('Calymperes afzelii 179','Calymperes afzelii 165'),'Calymperes graffeanum')))),'Syrrhopodon mauritianus')Calymperes),'Syrrhopodon japonicus'),'Syrrhopodon gardneri')Calymperaceae,('Octoblepharum Moorea 445','Octoblepharum albidum')Octoblepharum);",
-            "ot:dataDeposit": "https://treebase.org/treebase-web/search/study/taxa.html?id=1624&treeid=748",
+            "source": {
+                "type": "article",
+                "title": "Phylogeny of the Calymperaceae with a rank-free systematic treatment",
+                "year": 2007,
+                "authors": [
+                    {
+                        "name": "Fisher KM"
+                    },
+                    {
+                        "name": "Wall DP"
+                    },
+                    {
+                        "name": "Yip KL"
+                    },
+                    {
+                        "name": "Mishler BD"
+                    }
+                ],
+                "journal": {
+                    "name": "The Bryologist",
+                    "volume": "110",
+                    "issue": "1",
+                    "pages": "46--73",
+                    "identifier": [
+                        {
+                            "type": "ISSN",
+                            "id": "0007-2745"
+                        },
+                        {
+                            "type": "issn",
+                            "id": "0007-2745"
+                        }
+                    ],
+                    "number": "1"
+                },
+                "figure": "10 (with some modifications specific to TreeBase)",
+                "identifier": [
+                    {
+                        "type": "doi",
+                        "id": "10.1639/0007-2745(2007)110[46:POTCWA]2.0.CO;2"
+                    }
+                ],
+                "link": [
+                    {
+                        "url": "https://treebase.org/treebase-web/search/study/taxa.html?id=1624&treeid=748"
+                    }
+                ],
+                "pages": "46--73"
+            },
             "additionalNodeProperties": {
                 "Arthrocormus schimperi": {
                     "representsTaxonomicUnits": [
@@ -58,8 +107,7 @@
                         }
                     ]
                 }
-            },
-            "@id": "#phylogeny0"
+            }
         }
     ],
     "phylorefs": [
