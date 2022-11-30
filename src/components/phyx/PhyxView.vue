@@ -65,12 +65,26 @@
                 @change="$store.commit('setDefaultNomenCodeURI', { defaultNomenclaturalCodeURI: $event.target.value })"
               >
                 <option
-                  v-for="(nomenCode, nomenCodeIndex) of nomenCodes"
-                  :value="nomenCode.uri"
+                  v-for="nomenCode of nomenCodes"
+                  :value="nomenCode.iri"
                 >
                   {{ nomenCode.label }}
                 </option>
               </select>
+            </div>
+          </div>
+
+          <!-- Checkbox for permission to save this information to browser -->
+          <div class="form-group row">
+            <div class="col-md-2">&nbsp;</div>
+            <div class="col-md-10">
+              <input type="checkbox"
+                     :checked="cookieCheckbox"
+                     @click="$store.commit('toggleCookieAllowed')"
+              />
+              Save curator information and
+              default nomenclatural code as a browser cookie (currently for thirty days). If changed to unchecked,
+              delete Klados cookies from your browser.
             </div>
           </div>
         </form>
@@ -283,6 +297,9 @@ export default {
     phyxCuratorORCID: {
       get() { return this.phyx.curatorORCID; },
       set(orcid) { this.$store.commit('setCurator', { orcid }); },
+    },
+    cookieCheckbox() {
+      return this.$store.getters.isCookieAllowed;
     },
     ...mapState({
       phyx: state => state.phyx.currentPhyx,

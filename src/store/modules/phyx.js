@@ -17,7 +17,30 @@ import {
   OPEN_TREE_ABOUT_URL,
   OPEN_TREE_TNRS_MATCH_NAMES_URL,
   OPEN_TREE_INDUCED_SUBTREE_URL,
+
+  COOKIE_EXPIRY,
+  COOKIE_ALLOWED, COOKIE_DEFAULT_NOMEN_CODE_URI, COOKIE_CURATOR_NAME, COOKIE_CURATOR_EMAIL, COOKIE_CURATOR_ORCID,
 } from '../../config';
+
+// Shared code for reading and writing cookies.
+
+/** Check whether we are allowed to store cookies on this users' browser.
+ * We determine this based on whether the COOKIE_ALLOWED cookie is set. */
+function checkCookieAllowed() {
+  return (Vue.$cookies.get(COOKIE_ALLOWED) === 'true');
+}
+
+/** Get a cookie from the browser (if we're allowed to). */
+function getKladosCookie(keyName, valueIfNotSet = undefined) {
+  if (checkCookieAllowed()) return Vue.$cookies.get(keyName) || valueIfNotSet;
+  return valueIfNotSet;
+}
+
+/** Set a cookie on the browser (if we're allowed to). */
+function setKladosCookie(keyName, value, expiry = COOKIE_EXPIRY) {
+  // Only set the cookie if we are allowed (the COOKIE_ALLOWED is set).
+  if (checkCookieAllowed()) Vue.$cookies.set(keyName, value, expiry);
+}
 
 export default {
   state: {
@@ -39,8 +62,10 @@ export default {
       return !isEqual(state.currentPhyx, state.loadedPhyx);
     },
     getDefaultNomenCodeURI(state) {
+      // If no default nomenclatural code is set in the Phyx file, we will attempt to look up that information
+      // using a cookie.
       return state.currentPhyx.defaultNomenclaturalCodeURI
-        || TaxonNameWrapper.UNKNOWN_CODE;
+          || getKladosCookie(COOKIE_DEFAULT_NOMEN_CODE_URI, TaxonNameWrapper.UNKNOWN_CODE);
     },
     getDownloadFilenameForPhyx(state) {
       // Return a filename to be used to name downloads of this Phyx document.
@@ -69,8 +94,28 @@ export default {
       if (phylorefLabels.length === 3) return `${phylorefLabels[0]}_${phylorefLabels[1]}_and_${phylorefLabels[2]}`;
       return `${phylorefLabels[0]}_${phylorefLabels[1]}_and_${phylorefLabels.length - 2}_others`;
     },
+    isCookieAllowed() {
+      // Checks to see if cookies are allowed. We can check this by seeing if a cookie named
+      // COOKIE_ALLOWED is set.
+      return checkCookieAllowed();
+    },
   },
   mutations: {
+    toggleCookieAllowed(state) {
+      if (checkCookieAllowed()) {
+        // Cookie allowed! Toggle it by deleting all Klados cookies.
+        Vue.$cookies.keys().forEach(key => Vue.$cookies.remove(key));
+      } else {
+        // Cookie not allowed! Toggle it to cookie allowed. We don't use setKladosCookie() because
+        // it includes a check for COOKIE_ALLOWED; instead, we set it directly.
+        Vue.$cookies.set(COOKIE_ALLOWED, 'true', COOKIE_EXPIRY);
+
+        // Then, save all current curator information.
+        setKladosCookie(COOKIE_CURATOR_NAME, state.currentPhyx.curator || '');
+        setKladosCookie(COOKIE_CURATOR_EMAIL, state.currentPhyx.curatorEmail || '');
+        setKladosCookie(COOKIE_CURATOR_ORCID, state.currentPhyx.curatorORCID || '');
+      }
+    },
     setCurrentPhyx(state, phyx) {
       // Replace the current Phyx file using an object. This method does NOT
       // update the loaded Phyx file, so these changes are treated as changes
@@ -131,6 +176,9 @@ export default {
         throw new Error('No default nomenclatural code URI provided to setDefaultNomenCodeURI');
       }
 
+      // Overwrite the current default nomenclatural code cookie.
+      setKladosCookie(COOKIE_DEFAULT_NOMEN_CODE_URI, payload.defaultNomenclaturalCodeURI);
+
       Vue.set(state.currentPhyx, 'defaultNomenclaturalCodeURI', payload.defaultNomenclaturalCodeURI);
     },
     duplicatePhyloref(state, payload) {
@@ -144,9 +192,18 @@ export default {
     },
     setCurator(state, payload) {
       // Set the curator name, e-mail address or (eventually) ORCID.
-      if (has(payload, 'name')) Vue.set(state.currentPhyx, 'curator', payload.name);
-      if (has(payload, 'email')) Vue.set(state.currentPhyx, 'curatorEmail', payload.email);
-      if (has(payload, 'orcid')) Vue.set(state.currentPhyx, 'curatorORCID', payload.orcid);
+      if (has(payload, 'name')) {
+        setKladosCookie(COOKIE_CURATOR_NAME, payload.name);
+        Vue.set(state.currentPhyx, 'curator', payload.name);
+      }
+      if (has(payload, 'email')) {
+        setKladosCookie(COOKIE_CURATOR_EMAIL, payload.email);
+        Vue.set(state.currentPhyx, 'curatorEmail', payload.email);
+      }
+      if (has(payload, 'orcid')) {
+        setKladosCookie(COOKIE_CURATOR_ORCID, payload.orcid);
+        Vue.set(state.currentPhyx, 'curatorORCID', payload.orcid);
+      }
     },
   },
   actions: {
