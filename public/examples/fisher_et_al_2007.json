@@ -64,7 +64,7 @@
                             "@type": "http://rs.tdwg.org/dwc/terms/Occurrence",
                             "occurrenceID": "urn:catalog:::Mishler 7/24/98 (5)",
                             "nameString": "Arthrocormus schimperi",
-                            "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000109"
+                            "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICBN"
                         }
                     ]
                 },
@@ -123,7 +123,7 @@
                         "nameComplete": "Syrrhopodon gardneri",
                         "genusPart": "Syrrhopodon",
                         "specificEpithet": "gardneri",
-                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000109"
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICBN"
                     },
                     "label": "Type: Syrrhopodon gardneri (Hook.) Schwägr., Sp. Musc. Frond. Suppl. 2(1): 110, tab. 131, figs. 1–13. (1824)"
                 },
@@ -131,7 +131,7 @@
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
                     "hasName": {
                         "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
-                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000109",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICBN",
                         "label": "Leucophanes octoblepharoides",
                         "nameComplete": "Leucophanes octoblepharoides",
                         "genusPart": "Leucophanes",
@@ -149,7 +149,7 @@
                         "nameComplete": "Octoblepharum albidum",
                         "genusPart": "Octoblepharum",
                         "specificEpithet": "albidum",
-                        "nomenclaturalCode": "http://purl.obolibrary.org/obo/NOMEN_0000109"
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICBN"
                     },
                     "label": "Type: Octoblepharum albidum Hedw., Sp. Musc. 50. (1801)"
                 }
