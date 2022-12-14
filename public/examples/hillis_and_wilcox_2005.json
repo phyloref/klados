@@ -1,814 +1,901 @@
 {
-    "@context": "http://www.phyloref.org/phyx.js/context/v0.2.0/phyx.json",
+    "@context": "https://www.phyloref.org/phyx.js/context/v1.0.0/phyx.json",
     "title": "Phylogeny of the New World true frogs (Rana)",
     "citation": "Hillis DM and Wilcox TP (2005) Molecular Phylogenetics and Evolution 34(2):299-314",
     "url": "https://doi.org/10.1016/j.ympev.2004.10.007",
     "year": 2005,
-
-    "phylogenies": [{
-        "newick": "(((('Rana luteiventris MVZ225749','Rana luteiventris MVZ191016'),'Rana boylii'),('Rana muscosa',('Rana cascadae','Rana aurora')))Amerana,'Rana temporaria',(((('Rana septentrionales',((('Rana heckscheri',('Rana catesbiana X12841','Rana catesbiana DMH84R2')),('Rana clamitans','Rana okaloosae')),'Rana grylio')),'Rana virgatipes')Aquarana,('Rana sylvatica DMH84R43','Rana sylvatica')),((((('Rana pustulosa','Rana tarahumarae'),('Rana psilonota','Rana zweifelii'))Zweifelia,'Rana sierramadrensis')Torrentirana,((('Rana palustris',('Rana areolata',('Rana capito','Rana sevosa')))Nenirana,((((('Rana magnaocularis','Rana sp7 KU 194492'),('Rana sp8 KU 195346',('Rana onca','Rana yavapaiensis'))),(('Rana sp6 LACM 146810',('Rana sp5 LACM 146764','Rana sp4 AMNH A 124167')),('Rana taylori',('Rana macroglossa','Rana macroglossa b')))),'Rana forreri'),(('Rana spectabilis',('Rana sp3 KU 194559','Rana omiltemana')),(((('Rana tlaloci','Rana neovolcanica'),'Rana berlandieri'),'Rana blairi'),('Rana sphenocephela utricularia','Rana sphenocephela'))))Scurrilirana),(((('Rana chiricahuensis KU 194419',('Rana subaquavocalis','Rana chiricahuensis KU 194442')),'Rana sp2 KU 204420'),('Rana dunni','Rana montezumae'))Lacusirana,('Rana pipiens JSF1119','Rana pipiens Y10945'))Stertirana)Pantherana),(('Rana maculata',('Rana warszewitshii','Rana vibicaria')Trypheropsis)Levirana,(('Rana bwana',('Rana sp1 QCAZ13219',('Rana palmipes KU204425','Rana palmipes AMNHA118801'))),('Rana vaillanti','Rana juliani'))Lithobates)Ranula)Sierrana)Novirana)Laurasiarana;",
-        "ot:dataDeposit": "https://treebase.org/treebase-web/search/study/taxa.html?id=1269&treeid=4419",
-
-        "additionalNodeProperties": {
-            "Rana areolata": {
-                "hasBasisOfRecord": {
-                    "locatedAt": {
-                        "verbatimLocality": "KU 204370: USA: Kansas: Lyon: just S of Hartsford"
-                    },
-                    "ownerInstitutionCode": "KU",
-                    "catalogNumber": "204370",
-                    "genBankID": "AY779229",
-                    "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779229"
-                }
-            },
-            "Rana aurora": {
-                "hasBasisOfRecord": {
-                    "locatedAt": {
-                        "verbatimLocality": "MVZ 188960: USA: California: Del Norte: Kings Valley Rd., 2.4 mi N Hwy. 199"
-                    },
-                    "ownerInstitutionCode": "MVZ",
-                    "catalogNumber": "188960",
-                    "GenBankID": "AY779196",
-                    "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779196"
-                }
-            },
-            "Rana berlandieri": {
-                "hasBasisOfRecord": {
-                    "locatedAt": {
-                        "verbatimLocality": "JSF 1136: USA: TX: Hays: San Marcos"
-                    },
-                    "ownerInstitutionCode": "JSF",
-                    "catalogNumber": "1136",
-                    "GenBankID": "AY779235",
-                    "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779235"
-                }
-            },
-            "Rana blairi": {
-                "hasBasisOfRecord": {
-                    "locatedAt": {
-                        "verbatimLocality": "JSF 830: USA: Kansas: Douglas: Lawrence"
-                    },
-                    "ownerInstitutionCode": "JSF",
-                    "catalogNumber": "830",
-                    "GenBankID": "AY779237",
-                    "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779237"
-                }
-            },
-            "Rana boylii": {
-                "hasBasisOfRecord": {
-                    "locatedAt": {
-                        "verbatimLocality": "MVZ 148929: USA: California: Lake: along Butts Creek, 0.4 mi NW Napa County line"
-                    },
-                    "ownerInstitutionCode": "MVZ",
-                    "catalogNumber": "148929",
-                    "GenBankID": "AY779192",
-                    "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779192"
-                }
-            },
-            "Rana bwana": {
-                "hasBasisOfRecord": {
-                    "locatedAt": {
-                        "verbatimLocality": "QCAZ 13964: Ecuador: Prov. Loja: Río Alamor near Zapotillo"
-                    },
-                    "ownerInstitutionCode": "QCAZ",
-                    "catalogNumber": "13964",
-                    "GenBankID": "AY779212",
-                    "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779212"
-                }
-            },
-            "Rana capito": {
-                "hasBasisOfRecord": {
-                    "locatedAt": {
-                        "verbatimLocality": "TNHC 60195: USA: Florida: Marion: Archibold Biological Station"
-                    },
-                    "ownerInstitutionCode": "TNHC",
-                    "catalogNumber": "60195",
-                    "GenBankID": "AY779231",
-                    "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779231"
-                }
-            },
-            "Rana cascadae": {
-                "hasBasisOfRecord": {
-                    "locatedAt": {
-                        "verbatimLocality": "MVZ 148946: USA: California: Shasta: Dersch Meadows"
-                    },
-                    "ownerInstitutionCode": "MVZ",
-                    "catalogNumber": "148946",
-                    "GenBankID": "AY779197",
-                    "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779197"
-                }
-            },
-            "Rana catesbiana X12841": {
-                "hasBasisOfRecord": {
-                    "locatedAt": {
-                        "verbatimLocality": "GenBank sequence; locality unknown"
-                    },
-                    "GenBankID": "GB X12841",
-                    "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/GB X12841"
+    "phylogenies": [
+        {
+            "newick": "(((('Rana luteiventris MVZ225749','Rana luteiventris MVZ191016'),'Rana boylii'),('Rana muscosa',('Rana cascadae','Rana aurora')))Amerana,'Rana temporaria',(((('Rana septentrionales',((('Rana heckscheri',('Rana catesbiana X12841','Rana catesbiana DMH84R2')),('Rana clamitans','Rana okaloosae')),'Rana grylio')),'Rana virgatipes')Aquarana,('Rana sylvatica DMH84R43','Rana sylvatica')),((((('Rana pustulosa','Rana tarahumarae'),('Rana psilonota','Rana zweifelii'))Zweifelia,'Rana sierramadrensis')Torrentirana,((('Rana palustris',('Rana areolata',('Rana capito','Rana sevosa')))Nenirana,((((('Rana magnaocularis','Rana sp7 KU 194492'),('Rana sp8 KU 195346',('Rana onca','Rana yavapaiensis'))),(('Rana sp6 LACM 146810',('Rana sp5 LACM 146764','Rana sp4 AMNH A 124167')),('Rana taylori',('Rana macroglossa','Rana macroglossa b')))),'Rana forreri'),(('Rana spectabilis',('Rana sp3 KU 194559','Rana omiltemana')),(((('Rana tlaloci','Rana neovolcanica'),'Rana berlandieri'),'Rana blairi'),('Rana sphenocephela utricularia','Rana sphenocephela'))))Scurrilirana),(((('Rana chiricahuensis KU 194419',('Rana subaquavocalis','Rana chiricahuensis KU 194442')),'Rana sp2 KU 204420'),('Rana dunni','Rana montezumae'))Lacusirana,('Rana pipiens JSF1119','Rana pipiens Y10945'))Stertirana)Pantherana),(('Rana maculata',('Rana warszewitshii','Rana vibicaria')Trypheropsis)Levirana,(('Rana bwana',('Rana sp1 QCAZ13219',('Rana palmipes KU204425','Rana palmipes AMNHA118801'))),('Rana vaillanti','Rana juliani'))Lithobates)Ranula)Sierrana)Novirana)Laurasiarana;",
+            "ot:dataDeposit": "https://treebase.org/treebase-web/search/study/taxa.html?id=1269&treeid=4419",
+            "additionalNodeProperties": {
+                "Rana areolata": {
+                    "hasBasisOfRecord": {
+                        "locatedAt": {
+                            "verbatimLocality": "KU 204370: USA: Kansas: Lyon: just S of Hartsford"
+                        },
+                        "ownerInstitutionCode": "KU",
+                        "catalogNumber": "204370",
+                        "genBankID": "AY779229",
+                        "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779229"
+                    }
                 },
-                "representsTaxonomicUnits": [{
-                    "scientificNames": [{
-                        "scientificName": "Rana catesbeiana"
-                    }]
-                }]
-            },
-            "Rana catesbiana DMH84R2": {
-                "hasBasisOfRecord": {
-                    "locatedAt": {
-                        "verbatimLocality": "DMH 84-R2: USA: Kansas: Douglas: Lawrence"
-                    },
-                    "ownerInstitutionCode": "DMH",
-                    "catalogNumber": "84-R2",
-                    "GenBankID": "AY779206",
-                    "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779206"
+                "Rana aurora": {
+                    "hasBasisOfRecord": {
+                        "locatedAt": {
+                            "verbatimLocality": "MVZ 188960: USA: California: Del Norte: Kings Valley Rd., 2.4 mi N Hwy. 199"
+                        },
+                        "ownerInstitutionCode": "MVZ",
+                        "catalogNumber": "188960",
+                        "GenBankID": "AY779196",
+                        "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779196"
+                    }
                 },
-                "representsTaxonomicUnits": [{
-                    "scientificNames": [{
-                        "scientificName": "Rana catesbeiana"
-                    }]
-                }]
-            },
-            "Rana chiricahuensis KU 194442": {
-                "hasBasisOfRecord": {
-                    "locatedAt": {
-                        "verbatimLocality": "KU 194442: Mexico: Durango: Río Chico at Mexico Hwy. 40"
-                    },
-                    "ownerInstitutionCode": "KU",
-                    "catalogNumber": "194442",
-                    "GenBankID": "AY779225",
-                    "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779225"
+                "Rana berlandieri": {
+                    "hasBasisOfRecord": {
+                        "locatedAt": {
+                            "verbatimLocality": "JSF 1136: USA: TX: Hays: San Marcos"
+                        },
+                        "ownerInstitutionCode": "JSF",
+                        "catalogNumber": "1136",
+                        "GenBankID": "AY779235",
+                        "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779235"
+                    }
                 },
-                "representsTaxonomicUnits": [{
-                    "scientificNames": [{
-                        "scientificName": "Rana chiricahuensis"
-                    }]
-                }]
-            },
-            "Rana chiricahuensis KU 194419": {
-                "hasBasisOfRecord": {
-                    "locatedAt": {
-                        "verbatimLocality": "KU 194419: USA: Arizona: Apache: Apache National Forest: Three Forks"
-                    },
-                    "ownerInstitutionCode": "KU",
-                    "catalogNumber": "194419",
-                    "GenBankID": "AY779226",
-                    "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779226"
+                "Rana blairi": {
+                    "hasBasisOfRecord": {
+                        "locatedAt": {
+                            "verbatimLocality": "JSF 830: USA: Kansas: Douglas: Lawrence"
+                        },
+                        "ownerInstitutionCode": "JSF",
+                        "catalogNumber": "830",
+                        "GenBankID": "AY779237",
+                        "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779237"
+                    }
                 },
-                "representsTaxonomicUnits": [{
-                    "scientificNames": [{
-                        "scientificName": "Rana chiricahuensis"
-                    }]
-                }]
-            },
-            "Rana clamitans": {
-                "hasBasisOfRecord": {
-                    "locatedAt": {
-                        "verbatimLocality": "JSF 1118: USA: Missouri: Montgomery: 3 km W Danville"
-                    },
-                    "ownerInstitutionCode": "JSF",
-                    "catalogNumber": "1118",
-                    "GenBankID": "AY779204",
-                    "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779204"
-                }
-            },
-            "Rana dunni": {
-                "hasBasisOfRecord": {
-                    "locatedAt": {
-                        "verbatimLocality": "KU 194527: Mexico: Michoacan: Tintzuntzan, Lago Patzcuaro"
-                    },
-                    "ownerInstitutionCode": "KU",
-                    "catalogNumber": "194527",
-                    "GenBankID": "AY779222",
-                    "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779222"
-                }
-            },
-            "Rana forreri": {
-                "hasBasisOfRecord": {
-                    "locatedAt": {
-                        "verbatimLocality": "KU 194581: Mexico: Sinaloa: 37.9 km S Escuinapa"
-                    },
-                    "ownerInstitutionCode": "KU",
-                    "catalogNumber": "194581",
-                    "GenBankID": "AY779233",
-                    "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779233"
-                }
-            },
-            "Rana grylio": {
-                "hasBasisOfRecord": {
-                    "locatedAt": {
-                        "verbatimLocality": "MVZ 175945: USA: Florida: Leon: Tall Timbers Research Station, Lake Iamonia"
-                    },
-                    "ownerInstitutionCode": "MVZ",
-                    "catalogNumber": "175945",
-                    "GenBankID": "AY779201",
-                    "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779201"
-                }
-            },
-            "Rana heckscheri": {
-                "hasBasisOfRecord": {
-                    "locatedAt": {
-                        "verbatimLocality": "MVZ 164908: USA: Florida: Gadsen-Leon: Overflow creek of Ochlocknee River at Hwy. S-12"
-                    },
-                    "ownerInstitutionCode": "MVZ",
-                    "catalogNumber": "164908",
-                    "GenBankID": "AY779205",
-                    "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779205"
-                }
-            },
-            "Rana juliani": {
-                "hasBasisOfRecord": {
-                    "locatedAt": {
-                        "verbatimLocality": "TNHC 60324: Belize: Cayo District: Little Vaqueros Creek"
-                    },
-                    "ownerInstitutionCode": "TNHC",
-                    "catalogNumber": "60324",
-                    "GenBankID": "AY779215",
-                    "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779215"
-                }
-            },
-            "Rana luteiventris MVZ225749": {
-                "hasBasisOfRecord": {
-                    "locatedAt": {
-                        "verbatimLocality": "MVZ 225749: USA: Washington: Pend Oreille: Colville Natl. Forest; Flowery Trail Road, 6.1 mi E 49 Degrees Ski area"
-                    },
-                    "ownerInstitutionCode": "MVZ",
-                    "catalogNumber": "225749",
-                    "GenBankID": "AY779193",
-                    "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779193"
+                "Rana boylii": {
+                    "hasBasisOfRecord": {
+                        "locatedAt": {
+                            "verbatimLocality": "MVZ 148929: USA: California: Lake: along Butts Creek, 0.4 mi NW Napa County line"
+                        },
+                        "ownerInstitutionCode": "MVZ",
+                        "catalogNumber": "148929",
+                        "GenBankID": "AY779192",
+                        "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779192"
+                    }
                 },
-                "representsTaxonomicUnits": [{
-                    "scientificNames": [{
-                        "scientificName": "Rana luteiventris"
-                    }]
-                }]
-            },
-            "Rana luteiventris MVZ191016": {
-                "hasBasisOfRecord": {
-                    "locatedAt": {
-                        "verbatimLocality": "MVZ 191016: USA: Montana: Lincoln: Dry Creek at Hwy. 56"
-                    },
-                    "ownerInstitutionCode": "MVZ",
-                    "catalogNumber": "191016",
-                    "GenBankID": "AY779194",
-                    "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779194"
+                "Rana bwana": {
+                    "hasBasisOfRecord": {
+                        "locatedAt": {
+                            "verbatimLocality": "QCAZ 13964: Ecuador: Prov. Loja: Río Alamor near Zapotillo"
+                        },
+                        "ownerInstitutionCode": "QCAZ",
+                        "catalogNumber": "13964",
+                        "GenBankID": "AY779212",
+                        "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779212"
+                    }
                 },
-                "representsTaxonomicUnits": [{
-                    "scientificNames": [{
-                        "scientificName": "Rana luteiventris"
-                    }]
-                }]
-            },
-            "Rana macroglossa": {
-                "hasBasisOfRecord": {
-                    "locatedAt": {
-                        "verbatimLocality": "KU 195138: Mexico: Chiapas: 7.7 km SE San Cristobal de las Casas"
-                    },
-                    "ownerInstitutionCode": "KU",
-                    "catalogNumber": "195138",
-                    "GenBankID": "AY779242",
-                    "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779242"
-                }
-            },
-            "Rana macroglossa b": {
-                "comment": "I'm assuming this is 'b', because it's listed second in the table, but there's no clear evidence one way or the other.",
-                "hasBasisOfRecord": {
-                    "locatedAt": {
-                        "verbatimLocality": "UTA A-17185: Guatemala: Sololá: Panajachel, Lake Atitlan"
-                    },
-                    "ownerInstitutionCode": "UTA",
-                    "catalogNumber": "A-17185",
-                    "GenBankID": "AY779243",
-                    "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779243"
+                "Rana capito": {
+                    "hasBasisOfRecord": {
+                        "locatedAt": {
+                            "verbatimLocality": "TNHC 60195: USA: Florida: Marion: Archibold Biological Station"
+                        },
+                        "ownerInstitutionCode": "TNHC",
+                        "catalogNumber": "60195",
+                        "GenBankID": "AY779231",
+                        "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779231"
+                    }
                 },
-                "representsTaxonomicUnits": [{
-                    "scientificNames": [{
-                        "scientificName": "Rana macroglossa"
-                    }]
-                }]
-            },
-            "Rana maculata": {
-                "hasBasisOfRecord": {
-                    "locatedAt": {
-                        "verbatimLocality": "KU 195258: Mexico: Oaxaca: Colonia Rodulfo Figueroa, 19 km NW Rizo de Oro"
-                    },
-                    "ownerInstitutionCode": "KU",
-                    "catalogNumber": "195258",
-                    "GenBankID": "AY779207",
-                    "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779207"
-                }
-            },
-            "Rana magnaocularis": {
-                "hasBasisOfRecord": {
-                    "locatedAt": {
-                        "verbatimLocality": "KU 194592: Mexico: Sonora: Arroyo Hondo, 15.2 km N Nuri"
-                    },
-                    "ownerInstitutionCode": "KU",
-                    "catalogNumber": "194592",
-                    "GenBankID": "AY779239",
-                    "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779239"
-                }
-            },
-            "Rana montezumae": {
-                "hasBasisOfRecord": {
-                    "locatedAt": {
-                        "verbatimLocality": "KU 195251: Mexico: Morelos: Lagunas Zempoala"
-                    },
-                    "ownerInstitutionCode": "KU",
-                    "catalogNumber": "195251",
-                    "GenBankID": "AY779223",
-                    "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779223"
-                }
-            },
-            "Rana muscosa": {
-                "hasBasisOfRecord": {
-                    "locatedAt": {
-                        "verbatimLocality": "MVZ 149006: USA: California: Mono: Meadows below Levitt Lake, W side Sonora Pass"
-                    },
-                    "ownerInstitutionCode": "MVZ",
-                    "catalogNumber": "149006",
-                    "GenBankID": "AY779195",
-                    "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779195"
-                }
-            },
-            "Rana neovolcanica": {
-                "hasBasisOfRecord": {
-                    "locatedAt": {
-                        "verbatimLocality": "KU 194536: Mexico: Michoacan: Zurumbueno"
-                    },
-                    "ownerInstitutionCode": "KU",
-                    "catalogNumber": "194536",
-                    "GenBankID": "AY779236",
-                    "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779236"
-                }
-            },
-            "Rana okaloosae": {
-                "hasBasisOfRecord": {
-                    "locatedAt": {
-                        "verbatimLocality": "toe clip (released): USA:Florida: Santa Rosa: 5 km E Harold, Garnier Creek (collected by Paul Moler)"
-                    },
-                    "GenBankID": "AY779203",
-                    "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779203"
-                }
-            },
-            "Rana omiltemana": {
-                "hasBasisOfRecord": {
-                    "locatedAt": {
-                        "verbatimLocality": "KU 195179: Mexico: Guerrero: Agua de Obispo"
-                    },
-                    "ownerInstitutionCode": "KU",
-                    "catalogNumber": "195179",
-                    "GenBankID": "AY779238",
-                    "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779238"
-                }
-            },
-            "Rana onca": {
-                "hasBasisOfRecord": {
-                    "locatedAt": {
-                        "verbatimLocality": "LVT 3542: USA: Nevada: Clark: Blue Point Spring, Lake Mead"
-                    },
-                    "ownerInstitutionCode": "LVT",
-                    "catalogNumber": "3542",
-                    "GenBankID": "AY779249",
-                    "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779249"
-                }
-            },
-            "Rana palmipes AMNHA118801": {
-                "hasBasisOfRecord": {
-                    "locatedAt": {
-                        "verbatimLocality": "AMNH A-118801: Venezuela: Prov. Amazonas: Neblina Base Camp on Río Mawarinuma"
-                    },
-                    "ownerInstitutionCode": "AMNH",
-                    "catalogNumber": "A-118801",
-                    "GenBankID": "AY779210",
-                    "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779210"
+                "Rana cascadae": {
+                    "hasBasisOfRecord": {
+                        "locatedAt": {
+                            "verbatimLocality": "MVZ 148946: USA: California: Shasta: Dersch Meadows"
+                        },
+                        "ownerInstitutionCode": "MVZ",
+                        "catalogNumber": "148946",
+                        "GenBankID": "AY779197",
+                        "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779197"
+                    }
                 },
-                "representsTaxonomicUnits": [{
-                    "scientificNames": [{
-                        "scientificName": "Rana palmipes"
-                    }]
-                }]
-            },
-            "Rana palmipes KU204425": {
-                "hasBasisOfRecord": {
-                    "locatedAt": {
-                        "verbatimLocality": "KU 202896: Ecuador: Prov. Napo: Misahuallí"
+                "Rana catesbiana X12841": {
+                    "hasBasisOfRecord": {
+                        "locatedAt": {
+                            "verbatimLocality": "GenBank sequence; locality unknown"
+                        },
+                        "GenBankID": "GB X12841",
+                        "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/GB X12841"
                     },
-                    "ownerInstitutionCode": "KU",
-                    "catalogNumber": "202896",
-                    "GenBankID": "AY779211",
-                    "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779211"
+                    "representsTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Rana catesbeiana"
+                                }
+                            ]
+                        }
+                    ]
                 },
-                "representsTaxonomicUnits": [{
-                    "scientificNames": [{
-                        "scientificName": "Rana palmipes"
-                    }]
-                }]
-            },
-            "Rana palustris": {
-                "hasBasisOfRecord": {
-                    "locatedAt": {
-                        "verbatimLocality": "KU 204425: USA: Indiana: Washington: Cave Creek near Campbellsburg"
+                "Rana catesbiana DMH84R2": {
+                    "hasBasisOfRecord": {
+                        "locatedAt": {
+                            "verbatimLocality": "DMH 84-R2: USA: Kansas: Douglas: Lawrence"
+                        },
+                        "ownerInstitutionCode": "DMH",
+                        "catalogNumber": "84-R2",
+                        "GenBankID": "AY779206",
+                        "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779206"
                     },
-                    "ownerInstitutionCode": "KU",
-                    "catalogNumber": "204425",
-                    "GenBankID": "AY779228",
-                    "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779228"
-                }
-            },
-            "Rana pipiens Y10945": {
-                "hasBasisOfRecord": {
-                    "locatedAt": {
-                        "verbatimLocality": "GenBank sequence; locality unknown"
-                    },
-                    "GenBankID": "GBX12841",
-                    "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/GBX12841"
+                    "representsTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Rana catesbeiana"
+                                }
+                            ]
+                        }
+                    ]
                 },
-                "representsTaxonomicUnits": [{
-                    "scientificNames": [{
-                        "scientificName": "Rana pipiens"
-                    }]
-                }]
-            },
-            "Rana pipiens JSF1119": {
-                "hasBasisOfRecord": {
-                    "locatedAt": {
-                        "verbatimLocality": "JSF 1119: USA: Ohio: Ottawa: Little Portage State Park"
+                "Rana chiricahuensis KU 194442": {
+                    "hasBasisOfRecord": {
+                        "locatedAt": {
+                            "verbatimLocality": "KU 194442: Mexico: Durango: Río Chico at Mexico Hwy. 40"
+                        },
+                        "ownerInstitutionCode": "KU",
+                        "catalogNumber": "194442",
+                        "GenBankID": "AY779225",
+                        "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779225"
                     },
-                    "ownerInstitutionCode": "JSF",
-                    "catalogNumber": "1119",
-                    "GenBankID": "AY779221",
-                    "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779221"
+                    "representsTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Rana chiricahuensis"
+                                }
+                            ]
+                        }
+                    ]
                 },
-                "representsTaxonomicUnits": [{
-                    "scientificNames": [{
-                        "scientificName": "Rana pipiens"
-                    }]
-                }]
-            },
-            "Rana psilonota": {
-                "hasBasisOfRecord": {
-                    "locatedAt": {
-                        "verbatimLocality": "KU 195119: Mexico: Jalisco: 2.4 km NW Tapalpa"
+                "Rana chiricahuensis KU 194419": {
+                    "hasBasisOfRecord": {
+                        "locatedAt": {
+                            "verbatimLocality": "KU 194419: USA: Arizona: Apache: Apache National Forest: Three Forks"
+                        },
+                        "ownerInstitutionCode": "KU",
+                        "catalogNumber": "194419",
+                        "GenBankID": "AY779226",
+                        "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779226"
                     },
-                    "ownerInstitutionCode": "KU",
-                    "catalogNumber": "195119",
-                    "GenBankID": "AY779217",
-                    "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779217"
-                }
-            },
-            "Rana pustulosa": {
-                "hasBasisOfRecord": {
-                    "locatedAt": {
-                        "verbatimLocality": "KU 200776: Mexico: Sinaloa: 2.1 km NE Santa Lucia"
-                    },
-                    "ownerInstitutionCode": "KU",
-                    "catalogNumber": "200776",
-                    "GenBankID": "AY779220",
-                    "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779220"
-                }
-            },
-            "Rana septentrionales": {
-                "hasBasisOfRecord": {
-                    "locatedAt": {
-                        "verbatimLocality": "TNHC tissue collection: Canada: Ontario: Grey"
-                    },
-                    "ownerInstitutionCode": "TNHC tissue collection",
-                    "GenBankID": "AY779200",
-                    "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779200"
+                    "representsTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Rana chiricahuensis"
+                                }
+                            ]
+                        }
+                    ]
                 },
-                "representsTaxonomicUnits": [{
-                    "scientificNames": [{
-                        "scientificName": "Rana septentrionalis"
-                    }]
-                }]
-            },
-            "Rana sevosa": {
-                "hasBasisOfRecord": {
-                    "locatedAt": {
-                        "verbatimLocality": "TNHC 60194: USA: Mississippi: Harrison"
-                    },
-                    "ownerInstitutionCode": "TNHC",
-                    "catalogNumber": "60194",
-                    "GenBankID": "AY779230",
-                    "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779230"
-                }
-            },
-            "Rana sierramadrensis": {
-                "hasBasisOfRecord": {
-                    "locatedAt": {
-                        "verbatimLocality": "KU 195181: Mexico: Guerrero: Agua de Obispo, 24.2 mi S Chilpancingo"
-                    },
-                    "ownerInstitutionCode": "KU",
-                    "catalogNumber": "195181",
-                    "GenBankID": "AY779216",
-                    "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779216"
-                }
-            },
-            "Rana spectabilis": {
-                "hasBasisOfRecord": {
-                    "locatedAt": {
-                        "verbatimLocality": "KU 195186: Mexico: Hidalgo: La Estanzuela (holotype)"
-                    },
-                    "typeStatus": "holotype of Rana spectabilis",
-                    "ownerInstitutionCode": "KU",
-                    "catalogNumber": "195186",
-                    "GenBankID": "AY779232",
-                    "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779232",
-                    "skos:exactMatch": "http://portal.vertnet.org/o/ku/kuh?id=be19ff1e-b069-11e3-8cfe-90b11c41863e"
-                }
-            },
-            "Rana sphenocephela": {
-                "hasBasisOfRecord": {
-                    "locatedAt": {
-                        "verbatimLocality": "JSF 845: USA: Kansas: Cherokee"
-                    },
-                    "ownerInstitutionCode": "JSF",
-                    "catalogNumber": "845",
-                    "GenBankID": "AY779251",
-                    "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779251"
+                "Rana clamitans": {
+                    "hasBasisOfRecord": {
+                        "locatedAt": {
+                            "verbatimLocality": "JSF 1118: USA: Missouri: Montgomery: 3 km W Danville"
+                        },
+                        "ownerInstitutionCode": "JSF",
+                        "catalogNumber": "1118",
+                        "GenBankID": "AY779204",
+                        "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779204"
+                    }
                 },
-                "representsTaxonomicUnits": [{
-                    "scientificNames": [{
-                        "scientificName": "Rana sphenocephala"
-                    }]
-                }]
-            },
-            "Rana sphenocephela utricularia": {
-                "hasBasisOfRecord": {
-                    "locatedAt": {
-                        "verbatimLocality": "USC 7448: USA: Florida: Loop Road, Big Cypress National Preserve"
-                    },
-                    "ownerInstitutionCode": "USC",
-                    "catalogNumber": "7448",
-                    "GenBankID": "AY779252",
-                    "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779252"
+                "Rana dunni": {
+                    "hasBasisOfRecord": {
+                        "locatedAt": {
+                            "verbatimLocality": "KU 194527: Mexico: Michoacan: Tintzuntzan, Lago Patzcuaro"
+                        },
+                        "ownerInstitutionCode": "KU",
+                        "catalogNumber": "194527",
+                        "GenBankID": "AY779222",
+                        "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779222"
+                    }
                 },
-                "representsTaxonomicUnits": [{
-                    "scientificNames": [{
-                        "scientificName": "Rana sphenocephala utricularia"
-                    }]
-                }]
-            },
-            "Rana subaquavocalis": {
-                "hasBasisOfRecord": {
-                    "locatedAt": {
-                        "verbatimLocality": "James Platz Collection (specimens destroyed, DNA in TNHC tissue collection): USA: Arizona: Cochise: Ramsey Canyon"
-                    },
-                    "ownerInstitutionCode": "TNHC tissue collection",
-                    "GenBankID": "AY779227",
-                    "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779227"
-                }
-            },
-            "Rana sylvatica": {
-                "hasBasisOfRecord": {
-                    "locatedAt": {
-                        "verbatimLocality": "MVZ 137426: USA: New York: Tompkins; Connecticut Hill, ca. 10 mi SW Ithaca"
-                    },
-                    "ownerInstitutionCode": "MVZ",
-                    "catalogNumber": "137426",
-                    "GenBankID": "AY779198",
-                    "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779198"
-                }
-            },
-            "Rana sylvatica DMH84R43": {
-                "hasBasisOfRecord": {
-                    "locatedAt": {
-                        "verbatimLocality": "DMH 84-R43: USA: Missouri: St. Louis: Tyson Environmental Study Area"
-                    },
-                    "ownerInstitutionCode": "DMH",
-                    "catalogNumber": "84-R43",
-                    "GenBankID": "AY779199",
-                    "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779199"
+                "Rana forreri": {
+                    "hasBasisOfRecord": {
+                        "locatedAt": {
+                            "verbatimLocality": "KU 194581: Mexico: Sinaloa: 37.9 km S Escuinapa"
+                        },
+                        "ownerInstitutionCode": "KU",
+                        "catalogNumber": "194581",
+                        "GenBankID": "AY779233",
+                        "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779233"
+                    }
                 },
-                "representsTaxonomicUnits": [{
-                    "scientificNames": [{
-                        "scientificName": "Rana sylvatica"
-                    }]
-                }]
-            },
-            "Rana tarahumarae": {
-                "hasBasisOfRecord": {
-                    "locatedAt": {
-                        "verbatimLocality": "KU 194596: Mexico: Sonora: 14.4 km E Yecora"
-                    },
-                    "ownerInstitutionCode": "KU",
-                    "catalogNumber": "194596",
-                    "GenBankID": "AY779218",
-                    "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779218"
-                }
-            },
-            "Rana taylori": {
-                "hasBasisOfRecord": {
-                    "locatedAt": {
-                        "verbatimLocality": "TCWC 55963: Nicaragua: Zelaya: 2.5 mi NW Rama"
-                    },
-                    "ownerInstitutionCode": "TCWC",
-                    "catalogNumber": "55963",
-                    "GenBankID": "AY779244",
-                    "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779244"
-                }
-            },
-            "Rana temporaria": {
-                "hasBasisOfRecord": {
-                    "locatedAt": {
-                        "verbatimLocality": "DMH 84-R1: Switzerland: Valais Canton: 1.8 km NNE Grand St. Bernard Pass"
-                    },
-                    "ownerInstitutionCode": "DMH",
-                    "catalogNumber": "84-R1",
-                    "GenBankID": "AY779191",
-                    "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779191"
-                }
-            },
-            "Rana tlaloci": {
-                "hasBasisOfRecord": {
-                    "locatedAt": {
-                        "verbatimLocality": "KU 194436: Mexico: Distrito Federal: Xochimilco (paratype)"
-                    },
-                    "ownerInstitutionCode": "KU",
-                    "catalogNumber": "194436",
-                    "GenBankID": "AY779234",
-                    "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779234"
-                }
-            },
-            "Rana vaillanti": {
-                "hasBasisOfRecord": {
-                    "locatedAt": {
-                        "verbatimLocality": "KU 195299: Mexico: Oaxaca: 5.6 mi NE Tapanatepec"
-                    },
-                    "ownerInstitutionCode": "KU",
-                    "catalogNumber": "195299",
-                    "GenBankID": "AY779214",
-                    "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779214"
-                }
-            },
-            "Rana vibicaria": {
-                "hasBasisOfRecord": {
-                    "locatedAt": {
-                        "verbatimLocality": "MVZ 149033: Costa Rica: Prov. San José: El Empalme"
-                    },
-                    "ownerInstitutionCode": "MVZ",
-                    "catalogNumber": "149033",
-                    "GenBankID": "AY779208",
-                    "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779208"
-                }
-            },
-            "Rana virgatipes": {
-                "hasBasisOfRecord": {
-                    "locatedAt": {
-                        "verbatimLocality": "MVZ 175944: USA: Louisiana: De Soto Parish; Frierson"
-                    },
-                    "ownerInstitutionCode": "MVZ",
-                    "catalogNumber": "175944",
-                    "GenBankID": "AY779202",
-                    "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779202"
-                }
-            },
-            "Rana warszewitshii": {
-                "hasBasisOfRecord": {
-                    "locatedAt": {
-                        "verbatimLocality": "JSF 1127: Panama"
-                    },
-                    "ownerInstitutionCode": "JSF",
-                    "catalogNumber": "1127",
-                    "GenBankID": "AY779209",
-                    "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779209"
+                "Rana grylio": {
+                    "hasBasisOfRecord": {
+                        "locatedAt": {
+                            "verbatimLocality": "MVZ 175945: USA: Florida: Leon: Tall Timbers Research Station, Lake Iamonia"
+                        },
+                        "ownerInstitutionCode": "MVZ",
+                        "catalogNumber": "175945",
+                        "GenBankID": "AY779201",
+                        "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779201"
+                    }
                 },
-                "representsTaxonomicUnits": [{
-                    "scientificNames": [{
-                        "scientificName": "Rana warszewitschii"
-                    }]
-                }]
-            },
-            "Rana yavapaiensis": {
-                "hasBasisOfRecord": {
-                    "locatedAt": {
-                        "verbatimLocality": "KU 194423: USA: Arizona: Greenlee: Apache National Forest at Juan Miller Crossing"
-                    },
-                    "ownerInstitutionCode": "KU",
-                    "catalogNumber": "194423",
-                    "GenBankID": "AY779240",
-                    "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779240"
-                }
-            },
-            "Rana zweifelii": {
-                "hasBasisOfRecord": {
-                    "locatedAt": {
-                        "verbatimLocality": "KU 195310: Mexico: Oaxaca: 1.6 mi S Cuyotepej"
-                    },
-                    "ownerInstitutionCode": "KU",
-                    "catalogNumber": "195310",
-                    "GenBankID": "AY779219",
-                    "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779219"
+                "Rana heckscheri": {
+                    "hasBasisOfRecord": {
+                        "locatedAt": {
+                            "verbatimLocality": "MVZ 164908: USA: Florida: Gadsen-Leon: Overflow creek of Ochlocknee River at Hwy. S-12"
+                        },
+                        "ownerInstitutionCode": "MVZ",
+                        "catalogNumber": "164908",
+                        "GenBankID": "AY779205",
+                        "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779205"
+                    }
                 },
-                "representsTaxonomicUnits": [{
-                    "scientificNames": [{
-                        "scientificName": "Rana zweifeli"
-                    }]
-                }]
-            },
-            "Rana sp1 QCAZ13219": {
-                "hasBasisOfRecord": {
-                    "locatedAt": {
-                        "verbatimLocality": "QCAZ 13219: Ecuador: Prov. Esmeraldas: 5 km W Durango"
+                "Rana juliani": {
+                    "hasBasisOfRecord": {
+                        "locatedAt": {
+                            "verbatimLocality": "TNHC 60324: Belize: Cayo District: Little Vaqueros Creek"
+                        },
+                        "ownerInstitutionCode": "TNHC",
+                        "catalogNumber": "60324",
+                        "GenBankID": "AY779215",
+                        "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779215"
+                    }
+                },
+                "Rana luteiventris MVZ225749": {
+                    "hasBasisOfRecord": {
+                        "locatedAt": {
+                            "verbatimLocality": "MVZ 225749: USA: Washington: Pend Oreille: Colville Natl. Forest; Flowery Trail Road, 6.1 mi E 49 Degrees Ski area"
+                        },
+                        "ownerInstitutionCode": "MVZ",
+                        "catalogNumber": "225749",
+                        "GenBankID": "AY779193",
+                        "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779193"
                     },
-                    "ownerInstitutionCode": "QCAZ",
-                    "catalogNumber": "13219",
-                    "GenBankID": "AY779213",
-                    "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779213"
-                }
-            },
-            "Rana sp2 KU 204420": {
-                "hasBasisOfRecord": {
-                    "locatedAt": {
-                        "verbatimLocality": "KU 204420: Mexico: San Luis Potosí: Rodeo"
+                    "representsTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Rana luteiventris"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "Rana luteiventris MVZ191016": {
+                    "hasBasisOfRecord": {
+                        "locatedAt": {
+                            "verbatimLocality": "MVZ 191016: USA: Montana: Lincoln: Dry Creek at Hwy. 56"
+                        },
+                        "ownerInstitutionCode": "MVZ",
+                        "catalogNumber": "191016",
+                        "GenBankID": "AY779194",
+                        "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779194"
                     },
-                    "ownerInstitutionCode": "KU",
-                    "catalogNumber": "204420",
-                    "GenBankID": "AY779224",
-                    "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779224"
-                }
-            },
-            "Rana sp3 KU 194559": {
-                "hasBasisOfRecord": {
-                    "locatedAt": {
-                        "verbatimLocality": "KU 194559: Mexico: Michoacan: 11.4 km E junction Mexico Hwy. 51 and 15"
+                    "representsTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Rana luteiventris"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "Rana macroglossa": {
+                    "hasBasisOfRecord": {
+                        "locatedAt": {
+                            "verbatimLocality": "KU 195138: Mexico: Chiapas: 7.7 km SE San Cristobal de las Casas"
+                        },
+                        "ownerInstitutionCode": "KU",
+                        "catalogNumber": "195138",
+                        "GenBankID": "AY779242",
+                        "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779242"
+                    }
+                },
+                "Rana macroglossa b": {
+                    "comment": "I'm assuming this is 'b', because it's listed second in the table, but there's no clear evidence one way or the other.",
+                    "hasBasisOfRecord": {
+                        "locatedAt": {
+                            "verbatimLocality": "UTA A-17185: Guatemala: Sololá: Panajachel, Lake Atitlan"
+                        },
+                        "ownerInstitutionCode": "UTA",
+                        "catalogNumber": "A-17185",
+                        "GenBankID": "AY779243",
+                        "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779243"
                     },
-                    "ownerInstitutionCode": "KU",
-                    "catalogNumber": "194559",
-                    "GenBankID": "AY779250",
-                    "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779250"
-                }
-            },
-            "Rana sp4 AMNH A 124167": {
-                "hasBasisOfRecord": {
-                    "locatedAt": {
-                        "verbatimLocality": "AMNH A-124167: Panama: Chiriquí: 9 km SSE El Volcán"
+                    "representsTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Rana macroglossa"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "Rana maculata": {
+                    "hasBasisOfRecord": {
+                        "locatedAt": {
+                            "verbatimLocality": "KU 195258: Mexico: Oaxaca: Colonia Rodulfo Figueroa, 19 km NW Rizo de Oro"
+                        },
+                        "ownerInstitutionCode": "KU",
+                        "catalogNumber": "195258",
+                        "GenBankID": "AY779207",
+                        "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779207"
+                    }
+                },
+                "Rana magnaocularis": {
+                    "hasBasisOfRecord": {
+                        "locatedAt": {
+                            "verbatimLocality": "KU 194592: Mexico: Sonora: Arroyo Hondo, 15.2 km N Nuri"
+                        },
+                        "ownerInstitutionCode": "KU",
+                        "catalogNumber": "194592",
+                        "GenBankID": "AY779239",
+                        "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779239"
+                    }
+                },
+                "Rana montezumae": {
+                    "hasBasisOfRecord": {
+                        "locatedAt": {
+                            "verbatimLocality": "KU 195251: Mexico: Morelos: Lagunas Zempoala"
+                        },
+                        "ownerInstitutionCode": "KU",
+                        "catalogNumber": "195251",
+                        "GenBankID": "AY779223",
+                        "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779223"
+                    }
+                },
+                "Rana muscosa": {
+                    "hasBasisOfRecord": {
+                        "locatedAt": {
+                            "verbatimLocality": "MVZ 149006: USA: California: Mono: Meadows below Levitt Lake, W side Sonora Pass"
+                        },
+                        "ownerInstitutionCode": "MVZ",
+                        "catalogNumber": "149006",
+                        "GenBankID": "AY779195",
+                        "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779195"
+                    }
+                },
+                "Rana neovolcanica": {
+                    "hasBasisOfRecord": {
+                        "locatedAt": {
+                            "verbatimLocality": "KU 194536: Mexico: Michoacan: Zurumbueno"
+                        },
+                        "ownerInstitutionCode": "KU",
+                        "catalogNumber": "194536",
+                        "GenBankID": "AY779236",
+                        "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779236"
+                    }
+                },
+                "Rana okaloosae": {
+                    "hasBasisOfRecord": {
+                        "locatedAt": {
+                            "verbatimLocality": "toe clip (released): USA:Florida: Santa Rosa: 5 km E Harold, Garnier Creek (collected by Paul Moler)"
+                        },
+                        "GenBankID": "AY779203",
+                        "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779203"
+                    }
+                },
+                "Rana omiltemana": {
+                    "hasBasisOfRecord": {
+                        "locatedAt": {
+                            "verbatimLocality": "KU 195179: Mexico: Guerrero: Agua de Obispo"
+                        },
+                        "ownerInstitutionCode": "KU",
+                        "catalogNumber": "195179",
+                        "GenBankID": "AY779238",
+                        "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779238"
+                    }
+                },
+                "Rana onca": {
+                    "hasBasisOfRecord": {
+                        "locatedAt": {
+                            "verbatimLocality": "LVT 3542: USA: Nevada: Clark: Blue Point Spring, Lake Mead"
+                        },
+                        "ownerInstitutionCode": "LVT",
+                        "catalogNumber": "3542",
+                        "GenBankID": "AY779249",
+                        "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779249"
+                    }
+                },
+                "Rana palmipes AMNHA118801": {
+                    "hasBasisOfRecord": {
+                        "locatedAt": {
+                            "verbatimLocality": "AMNH A-118801: Venezuela: Prov. Amazonas: Neblina Base Camp on Río Mawarinuma"
+                        },
+                        "ownerInstitutionCode": "AMNH",
+                        "catalogNumber": "A-118801",
+                        "GenBankID": "AY779210",
+                        "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779210"
                     },
-                    "ownerInstitutionCode": "AMNH",
-                    "catalogNumber": "A-124167",
-                    "GenBankID": "AY779245",
-                    "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779245"
-                }
-            },
-            "Rana sp5 LACM 146764": {
-                "hasBasisOfRecord": {
-                    "locatedAt": {
-                        "verbatimLocality": "LACM 146764: Costa Rica: Heredia: Monte de la Cruz"
+                    "representsTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Rana palmipes"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "Rana palmipes KU204425": {
+                    "hasBasisOfRecord": {
+                        "locatedAt": {
+                            "verbatimLocality": "KU 202896: Ecuador: Prov. Napo: Misahuallí"
+                        },
+                        "ownerInstitutionCode": "KU",
+                        "catalogNumber": "202896",
+                        "GenBankID": "AY779211",
+                        "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779211"
                     },
-                    "ownerInstitutionCode": "LACM",
-                    "catalogNumber": "146764",
-                    "GenBankID": "AY779246",
-                    "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779246"
-                }
-            },
-            "Rana sp6 LACM 146810": {
-                "hasBasisOfRecord": {
-                    "locatedAt": {
-                        "verbatimLocality": "LACM 146810: Costa Rica: Puntarenas: near mouth of Rio Barranca, 10 km E Puntarenas"
+                    "representsTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Rana palmipes"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "Rana palustris": {
+                    "hasBasisOfRecord": {
+                        "locatedAt": {
+                            "verbatimLocality": "KU 204425: USA: Indiana: Washington: Cave Creek near Campbellsburg"
+                        },
+                        "ownerInstitutionCode": "KU",
+                        "catalogNumber": "204425",
+                        "GenBankID": "AY779228",
+                        "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779228"
+                    }
+                },
+                "Rana pipiens Y10945": {
+                    "hasBasisOfRecord": {
+                        "locatedAt": {
+                            "verbatimLocality": "GenBank sequence; locality unknown"
+                        },
+                        "GenBankID": "GBX12841",
+                        "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/GBX12841"
                     },
-                    "ownerInstitutionCode": "LACM",
-                    "catalogNumber": "146810",
-                    "GenBankID": "AY779247",
-                    "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779247"
-                }
-            },
-            "Rana sp7 KU 194492": {
-                "hasBasisOfRecord": {
-                    "locatedAt": {
-                        "verbatimLocality": "KU 194492: Mexico: Jalisco: Contla"
+                    "representsTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Rana pipiens"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "Rana pipiens JSF1119": {
+                    "hasBasisOfRecord": {
+                        "locatedAt": {
+                            "verbatimLocality": "JSF 1119: USA: Ohio: Ottawa: Little Portage State Park"
+                        },
+                        "ownerInstitutionCode": "JSF",
+                        "catalogNumber": "1119",
+                        "GenBankID": "AY779221",
+                        "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779221"
                     },
-                    "ownerInstitutionCode": "KU",
-                    "catalogNumber": "194492",
-                    "GenBankID": "AY779241",
-                    "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779241"
-                }
-            },
-            "Rana sp8 KU 195346": {
-                "hasBasisOfRecord": {
-                    "locatedAt": {
-                        "verbatimLocality": "KU 195346: Mexico: Puebla: Río Atoyac at Mexico Hwy. 190"
+                    "representsTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Rana pipiens"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "Rana psilonota": {
+                    "hasBasisOfRecord": {
+                        "locatedAt": {
+                            "verbatimLocality": "KU 195119: Mexico: Jalisco: 2.4 km NW Tapalpa"
+                        },
+                        "ownerInstitutionCode": "KU",
+                        "catalogNumber": "195119",
+                        "GenBankID": "AY779217",
+                        "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779217"
+                    }
+                },
+                "Rana pustulosa": {
+                    "hasBasisOfRecord": {
+                        "locatedAt": {
+                            "verbatimLocality": "KU 200776: Mexico: Sinaloa: 2.1 km NE Santa Lucia"
+                        },
+                        "ownerInstitutionCode": "KU",
+                        "catalogNumber": "200776",
+                        "GenBankID": "AY779220",
+                        "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779220"
+                    }
+                },
+                "Rana septentrionales": {
+                    "hasBasisOfRecord": {
+                        "locatedAt": {
+                            "verbatimLocality": "TNHC tissue collection: Canada: Ontario: Grey"
+                        },
+                        "ownerInstitutionCode": "TNHC tissue collection",
+                        "GenBankID": "AY779200",
+                        "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779200"
                     },
-                    "ownerInstitutionCode": "KU",
-                    "catalogNumber": "195346",
-                    "GenBankID": "AY779248",
-                    "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779248"
+                    "representsTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Rana septentrionalis"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "Rana sevosa": {
+                    "hasBasisOfRecord": {
+                        "locatedAt": {
+                            "verbatimLocality": "TNHC 60194: USA: Mississippi: Harrison"
+                        },
+                        "ownerInstitutionCode": "TNHC",
+                        "catalogNumber": "60194",
+                        "GenBankID": "AY779230",
+                        "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779230"
+                    }
+                },
+                "Rana sierramadrensis": {
+                    "hasBasisOfRecord": {
+                        "locatedAt": {
+                            "verbatimLocality": "KU 195181: Mexico: Guerrero: Agua de Obispo, 24.2 mi S Chilpancingo"
+                        },
+                        "ownerInstitutionCode": "KU",
+                        "catalogNumber": "195181",
+                        "GenBankID": "AY779216",
+                        "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779216"
+                    }
+                },
+                "Rana spectabilis": {
+                    "hasBasisOfRecord": {
+                        "locatedAt": {
+                            "verbatimLocality": "KU 195186: Mexico: Hidalgo: La Estanzuela (holotype)"
+                        },
+                        "typeStatus": "holotype of Rana spectabilis",
+                        "ownerInstitutionCode": "KU",
+                        "catalogNumber": "195186",
+                        "GenBankID": "AY779232",
+                        "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779232",
+                        "skos:exactMatch": "http://portal.vertnet.org/o/ku/kuh?id=be19ff1e-b069-11e3-8cfe-90b11c41863e"
+                    }
+                },
+                "Rana sphenocephela": {
+                    "hasBasisOfRecord": {
+                        "locatedAt": {
+                            "verbatimLocality": "JSF 845: USA: Kansas: Cherokee"
+                        },
+                        "ownerInstitutionCode": "JSF",
+                        "catalogNumber": "845",
+                        "GenBankID": "AY779251",
+                        "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779251"
+                    },
+                    "representsTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Rana sphenocephala"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "Rana sphenocephela utricularia": {
+                    "hasBasisOfRecord": {
+                        "locatedAt": {
+                            "verbatimLocality": "USC 7448: USA: Florida: Loop Road, Big Cypress National Preserve"
+                        },
+                        "ownerInstitutionCode": "USC",
+                        "catalogNumber": "7448",
+                        "GenBankID": "AY779252",
+                        "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779252"
+                    },
+                    "representsTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Rana sphenocephala utricularia"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "Rana subaquavocalis": {
+                    "hasBasisOfRecord": {
+                        "locatedAt": {
+                            "verbatimLocality": "James Platz Collection (specimens destroyed, DNA in TNHC tissue collection): USA: Arizona: Cochise: Ramsey Canyon"
+                        },
+                        "ownerInstitutionCode": "TNHC tissue collection",
+                        "GenBankID": "AY779227",
+                        "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779227"
+                    }
+                },
+                "Rana sylvatica": {
+                    "hasBasisOfRecord": {
+                        "locatedAt": {
+                            "verbatimLocality": "MVZ 137426: USA: New York: Tompkins; Connecticut Hill, ca. 10 mi SW Ithaca"
+                        },
+                        "ownerInstitutionCode": "MVZ",
+                        "catalogNumber": "137426",
+                        "GenBankID": "AY779198",
+                        "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779198"
+                    }
+                },
+                "Rana sylvatica DMH84R43": {
+                    "hasBasisOfRecord": {
+                        "locatedAt": {
+                            "verbatimLocality": "DMH 84-R43: USA: Missouri: St. Louis: Tyson Environmental Study Area"
+                        },
+                        "ownerInstitutionCode": "DMH",
+                        "catalogNumber": "84-R43",
+                        "GenBankID": "AY779199",
+                        "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779199"
+                    },
+                    "representsTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Rana sylvatica"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "Rana tarahumarae": {
+                    "hasBasisOfRecord": {
+                        "locatedAt": {
+                            "verbatimLocality": "KU 194596: Mexico: Sonora: 14.4 km E Yecora"
+                        },
+                        "ownerInstitutionCode": "KU",
+                        "catalogNumber": "194596",
+                        "GenBankID": "AY779218",
+                        "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779218"
+                    }
+                },
+                "Rana taylori": {
+                    "hasBasisOfRecord": {
+                        "locatedAt": {
+                            "verbatimLocality": "TCWC 55963: Nicaragua: Zelaya: 2.5 mi NW Rama"
+                        },
+                        "ownerInstitutionCode": "TCWC",
+                        "catalogNumber": "55963",
+                        "GenBankID": "AY779244",
+                        "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779244"
+                    }
+                },
+                "Rana temporaria": {
+                    "hasBasisOfRecord": {
+                        "locatedAt": {
+                            "verbatimLocality": "DMH 84-R1: Switzerland: Valais Canton: 1.8 km NNE Grand St. Bernard Pass"
+                        },
+                        "ownerInstitutionCode": "DMH",
+                        "catalogNumber": "84-R1",
+                        "GenBankID": "AY779191",
+                        "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779191"
+                    }
+                },
+                "Rana tlaloci": {
+                    "hasBasisOfRecord": {
+                        "locatedAt": {
+                            "verbatimLocality": "KU 194436: Mexico: Distrito Federal: Xochimilco (paratype)"
+                        },
+                        "ownerInstitutionCode": "KU",
+                        "catalogNumber": "194436",
+                        "GenBankID": "AY779234",
+                        "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779234"
+                    }
+                },
+                "Rana vaillanti": {
+                    "hasBasisOfRecord": {
+                        "locatedAt": {
+                            "verbatimLocality": "KU 195299: Mexico: Oaxaca: 5.6 mi NE Tapanatepec"
+                        },
+                        "ownerInstitutionCode": "KU",
+                        "catalogNumber": "195299",
+                        "GenBankID": "AY779214",
+                        "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779214"
+                    }
+                },
+                "Rana vibicaria": {
+                    "hasBasisOfRecord": {
+                        "locatedAt": {
+                            "verbatimLocality": "MVZ 149033: Costa Rica: Prov. San José: El Empalme"
+                        },
+                        "ownerInstitutionCode": "MVZ",
+                        "catalogNumber": "149033",
+                        "GenBankID": "AY779208",
+                        "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779208"
+                    }
+                },
+                "Rana virgatipes": {
+                    "hasBasisOfRecord": {
+                        "locatedAt": {
+                            "verbatimLocality": "MVZ 175944: USA: Louisiana: De Soto Parish; Frierson"
+                        },
+                        "ownerInstitutionCode": "MVZ",
+                        "catalogNumber": "175944",
+                        "GenBankID": "AY779202",
+                        "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779202"
+                    }
+                },
+                "Rana warszewitshii": {
+                    "hasBasisOfRecord": {
+                        "locatedAt": {
+                            "verbatimLocality": "JSF 1127: Panama"
+                        },
+                        "ownerInstitutionCode": "JSF",
+                        "catalogNumber": "1127",
+                        "GenBankID": "AY779209",
+                        "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779209"
+                    },
+                    "representsTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Rana warszewitschii"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "Rana yavapaiensis": {
+                    "hasBasisOfRecord": {
+                        "locatedAt": {
+                            "verbatimLocality": "KU 194423: USA: Arizona: Greenlee: Apache National Forest at Juan Miller Crossing"
+                        },
+                        "ownerInstitutionCode": "KU",
+                        "catalogNumber": "194423",
+                        "GenBankID": "AY779240",
+                        "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779240"
+                    }
+                },
+                "Rana zweifelii": {
+                    "hasBasisOfRecord": {
+                        "locatedAt": {
+                            "verbatimLocality": "KU 195310: Mexico: Oaxaca: 1.6 mi S Cuyotepej"
+                        },
+                        "ownerInstitutionCode": "KU",
+                        "catalogNumber": "195310",
+                        "GenBankID": "AY779219",
+                        "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779219"
+                    },
+                    "representsTaxonomicUnits": [
+                        {
+                            "scientificNames": [
+                                {
+                                    "scientificName": "Rana zweifeli"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "Rana sp1 QCAZ13219": {
+                    "hasBasisOfRecord": {
+                        "locatedAt": {
+                            "verbatimLocality": "QCAZ 13219: Ecuador: Prov. Esmeraldas: 5 km W Durango"
+                        },
+                        "ownerInstitutionCode": "QCAZ",
+                        "catalogNumber": "13219",
+                        "GenBankID": "AY779213",
+                        "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779213"
+                    }
+                },
+                "Rana sp2 KU 204420": {
+                    "hasBasisOfRecord": {
+                        "locatedAt": {
+                            "verbatimLocality": "KU 204420: Mexico: San Luis Potosí: Rodeo"
+                        },
+                        "ownerInstitutionCode": "KU",
+                        "catalogNumber": "204420",
+                        "GenBankID": "AY779224",
+                        "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779224"
+                    }
+                },
+                "Rana sp3 KU 194559": {
+                    "hasBasisOfRecord": {
+                        "locatedAt": {
+                            "verbatimLocality": "KU 194559: Mexico: Michoacan: 11.4 km E junction Mexico Hwy. 51 and 15"
+                        },
+                        "ownerInstitutionCode": "KU",
+                        "catalogNumber": "194559",
+                        "GenBankID": "AY779250",
+                        "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779250"
+                    }
+                },
+                "Rana sp4 AMNH A 124167": {
+                    "hasBasisOfRecord": {
+                        "locatedAt": {
+                            "verbatimLocality": "AMNH A-124167: Panama: Chiriquí: 9 km SSE El Volcán"
+                        },
+                        "ownerInstitutionCode": "AMNH",
+                        "catalogNumber": "A-124167",
+                        "GenBankID": "AY779245",
+                        "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779245"
+                    }
+                },
+                "Rana sp5 LACM 146764": {
+                    "hasBasisOfRecord": {
+                        "locatedAt": {
+                            "verbatimLocality": "LACM 146764: Costa Rica: Heredia: Monte de la Cruz"
+                        },
+                        "ownerInstitutionCode": "LACM",
+                        "catalogNumber": "146764",
+                        "GenBankID": "AY779246",
+                        "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779246"
+                    }
+                },
+                "Rana sp6 LACM 146810": {
+                    "hasBasisOfRecord": {
+                        "locatedAt": {
+                            "verbatimLocality": "LACM 146810: Costa Rica: Puntarenas: near mouth of Rio Barranca, 10 km E Puntarenas"
+                        },
+                        "ownerInstitutionCode": "LACM",
+                        "catalogNumber": "146810",
+                        "GenBankID": "AY779247",
+                        "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779247"
+                    }
+                },
+                "Rana sp7 KU 194492": {
+                    "hasBasisOfRecord": {
+                        "locatedAt": {
+                            "verbatimLocality": "KU 194492: Mexico: Jalisco: Contla"
+                        },
+                        "ownerInstitutionCode": "KU",
+                        "catalogNumber": "194492",
+                        "GenBankID": "AY779241",
+                        "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779241"
+                    }
+                },
+                "Rana sp8 KU 195346": {
+                    "hasBasisOfRecord": {
+                        "locatedAt": {
+                            "verbatimLocality": "KU 195346: Mexico: Puebla: Río Atoyac at Mexico Hwy. 190"
+                        },
+                        "ownerInstitutionCode": "KU",
+                        "catalogNumber": "195346",
+                        "GenBankID": "AY779248",
+                        "skos:closeMatch": "https://www.ncbi.nlm.nih.gov/nuccore/AY779248"
+                    }
                 }
             }
         }
-    }],
-
+    ],
     "phylorefs": [
         {
             "label": "Laurasiarana",
             "cladeDefinition": "Laurasiarana, new clade name. Definition: The clade stemming from the most recent common ancestor of Rana temporaria Linne 1758 and Rana aurora Baird and Girard 1852.",
             "curatorComments": "The Laurasiarana expected node is not found in the TreeBase tree, so I've placed it where I think it should go.",
-            "internalSpecifiers": [{
-                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                "nameString": "Rana temporaria Linne 1758"
-            }, {
-                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                "nameString": "Rana aurora Baird and Girard 1852"
-            }]
+            "internalSpecifiers": [
+                {
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "label": "Rana temporaria",
+                        "nameComplete": "Rana temporaria",
+                        "genusPart": "Rana",
+                        "specificEpithet": "temporaria",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICZN"
+                    },
+                    "label": "Rana temporaria Linne 1758"
+                },
+                {
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "label": "Rana aurora",
+                        "nameComplete": "Rana aurora",
+                        "genusPart": "Rana",
+                        "specificEpithet": "aurora",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICZN"
+                    },
+                    "label": "Rana aurora Baird and Girard 1852"
+                }
+            ],
+            "externalSpecifiers": []
         },
         {
             "label": "Amerana",
@@ -816,25 +903,66 @@
             "internalSpecifiers": [
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Rana aurora Baird and Girard 1852"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "label": "Rana aurora",
+                        "nameComplete": "Rana aurora",
+                        "genusPart": "Rana",
+                        "specificEpithet": "aurora",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICZN"
+                    },
+                    "label": "Rana aurora Baird and Girard 1852"
                 },
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Rana boylii Baird 1854"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "label": "Rana boylii",
+                        "nameComplete": "Rana boylii",
+                        "genusPart": "Rana",
+                        "specificEpithet": "boylii",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICZN"
+                    },
+                    "label": "Rana boylii Baird 1854"
                 },
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Rana cascadae Slater 1939"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "label": "Rana cascadae",
+                        "nameComplete": "Rana cascadae",
+                        "genusPart": "Rana",
+                        "specificEpithet": "cascadae",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICZN"
+                    },
+                    "label": "Rana cascadae Slater 1939"
                 },
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Rana muscosa Camp 1917"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "label": "Rana muscosa",
+                        "nameComplete": "Rana muscosa",
+                        "genusPart": "Rana",
+                        "specificEpithet": "muscosa",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICZN"
+                    },
+                    "label": "Rana muscosa Camp 1917"
                 },
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Rana pretiosa Baird and Girard 1853"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "label": "Rana pretiosa",
+                        "nameComplete": "Rana pretiosa",
+                        "genusPart": "Rana",
+                        "specificEpithet": "pretiosa",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICZN"
+                    },
+                    "label": "Rana pretiosa Baird and Girard 1853"
                 }
-            ]
+            ],
+            "externalSpecifiers": []
         },
         {
             "label": "Novirana",
@@ -842,198 +970,625 @@
             "internalSpecifiers": [
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Rana catesbeiana Shaw 1802"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "label": "Rana catesbeiana",
+                        "nameComplete": "Rana catesbeiana",
+                        "genusPart": "Rana",
+                        "specificEpithet": "catesbeiana",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICZN"
+                    },
+                    "label": "Rana catesbeiana Shaw 1802"
                 },
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Rana pipiens Schreber 1782"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "label": "Rana pipiens",
+                        "nameComplete": "Rana pipiens",
+                        "genusPart": "Rana",
+                        "specificEpithet": "pipiens",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICZN"
+                    },
+                    "label": "Rana pipiens LeConte 1825"
                 }
-            ]
+            ],
+            "externalSpecifiers": []
         },
         {
             "label": "Aquarana",
             "cladeDefinition": "Aquarana Dubois 1992 (converted clade name). Definition: The clade stemming from the most recent common ancestor of Rana catesbeiana Shaw 1802, Rana clamitans Latreille 1802, Rana grylio Stejneger 1901, Rana heckscheri Wright 1924, Rana okaloosae Moler 1985, Rana septentrionalis Baird 1854, and Rana virgatipes Cope1891. The species used in the definition are those species that were included by Dubois within this group.",
-            "internalSpecifiers": [{
-                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                "nameString": "Rana catesbeiana Shaw 1802"
-            }, {
-                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                "nameString": "Rana clamitans Latreille 1802"
-            }, {
-                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                "nameString": "Rana grylio Stejneger 1901"
-            }, {
-                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                "nameString": "Rana heckscheri Wright 1924"
-            }, {
-                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                "nameString": "Rana okaloosae Moler 1985"
-            }, {
-                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                "nameString": "Rana septentrionalis Baird 1854"
-            }, {
-                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                "nameString": "Rana virgatipes Cope 1891"
-            }]
+            "internalSpecifiers": [
+                {
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "label": "Rana catesbeiana",
+                        "nameComplete": "Rana catesbeiana",
+                        "genusPart": "Rana",
+                        "specificEpithet": "catesbeiana",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICZN"
+                    },
+                    "label": "Rana catesbeiana Shaw 1802"
+                },
+                {
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "label": "Rana clamitans",
+                        "nameComplete": "Rana clamitans",
+                        "genusPart": "Rana",
+                        "specificEpithet": "clamitans",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICZN"
+                    },
+                    "label": "Rana clamitans Latreille 1802"
+                },
+                {
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "label": "Rana grylio",
+                        "nameComplete": "Rana grylio",
+                        "genusPart": "Rana",
+                        "specificEpithet": "grylio",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICZN"
+                    },
+                    "label": "Rana grylio Stejneger 1901"
+                },
+                {
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "label": "Rana heckscheri",
+                        "nameComplete": "Rana heckscheri",
+                        "genusPart": "Rana",
+                        "specificEpithet": "heckscheri",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICZN"
+                    },
+                    "label": "Rana heckscheri Wright 1924"
+                },
+                {
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "label": "Rana okaloosae",
+                        "nameComplete": "Rana okaloosae",
+                        "genusPart": "Rana",
+                        "specificEpithet": "okaloosae",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICZN"
+                    },
+                    "label": "Rana okaloosae Moler 1985"
+                },
+                {
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "label": "Rana septentrionalis",
+                        "nameComplete": "Rana septentrionalis",
+                        "genusPart": "Rana",
+                        "specificEpithet": "septentrionalis",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICZN"
+                    },
+                    "label": "Rana septentrionalis Baird 1854"
+                },
+                {
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "label": "Rana virgatipes",
+                        "nameComplete": "Rana virgatipes",
+                        "genusPart": "Rana",
+                        "specificEpithet": "virgatipes",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICZN"
+                    },
+                    "label": "Rana virgatipes Cope 1891"
+                }
+            ],
+            "externalSpecifiers": []
         },
         {
             "label": "Sierrana",
             "cladeDefinition": "Sierrana Dubois 1992 (converted clade name). Definition: The clade stemming from the most recent common ancestor of Rana julianiHillis and de Sá, 1988, Rana maculata Brocchi 1877, and Rana sierramadrensis Taylor 1939.",
-            "internalSpecifiers": [{
-                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                "nameString": "Rana juliani Hillis and de Sá, 1988"
-            }, {
-                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                "nameString": "Rana maculata Brocchi 1877"
-            }, {
-                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                "nameString": "Rana sierramadrensis Taylor 1939"
-            }]
+            "internalSpecifiers": [
+                {
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "label": "Rana maculata",
+                        "nameComplete": "Rana juliani",
+                        "genusPart": "Rana",
+                        "specificEpithet": "juliani",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICZN"
+                    },
+                    "label": "Rana juliani Hillis and de Sá, 1988"
+                },
+                {
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "label": "Rana maculata",
+                        "nameComplete": "Rana maculata",
+                        "genusPart": "Rana",
+                        "specificEpithet": "maculata",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICZN"
+                    },
+                    "label": "Rana maculata Brocchi 1877"
+                },
+                {
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "label": "Rana sierramadrensis",
+                        "nameComplete": "Rana sierramadrensis",
+                        "genusPart": "Rana",
+                        "specificEpithet": "sierramadrensis",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICZN"
+                    },
+                    "label": "Rana sierramadrensis Taylor 1939"
+                }
+            ],
+            "externalSpecifiers": []
         },
         {
             "label": "Ranula",
             "cladeDefinition": "Ranula Peters 1859 (converted clade name). Definition: The clade stemming from the most recent common ancestor of Rana palmipes Spix 1824 and Rana warszewitschii (Schmidt) 1857.",
-            "internalSpecifiers": [{
-                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                "nameString": "Rana palmipes Spix 1824"
-            }, {
-                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                "nameString": "Rana warszewitschii (Schmidt) 1857"
-            }]
+            "internalSpecifiers": [
+                {
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "label": "Rana palmipes",
+                        "nameComplete": "Rana palmipes",
+                        "genusPart": "Rana",
+                        "specificEpithet": "palmipes",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICZN"
+                    },
+                    "label": "Rana palmipes Spix 1824"
+                },
+                {
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "label": "Rana warszewitschii",
+                        "nameComplete": "Rana warszewitschii",
+                        "genusPart": "Rana",
+                        "specificEpithet": "warszewitschii",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICZN"
+                    },
+                    "label": "Rana warszewitschii (Schmidt) 1857"
+                }
+            ],
+            "externalSpecifiers": []
         },
         {
             "label": "Levirana",
             "cladeDefinition": "Levirana Cope 1894 (converted clade name). Definition: The clade stemming from the most recent common ancestor of Rana maculata Brocchi 1877 and Rana vibicaria (Cope) 1894.",
-            "internalSpecifiers": [{
-                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                "nameString": "Rana maculata Brocchi 1877"
-            }, {
-                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                "nameString": "Rana vibicaria (Cope) 1894"
-            }]
+            "internalSpecifiers": [
+                {
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "label": "Rana maculata",
+                        "nameComplete": "Rana maculata",
+                        "genusPart": "Rana",
+                        "specificEpithet": "maculata",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICZN"
+                    },
+                    "label": "Rana maculata Brocchi 1877"
+                },
+                {
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "label": "Rana vibicaria",
+                        "nameComplete": "Rana vibicaria",
+                        "genusPart": "Rana",
+                        "specificEpithet": "vibicaria",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICZN"
+                    },
+                    "label": "Rana vibicaria (Cope) 1894"
+                }
+            ],
+            "externalSpecifiers": []
         },
         {
             "label": "Trypheropsis",
             "cladeDefinition": "Trypheropsis Cope 1868 (converted clade name). Definition: The clade stemming from the most recent common ancestor of Rana warszewitschii (Schmidt) 1857 and Rana vibicaria (Cope) 1894.",
-            "internalSpecifiers": [{
-                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                "nameString": "Rana warszewitschii (Schmidt) 1857"
-            }, {
-                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                "nameString": "Rana vibicaria (Cope) 1894"
-            }]
-        }, {
+            "internalSpecifiers": [
+                {
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "label": "Rana warszewitschii",
+                        "nameComplete": "Rana warszewitschii",
+                        "genusPart": "Rana",
+                        "specificEpithet": "warszewitschii",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICZN"
+                    },
+                    "label": "Rana warszewitschii (Schmidt) 1857"
+                },
+                {
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "label": "Rana vibicaria",
+                        "nameComplete": "Rana vibicaria",
+                        "genusPart": "Rana",
+                        "specificEpithet": "vibicaria",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICZN"
+                    },
+                    "label": "Rana vibicaria (Cope) 1894"
+                }
+            ],
+            "externalSpecifiers": []
+        },
+        {
             "label": "Lithobates",
-            "cladeDefinition": "Lithobates Fitzinger 1843 (converted clade name). Definition: The clade stemming from the most recent common ancestor of Rana palmipes Spix 1824, Rana vaillanti Brocchi 1877, Rana bwanaHillis and de Sá 1988, and Rana julianiHillis and de Sá 1988.",
-            "internalSpecifiers": [{
-                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                "nameString": "Rana palmipes Spix 1824"
-            }, {
-                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                "nameString": "Rana vaillanti Brocchi 1877"
-            }, {
-                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                "nameString": "Rana bwana Hillis and de Sá 1988"
-            }, {
-                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                "nameString": "Rana juliani Hillis and de Sá 1988"
-            }]
-        }, {
+            "cladeDefinition": "Lithobates Fitzinger 1843 (converted clade name). Definition: The clade stemming from the most recent common ancestor of Rana palmipes Spix 1824, Rana vaillanti Brocchi 1877, Rana bwana Hillis and de Sá 1988, and Rana juliani Hillis and de Sá 1988.",
+            "internalSpecifiers": [
+                {
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "label": "Rana palmipes",
+                        "nameComplete": "Rana palmipes",
+                        "genusPart": "Rana",
+                        "specificEpithet": "palmipes",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICZN"
+                    },
+                    "label": "Rana vaillanti Brocchi 1877"
+                },
+                {
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "label": "Rana vaillanti",
+                        "nameComplete": "Rana vaillanti",
+                        "genusPart": "Rana",
+                        "specificEpithet": "vaillanti",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICZN"
+                    },
+                    "label": "Rana vaillanti Brocchi 1877"
+                },
+                {
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "label": "Rana bwana",
+                        "nameComplete": "Rana bwana",
+                        "genusPart": "Rana",
+                        "specificEpithet": "bwana",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICZN"
+                    },
+                    "label": "Rana bwana Hillis and de Sá 1988"
+                },
+                {
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "label": "Rana juliani",
+                        "nameComplete": "Rana juliani",
+                        "genusPart": "Rana",
+                        "specificEpithet": "juliani",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICZN"
+                    },
+                    "label": "Rana juliani Hillis and de Sá 1988"
+                }
+            ],
+            "externalSpecifiers": []
+        },
+        {
             "label": "Torrentirana",
             "cladeDefinition": "Torrentirana, new clade name. Definition: The clade stemming from the most recent common ancestor of Rana tarahumarae Boulenger 1917 and Rana sierramadrensis Taylor 1939",
-            "internalSpecifiers": [{
-                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                "nameString": "Rana tarahumarae Boulenger 1917"
-            }, {
-                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                "nameString": "Rana sierramadrensis Taylor 1939"
-            }]
-        }, {
+            "internalSpecifiers": [
+                {
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "label": "Rana tarahumarae",
+                        "nameComplete": "Rana tarahumarae",
+                        "genusPart": "Rana",
+                        "specificEpithet": "tarahumarae",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICZN"
+                    },
+                    "label": "Rana tarahumarae Boulenger 1917"
+                },
+                {
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "label": "Rana sierramadrensis",
+                        "nameComplete": "Rana sierramadrensis",
+                        "genusPart": "Rana",
+                        "specificEpithet": "sierramadrensis",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICZN"
+                    },
+                    "label": "Rana sierramadrensis Taylor 1939"
+                }
+            ],
+            "externalSpecifiers": []
+        },
+        {
             "label": "Zweifelia",
             "cladeDefinition": "Zweifelia Dubois 1992 (converted clade name). Definition: The clade stemming from the most recent common ancestor of Rana tarahumarae Boulenger 1917 and Rana zweifeli Hillis, Frost and Webb 1984.",
-            "internalSpecifiers": [{
-                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                "nameString": "Rana tarahumarae Boulenger 1917"
-            }, {
-                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                "nameString": "Rana zweifeli Hillis, Frost and Webb 1984"
-            }]
-        }, {
+            "internalSpecifiers": [
+                {
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "label": "Rana tarahumarae",
+                        "nameComplete": "Rana tarahumarae",
+                        "genusPart": "Rana",
+                        "specificEpithet": "tarahumarae",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICZN"
+                    },
+                    "label": "Rana tarahumarae Boulenger 1917"
+                },
+                {
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "label": "Rana zweifeli",
+                        "nameComplete": "Rana zweifeli",
+                        "genusPart": "Rana",
+                        "specificEpithet": "zweifeli",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICZN"
+                    },
+                    "label": "Rana zweifeli Hillis, Frost and Webb 1984"
+                }
+            ],
+            "externalSpecifiers": []
+        },
+        {
             "label": "Pantherana",
             "cladeDefinition": "Pantherana Dubois 1992 (converted clade name). Definition: The clade stemming from the most recent common ancestor of Rana pipiens Schreber 1782, Rana montezumae Baird 1854, Rana palustris LeConte 1825, and Rana berlandieri Baird 1854.",
-            "internalSpecifiers": [{
-                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                "nameString": "Rana pipiens Schreber 1782"
-            }, {
-                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                "nameString": "Rana montezumae Baird 1854"
-            }, {
-                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                "nameString": "Rana palustris LeConte 1825"
-            }, {
-                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                "nameString": "Rana berlandieri Baird 1854"
-            }]
-        }, {
+            "internalSpecifiers": [
+                {
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "label": "Rana pipiens",
+                        "nameComplete": "Rana pipiens",
+                        "genusPart": "Rana",
+                        "specificEpithet": "pipiens",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICZN"
+                    },
+                    "label": "Rana pipiens LeConte 1825"
+                },
+                {
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "label": "Rana montezumae",
+                        "nameComplete": "Rana montezumae",
+                        "genusPart": "Rana",
+                        "specificEpithet": "montezumae",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICZN"
+                    },
+                    "label": "Rana montezumae LeConte 1825"
+                },
+                {
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "label": "Rana palustris",
+                        "nameComplete": "Rana palustris",
+                        "genusPart": "Rana",
+                        "specificEpithet": "palustris",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICZN"
+                    },
+                    "label": "Rana palustris LeConte 1825"
+                },
+                {
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "label": "Rana berlandieri",
+                        "nameComplete": "Rana berlandieri",
+                        "genusPart": "Rana",
+                        "specificEpithet": "berlandieri",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICZN"
+                    },
+                    "label": "Rana berlandieri Baird 1854"
+                }
+            ],
+            "externalSpecifiers": []
+        },
+        {
             "label": "Stertirana",
             "cladeDefinition": "Stertirana, new clade name. Definition: The clade stemming from the most recent common ancestor of Rana pipiens Schreber 1782 and Rana montezumae Baird 1854. Etymology: From the Latin words sterto, meaning ``snore,'' and rana, meaning ``frog,'' in reference to the snore-like element of the advertisement call of the frogs in this group. Content: Includes R. pipiens and the species in Lacusirana (see below). Type species: Rana montezumae Baird 1854.",
-            "internalSpecifiers": [{
-                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                "nameString": "Rana pipiens Schreber 1782"
-            }, {
-                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                "nameString": "Rana montezumae Baird 1854"
-            }]
-        }, {
+            "internalSpecifiers": [
+                {
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "label": "Rana pipiens",
+                        "nameComplete": "Rana pipiens",
+                        "genusPart": "Rana",
+                        "specificEpithet": "pipiens",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICZN"
+                    },
+                    "label": "Rana pipiens Schreber 1782"
+                },
+                {
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "label": "Rana montezumae",
+                        "nameComplete": "Rana montezumae",
+                        "genusPart": "Rana",
+                        "specificEpithet": "montezumae",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICZN"
+                    },
+                    "label": "Rana montezumae Baird 1854"
+                }
+            ],
+            "externalSpecifiers": []
+        },
+        {
             "label": "Lacusirana",
             "cladeDefinition": "Lacusirana, new clade name. Definition: The clade stemming from the most recent common ancestor of Rana montezumae Baird 1854, R. megapoda Taylor 1942, and Rana chiricahuensis Platz and Mecham 1979. Etymology: From the Latin words lacus, meaning ``lake,'' and rana, meaning ``frog,'' in reference to the habitat of most of the species in this group. Content: In addition to the species named in the definition, this clade contains Rana dunni Zweifel 1957, Rana megapoda Taylor 1942, Rana subaquavocalis Platz 1993, Rana lemosespinaliSmith and Chiszar 2003, and a least one undescribed species from the Mexican Plateau (species 2 in Figs. 1, 2). In addition, we place Rana fisheri Stejneger 1893 in this clade based on morphological similarity. Type species: R. megapoda Taylor 1942.",
-            "internalSpecifiers": [{
-                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                "nameString": "Rana montezumae Baird 1854"
-            }, {
-                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                "nameString": "Rana megapoda Taylor 1942"
-            }, {
-                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                "nameString": "Rana chiricahuensis Platz and Mecham 1979"
-            }]
-        }, {
+            "internalSpecifiers": [
+                {
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "label": "Rana montezumae",
+                        "nameComplete": "Rana montezumae",
+                        "genusPart": "Rana",
+                        "specificEpithet": "montezumae",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICZN"
+                    },
+                    "label": "Rana montezumae Baird 1854"
+                },
+                {
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "label": "Rana megapoda",
+                        "nameComplete": "Rana megapoda",
+                        "genusPart": "Rana",
+                        "specificEpithet": "megapoda",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICZN"
+                    },
+                    "label": "Rana megapoda Taylor 1942"
+                },
+                {
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "label": "Rana chiricahuensis",
+                        "nameComplete": "Rana chiricahuensis",
+                        "genusPart": "Rana",
+                        "specificEpithet": "chiricahuensis",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICZN"
+                    },
+                    "label": "Rana chiricahuensis Platz and Mecham 1979"
+                }
+            ],
+            "externalSpecifiers": []
+        },
+        {
             "label": "Nenirana",
             "cladeDefinition": "Nenirana, new clade name. Definition: The clade stemming from the most recent common ancestor of Rana areolata Baird and Girard 1852 and Rana palustris Le Conte 1825. Etymology: From the Latin words nenia, meaning ``a funeral song,'' and rana, meaning ``frog,'' in reference to the low, mournful advertisement call of the species in this clade. Content: In addition to the species specified in the definition, this clade includes Rana capito LeConte 1855 and Rana sevosa Goin and Netting 1940. Hillis et al. (1983) informally termed this clade the R. areolata group. Type species: Rana areolata Baird and Girard 1852.",
-            "internalSpecifiers": [{
-                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                "nameString": "Rana areolata Baird and Girard 1852"
-            }, {
-                "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                "nameString": "Rana palustris Le Conte 1825"
-            }]
-        }, {
+            "internalSpecifiers": [
+                {
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "label": "Rana areolata",
+                        "nameComplete": "Rana areolata",
+                        "genusPart": "Rana",
+                        "specificEpithet": "areolata",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICZN"
+                    },
+                    "label": "Rana areolata Baird and Girard 1852"
+                },
+                {
+                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "label": "Rana palustris",
+                        "nameComplete": "Rana palustris",
+                        "genusPart": "Rana",
+                        "specificEpithet": "palustris",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICZN"
+                    },
+                    "label": "Rana palustris Le Conte 1825"
+                }
+            ],
+            "externalSpecifiers": []
+        },
+        {
             "label": "Scurrilirana",
             "cladeDefinition": "Scurrilirana, new clade name. Definition: The clade stemming from the most recent common ancestor of Rana berlandieri Baird 1854, Rana sphenocephala Cope 1886, Rana forreri Boulenger 1883, R. spectabilisHillis and Frost 1985, Rana omiltemana Gunther 1900, Rana taylori Smith 1959, and Rana magnaocularis Frost and Bagnara 1976. Etymology: From the Latin words scurrilis, meaning ``jesting,'' and rana, meaning ``frog,'' in reference to the advertisement calls of most of the species in this clade, which sound like chuckling laughter. Content: In addition to the species specified in the definition, this clade includes Rana blairi Mecham, Littlejohn, Oldham, Brown, and Brown 1973, Rana chichicuahutlaCuellar et al., 1996, Rana macroglossa Brocchi 1877, Rana miadis Barbour and Loveridge 1929, Rana neovolcanicaHillis and Frost, 1985, Rana onca Cope in Yarrow 1875, Rana tlalociHillis and Frost, 1985, Rana yavapaiensis Platz and Frost 1984, and several undescribed species (species 3–8) in Mexico and Central America. Hillis et al. (1983) informally termed this clade the beta division of the R. pipiens complex. Type species: Rana berlandieri Baird 1854.",
             "internalSpecifiers": [
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Rana berlandieri Baird 1854"
-                }, {
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "label": "Rana berlandieri",
+                        "nameComplete": "Rana berlandieri",
+                        "genusPart": "Rana",
+                        "specificEpithet": "berlandieri",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICZN"
+                    },
+                    "label": "Rana berlandieri Baird 1854"
+                },
+                {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Rana sphenocephala Cope 1886"
-                }, {
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "label": "Rana sphenocephala",
+                        "nameComplete": "Rana sphenocephala",
+                        "genusPart": "Rana",
+                        "specificEpithet": "sphenocephala",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICZN"
+                    },
+                    "label": "Rana sphenocephala Cope 1886"
+                },
+                {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Rana forreri Boulenger 1883"
-                }, {
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "label": "Rana forreri",
+                        "nameComplete": "Rana forreri",
+                        "genusPart": "Rana",
+                        "specificEpithet": "forreri",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICZN"
+                    },
+                    "label": "Rana forreri Boulenger 1883"
+                },
+                {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Rana spectabilis Hillis and Frost 1985"
-                }, {
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "label": "Rana spectabilis",
+                        "nameComplete": "Rana spectabilis",
+                        "genusPart": "Rana",
+                        "specificEpithet": "spectabilis",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICZN"
+                    },
+                    "label": "Rana spectabilis Hillis and Frost 1985"
+                },
+                {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Rana omiltemana Gunther 1900"
-                }, {
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "label": "Rana omiltemana",
+                        "nameComplete": "Rana omiltemana",
+                        "genusPart": "Rana",
+                        "specificEpithet": "omiltemana",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICZN"
+                    },
+                    "label": "Rana omiltemana Gunther 1900"
+                },
+                {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Rana taylori Smith 1959"
-                }, {
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "label": "Rana taylori",
+                        "nameComplete": "Rana taylori",
+                        "genusPart": "Rana",
+                        "specificEpithet": "taylori",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICZN"
+                    },
+                    "label": "Rana taylori Smith 1959"
+                },
+                {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "nameString": "Rana magnaocularis Frost and Bagnara 1976"
+                    "hasName": {
+                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                        "label": "Rana magnaocularis",
+                        "nameComplete": "Rana magnaocularis",
+                        "genusPart": "Rana",
+                        "specificEpithet": "magnaocularis",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICZN"
+                    },
+                    "label": "Rana magnaocularis Frost and Bagnara 1976"
                 }
-            ]
+            ],
+            "externalSpecifiers": []
         }
     ]
 }
