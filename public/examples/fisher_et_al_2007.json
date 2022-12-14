@@ -8,6 +8,7 @@
         {
             "@id": "#phylogeny0",
             "newick": "((((((((((('Arthrocormus schimperi',('Exostratum blumii 243','Exostratum blumii 245')Exostratum),('Exodictyon incrassatum',(('Leucophanes seychellarum',('Leucophanes octoblepharoides','Leucophanes albescens'),'Leucophanes glaucum'),'Syrrhopodon confertus')Leucophanes))Albifolium,'Syrrhopodon muelleri'),'Syrrhopodon perarmatus'),(('Syrrhopodon ciliatus',('Syrrhopodon albovaginatus 446','Syrrhopodon albovaginatus 162')),((('Syrrhopodon tortillis','Syrrhopodon leprieurii'),'Syrrhopodon prolifer'),('Syrrhopodon parasiticus','Syrrhopodon trachyphyllus',('Syrrhopodon banksii','Syrrhopodon involutus')Leucophanella)))Trachymitrium),('Syrrhopodon armatus','Syrrhopodon fimbriatulus')),((((('Mitthyridium obtusifolium','Mitthyridium constrictum'),'Mitthyridium fasciculatum'),('Mitthyridium undulatum','Mitthyridium jungquilianum'))Mitthyridium_as_per_paper,'Syrrhopodon mahensis')Mitthyridium,('Syrrhopodon tristichus',('Syrrhopodon croceus','Syrrhopodon apertus','Syrrhopodon fissipapillatus'))))Syrrhopodon,(('Syrrhopodon incompletus',((((('Calymperes palisotii 159','Calymperes palisotii 180'),'Calymperes motleyi'),('Calymperes erosum','Calymperes robinsonii')),(('Calymperes tenerum','Calymperes subintegrum',('Calymperes tuatomuense','Calymperes pseudopodianum'),'Calymperes hispidium'),'Calymperes moluccense')),((('Calymperes tahitense 320','Calymperes tahitense 115'),'Calymperes lonchophyllum'),(('Calymperes afzelii 179','Calymperes afzelii 165'),'Calymperes graffeanum')))),'Syrrhopodon mauritianus')Calymperes),'Syrrhopodon japonicus'),'Syrrhopodon gardneri')Calymperaceae,('Octoblepharum Moorea 445','Octoblepharum albidum')Octoblepharum);",
+            "description": "For the nodes Exostratum blumii 243 and Exostratum blumii 245, the paper does not tell us which specimen ID goes with which node, so I've assigned both specimen IDs to both nodes. -- GGV",
             "source": {
                 "type": "article",
                 "title": "Phylogeny of the Calymperaceae with a rank-free systematic treatment",
@@ -62,9 +63,16 @@
                     "representsTaxonomicUnits": [
                         {
                             "@type": "http://rs.tdwg.org/dwc/terms/Occurrence",
-                            "occurrenceID": "urn:catalog:::Mishler 7/24/98 (5)",
-                            "nameString": "Arthrocormus schimperi",
-                            "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICBN"
+                            "catalogNumber": "Mishler 7/24/98 (5)"
+                        },
+                        {
+                            "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                            "hasName": {
+                                "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                                "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICBN",
+                                "label": "Arthrocormus schimperi",
+                                "nameComplete": "Arthrocormus schimperi"
+                            }
                         }
                     ]
                 },
@@ -72,38 +80,58 @@
                     "representsTaxonomicUnits": [
                         {
                             "@type": "http://rs.tdwg.org/dwc/terms/Occurrence",
-                            "occurrenceID": "urn:catalog:::Wall 2527, Fiji (uc)",
-                            "nameString": "Exodictyon sp"
+                            "occurrenceID": "urn:catalog:::Wall 2527, Fiji (uc)"
+                        },
+                        {
+                            "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                            "hasName": {
+                                "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                                "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICBN",
+                                "label": "Exodictyon incrassatum",
+                                "nameComplete": "Exodictyon incrassatum"
+                            }
                         }
                     ]
                 },
                 "Exostratum blumii 243": {
-                    "comment": "The paper does not tell us which specimen ID goes with which node, so I've assigned both specmen IDs to both nodes. -- GGV",
                     "representsTaxonomicUnits": [
                         {
                             "@type": "http://rs.tdwg.org/dwc/terms/Occurrence",
-                            "occurrenceID": "urn:catalog:::Mishler 7/26/98(1)",
-                            "nameString": "Exostratum blumii"
+                            "occurrenceID": "urn:catalog:::Mishler 7/26/98(1)"
                         },
                         {
                             "@type": "http://rs.tdwg.org/dwc/terms/Occurrence",
-                            "occurrenceID": "urn:catalog:::Mishler 7/26/98(3)",
-                            "nameString": "Exostratum blumii"
+                            "occurrenceID": "urn:catalog:::Mishler 7/26/98(3)"
+                        },
+                        {
+                            "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                            "hasName": {
+                                "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                                "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICBN",
+                                "label": "Exostratum blumii",
+                                "nameComplete": "Exostratum blumii"
+                            }
                         }
                     ]
                 },
                 "Exostratum blumii 245": {
-                    "comment": "The paper does not tell us which specimen ID goes with which node, so I've assigned both specmen IDs to both nodes. -- GGV",
                     "representsTaxonomicUnits": [
                         {
                             "@type": "http://rs.tdwg.org/dwc/terms/Occurrence",
-                            "occurrenceID": "urn:catalog:::Mishler 7/26/98(1)",
-                            "nameString": "Exostratum blumii"
+                            "occurrenceID": "urn:catalog:::Mishler 7/26/98(1)"
                         },
                         {
                             "@type": "http://rs.tdwg.org/dwc/terms/Occurrence",
-                            "occurrenceID": "urn:catalog:::Mishler 7/26/98(3)",
-                            "nameString": "Exostratum blumii"
+                            "occurrenceID": "urn:catalog:::Mishler 7/26/98(3)"
+                        },
+                        {
+                            "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                            "hasName": {
+                                "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                                "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICBN",
+                                "label": "Exostratum blumii",
+                                "nameComplete": "Exostratum blumii"
+                            }
                         }
                     ]
                 }
