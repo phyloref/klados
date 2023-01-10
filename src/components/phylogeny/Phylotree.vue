@@ -166,17 +166,17 @@ export default {
       this.pinningNodes = [];
       this.pinningNodeChildrenIRIs = new Set();
 
-      const container = jQuery(`#phylogeny${this.phylogenyIndex}`);
-
       // Draw the tree.
       const display = this.tree
         .render({
           'left-right-spacing': 'fit-to-size',
           'top-bottom-spacing': 'fit-to-size',
-          'align-tips': 'right',
+          'minimum-per-level-spacing': 50,
+          'minimum-per-node-spacing': 10,
+          'align-tips': true,
           'node-styler': ((element, node) => {
             const data = node.data;
-            console.log('node_styler:', element, node, data);
+            //console.log('node_styler:', element, node, data);
 
             // Instructions used to style nodes in Phylotree
             // - element: The D3 element of the node being styled
@@ -256,7 +256,7 @@ export default {
             //
             // Note that this node might NOT be labeled, in which case we need to
             // label it now!
-            console.log("Gonna try this", this.phyloref, data, this.$store.getters.getResolvedNodesForPhylogeny(this.phylogeny, this.phyloref));
+            // console.log("Gonna try this", this.phyloref, data, this.$store.getters.getResolvedNodesForPhylogeny(this.phylogeny, this.phyloref));
             if (
               this.phyloref !== undefined && has(data, '@id')
                 && this.$store.getters.getResolvedNodesForPhylogeny(this.phylogeny, this.phyloref).includes(data['@id'])
@@ -322,7 +322,7 @@ export default {
             }
           }),
           'edge-styler': ((element, data) => {
-            console.log('edge_styler:', element, data);
+            //console.log('edge_styler:', element, data);
 
             // Is the parent a descendant of a pinning node? If so, we need to
             // select this branch!
@@ -334,22 +334,30 @@ export default {
               // Apply a class to this branch.
               element.classed('descendant-of-pinning-node-branch', true);
               // element.setAttribute('class', 'branch descendant-of-pinning-node-branch');
-              console.log('Added classes to', element, element.attr('class'));
+              // console.log('Added classes to', element, element.attr('class'));
             } else {
               element.classed('descendant-of-pinning-node-branch', false);
               // element.setAttribute('class', 'branch');
-              console.log('Removed classes from', element, element.attr('class'));
+              // console.log('Removed classes from', element, element.attr('class'));
             }
           }),
           container: `#phylogeny${this.phylogenyIndex}`,
         });
 
+      // Resize the tree to the size of the container.
+      const container = jQuery(`#phylogeny${this.phylogenyIndex}`);
+      const height = container.innerHeight() < 600 ? 600 : container.innerHeight();
+      const width = container.innerWidth() < 800 ? 800 : container.innerWidth();
+
+      console.log("container.innerWidth()", container.innerWidth());
+      console.log("container.innerHeight()", container.innerHeight());
+
       display.font_size = 16;
       display.size = [
-        // height
-        container.innerHeight(),
         // width
-        container.innerWidth(),
+        width * 2,
+        // height
+        height * 2,
         // We need more space because our fonts are bigger than the default.
       ];
 
