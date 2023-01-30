@@ -161,12 +161,13 @@
                 "Mitthyridium undulatum": {
                     "representsTaxonomicUnits": [
                         {
-                            "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
-                            "label": "Codonoblepharum undulatum",
-                            "nameComplete": "Codonoblepharum undulatum",
-                            "genusPart": "Codonoblepharum",
-                            "specificEpithet": "undulatum",
-                            "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICBN"
+                            "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                            "hasName": {
+                                "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                                "label": "Codonoblepharum undulatum",
+                                "nameComplete": "Codonoblepharum undulatum",
+                                "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICBN"
+                            }
                         }
                     ]
                 }
