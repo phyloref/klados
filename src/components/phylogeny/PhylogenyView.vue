@@ -101,13 +101,13 @@
 
       <div class="card-footer">
         <div
-            class="btn-group"
-            role="group"
-            area-label="Phylogeny management"
+          class="btn-group"
+          role="group"
+          area-label="Phylogeny management"
         >
           <button
-              class="btn btn-danger"
-              @click="deleteThisPhylogeny()"
+            class="btn btn-danger"
+            @click="deleteThisPhylogeny()"
           >
             Delete phylogeny
           </button>
@@ -144,6 +144,23 @@
         />
       </div>
     </div>
+
+    <!-- Display taxonomic units in this phylogeny -->
+    <div class="card mt-2">
+      <h5 class="card-header">
+        Taxonomic units in this phylogeny
+      </h5>
+      <div class="card-body">
+        <b-table striped hover filter :items="taxonomicUnitsTable" :primary-key="node_label" show-empty>
+          <template #empty="scope">
+            <h4>No labels found in this phylogeny.</h4>
+          </template>
+          <template #emptyfiltered="scope">
+            <h4>No labels found after filtering.</h4>
+          </template>
+        </b-table>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -159,6 +176,7 @@ import { parse as parseNewick } from 'newick-js';
 import ModifiedCard from '../cards/ModifiedCard.vue';
 import Phylotree from './Phylotree.vue';
 import Citation from '../citations/Citation.vue';
+import {PhylogenyWrapper} from "@phyloref/phyx";
 
 export default {
   name: 'PhylogenyView',
@@ -265,6 +283,15 @@ export default {
       }
 
       return errors;
+    },
+    taxonomicUnitsTable() {
+      // Create a table of taxonomic units found in this phylogeny.
+      const terminalLabels = new PhylogenyWrapper(this.selectedPhylogeny).getNodeLabels('terminal').sort();
+      const internalLabels = new PhylogenyWrapper(this.selectedPhylogeny).getNodeLabels('internal').sort();
+
+      return terminalLabels.map(nodeLabel => ({ node_label: nodeLabel, node_type: 'Terminal node' })).concat(
+        internalLabels.map(nodeLabel => ({ node_label: nodeLabel, node_type: 'Internal node' })),
+      );
     },
     ...mapState({
       currentPhyx: state => state.phyx.currentPhyx,
