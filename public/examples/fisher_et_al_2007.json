@@ -170,6 +170,19 @@
                             }
                         }
                     ]
+                },
+                "Syrrhopodon ciliatus": {
+                    "representsTaxonomicUnits": [
+                        {
+                            "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+                            "hasName": {
+                                "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+                                "label": "Weissia ciliata",
+                                "nameComplete": "Weissia ciliata",
+                                "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICBN"
+                            }
+                        }
+                    ]
                 }
             }
         }
@@ -357,9 +370,10 @@
                         "label": "Weissia ciliata",
                         "nameComplete": "Weissia ciliata",
                         "genusPart": "Weissia",
-                        "specificEpithet": "ciliata"
+                        "specificEpithet": "ciliata",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICBN"
                     },
-                    "label": "Type: Syrrhopodon croceus Mitt., J. Proc. Linn. Soc., Bot. Suppl. 1: 41. (1859)"
+                    "label": "Type: Weissia ciliata Hook., Musci Exot. 2: 7. 171. (1820)"
                 },
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
@@ -368,7 +382,8 @@
                         "label": "Syrrhopodon involutus",
                         "nameComplete": "Syrrhopodon involutus",
                         "genusPart": "Syrrhopodon",
-                        "specificEpithet": "involutus"
+                        "specificEpithet": "involutus",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICBN"
                     },
                     "label": "Type: Syrrhopodon involutus Schwägr., Sp. Musc. Frond. Suppl. 2, 1(2): 117. pl. 132. (1824)"
                 }
@@ -381,7 +396,8 @@
                         "label": "Syrrhopodon perarmatus",
                         "nameComplete": "Syrrhopodon perarmatus",
                         "genusPart": "Syrrhopodon",
-                        "specificEpithet": "perarmatus"
+                        "specificEpithet": "perarmatus",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICBN"
                     },
                     "label": "Type: Syrrhopodon perarmatus Broth. & Watts, J. & Proc. Roy. Soc. New South Wales 49: 133. (1915)"
                 }
@@ -413,7 +429,7 @@
                         "specificEpithet": "involutus",
                         "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICBN"
                     },
-                    "label": "Type: S. banksii Müll. Hal., Bot. Zeitung (Berlin) 16: 162. (1858)"
+                    "label": "Type: S. involutus Schwägr., Sp. Musc. Frond. Suppl. 2, 1(2): 117. pl. 132. (1824)"
                 },
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
