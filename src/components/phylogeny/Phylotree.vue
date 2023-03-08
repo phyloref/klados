@@ -22,6 +22,13 @@
         class="col-md-12 phylogeny"
       />
       <ResizeObserver @notify="redrawTree" />
+      <button
+        type="button"
+        class="btn btn-primary"
+        @click="exportAsNewick()"
+      >
+        Download as Newick
+      </button>
     </div>
   </div>
 </template>
@@ -33,7 +40,8 @@
  */
 
 import { uniqueId, has } from 'lodash';
-import { PhylogenyWrapper, PhylorefWrapper } from '@phyloref/phyx';
+import { PhylogenyWrapper, PhylorefWrapper, PhyxWrapper } from '@phyloref/phyx';
+import { saveAs } from 'filesaver.js-npm';
 
 /*
  * Note that this requires the Phylotree Javascript to be loaded in the HTML
@@ -295,6 +303,15 @@ export default {
     this.redrawTree();
   },
   methods: {
+    exportAsNewick() {
+      // Export this phylogeny as a Newick string in a .txt file for download.
+      const newickStr = this.tree.get_newick();
+      const filename = 'phylogeny.txt';
+
+      // Save to local hard drive.
+      const newickFile = new File([newickStr], filename, { type: 'text/plain;charset=utf-8' });
+      saveAs(newickFile, filename);
+    },
     recurseNodes(node, func, nodeCount = 0, parentCount = undefined) {
       // Recurse through PhyloTree nodes, executing function on each node.
       //  - node: The node to recurse from. The function will be called on node
