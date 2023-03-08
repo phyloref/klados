@@ -11,7 +11,7 @@ in the [JSON-LD format]. Phyx files can be incorporated into the [Clade Ontology
 
 You can currently cite Klados as:
 
-> Vaidya, Becker, Cellinese, Lapp (2023) Klados: a tool for authoring, testing and curating phyloreferences. GitHub: https://github.com/phyloref/klados DOI: [10.5281/zenodo.7103131](https://doi.org/10.5281/zenodo.7103131)
+> Vaidya G, Becker A, Cellinese N, Lapp H (2023) Klados: a tool for authoring, testing and curating phyloreferences. GitHub: https://github.com/phyloref/klados DOI: [10.5281/zenodo.7103131](https://doi.org/10.5281/zenodo.7103131)
 
 ## Project setup
 ```
