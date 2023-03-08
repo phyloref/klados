@@ -1,6 +1,6 @@
 # Klados
 
-[![Zenodo](https://zenodo.org/badge/7103131.svg)](https://zenodo.org/badge/latestdoi/7103131)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7103131.svg)](https://doi.org/10.5281/zenodo.7103131)
 
 Klados allows users to curate [phyloreferences]
 side-by-side with the phylogenies they were originally defined on. The curated phylogenies
