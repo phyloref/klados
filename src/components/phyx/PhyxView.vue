@@ -389,6 +389,7 @@ export default {
         'Phyloreference ID',
         'Label',
         'Type',
+        'Definition',
         ...range(0, maxInternalSpecifiers).map((_, i) => `Internal specifier ${i + 1}`),
         ...range(0, maxExternalSpecifiers).map((_, i) => `External specifier ${i + 1}`),
         ...this.phylogenies.flatMap((phylogeny) => {
@@ -404,6 +405,8 @@ export default {
           this.$store.getters.getPhylorefId(phyloref),
           wrappedPhyloref.label,
           this.$store.getters.getPhylorefType(phyloref),
+          // Write out the clade definition.
+          phyloref.definition || '',
           // Write out the internal specifier labels
           ...(wrappedPhyloref.internalSpecifiers.map(sp => new TaxonomicUnitWrapper(sp).label)),
           // Write out blank cells for the remaining internal specifiers

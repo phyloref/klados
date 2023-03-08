@@ -64,7 +64,7 @@ export default {
     getDefaultNomenCodeURI(state) {
       // If no default nomenclatural code is set in the Phyx file, we will attempt to look up that information
       // using a cookie.
-      return state.currentPhyx.defaultNomenclaturalCodeURI
+      return state.currentPhyx.defaultNomenclaturalCodeIRI
           || getKladosCookie(COOKIE_DEFAULT_NOMEN_CODE_URI, TaxonNameWrapper.UNKNOWN_CODE);
     },
     getDownloadFilenameForPhyx(state) {
