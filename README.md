@@ -1,5 +1,7 @@
 # Klados
 
+[![Zenodo](https://zenodo.org/badge/7103131.svg)](https://zenodo.org/badge/latestdoi/7103131)
+
 Klados allows users to curate [phyloreferences]
 side-by-side with the phylogenies they were originally defined on. The curated phylogenies
 are stored in the [Phyx format], which can be downloaded as an [OWL 2 ontology]
