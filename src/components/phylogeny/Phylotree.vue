@@ -305,7 +305,22 @@ export default {
   methods: {
     exportAsNewick() {
       // Export this phylogeny as a Newick string in a .txt file for download.
-      const newickStr = this.tree.get_newick();
+      const newickStr = this.tree.get_newick((n) => {
+        // There appears to be a bug in the version of Phylotree.js we
+        // use in which leaf nodes are duplicated if we just return n.name
+        // here. So we return undefined for leaf nodes and n.name for
+        // everything else. I'll investigate this more deeply in
+        // https://github.com/phyloref/klados/issues/200.
+        if (!this.tree.is_leafnode(n)) return n.name;
+
+        // TODO: we should follow the same behavior as Phylotree:
+        //  - If we have reasoning results, internal nodes found by the reasoner should be marked `phyloref_{label}` to
+        //    distinguish them from the expected results.
+        //  - If phyloref is set, only that phyloref should be displayed (either as `phyloref_{label}` if reasoned or
+        //    just `{label}` if only present in the phylogeny).
+
+        return undefined;
+      });
       const filename = 'phylogeny.txt';
 
       // Save to local hard drive.
