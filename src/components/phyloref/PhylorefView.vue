@@ -177,6 +177,90 @@
             :remote-specifier-id="'external' + index"
           />
         </div>
+
+        <h5 class="mt-2">
+          Apomorphy
+        </h5>
+
+        <div class="form-group row">
+          <div class="form-check col-md-12">
+            <input class="form-check-input" type="checkbox" value="" />
+            <label class="form-check-label" for="flexCheckDefault">
+              This phyloreference includes an apomorphy.
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label
+              :for="apomorphy-definition"
+              class="col-form-label col-md-2"
+          >
+            Definition
+          </label>
+          <div class="col-md-10">
+            <textarea
+              id="bearing-entity"
+              class="form-control"
+              rows="2"
+              placeholder="e.g. 'A complete turtle shell as inherited by Testudo graeca.'"
+            />
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label
+            :for="bearing-entity"
+            class="col-form-label col-md-2"
+          >
+            Bearing entity
+          </label>
+          <div class="col-md-10">
+            <div class="input-group">
+              <input
+                id="bearing-entity"
+                class="form-control"
+                placeholder="e.g. 'http://purl.obolibrary.org/obo/UBERON_0008271'"
+              />
+              <div class="input-group-append">
+                <a
+                  class="btn btn-outline-secondary align-middle"
+                  target="_blank"
+                  style="vertical-align: middle"
+                >
+                  Open in new window
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label
+              :for="phenotypic-quality"
+              class="col-form-label col-md-2"
+          >
+            Phenotypic Quality
+          </label>
+          <div class="col-md-10">
+            <div class="input-group">
+              <input
+                  id="bearing-entity"
+                  class="form-control"
+                  placeholder="e.g. 'http://purl.obolibrary.org/obo/PATO_0000467'"
+              />
+              <div class="input-group-append">
+                <a
+                    class="btn btn-outline-secondary align-middle"
+                    target="_blank"
+                    style="vertical-align: middle"
+                >
+                  Open in new window
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="card-footer">
         <div
@@ -425,6 +509,7 @@ import Vue from 'vue';
 import { mapState } from 'vuex';
 import { has, cloneDeep } from 'lodash';
 import { PhylogenyWrapper, PhylorefWrapper } from '@phyloref/phyx';
+import { BIconTrash } from 'bootstrap-vue';
 
 import ModifiedCard from '../cards/ModifiedCard.vue';
 import Phylotree from '../phylogeny/Phylotree.vue';
@@ -438,6 +523,7 @@ export default {
     Phylotree,
     Citation,
     Specifier,
+    BIconTrash,
   },
   computed: {
     /*
@@ -521,7 +607,7 @@ export default {
     },
     deleteThisPhyloref() {
       // Delete this phyloreference, and unset the selected phyloref so we return to the summary page.
-      if(confirm('Are you sure you wish to delete this phyloreference? This cannot be undone!')) {
+      if (confirm('Are you sure you wish to delete this phyloreference? This cannot be undone!')) {
         this.$store.commit('deletePhyloref', {
           phyloref: this.selectedPhyloref,
         });
