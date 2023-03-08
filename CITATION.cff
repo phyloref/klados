@@ -33,7 +33,7 @@ authors:
       University, Durham, NC, USA
 identifiers:
   - type: doi
-    value: 10.5281/zenodo.7103132
+    value: 10.5281/zenodo.7103131
     description: Source code archived to Zenodo
 repository-code: 'https://github.com/phyloref/klados'
 url: 'https://phyloref.org/klados/'
