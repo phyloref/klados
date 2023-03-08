@@ -151,15 +151,22 @@
         Taxonomic units in this phylogeny
       </h5>
       <div class="card-body">
-        <b-table striped hover filter :items="taxonomicUnitsTable" :primary-key="node_label" show-empty>
-          <template #empty="scope">
-            <h4>No labels found in this phylogeny.</h4>
-          </template>
-          <template #emptyfiltered="scope">
-            <h4>No labels found after filtering.</h4>
-          </template>
-        </b-table>
+        To add additional taxonomic units to this list, please label the corresponding node on the phylogeny.
       </div>
+      <b-table
+        striped
+        hover
+        :items="taxonomicUnitsTable"
+        :primary-key="node_label"
+        show-empty
+      >
+        <template #empty="scope">
+          <h4>No labels found in this phylogeny.</h4>
+        </template>
+        <template #emptyfiltered="scope">
+          <h4>No labels found after filtering.</h4>
+        </template>
+      </b-table>
     </div>
   </div>
 </template>
@@ -173,10 +180,10 @@ import { has } from 'lodash';
 import { mapState } from 'vuex';
 import { parse as parseNewick } from 'newick-js';
 
+import { PhylogenyWrapper } from '@phyloref/phyx';
 import ModifiedCard from '../cards/ModifiedCard.vue';
 import Phylotree from './Phylotree.vue';
 import Citation from '../citations/Citation.vue';
-import {PhylogenyWrapper} from "@phyloref/phyx";
 
 export default {
   name: 'PhylogenyView',
@@ -190,7 +197,7 @@ export default {
   methods: {
     deleteThisPhylogeny() {
       // Delete this phylogeny, and unset the selected phylogeny so we return to the summary page.
-      if(confirm('Are you sure you wish to delete this phylogeny? This cannot be undone!')) {
+      if (confirm('Are you sure you wish to delete this phylogeny? This cannot be undone!')) {
         this.$store.commit('deletePhylogeny', {
           phylogeny: this.selectedPhylogeny,
         });
