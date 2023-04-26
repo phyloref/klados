@@ -142,152 +142,168 @@
           </div>
         </form>
 
-        <h5>Internal specifiers</h5>
-
-        <template v-if="!selectedPhyloref.internalSpecifiers || selectedPhyloref.internalSpecifiers.length === 0">
-          <p><em>No internal specifiers in this phyloreference.</em></p>
-        </template>
-        <div
-          v-for="(specifier, index) of selectedPhyloref.internalSpecifiers"
-          class="form-row input-group"
-        >
-          <Specifier
-            :key="'internal' + index"
-            :phyloref="selectedPhyloref"
-            :remote-specifier="specifier"
-            :remote-specifier-id="'internal' + index"
-          />
-        </div>
-
-        <h5 class="mt-2">
-          External specifiers
-        </h5>
-
-        <template v-if="!selectedPhyloref.externalSpecifiers || selectedPhyloref.externalSpecifiers.length === 0">
-          <p><em>No external specifiers in this phyloreference.</em></p>
-        </template>
-        <div
-          v-for="(specifier, index) of selectedPhyloref.externalSpecifiers"
-          class="form-row input-group"
-        >
-          <Specifier
-            :key="'external' + index"
-            :phyloref="selectedPhyloref"
-            :remote-specifier="specifier"
-            :remote-specifier-id="'external' + index"
-          />
-        </div>
-
-        <h5 class="mt-2">
-          Apomorphy
-        </h5>
-
-        <div class="form-group row">
-          <div class="form-check col-md-12">
-            <input class="form-check-input" type="checkbox" value="" />
-            <label class="form-check-label" for="flexCheckDefault">
-              This phyloreference includes an apomorphy.
-            </label>
+        <div class="card">
+          <div class="card-header">
+            <button
+              class="btn btn-secondary btn-sm float-right"
+              href="javascript:;"
+              @click="$store.commit('addInternalSpecifier', { phyloref: selectedPhyloref })"
+            >
+              <b-icon-plus-square />
+            </button>
+            <h5>Internal specifiers</h5>
           </div>
-        </div>
-
-        <div class="form-group row">
-          <label
-              :for="apomorphy-definition"
-              class="col-form-label col-md-2"
-          >
-            Definition
-          </label>
-          <div class="col-md-10">
-            <textarea
-              id="bearing-entity"
-              class="form-control"
-              rows="2"
-              placeholder="e.g. 'A complete turtle shell as inherited by Testudo graeca.'"
-            />
-          </div>
-        </div>
-
-        <div class="form-group row">
-          <label
-            :for="bearing-entity"
-            class="col-form-label col-md-2"
-          >
-            Bearing entity
-          </label>
-          <div class="col-md-10">
-            <div class="input-group">
-              <input
-                id="bearing-entity"
-                class="form-control"
-                placeholder="e.g. 'http://purl.obolibrary.org/obo/UBERON_0008271'"
+          <div class="card-body">
+            <template
+              v-if="!selectedPhyloref.internalSpecifiers || selectedPhyloref.internalSpecifiers.length === 0"
+            >
+              <p><em>No internal specifiers in this phyloreference.</em></p>
+            </template>
+            <div
+              v-for="(specifier, index) of selectedPhyloref.internalSpecifiers"
+              class="form-row input-group"
+            >
+              <Specifier
+                :key="'internal' + index"
+                :phyloref="selectedPhyloref"
+                :remote-specifier="specifier"
+                :remote-specifier-id="'internal' + index"
               />
-              <div class="input-group-append">
-                <a
-                  class="btn btn-outline-secondary align-middle"
-                  target="_blank"
-                  style="vertical-align: middle"
-                >
-                  Open in new window
-                </a>
-              </div>
             </div>
           </div>
         </div>
 
-        <div class="form-group row">
-          <label
-              :for="phenotypic-quality"
-              class="col-form-label col-md-2"
-          >
-            Phenotypic Quality
-          </label>
-          <div class="col-md-10">
-            <div class="input-group">
-              <input
-                  id="bearing-entity"
-                  class="form-control"
-                  placeholder="e.g. 'http://purl.obolibrary.org/obo/PATO_0000467'"
+        <div class="card mt-2">
+          <div class="card-header">
+            <button
+              class="btn btn-secondary btn-sm float-right"
+              href="javascript:;"
+              @click="$store.commit('addExternalSpecifier', { phyloref: selectedPhyloref })"
+            >
+              <b-icon-plus-square />
+            </button>
+            <h5>External specifiers</h5>
+          </div>
+          <div class="card-body">
+            <template
+              v-if="!selectedPhyloref.externalSpecifiers || selectedPhyloref.externalSpecifiers.length === 0"
+            >
+              <p><em>No external specifiers in this phyloreference.</em></p>
+            </template>
+            <div
+              v-for="(specifier, index) of selectedPhyloref.externalSpecifiers"
+              class="form-row input-group"
+            >
+              <Specifier
+                :key="'external' + index"
+                :phyloref="selectedPhyloref"
+                :remote-specifier="specifier"
+                :remote-specifier-id="'external' + index"
               />
-              <div class="input-group-append">
-                <a
-                    class="btn btn-outline-secondary align-middle"
-                    target="_blank"
-                    style="vertical-align: middle"
-                >
-                  Open in new window
-                </a>
-              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="card-footer">
-        <div
-          class="btn-group"
-          role="group"
-          area-label="Internal specifier management"
-        >
-          <button
-            class="btn btn-primary"
-            href="javascript:;"
-            @click="$store.commit('addInternalSpecifier', { phyloref: selectedPhyloref })"
-          >
-            Add internal specifier
-          </button>
-        </div>
-        <div
-          class="btn-group ml-2"
-          role="group"
-          area-label="External specifier management"
-        >
-          <button
-            class="btn btn-primary"
-            href="javascript:;"
-            @click="$store.commit('addExternalSpecifier', { phyloref: selectedPhyloref })"
-          >
-            Add external specifier
-          </button>
+
+        <div class="card mt-2">
+          <div class="card-header">
+            <h5>
+              <button
+                v-if="has_apomorphy"
+                class="btn btn-secondary btn-sm float-right"
+                href="javascript:;"
+                @click="has_apomorphy = !has_apomorphy"
+              >
+                <b-icon-check-square />
+              </button>
+              <button
+                v-if="!has_apomorphy"
+                class="btn btn-secondary btn-sm float-right"
+                href="javascript:;"
+                @click="has_apomorphy = !has_apomorphy"
+              >
+                <b-icon-square />
+              </button>
+              Apomorphy
+            </h5>
+          </div>
+          <div class="card-body">
+            <div v-if="!has_apomorphy">
+              <p><em>No apomorphy in this phyloreference.</em></p>
+            </div>
+
+            <template v-if="has_apomorphy">
+              <div class="form-group row">
+                <label
+                  :for="apomorphy-definition"
+                  class="col-form-label col-md-2"
+                >
+                  Definition
+                </label>
+                <div class="col-md-10">
+                  <textarea
+                    id="bearing-entity"
+                    class="form-control"
+                    rows="2"
+                    placeholder="e.g. 'A complete turtle shell as inherited by Testudo graeca.'"
+                  />
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label
+                  :for="bearing-entity"
+                  class="col-form-label col-md-2"
+                >
+                  Bearing entity
+                </label>
+                <div class="col-md-10">
+                  <div class="input-group">
+                    <input
+                      id="bearing-entity"
+                      class="form-control"
+                      placeholder="e.g. 'http://purl.obolibrary.org/obo/UBERON_0008271'"
+                    >
+                    <div class="input-group-append">
+                      <a
+                        class="btn btn-outline-secondary align-middle"
+                        target="_blank"
+                        style="vertical-align: middle"
+                      >
+                        Open in new window
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label
+                  :for="phenotypic-quality"
+                  class="col-form-label col-md-2"
+                >
+                  Phenotypic Quality
+                </label>
+                <div class="col-md-10">
+                  <div class="input-group">
+                    <input
+                      id="bearing-entity"
+                      class="form-control"
+                      placeholder="e.g. 'http://purl.obolibrary.org/obo/PATO_0000467'"
+                    >
+                    <div class="input-group-append">
+                      <a
+                        class="btn btn-outline-secondary align-middle"
+                        target="_blank"
+                        style="vertical-align: middle"
+                      >
+                        Open in new window
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </template>
+          </div>
         </div>
       </div>
     </div>
@@ -509,7 +525,9 @@ import Vue from 'vue';
 import { mapState } from 'vuex';
 import { has, cloneDeep } from 'lodash';
 import { PhylogenyWrapper, PhylorefWrapper } from '@phyloref/phyx';
-import { BIconTrash } from 'bootstrap-vue';
+import {
+  BIconSquare, BIconCheck, BIconCheckSquare, BIconPlusSquare,
+} from 'bootstrap-vue';
 
 import ModifiedCard from '../cards/ModifiedCard.vue';
 import Phylotree from '../phylogeny/Phylotree.vue';
@@ -523,7 +541,15 @@ export default {
     Phylotree,
     Citation,
     Specifier,
-    BIconTrash,
+    BIconSquare,
+    BIconCheck,
+    BIconCheckSquare,
+    BIconPlusSquare,
+  },
+  data() {
+    return {
+      has_apomorphy: false,
+    };
   },
   computed: {
     /*
