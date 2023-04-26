@@ -303,8 +303,8 @@ export default {
     },
     ...mapState({
       phyx: state => state.phyx.currentPhyx,
-      phylorefs: state => state.phyx.currentPhyx.phylorefs,
-      phylogenies: state => state.phyx.currentPhyx.phylogenies,
+      phylorefs: state => state.phyx.currentPhyx.phylorefs || [],
+      phylogenies: state => state.phyx.currentPhyx.phylogenies || [],
     }),
   },
   methods: {
