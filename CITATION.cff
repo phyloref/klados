@@ -39,6 +39,7 @@ repository-code: 'https://github.com/phyloref/klados'
 url: 'https://phyloref.org/klados/'
 repository: 'https://zenodo.org/record/7103132'
 abstract: >-
-  A curation tool to edit test cases for the
-  Phyloreferencing curation workflow 
+  Tool for curating phyloreferences side-by-side with the phylogenies they were originally defined on. Phyloreferences
+  and their accompanying phylogenies are stored in the Phyx format, which can be downloaded as an OWL 2 ontology in the
+  JSON-LD format.
 license: MIT
