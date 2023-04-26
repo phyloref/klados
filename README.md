@@ -1,9 +1,17 @@
 # Klados
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7103131.svg)](https://doi.org/10.5281/zenodo.7103131)
+
 Klados allows users to curate [phyloreferences]
 side-by-side with the phylogenies they were originally defined on. The curated phylogenies
 are stored in the [Phyx format], which can be downloaded as an [OWL 2 ontology]
 in the [JSON-LD format]. Phyx files can be incorporated into the [Clade Ontology].
+
+## Citing Klados
+
+You can currently cite Klados as:
+
+> Vaidya G, Becker A, Cellinese N, Lapp H (2023) Klados: a tool for authoring, testing and curating phyloreferences. GitHub: https://github.com/phyloref/klados DOI: [10.5281/zenodo.7103131](https://doi.org/10.5281/zenodo.7103131)
 
 ## Project setup
 ```

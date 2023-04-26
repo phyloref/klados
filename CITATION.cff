@@ -1,0 +1,45 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: Klados
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - orcid: 'https://orcid.org/0000-0003-0587-0454'
+    given-names: Gaurav
+    family-names: Vaidya
+    affiliation: >-
+      Renaissance Computing Institute, University of North
+      Carolina, Chapel Hill, NC, USA
+  - given-names: Anna
+    family-names: Becker
+    affiliation: >-
+      Florida Museum of Natural History, University of
+      Florida, Gainesville, FL, United States of America
+  - given-names: Nico
+    family-names: Cellinese
+    orcid: 'https://orcid.org/0000-0002-7157-9414'
+    affiliation: >-
+      Florida Museum of Natural History and Informatics
+      Institute, University of Florida, Gainesville, FL, USA
+  - given-names: Hilmar
+    family-names: Lapp
+    orcid: 'https://orcid.org/0000-0001-9107-0714'
+    affiliation: >-
+      Department of Biostatistics and Bioinformatics, Duke
+      University, Durham, NC, USA
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.7103131
+    description: Source code archived to Zenodo
+repository-code: 'https://github.com/phyloref/klados'
+url: 'https://phyloref.org/klados/'
+repository: 'https://zenodo.org/record/7103132'
+abstract: >-
+  Tool for curating phyloreferences side-by-side with the phylogenies they were originally defined on. Phyloreferences
+  and their accompanying phylogenies are stored in the Phyx format, which can be downloaded as an OWL 2 ontology in the
+  JSON-LD format.
+license: MIT
