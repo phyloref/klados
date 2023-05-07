@@ -25,7 +25,7 @@
     "jquery": "^3.5.1",
     "lodash": "^4.17.19",
     "newick-js": "^1.1.1",
-    "phylotree": "^1.1.0",
+    "phylotree": "^1.2.3",
     "popper.js": "^1.16.1",
     "vue": "^2.6.11",
     "vue-resize": "^0.4.5",
