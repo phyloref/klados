@@ -12,6 +12,16 @@ export default {
       const internalSpecifierCount = (phyloref.internalSpecifiers || []).length;
       const externalSpecifierCount = (phyloref.externalSpecifiers || []).length;
 
+      // Handle apormophy-based definitions separately.
+      if (has(phyloref, 'apomorphy') && has(phyloref.apomorphy, 'definition')) {
+        // Apomorphy-based phyloreferences must have a single internal specifier.
+        if (externalSpecifierCount === 0 && internalSpecifierCount === 1) {
+          return 'Apomorphy-based clade definition';
+        }
+
+        return 'Invalid definition (apomorphy-based clade definitions must have a single internal specifier)';
+      }
+
       if (externalSpecifierCount > 0) {
         if (internalSpecifierCount > 0) return 'Maximum clade definition';
       } else if (internalSpecifierCount > 0) {
