@@ -34,10 +34,13 @@ export default {
   },
   mutations: {
     setPhylorefProps(state, payload) {
-      // Set one or more properties on a phyloreference.
+      // Set or delete one or more properties on a phyloreference.
 
       if (!has(payload, 'phyloref')) {
         throw new Error('setPhylorefProps needs a phyloref to modify using the "phyloref" argument');
+      }
+      if (has(payload, 'deleteFields')) {
+        payload.deleteFields.forEach(fieldName => Vue.delete(payload.phyloref, fieldName));
       }
       if (has(payload, 'label')) {
         Vue.set(payload.phyloref, 'label', payload.label);
@@ -47,6 +50,9 @@ export default {
       }
       if (has(payload, 'curatorComments')) {
         Vue.set(payload.phyloref, 'curatorComments', payload.curatorComments);
+      }
+      if (has(payload, 'apomorphy')) {
+        Vue.set(payload.phyloref, 'apomorphy', payload.apomorphy);
       }
       if (has(payload, 'expectedResolution')) {
         if (!has(payload, 'phylogenyId')) {
