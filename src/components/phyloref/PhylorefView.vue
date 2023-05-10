@@ -208,18 +208,18 @@
           <div class="card-header">
             <h5>
               <button
-                v-if="has_apomorphy"
+                v-if="hasApomorphy"
                 class="btn btn-secondary btn-sm float-right"
                 href="javascript:;"
-                @click="has_apomorphy = !has_apomorphy"
+                @click="hasApomorphy = !hasApomorphy"
               >
                 <b-icon-check-square />
               </button>
               <button
-                v-if="!has_apomorphy"
+                v-if="!hasApomorphy"
                 class="btn btn-secondary btn-sm float-right"
                 href="javascript:;"
-                @click="has_apomorphy = !has_apomorphy"
+                @click="hasApomorphy = !hasApomorphy"
               >
                 <b-icon-square />
               </button>
@@ -227,11 +227,11 @@
             </h5>
           </div>
           <div class="card-body">
-            <div v-if="!has_apomorphy">
+            <div v-if="!hasApomorphy">
               <p><em>No apomorphy in this phyloreference.</em></p>
             </div>
 
-            <template v-if="has_apomorphy">
+            <template v-if="hasApomorphy">
               <div class="form-group row">
                 <label
                   :for="apomorphy-definition"
@@ -245,6 +245,7 @@
                     class="form-control"
                     rows="2"
                     placeholder="e.g. 'A complete turtle shell as inherited by Testudo graeca.'"
+                    v-model="selectedPhyloref.apomorphy.definition"
                   />
                 </div>
               </div>
@@ -262,12 +263,14 @@
                       id="bearing-entity"
                       class="form-control"
                       placeholder="e.g. 'http://purl.obolibrary.org/obo/UBERON_0008271'"
+                      v-model="selectedPhyloref.apomorphy.bearingEntity"
                     >
                     <div class="input-group-append">
                       <a
                         class="btn btn-outline-secondary align-middle"
                         target="_blank"
                         style="vertical-align: middle"
+                        :href="selectedPhyloref.apomorphy.bearingEntity"
                       >
                         Open in new window
                       </a>
@@ -289,12 +292,14 @@
                       id="bearing-entity"
                       class="form-control"
                       placeholder="e.g. 'http://purl.obolibrary.org/obo/PATO_0000467'"
+                      v-model="selectedPhyloref.apomorphy.phenotypicQuality"
                     >
                     <div class="input-group-append">
                       <a
                         class="btn btn-outline-secondary align-middle"
                         target="_blank"
                         style="vertical-align: middle"
+                        :href="selectedPhyloref.apomorphy.phenotypicQuality"
                       >
                         Open in new window
                       </a>
@@ -582,17 +587,21 @@ export default {
         && (this.selectedPhyloref.externalSpecifiers || []).length === 0
       );
     },
-    has_apomorphy: {
+    hasApomorphy: {
       get() {
         // Return true if this phyloref includes an apomorphy.
-        return has(this.selectedPhyloref, 'apomorphy') && this.selectedPhyloref.apomorphy;
+        return has(this.selectedPhyloref, 'apomorphy');
       },
       set(flag) {
+        console.debug(`Setting hasApomorphy to ${flag} with apomorphy at ${this.selectedPhyloref.apomorphy} but ${has(this.selectedPhyloref, 'apomorphy')}`);
         // Either create or delete the apomorphy information depending on the boolean value flag.
         if (flag) {
           // Make sure an 'apomorphy' field exists.
           if (!has(this.selectedPhyloref, 'apomorphy')) {
-            this.selectedPhyloref.apomorphy = this.previousApomorphy;
+            this.$store.commit('setPhylorefProps', {
+              phyloref: this.selectedPhyloref,
+              apomorphy: this.previousApomorphy || {},
+            });
           }
         } else {
           // Make sure an 'apomorphy' field doesn't exist.
@@ -601,7 +610,10 @@ export default {
           // eslint-disable-next-line no-lonely-if
           if (has(this.selectedPhyloref, 'apomorphy')) {
             this.previousApomorphy = this.selectedPhyloref.apomorphy;
-            Vue.delete(this.selectedPhyloref, 'apomorphy');
+            this.$store.commit('setPhylorefProps', {
+              phyloref: this.selectedPhyloref,
+              deleteFields: ['apomorphy'],
+            });
           }
         }
       },
