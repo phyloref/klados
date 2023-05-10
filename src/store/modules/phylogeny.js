@@ -4,8 +4,20 @@
 
 import Vue from 'vue';
 import { has, keys, cloneDeep } from 'lodash';
+import {PhylogenyWrapper} from "@phyloref/phyx";
 
 export default {
+  getters: {
+    getExplicitTaxonomicUnitsForPhylogenyNode: () => (phylogeny, nodeLabel) => {
+      // Return true if this node label in this phylogeny has a
+      if (has(phylogeny, 'additionalNodeProperties')
+          && has(phylogeny.additionalNodeProperties, nodeLabel)
+          && has(phylogeny.additionalNodeProperties[nodeLabel], 'representsTaxonomicUnits')) {
+        return phylogeny.additionalNodeProperties[nodeLabel].representsTaxonomicUnits;
+      }
+      return [];
+    },
+  },
   mutations: {
     setPhylogenyProps(state, payload) {
       if (!has(payload, 'phylogeny')) {

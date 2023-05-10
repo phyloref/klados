@@ -154,10 +154,12 @@
       <div class="card-body">
         To add additional taxonomic units to this list, please label the corresponding node on the phylogeny.
       </div>
+
       <b-table
         striped
         hover
         :items="taxonomicUnitsTable"
+        :fields="['node_label', 'node_type', 'show_details']"
         :primary-key="node_label"
         show-empty
       >
@@ -167,6 +169,27 @@
         <template #emptyfiltered="scope">
           <h4>No labels found after filtering.</h4>
         </template>
+        <template #cell(show_details)="row">
+          <b-form-checkbox v-model="row.detailsShowing" @change="row.toggleDetails">
+            Node has additional taxonomic units
+          </b-form-checkbox>
+        </template>
+
+          <template #row-details="row">
+              <b-card>
+                  <b-row class="mb-2">
+                      <b-col sm="3" class="text-sm-right"><b>Age:</b></b-col>
+                      <b-col>{{ row.item.age }}</b-col>
+                  </b-row>
+
+                  <b-row class="mb-2">
+                      <b-col sm="3" class="text-sm-right"><b>Is Active:</b></b-col>
+                      <b-col>{{ row.item.isActive }}</b-col>
+                  </b-row>
+
+                  <b-button size="sm" @click="row.toggleDetails">Hide Details</b-button>
+              </b-card>
+          </template>
       </b-table>
     </div>
   </div>
@@ -297,8 +320,14 @@ export default {
       const terminalLabels = new PhylogenyWrapper(this.selectedPhylogeny).getNodeLabels('terminal').sort();
       const internalLabels = new PhylogenyWrapper(this.selectedPhylogeny).getNodeLabels('internal').sort();
 
-      return terminalLabels.map(nodeLabel => ({ node_label: nodeLabel, node_type: 'Terminal node' })).concat(
-        internalLabels.map(nodeLabel => ({ node_label: nodeLabel, node_type: 'Internal node' })),
+      const hasExplicitTaxonomicUnitsForPhylogenyNode = nodeLabel => (
+        this.$store.getters
+          .getExplicitTaxonomicUnitsForPhylogenyNode(this.selectedPhylogeny, nodeLabel)
+          .length > 0
+      );
+
+      return terminalLabels.map(nodeLabel => ({ node_label: nodeLabel, node_type: 'Terminal node', _showDetails: hasExplicitTaxonomicUnitsForPhylogenyNode(nodeLabel) })).concat(
+        internalLabels.map(nodeLabel => ({ node_label: nodeLabel, node_type: 'Internal node', _showDetails: hasExplicitTaxonomicUnitsForPhylogenyNode(nodeLabel) })),
       );
     },
     ...mapState({
