@@ -548,7 +548,7 @@ export default {
   },
   data() {
     return {
-      has_apomorphy: false,
+      previousApomorphy: {},
     };
   },
   computed: {
@@ -581,6 +581,30 @@ export default {
         (this.selectedPhyloref.internalSpecifiers || []).length === 0
         && (this.selectedPhyloref.externalSpecifiers || []).length === 0
       );
+    },
+    has_apomorphy: {
+      get() {
+        // Return true if this phyloref includes an apomorphy.
+        return has(this.selectedPhyloref, 'apomorphy') && this.selectedPhyloref.apomorphy;
+      },
+      set(flag) {
+        // Either create or delete the apomorphy information depending on the boolean value flag.
+        if (flag) {
+          // Make sure an 'apomorphy' field exists.
+          if (!has(this.selectedPhyloref, 'apomorphy')) {
+            this.selectedPhyloref.apomorphy = this.previousApomorphy;
+          }
+        } else {
+          // Make sure an 'apomorphy' field doesn't exist.
+          // While this component is being displayed, we can store a previously set apomorphy so
+          // that the user can "undo" deleting an apomorphy without losing information.
+          // eslint-disable-next-line no-lonely-if
+          if (has(this.selectedPhyloref, 'apomorphy')) {
+            this.previousApomorphy = this.selectedPhyloref.apomorphy;
+            Vue.delete(this.selectedPhyloref, 'apomorphy');
+          }
+        }
+      },
     },
 
     ...mapState({
