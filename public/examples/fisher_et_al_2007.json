@@ -414,7 +414,7 @@
         {
             "label": "Leucophanella",
             "definition": "nomen cladi conversum, Syrrhopodon sect. Leucophanella Besch., Bull. Soc. Bot. France 45: 60. (1898)\nStem-based definition:\n\ninternal Specifier: Type: S. banksii Müll. Hal., Bot. Zeitung (Berlin) 16: 162. (1858)\ninternal Specifier: Type: S. involutus Schwägr., Sp. Musc. Frond. Suppl. 2, 1(2): 117. pl. 132. (1824)\ninternal Specifier: Type: S. revolutus Dozy & Molk.\nexternal Specifier: S. trachyphyllus Mont., Sylloge Gen. Sp. Cryptog. 47. (1856)\nImportant synapomorphies:\n\nCancellinae comprising 60–>90% of leaf area\nIncluded terminal clades:\n\ninvolutus, banksii",
-            "curatorComments": "The paper refers to this having a specifier of 'Type: S. revolutus Dozy & Molk.', but this is not included in the reference phylogeny (or mentioned elsewhere in the paper). I am deleting it.",
+            "curatorNotes": "The paper refers to this having a specifier of 'Type: S. revolutus Dozy & Molk.', but this is not included in the reference phylogeny (or mentioned elsewhere in the paper). I am deleting it.",
             "internalSpecifiers": [
                 {
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
