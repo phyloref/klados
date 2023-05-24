@@ -58,10 +58,10 @@
 
           <div class="form-group row">
             <label
-              for="phylogenyDescription"
+              for="phylogenyCuratorNotes"
               class="col-md-2 col-form-label"
             >
-              Description
+              Curator notes
             </label>
             <div class="col-md-10">
               <textarea
