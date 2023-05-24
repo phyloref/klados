@@ -238,7 +238,7 @@ export default {
 
             // Add the citation to the provided phylogeny.
             const citedPhylogeny = {
-              phylogenyCitation: citation,
+              source: citation,
               ...phylogeny,
             };
 
