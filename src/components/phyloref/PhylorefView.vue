@@ -453,7 +453,7 @@ export default {
     },
     selectedCuratorNotes: {
       get() { return this.selectedPhyloref.curatorNotes; },
-      set(curatorComments) { this.$store.commit('setPhylorefProps', { phyloref: this.selectedPhyloref, curatorNotes }); },
+      set(curatorNotes) { this.$store.commit('setPhylorefProps', { phyloref: this.selectedPhyloref, curatorNotes }); },
     },
     computedPhylorefType() {
       // Return the type of phyloreference based on internal/external specifier structure.
