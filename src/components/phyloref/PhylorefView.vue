@@ -32,7 +32,6 @@
                 v-model="selectedPhylorefLabel"
                 type="text"
                 class="form-control"
-                placeholder="Phyloreference label"
               >
             </div>
           </div>
@@ -60,7 +59,6 @@
                 v-model.lazy="selectedCladeDefinition"
                 class="form-control"
                 rows="6"
-                placeholder="Phylogenetic clade definition"
               />
             </div>
           </div>

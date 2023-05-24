@@ -281,7 +281,7 @@
                 id="occurrence-id"
                 v-model="enteredOccurrenceID"
                 class="form-control"
-                placeholder="Enter the occurrence ID of the specimen here"
+                placeholder="Enter the occurrence ID of the specimen here, e.g. 'MVZ:Herp:246033'"
               >
             </div>
           </div>
@@ -344,14 +344,13 @@
               class="col-form-label col-md-2"
               for="external-reference"
             >
-              External reference
+              External reference as URI
             </label>
             <div class="col-md-10 input-group">
               <input
                 id="external-reference"
                 v-model="externalReference"
                 class="form-control"
-                placeholder="Enter URI of external reference here"
               >
               <div class="input-group-append">
                 <a
