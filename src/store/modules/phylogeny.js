@@ -14,8 +14,8 @@ export default {
       if (has(payload, 'label')) {
         Vue.set(payload.phylogeny, 'label', payload.label);
       }
-      if (has(payload, 'description')) {
-        Vue.set(payload.phylogeny, 'description', payload.description);
+      if (has(payload, 'curatorNotes')) {
+        Vue.set(payload.phylogeny, 'curatorNotes', payload.curatorNotes);
       }
       if (has(payload, 'newick')) {
         Vue.set(payload.phylogeny, 'newick', payload.newick);
