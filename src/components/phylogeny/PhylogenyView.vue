@@ -51,7 +51,6 @@
                 v-model.trim="phylogenyLabel"
                 type="text"
                 class="form-control"
-                placeholder="Enter phylogeny name"
               >
             </div>
           </div>

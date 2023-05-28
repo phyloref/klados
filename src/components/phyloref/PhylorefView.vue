@@ -32,7 +32,6 @@
                 v-model="selectedPhylorefLabel"
                 type="text"
                 class="form-control"
-                placeholder="Phyloreference label"
               >
             </div>
           </div>
@@ -59,8 +58,8 @@
                 id="definition"
                 v-model.lazy="selectedCladeDefinition"
                 class="form-control"
+                placeholder="e.g. 'The largest crown clade containing Canis lupus Linnaeus 1758 (Canidae) but not Felis silvestris Schreber 1777 (Felidae).'"
                 rows="6"
-                placeholder="Phylogenetic clade definition"
               />
             </div>
           </div>

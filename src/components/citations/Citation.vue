@@ -19,7 +19,6 @@
             type="text"
             readonly
             class="form-control hand-cursor"
-            placeholder="Citation"
             :value="wrappedCitation(citation).toString() || 'Empty citation, click to enter'"
             @click="toggleCitationExpanded(citationIndex)"
           >
@@ -106,7 +105,6 @@
                   id="authors"
                   rows="3"
                   class="form-control"
-                  placeholder="Enter authors here"
                   :value="wrappedCitation(citation).authorsAsStrings.join('\n')"
                   @change="wrappedCitation(citation).authorsAsStrings = $event.target.value.split(/\s*\n\s*/); updateCitations();"
                 />
@@ -126,7 +124,6 @@
                   id="editors"
                   rows="2"
                   class="form-control"
-                  placeholder="Enter editors here"
                   :value="wrappedCitation(citation).editorsAsStrings.join('\n')"
                   @change="wrappedCitation(citation).editorsAsStrings = $event.target.value.split(/\s*\n\s*/); updateCitations();"
                 />
@@ -146,7 +143,6 @@
                   id="series-editors"
                   rows="2"
                   class="form-control"
-                  placeholder="Enter series editors here"
                   :value="wrappedCitation(citation).seriesEditorsAsStrings.join('\n')"
                   @change="wrappedCitation(citation).seriesEditorsAsStrings = $event.target.value.split(/\s*\n\s*/); updateCitations();"
                 />
@@ -167,7 +163,6 @@
                   v-model="citation.title"
                   type="text"
                   class="form-control"
-                  placeholder="Enter title here"
                   @change="updateCitations()"
                 >
               </div>
@@ -190,7 +185,6 @@
                   v-model="citation.section_title"
                   type="text"
                   class="form-control"
-                  placeholder="Enter section title here"
                   @change="updateCitations()"
                 >
               </div>
@@ -210,7 +204,6 @@
                   v-model="citation.year"
                   type="text"
                   class="form-control"
-                  placeholder="Enter year here"
                   @change="updateCitations()"
                 >
               </div>
@@ -229,7 +222,6 @@
                     v-model="citation.edition"
                     type="text"
                     class="form-control"
-                    placeholder="Enter edition here"
                     @change="updateCitations()"
                   >
                 </div>
@@ -251,7 +243,6 @@
                   v-model="citation.pages"
                   type="text"
                   class="form-control"
-                  placeholder="Enter pages here"
                   @change="updateCitations()"
                 >
               </div>
@@ -269,7 +260,6 @@
                   v-model="citation.figure"
                   type="text"
                   class="form-control"
-                  placeholder="Enter figure number here"
                   @change="updateCitations()"
                 >
               </div>
@@ -291,7 +281,6 @@
                     v-model="wrappedCitation(citation).journal.name"
                     type="text"
                     class="form-control"
-                    placeholder="Enter journal title here"
                     @change="updateCitations()"
                   >
                 </div>
@@ -312,7 +301,6 @@
                     v-model="wrappedCitation(citation).journal.volume"
                     type="text"
                     class="form-control"
-                    placeholder="Enter journal volume number here"
                     @change="updateCitations()"
                   >
                 </div>
@@ -330,7 +318,6 @@
                     v-model="wrappedCitation(citation).journal.number"
                     type="text"
                     class="form-control"
-                    placeholder="Enter journal issue number here"
                     @change="updateCitations()"
                   >
                 </div>
@@ -350,7 +337,6 @@
                       id="issns"
                       rows="1"
                       class="form-control"
-                      placeholder="Enter ISSNs here"
                       :value="wrappedCitation(wrappedCitation(citation).journal).issns.join('\n')"
                       @change="wrappedCitation(wrappedCitation(citation).journal).issns = $event.target.value.split(/\s*\n\s*/); updateCitations()"
                     />
@@ -384,7 +370,6 @@
                     id="isbns"
                     rows="1"
                     class="form-control"
-                    placeholder="Enter ISBNs here"
                     :value="wrappedCitation(wrappedCitation(citation).journal).isbns.join('\n')"
                     @change="wrappedCitation(wrappedCitation(citation).journal).isbns = $event.target.value.split(/\s*\n\s*/); updateCitations()"
                   />
@@ -418,7 +403,6 @@
                   v-model="citation.publisher"
                   type="text"
                   class="form-control"
-                  placeholder="Enter publisher here"
                   @change="updateCitations()"
                 >
               </div>
@@ -436,7 +420,6 @@
                   v-model="citation.city"
                   type="text"
                   class="form-control"
-                  placeholder="Enter publication city here"
                   @change="updateCitations()"
                 >
               </div>
@@ -456,7 +439,6 @@
                     id="doi"
                     rows="1"
                     class="form-control"
-                    placeholder="Enter DOIs here"
                     :value="wrappedCitation(citation).doisAsStrings.join('\n')"
                     @change="wrappedCitation(citation).doisAsStrings = $event.target.value.split(/\s*\n\s*/); updateCitations()"
                   />
@@ -489,7 +471,6 @@
                     id="urls"
                     rows="1"
                     class="form-control"
-                    placeholder="Enter URLs here"
                     :value="wrappedCitation(citation).urlsAsStrings.join('\n')"
                     @change="wrappedCitation(citation).urlsAsStrings = $event.target.value.split(/\s*\n\s*/); updateCitations()"
                   />
