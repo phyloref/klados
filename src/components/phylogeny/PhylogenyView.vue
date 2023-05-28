@@ -57,17 +57,18 @@
 
           <div class="form-group row">
             <label
-              for="phylogenyDescription"
+              for="phylogenyCuratorNotes"
               class="col-md-2 col-form-label"
             >
-              Description
+              Curator notes
             </label>
             <div class="col-md-10">
               <textarea
-                id="phylogenyDescription"
-                v-model.trim="phylogenyDescription"
+                id="phylogenyCuratorNotes"
+                v-model.trim="phylogenyCuratorNotes"
                 type="text"
                 class="form-control"
+                placeholder="Enter curator notes for this phylogeny, such as any differences from its published form."
               />
             </div>
           </div>
@@ -205,9 +206,9 @@ export default {
       get() { return this.selectedPhylogeny.label; },
       set(label) { this.$store.commit('setPhylogenyProps', { phylogeny: this.selectedPhylogeny, label }); },
     },
-    phylogenyDescription: {
-      get() { return this.selectedPhylogeny.description; },
-      set(description) { this.$store.commit('setPhylogenyProps', { phylogeny: this.selectedPhylogeny, description }); },
+    phylogenyCuratorNotes: {
+      get() { return this.selectedPhylogeny.curatorNotes; },
+      set(curatorNotes) { this.$store.commit('setPhylogenyProps', { phylogeny: this.selectedPhylogeny, curatorNotes }); },
     },
     phylogenyNewick: {
       get() { return this.selectedPhylogeny.newick || '()'; },
