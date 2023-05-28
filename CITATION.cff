@@ -2,7 +2,7 @@
 # Visit https://bit.ly/cffinit to generate yours today!
 
 cff-version: 1.2.0
-title: Klados
+title: "Klados: a tool for authoring, testing and curating phyloreferences"
 message: >-
   If you use this software, please cite it using the
   metadata from this file.
@@ -31,6 +31,7 @@ authors:
     affiliation: >-
       Department of Biostatistics and Bioinformatics, Duke
       University, Durham, NC, USA
+doi: 10.5281/zenodo.7103131
 identifiers:
   - type: doi
     value: 10.5281/zenodo.7103131
