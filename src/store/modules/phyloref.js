@@ -35,8 +35,8 @@ export default {
       if (has(payload, 'definition')) {
         Vue.set(payload.phyloref, 'definition', payload.definition);
       }
-      if (has(payload, 'curatorComments')) {
-        Vue.set(payload.phyloref, 'curatorComments', payload.curatorComments);
+      if (has(payload, 'curatorNotes')) {
+        Vue.set(payload.phyloref, 'curatorNotes', payload.curatorNotes);
       }
       if (has(payload, 'expectedResolution')) {
         if (!has(payload, 'phylogenyId')) {

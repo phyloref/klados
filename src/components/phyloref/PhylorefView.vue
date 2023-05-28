@@ -72,18 +72,18 @@
             citation-key="definitionSource"
           />
 
-          <!-- Phyloreference curator comments -->
+          <!-- Phyloreference curator notes -->
           <div class="form-group row">
             <label
-              for="curator-comments"
+              for="curator-notes"
               class="col-form-label col-md-2"
             >
-              Curator comments
+              Curator notes
             </label>
             <div class="col-md-10">
               <textarea
-                id="curator-comments"
-                v-model.lazy="selectedCuratorComments"
+                id="curator-notes"
+                v-model.lazy="selectedCuratorNotes"
                 class="form-control"
                 rows="2"
                 placeholder="e.g. 'Specifier X not included in reference phylogeny'"
@@ -451,9 +451,9 @@ export default {
       get() { return this.selectedPhyloref.definition; },
       set(definition) { this.$store.commit('setPhylorefProps', { phyloref: this.selectedPhyloref, definition }); },
     },
-    selectedCuratorComments: {
-      get() { return this.selectedPhyloref.curatorComments; },
-      set(curatorComments) { this.$store.commit('setPhylorefProps', { phyloref: this.selectedPhyloref, curatorComments }); },
+    selectedCuratorNotes: {
+      get() { return this.selectedPhyloref.curatorNotes; },
+      set(curatorNotes) { this.$store.commit('setPhylorefProps', { phyloref: this.selectedPhyloref, curatorNotes }); },
     },
     computedPhylorefType() {
       // Return the type of phyloreference based on internal/external specifier structure.
