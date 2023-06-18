@@ -590,7 +590,7 @@ export default {
     hasApomorphy: {
       get() {
         // Return true if this phyloref includes an apomorphy.
-        return has(this.selectedPhyloref, 'apomorphy');
+        return this.$store.getters.isApomorphyBasedPhyloref(this.selectedPhyloref);
       },
       set(flag) {
         console.debug(`Setting hasApomorphy to ${flag} with apomorphy at ${this.selectedPhyloref.apomorphy} but ${has(this.selectedPhyloref, 'apomorphy')}`);

@@ -8,12 +8,12 @@ import { has, keys, cloneDeep } from 'lodash';
 
 export default {
   getters: {
-    getPhylorefType: () => (phyloref) => {
+    getPhylorefType: (state, getters) => (phyloref) => {
       const internalSpecifierCount = (phyloref.internalSpecifiers || []).length;
       const externalSpecifierCount = (phyloref.externalSpecifiers || []).length;
 
       // Handle apormophy-based definitions separately.
-      if (has(phyloref, 'apomorphy') && has(phyloref.apomorphy, 'definition')) {
+      if (getters.isApomorphyBasedPhyloref(phyloref)) {
         // Apomorphy-based phyloreferences must have a single internal specifier.
         if (externalSpecifierCount === 0 && internalSpecifierCount === 1) {
           return 'Apomorphy-based clade definition';
@@ -31,6 +31,9 @@ export default {
 
       return 'Invalid definition (must have at least one internal specifier)';
     },
+
+    /** Returns true if a particular phyloref should be considered an apomorphy-based phyloref. */
+    isApomorphyBasedPhyloref: () => phyloref => has(phyloref, 'apomorphy') && has(phyloref.apomorphy, 'definition'),
   },
   mutations: {
     setPhylorefProps(state, payload) {
