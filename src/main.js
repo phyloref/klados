@@ -34,7 +34,6 @@ Vue.config.productionTip = false;
 
 // Set up Vue object.
 export default new Vue({
-  el: '#app',
   store,
-  render: h => h(App),
-});
+  render: (h) => h(App),
+}).$mount('#app');

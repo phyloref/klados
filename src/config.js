@@ -34,4 +34,4 @@ module.exports = {
   COOKIE_CURATOR_EMAIL: 'kladosCuratorEmail',
   // - curator ORCID
   COOKIE_CURATOR_ORCID: 'kladosCuratorORCID',
-};
+}
