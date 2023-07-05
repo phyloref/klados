@@ -56,13 +56,27 @@
   "eslintConfig": {
     "root": true,
     "env": {
-      "node": true
+      "node": true,
+      "es6": true,
+      "browser": true,
+      "jquery": true
     },
     "extends": [
       "plugin:vue/base",
-      "eslint:recommended"
+      "eslint:recommended",
+      "plugin:mocha/recommended"
     ],
-    "rules": {},
+    "plugins": [
+      "vue",
+      "json",
+      "mocha"
+    ],
+    "rules": {
+      "prefer-destructuring": "off",
+
+      "no-unused-vars": "off",
+      "no-undef": "off"
+    },
     "parserOptions": {
       "parser": "@babel/eslint-parser",
       "sourceType": "module",
