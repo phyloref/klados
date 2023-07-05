@@ -234,14 +234,14 @@
             <template v-if="hasApomorphy">
               <div class="form-group row">
                 <label
-                  :for="apomorphy-definition"
+                  for="apomorphy-definition"
                   class="col-form-label col-md-2"
                 >
                   Definition
                 </label>
                 <div class="col-md-10">
                   <textarea
-                    id="bearing-entity"
+                    id="apomorphy-definition"
                     class="form-control"
                     rows="2"
                     placeholder="e.g. 'A complete turtle shell as inherited by Testudo graeca.'"
@@ -252,7 +252,7 @@
 
               <div class="form-group row">
                 <label
-                  :for="bearing-entity"
+                  for="bearing-entity"
                   class="col-form-label col-md-2"
                 >
                   Bearing entity
@@ -281,7 +281,7 @@
 
               <div class="form-group row">
                 <label
-                  :for="phenotypic-quality"
+                  for="phenotypic-quality"
                   class="col-form-label col-md-2"
                 >
                   Phenotypic Quality
@@ -289,7 +289,7 @@
                 <div class="col-md-10">
                   <div class="input-group">
                     <input
-                      id="bearing-entity"
+                      id="phenotypic-quality"
                       class="form-control"
                       placeholder="e.g. 'http://purl.obolibrary.org/obo/PATO_0000467'"
                       v-model="selectedPhyloref.apomorphy.phenotypicQuality"
