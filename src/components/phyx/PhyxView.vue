@@ -272,7 +272,6 @@
  */
 import { mapState } from 'vuex';
 import { has, max, range } from 'lodash';
-import { stringify } from 'csv-stringify';
 import { saveAs } from 'filesaver.js-npm';
 import { BIconTrash } from 'bootstrap-vue';
 import {
@@ -435,6 +434,8 @@ export default {
 
       // Convert to CSV.
       // console.log('Output:', [header, ...rows]);
+
+      /* TODO restore
       stringify([
         header,
         ...rows,
@@ -454,6 +455,8 @@ export default {
         // turn it off.
         saveAs(csvFile, filename, { autoBom: false });
       });
+
+       */
     },
   },
 };
