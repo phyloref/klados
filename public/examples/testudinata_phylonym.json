@@ -1,0 +1,112 @@
+{
+  "@context": "https://www.phyloref.org/phyx.js/context/v1.0.0/phyx.json",
+  "phylorefs": [
+    {
+      "label": "Testudinata",
+      "phylorefType": "phyloref:PhyloreferenceUsingApomorphy",
+      "definition": "The apomorphy-based clade name, for which a complete turtle shell, as inherited by Testudo graeca Linnaeus 1758 is an apomorphy. A 'complete turtle shell' is herein defined as a composite structure consisting of a carapace with interlocking costals, neurals, peripherals, and a nuchal, together with the plastron comprising interlocking epi-, hyo-, meso- (lost in Testudo graeca), hypo-, xiphiplastra and an entoplastron.",
+      "definitionSource": {
+        "type": "book_section",
+        "title": "Testudinata (#273)",
+        "authors": [
+          {
+            "firstname": "W.",
+            "middlename": "G.",
+            "lastname": "Joyce"
+          },
+          {
+            "firstname": "J.",
+            "middlename": "F.",
+            "lastname": "Parham"
+          },
+          {
+            "firstname": "J.",
+            "lastname": "Anquetin"
+          },
+          {
+            "firstname": "J.",
+            "lastname": "Claude"
+          },
+          {
+            "firstname": "I.",
+            "middlename": "G.",
+            "lastname": "Danilov"
+          },
+          {
+            "firstname": "J.",
+            "middlename": "B.",
+            "lastname": "Iverson"
+          },
+          {
+            "firstname": "B.",
+            "lastname": "Kear"
+          },
+          {
+            "firstname": "T.",
+            "middlename": "R.",
+            "lastname": "Lyson"
+          },
+          {
+            "firstname": "M.",
+            "lastname": "Rabi"
+          },
+          {
+            "firstname": "J.",
+            "lastname": "Sterli"
+          }
+        ],
+        "year": 2020,
+        "identifier": [
+          {
+            "type": "isbn",
+            "id": "9781138332935"
+          },
+          {
+            "type": "regnum",
+            "id": "273"
+          }
+        ],
+        "editors": [
+          {
+            "firstname": "K.",
+            "lastname": "de Queiroz"
+          },
+          {
+            "firstname": "P.",
+            "middlename": "D.",
+            "lastname": "Cantino"
+          },
+          {
+            "firstname": "J.",
+            "middlename": "A.",
+            "lastname": "Gauthier"
+          }
+        ],
+        "booktitle": "Phylonyms: a companion to the PhyloCode",
+        "pages": "1045--1048",
+        "publisher": "CRC Press",
+        "city": "Boca Raton, FL"
+      },
+      "apomorphy": {
+        "@type": "https://semanticscience.org/resource/SIO_010056",
+        "bearingEntity": "http://purl.obolibrary.org/obo/UBERON_0008271",
+        "phenotypicQuality": "http://purl.obolibrary.org/obo/PATO_0000467",
+        "definition": "A 'complete turtle shell' is herein defined as a composite structure consisting of a carapace with interlocking costals, neurals, peripherals, and a nuchal, together with the plastron comprising interlocking epi-, hyo-, meso- (lost in Testudo graeca), hypo-, xiphiplastra and an entoplastron. These are articulated with one another along a bridge. Additional elements may be present as well."
+      },
+      "internalSpecifiers": [
+        {
+          "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+          "hasName": {
+            "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+            "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICZN",
+            "label": "Testudo graeca Linnaeus 1758",
+            "nameComplete": "Testudo graeca",
+            "genusPart": "Testudo",
+            "specificEpithet": "graeca"
+          }
+        }
+      ]
+    }
+  ],
+  "defaultNomenclaturalCodeIRI": "http://rs.tdwg.org/ontology/voc/TaxonName#ICZN"
+}

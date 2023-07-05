@@ -143,6 +143,9 @@ export default {
     },
     createEmptyPhylogeny(state) {
       // Create a new, empty phylogeny.
+      if (!has(state.currentPhyx, 'phylogenies')) {
+        Vue.set(state.currentPhyx, 'phylogenies', []);
+      }
       state.currentPhyx.phylogenies.push({});
     },
     createPhylogeny(state, { phylogeny }) {

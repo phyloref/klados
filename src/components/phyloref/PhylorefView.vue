@@ -141,68 +141,173 @@
           </div>
         </form>
 
-        <h5>Internal specifiers</h5>
-
-        <template v-if="!selectedPhyloref.internalSpecifiers || selectedPhyloref.internalSpecifiers.length === 0">
-          <p><em>No internal specifiers in this phyloreference.</em></p>
-        </template>
-        <div
-          v-for="(specifier, index) of selectedPhyloref.internalSpecifiers"
-          class="form-row input-group"
-        >
-          <Specifier
-            :key="'internal' + index"
-            :phyloref="selectedPhyloref"
-            :remote-specifier="specifier"
-            :remote-specifier-id="'internal' + index"
-          />
+        <div class="card">
+          <div class="card-header">
+            <button
+              class="btn btn-secondary btn-sm float-right"
+              href="javascript:;"
+              @click="$store.commit('addInternalSpecifier', { phyloref: selectedPhyloref })"
+            >
+              <b-icon-plus-square />
+            </button>
+            <h5>Internal specifiers</h5>
+          </div>
+          <div class="card-body">
+            <template
+              v-if="!selectedPhyloref.internalSpecifiers || selectedPhyloref.internalSpecifiers.length === 0"
+            >
+              <p><em>No internal specifiers in this phyloreference.</em></p>
+            </template>
+            <div
+              v-for="(specifier, index) of selectedPhyloref.internalSpecifiers"
+              class="form-row input-group"
+            >
+              <Specifier
+                :key="'internal' + index"
+                :phyloref="selectedPhyloref"
+                :remote-specifier="specifier"
+                :remote-specifier-id="'internal' + index"
+              />
+            </div>
+          </div>
         </div>
 
-        <h5 class="mt-2">
-          External specifiers
-        </h5>
+        <div class="card mt-2">
+          <div class="card-header">
+            <button
+              class="btn btn-secondary btn-sm float-right"
+              href="javascript:;"
+              @click="$store.commit('addExternalSpecifier', { phyloref: selectedPhyloref })"
+            >
+              <b-icon-plus-square />
+            </button>
+            <h5>External specifiers</h5>
+          </div>
+          <div class="card-body">
+            <template
+              v-if="!selectedPhyloref.externalSpecifiers || selectedPhyloref.externalSpecifiers.length === 0"
+            >
+              <p><em>No external specifiers in this phyloreference.</em></p>
+            </template>
+            <div
+              v-for="(specifier, index) of selectedPhyloref.externalSpecifiers"
+              class="form-row input-group"
+            >
+              <Specifier
+                :key="'external' + index"
+                :phyloref="selectedPhyloref"
+                :remote-specifier="specifier"
+                :remote-specifier-id="'external' + index"
+              />
+            </div>
+          </div>
+        </div>
 
-        <template v-if="!selectedPhyloref.externalSpecifiers || selectedPhyloref.externalSpecifiers.length === 0">
-          <p><em>No external specifiers in this phyloreference.</em></p>
-        </template>
-        <div
-          v-for="(specifier, index) of selectedPhyloref.externalSpecifiers"
-          class="form-row input-group"
-        >
-          <Specifier
-            :key="'external' + index"
-            :phyloref="selectedPhyloref"
-            :remote-specifier="specifier"
-            :remote-specifier-id="'external' + index"
-          />
-        </div>
-      </div>
-      <div class="card-footer">
-        <div
-          class="btn-group"
-          role="group"
-          area-label="Internal specifier management"
-        >
-          <button
-            class="btn btn-primary"
-            href="javascript:;"
-            @click="$store.commit('addInternalSpecifier', { phyloref: selectedPhyloref })"
-          >
-            Add internal specifier
-          </button>
-        </div>
-        <div
-          class="btn-group ml-2"
-          role="group"
-          area-label="External specifier management"
-        >
-          <button
-            class="btn btn-primary"
-            href="javascript:;"
-            @click="$store.commit('addExternalSpecifier', { phyloref: selectedPhyloref })"
-          >
-            Add external specifier
-          </button>
+        <div class="card mt-2">
+          <div class="card-header">
+            <h5>
+              <button
+                v-if="hasApomorphy"
+                class="btn btn-secondary btn-sm float-right"
+                href="javascript:;"
+                @click="hasApomorphy = !hasApomorphy"
+              >
+                <b-icon-check-square />
+              </button>
+              <button
+                v-if="!hasApomorphy"
+                class="btn btn-secondary btn-sm float-right"
+                href="javascript:;"
+                @click="hasApomorphy = !hasApomorphy"
+              >
+                <b-icon-square />
+              </button>
+              Apomorphy
+            </h5>
+          </div>
+          <div class="card-body">
+            <div v-if="!hasApomorphy">
+              <p><em>No apomorphy in this phyloreference.</em></p>
+            </div>
+
+            <template v-if="hasApomorphy">
+              <div class="form-group row">
+                <label
+                  for="apomorphy-definition"
+                  class="col-form-label col-md-2"
+                >
+                  Definition
+                </label>
+                <div class="col-md-10">
+                  <textarea
+                    id="apomorphy-definition"
+                    class="form-control"
+                    rows="2"
+                    placeholder="e.g. 'A complete turtle shell as inherited by Testudo graeca.'"
+                    v-model="selectedPhyloref.apomorphy.definition"
+                  />
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label
+                  for="bearing-entity"
+                  class="col-form-label col-md-2"
+                >
+                  Bearing entity
+                </label>
+                <div class="col-md-10">
+                  <div class="input-group">
+                    <input
+                      id="bearing-entity"
+                      class="form-control"
+                      placeholder="e.g. 'http://purl.obolibrary.org/obo/UBERON_0008271'"
+                      v-model="selectedPhyloref.apomorphy.bearingEntity"
+                    >
+                    <div class="input-group-append">
+                      <a
+                        class="btn btn-outline-secondary align-middle"
+                        target="_blank"
+                        style="vertical-align: middle"
+                        :href="selectedPhyloref.apomorphy.bearingEntity"
+                      >
+                        Open in new window
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label
+                  for="phenotypic-quality"
+                  class="col-form-label col-md-2"
+                >
+                  Phenotypic Quality
+                </label>
+                <div class="col-md-10">
+                  <div class="input-group">
+                    <input
+                      id="phenotypic-quality"
+                      class="form-control"
+                      placeholder="e.g. 'http://purl.obolibrary.org/obo/PATO_0000467'"
+                      v-model="selectedPhyloref.apomorphy.phenotypicQuality"
+                    >
+                    <div class="input-group-append">
+                      <a
+                        class="btn btn-outline-secondary align-middle"
+                        target="_blank"
+                        style="vertical-align: middle"
+                        :href="selectedPhyloref.apomorphy.phenotypicQuality"
+                      >
+                        Open in new window
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </template>
+          </div>
         </div>
       </div>
     </div>
@@ -424,6 +529,9 @@ import Vue from 'vue';
 import { mapState } from 'vuex';
 import { has, cloneDeep } from 'lodash';
 import { PhylogenyWrapper, PhylorefWrapper } from '@phyloref/phyx';
+import {
+  BIconSquare, BIconCheck, BIconCheckSquare, BIconPlusSquare,
+} from 'bootstrap-vue';
 
 import ModifiedCard from '../cards/ModifiedCard.vue';
 import Phylotree from '../phylogeny/Phylotree.vue';
@@ -437,6 +545,15 @@ export default {
     Phylotree,
     Citation,
     Specifier,
+    BIconSquare,
+    BIconCheck,
+    BIconCheckSquare,
+    BIconPlusSquare,
+  },
+  data() {
+    return {
+      previousApomorphy: {},
+    };
   },
   computed: {
     /*
@@ -468,6 +585,38 @@ export default {
         (this.selectedPhyloref.internalSpecifiers || []).length === 0
         && (this.selectedPhyloref.externalSpecifiers || []).length === 0
       );
+    },
+    hasApomorphy: {
+      get() {
+        // Return true if this phyloref includes an apomorphy.
+        return has(this.selectedPhyloref, 'apomorphy');
+        // return this.$store.getters.isApomorphyBasedPhyloref(this.selectedPhyloref);
+      },
+      set(flag) {
+        console.debug(`Setting hasApomorphy to ${flag} with apomorphy at ${this.selectedPhyloref.apomorphy} but ${has(this.selectedPhyloref, 'apomorphy')}`);
+        // Either create or delete the apomorphy information depending on the boolean value flag.
+        if (flag) {
+          // Make sure an 'apomorphy' field exists.
+          if (!has(this.selectedPhyloref, 'apomorphy')) {
+            this.$store.commit('setPhylorefProps', {
+              phyloref: this.selectedPhyloref,
+              apomorphy: this.previousApomorphy || {},
+            });
+          }
+        } else {
+          // Make sure an 'apomorphy' field doesn't exist.
+          // While this component is being displayed, we can store a previously set apomorphy so
+          // that the user can "undo" deleting an apomorphy without losing information.
+          // eslint-disable-next-line no-lonely-if
+          if (has(this.selectedPhyloref, 'apomorphy')) {
+            this.previousApomorphy = this.selectedPhyloref.apomorphy;
+            this.$store.commit('setPhylorefProps', {
+              phyloref: this.selectedPhyloref,
+              deleteFields: ['apomorphy'],
+            });
+          }
+        }
+      },
     },
 
     ...mapState({
@@ -520,7 +669,7 @@ export default {
     },
     deleteThisPhyloref() {
       // Delete this phyloreference, and unset the selected phyloref so we return to the summary page.
-      if(confirm('Are you sure you wish to delete this phyloreference? This cannot be undone!')) {
+      if (confirm('Are you sure you wish to delete this phyloreference? This cannot be undone!')) {
         this.$store.commit('deletePhyloref', {
           phyloref: this.selectedPhyloref,
         });

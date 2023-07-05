@@ -271,6 +271,10 @@ export default {
           url: 'examples/fisher_et_al_2007.json',
           title: 'Fisher et al, 2007',
         },
+	{
+	  url: 'examples/testudinata_phylonym.json',
+	  title: 'Testudinata from Phylonym',
+	},
       ];
     },
     ...mapGetters([

@@ -8,9 +8,19 @@ import { has, keys, cloneDeep } from 'lodash';
 
 export default {
   getters: {
-    getPhylorefType: () => (phyloref) => {
+    getPhylorefType: (state, getters) => (phyloref) => {
       const internalSpecifierCount = (phyloref.internalSpecifiers || []).length;
       const externalSpecifierCount = (phyloref.externalSpecifiers || []).length;
+
+      // Handle apormophy-based definitions separately.
+      if (getters.isApomorphyBasedPhyloref(phyloref)) {
+        // Apomorphy-based phyloreferences must have a single internal specifier.
+        if (externalSpecifierCount === 0 && internalSpecifierCount === 1) {
+          return 'Apomorphy-based clade definition';
+        }
+
+        return 'Invalid definition (apomorphy-based clade definitions must have a single internal specifier)';
+      }
 
       if (externalSpecifierCount > 0) {
         if (internalSpecifierCount > 0) return 'Maximum clade definition';
@@ -21,13 +31,19 @@ export default {
 
       return 'Invalid definition (must have at least one internal specifier)';
     },
+
+    /** Returns true if a particular phyloref should be considered an apomorphy-based phyloref. */
+    isApomorphyBasedPhyloref: () => phyloref => has(phyloref, 'apomorphy') && has(phyloref.apomorphy, 'definition'),
   },
   mutations: {
     setPhylorefProps(state, payload) {
-      // Set one or more properties on a phyloreference.
+      // Set or delete one or more properties on a phyloreference.
 
       if (!has(payload, 'phyloref')) {
         throw new Error('setPhylorefProps needs a phyloref to modify using the "phyloref" argument');
+      }
+      if (has(payload, 'deleteFields')) {
+        payload.deleteFields.forEach(fieldName => Vue.delete(payload.phyloref, fieldName));
       }
       if (has(payload, 'label')) {
         Vue.set(payload.phyloref, 'label', payload.label);
@@ -37,6 +53,9 @@ export default {
       }
       if (has(payload, 'curatorNotes')) {
         Vue.set(payload.phyloref, 'curatorNotes', payload.curatorNotes);
+      }
+      if (has(payload, 'apomorphy')) {
+        Vue.set(payload.phyloref, 'apomorphy', payload.apomorphy);
       }
       if (has(payload, 'expectedResolution')) {
         if (!has(payload, 'phylogenyId')) {
