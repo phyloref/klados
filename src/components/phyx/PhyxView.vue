@@ -202,9 +202,9 @@
           <button
             class="btn btn-secondary"
             href="javascript:;"
-            @click="exportAsCSV()"
+            @click="exportAsTSV()"
           >
-            Export as CSV
+            Export as TSV
           </button>
         </div>
       </div>
@@ -383,8 +383,8 @@ export default {
         this.$store.commit('deletePhylogeny', { phylogeny });
       }
     },
-    exportAsCSV() {
-      // Export the phyloref summary as CSV.
+    exportAsTSV() {
+      // Export the phyloref summary as TSV.
 
       // Determine the maximum number of internal and external specifiers we will need to export.
       const phylorefs = this.phylorefs;
@@ -440,31 +440,26 @@ export default {
         ];
       });
 
-      // Convert to CSV.
+      // Convert to TSV.
       // console.log('Output:', [header, ...rows]);
+      const tsv = [];
 
-      /* TODO restore
-      stringify([
-        header,
-        ...rows,
-      ], (err, csv) => {
-        if (err) {
-          console.log('Error occurred while producing CSV:', err);
-          return;
-        }
+      function removeWhitespace(str) {
+        return str.replaceAll(/(?:\s|\n|\r\n)+/g, " ");
+      }
 
-        const content = [csv];
-        // console.log('Content:', content);
+      tsv.push(header.map(removeWhitespace).join("\t"));
+      rows.forEach((row) => tsv.push(row.map(removeWhitespace).join("\t")));
 
-        // Save to local hard drive.
-        const filename = `${this.$store.getters.getDownloadFilenameForPhyx}.csv`;
-        const csvFile = new Blob(content, { type: 'text/csv;charset=utf-8' });
-        // Neither Numbers.app nor Excel can read the UTF-8 BOM correctly, so we explicitly
-        // turn it off.
-        saveAs(csvFile, filename, { autoBom: false });
-      });
+      const content = [tsv.join("\n")];
+      // console.log('Content:', content);
 
-       */
+      // Save to local hard drive.
+      const filename = `${this.$store.getters.getDownloadFilenameForPhyx}.tsv`;
+      const tsvFile = new Blob(content, { type: 'text/tab-separated-values;charset=utf-8' });
+      // Neither Numbers.app nor Excel can read the UTF-8 BOM correctly, so we explicitly
+      // turn it off.
+      saveAs(tsvFile, filename, { autoBom: false });
     },
   },
 };
