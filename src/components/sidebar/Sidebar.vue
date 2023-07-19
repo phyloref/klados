@@ -240,8 +240,12 @@ import { has } from 'lodash';
 import { Buffer } from "buffer";
 import { mapState, mapGetters } from 'vuex';
 import { saveAs } from 'filesaver.js-npm';
-import { signer } from 'x-hub-signature';
-import zlib from 'zlib';
+import CryptoJS from 'crypto-js';
+import pako from 'pako';
+import {
+  JPHYLOREF_X_HUB_SIGNATURE_SECRET,
+  JPHYLOREF_SUBMISSION_URL,
+} from '@/config';
 
 import { PhyxWrapper, PhylorefWrapper, TaxonomicUnitWrapper } from '@phyloref/phyx';
 
@@ -457,7 +461,7 @@ export default {
         ).asJSONLD()]);
 
         // To improve upload speed, let's Gzip the file before upload.
-        const jsonldGzipped = zlib.gzipSync(jsonld);
+        const jsonldGzipped = pako.gzip(jsonld);
 
         // Prepare request for submission.
         const query = $.param({
@@ -468,17 +472,14 @@ export default {
         // signature works.
 
         // Sign it with an X-Hub-Signature.
-        const sign = signer({
-          algorithm: 'sha1',
-          secret: outerThis.$config.JPHYLOREF_X_HUB_SIGNATURE_SECRET,
-        });
-        const signature = sign(new Buffer(query));
+        const signature = "sha1=" + CryptoJS.HmacSHA1(query, JPHYLOREF_X_HUB_SIGNATURE_SECRET)
+            .toString(CryptoJS.enc.Hex);
 
         console.log('Query: ', query);
         console.log('Signature: ', signature);
 
         $.post({
-          url: outerThis.$config.JPHYLOREF_SUBMISSION_URL,
+          url: JPHYLOREF_SUBMISSION_URL,
           data: query,
           headers: {
             'X-Hub-Signature': signature,

@@ -20,16 +20,17 @@
     "bootstrap": "^4.5.0",
     "bootstrap-vue": "^2.15.0",
     "buffer": "^6.0.3",
+    "crypto-js": "^4.1.1",
     "filesaver.js-npm": "^1.0.1",
     "jquery": "^3.5.1",
     "lodash": "^4.17.19",
     "newick-js": "^1.2.1",
+    "pako": "^2.1.0",
     "popper.js": "^1.16.1",
     "vue": "^2.7.7",
     "vue-cookies": "^1.8.1",
     "vue-resize": "^0.4.5",
-    "vuex": "^3.5.1",
-    "x-hub-signature": "^1.2.0"
+    "vuex": "^3.5.1"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.1.0",
