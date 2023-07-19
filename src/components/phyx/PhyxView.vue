@@ -149,6 +149,10 @@
                     <template v-else>
                       and resolved to {{ getNodeLabelsResolvedByPhyloref(phyloref, phylogeny)[0]||"an unlabeled node" }}
                     </template>
+
+                    <template v-if="$store.getters.isApomorphyBasedPhyloref(phyloref)">
+                      (apomorphy-based phyloreferences cannot currently be resolved)
+                    </template>
                   </template>
                 </template>
                 <template v-else>
@@ -169,6 +173,10 @@
                         <strong>incorrectly</strong>
                       </template>
                       to {{ getNodeLabelsResolvedByPhyloref(phyloref, phylogeny)[0]||"an unlabeled node" }}
+                    </template>
+
+                    <template v-if="$store.getters.isApomorphyBasedPhyloref(phyloref)">
+                      (apomorphy-based phyloreferences cannot currently be resolved)
                     </template>
                   </template>
                 </template>
@@ -302,8 +310,8 @@ export default {
     },
     ...mapState({
       phyx: state => state.phyx.currentPhyx,
-      phylorefs: state => state.phyx.currentPhyx.phylorefs,
-      phylogenies: state => state.phyx.currentPhyx.phylogenies,
+      phylorefs: state => state.phyx.currentPhyx.phylorefs || [],
+      phylogenies: state => state.phyx.currentPhyx.phylogenies || [],
     }),
   },
   methods: {
