@@ -10,7 +10,7 @@
  * since that is essentially what Regnum uses. This is surprisingly poorly supported,
  * except for the Citation.JS library (https://citation.js.org/), but I haven't been
  * able to get it working on Vue JS yet. Therefore, mostly, I've implemented a
- * basic CitationWrapper here, we'll replace it with Citations.JS or another proper
+ * basic CitationModel here, we'll replace it with Citations.JS or another proper
  * library when we can. We might switch over to CSL-JSON eventually (see issue
  * https://github.com/phyloref/clade-ontology/issues/69).
  */
@@ -26,12 +26,13 @@ function isNonEmptyString(str) {
   return true;
 }
 
-class CitationWrapper {
+class CitationModel {
   // Wraps a Citation in a Phyx document. Should be moved to phyx.js.
 
   constructor(citation) {
     // Store the citation we're wrapping.
     this.citation = citation;
+    this.wrappedCitation =
   }
 
   toString() {
@@ -280,7 +281,7 @@ class CitationWrapper {
 export default {
   getters: {
     // Get a wrapped citation for a given citation.
-    getWrappedCitation: () => citation => new CitationWrapper(citation),
+    getCitationModel: () => citation => new CitationModel(citation),
   },
   mutations: {
     // Update the value of a citation, using object-citationKey so we can change
