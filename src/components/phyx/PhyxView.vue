@@ -202,9 +202,9 @@
           <button
             class="btn btn-secondary"
             href="javascript:;"
-            @click="exportAsTSV()"
+            @click="exportAsCSV()"
           >
-            Export as TSV
+            Export as CSV
           </button>
         </div>
       </div>
@@ -278,6 +278,13 @@
 /*
  * Display a summary of the entire Phyx file.
  */
+
+// We would normally import `csv-stringify` directly, but it uses Buffer, which is
+// not implemented in browsers. We therefore need to import the browser-specific ESM
+// distribution, which includes polyfills to run outside of the Node.js environment
+// as described at https://csv.js.org/stringify/distributions/browser_esm/
+import { stringify } from 'csv-stringify/browser/esm';
+
 import { mapState } from 'vuex';
 import { has, max, range } from 'lodash';
 import { saveAs } from 'filesaver.js-npm';
@@ -383,8 +390,8 @@ export default {
         this.$store.commit('deletePhylogeny', { phylogeny });
       }
     },
-    exportAsTSV() {
-      // Export the phyloref summary as TSV.
+    exportAsCSV() {
+      // Export the phyloref summary as CSV.
 
       // Determine the maximum number of internal and external specifiers we will need to export.
       const phylorefs = this.phylorefs;
@@ -440,26 +447,25 @@ export default {
         ];
       });
 
-      // Convert to TSV.
-      // console.log('Output:', [header, ...rows]);
-      const tsv = [];
+      stringify([
+        header,
+        ...rows,
+      ], (err, csv) => {
+        if (err) {
+          console.log('Error occurred while producing CSV:', err);
+          return;
+        }
 
-      function removeWhitespace(str) {
-        return str.replaceAll(/\s+/g, " ");
-      }
+        const content = [csv];
+        // console.log('Content:', content);
 
-      tsv.push(header.map(removeWhitespace).join("\t"));
-      rows.forEach((row) => tsv.push(row.map(removeWhitespace).join("\t")));
-
-      const content = [tsv.join("\n")];
-      // console.log('Content:', content);
-
-      // Save to local hard drive.
-      const filename = `${this.$store.getters.getDownloadFilenameForPhyx}.tsv`;
-      const tsvFile = new Blob(content, { type: 'text/tab-separated-values;charset=utf-8' });
-      // Neither Numbers.app nor Excel can read the UTF-8 BOM correctly, so we explicitly
-      // turn it off.
-      saveAs(tsvFile, filename, { autoBom: false });
+        // Save to local hard drive.
+        const filename = `${this.$store.getters.getDownloadFilenameForPhyx}.csv`;
+        const csvFile = new Blob(content, { type: 'text/csv;charset=utf-8' });
+        // Neither Numbers.app nor Excel can read the UTF-8 BOM correctly, so we explicitly
+        // turn it off.
+        saveAs(csvFile, filename, { autoBom: false });
+      });
     },
   },
 };

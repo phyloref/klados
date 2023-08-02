@@ -21,6 +21,7 @@
     "bootstrap-vue": "^2.15.0",
     "buffer": "^6.0.3",
     "crypto-js": "^4.1.1",
+    "csv-stringify": "^6.4.0",
     "filesaver.js-npm": "^1.0.1",
     "jquery": "^3.5.1",
     "lodash": "^4.17.19",
