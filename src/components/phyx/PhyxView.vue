@@ -445,7 +445,7 @@ export default {
       const tsv = [];
 
       function removeWhitespace(str) {
-        return str.replaceAll(/(?:\s|\n|\r\n)+/g, " ");
+        return str.replaceAll(/\s+/g, " ");
       }
 
       tsv.push(header.map(removeWhitespace).join("\t"));
