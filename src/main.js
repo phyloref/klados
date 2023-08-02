@@ -4,6 +4,9 @@ import Vue from 'vue';
 // Import VueCookies (https://www.npmjs.com/package/vue-cookies)
 import VueCookies from 'vue-cookies';
 
+// Import Phylotree.
+import 'phylotree';
+
 // Import Bootstrap.
 import 'bootstrap';
 import BootstrapVue from 'bootstrap-vue';
