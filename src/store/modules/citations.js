@@ -65,7 +65,7 @@ class CitationModel {
 
   get authorsAsStrings() {
     // Return a list of author names.
-    return this.authors.map(agent => this.wrappedCitation.getAgentName(agent));
+    return this.authors.map(agent => CitationWrapper.getAgentName(agent));
   }
 
   set authorsAsStrings(authorsAsStrings) {
@@ -77,7 +77,7 @@ class CitationModel {
   get editorsAsStrings() {
     // Return a list of editor names.
     if (!has(this.citation, 'editors')) return [];
-    return this.citation.editors.map(editor => this.wrappedCitation.getAgentName(editor));
+    return this.citation.editors.map(editor => CitationWrapper.getAgentName(editor));
   }
 
   set editorsAsStrings(editors) {
@@ -89,7 +89,7 @@ class CitationModel {
   get seriesEditorsAsStrings() {
     // Return a list of series editor names.
     if (!has(this.citation, 'series_editors')) return [];
-    return this.citation.series_editors.map(editor => this.wrappedCitation.getAgentName(editor));
+    return this.citation.series_editors.map(editor => CitationWrapper.getAgentName(editor));
   }
 
   set seriesEditorsAsStrings(editors) {
