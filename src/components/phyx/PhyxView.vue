@@ -278,9 +278,15 @@
 /*
  * Display a summary of the entire Phyx file.
  */
+
+// We would normally import `csv-stringify` directly, but it uses Buffer, which is
+// not implemented in browsers. We therefore need to import the browser-specific ESM
+// distribution, which includes polyfills to run outside of the Node.js environment
+// as described at https://csv.js.org/stringify/distributions/browser_esm/
+import { stringify } from 'csv-stringify/browser/esm';
+
 import { mapState } from 'vuex';
 import { has, max, range } from 'lodash';
-import { stringify } from 'csv-stringify';
 import { saveAs } from 'filesaver.js-npm';
 import { BIconTrash } from 'bootstrap-vue';
 import {
@@ -441,8 +447,6 @@ export default {
         ];
       });
 
-      // Convert to CSV.
-      // console.log('Output:', [header, ...rows]);
       stringify([
         header,
         ...rows,

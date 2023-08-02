@@ -47,12 +47,7 @@ import AboutCurationToolModal from './components/modals/AboutCurationToolModal.v
 import AdvancedOptionsModal from './components/modals/AdvancedOptionsModal.vue';
 
 // Load some configuration options.
-import {
-  COOKIE_ALLOWED,
-  COOKIE_CURATOR_NAME,
-  COOKIE_CURATOR_EMAIL,
-  COOKIE_CURATOR_ORCID,
-} from './config';
+import {COOKIE_ALLOWED, COOKIE_CURATOR_NAME, COOKIE_CURATOR_EMAIL, COOKIE_CURATOR_ORCID} from "@/config";
 
 export default {
   name: 'App',

@@ -20,7 +20,7 @@ import {
 
   COOKIE_EXPIRY,
   COOKIE_ALLOWED, COOKIE_DEFAULT_NOMEN_CODE_URI, COOKIE_CURATOR_NAME, COOKIE_CURATOR_EMAIL, COOKIE_CURATOR_ORCID,
-} from '../../config';
+} from '@/config';
 
 // Shared code for reading and writing cookies.
 

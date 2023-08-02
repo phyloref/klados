@@ -1,6 +1,9 @@
 // Import Vue.
 import Vue from 'vue';
 
+// Import VueCookies (https://www.npmjs.com/package/vue-cookies)
+import VueCookies from 'vue-cookies';
+
 // Import Bootstrap.
 import 'bootstrap';
 import BootstrapVue from 'bootstrap-vue';
@@ -19,22 +22,26 @@ import App from './App.vue';
 import store from './store';
 
 // Set up JQuery as a global.
-window.$ = require('jquery');
+import jQuery from "jquery";
+window.$ = jQuery;
+
+// Set up Buffer as a global (csv-stringify needs this).
+import { Buffer } from 'buffer';
+globalThis.Buffer = Buffer;
 
 // Load configuration from the 'src/config.js' file included with the source.
-Vue.prototype.$config = require('./config.js');
+// Vue.prototype.$config = require('./config.js');
 
 // Add additional features to Vue.
 Vue.use(BootstrapVue);
 Vue.use(VueResize);
-Vue.use(require('vue-cookies')); // Use https://www.npmjs.com/package/vue-cookies
+Vue.use(VueCookies);
 
 // Turn off the Vue production tip on the console on Vue startup.
 Vue.config.productionTip = false;
 
 // Set up Vue object.
 export default new Vue({
-  el: '#app',
   store,
-  render: h => h(App),
-});
+  render: (h) => h(App),
+}).$mount('#app');

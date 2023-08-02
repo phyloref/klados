@@ -3,99 +3,45 @@
   "version": "0.4.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint",
-    "test": "jest"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview --port 4173",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/phyloref/klados.git"
   },
   "dependencies": {
-    "@babel/plugin-transform-modules-commonjs": "^7.10.4",
     "@fortawesome/fontawesome-svg-core": "^1.2.29",
     "@fortawesome/free-solid-svg-icons": "^5.13.1",
     "@fortawesome/vue-fontawesome": "^0.1.10",
     "@phyloref/phyx": "^1.0.1",
     "bootstrap": "^4.5.0",
     "bootstrap-vue": "^2.15.0",
-    "csv-stringify": "^6.0.5",
+    "buffer": "^6.0.3",
+    "crypto-js": "^4.1.1",
+    "csv-stringify": "^6.4.0",
     "filesaver.js-npm": "^1.0.1",
     "jquery": "^3.5.1",
     "lodash": "^4.17.19",
-    "newick-js": "1.1.1",
+    "newick-js": "^1.2.1",
+    "pako": "^2.1.0",
     "popper.js": "^1.16.1",
-    "vue": "^2.6.11",
+    "vue": "^2.7.7",
     "vue-cookies": "^1.8.1",
     "vue-resize": "^0.4.5",
-    "vuex": "^3.5.1",
-    "x-hub-signature": "^1.2.0"
+    "vuex": "^3.5.1"
   },
   "devDependencies": {
-    "@babel/cli": "^7.10.5",
-    "@babel/core": "^7.10.5",
-    "@babel/preset-env": "^7.10.4",
-    "@vue/cli-plugin-babel": "^3.12.1",
-    "@vue/cli-plugin-eslint": "^3.12.1",
-    "@vue/cli-service": "^3.12.1",
-    "@vue/test-utils": "^1.0.3",
-    "babel-core": "^7.0.0-bridge.0",
-    "babel-eslint": "^10.1.0",
-    "babel-jest": "^24.9.0",
-    "eslint": "^5.16.0",
-    "eslint-config-airbnb-base": "^13.2.0",
-    "eslint-plugin-import": "^2.22.0",
-    "eslint-plugin-json": "^1.4.0",
-    "eslint-plugin-mocha": "^5.3.0",
-    "eslint-plugin-vue": "^5.2.3",
-    "jest": "^24.9.0",
-    "vue-jest": "^3.0.6",
-    "vue-template-compiler": "^2.6.11"
-  },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
-    },
-    "extends": [
-      "plugin:vue/essential",
-      "eslint:recommended"
-    ],
-    "rules": {},
-    "parserOptions": {
-      "parser": "babel-eslint"
-    }
-  },
-  "postcss": {
-    "plugins": {
-      "autoprefixer": {}
-    }
-  },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not ie <= 8"
-  ],
-  "jest": {
-    "moduleFileExtensions": [
-      "js",
-      "json",
-      "vue"
-    ],
-    "transform": {
-      "^.*\\.vue$": "vue-jest",
-      "^.+\\.js$": "babel-jest"
-    },
-    "collectCoverage": true,
-    "collectCoverageFrom": [
-      "**/*.{js,vue}",
-      "!**/node_modules/**",
-      "!docs/**"
-    ],
-    "coverageReporters": [
-      "html",
-      "text-summary"
-    ]
+    "@rushstack/eslint-patch": "^1.1.0",
+    "@vitejs/plugin-legacy": "^2.0.0",
+    "@vitejs/plugin-vue2": "^1.1.2",
+    "@vue/eslint-config-prettier": "^7.0.0",
+    "eslint": "^8.5.0",
+    "eslint-plugin-vue": "^9.0.0",
+    "prettier": "^2.5.1",
+    "terser": "^5.14.2",
+    "vite": "^3.0.2"
   }
 }
