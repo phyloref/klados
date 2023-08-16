@@ -158,9 +158,14 @@ export default {
       return nextID;
     },
     redrawTree() {
-      // Reset the pinning node information before redrawing.
-      this.pinningNodes = [];
-      this.pinningNodeChildrenIRIs = new Set();
+      // While we are drawing the children, we can only find out about resolved nodes. When we find one, we calculate
+      // all children of that node and add it to pinningNodeChildrenIRIs so that we can highlight them as well.
+      //
+      // (Previous versions of phylotree.js would draw the nodes before the edges, so we could generate this
+      // once in the node styler and then reuse this it in the edge styler. But now either the edge styler goes
+      // first or the order in indeterminate. We therefore set it up in _both_ methods, and use a Set() to prevent
+      // duplicates. Since this is a local variable, it should be wiped every time redrawTree() is called.)
+      const pinningNodeChildrenIRIs = new Set();
 
       const display = this.tree.render({
         "left-right-spacing": "fit-to-size",
@@ -193,8 +198,7 @@ export default {
               //  (1) No selectedNodeLabel was provided to us (i.e. display all node labels), or
               //  (2) We are currently rendering the selectedNodeLabel.
               !this.selectedNodeLabel ||
-              this.selectedNodeLabel.toLowerCase() ===
-                data.name.toLowerCase()
+              this.selectedNodeLabel.toLowerCase() === data.name.toLowerCase()
             ) {
               if (textLabel.empty()) textLabel = element.append("text");
               textLabel
@@ -206,8 +210,7 @@ export default {
               // Is this the currently selected internal label?
               if (
                 this.selectedNodeLabel &&
-                this.selectedNodeLabel.toLowerCase() ===
-                  data.name.toLowerCase()
+                this.selectedNodeLabel.toLowerCase() === data.name.toLowerCase()
               ) {
                 textLabel.attr(
                   "id",
@@ -276,7 +279,7 @@ export default {
           ) {
             // We found another pinning node!
             this.recurseNodes(data, (node) =>
-              this.pinningNodeChildrenIRIs.add(node["@id"])
+              pinningNodeChildrenIRIs.add(node["@id"])
             );
 
             // Mark this node as the pinning node.
@@ -293,19 +296,13 @@ export default {
           }
 
           // Maybe this isn't a pinning node, but it is a child of a pinning node.
-          if (
-            has(data, "@id") &&
-            this.pinningNodeChildrenIRIs.has(data["@id"])
-          ) {
+          if (has(data, "@id") && pinningNodeChildrenIRIs.has(data["@id"])) {
             // Apply a class.
             // Note that this applies to the resolved-node too.
             element.classed("descendant-of-pinning-node-node", true);
           }
 
-          if (
-            data.name !== undefined &&
-            data.children === undefined
-          ) {
+          if (data.name !== undefined && data.children === undefined) {
             // Labeled leaf node! Look for taxonomic units.
             const tunits = wrappedPhylogeny.getTaxonomicUnitsForNodeLabel(
               data.name
@@ -320,8 +317,7 @@ export default {
               if (
                 has(this.phyloref, "label") &&
                 this.selectedNodeLabel &&
-                this.selectedNodeLabel.toLowerCase() ===
-                  data.name.toLowerCase()
+                this.selectedNodeLabel.toLowerCase() === data.name.toLowerCase()
               ) {
                 textLabel.attr(
                   "id",
@@ -360,17 +356,37 @@ export default {
         "edge-styler": (element, data) => {
           // const data = node.data;
 
-          // Is the parent a descendant of a pinning node? If so, we need to
-          // select this branch!
+          // Identify the source '@id'.
           if (
             has(data, "source") &&
-            has(data.source, "@id") &&
-            this.pinningNodeChildrenIRIs.has(data.source["@id"])
+            has(data.source, "data") &&
+            has(data.source.data, "@id")
           ) {
-            // Apply a class to this branch.
-            element.classed("descendant-of-pinning-node-branch", true);
-          } else {
-            element.classed("descendant-of-pinning-node-branch", false);
+            const source = data.source.data;
+            const source_id = source["@id"];
+
+            console.log("Checking edge with source", source_id);
+
+            // Is the source ID part of this phylogeny? If so, we want to highlight it!
+            if (
+              this.phyloref !== undefined &&
+              this.$store.getters
+                .getResolvedNodesForPhylogeny(this.phylogeny, this.phyloref)
+                .includes(source_id)
+            ) {
+              pinningNodeChildrenIRIs.add(source_id);
+              this.recurseNodes(source, (node) => {
+                pinningNodeChildrenIRIs.add(node["@id"]);
+                console.log("Found child", node["@id"], "for source", source_id);
+              });
+              console.log("Set pinningNodeChildrenIRIs to ", pinningNodeChildrenIRIs);
+
+              element.classed("descendant-of-pinning-node-branch", true);
+            } else if (pinningNodeChildrenIRIs.has(source_id)) {
+              element.classed("descendant-of-pinning-node-branch", true);
+            } else {
+              element.classed("descendant-of-pinning-node-branch", false);
+            }
           }
         },
       });
