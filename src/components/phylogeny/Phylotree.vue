@@ -168,13 +168,23 @@ export default {
       // duplicates. Since this is a local variable, it should be wiped every time redrawTree() is called.)
       const pinningNodeChildrenIRIs = new Set();
 
-      const display = this.tree.render({
+      // Resize the tree to the size of the container.
+      const container = jQuery(`#phylogeny${this.phylogenyIndex}`);
+      const width = container.innerWidth();
+      const height = container.innerHeight();
+
+      const tree = this.tree;
+      const display = tree.render({
         "left-right-spacing": "fit-to-size",
         "top-bottom-spacing": "fit-to-size",
-        "minimum-per-level-spacing": 50,
-        "minimum-per-node-spacing": 10,
+        // "minimum-per-level-spacing": 50,
+        // "minimum-per-node-spacing": 10,
         "align-tips": true,
         container: `#phylogeny${this.phylogenyIndex}`,
+        width: width,
+        height: height,
+        size: [2, 2],
+        "font-size": 20,
         "node-styler": (element, node) => {
           // Instructions used to style nodes in Phylotree
           // - element: The D3 element of the node being styled
@@ -384,21 +394,6 @@ export default {
         },
       });
 
-      // Resize the tree to the size of the container.
-      const container = jQuery(`#phylogeny${this.phylogenyIndex}`);
-      const height =
-        container.innerHeight() < 600 ? 600 : container.innerHeight();
-      const width = container.innerWidth() < 800 ? 800 : container.innerWidth();
-      console.log("container.innerWidth()", container.innerWidth());
-      console.log("container.innerHeight()", container.innerHeight());
-      display.font_size = 16;
-      display.size = [
-        // width
-        width * 2,
-        // height
-        height * 2,
-        // We need more space because our fonts are bigger than the default.
-      ];
       jQuery(display.container).empty();
       jQuery(display.container).html(display.show());
     },
