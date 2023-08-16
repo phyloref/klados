@@ -292,6 +292,7 @@ import { BIconTrash } from 'bootstrap-vue';
 import {
   PhylorefWrapper, PhylogenyWrapper, TaxonNameWrapper, TaxonomicUnitWrapper,
 } from '@phyloref/phyx';
+import { newickParser } from 'phylotree';
 
 export default {
   name: 'PhyxView',
@@ -347,7 +348,7 @@ export default {
       // Return all node labels with this nodeId in this phylogeny.
       const parsed = new PhylogenyWrapper(phylogeny).getParsedNewickWithIRIs(
         this.$store.getters.getPhylogenyId(phylogeny),
-        d3.layout.newick_parser,
+        newickParser,
       );
 
       function searchNode(node, results = []) {
