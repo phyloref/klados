@@ -184,7 +184,6 @@ export default {
         width: width,
         height: height,
         size: [2, 2],
-        "font-size": 20,
         "node-styler": (element, node) => {
           // Instructions used to style nodes in Phylotree
           // - element: The D3 element of the node being styled
@@ -465,6 +464,13 @@ export default {
 .pinning-node text {
   fill: black !important;
   font-weight: bolder;
+}
+
+/*
+ * Increase the font size to make the node text more readable.
+ */
+.phylotree-node-text {
+  font-size: 12pt !important;
 }
 
 /*
