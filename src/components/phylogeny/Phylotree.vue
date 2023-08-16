@@ -228,32 +228,34 @@ export default {
           // Add a custom menu item to allow us to rename this node.
           console.log("node", node);
           addCustomMenu(
-              node,
-              (node) => "Rename this node",
-              () => {
-                const node = data;
-                const existingName = node.name || "(none)";
-                const newName = window.prompt(
-                    `Rename node named '${existingName}' to:`
-                );
-                // Apparently IE7 and IE8 will return the string 'undefined' if the user doesn't
-                // enter anything.
-                if (!newName || newName === "undefined") {
-                  // Remove the current label.
-                  node.name = "";
-                } else {
-                  // Set the new label.
-                  node.name = '"' + newName + '"';
-                }
+            node,
+            (node) => "Rename this node",
+            () => {
+              const node = data;
+              const existingName = node.name || "(none)";
+              const newName = window.prompt(
+                `Rename node named '${existingName}' to:`
+              );
+              // Apparently IE7 and IE8 will return the string 'undefined' if the user doesn't
+              // enter anything.
+              if (!newName || newName === "undefined") {
+                // Remove the current label.
+                node.name = "";
+              } else {
+                // Set the new label.
+                node.name = '"' + newName + '"';
+              }
 
-                // Export the entire phylogeny as a Newick string, and store that
-                // in the phylogeny object.
-                this.$store.commit("setPhylogenyProps", {
-                  phylogeny: this.phylogeny,
-                  newick: this.tree.getNewick(),
-                });
-              },
-              (node) => true // We can replace this with a condition that indicates whether this node should be displayed.
+              // Export the entire phylogeny as a Newick string, and store that
+              // in the phylogeny object.
+              const updatedNewickString = this.tree.getNewick();
+              console.log("updatedNewickString", updatedNewickString);
+              this.$store.commit("setPhylogenyProps", {
+                phylogeny: this.phylogeny,
+                newick: updatedNewickString,
+              });
+            },
+            (node) => true // We can replace this with a condition that indicates whether this node should be displayed.
           );
 
           // If the internal label has the same IRI as the currently selected
