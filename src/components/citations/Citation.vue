@@ -626,7 +626,7 @@ export default {
     },
     wrappedCitation(citation) {
       // Return the citation
-      return this.$store.getters.getWrappedCitation(citation);
+      return this.$store.getters.getCitationModel(citation);
     },
   },
 };

@@ -10,13 +10,14 @@
  * since that is essentially what Regnum uses. This is surprisingly poorly supported,
  * except for the Citation.JS library (https://citation.js.org/), but I haven't been
  * able to get it working on Vue JS yet. Therefore, mostly, I've implemented a
- * basic CitationWrapper here, we'll replace it with Citations.JS or another proper
+ * basic CitationModel here, we'll replace it with Citations.JS or another proper
  * library when we can. We might switch over to CSL-JSON eventually (see issue
  * https://github.com/phyloref/clade-ontology/issues/69).
  */
 
 import Vue from 'vue';
 import { has, isEmpty, isString } from 'lodash';
+import { CitationWrapper } from '@phyloref/phyx';
 
 function isNonEmptyString(str) {
   // Helper method: checks to see if a provided object (1) is a string, that
@@ -26,68 +27,18 @@ function isNonEmptyString(str) {
   return true;
 }
 
-class CitationWrapper {
+class CitationModel {
   // Wraps a Citation in a Phyx document. Should be moved to phyx.js.
 
   constructor(citation) {
     // Store the citation we're wrapping.
     this.citation = citation;
+    this.wrappedCitation = new CitationWrapper(citation);
   }
 
   toString() {
     // Return this citation in a string representation.
-    if (!this.citation || isEmpty(this.citation)) return undefined;
-
-    let authors = this.authorsAsStrings;
-    if (authors.length === 0) authors = ['Anonymous'];
-    if (authors.length > 2) authors = [`${authors[0]} et al`];
-    let authorsAndTitle = `${authors.join(' and ')} (${this.citation.year || 'n.d.'}) ${this.citation.title || 'Untitled'}`;
-
-    const editorLists = [];
-    const editors = this.editorsAsStrings;
-    if (editors.length > 0) editorLists.push(`eds: ${editors.join(' and ')}`);
-
-    const seriesEditors = this.seriesEditorsAsStrings;
-    if (seriesEditors.length > 0) editorLists.push(`series eds: ${seriesEditors.join(' and ')}`);
-
-    if (editorLists.length > 0) authorsAndTitle += ` [${editorLists.join(', ')}]`;
-
-    if (has(this.citation, 'section_title')) {
-      authorsAndTitle += ` (section: ${this.citation.section_title})`;
-    }
-
-    // Additional info stores details that should be at the end of the figure number,
-    // DOIs, URLs, ISBNs and so on.
-    let additionalInfo = ' ';
-    if (has(this.citation, 'figure')) additionalInfo += ` fig ${this.citation.figure}`;
-
-    // Add DOIs and URLs.
-    additionalInfo += this.doisAsStrings.map(doi => ` doi: ${doi}`).join('');
-    additionalInfo += this.urlsAsStrings.map(url => ` URL: ${url}`).join('');
-
-    additionalInfo += this.isbns.map(isbn => ` ISBN: ${isbn}`).join('');
-
-    // A citation for a journal article should be different from others.
-    if (has(this.citation, 'journal') && this.citation.type === 'article') {
-      const journal = this.citation.journal;
-      const journalIssue = (has(journal, 'number')) ? `(${journal.number})` : '';
-      const pages = (has(this.citation, 'pages')) ? `:${this.citation.pages}` : '';
-      additionalInfo += this.issns.map(issn => `ISSN: ${issn} `).join('');
-      return `${authorsAndTitle} ${journal.name || 'Unknown journal'} ${journal.volume || 'Unknown volume'}${journalIssue}${pages}${additionalInfo}`;
-    }
-
-    // If we are here, this must be a book or a book_section.
-    if (has(this.citation, 'pages')) additionalInfo += ` pages: ${this.citation.pages}`;
-
-    if (has(this.citation, 'publisher') && has(this.citation, 'city')) {
-      return `${authorsAndTitle} ${this.citation.publisher}, ${this.citation.city}${additionalInfo}`;
-    }
-
-    if (has(this.citation, 'publisher')) {
-      return `${authorsAndTitle} ${this.citation.publisher}${additionalInfo}`;
-    }
-
-    return `${authorsAndTitle}${additionalInfo}`;
+    return this.wrappedCitation.toString();
   }
 
   get authors() {
@@ -114,7 +65,7 @@ class CitationWrapper {
 
   get authorsAsStrings() {
     // Return a list of author names.
-    return this.authors.map(author => author.name);
+    return this.authors.map(agent => CitationWrapper.getAgentName(agent));
   }
 
   set authorsAsStrings(authorsAsStrings) {
@@ -126,7 +77,7 @@ class CitationWrapper {
   get editorsAsStrings() {
     // Return a list of editor names.
     if (!has(this.citation, 'editors')) return [];
-    return this.citation.editors.map(editor => editor.name);
+    return this.citation.editors.map(editor => CitationWrapper.getAgentName(editor));
   }
 
   set editorsAsStrings(editors) {
@@ -138,7 +89,7 @@ class CitationWrapper {
   get seriesEditorsAsStrings() {
     // Return a list of series editor names.
     if (!has(this.citation, 'series_editors')) return [];
-    return this.citation.series_editors.map(editor => editor.name);
+    return this.citation.series_editors.map(editor => CitationWrapper.getAgentName(editor));
   }
 
   set seriesEditorsAsStrings(editors) {
@@ -280,7 +231,7 @@ class CitationWrapper {
 export default {
   getters: {
     // Get a wrapped citation for a given citation.
-    getWrappedCitation: () => citation => new CitationWrapper(citation),
+    getCitationModel: () => citation => new CitationModel(citation),
   },
   mutations: {
     // Update the value of a citation, using object-citationKey so we can change
