@@ -59,8 +59,6 @@ export default {
   },
   data() {
     return {
-      // List of pinning nodes to highlight for a particular phylogeny.
-      pinningNodes: [],
       // List of pinning nodes and all their children, so the entire clade can be
       // highlighted as needed.
       pinningNodeChildrenIRIs: new Set(),
@@ -277,7 +275,6 @@ export default {
               .includes(data["@id"])
           ) {
             // We found another pinning node!
-            this.pinningNodes.push(data);
             this.recurseNodes(data, (node) =>
               this.pinningNodeChildrenIRIs.add(node["@id"])
             );
