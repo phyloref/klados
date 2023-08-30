@@ -252,7 +252,13 @@ export default {
                 node.name = "";
               } else {
                 // Set the new label.
-                node.name = '"' + newName + '"';
+                const escapedName = newName.replace("'", "''");
+                // If the name contains whitespace, escape it.
+                if (/\w/.test(escapedName)) {
+                  node.name = "'" + escapedName + "'";
+                } else {
+                  node.name = escapedName;
+                }
               }
 
               // Export the entire phylogeny as a Newick string, and store that
