@@ -238,6 +238,7 @@
 import Vue from 'vue';
 import { has } from 'lodash';
 import { Buffer } from "buffer";
+import { newickParser } from "phylotree";
 import { mapState, mapGetters } from 'vuex';
 import { saveAs } from 'filesaver.js-npm';
 import CryptoJS from 'crypto-js';
@@ -457,7 +458,7 @@ export default {
         // Prepare JSON-LD file for submission.
         const jsonld = JSON.stringify([new PhyxWrapper(
           outerThis.$store.state.phyx.currentPhyx,
-          d3.layout.newick_parser,
+          newickParser,
         ).asJSONLD()]);
 
         // To improve upload speed, let's Gzip the file before upload.
