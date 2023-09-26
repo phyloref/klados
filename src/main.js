@@ -1,35 +1,35 @@
 // Import Vue.
-import Vue from 'vue';
+import Vue from "vue";
 
 // Import VueCookies (https://www.npmjs.com/package/vue-cookies)
-import VueCookies from 'vue-cookies';
+import VueCookies from "vue-cookies";
 
 // Import Phylotree CSS file.
-import 'phylotree/dist/phylotree.css';
+import "phylotree/dist/phylotree.css";
 
 // Import Bootstrap.
-import 'bootstrap';
-import BootstrapVue from 'bootstrap-vue';
+import "bootstrap";
+import BootstrapVue from "bootstrap-vue";
 
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap-vue/dist/bootstrap-vue.min.css';
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap-vue/dist/bootstrap-vue.min.css";
 
 // Use vue-resize to track when phylogenies are resized.
-import VueResize from 'vue-resize';
-import 'vue-resize/dist/vue-resize.css';
+import VueResize from "vue-resize";
+import "vue-resize/dist/vue-resize.css";
 
 // Import the main Vue file.
-import App from './App.vue';
+import App from "./App.vue";
 
 // Import our Vuex store.
-import store from './store';
+import store from "./store";
 
 // Set up JQuery as a global.
 import jQuery from "jquery";
 window.$ = jQuery;
 
 // Set up Buffer as a global (csv-stringify needs this).
-import { Buffer } from 'buffer';
+import { Buffer } from "buffer";
 globalThis.Buffer = Buffer;
 
 // Load configuration from the 'src/config.js' file included with the source.
@@ -47,4 +47,4 @@ Vue.config.productionTip = false;
 export default new Vue({
   store,
   render: (h) => h(App),
-}).$mount('#app');
+}).$mount("#app");

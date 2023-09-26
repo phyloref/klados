@@ -1,42 +1,27 @@
 <template>
-  <div
-    id="advanced-options"
-    class="modal"
-    tabindex="-1"
-    role="dialog"
-  >
-    <div
-      class="modal-dialog"
-      role="document"
-    >
+  <div id="advanced-options" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">
-            Advanced options
-          </h5>
+          <h5 class="modal-title">Advanced options</h5>
           <button
             type="button"
             class="close"
             data-dismiss="modal"
             aria-label="Close"
           >
-            <span aria-hidden="true">
-              &times;
-            </span>
+            <span aria-hidden="true"> &times; </span>
           </button>
         </div>
 
         <!-- Body of the about-us modal dialog -->
         <div class="modal-body">
           <p>
-            The following is a representation of this PHYX in JSON. You
-            can edit the JSON directly if you like.
+            The following is a representation of this PHYX in JSON. You can edit
+            the JSON directly if you like.
           </p>
 
-          <div
-            v-if="JSONParsingError"
-            class="card text-white bg-danger mb-2"
-          >
+          <div v-if="JSONParsingError" class="card text-white bg-danger mb-2">
             <div class="card-body">
               <p class="card-text">
                 This JSON could not be parsed: {{ JSONParsingError }}
@@ -47,7 +32,7 @@
           <textarea
             id="test-content"
             v-model.lazy="phyxAsJSON"
-            style="width: 100%; margin: auto;"
+            style="width: 100%; margin: auto"
             rows="10"
           />
         </div>
@@ -59,11 +44,7 @@
           >
             Download as JSON-LD
           </button>
-          <button
-            type="button"
-            class="btn btn-secondary"
-            data-dismiss="modal"
-          >
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
             Close
           </button>
         </div>
@@ -80,11 +61,11 @@
  *  - A download button that allows the JSON-LD file to be downloaded for debugging.
  */
 
-import { PhyxWrapper } from '@phyloref/phyx';
-import { saveAs } from 'filesaver.js-npm';
+import { PhyxWrapper } from "@phyloref/phyx";
+import { saveAs } from "filesaver.js-npm";
 
 export default {
-  name: 'AdvancedOptionsPanel',
+  name: "AdvancedOptionsPanel",
   data() {
     return {
       JSONParsingError: undefined,
@@ -102,7 +83,7 @@ export default {
         // as a change to the file.
         try {
           const phyx = JSON.parse(value);
-          this.$store.commit('setCurrentPhyx', phyx);
+          this.$store.commit("setCurrentPhyx", phyx);
           this.JSONParsingError = undefined;
         } catch (ex) {
           this.JSONParsingError = ex.message;
@@ -118,7 +99,9 @@ export default {
       const content = [JSON.stringify([wrapped.asJSONLD()], undefined, 4)];
 
       // Save to local hard drive.
-      const jsonldFile = new File(content, 'download.jsonld', { type: 'application/json;charset=utf-8' });
+      const jsonldFile = new File(content, "download.jsonld", {
+        type: "application/json;charset=utf-8",
+      });
       saveAs(jsonldFile);
     },
   },

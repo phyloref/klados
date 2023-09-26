@@ -4,20 +4,19 @@
     <ModifiedCard
       message="This phylogeny has been modified since being loaded. Use 'Save' to save your changes."
       :compare="selectedPhylogeny"
-      :compare-to="loadedPhyx.phylogenies[currentPhyx.phylogenies.indexOf(selectedPhylogeny)]"
+      :compare-to="
+        loadedPhyx.phylogenies[
+          currentPhyx.phylogenies.indexOf(selectedPhylogeny)
+        ]
+      "
     />
 
     <div class="card">
-      <h5 class="card-header">
-        Phylogeny information
-      </h5>
+      <h5 class="card-header">Phylogeny information</h5>
       <div class="card-body">
         <form>
           <div class="form-group row">
-            <label
-              for="phylogenyId"
-              class="col-md-2 col-form-label"
-            >
+            <label for="phylogenyId" class="col-md-2 col-form-label">
               Identifier
             </label>
             <div class="col-md-10">
@@ -26,23 +25,17 @@
                 v-model="phylogenyId"
                 type="text"
                 class="form-control"
-                :class="{'border-danger': phylogenyIdError}"
+                :class="{ 'border-danger': phylogenyIdError }"
                 placeholder="A global or local identifier for this phylogeny, e.g. 'http://doi.org/10.13/49#12' or '#phylogeny1'"
-              >
-              <p
-                v-if="phylogenyIdError"
-                class="form-text text-danger"
-              >
+              />
+              <p v-if="phylogenyIdError" class="form-text text-danger">
                 {{ phylogenyIdError }}
               </p>
             </div>
           </div>
 
           <div class="form-group row">
-            <label
-              for="phylogenyLabel"
-              class="col-md-2 col-form-label"
-            >
+            <label for="phylogenyLabel" class="col-md-2 col-form-label">
               Label
             </label>
             <div class="col-md-10">
@@ -51,15 +44,12 @@
                 v-model.trim="phylogenyLabel"
                 type="text"
                 class="form-control"
-              >
+              />
             </div>
           </div>
 
           <div class="form-group row">
-            <label
-              for="phylogenyCuratorNotes"
-              class="col-md-2 col-form-label"
-            >
+            <label for="phylogenyCuratorNotes" class="col-md-2 col-form-label">
               Curator notes
             </label>
             <div class="col-md-10">
@@ -81,12 +71,7 @@
           />
 
           <div class="form-group row">
-            <label
-              for="newick"
-              class="col-md-2 control-label"
-            >
-              Newick
-            </label>
+            <label for="newick" class="col-md-2 control-label"> Newick </label>
             <div class="col-md-10 input-group">
               <textarea
                 v-model.lazy="phylogenyNewick"
@@ -100,15 +85,8 @@
       </div>
 
       <div class="card-footer">
-        <div
-            class="btn-group"
-            role="group"
-            area-label="Phylogeny management"
-        >
-          <button
-              class="btn btn-danger"
-              @click="deleteThisPhylogeny()"
-          >
+        <div class="btn-group" role="group" area-label="Phylogeny management">
+          <button class="btn btn-danger" @click="deleteThisPhylogeny()">
             Delete phylogeny
           </button>
         </div>
@@ -125,23 +103,18 @@
       </h5>
       <div class="card-body">
         <template v-for="(error, errorIndex) of phylogenyNewickErrors">
-          <p><strong>{{ error.title }}.</strong> {{ error.message }}</p>
+          <p>
+            <strong>{{ error.title }}.</strong> {{ error.message }}
+          </p>
         </template>
       </div>
     </div>
 
     <!-- Display the phylogeny (unless there were Newick parsing errors) -->
-    <div
-      v-if="phylogenyNewickErrors.length === 0"
-      class="card mt-2"
-    >
-      <h5 class="card-header">
-        Phylogeny visualization
-      </h5>
+    <div v-if="phylogenyNewickErrors.length === 0" class="card mt-2">
+      <h5 class="card-header">Phylogeny visualization</h5>
       <div class="card-body">
-        <Phylotree
-          :phylogeny="selectedPhylogeny"
-        />
+        <Phylotree :phylogeny="selectedPhylogeny" />
       </div>
     </div>
   </div>
@@ -152,16 +125,16 @@
  * This view displays a phylogeny and changes its title or Newick string.
  */
 
-import { has } from 'lodash';
-import { mapState } from 'vuex';
-import { parse as parseNewick } from 'newick-js';
+import { has } from "lodash";
+import { mapState } from "vuex";
+import { parse as parseNewick } from "newick-js";
 
-import ModifiedCard from '../cards/ModifiedCard.vue';
-import Phylotree from './Phylotree.vue';
-import Citation from '../citations/Citation.vue';
+import ModifiedCard from "../cards/ModifiedCard.vue";
+import Phylotree from "./Phylotree.vue";
+import Citation from "../citations/Citation.vue";
 
 export default {
-  name: 'PhylogenyView',
+  name: "PhylogenyView",
   components: { ModifiedCard, Phylotree, Citation },
   data() {
     return {
@@ -172,11 +145,15 @@ export default {
   methods: {
     deleteThisPhylogeny() {
       // Delete this phylogeny, and unset the selected phylogeny so we return to the summary page.
-      if(confirm('Are you sure you wish to delete this phylogeny? This cannot be undone!')) {
-        this.$store.commit('deletePhylogeny', {
+      if (
+        confirm(
+          "Are you sure you wish to delete this phylogeny? This cannot be undone!"
+        )
+      ) {
+        this.$store.commit("deletePhylogeny", {
           phylogeny: this.selectedPhylogeny,
         });
-        this.$store.commit('changeDisplay', {});
+        this.$store.commit("changeDisplay", {});
       }
     },
   },
@@ -188,10 +165,15 @@ export default {
     phylogenyId: {
       // The phylogeny identifier; either a global identifier like http://doi.org/10.3014/3
       // or a local identifier like #phylogeny1.
-      get() { return this.$store.getters.getPhylogenyId(this.selectedPhylogeny); },
+      get() {
+        return this.$store.getters.getPhylogenyId(this.selectedPhylogeny);
+      },
       set(id) {
         try {
-          this.$store.dispatch('changePhylogenyId', { phylogeny: this.selectedPhylogeny, phylogenyId: id });
+          this.$store.dispatch("changePhylogenyId", {
+            phylogeny: this.selectedPhylogeny,
+            phylogenyId: id,
+          });
         } catch (err) {
           // If there was an error in setting phylogeny id, report that to the user.
           this.phylogenyIdError = err;
@@ -203,16 +185,37 @@ export default {
       },
     },
     phylogenyLabel: {
-      get() { return this.selectedPhylogeny.label; },
-      set(label) { this.$store.commit('setPhylogenyProps', { phylogeny: this.selectedPhylogeny, label }); },
+      get() {
+        return this.selectedPhylogeny.label;
+      },
+      set(label) {
+        this.$store.commit("setPhylogenyProps", {
+          phylogeny: this.selectedPhylogeny,
+          label,
+        });
+      },
     },
     phylogenyCuratorNotes: {
-      get() { return this.selectedPhylogeny.curatorNotes; },
-      set(curatorNotes) { this.$store.commit('setPhylogenyProps', { phylogeny: this.selectedPhylogeny, curatorNotes }); },
+      get() {
+        return this.selectedPhylogeny.curatorNotes;
+      },
+      set(curatorNotes) {
+        this.$store.commit("setPhylogenyProps", {
+          phylogeny: this.selectedPhylogeny,
+          curatorNotes,
+        });
+      },
     },
     phylogenyNewick: {
-      get() { return this.selectedPhylogeny.newick || '()'; },
-      set(newick) { this.$store.commit('setPhylogenyProps', { phylogeny: this.selectedPhylogeny, newick }); },
+      get() {
+        return this.selectedPhylogeny.newick || "()";
+      },
+      set(newick) {
+        this.$store.commit("setPhylogenyProps", {
+          phylogeny: this.selectedPhylogeny,
+          newick,
+        });
+      },
     },
     phylogenyNewickErrors() {
       // Given a Newick string, return a list of errors found in parsing this
@@ -224,33 +227,39 @@ export default {
       //
       // We try to order errors from most helpful ('Unbalanced parentheses in
       // Newick string') to least helpful ('Error parsing phylogeny').
-      if (!has(this.selectedPhylogeny, 'newick')) return [];
+      if (!has(this.selectedPhylogeny, "newick")) return [];
       const newickTrimmed = this.selectedPhylogeny.newick.trim();
       const errors = [];
 
       // Look for an empty Newick string.
-      if (newickTrimmed === '' || newickTrimmed === '()' || newickTrimmed === '();') {
+      if (
+        newickTrimmed === "" ||
+        newickTrimmed === "()" ||
+        newickTrimmed === "();"
+      ) {
         // None of the later errors are relevant here, so bail out now.
-        return [{
-          title: 'No phylogeny entered',
-          message: 'Click on "Edit as Newick" to enter a phylogeny below.',
-        }];
+        return [
+          {
+            title: "No phylogeny entered",
+            message: 'Click on "Edit as Newick" to enter a phylogeny below.',
+          },
+        ];
       }
 
       // Look for an unbalanced Newick string.
       let parenLevels = 0;
       for (let x = 0; x < newickTrimmed.length; x += 1) {
-        if (newickTrimmed[x] === '(') parenLevels += 1;
-        if (newickTrimmed[x] === ')') parenLevels -= 1;
+        if (newickTrimmed[x] === "(") parenLevels += 1;
+        if (newickTrimmed[x] === ")") parenLevels -= 1;
       }
 
       if (parenLevels !== 0) {
         errors.push({
-          title: 'Unbalanced parentheses in Newick string',
-          message: (parenLevels > 0
-            ? `You have ${parenLevels} too many open parentheses`
-            : `You have ${-parenLevels} too few open parentheses`
-          ),
+          title: "Unbalanced parentheses in Newick string",
+          message:
+            parenLevels > 0
+              ? `You have ${parenLevels} too many open parentheses`
+              : `You have ${-parenLevels} too few open parentheses`,
         });
       }
 
@@ -259,7 +268,7 @@ export default {
         parseNewick(newickTrimmed);
       } catch (ex) {
         errors.push({
-          title: 'Error parsing phylogeny',
+          title: "Error parsing phylogeny",
           message: `An error occured while parsing this phylogeny: ${ex.message}`,
         });
       }
@@ -267,9 +276,9 @@ export default {
       return errors;
     },
     ...mapState({
-      currentPhyx: state => state.phyx.currentPhyx,
-      loadedPhyx: state => state.phyx.loadedPhyx,
-      selectedPhylogeny: state => state.ui.display.phylogeny,
+      currentPhyx: (state) => state.phyx.currentPhyx,
+      loadedPhyx: (state) => state.phyx.loadedPhyx,
+      selectedPhylogeny: (state) => state.ui.display.phylogeny,
     }),
   },
 };

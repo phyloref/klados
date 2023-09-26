@@ -4,35 +4,27 @@
     <ModifiedCard
       message="This phyloreference has been modified since being loaded! Use 'Save' to save your changes."
       :compare="selectedPhyloref"
-      :compare-to="loadedPhyx.phylorefs[currentPhyx.phylorefs.indexOf(selectedPhyloref)]"
+      :compare-to="
+        loadedPhyx.phylorefs[currentPhyx.phylorefs.indexOf(selectedPhyloref)]
+      "
     />
 
     <!-- Phyloreference information -->
-    <div
-      v-if="!display.phylogeny"
-      class="card"
-    >
-      <h5 class="card-header">
-        Phyloreference information
-      </h5>
+    <div v-if="!display.phylogeny" class="card">
+      <h5 class="card-header">Phyloreference information</h5>
 
       <div class="card-body">
         <form>
           <!-- Phyloreference label -->
           <div class="form-group row">
-            <label
-              for="label"
-              class="col-form-label col-md-2"
-            >
-              Label
-            </label>
+            <label for="label" class="col-form-label col-md-2"> Label </label>
             <div class="col-md-10">
               <input
                 id="label"
                 v-model="selectedPhylorefLabel"
                 type="text"
                 class="form-control"
-              >
+              />
             </div>
           </div>
 
@@ -47,10 +39,7 @@
 
           <!-- Phyloreference clade definition -->
           <div class="form-group row">
-            <label
-              for="definition"
-              class="col-form-label col-md-2"
-            >
+            <label for="definition" class="col-form-label col-md-2">
               Definition in free-form text
             </label>
             <div class="col-md-10">
@@ -73,10 +62,7 @@
 
           <!-- Phyloreference curator notes -->
           <div class="form-group row">
-            <label
-              for="curator-notes"
-              class="col-form-label col-md-2"
-            >
+            <label for="curator-notes" class="col-form-label col-md-2">
               Curator notes
             </label>
             <div class="col-md-10">
@@ -100,15 +86,14 @@
         >
           <button
             class="btn btn-primary"
-            @click="$store.commit('duplicatePhyloref', { phyloref: selectedPhyloref })"
+            @click="
+              $store.commit('duplicatePhyloref', { phyloref: selectedPhyloref })
+            "
           >
             Duplicate phyloreference
           </button>
 
-          <button
-            class="btn btn-danger"
-            @click="deleteThisPhyloref()"
-          >
+          <button class="btn btn-danger" @click="deleteThisPhyloref()">
             Delete phyloreference
           </button>
         </div>
@@ -116,17 +101,12 @@
     </div>
 
     <div class="card mt-2">
-      <h5 class="card-header">
-        Specifiers
-      </h5>
+      <h5 class="card-header">Specifiers</h5>
       <div class="card-body">
         <form>
           <!-- Phyloreference type -->
           <div class="form-group row">
-            <label
-              for="phyloref-type"
-              class="col-form-label col-md-2"
-            >
+            <label for="phyloref-type" class="col-form-label col-md-2">
               Phyloreference type
             </label>
             <div class="col-md-10">
@@ -136,7 +116,7 @@
                 type="text"
                 readonly
                 class="form-control"
-              >
+              />
             </div>
           </div>
         </form>
@@ -146,7 +126,11 @@
             <button
               class="btn btn-secondary btn-sm float-right"
               href="javascript:;"
-              @click="$store.commit('addInternalSpecifier', { phyloref: selectedPhyloref })"
+              @click="
+                $store.commit('addInternalSpecifier', {
+                  phyloref: selectedPhyloref,
+                })
+              "
             >
               <b-icon-plus-square />
             </button>
@@ -154,7 +138,10 @@
           </div>
           <div class="card-body">
             <template
-              v-if="!selectedPhyloref.internalSpecifiers || selectedPhyloref.internalSpecifiers.length === 0"
+              v-if="
+                !selectedPhyloref.internalSpecifiers ||
+                selectedPhyloref.internalSpecifiers.length === 0
+              "
             >
               <p><em>No internal specifiers in this phyloreference.</em></p>
             </template>
@@ -177,7 +164,11 @@
             <button
               class="btn btn-secondary btn-sm float-right"
               href="javascript:;"
-              @click="$store.commit('addExternalSpecifier', { phyloref: selectedPhyloref })"
+              @click="
+                $store.commit('addExternalSpecifier', {
+                  phyloref: selectedPhyloref,
+                })
+              "
             >
               <b-icon-plus-square />
             </button>
@@ -185,7 +176,10 @@
           </div>
           <div class="card-body">
             <template
-              v-if="!selectedPhyloref.externalSpecifiers || selectedPhyloref.externalSpecifiers.length === 0"
+              v-if="
+                !selectedPhyloref.externalSpecifiers ||
+                selectedPhyloref.externalSpecifiers.length === 0
+              "
             >
               <p><em>No external specifiers in this phyloreference.</em></p>
             </template>
@@ -250,10 +244,7 @@
               </div>
 
               <div class="form-group row">
-                <label
-                  for="bearing-entity"
-                  class="col-form-label col-md-2"
-                >
+                <label for="bearing-entity" class="col-form-label col-md-2">
                   Bearing entity
                 </label>
                 <div class="col-md-10">
@@ -263,7 +254,7 @@
                       class="form-control"
                       placeholder="e.g. 'http://purl.obolibrary.org/obo/UBERON_0008271'"
                       v-model="selectedPhyloref.apomorphy.bearingEntity"
-                    >
+                    />
                     <div class="input-group-append">
                       <a
                         class="btn btn-outline-secondary align-middle"
@@ -279,10 +270,7 @@
               </div>
 
               <div class="form-group row">
-                <label
-                  for="phenotypic-quality"
-                  class="col-form-label col-md-2"
-                >
+                <label for="phenotypic-quality" class="col-form-label col-md-2">
                   Phenotypic Quality
                 </label>
                 <div class="col-md-10">
@@ -292,7 +280,7 @@
                       class="form-control"
                       placeholder="e.g. 'http://purl.obolibrary.org/obo/PATO_0000467'"
                       v-model="selectedPhyloref.apomorphy.phenotypicQuality"
-                    >
+                    />
                     <div class="input-group-append">
                       <a
                         class="btn btn-outline-secondary align-middle"
@@ -319,12 +307,18 @@
         - display only the selected phylogeny when it's selected
     -->
     <template v-for="(phylogeny, phylogenyIndex) of currentPhyx.phylogenies">
-      <template v-if="selectedPhylogeny === undefined || selectedPhylogeny === phylogeny">
+      <template
+        v-if="
+          selectedPhylogeny === undefined || selectedPhylogeny === phylogeny
+        "
+      >
         <div class="card mt-2">
           <h5 class="card-header">
-            Expected and actual resolution <span v-if="display.phylogeny">
-              of {{ phyloref.label || 'unlabeled phyloreference' }}
-            </span> on {{ phylogeny.label || `Phylogeny ${phylogenyIndex + 1}` }}
+            Expected and actual resolution
+            <span v-if="display.phylogeny">
+              of {{ phyloref.label || "unlabeled phyloreference" }}
+            </span>
+            on {{ phylogeny.label || `Phylogeny ${phylogenyIndex + 1}` }}
           </h5>
           <div class="card-body">
             <!-- Reference phylogeny information -->
@@ -349,17 +343,18 @@
                   rows="3"
                   class="form-control"
                   placeholder="e.g. 'Should resolve to clade X in fig 3 of Smith 2003'"
-                  @change="setExpectedResolution(phylogeny, {'description': $event.target.value})"
+                  @change="
+                    setExpectedResolution(phylogeny, {
+                      description: $event.target.value,
+                    })
+                  "
                 />
               </div>
             </div>
 
             <div class="form-group row">
               <!-- Node(s) this phyloreference is expected to resolve to -->
-              <label
-                for="expected-nodes"
-                class="col-form-label col-md-2"
-              >
+              <label for="expected-nodes" class="col-form-label col-md-2">
                 Expected nodes
               </label>
 
@@ -368,10 +363,13 @@
                 <div class="input-group-prepend">
                   <a
                     class="btn btn-outline-secondary"
-                    :href="'#current_expected_label_phylogeny_' + phylogenyIndex"
+                    :href="
+                      '#current_expected_label_phylogeny_' + phylogenyIndex
+                    "
                     title="Click here to jump to the expected label"
                     role="button"
-                  >Go to node</a>
+                    >Go to node</a
+                  >
                 </div>
 
                 <!-- Display the matching node(s) -->
@@ -381,8 +379,12 @@
                     readonly
                     type="text"
                     class="form-control"
-                    :value="'No node labeled \'' + selectedPhylorefLabel + '\' found in phylogeny'"
-                  >
+                    :value="
+                      'No node labeled \'' +
+                      selectedPhylorefLabel +
+                      '\' found in phylogeny'
+                    "
+                  />
                 </template>
 
                 <template v-if="getExpectedNodeLabel(phylogeny)">
@@ -392,7 +394,7 @@
                     type="text"
                     class="form-control"
                     :value="getExpectedNodeLabel(phylogeny)"
-                  >
+                  />
                 </template>
 
                 <!-- Display a dropdown menu that allows the modified label to be changed. -->
@@ -410,7 +412,7 @@
                   <div
                     class="dropdown-menu dropright"
                     aria-labelledby="expected-nodes-dropdown"
-                    style="height: 30em; overflow: visible scroll;"
+                    style="height: 30em; overflow: visible scroll"
                   >
                     <a class="dropdown-header">
                       Labeled internal nodes in this phylogeny
@@ -418,9 +420,11 @@
                     <a
                       v-for="nodeLabel of getNodeLabels(phylogeny, 'internal')"
                       class="dropdown-item"
-                      :class="{active: getExpectedNodeLabel(phylogeny) === nodeLabel}"
+                      :class="{
+                        active: getExpectedNodeLabel(phylogeny) === nodeLabel,
+                      }"
                       href="#selected-phyloref"
-                      @click="setExpectedResolution(phylogeny, {nodeLabel})"
+                      @click="setExpectedResolution(phylogeny, { nodeLabel })"
                     >
                       {{ nodeLabel }}
                     </a>
@@ -431,9 +435,11 @@
                     <a
                       v-for="nodeLabel of getNodeLabels(phylogeny, 'terminal')"
                       class="dropdown-item"
-                      :class="{active: getExpectedNodeLabel(phylogeny) === nodeLabel}"
+                      :class="{
+                        active: getExpectedNodeLabel(phylogeny) === nodeLabel,
+                      }"
                       href="#selected-phyloref"
-                      @click="setExpectedResolution(phylogeny, {nodeLabel})"
+                      @click="setExpectedResolution(phylogeny, { nodeLabel })"
                     >
                       {{ nodeLabel }}
                     </a>
@@ -442,10 +448,7 @@
               </div>
 
               <!-- Node(s) this phyloreference actually resolved to -->
-              <label
-                for="actual-nodes"
-                class="col-form-label col-md-2 pb-2"
-              >
+              <label for="actual-nodes" class="col-form-label col-md-2 pb-2">
                 Actual resolved nodes
               </label>
 
@@ -457,7 +460,8 @@
                     :href="'#current_pinning_node_phylogeny_' + phylogenyIndex"
                     title="Click here to jump to this node"
                     role="button"
-                  >Go to node</a>
+                    >Go to node</a
+                  >
                 </div>
 
                 <!-- Display the matching node(s) -->
@@ -467,7 +471,7 @@
                     type="text"
                     class="form-control"
                     value="Click 'Resolve against phylogenies' to reason over all phyloreferences."
-                  >
+                  />
                 </template>
                 <template v-else>
                   <template v-if="getResolvedNodes(phylogeny).length === 0">
@@ -477,7 +481,7 @@
                       type="text"
                       class="form-control"
                       :value="'No nodes could be resolved'"
-                    >
+                    />
                   </template>
                   <template v-if="getResolvedNodes(phylogeny).length === 1">
                     <!-- We matched exactly one node -->
@@ -486,7 +490,7 @@
                       type="text"
                       class="form-control"
                       :value="getResolvedNodes(phylogeny)[0]"
-                    >
+                    />
                   </template>
                   <template v-if="getResolvedNodes(phylogeny).length > 1">
                     <!-- We matched more than one node -->
@@ -494,17 +498,19 @@
                       readonly
                       type="text"
                       class="form-control"
-                      :value="getResolvedNodes(phylogeny).length + ' nodes matched: ' + getResolvedNodes(phylogeny).join(', ')"
-                    >
+                      :value="
+                        getResolvedNodes(phylogeny).length +
+                        ' nodes matched: ' +
+                        getResolvedNodes(phylogeny).join(', ')
+                      "
+                    />
                   </template>
                 </template>
               </div>
             </div>
 
             <!-- Display the phylogeny -->
-            <div
-              class="card mt-4 p-2"
-            >
+            <div class="card mt-4 p-2">
               <Phylotree
                 :phylogeny-index="String(phylogenyIndex)"
                 :phylogeny="phylogeny"
@@ -525,21 +531,24 @@
  * A view for displaying a phyloreference and how it resolves on all phylogenies.
  */
 
-import Vue from 'vue';
-import { mapState } from 'vuex';
-import { has, cloneDeep } from 'lodash';
-import { PhylogenyWrapper, PhylorefWrapper } from '@phyloref/phyx';
+import Vue from "vue";
+import { mapState } from "vuex";
+import { has, cloneDeep } from "lodash";
+import { PhylogenyWrapper, PhylorefWrapper } from "@phyloref/phyx";
 import {
-  BIconSquare, BIconCheck, BIconCheckSquare, BIconPlusSquare,
-} from 'bootstrap-vue';
+  BIconSquare,
+  BIconCheck,
+  BIconCheckSquare,
+  BIconPlusSquare,
+} from "bootstrap-vue";
 
-import ModifiedCard from '../cards/ModifiedCard.vue';
-import Phylotree from '../phylogeny/Phylotree.vue';
-import Citation from '../citations/Citation.vue';
-import Specifier from '../specifiers/Specifier.vue';
+import ModifiedCard from "../cards/ModifiedCard.vue";
+import Phylotree from "../phylogeny/Phylotree.vue";
+import Citation from "../citations/Citation.vue";
+import Specifier from "../specifiers/Specifier.vue";
 
 export default {
-  name: 'PhylorefView',
+  name: "PhylorefView",
   components: {
     ModifiedCard,
     Phylotree,
@@ -560,16 +569,37 @@ export default {
      * The following properties allow you to get or set phyloref label, clade definition or curator comments.
      */
     selectedPhylorefLabel: {
-      get() { return this.selectedPhyloref.label; },
-      set(label) { this.$store.commit('setPhylorefProps', { phyloref: this.selectedPhyloref, label }); },
+      get() {
+        return this.selectedPhyloref.label;
+      },
+      set(label) {
+        this.$store.commit("setPhylorefProps", {
+          phyloref: this.selectedPhyloref,
+          label,
+        });
+      },
     },
     selectedCladeDefinition: {
-      get() { return this.selectedPhyloref.definition; },
-      set(definition) { this.$store.commit('setPhylorefProps', { phyloref: this.selectedPhyloref, definition }); },
+      get() {
+        return this.selectedPhyloref.definition;
+      },
+      set(definition) {
+        this.$store.commit("setPhylorefProps", {
+          phyloref: this.selectedPhyloref,
+          definition,
+        });
+      },
     },
     selectedCuratorNotes: {
-      get() { return this.selectedPhyloref.curatorNotes; },
-      set(curatorNotes) { this.$store.commit('setPhylorefProps', { phyloref: this.selectedPhyloref, curatorNotes }); },
+      get() {
+        return this.selectedPhyloref.curatorNotes;
+      },
+      set(curatorNotes) {
+        this.$store.commit("setPhylorefProps", {
+          phyloref: this.selectedPhyloref,
+          curatorNotes,
+        });
+      },
     },
     computedPhylorefType() {
       // Return the type of phyloreference based on internal/external specifier structure.
@@ -582,23 +612,27 @@ export default {
     noSpecifiers() {
       // Return true if no specifiers are present.
       return (
-        (this.selectedPhyloref.internalSpecifiers || []).length === 0
-        && (this.selectedPhyloref.externalSpecifiers || []).length === 0
+        (this.selectedPhyloref.internalSpecifiers || []).length === 0 &&
+        (this.selectedPhyloref.externalSpecifiers || []).length === 0
       );
     },
     hasApomorphy: {
       get() {
         // Return true if this phyloref includes an apomorphy.
-        return has(this.selectedPhyloref, 'apomorphy');
+        return has(this.selectedPhyloref, "apomorphy");
         // return this.$store.getters.isApomorphyBasedPhyloref(this.selectedPhyloref);
       },
       set(flag) {
-        console.debug(`Setting hasApomorphy to ${flag} with apomorphy at ${this.selectedPhyloref.apomorphy} but ${has(this.selectedPhyloref, 'apomorphy')}`);
+        console.debug(
+          `Setting hasApomorphy to ${flag} with apomorphy at ${
+            this.selectedPhyloref.apomorphy
+          } but ${has(this.selectedPhyloref, "apomorphy")}`
+        );
         // Either create or delete the apomorphy information depending on the boolean value flag.
         if (flag) {
           // Make sure an 'apomorphy' field exists.
-          if (!has(this.selectedPhyloref, 'apomorphy')) {
-            this.$store.commit('setPhylorefProps', {
+          if (!has(this.selectedPhyloref, "apomorphy")) {
+            this.$store.commit("setPhylorefProps", {
               phyloref: this.selectedPhyloref,
               apomorphy: this.previousApomorphy || {},
             });
@@ -608,11 +642,11 @@ export default {
           // While this component is being displayed, we can store a previously set apomorphy so
           // that the user can "undo" deleting an apomorphy without losing information.
           // eslint-disable-next-line no-lonely-if
-          if (has(this.selectedPhyloref, 'apomorphy')) {
+          if (has(this.selectedPhyloref, "apomorphy")) {
             this.previousApomorphy = this.selectedPhyloref.apomorphy;
-            this.$store.commit('setPhylorefProps', {
+            this.$store.commit("setPhylorefProps", {
               phyloref: this.selectedPhyloref,
-              deleteFields: ['apomorphy'],
+              deleteFields: ["apomorphy"],
             });
           }
         }
@@ -620,12 +654,12 @@ export default {
     },
 
     ...mapState({
-      currentPhyx: state => state.phyx.currentPhyx,
-      loadedPhyx: state => state.phyx.loadedPhyx,
-      phylogenies: state => state.phyx.currentPhyx.phylogenies,
-      display: state => state.ui.display,
-      selectedPhylogeny: state => state.ui.display.phylogeny,
-      selectedPhyloref: state => state.ui.display.phyloref,
+      currentPhyx: (state) => state.phyx.currentPhyx,
+      loadedPhyx: (state) => state.phyx.loadedPhyx,
+      phylogenies: (state) => state.phyx.currentPhyx.phylogenies,
+      display: (state) => state.ui.display,
+      selectedPhylogeny: (state) => state.ui.display.phylogeny,
+      selectedPhyloref: (state) => state.ui.display.phyloref,
     }),
   },
   methods: {
@@ -634,13 +668,13 @@ export default {
       // a particular phylogeny.
       return this.$store.getters.getExpectedResolution(
         this.selectedPhyloref,
-        phylogeny,
+        phylogeny
       );
     },
     setExpectedResolution(phylogeny, payload) {
       // Set the expected resolution information for this phyloreference on
       // a particular phylogeny.
-      this.$store.dispatch('setExpectedResolution', {
+      this.$store.dispatch("setExpectedResolution", {
         phyloref: this.selectedPhyloref,
         phylogeny,
         expectedResolutionData: payload,
@@ -655,7 +689,7 @@ export default {
       // specified phylogeny.
       return this.$store.getters.getExpectedNodeLabel(
         this.selectedPhyloref,
-        phylogeny,
+        phylogeny
       );
     },
     getSpecifierLabel(specifier) {
@@ -665,15 +699,23 @@ export default {
     getResolvedNodes(phylogeny, flagReturnShortURIs = true) {
       // Return the list of nodes on a particular phylogeny that this phyloreference
       // has been determined to resolve on by JPhyloRef.
-      return this.$store.getters.getResolvedNodesForPhylogeny(phylogeny, this.selectedPhyloref, flagReturnShortURIs);
+      return this.$store.getters.getResolvedNodesForPhylogeny(
+        phylogeny,
+        this.selectedPhyloref,
+        flagReturnShortURIs
+      );
     },
     deleteThisPhyloref() {
       // Delete this phyloreference, and unset the selected phyloref so we return to the summary page.
-      if (confirm('Are you sure you wish to delete this phyloreference? This cannot be undone!')) {
-        this.$store.commit('deletePhyloref', {
+      if (
+        confirm(
+          "Are you sure you wish to delete this phyloreference? This cannot be undone!"
+        )
+      ) {
+        this.$store.commit("deletePhyloref", {
           phyloref: this.selectedPhyloref,
         });
-        this.$store.commit('changeDisplay', {});
+        this.$store.commit("changeDisplay", {});
       }
     },
   },

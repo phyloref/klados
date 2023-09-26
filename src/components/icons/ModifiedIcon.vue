@@ -1,9 +1,5 @@
 <template>
-  <div
-    v-if="dataChanged"
-    class="float-right"
-    :title="message"
-  >
+  <div v-if="dataChanged" class="float-right" :title="message">
     <FontAwesomeIcon
       size="lg"
       icon="exclamation-circle"
@@ -20,33 +16,34 @@
  *
  */
 
-import { isEqual } from 'lodash';
+import { isEqual } from "lodash";
 
 // Use icons from Font Awesome.
-import { library } from '@fortawesome/fontawesome-svg-core';
-import {
-  faExclamationCircle,
-} from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 // Set up exclamation circle for FontAwesome.
 library.add(faExclamationCircle);
 
 export default {
-  name: 'ModifiedIcon',
+  name: "ModifiedIcon",
   components: {
     FontAwesomeIcon,
   },
   props: {
     message: {
       type: String,
-      default: 'This element has changed! Please remember to save it.',
+      default: "This element has changed! Please remember to save it.",
     },
-    compare: Object, /* Object to check for changes. */
-    compareTo: Object, /* Changes will be determined by comparing this to this.compare */
+    compare: Object /* Object to check for changes. */,
+    compareTo:
+      Object /* Changes will be determined by comparing this to this.compare */,
   },
   computed: {
-    dataChanged() { return !isEqual(this.compare, this.compareTo); },
+    dataChanged() {
+      return !isEqual(this.compare, this.compareTo);
+    },
   },
 };
 </script>

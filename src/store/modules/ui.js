@@ -2,7 +2,7 @@
  * The UI Store module handles UI elements, such as which view is currently
  * displayed.
  */
-import Vue from 'vue';
+import Vue from "vue";
 
 export default {
   state: {
@@ -20,7 +20,7 @@ export default {
       //  'phyloref': A phyloreference to display.
       //  'phylogeny': A phylogeny to display.
       //  'specifier': A specifier to display.
-      Vue.set(state, 'display', newDisplay);
+      Vue.set(state, "display", newDisplay);
     },
   },
 };

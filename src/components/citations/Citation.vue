@@ -19,9 +19,12 @@
             type="text"
             readonly
             class="form-control hand-cursor"
-            :value="wrappedCitation(citation).toString() || 'Empty citation, click to enter'"
+            :value="
+              wrappedCitation(citation).toString() ||
+              'Empty citation, click to enter'
+            "
             @click="toggleCitationExpanded(citationIndex)"
-          >
+          />
           <div class="input-group-append">
             <a
               v-if="wrappedCitation(citation).url"
@@ -39,9 +42,7 @@
               <template v-if="citationsExpanded.includes(citationIndex)">
                 Close
               </template>
-              <template v-else>
-                Expand
-              </template>
+              <template v-else> Expand </template>
             </a>
             <a
               class="btn btn-danger"
@@ -52,21 +53,13 @@
             </a>
           </div>
         </div>
-        <div
-          v-if="citationsExpanded.includes(citationIndex)"
-          class="card mt-1"
-        >
+        <div v-if="citationsExpanded.includes(citationIndex)" class="card mt-1">
           <div class="card-body">
-            <h5 class="card-title">
-              Citation details
-            </h5>
+            <h5 class="card-title">Citation details</h5>
 
             <!-- Citation type -->
             <div class="form-group row">
-              <label
-                class="col-form-label col-md-2"
-                for="citation-type"
-              >
+              <label class="col-form-label col-md-2" for="citation-type">
                 Citation type
               </label>
               <div class="col-md-10">
@@ -76,28 +69,17 @@
                   class="form-control"
                   @change="updateCitations()"
                 >
-                  <option value="article">
-                    Article
-                  </option>
-                  <option value="book">
-                    Book
-                  </option>
-                  <option value="book_section">
-                    Book section
-                  </option>
-                  <option value="misc">
-                    Miscellaneous
-                  </option>
+                  <option value="article">Article</option>
+                  <option value="book">Book</option>
+                  <option value="book_section">Book section</option>
+                  <option value="misc">Miscellaneous</option>
                 </select>
               </div>
             </div>
 
             <!-- Authors (one per line) -->
             <div class="form-group row">
-              <label
-                class="col-form-label col-md-2"
-                for="authors"
-              >
+              <label class="col-form-label col-md-2" for="authors">
                 Authors (one per line)
               </label>
               <div class="col-md-10">
@@ -106,17 +88,18 @@
                   rows="3"
                   class="form-control"
                   :value="wrappedCitation(citation).authorsAsStrings.join('\n')"
-                  @change="wrappedCitation(citation).authorsAsStrings = $event.target.value.split(/\s*\n\s*/); updateCitations();"
+                  @change="
+                    wrappedCitation(citation).authorsAsStrings =
+                      $event.target.value.split(/\s*\n\s*/);
+                    updateCitations();
+                  "
                 />
               </div>
             </div>
 
             <!-- Editors (one per line) -->
             <div class="form-group row">
-              <label
-                class="col-form-label col-md-2"
-                for="editors"
-              >
+              <label class="col-form-label col-md-2" for="editors">
                 Editors (one per line)
               </label>
               <div class="col-md-10">
@@ -125,17 +108,18 @@
                   rows="2"
                   class="form-control"
                   :value="wrappedCitation(citation).editorsAsStrings.join('\n')"
-                  @change="wrappedCitation(citation).editorsAsStrings = $event.target.value.split(/\s*\n\s*/); updateCitations();"
+                  @change="
+                    wrappedCitation(citation).editorsAsStrings =
+                      $event.target.value.split(/\s*\n\s*/);
+                    updateCitations();
+                  "
                 />
               </div>
             </div>
 
             <!-- Series editors (one per line) -->
             <div class="form-group row">
-              <label
-                class="col-form-label col-md-2"
-                for="series-editors"
-              >
+              <label class="col-form-label col-md-2" for="series-editors">
                 Series editors (one per line)
               </label>
               <div class="col-md-10">
@@ -143,20 +127,21 @@
                   id="series-editors"
                   rows="2"
                   class="form-control"
-                  :value="wrappedCitation(citation).seriesEditorsAsStrings.join('\n')"
-                  @change="wrappedCitation(citation).seriesEditorsAsStrings = $event.target.value.split(/\s*\n\s*/); updateCitations();"
+                  :value="
+                    wrappedCitation(citation).seriesEditorsAsStrings.join('\n')
+                  "
+                  @change="
+                    wrappedCitation(citation).seriesEditorsAsStrings =
+                      $event.target.value.split(/\s*\n\s*/);
+                    updateCitations();
+                  "
                 />
               </div>
             </div>
 
             <!-- Title -->
             <div class="form-group row">
-              <label
-                class="col-form-label col-md-2"
-                for="title"
-              >
-                Title
-              </label>
+              <label class="col-form-label col-md-2" for="title"> Title </label>
               <div class="col-md-10">
                 <input
                   id="title"
@@ -164,19 +149,13 @@
                   type="text"
                   class="form-control"
                   @change="updateCitations()"
-                >
+                />
               </div>
             </div>
 
             <!-- Section title -->
-            <div
-              v-if="citation.type === 'book_section'"
-              class="form-group row"
-            >
-              <label
-                class="col-form-label col-md-2"
-                for="section-title"
-              >
+            <div v-if="citation.type === 'book_section'" class="form-group row">
+              <label class="col-form-label col-md-2" for="section-title">
                 Section title
               </label>
               <div class="col-md-10">
@@ -186,18 +165,13 @@
                   type="text"
                   class="form-control"
                   @change="updateCitations()"
-                >
+                />
               </div>
             </div>
 
             <!-- Publication year -->
             <div class="form-group row">
-              <label
-                class="col-form-label col-md-2"
-                for="year"
-              >
-                Year
-              </label>
+              <label class="col-form-label col-md-2" for="year"> Year </label>
               <div class="col-md-4">
                 <input
                   id="year"
@@ -205,15 +179,12 @@
                   type="text"
                   class="form-control"
                   @change="updateCitations()"
-                >
+                />
               </div>
 
               <!-- Edition -->
               <template v-if="citation.type !== 'article'">
-                <label
-                  class="col-form-label col-md-2"
-                  for="edition"
-                >
+                <label class="col-form-label col-md-2" for="edition">
                   Edition
                 </label>
                 <div class="col-md-4">
@@ -223,7 +194,7 @@
                     type="text"
                     class="form-control"
                     @change="updateCitations()"
-                  >
+                  />
                 </div>
               </template>
             </div>
@@ -231,12 +202,7 @@
             <!-- Pages and figure -->
             <div class="form-group row">
               <!-- Pages -->
-              <label
-                class="col-form-label col-md-2"
-                for="pages"
-              >
-                Pages
-              </label>
+              <label class="col-form-label col-md-2" for="pages"> Pages </label>
               <div class="col-md-4">
                 <input
                   id="pages"
@@ -244,14 +210,11 @@
                   type="text"
                   class="form-control"
                   @change="updateCitations()"
-                >
+                />
               </div>
 
               <!-- Figure -->
-              <label
-                class="col-form-label col-md-2"
-                for="figure"
-              >
+              <label class="col-form-label col-md-2" for="figure">
                 Figure
               </label>
               <div class="col-md-4">
@@ -261,7 +224,7 @@
                   type="text"
                   class="form-control"
                   @change="updateCitations()"
-                >
+                />
               </div>
             </div>
 
@@ -269,10 +232,7 @@
             <template v-if="citation.type === 'article'">
               <!-- Journal title -->
               <div class="form-group row">
-                <label
-                  class="col-form-label col-md-2"
-                  for="journal-title"
-                >
+                <label class="col-form-label col-md-2" for="journal-title">
                   Journal title
                 </label>
                 <div class="col-md-10">
@@ -282,17 +242,14 @@
                     type="text"
                     class="form-control"
                     @change="updateCitations()"
-                  >
+                  />
                 </div>
               </div>
 
               <!-- Journal volume and issue -->
               <div class="form-group row">
                 <!-- Journal volume -->
-                <label
-                  class="col-form-label col-md-2"
-                  for="journal-volume"
-                >
+                <label class="col-form-label col-md-2" for="journal-volume">
                   Volume
                 </label>
                 <div class="col-md-4">
@@ -302,14 +259,11 @@
                     type="text"
                     class="form-control"
                     @change="updateCitations()"
-                  >
+                  />
                 </div>
 
                 <!-- Journal issue/number -->
-                <label
-                  class="col-form-label col-md-2"
-                  for="journal-issue"
-                >
+                <label class="col-form-label col-md-2" for="journal-issue">
                   Issue number
                 </label>
                 <div class="col-md-4">
@@ -319,16 +273,13 @@
                     type="text"
                     class="form-control"
                     @change="updateCitations()"
-                  >
+                  />
                 </div>
               </div>
 
               <!-- ISSNs (one per line) -->
               <div class="form-group row">
-                <label
-                  class="col-form-label col-md-2"
-                  for="issns"
-                >
+                <label class="col-form-label col-md-2" for="issns">
                   ISSNs (one per line)
                 </label>
                 <div class="col-md-10">
@@ -337,16 +288,35 @@
                       id="issns"
                       rows="1"
                       class="form-control"
-                      :value="wrappedCitation(wrappedCitation(citation).journal).issns.join('\n')"
-                      @change="wrappedCitation(wrappedCitation(citation).journal).issns = $event.target.value.split(/\s*\n\s*/); updateCitations()"
+                      :value="
+                        wrappedCitation(
+                          wrappedCitation(citation).journal
+                        ).issns.join('\n')
+                      "
+                      @change="
+                        wrappedCitation(
+                          wrappedCitation(citation).journal
+                        ).issns = $event.target.value.split(/\s*\n\s*/);
+                        updateCitations();
+                      "
                     />
                     <div class="input-group-append">
                       <a
                         class="btn btn-outline-secondary align-middle"
                         target="_blank"
                         style="vertical-align: middle"
-                        :href="'https://www.worldcat.org/search?q=n2%3A' + wrappedCitation(wrappedCitation(citation).journal).issns[0]"
-                        :class="{disabled: (wrappedCitation(wrappedCitation(citation).journal).issns || []).length === 0}"
+                        :href="
+                          'https://www.worldcat.org/search?q=n2%3A' +
+                          wrappedCitation(wrappedCitation(citation).journal)
+                            .issns[0]
+                        "
+                        :class="{
+                          disabled:
+                            (
+                              wrappedCitation(wrappedCitation(citation).journal)
+                                .issns || []
+                            ).length === 0,
+                        }"
                       >
                         Open in new window
                       </a>
@@ -358,10 +328,7 @@
 
             <!-- ISBNs (one per line) -->
             <div class="form-group row">
-              <label
-                class="col-form-label col-md-2"
-                for="isbns"
-              >
+              <label class="col-form-label col-md-2" for="isbns">
                 ISBNs (one per line)
               </label>
               <div class="col-md-10">
@@ -370,16 +337,34 @@
                     id="isbns"
                     rows="1"
                     class="form-control"
-                    :value="wrappedCitation(wrappedCitation(citation).journal).isbns.join('\n')"
-                    @change="wrappedCitation(wrappedCitation(citation).journal).isbns = $event.target.value.split(/\s*\n\s*/); updateCitations()"
+                    :value="
+                      wrappedCitation(
+                        wrappedCitation(citation).journal
+                      ).isbns.join('\n')
+                    "
+                    @change="
+                      wrappedCitation(wrappedCitation(citation).journal).isbns =
+                        $event.target.value.split(/\s*\n\s*/);
+                      updateCitations();
+                    "
                   />
                   <div class="input-group-append">
                     <a
                       class="btn btn-outline-secondary align-middle"
                       target="_blank"
                       style="vertical-align: middle"
-                      :href="'https://www.worldcat.org/search?q=bn%3A' + wrappedCitation(wrappedCitation(citation).journal).isbns[0]"
-                      :class="{disabled: (wrappedCitation(wrappedCitation(citation).journal).isbns || []).length === 0}"
+                      :href="
+                        'https://www.worldcat.org/search?q=bn%3A' +
+                        wrappedCitation(wrappedCitation(citation).journal)
+                          .isbns[0]
+                      "
+                      :class="{
+                        disabled:
+                          (
+                            wrappedCitation(wrappedCitation(citation).journal)
+                              .isbns || []
+                          ).length === 0,
+                      }"
                     >
                       Open in new window
                     </a>
@@ -391,10 +376,7 @@
             <!-- Publisher and city -->
             <div class="form-group row">
               <!-- Publisher -->
-              <label
-                class="col-form-label col-md-2"
-                for="publisher"
-              >
+              <label class="col-form-label col-md-2" for="publisher">
                 Publisher
               </label>
               <div class="col-md-4">
@@ -404,16 +386,11 @@
                   type="text"
                   class="form-control"
                   @change="updateCitations()"
-                >
+                />
               </div>
 
               <!-- Publication city -->
-              <label
-                class="col-form-label col-md-2"
-                for="city"
-              >
-                City
-              </label>
+              <label class="col-form-label col-md-2" for="city"> City </label>
               <div class="col-md-4">
                 <input
                   id="city"
@@ -421,16 +398,13 @@
                   type="text"
                   class="form-control"
                   @change="updateCitations()"
-                >
+                />
               </div>
             </div>
 
             <!-- DOIs (one per line) -->
             <div class="form-group row">
-              <label
-                class="col-form-label col-md-2"
-                for="doi"
-              >
+              <label class="col-form-label col-md-2" for="doi">
                 DOIs (one per line)
               </label>
               <div class="col-md-10">
@@ -440,15 +414,24 @@
                     rows="1"
                     class="form-control"
                     :value="wrappedCitation(citation).doisAsStrings.join('\n')"
-                    @change="wrappedCitation(citation).doisAsStrings = $event.target.value.split(/\s*\n\s*/); updateCitations()"
+                    @change="
+                      wrappedCitation(citation).doisAsStrings =
+                        $event.target.value.split(/\s*\n\s*/);
+                      updateCitations();
+                    "
                   />
                   <div class="input-group-append">
                     <a
                       class="btn btn-outline-secondary align-middle"
                       target="_blank"
                       style="vertical-align: middle"
-                      :href="wrappedCitation(citation).firstDOI ? 'http://doi.org/' + wrappedCitation(citation).firstDOI : undefined"
-                      :class="{disabled: !wrappedCitation(citation).firstDOI}"
+                      :href="
+                        wrappedCitation(citation).firstDOI
+                          ? 'http://doi.org/' +
+                            wrappedCitation(citation).firstDOI
+                          : undefined
+                      "
+                      :class="{ disabled: !wrappedCitation(citation).firstDOI }"
                     >
                       Open in new window
                     </a>
@@ -459,10 +442,7 @@
 
             <!-- URLs (one per line) -->
             <div class="form-group row">
-              <label
-                class="col-form-label col-md-2"
-                for="urls"
-              >
+              <label class="col-form-label col-md-2" for="urls">
                 URLs (one per line)
               </label>
               <div class="col-md-10">
@@ -472,7 +452,11 @@
                     rows="1"
                     class="form-control"
                     :value="wrappedCitation(citation).urlsAsStrings.join('\n')"
-                    @change="wrappedCitation(citation).urlsAsStrings = $event.target.value.split(/\s*\n\s*/); updateCitations()"
+                    @change="
+                      wrappedCitation(citation).urlsAsStrings =
+                        $event.target.value.split(/\s*\n\s*/);
+                      updateCitations();
+                    "
                   />
                   <div class="input-group-append">
                     <a
@@ -480,7 +464,7 @@
                       target="_blank"
                       style="vertical-align: middle"
                       :href="wrappedCitation(citation).firstURL"
-                      :class="{disabled: !wrappedCitation(citation).firstURL}"
+                      :class="{ disabled: !wrappedCitation(citation).firstURL }"
                     >
                       Open in new window
                     </a>
@@ -500,28 +484,27 @@
  * Displays a citation as a textfield/expanded field.
  */
 
-import Vue from 'vue';
-import { BIcon, BIconTrash } from 'bootstrap-vue';
-import {
-  has, isEmpty, isEqual, cloneDeep, pickBy,
-} from 'lodash';
+import Vue from "vue";
+import { BIcon, BIconTrash } from "bootstrap-vue";
+import { has, isEmpty, isEqual, cloneDeep, pickBy } from "lodash";
 
 export default {
-  name: 'Citation',
+  name: "Citation",
   components: {
     BIcon,
     BIconTrash,
   },
   props: {
-    label: { /* The label for this citation */
-      type: String,
-      default: 'Citation',
+    label: {
+      /* The label for this citation */ type: String,
+      default: "Citation",
     },
-    object: { /* The object containing the citation to display and edit */
-      type: Object,
+    object: {
+      /* The object containing the citation to display and edit */ type: Object,
       required: true,
     },
-    citationKey: { /* The key on the object containing the citation to display and edit */
+    citationKey: {
+      /* The key on the object containing the citation to display and edit */
       type: String,
       required: true,
     },
@@ -541,7 +524,7 @@ export default {
       citations,
 
       // Items used to store new items.
-      newDOI: '',
+      newDOI: "",
     };
   },
   watch: {
@@ -559,7 +542,7 @@ export default {
     deleteCitation(index) {
       // Remove the citation at a particular index from the input citations.
       // eslint-disable-next-line no-restricted-globals
-      if (confirm('Are you sure you wish to delete this citation?')) {
+      if (confirm("Are you sure you wish to delete this citation?")) {
         if (Array.isArray(this.object[this.citationKey])) {
           this.object[this.citationKey].splice(index, 1);
         } else {
@@ -575,7 +558,8 @@ export default {
 
       if (Array.isArray(this.object[this.citationKey])) {
         return cloneDeep(this.object[this.citationKey]);
-      } if (isEmpty(this.object[this.citationKey])) {
+      }
+      if (isEmpty(this.object[this.citationKey])) {
         return [];
       }
 
@@ -588,14 +572,12 @@ export default {
 
       // Exception: this component will ALWAYS add a 'journal' key to the citation,
       // even if it is empty. We should eliminate that to make the comparison.
-      const ourCitations = cloneDeep(this.citations).map(
-        (citation) => {
-          if (has(citation, 'journal') && isEqual(pickBy(citation.journal), {})) {
-            delete citation.journal;
-          }
-          return citation;
-        },
-      );
+      const ourCitations = cloneDeep(this.citations).map((citation) => {
+        if (has(citation, "journal") && isEqual(pickBy(citation.journal), {})) {
+          delete citation.journal;
+        }
+        return citation;
+      });
 
       // Exception: we *always* store citations as an array, but
       // this.object[this.citationKey] might be an object. Let's check for that.
@@ -603,15 +585,25 @@ export default {
       if (ourCitations.length === 1) {
         if (isEqual(ourCitations[0], this.object[this.citationKey])) return;
 
-        console.log('Updating citations as ', ourCitations[0], ' differs from ', this.object[this.citationKey]);
-        this.$store.commit('setCitations', {
+        console.log(
+          "Updating citations as ",
+          ourCitations[0],
+          " differs from ",
+          this.object[this.citationKey]
+        );
+        this.$store.commit("setCitations", {
           object: this.object,
           citationKey: this.citationKey,
           citations: ourCitations[0],
         });
       } else {
-        console.log('Updating citations as ', ourCitations, ' differs from ', this.object[this.citationKey]);
-        this.$store.commit('setCitations', {
+        console.log(
+          "Updating citations as ",
+          ourCitations,
+          " differs from ",
+          this.object[this.citationKey]
+        );
+        this.$store.commit("setCitations", {
           object: this.object,
           citationKey: this.citationKey,
           citations: ourCitations,
@@ -621,7 +613,10 @@ export default {
     toggleCitationExpanded(citationIndex) {
       // Given the index of a citation, either expand it or collapse it.
       // (The citation is expanded if its index is in the citationsExpanded list)
-      if (this.citationsExpanded.includes(citationIndex)) this.citationsExpanded = this.citationsExpanded.filter(index => index !== citationIndex);
+      if (this.citationsExpanded.includes(citationIndex))
+        this.citationsExpanded = this.citationsExpanded.filter(
+          (index) => index !== citationIndex
+        );
       else this.citationsExpanded.push(citationIndex);
     },
     wrappedCitation(citation) {

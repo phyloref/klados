@@ -5,29 +5,34 @@
  * server.
  */
 
-import Vue from 'vue';
-import jQuery from 'jquery';
-import { TaxonNameWrapper, PhylorefWrapper, TaxonConceptWrapper } from '@phyloref/phyx';
+import Vue from "vue";
+import jQuery from "jquery";
 import {
-  has, cloneDeep, isEqual, keys,
-} from 'lodash';
+  TaxonNameWrapper,
+  PhylorefWrapper,
+  TaxonConceptWrapper,
+} from "@phyloref/phyx";
+import { has, cloneDeep, isEqual, keys } from "lodash";
 
 // Get some configuration settings.
 import {
   OPEN_TREE_ABOUT_URL,
   OPEN_TREE_TNRS_MATCH_NAMES_URL,
   OPEN_TREE_INDUCED_SUBTREE_URL,
-
   COOKIE_EXPIRY,
-  COOKIE_ALLOWED, COOKIE_DEFAULT_NOMEN_CODE_URI, COOKIE_CURATOR_NAME, COOKIE_CURATOR_EMAIL, COOKIE_CURATOR_ORCID,
-} from '@/config';
+  COOKIE_ALLOWED,
+  COOKIE_DEFAULT_NOMEN_CODE_URI,
+  COOKIE_CURATOR_NAME,
+  COOKIE_CURATOR_EMAIL,
+  COOKIE_CURATOR_ORCID,
+} from "@/config";
 
 // Shared code for reading and writing cookies.
 
 /** Check whether we are allowed to store cookies on this users' browser.
  * We determine this based on whether the COOKIE_ALLOWED cookie is set. */
 function checkCookieAllowed() {
-  return (Vue.$cookies.get(COOKIE_ALLOWED) === 'true');
+  return Vue.$cookies.get(COOKIE_ALLOWED) === "true";
 }
 
 /** Get a cookie from the browser (if we're allowed to). */
@@ -64,14 +69,19 @@ export default {
     getDefaultNomenCodeURI(state) {
       // If no default nomenclatural code is set in the Phyx file, we will attempt to look up that information
       // using a cookie.
-      return state.currentPhyx.defaultNomenclaturalCodeIRI
-          || getKladosCookie(COOKIE_DEFAULT_NOMEN_CODE_URI, TaxonNameWrapper.UNKNOWN_CODE);
+      return (
+        state.currentPhyx.defaultNomenclaturalCodeIRI ||
+        getKladosCookie(
+          COOKIE_DEFAULT_NOMEN_CODE_URI,
+          TaxonNameWrapper.UNKNOWN_CODE
+        )
+      );
     },
     getDownloadFilenameForPhyx(state) {
       // Return a filename to be used to name downloads of this Phyx document.
 
       // The default download filename to use if no phylorefs are present.
-      const DEFAULT_DOWNLOAD_FILENAME = 'download';
+      const DEFAULT_DOWNLOAD_FILENAME = "download";
 
       if (!state.currentPhyx || !state.currentPhyx.phylorefs) {
         return DEFAULT_DOWNLOAD_FILENAME;
@@ -80,7 +90,11 @@ export default {
       // Determine all phyloref labels in this document. Non-Latin characters will be replaced with '_' to avoid
       // creating filenames using non-ASCII Unicode characters. As per the UI, unlabeled phylorefs will be referred
       // to as 'Phyloref 1', 'Phyloref 2', and so on.
-      const phylorefLabels = state.currentPhyx.phylorefs.map((p, index) => (has(p, 'label') ? p.label.replaceAll(/\W/g, '_') : `Phyloref_${index + 1}`));
+      const phylorefLabels = state.currentPhyx.phylorefs.map((p, index) =>
+        has(p, "label")
+          ? p.label.replaceAll(/\W/g, "_")
+          : `Phyloref_${index + 1}`
+      );
 
       // Construct a download filename depending on the number of phylorefs, which is in the form:
       // - Phyloref_1
@@ -90,9 +104,13 @@ export default {
       // - ...
       if (phylorefLabels.length === 0) return DEFAULT_DOWNLOAD_FILENAME;
       if (phylorefLabels.length === 1) return phylorefLabels[0];
-      if (phylorefLabels.length === 2) return `${phylorefLabels[0]}_and_${phylorefLabels[1]}`;
-      if (phylorefLabels.length === 3) return `${phylorefLabels[0]}_${phylorefLabels[1]}_and_${phylorefLabels[2]}`;
-      return `${phylorefLabels[0]}_${phylorefLabels[1]}_and_${phylorefLabels.length - 2}_others`;
+      if (phylorefLabels.length === 2)
+        return `${phylorefLabels[0]}_and_${phylorefLabels[1]}`;
+      if (phylorefLabels.length === 3)
+        return `${phylorefLabels[0]}_${phylorefLabels[1]}_and_${phylorefLabels[2]}`;
+      return `${phylorefLabels[0]}_${phylorefLabels[1]}_and_${
+        phylorefLabels.length - 2
+      }_others`;
     },
     isCookieAllowed() {
       // Checks to see if cookies are allowed. We can check this by seeing if a cookie named
@@ -104,23 +122,29 @@ export default {
     toggleCookieAllowed(state) {
       if (checkCookieAllowed()) {
         // Cookie allowed! Toggle it by deleting all Klados cookies.
-        Vue.$cookies.keys().forEach(key => Vue.$cookies.remove(key));
+        Vue.$cookies.keys().forEach((key) => Vue.$cookies.remove(key));
       } else {
         // Cookie not allowed! Toggle it to cookie allowed. We don't use setKladosCookie() because
         // it includes a check for COOKIE_ALLOWED; instead, we set it directly.
-        Vue.$cookies.set(COOKIE_ALLOWED, 'true', COOKIE_EXPIRY);
+        Vue.$cookies.set(COOKIE_ALLOWED, "true", COOKIE_EXPIRY);
 
         // Then, save all current curator information.
-        setKladosCookie(COOKIE_CURATOR_NAME, state.currentPhyx.curator || '');
-        setKladosCookie(COOKIE_CURATOR_EMAIL, state.currentPhyx.curatorEmail || '');
-        setKladosCookie(COOKIE_CURATOR_ORCID, state.currentPhyx.curatorORCID || '');
+        setKladosCookie(COOKIE_CURATOR_NAME, state.currentPhyx.curator || "");
+        setKladosCookie(
+          COOKIE_CURATOR_EMAIL,
+          state.currentPhyx.curatorEmail || ""
+        );
+        setKladosCookie(
+          COOKIE_CURATOR_ORCID,
+          state.currentPhyx.curatorORCID || ""
+        );
       }
     },
     setCurrentPhyx(state, phyx) {
       // Replace the current Phyx file using an object. This method does NOT
       // update the loaded Phyx file, so these changes are treated as changes
       // made since the file was last loaded.
-      Vue.set(state, 'currentPhyx', phyx);
+      Vue.set(state, "currentPhyx", phyx);
     },
     setLoadedPhyx(state, phyx) {
       // Replace the current loaded Phyx file using an object. This also updates
@@ -132,9 +156,13 @@ export default {
         // A common error is using the same object as the current Phyx and the
         // loaded Phyx. In that case, we deep-copy loaded Phyx so that modifying
         // one won't automatically modify the other.
-        Vue.set(state, 'loadedPhyx', JSON.parse(JSON.stringify(state.currentPhyx)));
+        Vue.set(
+          state,
+          "loadedPhyx",
+          JSON.parse(JSON.stringify(state.currentPhyx))
+        );
       } else {
-        Vue.set(state, 'loadedPhyx', phyx);
+        Vue.set(state, "loadedPhyx", phyx);
       }
     },
     createEmptyPhyloref(state) {
@@ -143,8 +171,8 @@ export default {
     },
     createEmptyPhylogeny(state) {
       // Create a new, empty phylogeny.
-      if (!has(state.currentPhyx, 'phylogenies')) {
-        Vue.set(state.currentPhyx, 'phylogenies', []);
+      if (!has(state.currentPhyx, "phylogenies")) {
+        Vue.set(state.currentPhyx, "phylogenies", []);
       }
       state.currentPhyx.phylogenies.push({});
     },
@@ -154,58 +182,93 @@ export default {
     },
     deletePhyloref(state, payload) {
       // Delete a phyloreference.
-      if (!has(payload, 'phyloref')) {
-        throw new Error('deletePhyloref needs a phyloref to modify using the "phyloref" argument');
+      if (!has(payload, "phyloref")) {
+        throw new Error(
+          'deletePhyloref needs a phyloref to modify using the "phyloref" argument'
+        );
       }
 
-      const indexOf = (state.currentPhyx.phylorefs || []).indexOf(payload.phyloref);
-      if (indexOf < 0) throw new Error(`Could not delete unknown phyloref: ${JSON.stringify(payload.phyloref)}`);
+      const indexOf = (state.currentPhyx.phylorefs || []).indexOf(
+        payload.phyloref
+      );
+      if (indexOf < 0)
+        throw new Error(
+          `Could not delete unknown phyloref: ${JSON.stringify(
+            payload.phyloref
+          )}`
+        );
 
       state.currentPhyx.phylorefs.splice(indexOf, 1);
     },
     deletePhylogeny(state, payload) {
       // Delete a phylogeny.
-      if (!has(payload, 'phylogeny')) {
-        throw new Error('deletePhylogeny needs a phylogeny to modify using the "phylogeny" argument');
+      if (!has(payload, "phylogeny")) {
+        throw new Error(
+          'deletePhylogeny needs a phylogeny to modify using the "phylogeny" argument'
+        );
       }
 
-      const indexOf = (state.currentPhyx.phylogenies || []).indexOf(payload.phylogeny);
-      if (indexOf < 0) throw new Error(`Could not delete unknown phylogeny: ${JSON.stringify(payload.phylogeny)}`);
+      const indexOf = (state.currentPhyx.phylogenies || []).indexOf(
+        payload.phylogeny
+      );
+      if (indexOf < 0)
+        throw new Error(
+          `Could not delete unknown phylogeny: ${JSON.stringify(
+            payload.phylogeny
+          )}`
+        );
 
       state.currentPhyx.phylogenies.splice(indexOf, 1);
     },
     setDefaultNomenCodeURI(state, payload) {
-      if (!has(payload, 'defaultNomenclaturalCodeURI')) {
-        throw new Error('No default nomenclatural code URI provided to setDefaultNomenCodeURI');
+      if (!has(payload, "defaultNomenclaturalCodeURI")) {
+        throw new Error(
+          "No default nomenclatural code URI provided to setDefaultNomenCodeURI"
+        );
       }
 
       // Overwrite the current default nomenclatural code cookie.
-      setKladosCookie(COOKIE_DEFAULT_NOMEN_CODE_URI, payload.defaultNomenclaturalCodeURI);
+      setKladosCookie(
+        COOKIE_DEFAULT_NOMEN_CODE_URI,
+        payload.defaultNomenclaturalCodeURI
+      );
 
-      Vue.set(state.currentPhyx, 'defaultNomenclaturalCodeURI', payload.defaultNomenclaturalCodeURI);
+      Vue.set(
+        state.currentPhyx,
+        "defaultNomenclaturalCodeURI",
+        payload.defaultNomenclaturalCodeURI
+      );
     },
     duplicatePhyloref(state, payload) {
-      if (!has(payload, 'phyloref')) {
-        throw new Error('duplicatePhyloref needs a phyloref to duplicate using the "phyloref" argument');
+      if (!has(payload, "phyloref")) {
+        throw new Error(
+          'duplicatePhyloref needs a phyloref to duplicate using the "phyloref" argument'
+        );
       }
 
-      let indexOf = (state.currentPhyx.phylorefs || []).indexOf(payload.phyloref);
+      let indexOf = (state.currentPhyx.phylorefs || []).indexOf(
+        payload.phyloref
+      );
       if (indexOf < 0) indexOf = state.currentPhyx.phylorefs.length;
-      state.currentPhyx.phylorefs.splice(indexOf, 0, cloneDeep(payload.phyloref));
+      state.currentPhyx.phylorefs.splice(
+        indexOf,
+        0,
+        cloneDeep(payload.phyloref)
+      );
     },
     setCurator(state, payload) {
       // Set the curator name, e-mail address or (eventually) ORCID.
-      if (has(payload, 'name')) {
+      if (has(payload, "name")) {
         setKladosCookie(COOKIE_CURATOR_NAME, payload.name);
-        Vue.set(state.currentPhyx, 'curator', payload.name);
+        Vue.set(state.currentPhyx, "curator", payload.name);
       }
-      if (has(payload, 'email')) {
+      if (has(payload, "email")) {
         setKladosCookie(COOKIE_CURATOR_EMAIL, payload.email);
-        Vue.set(state.currentPhyx, 'curatorEmail', payload.email);
+        Vue.set(state.currentPhyx, "curatorEmail", payload.email);
       }
-      if (has(payload, 'orcid')) {
+      if (has(payload, "orcid")) {
         setKladosCookie(COOKIE_CURATOR_ORCID, payload.orcid);
-        Vue.set(state.currentPhyx, 'curatorORCID', payload.orcid);
+        Vue.set(state.currentPhyx, "curatorORCID", payload.orcid);
       }
     },
   },
@@ -217,24 +280,33 @@ export default {
       function createOTTPhylogenyWithCitation(phylogeny) {
         // Create an OTT phylogeny after querying for the synthetic tree ID.
         jQuery.ajax({
-          type: 'POST',
+          type: "POST",
           url: OPEN_TREE_ABOUT_URL,
-          dataType: 'json',
-          error: err => console.log('Could not retrieve Open Tree of Life /about information: ', err),
+          dataType: "json",
+          error: (err) =>
+            console.log(
+              "Could not retrieve Open Tree of Life /about information: ",
+              err
+            ),
           success: (data) => {
             // Citation as per https://tree.opentreeoflife.org/about/open-tree-of-life, retrieved March 30, 2022.
             const citation = {
-              type: 'misc',
+              type: "misc",
               authors: [
                 {
-                  name: 'OpenTree et al',
+                  name: "OpenTree et al",
                 },
               ],
-              year: data.date_created.substring(0, 4) || new Date().getFullYear(),
-              title: `Open Tree of Life synthetic tree ${data.synth_id || '(unknown synthetic tree version)'} using taxonomy ${data.taxonomy_version || '(unknown taxonomy version)'}`,
+              year:
+                data.date_created.substring(0, 4) || new Date().getFullYear(),
+              title: `Open Tree of Life synthetic tree ${
+                data.synth_id || "(unknown synthetic tree version)"
+              } using taxonomy ${
+                data.taxonomy_version || "(unknown taxonomy version)"
+              }`,
               link: [
                 {
-                  url: 'https://doi.org/10.5281/zenodo.3937741',
+                  url: "https://doi.org/10.5281/zenodo.3937741",
                 },
               ],
             };
@@ -246,18 +318,18 @@ export default {
             };
 
             // Now create this phylogeny via Vue.
-            commit('createPhylogeny', { phylogeny: citedPhylogeny });
+            commit("createPhylogeny", { phylogeny: citedPhylogeny });
           },
         });
       }
 
       // Step 1. Get a list of all taxon names used across all phyloreferences.
       const taxonConceptNames = (state.currentPhyx.phylorefs || [])
-        .map(phyloref => new PhylorefWrapper(phyloref))
-        .flatMap(wrappedPhyloref => wrappedPhyloref.specifiers)
-        .map(specifier => new TaxonConceptWrapper(specifier))
-        .map(wrappedTC => wrappedTC.nameComplete)
-        .filter(name => name); // Eliminate blank and undefined names
+        .map((phyloref) => new PhylorefWrapper(phyloref))
+        .flatMap((wrappedPhyloref) => wrappedPhyloref.specifiers)
+        .map((specifier) => new TaxonConceptWrapper(specifier))
+        .map((wrappedTC) => wrappedTC.nameComplete)
+        .filter((name) => name); // Eliminate blank and undefined names
 
       // Note that we don't assume that these names are at any particular taxonomic level;
       // thus, if "Amphibia" is used as a specifier, we will include Amphibia in the generated
@@ -268,9 +340,10 @@ export default {
         // identifiers or if there are no phyloreferences, say -- we create a new phylogeny
         // named "Open Tree of Life" with a description that tells the user what happened.
         createOTTPhylogenyWithCitation({
-          label: 'Open Tree of Life',
-          description: 'Attempt to load Open Tree of Life tree failed: no taxon name specifiers present.',
-          newick: '()',
+          label: "Open Tree of Life",
+          description:
+            "Attempt to load Open Tree of Life tree failed: no taxon name specifiers present.",
+          newick: "()",
         });
         return;
       }
@@ -282,90 +355,111 @@ export default {
       // so it's not a consistent return.
       // eslint-disable-next-line consistent-return
       return jQuery.ajax({
-        type: 'POST',
+        type: "POST",
         url: OPEN_TREE_TNRS_MATCH_NAMES_URL,
         data: JSON.stringify({ names: namesToQuery }),
-        contentType: 'application/json; charset=utf-8',
-        dataType: 'json',
-        error: err => console.log('Error accessing Open Tree Taxonomy match_names: ', err),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        error: (err) =>
+          console.log("Error accessing Open Tree Taxonomy match_names: ", err),
         success: (data) => {
           // Go through the `matches` in the returned `results` and pull out the OTT IDs.
-          const ottIds = (data.results || [])
-            .flatMap(r => (r.matches || [])
-              .flatMap((m) => {
-                if ('taxon' in m && 'ott_id' in m.taxon) return [m.taxon.ott_id];
-                return [];
-              }));
+          const ottIds = (data.results || []).flatMap((r) =>
+            (r.matches || []).flatMap((m) => {
+              if ("taxon" in m && "ott_id" in m.taxon) return [m.taxon.ott_id];
+              return [];
+            })
+          );
 
           // Try to retrieve the induced subtree including these OTT IDs.
-          return jQuery.ajax({
-            type: 'POST',
-            url: OPEN_TREE_INDUCED_SUBTREE_URL,
-            data: JSON.stringify({
-              ott_ids: ottIds,
-            }),
-            contentType: 'application/json; charset=utf-8',
-            dataType: 'json',
-            success: (innerData) => {
-              // If successful, we get back the induced tree as a Newick string.
-              // We use that to create a new phylogeny labeled "Open Tree of Life".
-              createOTTPhylogenyWithCitation({
-                label: 'Open Tree of Life',
-                description: `This phylogeny was generated from the Open Tree of Life based on the following studies: ${innerData.supporting_studies}`,
-                newick: innerData.newick,
-              });
-            },
-          }).fail((err) => {
-            // If some OTT ids were not found on the synthetic tree, the OTT API
-            // will return a list of nodes that could not be matched. We can remove
-            // these OTT ids from our list of queries and try again.
-            const regexErrorMessage = /^\[\/v3\/tree_of_life\/induced_subtree\] Error: node_id '\w+' was not found!/;
-            if (regexErrorMessage.test(err.responseJSON.message)) {
-              // Step 3. If the response includes node-not-found errors, we can re-run the query without
-              // the not-found nodes. The response includes an object that lists failed OTT IDs and the
-              // reason they failed. We report this to the user on the console.
-              const unknownOttIdReasons = err.responseJSON.unknown;
-              console.log('The Open Tree synthetic tree does not contain the following nodes: ', unknownOttIdReasons);
-
-              // Remove the unknown OTT ids from the list of OTT ids to be queried.
-              const knownOttIds = ottIds.filter(id => !has(unknownOttIdReasons, `ott${id}`));
-              console.log('Query has been reduced to the following nodes: ', knownOttIds);
-
-              if (knownOttIds.length === 0) {
-                // It may turn out that ALL the OTT IDs are filtered out, in which case we should produce
-                // a phylogeny for the user with a description that explains what happened.
+          return jQuery
+            .ajax({
+              type: "POST",
+              url: OPEN_TREE_INDUCED_SUBTREE_URL,
+              data: JSON.stringify({
+                ott_ids: ottIds,
+              }),
+              contentType: "application/json; charset=utf-8",
+              dataType: "json",
+              success: (innerData) => {
+                // If successful, we get back the induced tree as a Newick string.
+                // We use that to create a new phylogeny labeled "Open Tree of Life".
                 createOTTPhylogenyWithCitation({
-                  label: 'Open Tree of Life',
-                  description: 'Attempt to load Open Tree of Life tree failed, as none of the Open Tree taxonomy IDs'
-                      + ` were present on the synthetic tree: ${JSON.stringify(unknownOttIdReasons, undefined, 4)}`,
-                  newick: '()',
+                  label: "Open Tree of Life",
+                  description: `This phylogeny was generated from the Open Tree of Life based on the following studies: ${innerData.supporting_studies}`,
+                  newick: innerData.newick,
                 });
+              },
+            })
+            .fail((err) => {
+              // If some OTT ids were not found on the synthetic tree, the OTT API
+              // will return a list of nodes that could not be matched. We can remove
+              // these OTT ids from our list of queries and try again.
+              const regexErrorMessage =
+                /^\[\/v3\/tree_of_life\/induced_subtree\] Error: node_id '\w+' was not found!/;
+              if (regexErrorMessage.test(err.responseJSON.message)) {
+                // Step 3. If the response includes node-not-found errors, we can re-run the query without
+                // the not-found nodes. The response includes an object that lists failed OTT IDs and the
+                // reason they failed. We report this to the user on the console.
+                const unknownOttIdReasons = err.responseJSON.unknown;
+                console.log(
+                  "The Open Tree synthetic tree does not contain the following nodes: ",
+                  unknownOttIdReasons
+                );
+
+                // Remove the unknown OTT ids from the list of OTT ids to be queried.
+                const knownOttIds = ottIds.filter(
+                  (id) => !has(unknownOttIdReasons, `ott${id}`)
+                );
+                console.log(
+                  "Query has been reduced to the following nodes: ",
+                  knownOttIds
+                );
+
+                if (knownOttIds.length === 0) {
+                  // It may turn out that ALL the OTT IDs are filtered out, in which case we should produce
+                  // a phylogeny for the user with a description that explains what happened.
+                  createOTTPhylogenyWithCitation({
+                    label: "Open Tree of Life",
+                    description:
+                      "Attempt to load Open Tree of Life tree failed, as none of the Open Tree taxonomy IDs" +
+                      ` were present on the synthetic tree: ${JSON.stringify(
+                        unknownOttIdReasons,
+                        undefined,
+                        4
+                      )}`,
+                    newick: "()",
+                  });
+                } else {
+                  // We have a filtered list of OTT IDs to query. Re-POST the request.
+                  jQuery.ajax({
+                    type: "POST",
+                    url: OPEN_TREE_INDUCED_SUBTREE_URL,
+                    data: JSON.stringify({
+                      ott_ids: knownOttIds,
+                    }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    error: (innerErr) =>
+                      console.log(
+                        "Error accessing Open Tree induced_subtree: ",
+                        innerErr
+                      ),
+                    success: (innerData) => {
+                      // If we get an induced phylogeny as a Newick string, create a phylogeny with that Newick string.
+                      createOTTPhylogenyWithCitation({
+                        label: "Open Tree of Life",
+                        description: `This phylogeny was generated from the Open Tree of Life based on the following studies: ${innerData.supporting_studies}`,
+                        newick: innerData.newick,
+                      });
+                    },
+                  });
+                }
               } else {
-                // We have a filtered list of OTT IDs to query. Re-POST the request.
-                jQuery.ajax({
-                  type: 'POST',
-                  url: OPEN_TREE_INDUCED_SUBTREE_URL,
-                  data: JSON.stringify({
-                    ott_ids: knownOttIds,
-                  }),
-                  contentType: 'application/json; charset=utf-8',
-                  dataType: 'json',
-                  error: innerErr => console.log('Error accessing Open Tree induced_subtree: ', innerErr),
-                  success: (innerData) => {
-                    // If we get an induced phylogeny as a Newick string, create a phylogeny with that Newick string.
-                    createOTTPhylogenyWithCitation({
-                      label: 'Open Tree of Life',
-                      description: `This phylogeny was generated from the Open Tree of Life based on the following studies: ${innerData.supporting_studies}`,
-                      newick: innerData.newick,
-                    });
-                  },
-                });
+                // If we got a different error, record it to the Console for future debugging.
+                console.log("Error accessing Open Tree induced_subtree: ", err);
               }
-            } else {
-              // If we got a different error, record it to the Console for future debugging.
-              console.log('Error accessing Open Tree induced_subtree: ', err);
-            }
-          });
+            });
         },
       });
     },

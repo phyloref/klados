@@ -2,12 +2,7 @@
   <div>
     <!-- Navigation bar at the top of the page -->
     <nav class="navbar navbar-expand navbar-dark bg-dark mb-2 fixed-top">
-      <a
-        class="navbar-brand"
-        href="index.html"
-      >
-        Klados
-      </a>
+      <a class="navbar-brand" href="index.html"> Klados </a>
       <small class="text-white">{{ version }}</small>
       <div class="collapse navbar-collapse">
         <ul class="navbar-nav">
@@ -54,18 +49,17 @@
 </template>
 
 <script>
-
 /*
  * The top navigation bar provides links to Phyloreferencing resources,
  * the about-us modal, and a link to report bugs.
  */
 
 export default {
-  name: 'TopNavigationBar',
+  name: "TopNavigationBar",
   props: {
     version: {
       type: String,
-      default: '(unversioned)',
+      default: "(unversioned)",
     },
   },
 };

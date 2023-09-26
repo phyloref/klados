@@ -1,8 +1,5 @@
 <template>
-  <div
-    v-if="dataChanged"
-    class="card mb-2 border-dark"
-  >
+  <div v-if="dataChanged" class="card mb-2 border-dark">
     <div class="card-body bg-warning">
       {{ message }}
     </div>
@@ -18,20 +15,23 @@
  * that off as its own component.
  */
 
-import { isEqual } from 'lodash';
+import { isEqual } from "lodash";
 
 export default {
-  name: 'ModifiedCard',
+  name: "ModifiedCard",
   props: {
     message: {
       type: String,
-      default: 'This element has changed! Please remember to save it.',
+      default: "This element has changed! Please remember to save it.",
     },
-    compare: Object, /* Object to check for changes. */
-    compareTo: Object, /* Changes will be determined by comparing this to this.compare */
+    compare: Object /* Object to check for changes. */,
+    compareTo:
+      Object /* Changes will be determined by comparing this to this.compare */,
   },
   computed: {
-    dataChanged() { return !isEqual(this.compare, this.compareTo); },
+    dataChanged() {
+      return !isEqual(this.compare, this.compareTo);
+    },
   },
 };
 </script>

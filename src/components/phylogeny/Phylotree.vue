@@ -30,7 +30,7 @@ import { uniqueId, has } from "lodash";
 import { phylotree, newickParser } from "phylotree";
 import jQuery from "jquery";
 import { PhylogenyWrapper, PhylorefWrapper } from "@phyloref/phyx";
-import {addCustomMenu} from "phylotree/src/render/menus";
+import { addCustomMenu } from "phylotree/src/render/menus";
 
 /*
  * Note that this requires the Phylotree Javascript to be loaded in the HTML
@@ -385,9 +385,17 @@ export default {
               pinningNodeChildrenIRIs.add(source_id);
               this.recurseNodes(source, (node) => {
                 pinningNodeChildrenIRIs.add(node["@id"]);
-                console.log("Found child", node["@id"], "for source", source_id);
+                console.log(
+                  "Found child",
+                  node["@id"],
+                  "for source",
+                  source_id
+                );
               });
-              console.log("Set pinningNodeChildrenIRIs to ", pinningNodeChildrenIRIs);
+              console.log(
+                "Set pinningNodeChildrenIRIs to ",
+                pinningNodeChildrenIRIs
+              );
 
               element.classed("descendant-of-pinning-node-branch", true);
             } else if (pinningNodeChildrenIRIs.has(source_id)) {
