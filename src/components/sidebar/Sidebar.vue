@@ -107,12 +107,12 @@
       <div class="list-group list-group-flush">
         <a
           href="javascript: void(0)"
-          class="list-group-item list-group-item-action bg-dark text-light disabled"
+          class="border-1 margin-0 border-dark list-group-item list-group-item-action bg-dark text-light disabled"
         >
           Phyloreferences
         </a>
         <a
-          class="list-group-item list-group-item-action"
+          class="border-1 margin-0 border-dark list-group-item list-group-item-action"
           href="javascript: void(0)"
           :class="{active: !selectedPhyloref && !selectedPhylogeny}"
           @click="$store.commit('changeDisplay', {})"
@@ -122,7 +122,7 @@
         <template v-for="(phyloref, phylorefIndex) of phylorefs">
           <a
             href="javascript: void(0)"
-            class="h6 list-group-item list-group-item-action border-dark"
+            class="h6 border-dark by-0 my-0 list-group-item list-group-item-action"
             :class="{active: selectedPhyloref === phyloref}"
             @click="$store.commit('changeDisplay', {phyloref})"
           >
@@ -147,8 +147,6 @@
               v-for="(specifier, specifierIndex) of phyloref.internalSpecifiers"
               href="javascript: void(0)"
               class="list-group-item list-group-item-action"
-              :class="{'active border-dark': selectedSpecifier === specifier}"
-              @click="$store.commit('changeDisplay', { phyloref, specifier })"
             >
               &#9679; <strong>Internal:</strong> {{ getSpecifierLabel(specifier) }}
             </a>
@@ -157,14 +155,13 @@
               v-for="(specifier, specifierIndex) of phyloref.externalSpecifiers"
               href="javascript: void(0)"
               class="list-group-item list-group-item-action"
-              :class="{'active border-dark': selectedSpecifier === specifier}"
               @click="$store.commit('changeDisplay', { phyloref, specifier })"
             >
               &#9679; <strong>External:</strong> {{ getSpecifierLabel(specifier) }}
             </a>
             <a
               href="javascript: void(0)"
-              class="list-group-item list-group-item-action"
+              class="by-1 my-0 border-dark list-group-item list-group-item-action"
               @click="$store.commit('addSpecifier', { phyloref })"
             >
               &#9679; <em>Add specifier</em>
