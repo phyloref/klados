@@ -185,14 +185,14 @@
       <div class="list-group list-group-flush">
         <a
           href="javascript: void(0)"
-          class="list-group-item list-group-item-action bg-dark text-light disabled"
+          class="by-1 my-0 list-group-item list-group-item-action bg-dark text-light disabled"
         >
           Phylogenies
         </a>
         <a
           v-for="(phylogeny, phylogenyIndex) of phylogenies"
           href="javascript: void(0)"
-          class="h6 list-group-item list-group-item-action border-dark"
+          class="h6 by-1 my-0 list-group-item list-group-item-action"
           :class="{active: selectedPhylogeny === phylogeny}"
           @click="$store.commit('changeDisplay', {phylogeny})"
         >
@@ -206,7 +206,7 @@
           />
         </a>
         <a
-          class="list-group-item list-group-item-action border-dark"
+          class="list-group-item list-group-item-action"
           href="javascript: void(0)"
           @click="$store.commit('createEmptyPhylogeny')"
         >
