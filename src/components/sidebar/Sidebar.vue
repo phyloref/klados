@@ -107,12 +107,12 @@
       <div class="list-group list-group-flush">
         <a
           href="javascript: void(0)"
-          class="border-1 margin-0 border-dark list-group-item list-group-item-action bg-dark text-light disabled"
+          class="m-0 border-0 list-group-item list-group-item-action bg-dark text-light disabled"
         >
           Phyloreferences
         </a>
         <a
-          class="border-1 margin-0 border-dark list-group-item list-group-item-action"
+          class="m-0 border-0 list-group-item list-group-item-action"
           href="javascript: void(0)"
           :class="{active: !selectedPhyloref && !selectedPhylogeny}"
           @click="$store.commit('changeDisplay', {})"
@@ -122,7 +122,7 @@
         <template v-for="(phyloref, phylorefIndex) of phylorefs">
           <a
             href="javascript: void(0)"
-            class="h6 border-dark by-0 my-0 list-group-item list-group-item-action"
+            class="h6 border-top border-bottom-0 m-0 border-dark list-group-item list-group-item-action"
             :class="{active: selectedPhyloref === phyloref}"
             @click="$store.commit('changeDisplay', {phyloref})"
           >
@@ -163,7 +163,7 @@
 
         <!-- Let users add phyloreferences directly from the sidebar -->
         <a
-          class="list-group-item list-group-item-action border-dark"
+          class="border-top border-dark list-group-item list-group-item-action"
           href="javascript: void(0)"
           @click="$store.commit('createEmptyPhyloref')"
         >
@@ -177,14 +177,14 @@
       <div class="list-group list-group-flush">
         <a
           href="javascript: void(0)"
-          class="by-1 my-0 list-group-item list-group-item-action bg-dark text-light disabled"
+          class="by-1 m-0 list-group-item list-group-item-action bg-dark text-light disabled"
         >
           Phylogenies
         </a>
         <a
           v-for="(phylogeny, phylogenyIndex) of phylogenies"
           href="javascript: void(0)"
-          class="h6 by-1 my-0 list-group-item list-group-item-action"
+          class="h6 border-top m-0 list-group-item list-group-item-action"
           :class="{active: selectedPhylogeny === phylogeny}"
           @click="$store.commit('changeDisplay', {phylogeny})"
         >
