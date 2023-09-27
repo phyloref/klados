@@ -198,14 +198,14 @@
           />
         </a>
         <a
-          class="list-group-item list-group-item-action"
+          class="border-dark border-top border-bottom-0 list-group-item list-group-item-action"
           href="javascript: void(0)"
           @click="$store.commit('createEmptyPhylogeny')"
         >
           <em>Add phylogeny</em>
         </a>
         <a
-          class="list-group-item list-group-item-action"
+          class="border-dark border-top border-bottom-0 list-group-item list-group-item-action"
           href="javascript: void(0)"
           @click="$store.dispatch('createPhylogenyFromOpenTree')"
         >
