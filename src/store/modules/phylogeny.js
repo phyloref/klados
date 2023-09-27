@@ -19,6 +19,23 @@ export default {
     },
   },
   mutations: {
+    /** Set the additionalNodeProperties for a particular node label on a particular phylogeny. */
+    setPhylogenyAdditionalProps(state, payload) {
+      if (!has(payload, 'phylogeny')) {
+        throw new Error('setPhylogenyAdditionalProps needs a phylogeny to modify using the "phylogeny" argument');
+      }
+      if (!has(payload, 'nodeLabel')) {
+        throw new Error('setPhylogenyAdditionalProps needs a node label to modify using the "nodeLabel" argument');
+      }
+      if (!has(payload, 'content')) {
+        throw new Error('setPhylogenyAdditionalProps needs content to set using the "content" argument');
+      }
+
+      if (!has(payload.phylogeny, 'additionalNodeProperties'))
+        Vue.set(payload.phylogeny, 'additionalNodeProperties', {});
+
+      Vue.set(payload.phylogeny.additionalNodeProperties, payload.nodeLabel, payload.content);
+    },
     setPhylogenyProps(state, payload) {
       if (!has(payload, 'phylogeny')) {
         throw new Error('setPhylogenyProps needs a phylogeny to modify using the "phylogeny" argument');
