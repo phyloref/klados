@@ -154,6 +154,18 @@
         To add additional taxonomic units to this list, please label the corresponding node on the phylogeny.
       </div>
 
+      <!--
+      <b-table-simple striped hover>
+        <b-thead>
+          <b-tr>
+            <b-th>Node label</b-th>
+            <b-th>Node type</b-th>
+
+          </b-tr>
+        </b-thead>
+      </b-table-simple>
+      -->
+
       <b-table
         striped
         hover
@@ -174,21 +186,25 @@
           </b-form-checkbox>
         </template>
 
-          <template #row-details="row">
-              <b-card>
-                  <b-row class="mb-2">
-                      <b-col sm="3" class="text-sm-right"><b>Age:</b></b-col>
-                      <b-col>{{ row.item.age }}</b-col>
-                  </b-row>
+        <template #row-details="row">
+          <b-card>
+            <b-row
+              v-for="(tunit, index) in getTUnitsForLabel(row.item.node_label)"
+              class="mb-12"
+            >
+              <Specifier
+                :key="'tunit_' + index"
+                :phyloref="selectedPhylogeny"
+                :remote-specifier="tunit"
+                :remote-specifier-id="'tunit_' + index"
+              />
+          </b-row>
 
-                  <b-row class="mb-2">
-                      <b-col sm="3" class="text-sm-right"><b>Is Active:</b></b-col>
-                      <b-col>{{ row.item.isActive }}</b-col>
-                  </b-row>
-
-                  <b-button size="sm" @click="row.toggleDetails">Hide Details</b-button>
-              </b-card>
-          </template>
+            <b-button size="sm" @click="row.toggleDetails"
+              >Hide Details</b-button
+            >
+          </b-card>
+        </template>
       </b-table>
     </div>
   </div>
@@ -207,26 +223,16 @@ import { PhylogenyWrapper } from '@phyloref/phyx';
 import ModifiedCard from '../cards/ModifiedCard.vue';
 import Phylotree from './Phylotree.vue';
 import Citation from '../citations/Citation.vue';
+import Specifier from "@/components/specifiers/Specifier.vue";
 
 export default {
   name: 'PhylogenyView',
-  components: { ModifiedCard, Phylotree, Citation },
+  components: {Specifier, ModifiedCard, Phylotree, Citation },
   data() {
     return {
       // Errors in the phylogenyId field.
       phylogenyIdError: undefined,
     };
-  },
-  methods: {
-    deleteThisPhylogeny() {
-      // Delete this phylogeny, and unset the selected phylogeny so we return to the summary page.
-      if (confirm('Are you sure you wish to delete this phylogeny? This cannot be undone!')) {
-        this.$store.commit('deletePhylogeny', {
-          phylogeny: this.selectedPhylogeny,
-        });
-        this.$store.commit('changeDisplay', {});
-      }
-    },
   },
   computed: {
     /*
@@ -314,16 +320,19 @@ export default {
 
       return errors;
     },
+    terminalLabelsSorted() {
+      return new PhylogenyWrapper(this.selectedPhylogeny).getNodeLabels('terminal').sort();
+    },
+    internalLabelsSorted() {
+      return new PhylogenyWrapper(this.selectedPhylogeny).getNodeLabels('internal').sort();
+    },
     taxonomicUnitsTable() {
       // Create a table of taxonomic units found in this phylogeny.
-      const terminalLabels = new PhylogenyWrapper(this.selectedPhylogeny).getNodeLabels('terminal').sort();
-      const internalLabels = new PhylogenyWrapper(this.selectedPhylogeny).getNodeLabels('internal').sort();
+      const terminalLabels = this.terminalLabelsSorted;
+      const internalLabels = this.internalLabelsSorted;
 
-      const hasExplicitTaxonomicUnitsForPhylogenyNode = nodeLabel => (
-        this.$store.getters
-          .getExplicitTaxonomicUnitsForPhylogenyNode(this.selectedPhylogeny, nodeLabel)
-          .length > 0
-      );
+      const hasExplicitTaxonomicUnitsForPhylogenyNode = (nodeLabel) =>
+        this.getTUnitsForLabel(nodeLabel).length > 0;
 
       return terminalLabels.map(nodeLabel => ({ node_label: nodeLabel, node_type: 'Terminal node', _showDetails: hasExplicitTaxonomicUnitsForPhylogenyNode(nodeLabel) })).concat(
         internalLabels.map(nodeLabel => ({ node_label: nodeLabel, node_type: 'Internal node', _showDetails: hasExplicitTaxonomicUnitsForPhylogenyNode(nodeLabel) })),
@@ -334,6 +343,21 @@ export default {
       loadedPhyx: state => state.phyx.loadedPhyx,
       selectedPhylogeny: state => state.ui.display.phylogeny,
     }),
+  },
+  methods: {
+    deleteThisPhylogeny() {
+      // Delete this phylogeny, and unset the selected phylogeny so we return to the summary page.
+      if (confirm('Are you sure you wish to delete this phylogeny? This cannot be undone!')) {
+        this.$store.commit('deletePhylogeny', {
+          phylogeny: this.selectedPhylogeny,
+        });
+        this.$store.commit('changeDisplay', {});
+      }
+    },
+    getTUnitsForLabel(nodeLabel) {
+      return this.$store.getters
+          .getExplicitTaxonomicUnitsForPhylogenyNode(this.selectedPhylogeny, nodeLabel);
+    },
   },
 };
 </script>
