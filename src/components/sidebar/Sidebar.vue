@@ -107,12 +107,12 @@
       <div class="list-group list-group-flush">
         <a
           href="javascript: void(0)"
-          class="list-group-item list-group-item-action bg-dark text-light disabled"
+          class="m-0 border-0 list-group-item list-group-item-action bg-dark text-light disabled"
         >
           Phyloreferences
         </a>
         <a
-          class="list-group-item list-group-item-action"
+          class="m-0 border-0 list-group-item list-group-item-action"
           href="javascript: void(0)"
           :class="{active: !selectedPhyloref && !selectedPhylogeny}"
           @click="$store.commit('changeDisplay', {})"
@@ -122,7 +122,7 @@
         <template v-for="(phyloref, phylorefIndex) of phylorefs">
           <a
             href="javascript: void(0)"
-            class="h6 list-group-item list-group-item-action border-dark"
+            class="h6 border-top border-bottom-0 m-0 border-dark list-group-item list-group-item-action"
             :class="{active: selectedPhyloref === phyloref}"
             @click="$store.commit('changeDisplay', {phyloref})"
           >
@@ -147,8 +147,6 @@
               v-for="(specifier, specifierIndex) of phyloref.internalSpecifiers"
               href="javascript: void(0)"
               class="list-group-item list-group-item-action"
-              :class="{'active border-dark': selectedSpecifier === specifier}"
-              @click="$store.commit('changeDisplay', { phyloref, specifier })"
             >
               &#9679; <strong>Internal:</strong> {{ getSpecifierLabel(specifier) }}
             </a>
@@ -157,24 +155,15 @@
               v-for="(specifier, specifierIndex) of phyloref.externalSpecifiers"
               href="javascript: void(0)"
               class="list-group-item list-group-item-action"
-              :class="{'active border-dark': selectedSpecifier === specifier}"
-              @click="$store.commit('changeDisplay', { phyloref, specifier })"
             >
               &#9679; <strong>External:</strong> {{ getSpecifierLabel(specifier) }}
-            </a>
-            <a
-              href="javascript: void(0)"
-              class="list-group-item list-group-item-action"
-              @click="$store.commit('addSpecifier', { phyloref })"
-            >
-              &#9679; <em>Add specifier</em>
             </a>
           </template>
         </template>
 
         <!-- Let users add phyloreferences directly from the sidebar -->
         <a
-          class="list-group-item list-group-item-action border-dark"
+          class="border-top border-dark list-group-item list-group-item-action"
           href="javascript: void(0)"
           @click="$store.commit('createEmptyPhyloref')"
         >
@@ -188,14 +177,14 @@
       <div class="list-group list-group-flush">
         <a
           href="javascript: void(0)"
-          class="list-group-item list-group-item-action bg-dark text-light disabled"
+          class="by-1 m-0 list-group-item list-group-item-action bg-dark text-light disabled"
         >
           Phylogenies
         </a>
         <a
           v-for="(phylogeny, phylogenyIndex) of phylogenies"
           href="javascript: void(0)"
-          class="h6 list-group-item list-group-item-action border-dark"
+          class="h6 border-top m-0 list-group-item list-group-item-action"
           :class="{active: selectedPhylogeny === phylogeny}"
           @click="$store.commit('changeDisplay', {phylogeny})"
         >
@@ -209,14 +198,14 @@
           />
         </a>
         <a
-          class="list-group-item list-group-item-action border-dark"
+          class="border-dark border-top border-bottom-0 list-group-item list-group-item-action"
           href="javascript: void(0)"
           @click="$store.commit('createEmptyPhylogeny')"
         >
           <em>Add phylogeny</em>
         </a>
         <a
-          class="list-group-item list-group-item-action"
+          class="border-dark border-top border-bottom-0 list-group-item list-group-item-action"
           href="javascript: void(0)"
           @click="$store.dispatch('createPhylogenyFromOpenTree')"
         >
