@@ -695,7 +695,7 @@ export default {
         return;
 
       if (this.phyloref) {
-        console.log('Updating specifier in ', phyloref, ' as ', result, ' differs from ', this.remoteSpecifier);
+        console.log('Updating specifier in ', this.phyloref, ' as ', result, ' differs from ', this.remoteSpecifier);
         this.$store.commit('setSpecifierProps', {
           specifier: this.remoteSpecifier,
           props: result,
@@ -718,7 +718,7 @@ export default {
           tunit_new: result,
         });
       } else {
-        console.error("Specifier has neither phyloref nor phylogeny/nodeLabel combination: ", data);
+        console.error("Specifier has neither phyloref nor phylogeny/nodeLabel combination: ", this);
       }
     },
   },

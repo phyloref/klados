@@ -193,10 +193,11 @@
               class="mb-12"
             >
               <Specifier
-                :key="'tunit_' + index"
-                :phyloref="selectedPhylogeny"
+                :key="'tunit_' + row.item.node_label + '_' + index"
+                :phylogeny="selectedPhylogeny"
+                :node-label="row.item.node_label"
                 :remote-specifier="tunit"
-                :remote-specifier-id="'tunit_' + index"
+                :remote-specifier-id="'tunit_' + row.item.node_label + '_' + index"
               />
           </b-row>
 

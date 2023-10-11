@@ -23,7 +23,7 @@ export default {
       return [];
     },
     areTUnitsIdentical: () => (tunit1, tunit2) => {
-      return this.areTUnitsIdentical(tunit1, tunit2);
+      return areTUnitsIdentical(tunit1, tunit2);
     }
   },
   mutations: {
