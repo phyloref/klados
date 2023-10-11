@@ -97,8 +97,8 @@
           Specifier details
         </h5>
 
-        <!-- Specifier type: internal or external -->
-        <div class="form-group row">
+        <!-- Specifier type: internal or external. Only applies to phylorefs! -->
+        <div v-if="phyloref" class="form-group row">
           <label
             class="col-form-label col-md-2"
             for="specifier-type"
@@ -424,9 +424,25 @@ export default {
       required: false,
       default: () => uniqueId('remoteSpecifierId'),
     },
-    phyloref: { /* The phyloreference containing this specifier */
+    /*
+     * There are two ways of visualizing a specifier:
+     * - The specifier may be a part of a phyloref, or
+     * - The specifier (really a taxonomic unit) may be a part of a phylogeny via the `representsTaxonomicUnits`
+     *   property. This is specified in two ways: a phylogeny as well as a nodeLabel.
+     */
+    /* The phyloreference containing this specifier */
+    phyloref: {
       type: Object,
-      required: true,
+      required: false,
+    },
+    /* The phylogeny and nodeLabel containing this specifier (really a taxonomic unit). */
+    phylogeny: {
+      type: Object,
+      required: false,
+    },
+    nodeLabel: {
+      type: String,
+      required: false,
     },
   },
   data() {
@@ -489,9 +505,12 @@ export default {
     },
     specifierType: {
       get() {
+        if (!this.phyloref) return undefined;
         return new PhylorefWrapper(this.phyloref).getSpecifierType(this.remoteSpecifier);
       },
       set(type) {
+        if (!this.phyloref) return undefined;
+
         this.$store.commit(
           'setSpecifierType',
           {
@@ -573,6 +592,12 @@ export default {
     phyloref() {
       this.recalculateEntered();
     },
+    phylogeny() {
+      this.recalculateEntered();
+    },
+    nodeLabel() {
+      this.recalculateEntered();
+    },
     remoteSpecifier() {
       this.recalculateEntered();
     },
@@ -645,24 +670,56 @@ export default {
       // Update remoteSpecifier to what we've got currently entered.
       const confirmed = confirm('Are you sure you want to delete this specifier?');
       if (confirmed) {
-        console.log('Deleting specifier: ', this.phyloref, this.remoteSpecifier);
-        this.$store.commit('deleteSpecifier', {
-          phyloref: this.phyloref,
-          specifier: this.remoteSpecifier,
-        });
+        if (this.phyloref) {
+          console.log("Deleting specifier from phyloref: ", this.phyloref, this.remoteSpecifier);
+          this.$store.commit('deleteSpecifier', {
+            phyloref: this.phyloref,
+            specifier: this.remoteSpecifier,
+          });
+        } else if (this.phylogeny && this.nodeLabel) {
+          console.log("Deleting taxonomic unit from phylogeny: ", this.phylogeny, this.nodeLabel, this.remoteSpecifier);
+          this.$store.commit('replaceTUnitForPhylogenyNode', {
+            phyloref: this.phylogeny,
+            nodeLabel: this.nodeLabel,
+            tunit: this.remoteSpecifier,
+            delete: true,
+          });
+        }
       }
     },
     updateSpecifier() {
       const result = this.specifier;
 
       // If our local specifier differs from the remoteSpecifier, update it.
-      if (isEqual(result, this.remoteSpecifier)) return;
+      if (this.$store.getters.areTUnitsIdentical(result, this.remoteSpecifier))
+        return;
 
-      console.log('Updating specifier as ', result, ' differs from ', this.remoteSpecifier);
-      this.$store.commit('setSpecifierProps', {
-        specifier: this.remoteSpecifier,
-        props: result,
-      });
+      if (this.phyloref) {
+        console.log('Updating specifier in ', phyloref, ' as ', result, ' differs from ', this.remoteSpecifier);
+        this.$store.commit('setSpecifierProps', {
+          specifier: this.remoteSpecifier,
+          props: result,
+        });
+      } else if (this.phylogeny && this.nodeLabel) {
+        console.log(
+          "Updating tunit in ",
+          this.phylogeny,
+          " with node label ",
+          this.nodeLabel,
+          " as ",
+          result,
+          " differs from ",
+          this.remoteSpecifier
+        );
+        this.$store.commit('replaceTUnitForPhylogenyNode', {
+          phylogeny: this.phylogeny,
+          nodeLabel: this.nodeLabel,
+          tunit: this.remoteSpecifier,
+          tunit_new: result,
+        });
+      } else {
+        console.error("Specifier has neither phyloref nor phylogeny/nodeLabel combination: ", data);
+      }
     },
   },
 };
