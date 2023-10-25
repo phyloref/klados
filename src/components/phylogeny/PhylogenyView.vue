@@ -182,7 +182,7 @@
         </template>
 
         <template #cell(additional_taxonomic_units)="row">
-          {{row.item.additional_taxonomic_units}} taxonomic units <b-button variant="primary" class="float-right" size="sm">Add</b-button>
+          {{row.item.additional_taxonomic_units}} taxonomic units <b-button variant="primary" @click="addTUnitForNodeLabel(row.item.node_label)" class="float-right" size="sm">Add</b-button>
         </template>
 
         <template #row-details="row">
@@ -216,7 +216,7 @@ import { has } from 'lodash';
 import { mapState } from 'vuex';
 import { parse as parseNewick } from 'newick-js';
 
-import { PhylogenyWrapper } from '@phyloref/phyx';
+import {PhylogenyWrapper, TaxonomicUnitWrapper} from '@phyloref/phyx';
 import ModifiedCard from '../cards/ModifiedCard.vue';
 import Phylotree from './Phylotree.vue';
 import Citation from '../citations/Citation.vue';
@@ -371,6 +371,16 @@ export default {
     getTUnitsForLabel(nodeLabel) {
       return this.$store.getters
           .getExplicitTaxonomicUnitsForPhylogenyNode(this.selectedPhylogeny, nodeLabel);
+    },
+    addTUnitForNodeLabel(nodeLabel) {
+      this.$store.commit('addTaxonomicUnitToPhylogenyNode', {
+        phylogeny: this.selectedPhylogeny,
+        nodeLabel,
+        tunit: TaxonomicUnitWrapper.fromLabel(
+          "",
+          this.$store.getters.getDefaultNomenCodeURI
+        ),
+      });
     },
   },
 };

@@ -4,7 +4,7 @@
 
 import Vue from 'vue';
 import { has, findIndex, isEqual, keys, cloneDeep } from 'lodash';
-import {PhylogenyWrapper} from "@phyloref/phyx";
+import {PhylogenyWrapper, TaxonomicUnitWrapper} from "@phyloref/phyx";
 
 // A helper function for comparing two taxonomic units.
 function areTUnitsIdentical(tunit1, tunit2) {
@@ -29,35 +29,80 @@ export default {
   mutations: {
     /** Set the additionalNodeProperties for a particular node label on a particular phylogeny. */
     setPhylogenyAdditionalProps(state, payload) {
-      if (!has(payload, 'phylogeny')) {
-        throw new Error('setPhylogenyAdditionalProps needs a phylogeny to modify using the "phylogeny" argument');
+      if (!has(payload, "phylogeny")) {
+        throw new Error(
+          'setPhylogenyAdditionalProps needs a phylogeny to modify using the "phylogeny" argument'
+        );
       }
-      if (!has(payload, 'nodeLabel')) {
-        throw new Error('setPhylogenyAdditionalProps needs a node label to modify using the "nodeLabel" argument');
+      if (!has(payload, "nodeLabel")) {
+        throw new Error(
+          'setPhylogenyAdditionalProps needs a node label to modify using the "nodeLabel" argument'
+        );
       }
-      if (!has(payload, 'content')) {
-        throw new Error('setPhylogenyAdditionalProps needs content to set using the "content" argument');
+      if (!has(payload, "content")) {
+        throw new Error(
+          'setPhylogenyAdditionalProps needs content to set using the "content" argument'
+        );
       }
 
-      if (!has(payload.phylogeny, 'additionalNodeProperties'))
-        Vue.set(payload.phylogeny, 'additionalNodeProperties', {});
+      if (!has(payload.phylogeny, "additionalNodeProperties"))
+        Vue.set(payload.phylogeny, "additionalNodeProperties", {});
 
       Vue.set(payload.phylogeny.additionalNodeProperties, payload.nodeLabel, payload.content);
+    },
+    /**
+     * Insert a new taxonomic unit to a phylogeny node. If one is not provided, we insert a generic taxonomic unit.
+     */
+    addTaxonomicUnitToPhylogenyNode(state, payload) {
+      if (!has(payload, "phylogeny")) {
+        throw new Error(
+          'addTaxonomicUnitToPhylogenyNode needs a phylogeny to modify using the "phylogeny" argument'
+        );
+      }
+      if (!has(payload, "nodeLabel")) {
+        throw new Error(
+          'addTaxonomicUnitToPhylogenyNode needs a node label to modify using the "nodeLabel" argument'
+        );
+      }
+
+      let tunitToBeAdded = TaxonomicUnitWrapper.fromLabel("");
+      if (has(payload, "tunit")) {
+        tunitToBeAdded = payload.tunit;
+      }
+
+      // If there is no additionalNodeProperties or representsTaxonomicUnits, set them up now.
+      if (!has(payload.phylogeny, "additionalNodeProperties"))
+        Vue.set(payload.phylogeny, "additionalNodeProperties", {});
+
+      if (!has(payload.phylogeny.additionalNodeProperties, payload.nodeLabel))
+        Vue.set(payload.phylogeny.additionalNodeProperties, payload.nodeLabel, {});
+
+      if (!has(payload.phylogeny.additionalNodeProperties[payload.nodeLabel], "representsTaxonomicUnits"))
+        Vue.set(payload.phylogeny.additionalNodeProperties[payload.nodeLabel], "representsTaxonomicUnits", []);
+
+      // Now we can append the new taxonomic unit to it.
+      payload.phylogeny.additionalNodeProperties[payload.nodeLabel].representsTaxonomicUnits.push(tunitToBeAdded);
     },
     /**
      * Replace or delete a taxonomic unit from a phylogeny node.
      */
     replaceTUnitForPhylogenyNode(state, payload) {
-      if (!has(payload, 'phylogeny')) {
-        throw new Error('replaceTUnitForPhylogenyNode needs a phylogeny to modify using the "phylogeny" argument');
+      if (!has(payload, "phylogeny")) {
+        throw new Error(
+          'replaceTUnitForPhylogenyNode needs a phylogeny to modify using the "phylogeny" argument'
+        );
       }
-      if (!has(payload, 'nodeLabel')) {
-        throw new Error('replaceTUnitForPhylogenyNode needs a node label to modify using the "nodeLabel" argument');
+      if (!has(payload, "nodeLabel")) {
+        throw new Error(
+          'replaceTUnitForPhylogenyNode needs a node label to modify using the "nodeLabel" argument'
+        );
       }
-      if (!has(payload, 'tunit')) {
-        throw new Error('replaceTUnitForPhylogenyNode needs a tunit to delete using the "tunit" argument');
+      if (!has(payload, "tunit")) {
+        throw new Error(
+          'replaceTUnitForPhylogenyNode needs a tunit to delete using the "tunit" argument'
+        );
       }
-      if (!has(payload, 'tunit_new') && !has(payload, 'delete')) {
+      if (!has(payload, "tunit_new") && !has(payload, "delete")) {
         throw new Error(
           "replaceTUnitForPhylogenyNode needs either a `tunit_new` to replace the tunit or `delete` to indicate it should be deleted."
         );
@@ -66,18 +111,28 @@ export default {
       console.log(
         "Tried to replace or delete tunit: ", payload.tunit, " from phylogeny ", payload.phylogeny, " at node label ", payload.nodeLabel
       );
-      if (!has(payload.phylogeny, 'additionalNodeProperties')) {
-        console.error("Could not replace or delete: no additionalNodeProperties present in phylogeny.");
+      if (!has(payload.phylogeny, "additionalNodeProperties")) {
+        console.error(
+          "Could not replace or delete: no additionalNodeProperties present in phylogeny."
+        );
         return;
       }
 
       if (!has(payload.phylogeny.additionalNodeProperties, payload.nodeLabel)) {
-        console.error("Could not replace or delete: node label ", payload.nodeLabel, " not present in phylogeny.");
+        console.error(
+          "Could not replace or delete: node label ",
+          payload.nodeLabel,
+          " not present in phylogeny."
+        );
         return;
       }
 
       if (!has(payload.phylogeny.additionalNodeProperties[payload.nodeLabel], 'representsTaxonomicUnits')) {
-        console.error("Could not replace or delete: node label ", payload.nodeLabel, " does not have a representsTaxonomicUnits.");
+        console.error(
+          "Could not replace or delete: node label ",
+          payload.nodeLabel,
+          " does not have a representsTaxonomicUnits."
+        );
         return;
       }
 
@@ -89,7 +144,12 @@ export default {
       );
 
       if (index < 0) {
-        console.error("Could not replace or delete: tunit ", payload.tunit, " as it is not present in tunits: ", tunits);
+        console.error(
+          "Could not replace or delete: tunit ",
+          payload.tunit,
+          " as it is not present in tunits: ",
+          tunits
+        );
         return;
       }
 
@@ -103,7 +163,6 @@ export default {
           "Neither `delete` nor `tunit_new` was set in payload, which should have been checked earlier: ",
           payload
         );
-        return;
       }
     },
     setPhylogenyProps(state, payload) {

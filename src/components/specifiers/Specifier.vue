@@ -679,7 +679,7 @@ export default {
         } else if (this.phylogeny && this.nodeLabel) {
           console.log("Deleting taxonomic unit from phylogeny: ", this.phylogeny, this.nodeLabel, this.remoteSpecifier);
           this.$store.commit('replaceTUnitForPhylogenyNode', {
-            phyloref: this.phylogeny,
+            phylogeny: this.phylogeny,
             nodeLabel: this.nodeLabel,
             tunit: this.remoteSpecifier,
             delete: true,
