@@ -170,7 +170,7 @@
         striped
         hover
         :items="taxonomicUnitsTable"
-        :fields="['node_label', 'node_type', 'show_details']"
+        :fields="['node_label', 'node_type', 'additional_taxonomic_units']"
         :primary-key="node_label"
         show-empty
       >
@@ -180,16 +180,12 @@
         <template #emptyfiltered="scope">
           <h4>No labels found after filtering.</h4>
         </template>
-        <template #cell(show_details)="row">
-          <b-form-checkbox v-model="row.detailsShowing" @change="row.toggleDetails">
-            Node has additional taxonomic units
-          </b-form-checkbox>
-        </template>
 
         <template #row-details="row">
           <b-card>
             <b-row
               v-for="(tunit, index) in getTUnitsForLabel(row.item.node_label)"
+              :key="row.item.node_label"
               class="mb-12"
             >
               <Specifier
@@ -199,11 +195,7 @@
                 :remote-specifier="tunit"
                 :remote-specifier-id="'tunit_' + row.item.node_label + '_' + index"
               />
-          </b-row>
-
-            <b-button size="sm" @click="row.toggleDetails"
-              >Hide Details</b-button
-            >
+            </b-row>
           </b-card>
         </template>
       </b-table>
@@ -332,12 +324,29 @@ export default {
       const terminalLabels = this.terminalLabelsSorted;
       const internalLabels = this.internalLabelsSorted;
 
+      const getExplicitTaxonomicUnitsForPhylogenyNode = (nodeLabel) =>
+        this.getTUnitsForLabel(nodeLabel)
+
       const hasExplicitTaxonomicUnitsForPhylogenyNode = (nodeLabel) =>
         this.getTUnitsForLabel(nodeLabel).length > 0;
 
-      return terminalLabels.map(nodeLabel => ({ node_label: nodeLabel, node_type: 'Terminal node', _showDetails: hasExplicitTaxonomicUnitsForPhylogenyNode(nodeLabel) })).concat(
-        internalLabels.map(nodeLabel => ({ node_label: nodeLabel, node_type: 'Internal node', _showDetails: hasExplicitTaxonomicUnitsForPhylogenyNode(nodeLabel) })),
-      );
+      return terminalLabels
+        .map((nodeLabel) => ({
+          node_label: nodeLabel,
+          node_type: "Terminal node",
+          additional_taxonomic_units:
+            getExplicitTaxonomicUnitsForPhylogenyNode(nodeLabel).length,
+          _showDetails: hasExplicitTaxonomicUnitsForPhylogenyNode(nodeLabel),
+        }))
+        .concat(
+          internalLabels.map((nodeLabel) => ({
+            node_label: nodeLabel,
+            node_type: "Internal node",
+            additional_taxonomic_units:
+              getExplicitTaxonomicUnitsForPhylogenyNode(nodeLabel).length,
+            _showDetails: hasExplicitTaxonomicUnitsForPhylogenyNode(nodeLabel),
+          }))
+        );
     },
     ...mapState({
       currentPhyx: state => state.phyx.currentPhyx,
