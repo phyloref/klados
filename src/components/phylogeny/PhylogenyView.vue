@@ -181,6 +181,10 @@
           <h4>No labels found after filtering.</h4>
         </template>
 
+        <template #cell(additional_taxonomic_units)="row">
+          {{row.item.additional_taxonomic_units}} taxonomic units <b-button variant="primary" class="float-right" size="sm">Add</b-button>
+        </template>
+
         <template #row-details="row">
           <b-card>
             <b-row
