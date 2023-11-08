@@ -188,7 +188,7 @@
         <template #row-details="row">
           <b-card>
             <b-row
-              v-for="(tunit, index) in getTUnitsForLabel(row.item.node_label)"
+              v-for="(tunit, index) in getExplicitTUnitsForLabel(row.item.node_label)"
               :key="row.item.node_label"
               class="mb-12"
             >
@@ -297,11 +297,11 @@ export default {
 
       if (parenLevels !== 0) {
         errors.push({
-          title: 'Unbalanced parentheses in Newick string',
-          message: (parenLevels > 0
-            ? `You have ${parenLevels} too many open parentheses`
-            : `You have ${-parenLevels} too few open parentheses`
-          ),
+          title: "Unbalanced parentheses in Newick string",
+          message:
+            parenLevels > 0
+              ? `You have ${parenLevels} too many open parentheses`
+            : `You have ${-parenLevels} too few open parentheses`,
         });
       }
 
@@ -318,37 +318,33 @@ export default {
       return errors;
     },
     terminalLabelsSorted() {
+      // Return a list of terminal (i.e. leaf node) labels sorted alphabetically.
       return new PhylogenyWrapper(this.selectedPhylogeny).getNodeLabels('terminal').sort();
     },
     internalLabelsSorted() {
+      // Return a list of internal (i.e. non-leaf node) labels sorted alphabetically.
       return new PhylogenyWrapper(this.selectedPhylogeny).getNodeLabels('internal').sort();
     },
     taxonomicUnitsTable() {
-      // Create a table of taxonomic units found in this phylogeny.
+      // Create a table of taxonomic units and their additional taxonomic units found in this phylogeny.
       const terminalLabels = this.terminalLabelsSorted;
       const internalLabels = this.internalLabelsSorted;
-
-      const getExplicitTaxonomicUnitsForPhylogenyNode = (nodeLabel) =>
-        this.getTUnitsForLabel(nodeLabel)
-
-      const hasExplicitTaxonomicUnitsForPhylogenyNode = (nodeLabel) =>
-        this.getTUnitsForLabel(nodeLabel).length > 0;
 
       return terminalLabels
         .map((nodeLabel) => ({
           node_label: nodeLabel,
           node_type: "Terminal node",
           additional_taxonomic_units:
-            getExplicitTaxonomicUnitsForPhylogenyNode(nodeLabel).length,
-          _showDetails: hasExplicitTaxonomicUnitsForPhylogenyNode(nodeLabel),
+            this.getExplicitTUnitsForLabel(nodeLabel).length,
+          _showDetails: this.getExplicitTUnitsForLabel(nodeLabel).length > 0,
         }))
         .concat(
           internalLabels.map((nodeLabel) => ({
             node_label: nodeLabel,
             node_type: "Internal node",
             additional_taxonomic_units:
-              getExplicitTaxonomicUnitsForPhylogenyNode(nodeLabel).length,
-            _showDetails: hasExplicitTaxonomicUnitsForPhylogenyNode(nodeLabel),
+              this.getExplicitTUnitsForLabel(nodeLabel).length,
+            _showDetails: this.getExplicitTUnitsForLabel(nodeLabel).length > 0,
           }))
         );
     },
@@ -368,11 +364,18 @@ export default {
         this.$store.commit('changeDisplay', {});
       }
     },
-    getTUnitsForLabel(nodeLabel) {
-      return this.$store.getters
-          .getExplicitTaxonomicUnitsForPhylogenyNode(this.selectedPhylogeny, nodeLabel);
+    getExplicitTUnitsForLabel(nodeLabel) {
+      // Return the list of "explicit" taxonomic units for a phylogeny node, which is the list of
+      // taxonomic units listed in the additionalNodeProperties.
+      //
+      // This will not include "implicit" taxonomic units, which we generate from the node label.
+      return this.$store.getters.getExplicitTaxonomicUnitsForPhylogenyNode(
+        this.selectedPhylogeny,
+        nodeLabel
+      );
     },
     addTUnitForNodeLabel(nodeLabel) {
+      // Add a taxonomic unit to a node label.
       this.$store.commit('addTaxonomicUnitToPhylogenyNode', {
         phylogeny: this.selectedPhylogeny,
         nodeLabel,
