@@ -6,25 +6,36 @@ import Vue from 'vue';
 import { has, findIndex, isEqual, keys, cloneDeep } from 'lodash';
 import {PhylogenyWrapper, TaxonomicUnitWrapper} from "@phyloref/phyx";
 
-// A helper function for comparing two taxonomic units.
 function areTUnitsIdentical(tunit1, tunit2) {
+  // A helper function for comparing two taxonomic units.
   return isEqual(tunit1, tunit2);
 }
 
 export default {
   getters: {
     getExplicitTaxonomicUnitsForPhylogenyNode: () => (phylogeny, nodeLabel) => {
-      // Return true if this node label in this phylogeny has a
-      if (has(phylogeny, 'additionalNodeProperties')
-          && has(phylogeny.additionalNodeProperties, nodeLabel)
-          && has(phylogeny.additionalNodeProperties[nodeLabel], 'representsTaxonomicUnits')) {
-        return phylogeny.additionalNodeProperties[nodeLabel].representsTaxonomicUnits;
+      // Return any "explicit" taxonomic units for a phylogeny node, i.e. those with representsTaxonomicUnits
+      // in the additionalNodeProperties for this node label. This is as compared to implicit taxonomic units,
+      // which we generate from the node label.
+      if (
+        has(phylogeny, "additionalNodeProperties") &&
+        has(phylogeny.additionalNodeProperties, nodeLabel) &&
+        has(
+          phylogeny.additionalNodeProperties[nodeLabel],
+          "representsTaxonomicUnits"
+        )
+      ) {
+        return phylogeny.additionalNodeProperties[nodeLabel]
+          .representsTaxonomicUnits;
       }
       return [];
     },
     areTUnitsIdentical: () => (tunit1, tunit2) => {
+      // Test whether two taxonomic units are identical. This is intended to be the only place in Klados where
+      // we do this comparison. Eventually I will update this to normalize the TUs before comparison, which should
+      // help with https://github.com/phyloref/klados/issues/263
       return areTUnitsIdentical(tunit1, tunit2);
-    }
+    },
   },
   mutations: {
     /** Set the additionalNodeProperties for a particular node label on a particular phylogeny. */
