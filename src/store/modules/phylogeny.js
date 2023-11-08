@@ -39,7 +39,8 @@ export default {
   },
   mutations: {
     /**
-     * Insert a new taxonomic unit to a phylogeny node. If one is not provided, we insert a generic taxonomic unit.
+     * Insert a new taxonomic unit to a phylogeny node. If one is not provided, we insert an empty taxonomic unit
+     * without a nomenclatural code.
      */
     addTaxonomicUnitToPhylogenyNode(state, payload) {
       if (!has(payload, "phylogeny")) {
@@ -63,10 +64,18 @@ export default {
         Vue.set(payload.phylogeny, "additionalNodeProperties", {});
 
       if (!has(payload.phylogeny.additionalNodeProperties, payload.nodeLabel))
-        Vue.set(payload.phylogeny.additionalNodeProperties, payload.nodeLabel, {});
+        Vue.set(
+          payload.phylogeny.additionalNodeProperties,
+          payload.nodeLabel,
+          {}
+        );
 
       if (!has(payload.phylogeny.additionalNodeProperties[payload.nodeLabel], "representsTaxonomicUnits"))
-        Vue.set(payload.phylogeny.additionalNodeProperties[payload.nodeLabel], "representsTaxonomicUnits", []);
+        Vue.set(
+          payload.phylogeny.additionalNodeProperties[payload.nodeLabel],
+          "representsTaxonomicUnits",
+          []
+        );
 
       // Now we can append the new taxonomic unit to it.
       payload.phylogeny.additionalNodeProperties[payload.nodeLabel].representsTaxonomicUnits.push(tunitToBeAdded);
@@ -115,7 +124,12 @@ export default {
         return;
       }
 
-      if (!has(payload.phylogeny.additionalNodeProperties[payload.nodeLabel], 'representsTaxonomicUnits')) {
+      if (
+        !has(
+          payload.phylogeny.additionalNodeProperties[payload.nodeLabel],
+          "representsTaxonomicUnits"
+        )
+      ) {
         console.error(
           "Could not replace or delete: node label ",
           payload.nodeLabel,
@@ -142,9 +156,9 @@ export default {
       }
 
       // Delete or replace?
-      if (has(payload, 'delete')) {
+      if (has(payload, "delete")) {
         tunits.splice(index, 1);
-      } else if (has(payload, 'tunit_new')) {
+      } else if (has(payload, "tunit_new")) {
         tunits.splice(index, 1, payload.tunit_new);
       } else {
         console.error(
@@ -153,21 +167,26 @@ export default {
         );
       }
     },
+    /**
+     * Set phylogeny properties.
+     */
     setPhylogenyProps(state, payload) {
-      if (!has(payload, 'phylogeny')) {
-        throw new Error('setPhylogenyProps needs a phylogeny to modify using the "phylogeny" argument');
+      if (!has(payload, "phylogeny")) {
+        throw new Error(
+          'setPhylogenyProps needs a phylogeny to modify using the "phylogeny" argument'
+        );
       }
-      if (has(payload, 'label')) {
-        Vue.set(payload.phylogeny, 'label', payload.label);
+      if (has(payload, "label")) {
+        Vue.set(payload.phylogeny, "label", payload.label);
       }
-      if (has(payload, 'curatorNotes')) {
-        Vue.set(payload.phylogeny, 'curatorNotes', payload.curatorNotes);
+      if (has(payload, "curatorNotes")) {
+        Vue.set(payload.phylogeny, "curatorNotes", payload.curatorNotes);
       }
-      if (has(payload, 'newick')) {
-        Vue.set(payload.phylogeny, 'newick', payload.newick);
+      if (has(payload, "newick")) {
+        Vue.set(payload.phylogeny, "newick", payload.newick);
       }
-      if (has(payload, '@id')) {
-        Vue.set(payload.phylogeny, '@id', payload['@id']);
+      if (has(payload, "@id")) {
+        Vue.set(payload.phylogeny, "@id", payload["@id"]);
       }
     },
   },
