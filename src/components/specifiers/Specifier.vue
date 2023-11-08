@@ -428,7 +428,8 @@ export default {
      * There are two ways of visualizing a specifier:
      * - The specifier may be a part of a phyloref, or
      * - The specifier (really a taxonomic unit) may be a part of a phylogeny via the `representsTaxonomicUnits`
-     *   property. This is specified in two ways: a phylogeny as well as a nodeLabel.
+     *   property of the `additionalNodeProperties` dictionary. This is specified in two ways: a phylogeny as
+     *   well as a nodeLabel.
      */
     /* The phyloreference containing this specifier */
     phyloref: {
