@@ -101,13 +101,13 @@
 
       <div class="card-footer">
         <div
-            class="btn-group"
-            role="group"
-            area-label="Phylogeny management"
+          class="btn-group"
+          role="group"
+          area-label="Phylogeny management"
         >
           <button
-              class="btn btn-danger"
-              @click="deleteThisPhylogeny()"
+            class="btn btn-danger"
+            @click="deleteThisPhylogeny()"
           >
             Delete phylogeny
           </button>
@@ -144,6 +144,66 @@
         />
       </div>
     </div>
+
+    <!-- Display taxonomic units in this phylogeny -->
+    <div class="card mt-2">
+      <h5 class="card-header">
+        Taxonomic units in this phylogeny
+      </h5>
+      <div class="card-body">
+        To add additional taxonomic units to this list, please label the corresponding node on the phylogeny.
+      </div>
+
+      <!--
+      <b-table-simple striped hover>
+        <b-thead>
+          <b-tr>
+            <b-th>Node label</b-th>
+            <b-th>Node type</b-th>
+
+          </b-tr>
+        </b-thead>
+      </b-table-simple>
+      -->
+
+      <b-table
+        striped
+        hover
+        :items="taxonomicUnitsTable"
+        :fields="['node_label', 'node_type', 'additional_taxonomic_units']"
+        :primary-key="node_label"
+        show-empty
+      >
+        <template #empty="scope">
+          <h4>No labels found in this phylogeny.</h4>
+        </template>
+        <template #emptyfiltered="scope">
+          <h4>No labels found after filtering.</h4>
+        </template>
+
+        <template #cell(additional_taxonomic_units)="row">
+          {{row.item.additional_taxonomic_units}} taxonomic units <b-button variant="primary" @click="addTUnitForNodeLabel(row.item.node_label)" class="float-right" size="sm">Add</b-button>
+        </template>
+
+        <template #row-details="row">
+          <b-card>
+            <b-row
+              v-for="(tunit, index) in getExplicitTUnitsForLabel(row.item.node_label)"
+              :key="row.item.node_label"
+              class="mb-12"
+            >
+              <Specifier
+                :key="'tunit_' + row.item.node_label + '_' + index"
+                :phylogeny="selectedPhylogeny"
+                :node-label="row.item.node_label"
+                :remote-specifier="tunit"
+                :remote-specifier-id="'tunit_' + row.item.node_label + '_' + index"
+              />
+            </b-row>
+          </b-card>
+        </template>
+      </b-table>
+    </div>
   </div>
 </template>
 
@@ -156,29 +216,20 @@ import { has } from 'lodash';
 import { mapState } from 'vuex';
 import { parse as parseNewick } from 'newick-js';
 
+import {PhylogenyWrapper, TaxonomicUnitWrapper} from '@phyloref/phyx';
 import ModifiedCard from '../cards/ModifiedCard.vue';
 import Phylotree from './Phylotree.vue';
 import Citation from '../citations/Citation.vue';
+import Specifier from "@/components/specifiers/Specifier.vue";
 
 export default {
   name: 'PhylogenyView',
-  components: { ModifiedCard, Phylotree, Citation },
+  components: {Specifier, ModifiedCard, Phylotree, Citation },
   data() {
     return {
       // Errors in the phylogenyId field.
       phylogenyIdError: undefined,
     };
-  },
-  methods: {
-    deleteThisPhylogeny() {
-      // Delete this phylogeny, and unset the selected phylogeny so we return to the summary page.
-      if(confirm('Are you sure you wish to delete this phylogeny? This cannot be undone!')) {
-        this.$store.commit('deletePhylogeny', {
-          phylogeny: this.selectedPhylogeny,
-        });
-        this.$store.commit('changeDisplay', {});
-      }
-    },
   },
   computed: {
     /*
@@ -246,11 +297,11 @@ export default {
 
       if (parenLevels !== 0) {
         errors.push({
-          title: 'Unbalanced parentheses in Newick string',
-          message: (parenLevels > 0
-            ? `You have ${parenLevels} too many open parentheses`
-            : `You have ${-parenLevels} too few open parentheses`
-          ),
+          title: "Unbalanced parentheses in Newick string",
+          message:
+            parenLevels > 0
+              ? `You have ${parenLevels} too many open parentheses`
+            : `You have ${-parenLevels} too few open parentheses`,
         });
       }
 
@@ -266,11 +317,74 @@ export default {
 
       return errors;
     },
+    terminalLabelsSorted() {
+      // Return a list of terminal (i.e. leaf node) labels sorted alphabetically.
+      return new PhylogenyWrapper(this.selectedPhylogeny).getNodeLabels('terminal').sort();
+    },
+    internalLabelsSorted() {
+      // Return a list of internal (i.e. non-leaf node) labels sorted alphabetically.
+      return new PhylogenyWrapper(this.selectedPhylogeny).getNodeLabels('internal').sort();
+    },
+    taxonomicUnitsTable() {
+      // Create a table of taxonomic units and their additional taxonomic units found in this phylogeny.
+      const terminalLabels = this.terminalLabelsSorted;
+      const internalLabels = this.internalLabelsSorted;
+
+      return terminalLabels
+        .map((nodeLabel) => ({
+          node_label: nodeLabel,
+          node_type: "Terminal node",
+          additional_taxonomic_units:
+            this.getExplicitTUnitsForLabel(nodeLabel).length,
+          _showDetails: this.getExplicitTUnitsForLabel(nodeLabel).length > 0,
+        }))
+        .concat(
+          internalLabels.map((nodeLabel) => ({
+            node_label: nodeLabel,
+            node_type: "Internal node",
+            additional_taxonomic_units:
+              this.getExplicitTUnitsForLabel(nodeLabel).length,
+            _showDetails: this.getExplicitTUnitsForLabel(nodeLabel).length > 0,
+          }))
+        );
+    },
     ...mapState({
       currentPhyx: state => state.phyx.currentPhyx,
       loadedPhyx: state => state.phyx.loadedPhyx,
       selectedPhylogeny: state => state.ui.display.phylogeny,
     }),
+  },
+  methods: {
+    deleteThisPhylogeny() {
+      // Delete this phylogeny, and unset the selected phylogeny so we return to the summary page.
+      if (confirm('Are you sure you wish to delete this phylogeny? This cannot be undone!')) {
+        this.$store.commit('deletePhylogeny', {
+          phylogeny: this.selectedPhylogeny,
+        });
+        this.$store.commit('changeDisplay', {});
+      }
+    },
+    getExplicitTUnitsForLabel(nodeLabel) {
+      // Return the list of "explicit" taxonomic units for a phylogeny node, which is the list of
+      // taxonomic units listed in the additionalNodeProperties.
+      //
+      // This will not include "implicit" taxonomic units, which we generate from the node label.
+      return this.$store.getters.getExplicitTaxonomicUnitsForPhylogenyNode(
+        this.selectedPhylogeny,
+        nodeLabel
+      );
+    },
+    addTUnitForNodeLabel(nodeLabel) {
+      // Add a taxonomic unit to a node label.
+      this.$store.commit('addTaxonomicUnitToPhylogenyNode', {
+        phylogeny: this.selectedPhylogeny,
+        nodeLabel,
+        tunit: TaxonomicUnitWrapper.fromLabel(
+          "",
+          this.$store.getters.getDefaultNomenCodeURI
+        ),
+      });
+    },
   },
 };
 </script>
