@@ -16,11 +16,7 @@
     <div v-else class="phylotreeContainer">
       <div :id="'phylogeny' + phylogenyIndex" class="col-md-12 phylogeny" />
       <ResizeObserver @notify="redrawTree" />
-      <button
-          type="button"
-          class="btn btn-primary"
-          @click="exportAsNewick()"
-      >
+      <button type="button" class="btn btn-primary" @click="exportAsNewick()">
         Download as Newick
       </button>
     </div>
@@ -38,7 +34,7 @@ import { phylotree, newickParser } from "phylotree";
 import jQuery from "jquery";
 import { PhylogenyWrapper, PhylorefWrapper } from "@phyloref/phyx";
 import { addCustomMenu } from "phylotree/src/render/menus";
-import { saveAs } from 'filesaver.js-npm';
+import { saveAs } from "filesaver.js-npm";
 
 /*
  * Note that this requires the Phylotree Javascript to be loaded in the HTML
@@ -140,23 +136,83 @@ export default {
   methods: {
     exportAsNewick() {
       // Export this phylogeny as a Newick string in a .txt file for download.
-      const newickStr = this.tree.getNewick((n) => {
-        // There appears to be a bug in the version of Phylotree.js we
-        // use in which leaf nodes are duplicated if we just return n.name
-        // here. So we return undefined for leaf nodes and n.name for
-        // everything else. I'll investigate this more deeply in
-        // https://github.com/phyloref/klados/issues/200.
-        if (!this.tree.isLeafNode(n)) return n.name;
-        // TODO: we should follow the same behavior as Phylotree:
-        //  - If we have reasoning results, internal nodes found by the reasoner should be marked `phyloref_{label}` to
-        //    distinguish them from the expected results.
-        //  - If phyloref is set, only that phyloref should be displayed (either as `phyloref_{label}` if reasoned or
-        //    just `{label}` if only present in the phylogeny).
+      const newickStr = this.tree.getNewick((node) => {
+        // Is the resolved node for this phyloref? If so, let's make an annotation.
+        if (
+          this.phyloref !== undefined &&
+          has(node, "data") &&
+          has(node.data, "@id")
+        ) {
+          const annotations = [];
+          const data = node.data;
+
+          const removeColonsAndEquals = (str) => {
+            // Both colons and equal-tos have special significance in NHX
+            // annotations, so we need to escape them.
+            return str.replaceAll(":", "_").replaceAll("=", "_");
+          };
+
+          if (
+            this.$store.getters
+              .getResolvedNodesForPhylogeny(this.phylogeny, this.phyloref)
+              .includes(data["@id"])
+          ) {
+            if (has(this.phyloref, "@id")) {
+              annotations.push(
+                "klados_actual_id=" +
+                  removeColonsAndEquals(this.phyloref["@id"])
+              );
+            }
+
+            if (has(this.phyloref, "label")) {
+              annotations.push(
+                "klados_actual_label=" +
+                  removeColonsAndEquals(this.phyloref["label"])
+              );
+            }
+
+            // We don't know what to call this phyloref, but nevertheless we label it minimally.
+            if (!has(this.phyloref, "@id") && !has(this.phyloref, "label"))
+              annotations.push("klados_actual_id=");
+          }
+
+          if (
+            this.selectedNodeLabel &&
+            this.selectedNodeLabel.toLowerCase() === data.name.toLowerCase()
+          ) {
+            if (has(this.phyloref, "@id")) {
+              annotations.push(
+                "klados_expected_id=" +
+                  removeColonsAndEquals(this.phyloref["@id"])
+              );
+            }
+
+            if (has(this.phyloref, "label")) {
+              annotations.push(
+                "klados_expected_label=" +
+                  removeColonsAndEquals(this.phyloref["label"])
+              );
+            }
+
+            // We don't know what to call this phyloref, but nevertheless we label it minimally.
+            if (!has(this.phyloref, "@id") && !has(this.phyloref, "label"))
+              annotations.push("klados_expected_id=");
+          }
+          console.log("Annotations: ", annotations);
+
+          if (annotations.length === 0) return undefined;
+          else return `[&&NHX:${annotations.join(":")}]`;
+        }
+
         return undefined;
       });
-      const filename = 'phylogeny.txt';
+      const filename = `${this.$store.getters.getDownloadFilenameForPhyx}.nwk`;
       // Save to local hard drive.
-      const newickFile = new File([newickStr], filename, { type: 'text/plain;charset=utf-8' });
+      const newickFile = new File([newickStr], filename, {
+        type: "text/plain;charset=utf-8",
+      });
+      // With charset=utf-8, saveAs defaults to adding a Unicode BOM.
+      // This will confuse downstream files, so we force it off here.
       saveAs(newickFile, filename, { autoBom: false });
     },
     recurseNodes(node, func, nodeCount = 0, parentCount = undefined) {
@@ -411,9 +467,17 @@ export default {
               pinningNodeChildrenIRIs.add(source_id);
               this.recurseNodes(source, (node) => {
                 pinningNodeChildrenIRIs.add(node["@id"]);
-                console.log("Found child", node["@id"], "for source", source_id);
+                console.log(
+                  "Found child",
+                  node["@id"],
+                  "for source",
+                  source_id
+                );
               });
-              console.log("Set pinningNodeChildrenIRIs to ", pinningNodeChildrenIRIs);
+              console.log(
+                "Set pinningNodeChildrenIRIs to ",
+                pinningNodeChildrenIRIs
+              );
 
               element.classed("descendant-of-pinning-node-branch", true);
             } else if (pinningNodeChildrenIRIs.has(source_id)) {
