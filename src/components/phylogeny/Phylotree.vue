@@ -16,6 +16,13 @@
     <div v-else class="phylotreeContainer">
       <div :id="'phylogeny' + phylogenyIndex" class="col-md-12 phylogeny" />
       <ResizeObserver @notify="redrawTree" />
+      <button
+          type="button"
+          class="btn btn-primary"
+          @click="exportAsNewick()"
+      >
+        Download as Newick
+      </button>
     </div>
   </div>
 </template>
@@ -30,7 +37,8 @@ import { uniqueId, has } from "lodash";
 import { phylotree, newickParser } from "phylotree";
 import jQuery from "jquery";
 import { PhylogenyWrapper, PhylorefWrapper } from "@phyloref/phyx";
-import {addCustomMenu} from "phylotree/src/render/menus";
+import { addCustomMenu } from "phylotree/src/render/menus";
+import { saveAs } from 'filesaver.js-npm';
 
 /*
  * Note that this requires the Phylotree Javascript to be loaded in the HTML
@@ -130,6 +138,27 @@ export default {
     this.redrawTree();
   },
   methods: {
+    exportAsNewick() {
+      // Export this phylogeny as a Newick string in a .txt file for download.
+      const newickStr = this.tree.getNewick((n) => {
+        // There appears to be a bug in the version of Phylotree.js we
+        // use in which leaf nodes are duplicated if we just return n.name
+        // here. So we return undefined for leaf nodes and n.name for
+        // everything else. I'll investigate this more deeply in
+        // https://github.com/phyloref/klados/issues/200.
+        if (!this.tree.isLeafNode(n)) return n.name;
+        // TODO: we should follow the same behavior as Phylotree:
+        //  - If we have reasoning results, internal nodes found by the reasoner should be marked `phyloref_{label}` to
+        //    distinguish them from the expected results.
+        //  - If phyloref is set, only that phyloref should be displayed (either as `phyloref_{label}` if reasoned or
+        //    just `{label}` if only present in the phylogeny).
+        return undefined;
+      });
+      const filename = 'phylogeny.txt';
+      // Save to local hard drive.
+      const newickFile = new File([newickStr], filename, { type: 'text/plain;charset=utf-8' });
+      saveAs(newickFile, filename, { autoBom: false });
+    },
     recurseNodes(node, func, nodeCount = 0, parentCount = undefined) {
       // Recurse through PhyloTree nodes, executing function on each node.
       //  - node: The node to recurse from. The function will be called on node
