@@ -3,8 +3,28 @@
  */
 
 import Vue from 'vue';
-import { PhylorefWrapper } from '@phyloref/phyx';
-import { has, keys, cloneDeep } from 'lodash';
+import {PhylorefWrapper} from '@phyloref/phyx';
+import {cloneDeep, has, isEqual, keys} from 'lodash';
+
+/**
+ * Checks if two taxonomic units are identical.
+ *
+ * @param {any} tunit1 - The first taxonomic unit.
+ * @param {any} tunit2 - The second taxonomic unit.
+ * @returns {boolean} - True if the taxonomic units are identical, false otherwise.
+ */
+export function areTUnitsIdentical(tunit1, tunit2) {
+  // Eventually we will call a "normalizeTUnit(tunit)" function
+  // in phyx.js, but for now we can develop that feature here
+  // and see if it works for our needs.
+  const normalizeTUnit = function(tunit) {
+    return tunit;
+  }
+
+
+  // Check if the taxonomic units are identical after normalization.
+  return isEqual(normalizeTUnit(tunit1), normalizeTUnit(tunit2));
+}
 
 export default {
   getters: {
