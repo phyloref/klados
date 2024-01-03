@@ -16,8 +16,15 @@
     <div v-else class="phylotreeContainer">
       <div :id="'phylogeny' + phylogenyIndex" class="col-md-12 phylogeny" />
       <ResizeObserver @notify="redrawTree" />
-      <button type="button" class="btn btn-primary" @click="exportAsNewick()">
-        Download as Newick
+      <button
+        type="button"
+        class="btn btn-primary"
+        @click="exportAsNexus()"
+        data-toggle="tooltip"
+        data-placement="bottom"
+        title="Download Nexus file with annotations indicating phyloreferences."
+      >
+        Download as Nexus
       </button>
     </div>
   </div>
@@ -134,8 +141,8 @@ export default {
     this.redrawTree();
   },
   methods: {
-    exportAsNewick() {
-      // Export this phylogeny as a Newick string in a .txt file for download.
+    exportAsNexus() {
+      // Export this phylogeny as a Nexus string in a .nex file for download.
       const newickStr = this.tree.getNewick((node) => {
         // Is the resolved node for this phyloref? If so, let's make an annotation.
         if (
@@ -146,10 +153,9 @@ export default {
           const annotations = [];
           const data = node.data;
 
-          const removeColonsAndEquals = (str) => {
-            // Both colons and equal-tos have special significance in NHX
-            // annotations, so we need to escape them.
-            return str.replaceAll(":", "_").replaceAll("=", "_");
+          const convertToNexusAnnotationValue = (str) => {
+            // We really just need to wrap this in double-quotes, which means we need to filter out existing double quotes.
+            return '"' + str.replaceAll('"', "''") + '"';
           };
 
           if (
@@ -159,21 +165,21 @@ export default {
           ) {
             if (has(this.phyloref, "@id")) {
               annotations.push(
-                "klados_actual_id=" +
-                  removeColonsAndEquals(this.phyloref["@id"])
+                "phyloref:actual=" +
+                  convertToNexusAnnotationValue(this.phyloref["@id"])
               );
             }
 
             if (has(this.phyloref, "label")) {
               annotations.push(
-                "klados_actual_label=" +
-                  removeColonsAndEquals(this.phyloref["label"])
+                "phyloref:actualLabel=" +
+                  convertToNexusAnnotationValue(this.phyloref["label"])
               );
             }
 
             // We don't know what to call this phyloref, but nevertheless we label it minimally.
             if (!has(this.phyloref, "@id") && !has(this.phyloref, "label"))
-              annotations.push("klados_actual_id=");
+              annotations.push("phyloref:actual=");
           }
 
           if (
@@ -182,33 +188,34 @@ export default {
           ) {
             if (has(this.phyloref, "@id")) {
               annotations.push(
-                "klados_expected_id=" +
-                  removeColonsAndEquals(this.phyloref["@id"])
+                "phyloref:expected=" +
+                  convertToNexusAnnotationValue(this.phyloref["@id"])
               );
             }
 
             if (has(this.phyloref, "label")) {
               annotations.push(
-                "klados_expected_label=" +
-                  removeColonsAndEquals(this.phyloref["label"])
+                "phyloref:expectedLabel=" +
+                  convertToNexusAnnotationValue(this.phyloref["label"])
               );
             }
 
             // We don't know what to call this phyloref, but nevertheless we label it minimally.
             if (!has(this.phyloref, "@id") && !has(this.phyloref, "label"))
-              annotations.push("klados_expected_id=");
+              annotations.push("phyloref:expected=");
           }
           console.log("Annotations: ", annotations);
 
           if (annotations.length === 0) return undefined;
-          else return `[&&NHX:${annotations.join(":")}]`;
+          else return `[&${annotations.join(",")}]`;
         }
 
         return undefined;
       });
-      const filename = `${this.$store.getters.getDownloadFilenameForPhyx}.nwk`;
+      const nexusStr = `#NEXUS\n\nBEGIN TREES;\n  TREE klados_tree = ${newickStr}\nEND;\n`;
+      const filename = `${this.$store.getters.getDownloadFilenameForPhyx}.nex`;
       // Save to local hard drive.
-      const newickFile = new File([newickStr], filename, {
+      const newickFile = new File([nexusStr], filename, {
         type: "text/plain;charset=utf-8",
       });
       // With charset=utf-8, saveAs defaults to adding a Unicode BOM.
