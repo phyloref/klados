@@ -42,6 +42,7 @@ import jQuery from "jquery";
 import { PhylogenyWrapper, PhylorefWrapper } from "@phyloref/phyx";
 import { addCustomMenu } from "phylotree/src/render/menus";
 import { saveAs } from "filesaver.js-npm";
+import {text} from "@fortawesome/fontawesome-svg-core";
 
 /*
  * Note that this requires the Phylotree Javascript to be loaded in the HTML
@@ -68,6 +69,11 @@ export default {
       type: String,
       required: false,
     },
+    phylorefNoFilter: {
+      // If true, then don't filter phyloreferences: display them all!
+      type: Boolean,
+      default: false,
+    }
   },
   data() {
     return {
@@ -367,7 +373,7 @@ export default {
           );
 
           // If the internal label has the same IRI as the currently selected
-          // phyloreference's reasoned node, further mark it as the resolved node.
+          // phyloreference's reasoned node, further mark or label it as the resolved node.
           //
           // Note that this node might NOT be labeled, in which case we need to
           // label it now!
@@ -394,6 +400,23 @@ export default {
               "id",
               `current_pinning_node_phylogeny_${this.phylogenyIndex}`
             );
+
+            // If we have phylorefNoFilter set, then
+            if (this.phylorefNoFilter) {
+              // Make sure we don't already have an internal label node on this SVG node!
+              let textLabel = element.selectAll("text");
+
+              if (textLabel.empty()) textLabel = element.append("text");
+              console.log(`Found text label `, textLabel);
+              let textLabelText = textLabel.text;
+              if (!textLabelText) textLabelText = data.name;
+              else textLabelText = textLabelText + '_and_' + data.name;
+              textLabel
+                  .classed("internal-label", true)
+                  .text(textLabelText)
+                  .attr("dx", "0.3em")
+                  .attr("dy", "0.35em");
+            }
           }
 
           // Maybe this isn't a pinning node, but it is a child of a pinning node.
