@@ -212,7 +212,11 @@ export default {
 
         return undefined;
       });
+
+      // Create a Nexus file to store this `klados_tree` in.
       const nexusStr = `#NEXUS\n\nBEGIN TREES;\n  TREE klados_tree = ${newickStr}\nEND;\n`;
+
+      // Write Nexus file to a location chosen by the user.
       const filename = `${this.$store.getters.getDownloadFilenameForPhyx}.nex`;
       // Save to local hard drive.
       const newickFile = new File([nexusStr], filename, {
