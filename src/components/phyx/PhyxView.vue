@@ -284,6 +284,7 @@
           <Phylotree
               :phylogeny-index="String(phylogenyIndex)"
               :phylogeny="phylogeny"
+              :phylorefs="phylorefs"
           />
         </div>
       </div>
