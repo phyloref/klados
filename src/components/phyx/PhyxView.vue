@@ -282,7 +282,7 @@
         </h5>
         <div class="card-body">
           <Phylotree
-              :phylogeny-index="phylogenyIndex"
+              :phylogeny-index="String(phylogenyIndex)"
               :phylogeny="phylogeny"
           />
         </div>
