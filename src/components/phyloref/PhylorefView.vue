@@ -648,15 +648,23 @@ export default {
     },
     getNodeLabels(phylogeny, nodeType) {
       // Return a list of node labels in a particular phylogeny.
-      return new PhylogenyWrapper(phylogeny).getNodeLabels(nodeType).sort();
+      try {
+        return new PhylogenyWrapper(phylogeny).getNodeLabels(nodeType).sort();
+      } catch {
+        return [];
+      }
     },
     getExpectedNodeLabel(phylogeny) {
       // Return the node label we expect this phyloref to resolve to on the
       // specified phylogeny.
-      return this.$store.getters.getExpectedNodeLabel(
-        this.selectedPhyloref,
-        phylogeny,
-      );
+      try {
+        return this.$store.getters.getExpectedNodeLabel(
+            this.selectedPhyloref,
+            phylogeny,
+        );
+      } catch {
+        return undefined;
+      }
     },
     getSpecifierLabel(specifier) {
       // Return the specifier label of a particular specifier.
