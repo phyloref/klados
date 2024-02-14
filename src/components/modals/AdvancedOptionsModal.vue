@@ -119,8 +119,8 @@ export default {
         const content = [JSON.stringify([wrapped.asJSONLD()], undefined, 4)];
 
         // Save to local hard drive.
-        const jsonldFile = new File(content, 'download.jsonld', { type: 'application/json;charset=utf-8' });
-        saveAs(jsonldFile);
+        const jsonldFile = new File(content, `${this.$store.getters.getDownloadFilenameForPhyx}.jsonld`, { type: 'application/json;charset=utf-8' });
+        saveAs(jsonldFile, `${this.$store.getters.getDownloadFilenameForPhyx}.jsonld`);
       } catch (err) {
         alert(`Could not convert Phyx to JSON-LD: ${err}`);
       }
