@@ -339,14 +339,10 @@ export default {
     },
     getPhylorefExpectedNodeLabel(phyloref, phylogeny) {
       // Return a list of nodes that a phyloreference is expected to resolve to.
-      try {
-        return this.$store.getters.getExpectedNodeLabel(
-            phyloref,
-            phylogeny,
-        );
-      } catch {
-        return undefined;
-      }
+      return this.$store.getters.getExpectedNodeLabel(
+          phyloref,
+          phylogeny,
+      );
     },
     getNodesById(phylogeny, nodeId) {
       // Return all node labels with this nodeId in this phylogeny.
