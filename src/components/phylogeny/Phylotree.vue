@@ -475,6 +475,7 @@ export default {
 .pinning-node text {
   fill: black !important;
   font-weight: bolder;
+  font-size: 16pt !important;
 }
 
 /*
