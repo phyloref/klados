@@ -439,19 +439,16 @@ export default {
           // Write out blank cells for the remaining external specifiers
           ...range(wrappedPhyloref.externalSpecifiers.length, maxExternalSpecifiers).map(() => ''),
           // Export phyloref expectation information.
-          ...this.phylogenies.map((phylogeny) => {
-            const expectedNodeLabel = this.getPhylorefExpectedNodeLabel(phyloref, phylogeny);
-            if (!expectedNodeLabel) {
-              return '';
-            }
-            return expectedNodeLabel;
-          }),
-          // Export phyloref resolution information.
-          ...this.phylogenies.map((phylogeny) => {
+          ...this.phylogenies.flatMap((phylogeny) => {
+            const expectedNodeLabel = this.getPhylorefExpectedNodeLabel(phyloref, phylogeny) || '';
+
             if (!this.hasReasoningResults(phyloref)) return 'Resolution not yet run';
 
             const resolvedNodes = this.getNodeLabelsResolvedByPhyloref(phyloref, phylogeny);
-            return resolvedNodes.map(nl => (nl === '' ? 'an unlabeled node' : nl)).join('|');
+            const resolvedNodesDescription = resolvedNodes.map(nl => (nl === '' ? 'an unlabeled node' : nl))
+              .join("|");
+
+            return [expectedNodeLabel, resolvedNodesDescription];
           }),
         ];
       });
