@@ -293,8 +293,13 @@ export default {
             // Mark this node as the pinning node.
             element.classed("pinning-node", true);
 
-            // Make the pinning node circle larger (twice its usual size of 3).
-            element.select("circle").attr("r", 6);
+            // If there is no circle, add one.
+            if (element.select("circle").empty()) {
+              element.append("circle").attr("cx", -3).attr("r", 6);
+            } else {
+              // Make the pinning node circle larger (twice its usual size of 3).
+              element.select("circle").attr("r", 6);
+            }
 
             // Set its id to 'current_pinning_node_phylogeny{{phylogenyIndex}}'
             element.attr(
