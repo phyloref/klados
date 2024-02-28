@@ -22,7 +22,7 @@
         @click="exportAsNexus()"
         data-toggle="tooltip"
         data-placement="bottom"
-        title="Download Nexus file with annotations indicating phyloreferences."
+        title="Download Nexus file with annotations of where phyloreferences resolve"
       >
         Download as Nexus
       </button>
