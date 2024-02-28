@@ -219,7 +219,7 @@
           <thead>
             <th>&nbsp;</th>
             <th>Phylogeny</th>
-            <th>Description</th>
+            <th>Curator notes</th>
           </thead>
           <tbody>
             <tr
@@ -249,7 +249,7 @@
                 </a>
               </td>
               <td>
-                {{ phylogeny.description }}
+                {{ phylogeny.curatorNotes }}
               </td>
             </tr>
           </tbody>
@@ -324,12 +324,20 @@ export default {
   },
   methods: {
     getPhylogenyLabel(phylogeny) {
-      return phylogeny.label
-        || `Phylogeny ${this.phylogenies.indexOf(phylogeny) + 1}`;
+      const phylogeny_label = phylogeny.label;
+      if (!phylogeny_label) {
+        return `Phylogeny ${this.phylogenies.indexOf(phylogeny) + 1}`;
+      } else if (phylogeny_label.match(/^Phylogeny (\d+)$/)) {
+        return phylogeny_label;
+      } else {
+        return `Phylogeny: ${phylogeny_label}`;
+      }
     },
     getPhylorefLabel(phyloref) {
-      return new PhylorefWrapper(phyloref).label
-        || `Phyloref ${this.phylorefs.indexOf(phyloref) + 1}`;
+      return (
+        new PhylorefWrapper(phyloref).label ||
+        `Phyloref ${this.phylorefs.indexOf(phyloref) + 1}`
+      );
     },
     hasReasoningResults(phyloref) {
       if (!has(this.$store.state.resolution.reasoningResults, 'phylorefs')) return false;
@@ -431,19 +439,16 @@ export default {
           // Write out blank cells for the remaining external specifiers
           ...range(wrappedPhyloref.externalSpecifiers.length, maxExternalSpecifiers).map(() => ''),
           // Export phyloref expectation information.
-          ...this.phylogenies.map((phylogeny) => {
-            const expectedNodeLabel = this.getPhylorefExpectedNodeLabel(phyloref, phylogeny);
-            if (!expectedNodeLabel) {
-              return '';
-            }
-            return expectedNodeLabel;
-          }),
-          // Export phyloref resolution information.
-          ...this.phylogenies.map((phylogeny) => {
+          ...this.phylogenies.flatMap((phylogeny) => {
+            const expectedNodeLabel = this.getPhylorefExpectedNodeLabel(phyloref, phylogeny) || '';
+
             if (!this.hasReasoningResults(phyloref)) return 'Resolution not yet run';
 
             const resolvedNodes = this.getNodeLabelsResolvedByPhyloref(phyloref, phylogeny);
-            return resolvedNodes.map(nl => (nl === '' ? 'an unlabeled node' : nl)).join('|');
+            const resolvedNodesDescription = resolvedNodes.map(nl => (nl === '' ? 'an unlabeled node' : nl))
+              .join("|");
+
+            return [expectedNodeLabel, resolvedNodesDescription];
           }),
         ];
       });

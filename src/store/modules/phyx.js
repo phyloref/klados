@@ -266,10 +266,10 @@ export default {
       if (taxonConceptNames.length === 0) {
         // If no taxon names are used in any phyloreferences -- if they use non-taxon-name
         // identifiers or if there are no phyloreferences, say -- we create a new phylogeny
-        // named "Open Tree of Life" with a description that tells the user what happened.
+        // named "Open Tree of Life" with curator notes that tells the user what happened.
         createOTTPhylogenyWithCitation({
           label: 'Open Tree of Life',
-          description: 'Attempt to load Open Tree of Life tree failed: no taxon name specifiers present.',
+          curatorNotes: 'Attempt to load Open Tree of Life tree failed: no taxon name specifiers present.',
           newick: '()',
         });
         return;
@@ -311,7 +311,7 @@ export default {
               // We use that to create a new phylogeny labeled "Open Tree of Life".
               createOTTPhylogenyWithCitation({
                 label: 'Open Tree of Life',
-                description: `This phylogeny was generated from the Open Tree of Life based on the following studies: ${innerData.supporting_studies}`,
+                curatorNotes: `This phylogeny was generated from the Open Tree of Life based on the following studies: ${innerData.supporting_studies}`,
                 newick: innerData.newick,
               });
             },
@@ -333,10 +333,10 @@ export default {
 
               if (knownOttIds.length === 0) {
                 // It may turn out that ALL the OTT IDs are filtered out, in which case we should produce
-                // a phylogeny for the user with a description that explains what happened.
+                // a phylogeny for the user with curator notes that explains what happened.
                 createOTTPhylogenyWithCitation({
                   label: 'Open Tree of Life',
-                  description: 'Attempt to load Open Tree of Life tree failed, as none of the Open Tree taxonomy IDs'
+                  curatorNotes: 'Attempt to load Open Tree of Life tree failed, as none of the Open Tree taxonomy IDs'
                       + ` were present on the synthetic tree: ${JSON.stringify(unknownOttIdReasons, undefined, 4)}`,
                   newick: '()',
                 });
@@ -355,7 +355,7 @@ export default {
                     // If we get an induced phylogeny as a Newick string, create a phylogeny with that Newick string.
                     createOTTPhylogenyWithCitation({
                       label: 'Open Tree of Life',
-                      description: `This phylogeny was generated from the Open Tree of Life based on the following studies: ${innerData.supporting_studies}`,
+                      curatorNotes: `This phylogeny was generated from the Open Tree of Life based on the following studies: ${innerData.supporting_studies}`,
                       newick: innerData.newick,
                     });
                   },
