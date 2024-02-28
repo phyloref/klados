@@ -330,7 +330,7 @@ export default {
       } else if (phylogeny_label.match(/^Phylogeny (\d+)$/)) {
         return phylogeny_label;
       } else {
-        return `Phylogeny ${this.phylogenies.indexOf(phylogeny) + 1}: ${phylogeny_label}`;
+        return `Phylogeny: ${phylogeny_label}`;
       }
     },
     getPhylorefLabel(phyloref) {
