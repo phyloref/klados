@@ -51,7 +51,7 @@
               for="definition"
               class="col-form-label col-md-2"
             >
-              Definition in free-form text
+              Definition in free-form text (including qualifiers)
             </label>
             <div class="col-md-10">
               <textarea
