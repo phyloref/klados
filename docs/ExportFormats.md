@@ -20,7 +20,7 @@ The summary table CSV export includes the following columns:
   * Example: `Caiman crocodilus`
 * `External specifier N`: A description of each external specifier (_N_ is a number starting from 1).
   * Example: `Caiman crocodilus`
-* `Phylogeny N: [Phylogeny label] expected`: The node resolved for this phylogeny (_N_ is a number starting from 1, and _Phylogeny label_ is the label of this phylogeny).
+* `Phylogeny: [Phylogeny label] expected`: The node resolved for this phylogeny (_N_ is a number starting from 1, and _Phylogeny label_ is the label of this phylogeny).
   * Example: `Alligatoridae`
-* `Phylogeny N: [Phylogeny label] actual`: The node resolved for this phylogeny (_N_ is a number starting from 1, and _Phylogeny label_ is the label of this phylogeny).
+* `Phylogeny: [Phylogeny label] actual`: The node resolved for this phylogeny (_N_ is a number starting from 1, and _Phylogeny label_ is the label of this phylogeny).
   * Example: `Alligatoridae_ott195670`, or `(unlabelled)` if the node has no label
