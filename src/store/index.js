@@ -12,7 +12,7 @@ import citations from './modules/citations';
 
 Vue.use(Vuex);
 
-const debug = process.env.NODE_ENV !== 'production';
+const debug = import.meta.env.PROD;
 
 export default new Vuex.Store({
   state: {
