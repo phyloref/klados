@@ -245,20 +245,17 @@ export default {
               const newName = window.prompt(
                 `Rename node named '${existingName}' to:`
               );
-              // Apparently IE7 and IE8 will return the string 'undefined' if the user doesn't
-              // enter anything.
-              if (!newName || newName === "undefined") {
+              if (newName === null) {
+                // This means the user clicked "Cancel", so don't do anything.
+              } else if (!newName || newName === "undefined") {
+                // Apparently IE7 and IE8 will return the string 'undefined' if the user doesn't
+                // enter anything.
+                //
                 // Remove the current label.
                 node.name = "";
               } else {
                 // Set the new label.
-                const escapedName = newName.replace("'", "''");
-                // If the name contains whitespace, escape it.
-                if (/\w/.test(escapedName)) {
-                  node.name = "'" + escapedName + "'";
-                } else {
-                  node.name = escapedName;
-                }
+                node.name = newName;
               }
 
               // Export the entire phylogeny as a Newick string, and store that
