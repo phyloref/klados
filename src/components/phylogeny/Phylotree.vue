@@ -75,10 +75,14 @@ export default {
       return this.phylogeny.newick || "()";
     },
     parsedNewick() {
-      return new PhylogenyWrapper(this.phylogeny).getParsedNewickWithIRIs(
-        this.$store.getters.getPhylogenyId(this.phylogeny),
-        newickParser
-      );
+      try {
+        return new PhylogenyWrapper(this.phylogeny).getParsedNewickWithIRIs(
+          this.$store.getters.getPhylogenyId(this.phylogeny),
+          newickParser
+        );
+      } catch {
+        return undefined;
+      }
     },
     newickErrors() {
       // Check to see if the newick could actually be parsed.
