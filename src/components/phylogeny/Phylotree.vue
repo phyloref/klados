@@ -16,6 +16,16 @@
     <div v-else class="phylotreeContainer">
       <div :id="'phylogeny' + phylogenyIndex" class="col-md-12 phylogeny" />
       <ResizeObserver @notify="redrawTree" />
+      <button
+        type="button"
+        class="btn btn-primary"
+        @click="exportAsNexus()"
+        data-toggle="tooltip"
+        data-placement="bottom"
+        title="Download Nexus file with annotations of where phyloreferences resolve"
+      >
+        Download as Nexus
+      </button>
     </div>
   </div>
 </template>
@@ -30,7 +40,8 @@ import { uniqueId, has } from "lodash";
 import { phylotree, newickParser } from "phylotree";
 import jQuery from "jquery";
 import { PhylogenyWrapper, PhylorefWrapper } from "@phyloref/phyx";
-import {addCustomMenu} from "phylotree/src/render/menus";
+import { addCustomMenu } from "phylotree/src/render/menus";
+import { saveAs } from "filesaver.js-npm";
 
 /*
  * Note that this requires the Phylotree Javascript to be loaded in the HTML
@@ -134,6 +145,91 @@ export default {
     this.redrawTree();
   },
   methods: {
+    exportAsNexus() {
+      // Export this phylogeny as a Nexus string in a .nex file for download.
+      const newickStr = this.tree.getNewick((node) => {
+        // Is the resolved node for this phyloref? If so, let's make an annotation.
+        if (
+          this.phyloref !== undefined &&
+          has(node, "data") &&
+          has(node.data, "@id")
+        ) {
+          const annotations = [];
+          const data = node.data;
+
+          const convertToNexusAnnotationValue = (str) => {
+            // We really just need to wrap this in double-quotes, which means we need to filter out existing double quotes.
+            return '"' + str.replaceAll('"', "''") + '"';
+          };
+
+          if (
+            this.$store.getters
+              .getResolvedNodesForPhylogeny(this.phylogeny, this.phyloref)
+              .includes(data["@id"])
+          ) {
+            if (has(this.phyloref, "@id")) {
+              annotations.push(
+                "phyloref:actual=" +
+                  convertToNexusAnnotationValue(this.phyloref["@id"])
+              );
+            }
+
+            if (has(this.phyloref, "label")) {
+              annotations.push(
+                "phyloref:actualLabel=" +
+                  convertToNexusAnnotationValue(this.phyloref["label"])
+              );
+            }
+
+            // We don't know what to call this phyloref, but nevertheless we label it minimally.
+            if (!has(this.phyloref, "@id") && !has(this.phyloref, "label"))
+              annotations.push("phyloref:actual=");
+          }
+
+          if (
+            this.selectedNodeLabel &&
+            this.selectedNodeLabel.toLowerCase() === data.name.toLowerCase()
+          ) {
+            if (has(this.phyloref, "@id")) {
+              annotations.push(
+                "phyloref:expected=" +
+                  convertToNexusAnnotationValue(this.phyloref["@id"])
+              );
+            }
+
+            if (has(this.phyloref, "label")) {
+              annotations.push(
+                "phyloref:expectedLabel=" +
+                  convertToNexusAnnotationValue(this.phyloref["label"])
+              );
+            }
+
+            // We don't know what to call this phyloref, but nevertheless we label it minimally.
+            if (!has(this.phyloref, "@id") && !has(this.phyloref, "label"))
+              annotations.push("phyloref:expected=");
+          }
+          console.log("Annotations: ", annotations);
+
+          if (annotations.length === 0) return undefined;
+          else return `[&${annotations.join(",")}]`;
+        }
+
+        return undefined;
+      });
+
+      // Create a Nexus file to store this `klados_tree` in.
+      const nexusStr = `#NEXUS\n\nBEGIN TREES;\n  TREE klados_tree = ${newickStr}\nEND;\n`;
+
+      // Write Nexus file to a location chosen by the user.
+      const filename = `${this.$store.getters.getDownloadFilenameForPhyx}.nex`;
+      // Save to local hard drive.
+      const newickFile = new File([nexusStr], filename, {
+        type: "text/plain;charset=utf-8",
+      });
+      // With charset=utf-8, saveAs defaults to adding a Unicode BOM.
+      // This will confuse downstream files, so we force it off here.
+      saveAs(newickFile, filename, { autoBom: false });
+    },
     recurseNodes(node, func, nodeCount = 0, parentCount = undefined) {
       // Recurse through PhyloTree nodes, executing function on each node.
       //  - node: The node to recurse from. The function will be called on node
@@ -386,9 +482,17 @@ export default {
               pinningNodeChildrenIRIs.add(source_id);
               this.recurseNodes(source, (node) => {
                 pinningNodeChildrenIRIs.add(node["@id"]);
-                console.log("Found child", node["@id"], "for source", source_id);
+                console.log(
+                  "Found child",
+                  node["@id"],
+                  "for source",
+                  source_id
+                );
               });
-              console.log("Set pinningNodeChildrenIRIs to ", pinningNodeChildrenIRIs);
+              console.log(
+                "Set pinningNodeChildrenIRIs to ",
+                pinningNodeChildrenIRIs
+              );
 
               element.classed("descendant-of-pinning-node-branch", true);
             } else if (pinningNodeChildrenIRIs.has(source_id)) {
