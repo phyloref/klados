@@ -142,6 +142,9 @@ export default {
   },
   methods: {
     exportAsNexus() {
+      // Store a list of annotations containing both double quotes and single quotes.
+      let annotations_containing_single_and_double_quotes = [];
+
       // Export this phylogeny as a Nexus string in a .nex file for download.
       const newickStr = this.tree.getNewick((node) => {
         // Is the resolved node for this phyloref? If so, let's make an annotation.
@@ -154,8 +157,17 @@ export default {
           const data = node.data;
 
           const convertToNexusAnnotationValue = (str) => {
-            // We really just need to wrap this in double-quotes, which means we need to filter out existing double quotes.
-            return '"' + str.replaceAll('"', "''") + '"';
+            // We really just need to wrap this in double-quotes, which means we need to filter out existing double
+            // quotes. We can do that by replacing them with a single quote. However, if there are already single
+            // quotes in the string, then this is a non-reversible action, so we should warn the user before doing
+            // that. If we need to do that, we add the annotations to annotations_containing_single_and_double_quotes,
+            // and ask the user for confirmation before export.
+            if (str.indexOf("'") >= 0 && str.indexOf('"') >= 0) {
+              annotations_containing_single_and_double_quotes.push(str);
+            }
+
+            // Replace double-quotes with a single quote.
+            return '"' + str.replaceAll('"', "'") + '"';
           };
 
           if (
@@ -215,6 +227,24 @@ export default {
 
       // Create a Nexus file to store this `klados_tree` in.
       const nexusStr = `#NEXUS\n\nBEGIN TREES;\n  TREE klados_tree = ${newickStr}\nEND;\n`;
+
+      // If there are annotations containing both single and double quotes, we report them here and
+      // request confirmation from the user before exporting data that can't be exported.
+      if (annotations_containing_single_and_double_quotes.length > 0) {
+        const example_annotations = annotations_containing_single_and_double_quotes.slice(0, 3);
+        if (
+          !window.confirm(
+            `Some annotations (such as ${example_annotations.join(
+              "; "
+            )}) contain both single quotes and double quotes. Double quotes need to be converted to single quotes ` +
+              "so that the resulting NEXUS file can be read, but this will be non-reversible. Do you want to export " +
+              "this NEXUS file?"
+          )
+        ) {
+          // User doesn't want to do this export. Cancel this operation.
+          return;
+        }
+      }
 
       // Write Nexus file to a location chosen by the user.
       const filename = `${this.$store.getters.getDownloadFilenameForPhyx}.nex`;
