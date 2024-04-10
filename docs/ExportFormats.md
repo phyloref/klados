@@ -14,7 +14,7 @@ The summary table CSV export includes the following columns:
     * `Maximum clade definition`
     * `Minimum clade definition`
     * `Invalid definition (...)` (with the reason for the invalid definition in brackets)
-* `Definition`: The clade definition as entered in the `Definition in free-form text`.
+* `Definition`: The (human readable) clade definition as entered in the `Definition in free-form text`.
   * Example: `Last common ancestor of Crocodylus niloticus, Osteolaemus tetraspis, and Tomistoma schlegelii and all of its descendents.`
 * `Internal specifier N`: A description of each internal specifier (_N_ is a number starting from 1).
   * Example: `Caiman crocodilus`
