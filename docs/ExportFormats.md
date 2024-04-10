@@ -4,7 +4,7 @@
 
 The summary table CSV export includes the following columns:
 
-* `Phyloreference ID`: A URL or URI (absolute, relative or local) that identifies this phyloreference.
+* `Phyloreference ID`: A URI (absolute, relative or local; may or may not resolve) that identifies this phyloreference. Normally intended for machine consumption.
   * Example `#Alligatoridae`
 * `Label`: A label used to identify this phyloreference.
   * Example: `Alligatoridae`
