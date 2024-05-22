@@ -389,10 +389,10 @@ export default {
 
               // If there is no circle, add one.
               if (element.select("circle").empty()) {
-                element.append("circle").attr("cx", -3).attr("r", 6);
+                element.append("circle").attr("cx", -3).attr("r", 4);
               } else {
-                // Make the pinning node circle larger (twice its usual size of 3).
-                element.select("circle").attr("r", 6);
+                // Make the pinning node circle larger (slightly larger than its usual size of 3).
+                element.select("circle").attr("r", 4);
               }
 
               // Set its id to 'current_pinning_node_phylogeny{{phylogenyIndex}}'
