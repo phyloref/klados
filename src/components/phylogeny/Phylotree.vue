@@ -561,8 +561,7 @@ export default {
 /* Labels for internal nodes, whether phylorefs or not */
 .internal-label {
   font-family: serif;
-  font-size: 16pt;
-  font-style: italic;
+  font-size: 14pt;
 
   text-anchor: start; /* Align text so it starts at the coordinates provided */
   alignment-baseline: middle;
@@ -586,7 +585,7 @@ export default {
 
 /* The selected internal label on a phylogeny, whether determined to be the pinning node or not. */
 .selected-internal-label {
-  font-size: 16pt;
+  font-size: 12pt !important;
   fill: rgb(0, 24, 168);
 }
 
@@ -598,7 +597,7 @@ export default {
 .pinning-node text {
   fill: black !important;
   font-weight: bolder;
-  font-size: 16pt !important;
+  font-size: 14pt;
 }
 
 /*
