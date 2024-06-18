@@ -442,7 +442,7 @@ export default {
           ...this.phylogenies.flatMap((phylogeny) => {
             const expectedNodeLabel = this.getPhylorefExpectedNodeLabel(phyloref, phylogeny) || '';
 
-            if (!this.hasReasoningResults(phyloref)) return 'Resolution not yet run';
+            if (!this.hasReasoningResults(phyloref)) return '(resolution not yet run)';
 
             const resolvedNodes = this.getNodeLabelsResolvedByPhyloref(phyloref, phylogeny);
 
