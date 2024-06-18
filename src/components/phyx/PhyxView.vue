@@ -445,7 +445,10 @@ export default {
             if (!this.hasReasoningResults(phyloref)) return 'Resolution not yet run';
 
             const resolvedNodes = this.getNodeLabelsResolvedByPhyloref(phyloref, phylogeny);
-            const resolvedNodesDescription = resolvedNodes.map(nl => (nl === '' ? 'an unlabeled node' : nl))
+
+            // A blank label here indicates that no node could be resolved (if you check getNodeLabelsResolvedByPhyloref(),
+            // you'll see that nodes without a label are already labeled as '(unlabelled)').
+            const resolvedNodesDescription = resolvedNodes.map(nl => (nl === '' ? '(could not resolve)' : nl))
               .join("|");
 
             return [expectedNodeLabel, resolvedNodesDescription];
