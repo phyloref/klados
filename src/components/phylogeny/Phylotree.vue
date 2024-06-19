@@ -240,9 +240,9 @@ export default {
           !window.confirm(
             `Some annotations (such as ${example_annotations.join(
               "; "
-            )}) contain both single quotes and double quotes. Double quotes need to be converted to single quotes ` +
-              "so that the resulting NEXUS file can be read, but this will be non-reversible. Do you want to export " +
-              "this NEXUS file?"
+            )}) contain both single quotes and double quotes. To comply with NEXUS format, the double quotes need ` +
+              "to be converted to single quotes, but this will be non-reversible because the string already contains " +
+              "single quotes. Do you still want to export this NEXUS file?"
           )
         ) {
           // User doesn't want to do this export. Cancel this operation.
