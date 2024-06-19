@@ -22,5 +22,9 @@ The summary table CSV export includes the following columns:
   * Example: `Caiman crocodilus`
 * `Phylogeny: [Phylogeny label] expected`: The label of the node in the specified phylogeny to which the phyloreference was expected to resolve.
   * Example: `Alligatoridae`
+  * Will be set to `(none)` if no expected node was found.
 * `Phylogeny: [Phylogeny label] actual`: The label of the node actually resolved for this phyloreference in the specified phylogeny.
-  * Example: `Alligatoridae_ott195670`, or `(unlabelled)` if the node has no label
+  * Example: `Alligatoridae_ott195670`
+  * Will be set to `(resolution not yet run)` if resolution has not yet been run.
+  * Will be set to `(could not resolve)` if this phyloreference could not be resolved.
+  * Will be set to `(unlabelled)` if a node was resolved, but it had no label.
