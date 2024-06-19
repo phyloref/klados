@@ -2,10 +2,9 @@
  * Store module for modifying phylogenies.
  */
 
-import Vue from 'vue';
-import {findIndex, has} from 'lodash';
-import {TaxonomicUnitWrapper} from "@phyloref/phyx";
-import {areTUnitsIdentical} from "@/store/modules/phyloref";
+import Vue from "vue";
+import { findIndex, has } from "lodash";
+import { TaxonomicUnitWrapper } from "@phyloref/phyx";
 
 export default {
   getters: {
@@ -25,12 +24,6 @@ export default {
           .representsTaxonomicUnits;
       }
       return [];
-    },
-    areTUnitsIdentical: () => (tunit1, tunit2) => {
-      // Test whether two taxonomic units are identical. This is intended to be the only place in Klados where
-      // we do this comparison. Eventually I will update this to normalize the TUs before comparison, which should
-      // help with https://github.com/phyloref/klados/issues/263
-      return areTUnitsIdentical(tunit1, tunit2);
     },
   },
   mutations: {
@@ -66,7 +59,12 @@ export default {
           {}
         );
 
-      if (!has(payload.phylogeny.additionalNodeProperties[payload.nodeLabel], "representsTaxonomicUnits"))
+      if (
+        !has(
+          payload.phylogeny.additionalNodeProperties[payload.nodeLabel],
+          "representsTaxonomicUnits"
+        )
+      )
         Vue.set(
           payload.phylogeny.additionalNodeProperties[payload.nodeLabel],
           "representsTaxonomicUnits",
@@ -74,7 +72,9 @@ export default {
         );
 
       // Now we can append the new taxonomic unit to it.
-      payload.phylogeny.additionalNodeProperties[payload.nodeLabel].representsTaxonomicUnits.push(tunitToBeAdded);
+      payload.phylogeny.additionalNodeProperties[
+        payload.nodeLabel
+      ].representsTaxonomicUnits.push(tunitToBeAdded);
     },
     /**
      * Replace or delete a taxonomic unit from a phylogeny node.
@@ -102,7 +102,12 @@ export default {
       }
 
       console.log(
-        "Tried to replace or delete tunit: ", payload.tunit, " from phylogeny ", payload.phylogeny, " at node label ", payload.nodeLabel
+        "Tried to replace or delete tunit: ",
+        payload.tunit,
+        " from phylogeny ",
+        payload.phylogeny,
+        " at node label ",
+        payload.nodeLabel
       );
       if (!has(payload.phylogeny, "additionalNodeProperties")) {
         console.error(
@@ -193,24 +198,36 @@ export default {
       //  (2) all current references to this phylogeny continue to make sense.
 
       // Check arguments.
-      if (!has(payload, 'phylogeny')) {
-        throw new Error('changePhylogenyId needs a phylogeny to modify using the "phylogeny" argument');
+      if (!has(payload, "phylogeny")) {
+        throw new Error(
+          'changePhylogenyId needs a phylogeny to modify using the "phylogeny" argument'
+        );
       }
 
-      if (!has(payload, 'phylogenyId')) {
-        throw new Error('changePhylogenyId needs a new phylogeny ID using the "phylogenyId" argument');
+      if (!has(payload, "phylogenyId")) {
+        throw new Error(
+          'changePhylogenyId needs a new phylogeny ID using the "phylogenyId" argument'
+        );
       }
 
       // What was the previous phylogeny ID?
-      const oldPhylogenyId = context.rootGetters.getPhylogenyId(payload.phylogeny);
+      const oldPhylogenyId = context.rootGetters.getPhylogenyId(
+        payload.phylogeny
+      );
 
       // No need to do anything if they haven't changed.
       if (oldPhylogenyId === payload.phylogenyId) return;
 
       // Do any of our current phylogenies have this ID?
-      const phylogenyWithDuplicateID = context.rootState.phyx.currentPhyx.phylogenies.find(phylogeny => has(phylogeny, '@id') && phylogeny['@id'] === payload.phylogenyId);
+      const phylogenyWithDuplicateID =
+        context.rootState.phyx.currentPhyx.phylogenies.find(
+          (phylogeny) =>
+            has(phylogeny, "@id") && phylogeny["@id"] === payload.phylogenyId
+        );
       if (phylogenyWithDuplicateID) {
-        throw new Error(`Attempt to change ${oldPhylogenyId} to ${payload.phylogenyId} failed: duplicate phylogeny ID detected.`);
+        throw new Error(
+          `Attempt to change ${oldPhylogenyId} to ${payload.phylogenyId} failed: duplicate phylogeny ID detected.`
+        );
       }
 
       // If any phyloreferences refer to oldPhylogenyId, replace it with
@@ -218,13 +235,13 @@ export default {
       context.rootState.phyx.currentPhyx.phylorefs.forEach((phyloref) => {
         if (has(phyloref.expectedResolution || {}, oldPhylogenyId)) {
           // Copy the expected resolution of oldPhylogenyId into the new phylogenyId.
-          context.commit('setPhylorefProps', {
+          context.commit("setPhylorefProps", {
             phyloref,
             phylogenyId: payload.phylogenyId,
             expectedResolution: phyloref.expectedResolution[oldPhylogenyId],
           });
           // Delete the expected resolution of oldPhylogenyId.
-          context.commit('setPhylorefProps', {
+          context.commit("setPhylorefProps", {
             phyloref,
             phylogenyId: oldPhylogenyId,
             expectedResolution: undefined,
@@ -233,9 +250,9 @@ export default {
       });
 
       // Change the phylogeny.
-      context.commit('setPhylogenyProps', {
+      context.commit("setPhylogenyProps", {
         phylogeny: payload.phylogeny,
-        '@id': payload.phylogenyId,
+        "@id": payload.phylogenyId,
       });
     },
   },

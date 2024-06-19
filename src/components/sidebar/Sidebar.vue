@@ -23,7 +23,7 @@
           type="file"
           class="d-none"
           @change="loadPhyxFromFileInputById('#file-input')"
-        >
+        />
 
         <a
           class="list-group-item list-group-item-action"
@@ -59,6 +59,7 @@
             message="This Phyx file has been modified after it was loaded! Use 'Save' to save your changes."
             :compare="currentPhyx"
             :compare-to="loadedPhyx"
+            normalize-as="phyx"
           />
         </a>
 
@@ -83,12 +84,8 @@
           href="javascript: void(0)"
           @click="reasonOverPhyloreferences()"
         >
-          <span v-if="reasoningInProgress">
-            (Reasoning in progress)
-          </span>
-          <span v-else>
-            Resolve against phylogenies
-          </span>
+          <span v-if="reasoningInProgress"> (Reasoning in progress) </span>
+          <span v-else> Resolve against phylogenies </span>
         </a>
 
         <a
@@ -114,7 +111,7 @@
         <a
           class="m-0 border-0 list-group-item list-group-item-action"
           href="javascript: void(0)"
-          :class="{active: !selectedPhyloref && !selectedPhylogeny}"
+          :class="{ active: !selectedPhyloref && !selectedPhylogeny }"
           @click="$store.commit('changeDisplay', {})"
         >
           <em>Summary</em>
@@ -123,14 +120,14 @@
           <a
             href="javascript: void(0)"
             class="h6 border-top border-bottom-0 m-0 border-dark list-group-item list-group-item-action"
-            :class="{active: selectedPhyloref === phyloref}"
-            @click="$store.commit('changeDisplay', {phyloref})"
+            :class="{ active: selectedPhyloref === phyloref }"
+            @click="$store.commit('changeDisplay', { phyloref })"
           >
             <span v-if="phyloref.label">
               {{ phyloref.label }}
             </span>
             <span v-else>
-              {{ 'Phyloreference ' + (phylorefIndex + 1) }}
+              {{ "Phyloreference " + (phylorefIndex + 1) }}
             </span>
 
             <!-- Add a warning if this phyloreference has changed -->
@@ -138,6 +135,7 @@
               message="This phyloreference has been modified after it was loaded! Use 'Save' to save your changes."
               :compare="phyloref"
               :compare-to="loadedPhyx.phylorefs[phylorefIndex]"
+              normalize-as="phyloref"
             />
           </a>
 
@@ -148,7 +146,8 @@
               href="javascript: void(0)"
               class="list-group-item list-group-item-action"
             >
-              &#9679; <strong>Internal:</strong> {{ getSpecifierLabel(specifier) }}
+              &#9679; <strong>Internal:</strong>
+              {{ getSpecifierLabel(specifier) }}
             </a>
 
             <a
@@ -156,7 +155,8 @@
               href="javascript: void(0)"
               class="list-group-item list-group-item-action"
             >
-              &#9679; <strong>External:</strong> {{ getSpecifierLabel(specifier) }}
+              &#9679; <strong>External:</strong>
+              {{ getSpecifierLabel(specifier) }}
             </a>
           </template>
         </template>
@@ -185,8 +185,8 @@
           v-for="(phylogeny, phylogenyIndex) of phylogenies"
           href="javascript: void(0)"
           class="h6 border-top m-0 list-group-item list-group-item-action"
-          :class="{active: selectedPhylogeny === phylogeny}"
-          @click="$store.commit('changeDisplay', {phylogeny})"
+          :class="{ active: selectedPhylogeny === phylogeny }"
+          @click="$store.commit('changeDisplay', { phylogeny })"
         >
           {{ phylogeny.label || `Phylogeny ${phylogenyIndex + 1}` }}
 
@@ -195,6 +195,7 @@
             message="This phylogeny has been modified after it was loaded! Use 'Save' to save your changes."
             :compare="phylogeny"
             :compare-to="loadedPhyx.phylogenies[phylogenyIndex]"
+            normalize-as="phylogeny"
           />
         </a>
         <a
@@ -213,7 +214,8 @@
         </a>
       </div>
     </div>
-  </div><!-- End of sidebar -->
+  </div>
+  <!-- End of sidebar -->
 </template>
 
 <script>
@@ -224,25 +226,29 @@
  *  - A list of all phylogenies and a button to add more phylogenies.
  */
 
-import Vue from 'vue';
-import { has } from 'lodash';
+import Vue from "vue";
+import { has } from "lodash";
 import { Buffer } from "buffer";
 import { newickParser } from "phylotree";
-import { mapState, mapGetters } from 'vuex';
-import { saveAs } from 'filesaver.js-npm';
-import CryptoJS from 'crypto-js';
-import pako from 'pako';
+import { mapState, mapGetters } from "vuex";
+import { saveAs } from "filesaver.js-npm";
+import CryptoJS from "crypto-js";
+import pako from "pako";
 import {
   JPHYLOREF_X_HUB_SIGNATURE_SECRET,
   JPHYLOREF_SUBMISSION_URL,
-} from '@/config';
+} from "@/config";
 
-import { PhyxWrapper, PhylorefWrapper, TaxonomicUnitWrapper } from '@phyloref/phyx';
+import {
+  PhyxWrapper,
+  PhylorefWrapper,
+  TaxonomicUnitWrapper,
+} from "@phyloref/phyx";
 
-import ModifiedIcon from '../icons/ModifiedIcon.vue';
+import ModifiedIcon from "../icons/ModifiedIcon.vue";
 
 export default {
-  name: 'Sidebar',
+  name: "Sidebar",
   components: {
     ModifiedIcon,
   },
@@ -259,12 +265,12 @@ export default {
       // Returns a list of example files to display in the "Examples" menu.
       return [
         {
-          url: 'examples/brochu_2003.json',
-          title: 'Brochu 2003',
+          url: "examples/brochu_2003.json",
+          title: "Brochu 2003",
         },
         {
-          url: 'examples/fisher_et_al_2007.json',
-          title: 'Fisher et al, 2007',
+          url: "examples/fisher_et_al_2007.json",
+          title: "Fisher et al, 2007",
         },
         {
           url: "examples/testudinata_phylonym.json",
@@ -273,10 +279,7 @@ export default {
       ];
     },
     wrappedPhyx() {
-      return new PhyxWrapper(
-        this.$store.state.phyx.currentPhyx,
-        newickParser
-      );
+      return new PhyxWrapper(this.$store.state.phyx.currentPhyx, newickParser);
     },
     wrappedPhyxAsJSONLD() {
       try {
@@ -286,18 +289,16 @@ export default {
         return undefined;
       }
     },
-    ...mapGetters([
-      'phyxTitle',
-    ]),
+    ...mapGetters(["phyxTitle"]),
     ...mapState({
-      phyx: state => state.phyx,
-      currentPhyx: state => state.phyx.currentPhyx,
-      loadedPhyx: state => state.phyx.loadedPhyx,
-      phylorefs: state => state.phyx.currentPhyx.phylorefs,
-      phylogenies: state => state.phyx.currentPhyx.phylogenies,
-      selectedPhyloref: state => state.ui.display.phyloref,
-      selectedPhylogeny: state => state.ui.display.phylogeny,
-      selectedSpecifier: state => state.ui.display.specifier,
+      phyx: (state) => state.phyx,
+      currentPhyx: (state) => state.phyx.currentPhyx,
+      loadedPhyx: (state) => state.phyx.loadedPhyx,
+      phylorefs: (state) => state.phyx.currentPhyx.phylorefs,
+      phylogenies: (state) => state.phyx.currentPhyx.phylogenies,
+      selectedPhyloref: (state) => state.ui.display.phyloref,
+      selectedPhylogeny: (state) => state.ui.display.phylogeny,
+      selectedSpecifier: (state) => state.ui.display.specifier,
     }),
   },
   methods: {
@@ -305,7 +306,11 @@ export default {
       // Get the label for a particular specifier.
       // TODO: We need to include verbatimSpecifier first because of
       // https://github.com/phyloref/phyx.js/issues/14
-      return specifier.verbatimSpecifier || new TaxonomicUnitWrapper(specifier).label || 'Undefined specifier';
+      return (
+        specifier.verbatimSpecifier ||
+        new TaxonomicUnitWrapper(specifier).label ||
+        "Undefined specifier"
+      );
     },
 
     promptAndSetDict(message, dict, key) {
@@ -313,7 +318,8 @@ export default {
       // to provide a new value for that dictionary and key. If one is provided,
       // we replace it.
       const response = window.prompt(message, dict[key]);
-      if (response !== undefined && response !== null) Vue.set(dict, key, response);
+      if (response !== undefined && response !== null)
+        Vue.set(dict, key, response);
     },
 
     loadPhyxFromURL(url) {
@@ -321,23 +327,31 @@ export default {
 
       // Is the user sure that they want to do this?
       if (this.$store.getters.loadedPhyxChanged) {
-        if (!confirm('The current Phyx file has been modified! Are you sure you want to discard these changes by loading another file?')) {
+        if (
+          !confirm(
+            "The current Phyx file has been modified! Are you sure you want to discard these changes by loading another file?"
+          )
+        ) {
           return;
         }
       }
 
       $.getJSON(url)
         .done((data) => {
-          this.$store.commit('setCurrentPhyx', data);
-          this.$store.commit('setLoadedPhyx', data);
+          this.$store.commit("setCurrentPhyx", data);
+          this.$store.commit("setLoadedPhyx", data);
           // Reset the display.
-          this.$store.commit('changeDisplay', {});
+          this.$store.commit("changeDisplay", {});
         })
         .fail((error) => {
           if (error.status === 200) {
-            alert(`Could not load PHYX file '${url}': file malformed, see console for details.`);
+            alert(
+              `Could not load PHYX file '${url}': file malformed, see console for details.`
+            );
           } else {
-            alert(`Could not load PHYX file '${url}': server error ${error.status} ${error.statusText}`);
+            alert(
+              `Could not load PHYX file '${url}': server error ${error.status} ${error.statusText}`
+            );
           }
           // throw new Error(`Could not load PHYX file ${url}: ${error}`);
         });
@@ -351,55 +365,67 @@ export default {
       //
       // This code is based on https://stackoverflow.com/a/21446426/27310
 
-      if (typeof window.FileReader !== 'function') {
-        alert('The FileReader API is not supported on this browser.');
+      if (typeof window.FileReader !== "function") {
+        alert("The FileReader API is not supported on this browser.");
         return;
       }
 
       const $fileInput = $(fileInputId);
       if (!$fileInput) {
-        alert('Programmer error: No file input element specified.');
+        alert("Programmer error: No file input element specified.");
         return;
       }
 
-      if (!$fileInput.prop('files')) {
-        alert('File input element found, but files property missing: try another browser?');
+      if (!$fileInput.prop("files")) {
+        alert(
+          "File input element found, but files property missing: try another browser?"
+        );
         return;
       }
 
-      if (!$fileInput.prop('files')[0]) {
-        alert('Please select a file before attempting to load it.');
+      if (!$fileInput.prop("files")[0]) {
+        alert("Please select a file before attempting to load it.");
         return;
       }
 
       // Is the user sure that they want to do this?
       if (this.$store.getters.loadedPhyxChanged) {
-        if (!confirm('The current Phyx file has been modified! Are you sure you want to discard these changes by loading another file?')) {
+        if (
+          !confirm(
+            "The current Phyx file has been modified! Are you sure you want to discard these changes by loading another file?"
+          )
+        ) {
           return;
         }
       }
 
-      const [file] = $fileInput.prop('files');
+      const [file] = $fileInput.prop("files");
       const fr = new FileReader();
-      fr.onload = ((e) => {
+      fr.onload = (e) => {
         const lines = e.target.result;
         const phyx = JSON.parse(lines);
 
-        this.$store.commit('setCurrentPhyx', phyx);
-        this.$store.commit('setLoadedPhyx', phyx);
+        this.$store.commit("setCurrentPhyx", phyx);
+        this.$store.commit("setLoadedPhyx", phyx);
 
         // Reset the display.
-        this.$store.commit('changeDisplay', {});
-      });
+        this.$store.commit("changeDisplay", {});
+      };
       fr.readAsText(file);
     },
 
     downloadAsJSON() {
       // Provide the JSON file as a download to the browser.
-      const content = [JSON.stringify(this.$store.state.phyx.currentPhyx, undefined, 4)];
+      const content = [
+        JSON.stringify(this.$store.state.phyx.currentPhyx, undefined, 4),
+      ];
 
       // Save to local hard drive.
-      const jsonFile = new File(content, `${this.downloadFilenameForPhyx}.json`, { type: 'application/json;charset=utf-8' });
+      const jsonFile = new File(
+        content,
+        `${this.downloadFilenameForPhyx}.json`,
+        { type: "application/json;charset=utf-8" }
+      );
       saveAs(jsonFile, `${this.downloadFilenameForPhyx}.json`);
 
       // saveAs(jsonFile) doesn't report on whether the user accepted the download
@@ -413,7 +439,7 @@ export default {
       // Deep-copy the testcase into a 'testcaseAsLoaded' variable in our
       // model. We deep-compare this.testcase with this.testcaseAsLoaded to
       // determine if the loaded model has been modified.
-      this.$store.commit('setLoadedPhyx');
+      this.$store.commit("setLoadedPhyx");
     },
 
     downloadAsJSONLD() {
@@ -424,7 +450,11 @@ export default {
       const content = [JSON.stringify([jsonld], undefined, 4)];
 
       // Save to local hard drive.
-      const jsonldFile = new File(content, `${this.downloadFilenameForPhyx}.jsonld`, { type: 'application/json;charset=utf-8' });
+      const jsonldFile = new File(
+        content,
+        `${this.downloadFilenameForPhyx}.jsonld`,
+        { type: "application/json;charset=utf-8" }
+      );
       saveAs(jsonldFile, `${this.downloadFilenameForPhyx}.jsonld`);
     },
 
@@ -436,9 +466,13 @@ export default {
       // TODO: we need a baseIRI here because of https://github.com/phyloref/phyx.js/issues/113
       // Once that is fixed in phyx.js, we can remove it here.
       try {
-        wrapped.toRDF('https://example.org/phyx#').then((content) => {
+        wrapped.toRDF("https://example.org/phyx#").then((content) => {
           // Save to local hard drive.
-          const nqFile = new File([content], `${this.downloadFilenameForPhyx}.owl`, {type: 'application/n-quads;charset=utf-8'});
+          const nqFile = new File(
+            [content],
+            `${this.downloadFilenameForPhyx}.owl`,
+            { type: "application/n-quads;charset=utf-8" }
+          );
           saveAs(nqFile, `${this.downloadFilenameForPhyx}.owl`);
         });
       } catch (err) {
@@ -454,7 +488,7 @@ export default {
       if (this.reasoningInProgress) return;
 
       // Reset the existing reasoning information.
-      this.$store.commit('setReasoningResults', undefined);
+      this.$store.commit("setReasoningResults", undefined);
 
       // Disable "Reason" buttons so they can't be reused.
       this.reasoningInProgress = true;
@@ -477,43 +511,52 @@ export default {
         // Prepare request for submission.
         const query = $.param({
           // Convert Gzipped data into a string in Base64.
-          jsonldGzipped: Buffer.from(jsonldGzipped).toString('base64'),
-        }).replace(/%20/g, '+'); // $.post will do this automatically,
+          jsonldGzipped: Buffer.from(jsonldGzipped).toString("base64"),
+        }).replace(/%20/g, "+"); // $.post will do this automatically,
         // but we need to do this here so our
         // signature works.
 
         // Sign it with an X-Hub-Signature.
-        const signature = "sha1=" + CryptoJS.HmacSHA1(query, JPHYLOREF_X_HUB_SIGNATURE_SECRET)
-            .toString(CryptoJS.enc.Hex);
+        const signature =
+          "sha1=" +
+          CryptoJS.HmacSHA1(query, JPHYLOREF_X_HUB_SIGNATURE_SECRET).toString(
+            CryptoJS.enc.Hex
+          );
 
-        console.log('Query: ', query);
-        console.log('Signature: ', signature);
+        console.log("Query: ", query);
+        console.log("Signature: ", signature);
 
         $.post({
           url: JPHYLOREF_SUBMISSION_URL,
           data: query,
           headers: {
-            'X-Hub-Signature': signature,
+            "X-Hub-Signature": signature,
           },
-        }).done((data) => {
-          outerThis.$store.commit('setReasoningResults', data);
-          // console.log('Data retrieved: ', data);
-        }).fail((jqXHR, textStatus, errorThrown) => {
-          // We can try using the third argument, but it appears to be the
-          // HTTP status (e.g. 'Internal Server Error'). So we default to that,
-          // but look for a better one in the JSON response from the server, if
-          // available.
-          let error = errorThrown;
-          if (has(jqXHR, 'responseJSON') && has(jqXHR.responseJSON, 'error')) {
-            error = jqXHR.responseJSON.error;
-          }
+        })
+          .done((data) => {
+            outerThis.$store.commit("setReasoningResults", data);
+            // console.log('Data retrieved: ', data);
+          })
+          .fail((jqXHR, textStatus, errorThrown) => {
+            // We can try using the third argument, but it appears to be the
+            // HTTP status (e.g. 'Internal Server Error'). So we default to that,
+            // but look for a better one in the JSON response from the server, if
+            // available.
+            let error = errorThrown;
+            if (
+              has(jqXHR, "responseJSON") &&
+              has(jqXHR.responseJSON, "error")
+            ) {
+              error = jqXHR.responseJSON.error;
+            }
 
-          if (error === undefined || error === '') error = 'unknown error';
-          alert(`Error occurred on server while reasoning: ${error}`);
-        }).always(() => {
-          // Reset "Reasoning" buttons to their usual state.
-          outerThis.reasoningInProgress = false;
-        });
+            if (error === undefined || error === "") error = "unknown error";
+            alert(`Error occurred on server while reasoning: ${error}`);
+          })
+          .always(() => {
+            // Reset "Reasoning" buttons to their usual state.
+            outerThis.reasoningInProgress = false;
+          });
       });
     },
   },
