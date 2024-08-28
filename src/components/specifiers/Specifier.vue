@@ -30,12 +30,6 @@
             href="javascript:;"
             @click="specifierClass = 'External reference'"
           >External reference</a>
-          <a
-            class="dropdown-item"
-            :class="{active: specifierClass === 'Apomorphy'}"
-            href="javascript:;"
-            @click="specifierClass = 'Apomorphy'"
-          >Apomorphy</a>
         </div>
       </div>
       <div
@@ -162,9 +156,6 @@
               </option>
               <option value="External reference">
                 External reference
-              </option>
-              <option value="Apomorphy">
-                Apomorphy
               </option>
             </select>
           </div>
@@ -364,13 +355,6 @@
             </div>
           </div>
         </template>
-
-        <template v-if="specifierClass === 'Apomorphy'">
-          <p>
-            Apomorphy-based specifiers are not currently supported. Please enter
-            them into the verbatim label field for now.
-          </p>
-        </template>
       </div>
     </div>
   </div>
@@ -400,11 +384,6 @@ import {
 import {
   has, isEqual, cloneDeep, uniqueId,
 } from 'lodash';
-
-
-// TaxonomicUnitWrapper doesn't yet set a type for apomophies, so
-// we'll set one up ourselves.
-TaxonomicUnitWrapper.TYPE_APOMORPHY = 'http://purl.obolibrary.org/obo/CDAO_0000071';
 
 export default {
   name: 'Specifier',
@@ -477,12 +456,6 @@ export default {
 
         case 'Specimen':
           result = SpecimenWrapper.fromOccurrenceID(this.enteredOccurrenceID);
-          break;
-
-        case 'Apomorphy':
-          result = {
-            '@type': TaxonomicUnitWrapper.TYPE_APOMORPHY,
-          };
           break;
 
         case 'External reference':
@@ -590,9 +563,6 @@ export default {
 
           case TaxonomicUnitWrapper.TYPE_SPECIMEN:
             return 'Specimen';
-
-          case TaxonomicUnitWrapper.TYPE_APOMORPHY:
-            return 'Apomorphy';
         }
 
         // If it has an '@id', it is an external reference to that '@id'.
