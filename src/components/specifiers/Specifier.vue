@@ -12,7 +12,6 @@
           {{ specifierClass }}
         </button>
         <div class="dropdown-menu">
-          <!-- TODO: remove external reference as a type and add it in as a separate property. -->
           <a
             class="dropdown-item"
             :class="{active: specifierClass === 'Taxon'}"
@@ -67,6 +66,7 @@
       </div>
       <input
         v-model="specifierLabel"
+        readonly
         type="text"
         class="form-control"
       >
@@ -522,45 +522,12 @@ export default {
         );
       },
     },
-    specifierLabel: {
-      get() {
-        if (this.enteredVerbatimLabel) return this.enteredVerbatimLabel;
-        if (this.externalReference) return this.externalReference;
-        if (this.specimenWrapped) return this.specimenWrapped.label;
-        if (this.taxonNameWrapped) return this.taxonNameWrapped.label;
-        return '';
-      },
-      set(label) {
-        // 1. Set the verbatim label to this.
-        this.enteredVerbatimLabel = label;
-
-        // 2. Attempt to extract the specifier information from there.
-        switch (this.specifierClass) {
-          case 'Taxon':
-            // Try to extract a taxon name from this.
-            this.taxonNameWrapped = TaxonNameWrapper.fromVerbatimName(
-              label,
-              this.enteredNomenclaturalCode,
-            );
-            break;
-
-          case 'Specimen':
-            this.specimenWrapped = SpecimenWrapper.fromOccurrenceID(
-              label,
-            );
-            break;
-
-          case 'Apomorphy':
-            // For now, we just write apomorphies into the verbatim label.
-            break;
-
-          case 'External reference':
-            this.externalReference = label;
-            break;
-        }
-
-        this.updateSpecifier();
-      },
+    specifierLabel() {
+      if (this.enteredVerbatimLabel) return this.enteredVerbatimLabel;
+      if (this.externalReference) return this.externalReference;
+      if (this.specimenWrapped) return this.specimenWrapped.label;
+      if (this.taxonNameWrapped) return this.taxonNameWrapped.label;
+      return '';
     },
     enteredScientificName: {
       // TODO: We should want the user if we couldn't parse this; at the moment,
