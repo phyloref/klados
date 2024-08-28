@@ -49,9 +49,9 @@
           <a
             v-for="(nomenCode, nomenCodeIndex) of nomenCodes"
             class="dropdown-item"
-            :class="{active: enteredNomenclaturalCode === nomenCode.iri }"
+            :class="{active: nomenclaturalCode === nomenCode.iri }"
             href="javascript:;"
-            @click="enteredNomenclaturalCode = nomenCode.iri"
+            @click="nomenclaturalCode = nomenCode.iri"
             :key="nomenCode.iri"
           >
             {{ nomenCode.label }}
@@ -126,9 +126,9 @@
           <div class="col-md-10">
             <input
               id="verbatim-specifier"
-              v-model="enteredVerbatimLabel"
+              v-model="verbatimLabel"
               class="form-control"
-              @change="updateSpecifier()"
+              @change="saveSpecifier()"
             >
           </div>
         </div>
@@ -146,7 +146,7 @@
               id="specifier-class"
               v-model="specifierClass"
               class="form-control"
-              @change="updateSpecifier()"
+              @change="saveSpecifier()"
             >
               <option value="Taxon">
                 Taxon
@@ -177,7 +177,7 @@
             <div class="col-md-10">
               <select
                 id="nomen-code"
-                v-model="enteredNomenclaturalCode"
+                v-model="nomenclaturalCode"
                 class="form-control"
               >
                 <option
@@ -201,7 +201,8 @@
             <div class="col-md-10 input-group">
               <input
                 id="name-complete"
-                v-model.lazy="taxonNameWrapped.nameComplete"
+                readonly
+                :value="nameComplete"
                 class="form-control"
               >
             </div>
@@ -217,7 +218,7 @@
             <div class="col-md-10 input-group">
               <input
                 id="genus"
-                v-model="taxonNameWrapped.genusPart"
+                v-model="genusPart"
                 class="form-control"
               >
             </div>
@@ -233,14 +234,13 @@
             <div class="col-md-10 input-group">
               <input
                 id="specific-epithet"
-                v-model="taxonNameWrapped.specificEpithet"
+                v-model="specificEpithet"
                 class="form-control"
               >
             </div>
           </div>
 
           <div
-            v-if="taxonNameWrapped.infraspecificEpithet"
             class="form-group row"
           >
             <label
@@ -252,7 +252,7 @@
             <div class="col-md-10 input-group">
               <input
                 id="infraspecific-epithet"
-                v-model="taxonNameWrapped.infraspecificEpithet"
+                v-model="infraspecificEpithet"
                 class="form-control"
               >
             </div>
@@ -270,7 +270,7 @@
             <div class="col-md-10 input-group">
               <input
                 id="occurrence-id"
-                v-model="enteredOccurrenceID"
+                v-model="occurrenceID"
                 class="form-control"
                 placeholder="Enter the occurrence ID of the specimen here, e.g. 'MVZ:Herp:246033'"
               >
@@ -289,7 +289,7 @@
                 id="collection-code"
                 readonly
                 class="form-control"
-                :value="specimenWrapped.institutionCode"
+                :value="institutionCode"
               >
             </div>
           </div>
@@ -306,7 +306,7 @@
                 id="collection-code"
                 readonly
                 class="form-control"
-                :value="specimenWrapped.collectionCode"
+                :value="collectionCode"
               >
             </div>
           </div>
@@ -323,7 +323,7 @@
                 id="catalog-number"
                 readonly
                 class="form-control"
-                :value="specimenWrapped.catalogNumber"
+                :value="catalogNumber"
               >
             </div>
           </div>
@@ -426,57 +426,59 @@ export default {
     },
   },
   data() {
-    // All of this will be filled in by mounted().
+    // All of this will be filled in by loadSpecifier().
     return {
+      // Has this specifier been expanded for editing?
       expand: false,
-      specifierClass: undefined,
-      specimenWrapped: undefined,
-      taxonNameWrapped: undefined,
-      enteredNomenclaturalCode: this.$store.getters.getDefaultNomenCodeURI,
-      enteredVerbatimLabel: undefined,
-      externalReference: undefined,
+
+      // Fields for all specifier types.
+      specifierClass: "",
+      verbatimLabel: "",
+
+      // Fields for taxon names.
+      nomenclaturalCode: "",
+      genusPart: "",
+      specificEpithet: "",
+      infraspecificEpithet: "",
+
+      // Fields for specimens.
+      occurrenceID: "",
+
+      // Fields for external reference.
+      externalReference: "",
     };
   },
   computed: {
     nomenCodes: () => TaxonNameWrapper.getNomenclaturalCodes(),
     nomenclaturalCodeObj() {
-      return TaxonNameWrapper.getNomenCodeDetails(this.enteredNomenclaturalCode);
+      return TaxonNameWrapper.getNomenCodeDetails(this.nomenclaturalCode);
     },
-    specifier() {
-      // Check the specifierClass before we figure out how to construct the
-      // specifier we might want to overwrite.
-      let result;
-      switch (this.specifierClass) {
-        case 'Taxon':
-          result = TaxonConceptWrapper.fromLabel(
-            this.enteredScientificName,
-            this.enteredNomenclaturalCode,
-          );
-          break;
-
-        case 'Specimen':
-          result = SpecimenWrapper.fromOccurrenceID(this.enteredOccurrenceID);
-          break;
-
-        case 'External reference':
-          result = {
-            // We store the external reference in the '@id' field.
-            '@id': this.externalReference || this.enteredVerbatimLabel || '',
-          };
-          break;
-
-        default:
-          // Make sure we have a result, even if it's just a blank object.
-          result = {};
-      }
-
-      // Add the entered verbatim label.
-      if (this.enteredVerbatimLabel) {
-        result.label = this.enteredVerbatimLabel;
-      }
-
-      return result;
+    // Taxon name fields.
+    nameComplete() {
+      if (this.genusPart && this.specificEpithet && this.infraspecificEpithet) {
+        return `${this.genusPart} ${this.specificEpithet} ${this.infraspecificEpithet}`;
+      } else if (this.genusPart && this.specificEpithet) {
+        return `${this.genusPart} ${this.specificEpithet}`;
+      } else if (this.genusPart) {
+        return this.genusPart;
+      } else return "";
     },
+    // Specimen fields.
+    wrappedSpecimen() {
+      return SpecimenWrapper.fromOccurrenceID(this.occurrenceID);
+    },
+    institutionCode() {
+      const sbc = new SpecimenWrapper();
+      sbc.catalogNumber
+      return this.wrappedSpecimen.institutionCode;
+    },
+    collectionCode() {
+      return this.wrappedSpecimen.collectionCode;
+    },
+    catalogNumber() {
+      return this.wrappedSpecimen.catalogNumber;
+    },
+    // Specifier type.
     specifierType: {
       get() {
         if (!this.phyloref) return undefined;
@@ -496,62 +498,32 @@ export default {
       },
     },
     specifierLabel() {
-      if (this.enteredVerbatimLabel) return this.enteredVerbatimLabel;
-      if (this.externalReference) return this.externalReference;
-      if (this.specimenWrapped) return this.specimenWrapped.label;
-      if (this.taxonNameWrapped) return this.taxonNameWrapped.label;
+      if (this.verbatimLabel) return this.verbatimLabel;
+      // TODO: we should probably try to figure out one for each type.
       return '';
     },
-    enteredScientificName: {
-      // TODO: We should want the user if we couldn't parse this; at the moment,
-      // we silently ignore this and no specifier gets written.
-      get() {
-        if (this.taxonNameWrapped) return this.taxonNameWrapped.nameComplete;
-        return '';
-      },
-      set(scname) {
-        // Don't do anything if a scname is not actually set.
-        if (!scname) return;
 
-        this.taxonNameWrapped = new TaxonNameWrapper(TaxonNameWrapper.fromVerbatimName(scname, this.enteredNomenclaturalCode) || {});
-        this.updateSpecifier();
-        this.enteredScientificName = scname;
-      },
-    },
-    enteredOccurrenceID: {
-      get() {
-        if (this.specimenWrapped) return this.specimenWrapped.occurrenceID;
-        return '';
-      },
-      set(occurID) {
-        this.specimenWrapped = new SpecimenWrapper(SpecimenWrapper.fromOccurrenceID(occurID));
-        this.updateSpecifier();
-      },
-    },
   },
   watch: {
+    // If any of our input parameters change, we should reload this specifier.
     phyloref() {
-      this.recalculateEntered();
+      this.loadSpecifier();
     },
     phylogeny() {
-      this.recalculateEntered();
+      this.loadSpecifier();
     },
     nodeLabel() {
-      this.recalculateEntered();
+      this.loadSpecifier();
     },
     remoteSpecifier() {
-      this.recalculateEntered();
+      this.loadSpecifier();
     },
     remoteSpecifierId() {
-      this.recalculateEntered();
-    },
-    specifierClass() {
-      // If this changes we need to update the specifier!
-      this.updateSpecifier();
+      this.loadSpecifier();
     },
   },
   mounted() {
-    this.recalculateEntered();
+    this.loadSpecifier();
   },
   methods: {
     getSpecifierClass(tunit) {
@@ -573,11 +545,11 @@ export default {
 
       return undefined;
     },
-    recalculateEntered() {
-      console.log('Recalculating entered values from: ', this.remoteSpecifier);
+    loadSpecifier() {
+      console.log('(Re)loading specifier from: ', this.remoteSpecifier);
 
       // Recalculate the entered values.
-      const tunit = new TaxonomicUnitWrapper(cloneDeep(this.remoteSpecifier || {}));
+      const tunit = new TaxonomicUnitWrapper(this.remoteSpecifier || {});
 
       // If it has an '@id', it is an external reference to that '@id'.
       if (has(this.remoteSpecifier, '@id')) {
@@ -585,24 +557,29 @@ export default {
         this.externalReference = this.remoteSpecifier['@id'];
         // tunit.label adds '<>s' around the @id. We work around that by trying
         // to read the label directly.
-        this.enteredVerbatimLabel = this.remoteSpecifier.label || tunit.label;
+        this.verbatimLabel = this.remoteSpecifier.label || tunit.label;
       } else {
-        this.enteredVerbatimLabel = tunit.label;
+        this.verbatimLabel = tunit.label;
         this.specifierClass = this.getSpecifierClass(tunit) || 'Taxon';
       }
 
       const taxonConceptWrapped = new TaxonConceptWrapper(tunit.taxonConcept);
       if (taxonConceptWrapped && taxonConceptWrapped.taxonName) {
-        this.taxonNameWrapped = new TaxonNameWrapper(taxonConceptWrapped.taxonName);
-        this.enteredNomenclaturalCode = this.taxonNameWrapped.nomenclaturalCode
-          || this.enteredNomenclaturalCode;
+        const taxonNameWrapped = new TaxonNameWrapper(taxonConceptWrapped.taxonName);
+
+        this.genusPart = taxonNameWrapped.genusPart;
+        this.specificEpithet = taxonNameWrapped.specificEpithet;
+        this.infraspecificEpithet = taxonNameWrapped.infraspecificEpithet;
+
+        this.nomenclaturalCode = taxonNameWrapped.nomenclaturalCode
+          || this.$store.getters.getDefaultNomenCodeURI;
       }
 
       if (tunit.specimen) {
-        this.specimenWrapped = new SpecimenWrapper(tunit.specimen);
-      }
+        const specimenWrapped = new SpecimenWrapper(tunit.specimen);
 
-      // TODO: what if all fail?
+        this.occurrenceID = specimenWrapped.occurrenceID;
+      }
     },
     deleteSpecifier() {
       // Update remoteSpecifier to what we've got currently entered.
@@ -625,12 +602,48 @@ export default {
         }
       }
     },
-    updateSpecifier() {
-      const result = this.specifier;
+    saveSpecifier() {
+      // Check the specifierClass before we figure out how to save them.
+      let result;
+      switch (this.specifierClass) {
+        case 'Taxon': {
+          // Set up a taxon name for this taxon.
+          const tname = {
+            "@type": TaxonNameWrapper.TYPE_TAXON_NAME,
+            label: this.verbatimLabel,
+            nameComplete: this.nameComplete,
+            genusPart: this.genusPart,
+            specificEpithet: this.specificEpithet,
+            infraspecificEpithet: this.infraspecificEpithet,
+          };
 
-      // If our local specifier differs from the remoteSpecifier, update it.
-      if (this.$store.getters.areTUnitsIdentical(result, this.remoteSpecifier))
-        return;
+          // We don't actually support accordingTo citations here.
+          const accordingTo = undefined;
+
+          result = TaxonConceptWrapper.wrapTaxonName(tname, accordingTo);
+          break;
+        }
+
+        case 'Specimen':
+          result = SpecimenWrapper.fromOccurrenceID(this.enteredOccurrenceID);
+          break;
+
+        case 'External reference':
+          result = {
+            // We store the external reference in the '@id' field.
+            '@id': this.externalReference || this.verbatimLabel || '',
+          };
+          break;
+
+        default:
+          // Make sure we have a result, even if it's just a blank object.
+          result = {};
+      }
+
+      // Add the entered verbatim label.
+      if (this.verbatimLabel) {
+        result.label = this.verbatimLabel;
+      }
 
       if (this.phyloref) {
         console.log('Updating specifier in ', this.phyloref, ' as ', result, ' differs from ', this.remoteSpecifier);
