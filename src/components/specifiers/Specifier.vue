@@ -291,7 +291,7 @@
                 id="occurrence-id"
                 v-model="occurrenceID"
                 class="form-control"
-                placeholder="Enter the occurrence ID of the specimen here, e.g. 'MVZ:Herp:246033'"
+                placeholder="Enter the occurrence ID of the specimen here, e.g. 'MVZ:Herp:246033' or '000866d2-c177-4648-a200-ead4007051b9'"
               >
             </div>
           </div>
