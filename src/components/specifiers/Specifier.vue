@@ -524,7 +524,10 @@ export default {
     },
     specifierLabel() {
       if (this.verbatimLabel) return this.verbatimLabel;
-      // TODO: we should probably try to figure out one for each type.
+      switch (this.specifierClass) {
+        case 'Taxon': return this.nameComplete;
+        case 'Specimen': return this.occurrenceID;
+      }
       return '';
     },
 
