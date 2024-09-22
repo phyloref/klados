@@ -27,19 +27,19 @@
             class="dropdown-item"
             :class="{active: specifierClass === 'Taxon'}"
             href="javascript:;"
-            @click="specifierClass = 'Taxon'"
+            @click="specifierClass = 'Taxon'; updateSpecifier()"
           >Taxon</a>
           <a
             class="dropdown-item"
             :class="{active: specifierClass === 'Specimen'}"
             href="javascript:;"
-            @click="specifierClass = 'Specimen'"
+            @click="specifierClass = 'Specimen'; updateSpecifier()"
           >Specimen</a>
           <a
             class="dropdown-item"
             :class="{active: specifierClass === 'External reference'}"
             href="javascript:;"
-            @click="specifierClass = 'External reference'"
+            @click="specifierClass = 'External reference'; updateSpecifier()"
           >External reference</a>
         </div>
       </div>
@@ -653,7 +653,7 @@ export default {
         }
 
         case 'Specimen':
-          result = SpecimenWrapper.fromOccurrenceID(this.enteredOccurrenceID);
+          result = SpecimenWrapper.fromOccurrenceID(this.occurrenceID);
           break;
 
         case 'External reference':
