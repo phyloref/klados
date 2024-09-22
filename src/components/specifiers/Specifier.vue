@@ -1,7 +1,18 @@
+<!--
+  The Specifier component is used in two places:
+  - The PhylorefView uses it to display specifiers for phyloreferences.
+  - The PhylogenyView uses it to display taxonomic units for phylogenies.
+
+  This means that the Specifier component needs to be created with one of two sets of arguments:
+  - `phyloref` when the specifier to be edited is part of a phyloreference.
+  - `phylogeny` and `nodeLabel` when the taxonomic unit to be edited is part of a phylogeny.
+-->
+
 <template>
   <div class="col-md-12">
     <div class="input-group mb-1">
       <div class="input-group-prepend">
+        <!-- Display and change the specifier class. -->
         <button
           class="btn btn-outline-secondary dropdown-toggle"
           type="button"
@@ -32,6 +43,7 @@
           >External reference</a>
         </div>
       </div>
+      <!-- For taxon specifiers only, display all possible nomenclatural codes. -->
       <div
         v-if="specifierClass === 'Taxon'"
         class="input-group-prepend"
@@ -49,30 +61,34 @@
           <a
             v-for="(nomenCode, nomenCodeIndex) of nomenCodes"
             class="dropdown-item"
-            :class="{active: nomenclaturalCode === nomenCode.iri }"
             href="javascript:;"
             @click="nomenclaturalCode = nomenCode.iri"
             :key="nomenCode.iri"
+
+            :class="{active: nomenclaturalCode === nomenCode.iri }"
           >
             {{ nomenCode.label }}
           </a>
         </div>
       </div>
+      <!-- Display a specifierLabel describing the specifier. -->
       <input
         v-model="specifierLabel"
         readonly
         type="text"
         class="form-control"
       >
+      <!-- The "Edit/Collapse" button can be used to edit this specifier. -->
       <div class="input-group-append">
         <button
           class="btn btn-outline-secondary"
           :class="{active: expand}"
           @click="expand = !expand"
         >
-          {{ (expand) ? 'Collapse' : 'Expand' }}
+          {{ (expand) ? 'Collapse' : 'Edit' }}
         </button>
       </div>
+      <!-- The "Delete" button can be used to delete this specifier. -->
       <div class="input-group-append">
         <button
           class="btn btn-danger"
@@ -82,6 +98,9 @@
         </button>
       </div>
     </div>
+
+    <!-- The Edit card is used to edit this specifier -->
+
     <div
       v-if="expand"
       class="card mt-1 mb-3"
@@ -91,7 +110,7 @@
           Specifier details
         </h5>
 
-        <!-- Specifier type: internal or external. Only applies to phylorefs! -->
+        <!-- Specifier type: internal or external. Only phylorefs have this, so we shouldn't display this for others. -->
         <div v-if="phyloref" class="form-group row">
           <label
             class="col-form-label col-md-2"
@@ -128,7 +147,7 @@
               id="verbatim-specifier"
               v-model="verbatimLabel"
               class="form-control"
-              @change="saveSpecifier()"
+              @change="updateSpecifier()"
             >
           </div>
         </div>
@@ -146,7 +165,7 @@
               id="specifier-class"
               v-model="specifierClass"
               class="form-control"
-              @change="saveSpecifier()"
+              @change="updateSpecifier()"
             >
               <option value="Taxon">
                 Taxon
@@ -163,7 +182,7 @@
 
         <!--
           We provide three different possible displays for the three different
-          types here
+          types here: Taxon, Specimen, External Reference.
         -->
         <template v-if="specifierClass === 'Taxon'">
           <!-- Specifier class -->
@@ -602,7 +621,7 @@ export default {
         }
       }
     },
-    saveSpecifier() {
+    updateSpecifier() {
       // Check the specifierClass before we figure out how to save them.
       let result;
       switch (this.specifierClass) {
