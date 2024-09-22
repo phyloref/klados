@@ -134,17 +134,17 @@
           </div>
         </div>
 
-        <!-- Verbatim specifier -->
+        <!-- Specifier label -->
         <div class="form-group row">
           <label
             class="col-form-label col-md-2"
-            for="verbatim-specifier"
+            for="specifier-label"
           >
-            Verbatim specifier
+            Specifier label
           </label>
           <div class="col-md-10">
             <input
-              id="verbatim-specifier"
+              id="specifier-label"
               v-model="verbatimLabel"
               class="form-control"
               @change="updateSpecifier()"
