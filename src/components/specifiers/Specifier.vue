@@ -286,13 +286,19 @@
             >
               Occurrence ID
             </label>
-            <div class="col-md-10 input-group">
-              <input
-                id="occurrence-id"
-                v-model="occurrenceID"
-                class="form-control"
-                placeholder="Enter the occurrence ID of the specimen here, e.g. 'MVZ:Herp:246033' or '000866d2-c177-4648-a200-ead4007051b9'"
-              >
+            <div class="col-md-10">
+              <div class="input-group">
+                <input
+                  id="occurrence-id"
+                  v-model="occurrenceID"
+                  class="form-control"
+                  placeholder="Enter the occurrence ID of the specimen here, e.g. 'MVZ:Herp:246033' or '000866d2-c177-4648-a200-ead4007051b9'"
+                >
+              </div>
+              <small id="occurrenceIDHelp" class="form-text text-muted">As
+                <a href="https://dwc.tdwg.org/terms/#dwc:occurrenceID" target="_blank">per Darwin Core</a>, we recommend
+                a persistent, globally unique identifier such as a Darwin Core Triple, a URI/IRI or a UUID.
+              </small>
             </div>
           </div>
 
