@@ -221,7 +221,7 @@
               <input
                 id="name-complete"
                 readonly
-                :value="nameComplete"
+                :value="wrappedTaxonConcept.nameComplete"
                 class="form-control"
               >
             </div>
@@ -387,15 +387,13 @@
 
 <script>
 /*
- * Displays a specifier as a textfield/expanded field.
+ * The Specifier component is used in two places:
+ * - The PhylorefView uses it to display specifiers for phyloreferences.
+ * - The PhylogenyView uses it to display taxonomic units for phylogenies.
  *
- * Here is a quick guide to how this is wired together:
- *  - Individual text fields will update their synthesized field (i.e. editing genus
- *    will update specifierText).
- *  - Editing or otherwise updating the synthesized field will overwrite
- *    locally stored specifier (specifier).
- *  - If our local specifier falls out of sync with the remoteSpecifier, we
- *    overwrite it using the specifier.
+ * This means that the Specifier component needs to be created with one of two sets of arguments:
+ * - `phyloref` when the specifier to be edited is part of a phyloreference.
+ * - `phylogeny` and `nodeLabel` when the taxonomic unit to be edited is part of a phylogeny.
  */
 
 import { BIconTrash } from 'bootstrap-vue';
@@ -413,17 +411,17 @@ import {
 export default {
   name: 'Specifier',
   components: {
+    /* A "trash" icon for deleting this specifier. */
     BIconTrash,
   },
   props: {
-    specifierIndex: {
-      default: () => uniqueId(),
-    },
-    remoteSpecifier: { /* The specifier to display and edit */
+    /* The specifier to display and edit. */
+    remoteSpecifier: {
       type: Object,
       required: true,
     },
-    remoteSpecifierId: { /* An ID for this specifier. We recalculate if this ID changes. */
+    /* This is used to uniquely identify the specifiers on a page. */
+    remoteSpecifierId: {
       type: String,
       required: false,
       default: () => uniqueId('remoteSpecifierId'),
@@ -460,41 +458,45 @@ export default {
       specifierClass: "",
       verbatimLabel: "",
 
-      // Fields for taxon names.
+      // Fields for a taxon name.
       nomenclaturalCode: "",
       genusPart: "",
       specificEpithet: "",
       infraspecificEpithet: "",
 
-      // Fields for specimens.
+      // Fields for a specimen.
       occurrenceID: "",
 
-      // Fields for external reference.
+      // Fields for an external reference.
       externalReference: "",
     };
   },
   computed: {
+    /* Return a list of all nomenclatural codes recognized by phyx.js. */
     nomenCodes: () => TaxonNameWrapper.getNomenclaturalCodes(),
+    /*
+     * Return the currently selected nomenclatural code as a Nomen Code Details object, which has e.g. the short name of
+     * this code.
+     */
     nomenclaturalCodeObj() {
       return TaxonNameWrapper.getNomenCodeDetails(this.nomenclaturalCode);
     },
+
     // Taxon name fields.
-    nameComplete() {
-      if (this.genusPart && this.specificEpithet && this.infraspecificEpithet) {
-        return `${this.genusPart} ${this.specificEpithet} ${this.infraspecificEpithet}`;
-      } else if (this.genusPart && this.specificEpithet) {
-        return `${this.genusPart} ${this.specificEpithet}`;
-      } else if (this.genusPart) {
-        return this.genusPart;
-      } else return "";
+    /* Prepare a Taxonomic */
+    wrappedTaxonConcept() {
+      try {
+        return new TaxonomicUnitWrapper(this.remoteSpecifier).taxonConcept();
+      } catch {
+        return new TaxonConceptWrapper({});
+      }
     },
+
     // Specimen fields.
     wrappedSpecimen() {
       return SpecimenWrapper.fromOccurrenceID(this.occurrenceID);
     },
     institutionCode() {
-      const sbc = new SpecimenWrapper();
-      sbc.catalogNumber
       return this.wrappedSpecimen.institutionCode;
     },
     collectionCode() {
@@ -525,7 +527,7 @@ export default {
     specifierLabel() {
       if (this.verbatimLabel) return this.verbatimLabel;
       switch (this.specifierClass) {
-        case 'Taxon': return this.nameComplete;
+        case 'Taxon': return this.wrappedTaxonConcept.nameComplete;
         case 'Specimen': return this.occurrenceID;
       }
       return '';
@@ -608,6 +610,11 @@ export default {
 
         this.occurrenceID = specimenWrapped.occurrenceID;
       }
+
+      // Finally, if the nomenclatural code has not been set, set it to the default.
+      if(!this.nomenclaturalCode) {
+        this.nomenclaturalCode = this.$store.getters.getDefaultNomenCodeURI;
+      }
     },
     deleteSpecifier() {
       // Update remoteSpecifier to what we've got currently entered.
@@ -639,7 +646,6 @@ export default {
           const tname = {
             "@type": TaxonNameWrapper.TYPE_TAXON_NAME,
             label: this.verbatimLabel,
-            nameComplete: this.nameComplete,
             genusPart: this.genusPart,
             specificEpithet: this.specificEpithet,
             infraspecificEpithet: this.infraspecificEpithet,
