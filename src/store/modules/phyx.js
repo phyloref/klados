@@ -19,7 +19,7 @@ import {
   OPEN_TREE_INDUCED_SUBTREE_URL,
 
   COOKIE_EXPIRY,
-  COOKIE_ALLOWED, COOKIE_DEFAULT_NOMEN_CODE_URI, COOKIE_CURATOR_NAME, COOKIE_CURATOR_EMAIL, COOKIE_CURATOR_ORCID,
+  COOKIE_ALLOWED, COOKIE_DEFAULT_NOMEN_CODE_IRI, COOKIE_CURATOR_NAME, COOKIE_CURATOR_EMAIL, COOKIE_CURATOR_ORCID,
 } from '@/config';
 
 // Shared code for reading and writing cookies.
@@ -65,7 +65,7 @@ export default {
       // If no default nomenclatural code is set in the Phyx file, we will attempt to look up that information
       // using a cookie.
       return state.currentPhyx.defaultNomenclaturalCodeIRI
-          || getKladosCookie(COOKIE_DEFAULT_NOMEN_CODE_URI, TaxonNameWrapper.UNKNOWN_CODE);
+          || getKladosCookie(COOKIE_DEFAULT_NOMEN_CODE_IRI, TaxonNameWrapper.UNKNOWN_CODE);
     },
     getDownloadFilenameForPhyx(state) {
       // Return a filename to be used to name downloads of this Phyx document.
@@ -174,15 +174,15 @@ export default {
 
       state.currentPhyx.phylogenies.splice(indexOf, 1);
     },
-    setDefaultNomenCodeURI(state, payload) {
-      if (!has(payload, 'defaultNomenclaturalCodeURI')) {
-        throw new Error('No default nomenclatural code URI provided to setDefaultNomenCodeURI');
+    setDefaultNomenCodeIRI(state, payload) {
+      if (!has(payload, 'defaultNomenclaturalCodeIRI')) {
+        throw new Error('No default nomenclatural code URI provided to setDefaultNomenCodeIRI');
       }
 
       // Overwrite the current default nomenclatural code cookie.
-      setKladosCookie(COOKIE_DEFAULT_NOMEN_CODE_URI, payload.defaultNomenclaturalCodeURI);
+      setKladosCookie(COOKIE_DEFAULT_NOMEN_CODE_IRI, payload.defaultNomenclaturalCodeIRI);
 
-      Vue.set(state.currentPhyx, 'defaultNomenclaturalCodeURI', payload.defaultNomenclaturalCodeURI);
+      Vue.set(state.currentPhyx, 'defaultNomenclaturalCodeURI', payload.defaultNomenclaturalCodeIRI);
     },
     duplicatePhyloref(state, payload) {
       if (!has(payload, 'phyloref')) {

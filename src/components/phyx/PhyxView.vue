@@ -55,8 +55,8 @@
                 :value="$store.getters.getDefaultNomenCodeURI"
                 class="form-control"
                 @change="
-                  $store.commit('setDefaultNomenCodeURI', {
-                    defaultNomenclaturalCodeURI: $event.target.value,
+                  $store.commit('setDefaultNomenCodeIRI', {
+                    defaultNomenclaturalCodeIRI: $event.target.value,
                   })
                 "
               >
