@@ -182,7 +182,7 @@ export default {
       // Overwrite the current default nomenclatural code cookie.
       setKladosCookie(COOKIE_DEFAULT_NOMEN_CODE_IRI, payload.defaultNomenclaturalCodeIRI);
 
-      Vue.set(state.currentPhyx, 'defaultNomenclaturalCodeURI', payload.defaultNomenclaturalCodeIRI);
+      Vue.set(state.currentPhyx, 'defaultNomenclaturalCodeIRI', payload.defaultNomenclaturalCodeIRI);
     },
     duplicatePhyloref(state, payload) {
       if (!has(payload, 'phyloref')) {
