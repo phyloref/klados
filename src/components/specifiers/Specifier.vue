@@ -71,7 +71,7 @@
           </a>
         </div>
       </div>
-      <!-- Display a specifierLabel describing the specifier. -->
+      <!-- Display a verbatim label describing the specifier. -->
       <input
         v-model="specifierLabel"
         readonly
@@ -472,9 +472,9 @@ export default {
     };
   },
   computed: {
-    /* Return a list of all nomenclatural codes recognized by phyx.js. */
+    /** Return a list of all nomenclatural codes recognized by phyx.js. */
     nomenCodes: () => TaxonNameWrapper.getNomenclaturalCodes(),
-    /*
+    /**
      * Return the currently selected nomenclatural code as a Nomen Code Details object, which has e.g. the short name of
      * this code.
      */
@@ -483,19 +483,44 @@ export default {
     },
 
     // Taxon name fields.
-    /* Prepare a Taxonomic */
-    wrappedTaxonConcept() {
+    /**
+     * Prepare a wrapped Taxon concept based on the genusName, specificEpithet and the infraspecificEpithet.
+     */
+    taxonConcept() {
+      const emptyTaxonConcept = TaxonConceptWrapper.fromLabel('', this.$store.getters.getDefaultNomenCodeIRI);
+      const nomenCodeIRI = this.nomenclaturalCode || this.$store.getters.getDefaultNomenCodeIRI;
+
+      console.log(`wrappedTaxonConcept: ${this.genusPart}, ${this.specificEpithet}, ${this.infraspecificEpithet}.`)
+
       try {
-        return new TaxonomicUnitWrapper(this.remoteSpecifier).taxonConcept();
+        if (this.genusPart) {
+          if (this.specificEpithet) {
+            if (this.infraspecificEpithet) {
+              return TaxonConceptWrapper.fromLabel(`${this.genusPart} ${this.specificEpithet} ${this.infraspecificEpithet}`, nomenCodeIRI);
+            } else {
+              return TaxonConceptWrapper.fromLabel(`${this.genusPart} ${this.specificEpithet}`, nomenCodeIRI);
+            }
+          } else {
+            return TaxonConceptWrapper.fromLabel(this.genusPart, nomenCodeIRI);
+          }
+        }
+
+        return emptyTaxonConcept;
       } catch {
-        return new TaxonConceptWrapper({});
+        return emptyTaxonConcept;
       }
     },
 
+    wrappedTaxonConcept() {
+      return new TaxonConceptWrapper(this.taxonConcept);
+    },
+
     // Specimen fields.
+    /** Return a wrapped specimen. */
     wrappedSpecimen() {
       return SpecimenWrapper.fromOccurrenceID(this.occurrenceID);
     },
+    // Return the individual components of this specimen.
     institutionCode() {
       return this.wrappedSpecimen.institutionCode;
     },
@@ -505,7 +530,12 @@ export default {
     catalogNumber() {
       return this.wrappedSpecimen.catalogNumber;
     },
-    // Specifier type.
+    /**
+     * Get or set the specifier type. The code inside the store converts a change-of-specifier-type into
+     * removing the specifier from e.g. internalSpecifiers and adding it to e.g. externalSpecifiers.
+     *
+     * This only makes sense if this specifier is part of a phyloref, in which case `this.phyloref` should be set.
+     */
     specifierType: {
       get() {
         if (!this.phyloref) return undefined;
@@ -524,6 +554,11 @@ export default {
         );
       },
     },
+
+    /**
+     * The specifier label is what is displayed when the Specifier is not in edit mode. There is also a "Specifier label"
+     * field, which can be used to override this.
+     */
     specifierLabel() {
       if (this.verbatimLabel) return this.verbatimLabel;
       switch (this.specifierClass) {
@@ -602,7 +637,7 @@ export default {
         this.infraspecificEpithet = taxonNameWrapped.infraspecificEpithet;
 
         this.nomenclaturalCode = taxonNameWrapped.nomenclaturalCode
-          || this.$store.getters.getDefaultNomenCodeURI;
+          || this.$store.getters.getDefaultNomenCodeIRI;
       }
 
       if (tunit.specimen) {
@@ -613,7 +648,7 @@ export default {
 
       // Finally, if the nomenclatural code has not been set, set it to the default.
       if(!this.nomenclaturalCode) {
-        this.nomenclaturalCode = this.$store.getters.getDefaultNomenCodeURI;
+        this.nomenclaturalCode = this.$store.getters.getDefaultNomenCodeIRI;
       }
     },
     deleteSpecifier() {
@@ -643,18 +678,7 @@ export default {
       switch (this.specifierClass) {
         case 'Taxon': {
           // Set up a taxon name for this taxon.
-          const tname = {
-            "@type": TaxonNameWrapper.TYPE_TAXON_NAME,
-            label: this.verbatimLabel,
-            genusPart: this.genusPart,
-            specificEpithet: this.specificEpithet,
-            infraspecificEpithet: this.infraspecificEpithet,
-          };
-
-          // We don't actually support accordingTo citations here.
-          const accordingTo = undefined;
-
-          result = TaxonConceptWrapper.wrapTaxonName(tname, accordingTo);
+          result = this.wrappedTaxonConcept.tunit;
           break;
         }
 
