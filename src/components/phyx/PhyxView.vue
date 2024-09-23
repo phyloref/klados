@@ -52,7 +52,7 @@
             <div class="col-md-10">
               <select
                 id="nomen-code"
-                :value="$store.getters.getDefaultNomenCodeURI"
+                :value="$store.getters.getDefaultNomenCodeIRI"
                 class="form-control"
                 @change="
                   $store.commit('setDefaultNomenCodeIRI', {

@@ -61,7 +61,7 @@ export default {
     loadedPhyxChanged(state) {
       return !isEqual(state.currentPhyx, state.loadedPhyx);
     },
-    getDefaultNomenCodeURI(state) {
+    getDefaultNomenCodeIRI(state) {
       // If no default nomenclatural code is set in the Phyx file, we will attempt to look up that information
       // using a cookie.
       return state.currentPhyx.defaultNomenclaturalCodeIRI
@@ -176,7 +176,7 @@ export default {
     },
     setDefaultNomenCodeIRI(state, payload) {
       if (!has(payload, 'defaultNomenclaturalCodeIRI')) {
-        throw new Error('No default nomenclatural code URI provided to setDefaultNomenCodeIRI');
+        throw new Error('No default nomenclatural code IRI provided to setDefaultNomenCodeIRI');
       }
 
       // Overwrite the current default nomenclatural code cookie.
