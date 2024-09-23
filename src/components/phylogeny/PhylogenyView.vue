@@ -403,7 +403,7 @@ export default {
         nodeLabel,
         tunit: TaxonomicUnitWrapper.fromLabel(
           "",
-          this.$store.getters.getDefaultNomenCodeURI
+          this.$store.getters.getDefaultNomenCodeIRI
         ),
       });
     },
