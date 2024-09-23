@@ -26,7 +26,7 @@ export const COOKIE_EXPIRY = '30d'; // Expire cookies in 30 days
 //   to store their information in cookies.
 export const COOKIE_ALLOWED = 'kladosCookieAllowed';
 // - the default nomenclatural code
-export const COOKIE_DEFAULT_NOMEN_CODE_URI =  'kladosDefaultNomenclaturalCodeURI';
+export const COOKIE_DEFAULT_NOMEN_CODE_IRI =  'kladosDefaultNomenclaturalCodeIRI';
 // - curator name
 export const COOKIE_CURATOR_NAME = 'kladosCuratorName';
 // - curator e-mail address

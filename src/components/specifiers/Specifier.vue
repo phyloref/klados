@@ -453,7 +453,7 @@ export default {
       specifierClass: undefined,
       specimenWrapped: undefined,
       taxonNameWrapped: undefined,
-      enteredNomenclaturalCode: this.$store.getters.getDefaultNomenCodeURI,
+      enteredNomenclaturalCode: this.$store.getters.getDefaultNomenCodeIRI,
       enteredVerbatimLabel: undefined,
       externalReference: undefined,
     };

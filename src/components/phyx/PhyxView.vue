@@ -52,11 +52,11 @@
             <div class="col-md-10">
               <select
                 id="nomen-code"
-                :value="$store.getters.getDefaultNomenCodeURI"
+                :value="$store.getters.getDefaultNomenCodeIRI"
                 class="form-control"
                 @change="
-                  $store.commit('setDefaultNomenCodeURI', {
-                    defaultNomenclaturalCodeURI: $event.target.value,
+                  $store.commit('setDefaultNomenCodeIRI', {
+                    defaultNomenclaturalCodeIRI: $event.target.value,
                   })
                 "
               >
