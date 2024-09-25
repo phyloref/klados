@@ -613,6 +613,14 @@ export default {
 
       return undefined;
     },
+    /**
+     * loadSpecifier() reads information from this.remoteSpecifier and loads it into the
+     * local variables used by this component.
+     *
+     * See updateSpecifier() which does the reverse: we call it every time any value changes,
+     * and it copies the changes into this.remoteSpecifier using the appropriate $state.commit()
+     * methods.
+     */
     loadSpecifier() {
       console.log('(Re)loading specifier from: ', this.remoteSpecifier);
 
@@ -654,27 +662,15 @@ export default {
         this.nomenclaturalCode = this.$store.getters.getDefaultNomenCodeIRI;
       }
     },
-    deleteSpecifier() {
-      // Update remoteSpecifier to what we've got currently entered.
-      const confirmed = confirm('Are you sure you want to delete this specifier?');
-      if (confirmed) {
-        if (this.phyloref) {
-          console.log("Deleting specifier from phyloref: ", this.phyloref, this.remoteSpecifier);
-          this.$store.commit('deleteSpecifier', {
-            phyloref: this.phyloref,
-            specifier: this.remoteSpecifier,
-          });
-        } else if (this.phylogeny && this.nodeLabel) {
-          console.log("Deleting taxonomic unit from phylogeny: ", this.phylogeny, this.nodeLabel, this.remoteSpecifier);
-          this.$store.commit('replaceTUnitForPhylogenyNode', {
-            phylogeny: this.phylogeny,
-            nodeLabel: this.nodeLabel,
-            tunit: this.remoteSpecifier,
-            delete: true,
-          });
-        }
-      }
-    },
+    /**
+     * updateSpecifier() updates the underlying this.remoteSpecifier with changes made in this
+     * component. We shouldn't make those changes directly in Vue, so instead we figure out the
+     * correct $store.commit() method to make the change (there are different ones for phylorefs
+     * and for phylogenies).
+     *
+     * See loadSpecifier() which does the reverse: when the underlying data changes (or when this component
+     * is mounted), it loads information from this.remoteSpecifier.
+     */
     updateSpecifier() {
       // Check the specifierClass before we figure out how to save them.
       let result;
@@ -731,6 +727,27 @@ export default {
         });
       } else {
         console.error("Specifier has neither phyloref nor phylogeny/nodeLabel combination: ", this);
+      }
+    },
+    deleteSpecifier() {
+      // Update remoteSpecifier to what we've got currently entered.
+      const confirmed = confirm('Are you sure you want to delete this specifier?');
+      if (confirmed) {
+        if (this.phyloref) {
+          console.log("Deleting specifier from phyloref: ", this.phyloref, this.remoteSpecifier);
+          this.$store.commit('deleteSpecifier', {
+            phyloref: this.phyloref,
+            specifier: this.remoteSpecifier,
+          });
+        } else if (this.phylogeny && this.nodeLabel) {
+          console.log("Deleting taxonomic unit from phylogeny: ", this.phylogeny, this.nodeLabel, this.remoteSpecifier);
+          this.$store.commit('replaceTUnitForPhylogenyNode', {
+            phylogeny: this.phylogeny,
+            nodeLabel: this.nodeLabel,
+            tunit: this.remoteSpecifier,
+            delete: true,
+          });
+        }
       }
     },
   },
