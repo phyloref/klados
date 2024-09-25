@@ -484,13 +484,13 @@ export default {
 
     // Taxon name fields.
     /**
-     * Prepare a wrapped Taxon concept based on the genusName, specificEpithet and the infraspecificEpithet.
+     * Return a Taxon concept based on the genusName, specificEpithet and the infraspecificEpithet entered by the user.
      */
     taxonConcept() {
       const emptyTaxonConcept = TaxonConceptWrapper.fromLabel('', this.$store.getters.getDefaultNomenCodeIRI);
       const nomenCodeIRI = this.nomenclaturalCode || this.$store.getters.getDefaultNomenCodeIRI;
 
-      console.log(`wrappedTaxonConcept: ${this.genusPart}, ${this.specificEpithet}, ${this.infraspecificEpithet}.`)
+      // console.log(`wrappedTaxonConcept: ${this.genusPart}, ${this.specificEpithet}, ${this.infraspecificEpithet}.`)
 
       try {
         if (this.genusPart) {
@@ -511,6 +511,7 @@ export default {
       }
     },
 
+    /** Return a TaxonConceptWrapper that wraps the current taxonConcept. */
     wrappedTaxonConcept() {
       return new TaxonConceptWrapper(this.taxonConcept);
     },
