@@ -549,14 +549,17 @@ export default {
     },
 
     /**
-     * The specifier label is what is displayed when the Specifier is not in edit mode. There is also a "Specifier label"
-     * field, which can be used to override this.
+     * The specifier label is what is displayed when the Specifier is not in edit mode. There is also a verbatim label
+     * field, which can be used to override this label (it corresponds to the `label` field of the taxonomic unit). If
+     * the specifier label is empty, we compute a label from either the taxon concept complete name, the specimen
+     * occurrence ID or the external reference.
      */
     specifierLabel() {
       if (this.verbatimLabel) return this.verbatimLabel;
       switch (this.specifierClass) {
         case 'Taxon': return this.wrappedTaxonConcept.nameComplete;
         case 'Specimen': return this.occurrenceID;
+        case 'External reference': return this.externalReference;
       }
       return '';
     },
