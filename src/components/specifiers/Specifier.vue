@@ -566,7 +566,9 @@ export default {
 
   },
   watch: {
-    // If any of our input parameters change, we should reload this specifier.
+    // If any of our input parameters change, we should reload this specifier. Note that this doesn't check for updates
+    // to the contents of these parameters, just whether a new phyloref, remoteSpecifier or remoteSpecifierId has been
+    // provided to this template.
     phyloref() {
       this.loadSpecifier();
     },
@@ -583,12 +585,22 @@ export default {
       this.loadSpecifier();
     },
   },
+  // Load the specifier when this component is loaded for the first time.
   mounted() {
     this.loadSpecifier();
   },
   methods: {
+    /**
+     * Return the specifier class for a provided taxonomic unit. We could stick this into loadSpecifier(), which is the
+     * only place it's called, but it's cleaner as its own method.
+     */
     getSpecifierClass(tunit) {
-      // Return the specifier class for a tunit.
+      // If it has an '@id', it is an external reference to that '@id'.
+      if (has(tunit, '@id')) {
+        return 'External reference';
+      }
+
+      // Check the 'types' field to figure out if this tunit is taxon unit or a specimen.
       if (tunit.types.length > 0) {
         switch (tunit.types[0]) {
           case TaxonomicUnitWrapper.TYPE_TAXON_CONCEPT:
@@ -596,11 +608,6 @@ export default {
 
           case TaxonomicUnitWrapper.TYPE_SPECIMEN:
             return 'Specimen';
-        }
-
-        // If it has an '@id', it is an external reference to that '@id'.
-        if (has(tunit, '@id')) {
-          return 'External reference';
         }
       }
 
