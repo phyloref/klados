@@ -584,6 +584,15 @@ export default {
     remoteSpecifierId() {
       this.loadSpecifier();
     },
+    // If the user edits any of the input components, trigger an updateSpecifier() so that we save those changes to
+    // the underlying data objects.
+    verbatimLabel()         { this.updateSpecifier(); },
+    nomenclaturalCode()     { this.updateSpecifier(); },
+    genusPart()             { this.updateSpecifier(); },
+    specificEpithet()       { this.updateSpecifier(); },
+    infraspecificEpithet()  { this.updateSpecifier(); },
+    occurrenceID()          { this.updateSpecifier(); },
+    externalReference()     { this.updateSpecifier(); },
   },
   // Load the specifier when this component is loaded for the first time.
   mounted() {
@@ -683,23 +692,26 @@ export default {
      * is mounted), it loads information from this.remoteSpecifier.
      */
     updateSpecifier() {
-      // Check the specifierClass before we figure out how to save them.
+      // Step 1. Create a `result` taxonomic unit. Unlike the loading code, we strictly write this out by type, so
+      // if you loaded a taxonomic unit with both Specimen and Taxon information, we ONLY write out EITHER the Specimen
+      // or Taxon information, based on which one is chosen in the UI.
       let result;
       switch (this.specifierClass) {
         case 'Taxon': {
-          // Set up a taxon name for this taxon.
+          // Set up a taxonomic unit for this taxon.
           result = this.wrappedTaxonConcept.tunit;
           break;
         }
 
         case 'Specimen':
+          // Set up a taxonomic unit for this specimen.
           result = SpecimenWrapper.fromOccurrenceID(this.occurrenceID);
           break;
 
         case 'External reference':
           result = {
             // We store the external reference in the '@id' field.
-            '@id': this.externalReference || this.verbatimLabel || '',
+            '@id': this.externalReference,
           };
           break;
 
@@ -713,6 +725,8 @@ export default {
         result.label = this.verbatimLabel;
       }
 
+      // Update the underlying specifier, which requires a different command whether this is a specifier in a phyloref
+      // or in a phylogeny.
       if (this.phyloref) {
         console.log('Updating specifier in ', this.phyloref, ' as ', result, ' differs from ', this.remoteSpecifier);
         this.$store.commit('setSpecifierProps', {
@@ -721,14 +735,7 @@ export default {
         });
       } else if (this.phylogeny && this.nodeLabel) {
         console.log(
-          "Updating tunit in ",
-          this.phylogeny,
-          " with node label ",
-          this.nodeLabel,
-          " as ",
-          result,
-          " differs from ",
-          this.remoteSpecifier
+          "Updating tunit in ", this.phylogeny, " with node label ", this.nodeLabel
         );
         this.$store.commit('replaceTUnitForPhylogenyNode', {
           phylogeny: this.phylogeny,
