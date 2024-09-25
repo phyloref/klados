@@ -314,7 +314,7 @@
                 id="collection-code"
                 readonly
                 class="form-control"
-                :value="institutionCode"
+                :value="wrappedSpecimen.institutionCode"
               >
             </div>
           </div>
@@ -331,7 +331,7 @@
                 id="collection-code"
                 readonly
                 class="form-control"
-                :value="collectionCode"
+                :value="wrappedSpecimen.collectionCode"
               >
             </div>
           </div>
@@ -348,7 +348,7 @@
                 id="catalog-number"
                 readonly
                 class="form-control"
-                :value="catalogNumber"
+                :value="wrappedSpecimen.catalogNumber"
               >
             </div>
           </div>
@@ -517,20 +517,12 @@ export default {
     },
 
     // Specimen fields.
-    /** Return a wrapped specimen. */
+    /** Return a wrapped specimen based on the only human-editable specimen field: occurrenceID. */
     wrappedSpecimen() {
       return SpecimenWrapper.fromOccurrenceID(this.occurrenceID);
     },
-    // Return the individual components of this specimen.
-    institutionCode() {
-      return this.wrappedSpecimen.institutionCode;
-    },
-    collectionCode() {
-      return this.wrappedSpecimen.collectionCode;
-    },
-    catalogNumber() {
-      return this.wrappedSpecimen.catalogNumber;
-    },
+
+    // Specifier type.
     /**
      * Get or set the specifier type. The code inside the store converts a change-of-specifier-type into
      * removing the specifier from e.g. internalSpecifiers and adding it to e.g. externalSpecifiers.
