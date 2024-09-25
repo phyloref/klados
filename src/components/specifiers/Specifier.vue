@@ -591,29 +591,6 @@ export default {
   },
   methods: {
     /**
-     * Return the specifier class for a provided taxonomic unit. We could stick this into loadSpecifier(), which is the
-     * only place it's called, but it's cleaner as its own method.
-     */
-    getSpecifierClass(tunit) {
-      // If it has an '@id', it is an external reference to that '@id'.
-      if (has(tunit, '@id')) {
-        return 'External reference';
-      }
-
-      // Check the 'types' field to figure out if this tunit is taxon unit or a specimen.
-      if (tunit.types.length > 0) {
-        switch (tunit.types[0]) {
-          case TaxonomicUnitWrapper.TYPE_TAXON_CONCEPT:
-            return 'Taxon';
-
-          case TaxonomicUnitWrapper.TYPE_SPECIMEN:
-            return 'Specimen';
-        }
-      }
-
-      return undefined;
-    },
-    /**
      * loadSpecifier() reads information from this.remoteSpecifier and loads it into the
      * local variables used by this component.
      *
@@ -624,21 +601,57 @@ export default {
     loadSpecifier() {
       console.log('(Re)loading specifier from: ', this.remoteSpecifier);
 
-      // Recalculate the entered values.
+      // Wrap the remote specifier in a TaxonomicUnitWrapper and figure out
+      // what kind of taxonomic unit it is.
       const tunit = new TaxonomicUnitWrapper(this.remoteSpecifier || {});
 
-      // If it has an '@id', it is an external reference to that '@id'.
+      // Is there an explicit `label` on this remote specifier?
+      // Note we don't use `tunit.label`, becaused TaxonomicUnitWrapper would automatically generate a label:
+      // we only want to set `verbatimLabel` if an explicit `label` was set on this
+      // taxonomic unit.
+      if (has(this.remoteSpecifier, 'label')) {
+        this.verbatimLabel = this.remoteSpecifier['label'];
+      }
+
+      // If it has an '@id', we treat it solely as an external reference to that '@id'.
+      // Otherwise, we try to figure out the specifier class.
       if (has(this.remoteSpecifier, '@id')) {
         this.specifierClass = 'External reference';
         this.externalReference = this.remoteSpecifier['@id'];
-        // tunit.label adds '<>s' around the @id. We work around that by trying
-        // to read the label directly.
-        this.verbatimLabel = this.remoteSpecifier.label || tunit.label;
       } else {
-        this.verbatimLabel = tunit.label;
-        this.specifierClass = this.getSpecifierClass(tunit) || 'Taxon';
+        // Check the 'types' field to figure out if this tunit is taxon unit or a specimen.
+        if (tunit.types.length > 0) {
+          switch (tunit.types[0]) {
+            case TaxonomicUnitWrapper.TYPE_TAXON_CONCEPT:
+              this.specifierClass = 'Taxon';
+              break;
+
+            case TaxonomicUnitWrapper.TYPE_SPECIMEN:
+              this.specifierClass =  'Specimen';
+          }
+        }
+
+        if (!this.specifierClass) {
+          console.error(`Could not assign a specifier class for ${JSON.stringify(this.remoteSpecifier)}`);
+
+          // Default to Taxon.
+          this.specifierClass = 'Taxon';
+        }
       }
 
+      /*
+       * Here, we do something a little tricky: we load BOTH the taxon concept as well as the specimen information,
+       * if present. Eventually, we could use this to implement a user interface that allows a specimen with a taxon
+       * concept to be fully represented in the UI, but for now this just means that if you load a taxon unit with both
+       * of these pieces of information, you'll be able to see them if you swap between "Taxon" and "Specimen" in the UI.
+       */
+
+      // To start with, set the nomenclatural code to the default. This uses the default nomenclatural code currently
+      // set in Klados rather than in the Phyx file, but since we load this from the file when we open it, that
+      // should be fine.
+      this.nomenclaturalCode = this.$store.getters.getDefaultNomenCodeIRI;
+
+      // Load the taxon concept, if present.
       const taxonConceptWrapped = new TaxonConceptWrapper(tunit.taxonConcept);
       if (taxonConceptWrapped && taxonConceptWrapped.taxonName) {
         const taxonNameWrapped = new TaxonNameWrapper(taxonConceptWrapped.taxonName);
@@ -647,19 +660,17 @@ export default {
         this.specificEpithet = taxonNameWrapped.specificEpithet;
         this.infraspecificEpithet = taxonNameWrapped.infraspecificEpithet;
 
-        this.nomenclaturalCode = taxonNameWrapped.nomenclaturalCode
-          || this.$store.getters.getDefaultNomenCodeIRI;
+        // Override the nomenclatural code if one is present.
+        if (taxonNameWrapped.nomenclaturalCode) {
+          this.nomenclaturalCode = taxonNameWrapped.nomenclaturalCode;
+        }
       }
 
+      // Load the specimen, if present.
       if (tunit.specimen) {
         const specimenWrapped = new SpecimenWrapper(tunit.specimen);
 
         this.occurrenceID = specimenWrapped.occurrenceID;
-      }
-
-      // Finally, if the nomenclatural code has not been set, set it to the default.
-      if(!this.nomenclaturalCode) {
-        this.nomenclaturalCode = this.$store.getters.getDefaultNomenCodeIRI;
       }
     },
     /**
@@ -729,8 +740,11 @@ export default {
         console.error("Specifier has neither phyloref nor phylogeny/nodeLabel combination: ", this);
       }
     },
+    /**
+     * This method deletes the current taxonomic unit. There are two possible ways of doing this, depending on whether
+     * it is a specifier or a taxonomic unit in a phylogeny.
+     */
     deleteSpecifier() {
-      // Update remoteSpecifier to what we've got currently entered.
       const confirmed = confirm('Are you sure you want to delete this specifier?');
       if (confirmed) {
         if (this.phyloref) {
@@ -755,6 +769,7 @@ export default {
 </script>
 
 <style>
+/* We don't actually use this anywhere any more. */
 .hand-cursor {
   cursor: pointer;
 }
