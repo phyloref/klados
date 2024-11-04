@@ -449,26 +449,10 @@ export default {
     },
   },
   data() {
-    // All of this will be filled in by loadSpecifier().
+    // The actual empty data is in methods.emptyData(), except for the `expand` flag.
     return {
-      // Has this specifier been expanded for editing?
       expand: false,
-
-      // Fields for all specifier types.
-      specifierClass: "",
-      verbatimLabel: "",
-
-      // Fields for a taxon name.
-      nomenclaturalCode: "",
-      genusPart: "",
-      specificEpithet: "",
-      infraspecificEpithet: "",
-
-      // Fields for a specimen.
-      occurrenceID: "",
-
-      // Fields for an external reference.
-      externalReference: "",
+      ...this.emptyData(),
     };
   },
   computed: {
@@ -599,6 +583,29 @@ export default {
     this.loadSpecifier();
   },
   methods: {
+    emptyData() {
+      /*
+       * This method can be used to reset this.$data to its initial state. The only variable missing is `expand`,
+       * because we don't want to reset that every time we load.
+       */
+      return {
+        // Fields for all specifier types.
+        specifierClass: "",
+        verbatimLabel: "",
+
+        // Fields for a taxon name.
+        nomenclaturalCode: "",
+        genusPart: "",
+        specificEpithet: "",
+        infraspecificEpithet: "",
+
+        // Fields for a specimen.
+        occurrenceID: "",
+
+        // Fields for an external reference.
+        externalReference: "",
+      };
+    },
     /**
      * loadSpecifier() reads information from this.remoteSpecifier and loads it into the
      * local variables used by this component.
@@ -609,6 +616,10 @@ export default {
      */
     loadSpecifier() {
       console.log('(Re)loading specifier from: ', this.remoteSpecifier);
+
+      // To begin with, let's blank all our variables so that we don't share information between phylorefs.
+      // Has this specifier been expanded for editing?
+      Object.assign(this.$data, this.emptyData());
 
       // Wrap the remote specifier in a TaxonomicUnitWrapper and figure out
       // what kind of taxonomic unit it is.
