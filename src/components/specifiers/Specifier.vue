@@ -776,8 +776,4 @@ export default {
 </script>
 
 <style>
-/* We don't actually use this anywhere any more. */
-.hand-cursor {
-  cursor: pointer;
-}
 </style>
