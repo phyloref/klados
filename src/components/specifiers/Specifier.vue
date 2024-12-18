@@ -147,7 +147,6 @@
               id="specifier-label"
               v-model="verbatimLabel"
               class="form-control"
-              @change="updateSpecifier()"
             >
           </div>
         </div>
@@ -618,7 +617,6 @@ export default {
       console.log('(Re)loading specifier from: ', this.remoteSpecifier);
 
       // To begin with, let's blank all our variables so that we don't share information between phylorefs.
-      // Has this specifier been expanded for editing?
       Object.assign(this.$data, this.emptyData());
 
       // Wrap the remote specifier in a TaxonomicUnitWrapper and figure out
@@ -660,7 +658,7 @@ export default {
       }
 
       /*
-       * Here, we do something a little tricky: we load BOTH the taxon concept as well as the specimen information,
+       * Here, we do something a little tricky: we load BOTH the taxon concept and the specimen information,
        * if present. Eventually, we could use this to implement a user interface that allows a specimen with a taxon
        * concept to be fully represented in the UI, but for now this just means that if you load a taxon unit with both
        * of these pieces of information, you'll be able to see them if you swap between "Taxon" and "Specimen" in the UI.
@@ -706,13 +704,12 @@ export default {
       // Step 1. Create a `result` taxonomic unit. Unlike the loading code, we strictly write this out by type, so
       // if you loaded a taxonomic unit with both Specimen and Taxon information, we ONLY write out EITHER the Specimen
       // or Taxon information, based on which one is chosen in the UI.
-      let result;
+      let result = {};
       switch (this.specifierClass) {
-        case 'Taxon': {
+        case 'Taxon':
           // Set up a taxonomic unit for this taxon.
           result = this.wrappedTaxonConcept.tunit;
           break;
-        }
 
         case 'Specimen':
           // Set up a taxonomic unit for this specimen.

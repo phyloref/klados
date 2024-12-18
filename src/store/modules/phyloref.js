@@ -3,8 +3,21 @@
  */
 
 import Vue from 'vue';
-import { PhylorefWrapper } from '@phyloref/phyx';
+import {PhylorefWrapper, TaxonConceptWrapper} from '@phyloref/phyx';
 import { has, keys, cloneDeep } from 'lodash';
+
+function createEmptySpecifier(nomenCodeIRI) {
+  return {
+    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
+    "hasName": {
+      "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
+      "nomenclaturalCode": nomenCodeIRI,
+      "nameComplete": "",
+      "genusPart": "",
+      "specificEpithet": "",
+    }
+  }
+}
 
 export default {
   getters: {
@@ -78,7 +91,7 @@ export default {
         Vue.set(payload.phyloref, 'externalSpecifiers', []);
       }
 
-      payload.phyloref.externalSpecifiers.push({});
+      payload.phyloref.externalSpecifiers.push(createEmptySpecifier(this.getters.getDefaultNomenCodeIRI));
     },
 
     addInternalSpecifier(state, payload) {
@@ -92,7 +105,7 @@ export default {
         Vue.set(payload.phyloref, 'internalSpecifiers', []);
       }
 
-      payload.phyloref.internalSpecifiers.push({});
+      payload.phyloref.internalSpecifiers.push(createEmptySpecifier(this.getters.getDefaultNomenCodeIRI));
     },
 
     deleteSpecifier(state, payload) {
