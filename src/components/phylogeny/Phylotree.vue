@@ -435,22 +435,19 @@ export default {
                 `current_pinning_node_phylogeny_${this.phylogenyIndex}`
               );
 
-              // If we have phylorefNoFilter set, then
-              if (this.phylorefNoFilter) {
-                // Make sure we don't already have an internal label node on this SVG node!
-                let textLabel = element.selectAll("text");
+              // Make sure we don't already have an internal label node on this SVG node!
+              let textLabel = element.selectAll("text");
+              if (textLabel.empty()) textLabel = element.append("text");
 
-                if (textLabel.empty()) textLabel = element.append("text");
-                console.log(`Found text label `, textLabel);
-                let textLabelText = textLabel.text;
-                if (!textLabelText) textLabelText = data.name;
-                else textLabelText = textLabelText + "_and_" + data.name;
-                textLabel
-                  .classed("internal-label", true)
-                  .text(textLabelText)
-                  .attr("dx", "0.3em")
-                  .attr("dy", "0.35em");
-              }
+              const textLabels = (textLabel.textContent || "").split(", ");
+              textLabels.push(data.name);
+              const textLabelText = textLabels.map(label => label.trim()).filter(label => label !== '').sort().join(", ");
+
+              textLabel
+                .classed("internal-label", true)
+                .text(textLabelText)
+                .attr("dx", "0.3em")
+                .attr("dy", "0.35em");
             }
 
             // Maybe this isn't a pinning node, but it is a child of a pinning node.
@@ -595,7 +592,7 @@ export default {
 /* Labels for internal nodes, whether phylorefs or not */
 .internal-label {
   font-family: serif;
-  font-size: 14pt;
+  font-size: 12pt;
 
   text-anchor: start; /* Align text so it starts at the coordinates provided */
   alignment-baseline: middle;
@@ -629,16 +626,16 @@ export default {
  * than as an .internal-specifier-node.
  */
 .pinning-node text {
-  fill: black !important;
+  fill: black;
   font-weight: bolder;
-  font-size: 14pt;
+  font-size: 14pt !important;
 }
 
 /*
  * Increase the font size to make the node text more readable.
  */
 .phylotree-node-text {
-  font-size: 12pt !important;
+  font-size: 12pt;
 }
 
 /*
