@@ -73,6 +73,12 @@ export default {
       type: String,
       required: false,
     },
+    supportTreeViewer: {
+      // TreeViewer (https://treeviewer.org/) is a fairly recent phylogenetic tree viewing software that
+      // has a slightly different idea about how annotations should be formatted in NEXUS files.
+      type: Boolean,
+      default: true,
+    }
   },
   data() {
     return {
@@ -167,21 +173,21 @@ export default {
             ) {
               if (has(phyloref, "@id")) {
                 annotations.push(
-                  "phyloref:actual=" +
+                  "\"phyloref:actual\"=" +
                     convertToNexusAnnotationValue(phyloref["@id"])
                 );
               }
 
               if (has(phyloref, "label")) {
                 annotations.push(
-                  "phyloref:actualLabel=" +
+                  "\"phyloref:actualLabel\"=" +
                     convertToNexusAnnotationValue(phyloref["label"])
                 );
               }
 
               // We don't know what to call this phyloref, but nevertheless we label it minimally.
               if (!has(phyloref, "@id") && !has(phyloref, "label"))
-                annotations.push("phyloref:actual=");
+                annotations.push("\"phyloref:actual\"=");
             }
 
             if (
@@ -190,27 +196,33 @@ export default {
             ) {
               if (has(this.phyloref, "@id")) {
                 annotations.push(
-                  "phyloref:expected=" +
+                  "\"phyloref:expected\"=" +
                     convertToNexusAnnotationValue(phyloref["@id"])
                 );
               }
 
               if (has(phyloref, "label")) {
                 annotations.push(
-                  "phyloref:expectedLabel=" +
+                  "\"phyloref:expectedLabel\"=" +
                     convertToNexusAnnotationValue(phyloref["label"])
                 );
               }
 
               // We don't know what to call this phyloref, but nevertheless we label it minimally.
               if (!has(phyloref, "@id") && !has(phyloref, "label"))
-                annotations.push("phyloref:expected=");
+                annotations.push("\"phyloref:expected\"=");
             }
           });
           console.log("Annotations: ", annotations);
 
           if (annotations.length === 0) return undefined;
-          else return `[&${annotations.join(",")}]`;
+          else {
+            if (this.supportTreeViewer) {
+              return `[${annotations.join(",")}]`;
+            } else {
+              return `[&${annotations.join(",")}]`;
+            }
+          }
         }
 
         return undefined;
