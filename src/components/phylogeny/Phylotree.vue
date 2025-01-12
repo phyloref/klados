@@ -158,6 +158,7 @@ export default {
       const newickStr = this.tree.getNewick((node) => {
         // Is the resolved node for this phyloref? If so, let's make an annotation.
         if (has(node, "data") && has(node.data, "@id")) {
+          // We collect annotations by type -- note that we can have multiple phylorefs on each node.
           const annotations = {
             "phyloref:actual": [],
             "phyloref:actualLabel": [],
@@ -167,6 +168,7 @@ export default {
           const data = node.data;
 
           this.phylorefs.forEach((phyloref) => {
+            // Is this node one of the resolved nodes for this phyloreference?
             if (
               this.$store.getters
                 .getResolvedNodesForPhylogeny(this.phylogeny, phyloref)
@@ -180,11 +182,12 @@ export default {
                 annotations["phyloref:actualLabel"].push(phyloref["label"]);
               }
 
-              // We don't know what to call this phyloref, but nevertheless we label it minimally.
+              // We don't know what to call this phyloref, but nevertheless we tag it so we know there's _something_ here.
               if (!has(phyloref, "@id") && !has(phyloref, "label"))
                 annotations["phyloref:actual"].push("");
             }
 
+            // Is this node one of the expected nodes for this phyloreference?
             if (
               this.selectedNodeLabel &&
               this.selectedNodeLabel.toLowerCase() === data.name.toLowerCase()
@@ -197,21 +200,24 @@ export default {
                 annotations["phyloref:expectedLabel"].push(phyloref["label"]);
               }
 
-              // We don't know what to call this phyloref, but nevertheless we label it minimally.
+              // We don't know what to call this phyloref, but nevertheless we tag it so we know there's _something_ here.
               if (!has(phyloref, "@id") && !has(phyloref, "label"))
                 annotations["phyloref:expected"].push("");
             }
           });
-          console.log("Annotations: ", annotations);
+          // console.log("Annotations: ", annotations);
 
+          // Helper method to wrap annotation values.
           const convertToNexusAnnotationValue = (str) => {
             // We really just need to wrap this in double-quotes, which means we need to filter out existing double quotes.
             return '"' + str.replaceAll('"', "''") + '"';
           };
 
-          // I think Nexus allows us to have multiple annotations with the same label, but TreeViewer doesn't.
-          // Also Nexus requires that the annotations start with '&', while TreeViewer doesn't. So we generate
-          // the annotation strings separately depending on whether we want to support TreeViewer or not.
+          // There are three differences between TreeViewer and other Nexus tools:
+          //  - Nexus wants annotation comments to start with '&', but that confuses TreeViewer.
+          //  - Nexus allows us to have multiple annotations with the same label, but TreeViewer doesn't, so we
+          //    combine annotations for TreeViewer (separated by '||').
+          //  - Nexus allows ':' in the annotation names, while TreeViewer doesn't, so we change them into '.'s.
           if (this.supportTreeViewer) {
             const annotationList = [];
 
@@ -228,7 +234,7 @@ export default {
             }
           } else {
             const annotationList = annotations.entries().flatMap(entry => {
-              return entry[1].map(value => `"{'${entry[0]}"=${convertToNexusAnnotationValue(value)}`)
+              return entry[1].map(value => `"${entry[0]}"=${convertToNexusAnnotationValue(value)}`)
             });
 
             if (annotationList.length > 0) {
