@@ -43,6 +43,7 @@ import { PhylogenyWrapper, PhylorefWrapper } from "@phyloref/phyx";
 import { addCustomMenu } from "phylotree/src/render/menus";
 import { saveAs } from "filesaver.js-npm";
 import { text } from "@fortawesome/fontawesome-svg-core";
+import convert from "lodash/fp/convert";
 
 /*
  * Note that this requires the Phylotree Javascript to be loaded in the HTML
@@ -157,13 +158,13 @@ export default {
       const newickStr = this.tree.getNewick((node) => {
         // Is the resolved node for this phyloref? If so, let's make an annotation.
         if (has(node, "data") && has(node.data, "@id")) {
-          const annotations = [];
-          const data = node.data;
-
-          const convertToNexusAnnotationValue = (str) => {
-            // We really just need to wrap this in double-quotes, which means we need to filter out existing double quotes.
-            return '"' + str.replaceAll('"', "''") + '"';
+          const annotations = {
+            "phyloref:actual": [],
+            "phyloref:actualLabel": [],
+            "phyloref:expected": [],
+            "phyloref:expectedLabel": [],
           };
+          const data = node.data;
 
           this.phylorefs.forEach((phyloref) => {
             if (
@@ -172,22 +173,16 @@ export default {
                 .includes(data["@id"])
             ) {
               if (has(phyloref, "@id")) {
-                annotations.push(
-                  "\"phyloref:actual\"=" +
-                    convertToNexusAnnotationValue(phyloref["@id"])
-                );
+                annotations["phyloref:actual"].push(phyloref["@id"]);
               }
 
               if (has(phyloref, "label")) {
-                annotations.push(
-                  "\"phyloref:actualLabel\"=" +
-                    convertToNexusAnnotationValue(phyloref["label"])
-                );
+                annotations["phyloref:actualLabel"].push(phyloref["label"]);
               }
 
               // We don't know what to call this phyloref, but nevertheless we label it minimally.
               if (!has(phyloref, "@id") && !has(phyloref, "label"))
-                annotations.push("\"phyloref:actual\"=");
+                annotations["phyloref:actual"].push("");
             }
 
             if (
@@ -195,37 +190,54 @@ export default {
               this.selectedNodeLabel.toLowerCase() === data.name.toLowerCase()
             ) {
               if (has(this.phyloref, "@id")) {
-                annotations.push(
-                  "\"phyloref:expected\"=" +
-                    convertToNexusAnnotationValue(phyloref["@id"])
-                );
+                annotations["phyloref:expected"].push(phyloref["@id"]);
               }
 
               if (has(phyloref, "label")) {
-                annotations.push(
-                  "\"phyloref:expectedLabel\"=" +
-                    convertToNexusAnnotationValue(phyloref["label"])
-                );
+                annotations["phyloref:expectedLabel"].push(phyloref["label"]);
               }
 
               // We don't know what to call this phyloref, but nevertheless we label it minimally.
               if (!has(phyloref, "@id") && !has(phyloref, "label"))
-                annotations.push("\"phyloref:expected\"=");
+                annotations["phyloref:expected"].push("");
             }
           });
           console.log("Annotations: ", annotations);
 
-          if (annotations.length === 0) return undefined;
-          else {
-            if (this.supportTreeViewer) {
-              return `[${annotations.join(",")}]`;
+          const convertToNexusAnnotationValue = (str) => {
+            // We really just need to wrap this in double-quotes, which means we need to filter out existing double quotes.
+            return '"' + str.replaceAll('"', "''") + '"';
+          };
+
+          // I think Nexus allows us to have multiple annotations with the same label, but TreeViewer doesn't.
+          // Also Nexus requires that the annotations start with '&', while TreeViewer doesn't. So we generate
+          // the annotation strings separately depending on whether we want to support TreeViewer or not.
+          if (this.supportTreeViewer) {
+            const annotationList = [];
+
+            for (const [key, value] of Object.entries(annotations)) {
+              if (value.length > 0) {
+                annotationList.push(`${key.replaceAll(':', '.')}=${convertToNexusAnnotationValue(value.join("||"))}`);
+              }
+            }
+
+            if (annotationList.length > 0) {
+              return `[${annotationList.join(",")}]`;
             } else {
-              return `[&${annotations.join(",")}]`;
+              return undefined;
+            }
+          } else {
+            const annotationList = annotations.entries().flatMap(entry => {
+              return entry[1].map(value => `"{'${entry[0]}"=${convertToNexusAnnotationValue(value)}`)
+            });
+
+            if (annotationList.length > 0) {
+              return `[&${annotationList.join(",")}]`;
+            } else {
+              return undefined;
             }
           }
         }
-
-        return undefined;
       });
 
       // Create a Nexus file to store this `klados_tree` in.
