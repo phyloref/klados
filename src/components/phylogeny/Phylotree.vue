@@ -53,7 +53,11 @@ export default {
   name: "Phylotree",
   props: {
     phylogeny: Object, // The phylogeny to render.
-    phylorefs: Array, // The phyloreferences to highlight.
+    phylorefs: {
+      // The phyloreferences to highlight.
+      type: Array,
+      default: [],
+    },
     spacingX: {
       // Spacing in the X axis in pixels.
       type: Number,
