@@ -29,6 +29,29 @@ export default {
       if (getters.isApomorphyBasedPhyloref(phyloref)) {
         // Apomorphy-based phyloreferences must have a single internal specifier.
         if (externalSpecifierCount === 0 && internalSpecifierCount === 1) {
+          return 'phyloref:PhyloreferenceUsingApomorphy';
+        }
+
+        return undefined;
+      }
+
+      if (externalSpecifierCount > 0) {
+        if (internalSpecifierCount > 0) return 'phyloref:PhyloreferenceUsingMaximumClade';
+      } else if (internalSpecifierCount > 0) {
+        if (internalSpecifierCount > 1) return 'phyloref:PhyloreferenceUsingMinimumClade';
+        return undefined;
+      }
+
+      return undefined;
+    },
+    getPhylorefTypeAsString: (state, getters) => (phyloref) => {
+      const internalSpecifierCount = (phyloref.internalSpecifiers || []).length;
+      const externalSpecifierCount = (phyloref.externalSpecifiers || []).length;
+
+      // Handle apormophy-based definitions separately.
+      if (getters.isApomorphyBasedPhyloref(phyloref)) {
+        // Apomorphy-based phyloreferences must have a single internal specifier.
+        if (externalSpecifierCount === 0 && internalSpecifierCount === 1) {
           return 'Apomorphy-based clade definition';
         }
 
@@ -92,6 +115,7 @@ export default {
       }
 
       payload.phyloref.externalSpecifiers.push(createEmptySpecifier(this.getters.getDefaultNomenCodeIRI));
+      payload.phyloref.phylorefType = this.getters.getPhylorefType(payload.phyloref);
     },
 
     addInternalSpecifier(state, payload) {
@@ -106,6 +130,7 @@ export default {
       }
 
       payload.phyloref.internalSpecifiers.push(createEmptySpecifier(this.getters.getDefaultNomenCodeIRI));
+      payload.phyloref.phylorefType = this.getters.getPhylorefType(payload.phyloref)
     },
 
     deleteSpecifier(state, payload) {
@@ -119,6 +144,7 @@ export default {
       }
 
       new PhylorefWrapper(payload.phyloref).deleteSpecifier(payload.specifier);
+      payload.phyloref.phylorefType = this.getters.getPhylorefType(payload.phyloref)
     },
 
     setSpecifierProps(state, payload) {
@@ -187,6 +213,8 @@ export default {
       } else {
         throw new Error(`Unknown specifier type: ${payload.specifierType}`);
       }
+
+      payload.phyloref.phylorefType = this.getters.getPhylorefType(payload.phyloref)
     },
 
     setSpecifierPart(state, payload) {
