@@ -319,6 +319,9 @@ export default {
           // - data: The data associated with the node being styled
           const data = node.data;
 
+          // Store the phylorefs that resolves to each node ID.
+          const phylorefsByNodeId = {};
+
           // Wrap the phylogeny so we can call methods on it.
           const wrappedPhylogeny = new PhylogenyWrapper(this.phylogeny || {});
 
@@ -366,7 +369,7 @@ export default {
             node.menu_items = [];
 
             // Add a custom menu item to allow us to rename this node.
-            console.log("node", node);
+            // console.log("node", node);
             addCustomMenu(
               node,
               (node) => "Rename this node",
@@ -414,6 +417,8 @@ export default {
                 .includes(data["@id"])
             ) {
               // We found another pinning node!
+              if(!(data["@id"] in phylorefsByNodeId)) phylorefsByNodeId[data["@id"]] = new Set();
+              phylorefsByNodeId[data["@id"]].add(phyloref);
               this.recurseNodes(data, (node) =>
                 pinningNodeChildrenIRIs.add(node["@id"])
               );
@@ -437,11 +442,29 @@ export default {
 
               // Make sure we don't already have an internal label node on this SVG node!
               let textLabel = element.selectAll("text");
-              if (textLabel.empty()) textLabel = element.append("text");
+              // console.log(`Looking for textLabel for phyloref ${wrappedPhyloref.label} on node ${data['@id']}: `, textLabel);
+              // if (textLabel.empty()) element.append("text");
+              if (!textLabel.empty()) textLabel.remove();
+              textLabel = element.append("text");
 
-              const textLabels = (textLabel.textContent || "").split(", ");
+              const textLabels = [];
               textLabels.push(data.name);
-              const textLabelText = textLabels.map(label => label.trim()).filter(label => label !== '').sort().join(", ");
+
+
+
+              // TODO: we should get all the alternate labels for this node.
+              console.log("tunits = ", wrappedPhylogeny.getTaxonomicUnitsForNodeLabel(data.name));
+
+              // Add all the phyloref labels for this node.
+              const phylorefLabels = [...phylorefsByNodeId[data["@id"]]].map(phyloref => new PhylorefWrapper(phyloref).label).sort();
+              textLabels.push(...phylorefLabels);
+              console.log(`Found phylorefs for node ${data['@id']}: `, textLabels);
+              const textLabelText = [...new Set(textLabels
+                  .filter(label => label && label !== '')   // Filter out undefined or blank label.
+                  .map(label => label.trim()))]             // Trim all labels
+                  .join("||");                              // Join them with '||'s so we can re-separate them if needed.
+
+              console.log(`Found phyloref ${wrappedPhyloref.label}, assigned label '${textLabelText}' to ${data['@id']} from textLabels: `, textLabels);
 
               textLabel
                 .classed("internal-label", true)
