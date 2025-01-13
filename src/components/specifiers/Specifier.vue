@@ -59,7 +59,7 @@
         </button>
         <div class="dropdown-menu">
           <a
-            v-for="(nomenCode, nomenCodeIndex) of nomenCodes"
+            v-for="nomenCode of nomenCodes"
             class="dropdown-item"
             href="javascript:;"
             @click="nomenclaturalCode = nomenCode.iri"
