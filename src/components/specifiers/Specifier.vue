@@ -73,7 +73,7 @@
       </div>
       <!-- Display a verbatim label describing the specifier. -->
       <input
-        v-model="specifierLabel"
+        v-model.lazy.trim="specifierLabel"
         readonly
         type="text"
         class="form-control"
@@ -121,7 +121,7 @@
           <div class="col-md-10">
             <select
               id="specifier-type"
-              v-model="specifierType"
+              v-model.lazy.trim="specifierType"
               class="form-control"
             >
               <option value="Internal">
@@ -145,7 +145,7 @@
           <div class="col-md-10">
             <input
               id="specifier-label"
-              v-model="verbatimLabel"
+              v-model.lazy.trim="verbatimLabel"
               class="form-control"
             >
           </div>
@@ -162,7 +162,7 @@
           <div class="col-md-10">
             <select
               id="specifier-class"
-              v-model="specifierClass"
+              v-model.lazy.trim="specifierClass"
               class="form-control"
               @change="updateSpecifier()"
             >
@@ -195,7 +195,7 @@
             <div class="col-md-10">
               <select
                 id="nomen-code"
-                v-model="nomenclaturalCode"
+                v-model.lazy.trim="nomenclaturalCode"
                 class="form-control"
               >
                 <option
@@ -236,7 +236,7 @@
             <div class="col-md-10 input-group">
               <input
                 id="genus"
-                v-model="genusPart"
+                v-model.lazy.trim="genusPart"
                 class="form-control"
               >
             </div>
@@ -252,7 +252,7 @@
             <div class="col-md-10 input-group">
               <input
                 id="specific-epithet"
-                v-model="specificEpithet"
+                v-model.lazy.trim="specificEpithet"
                 class="form-control"
               >
             </div>
@@ -270,7 +270,7 @@
             <div class="col-md-10 input-group">
               <input
                 id="infraspecific-epithet"
-                v-model="infraspecificEpithet"
+                v-model.lazy.trim="infraspecificEpithet"
                 class="form-control"
               >
             </div>
@@ -289,7 +289,7 @@
               <div class="input-group">
                 <input
                   id="occurrence-id"
-                  v-model="occurrenceID"
+                  v-model.lazy.trim="occurrenceID"
                   class="form-control"
                   placeholder="Enter the occurrence ID of the specimen here, e.g. 'MVZ:Herp:246033' or '000866d2-c177-4648-a200-ead4007051b9'"
                 >
@@ -364,7 +364,7 @@
             <div class="col-md-10 input-group">
               <input
                 id="external-reference"
-                v-model="externalReference"
+                v-model.lazy.trim="externalReference"
                 class="form-control"
               >
               <div class="input-group-append">
@@ -562,7 +562,11 @@ export default {
       this.loadSpecifier();
     },
     remoteSpecifier() {
-      this.loadSpecifier();
+      // Did we trigger this?
+      if (!this.remoteSpecifierTriggeredHere)
+        this.loadSpecifier();
+      else
+        this.remoteSpecifierTriggeredHere = false;
     },
     remoteSpecifierId() {
       this.loadSpecifier();
@@ -603,6 +607,11 @@ export default {
 
         // Fields for an external reference.
         externalReference: "",
+
+        // We would like to trigger a reload if something else changes a specifier (unlikely, but it might happen in
+        // the future), but we can't trigger that when we update it ourselves. So we set this flag to true while we're
+        // updating it.
+        remoteSpecifierTriggeredHere: false,
       };
     },
     /**
@@ -701,6 +710,9 @@ export default {
      * is mounted), it loads information from this.remoteSpecifier.
      */
     updateSpecifier() {
+      // We don't want to set off a (re)-loadSpecifier() while we're editing the specifier here, so set this flag.
+      this.remoteSpecifierTriggeredHere = true;
+
       // Step 1. Create a `result` taxonomic unit. Unlike the loading code, we strictly write this out by type, so
       // if you loaded a taxonomic unit with both Specimen and Taxon information, we ONLY write out EITHER the Specimen
       // or Taxon information, based on which one is chosen in the UI.
