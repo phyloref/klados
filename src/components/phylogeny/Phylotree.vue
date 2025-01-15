@@ -78,7 +78,7 @@ export default {
       // TreeViewer (https://treeviewer.org/) is a fairly recent phylogenetic tree viewing software that
       // has a slightly different idea about how annotations should be formatted in NEXUS files.
       type: Boolean,
-      default: true,
+      default: false,
     }
   },
   data() {
@@ -233,7 +233,7 @@ export default {
               return undefined;
             }
           } else {
-            const annotationList = annotations.entries().flatMap(entry => {
+            const annotationList = Object.entries(annotations).flatMap(entry => {
               return entry[1].map(value => `"${entry[0]}"=${convertToNexusAnnotationValue(value)}`)
             });
 
