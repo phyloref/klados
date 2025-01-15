@@ -52,45 +52,6 @@
       ],
       "value": ""
     }, {
-      "id": "6d909a21-f96f-41b1-8114-523510969e43",
-      "comment": "",
-      "command": "mouseDownAt",
-      "target": "id=sidebar-wrapper",
-      "targets": [
-        ["id=sidebar-wrapper", "id"],
-        ["css=#sidebar-wrapper", "css:finder"],
-        ["xpath=//div[@id='sidebar-wrapper']", "xpath:attributes"],
-        ["xpath=//div[@id='wrapper']/div", "xpath:idRelative"],
-        ["xpath=//div[2]/div", "xpath:position"]
-      ],
-      "value": "264,588"
-    }, {
-      "id": "876d2a56-9309-47f9-9e54-d7a157b7cb8f",
-      "comment": "",
-      "command": "mouseMoveAt",
-      "target": "id=sidebar-wrapper",
-      "targets": [
-        ["id=sidebar-wrapper", "id"],
-        ["css=#sidebar-wrapper", "css:finder"],
-        ["xpath=//div[@id='sidebar-wrapper']", "xpath:attributes"],
-        ["xpath=//div[@id='wrapper']/div", "xpath:idRelative"],
-        ["xpath=//div[2]/div", "xpath:position"]
-      ],
-      "value": "264,588"
-    }, {
-      "id": "2f6d4085-4ed4-46dc-8e81-359c66781441",
-      "comment": "",
-      "command": "mouseUpAt",
-      "target": "id=sidebar-wrapper",
-      "targets": [
-        ["id=sidebar-wrapper", "id"],
-        ["css=#sidebar-wrapper", "css:finder"],
-        ["xpath=//div[@id='sidebar-wrapper']", "xpath:attributes"],
-        ["xpath=//div[@id='wrapper']/div", "xpath:idRelative"],
-        ["xpath=//div[2]/div", "xpath:position"]
-      ],
-      "value": "264,588"
-    }, {
       "id": "0fc0b9ff-88be-4714-9a0e-d0fd589eb846",
       "comment": "",
       "command": "click",
