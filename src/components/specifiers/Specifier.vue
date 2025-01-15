@@ -720,12 +720,12 @@ export default {
       switch (this.specifierClass) {
         case 'Taxon':
           // Set up a taxonomic unit for this taxon.
-          result = this.wrappedTaxonConcept.tunit;
+          result = this.wrappedTaxonConcept.tunit || {};
           break;
 
         case 'Specimen':
           // Set up a taxonomic unit for this specimen.
-          result = SpecimenWrapper.fromOccurrenceID(this.occurrenceID);
+          result = SpecimenWrapper.fromOccurrenceID(this.occurrenceID) || {};
           break;
 
         case 'External reference':
