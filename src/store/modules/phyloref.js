@@ -20,6 +20,9 @@ function createEmptySpecifier(nomenCodeIRI) {
 }
 
 export default {
+  unmounted() {
+    this.updateSpecifier();
+  },
   getters: {
     getPhylorefType: (state, getters) => (phyloref) => {
       const internalSpecifierCount = (phyloref.internalSpecifiers || []).length;
@@ -44,7 +47,7 @@ export default {
 
       return undefined;
     },
-    getPhylorefTypeAsString: (state, getters) => (phyloref) => {
+    getPhylorefTypeDescription: (state, getters) => (phyloref) => {
       const internalSpecifierCount = (phyloref.internalSpecifiers || []).length;
       const externalSpecifierCount = (phyloref.externalSpecifiers || []).length;
 
