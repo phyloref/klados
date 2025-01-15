@@ -44,7 +44,7 @@ export default {
 
       return undefined;
     },
-    getPhylorefTypeAsString: (state, getters) => (phyloref) => {
+    getPhylorefTypeDescription: (state, getters) => (phyloref) => {
       const internalSpecifierCount = (phyloref.internalSpecifiers || []).length;
       const externalSpecifierCount = (phyloref.externalSpecifiers || []).length;
 
