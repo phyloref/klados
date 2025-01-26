@@ -101,10 +101,10 @@
           <tbody>
             <tr v-if="phylorefs.length === 0" class="bg-white">
               <td :colspan="4 + phylogenies.length">
-                <Center><em>No phyloreferences in this file</em></Center>
+                <center><em>No phyloreferences in this file</em></center>
               </td>
             </tr>
-            <tr v-for="(phyloref, phylorefIndex) of phylorefs">
+            <tr v-for="phyloref of phylorefs">
               <td>
                 <button
                   type="button"
@@ -315,7 +315,7 @@
           class="card mt-2"
       >
         <h5 class="card-header">
-          Phylogeny: {{ getPhylogenyLabel(phylogeny) }}
+          {{ getPhylogenyLabel(phylogeny) }}
         </h5>
         <div class="card-body">
           <Phylotree
@@ -323,6 +323,25 @@
               :phylogeny="phylogeny"
               :phylorefs="phylorefs"
           />
+            <table class="table table-bordered mt-2">
+              <thead>
+              <tr>
+                <th>Phylogeny Node</th>
+                <th>Phyloreferences</th>
+              </tr>
+              </thead>
+              <tbody>
+                <template v-for="phyloref in phylorefs">
+                  <tr v-for="phylogenyNodeLabel in getNodeLabelsResolvedByPhyloref(phyloref, phylogeny)">
+                    <td>{{ phylogenyNodeLabel }}</td>
+                    <td><a
+                        href="javascript: void(0)"
+                        @click="$store.commit('changeDisplay', { phyloref })"
+                    >{{ getPhylorefLabel(phyloref) }}</a></td>
+                  </tr>
+                </template>
+              </tbody>
+            </table>
         </div>
       </div>
     </template>

@@ -466,24 +466,27 @@ export default {
               // Make sure we don't already have an internal label node on this SVG node!
               let textLabel = element.selectAll("text");
               // console.log(`Looking for textLabel for phyloref ${wrappedPhyloref.label} on node ${data['@id']}: `, textLabel);
-              // if (textLabel.empty()) element.append("text");
-              if (!textLabel.empty()) textLabel.remove();
-              textLabel = element.append("text");
+              if (textLabel.empty()) element.append("text");
+              // if (!textLabel.empty()) textLabel.remove();
+              // textLabel = element.append("text");
 
               const textLabels = [];
               textLabels.push(data.name);
 
-              // TODO: we should get all the alternate labels for this node.
-              console.log("tunits = ", wrappedPhylogeny.getTaxonomicUnitsForNodeLabel(data.name));
-
-              // Add all the phyloref labels for this node.
+              // Determine all the phyloref labels for this node.
               const phylorefLabels = [...phylorefsByNodeId[data["@id"]]].map(phyloref => new PhylorefWrapper(phyloref).label).sort();
               textLabels.push(...phylorefLabels);
               console.log(`Found phylorefs for node ${data['@id']}: `, textLabels);
-              const textLabelText = [...new Set(textLabels
+
+              let sortedTextLabels = [...new Set(textLabels
                   .filter(label => label && label !== '')   // Filter out undefined or blank label.
                   .map(label => label.trim()))]             // Trim all labels
-                  .join("||");                              // Join them with '||'s so we can re-separate them if needed.
+                  .filter(label => label !== data.name);    // We're going to promote the actual node label, so don't include it here.
+
+              let textLabelText = data.name;
+              if (this.phylorefs.length === 1 && sortedTextLabels.length > 0) {
+                textLabelText = `${data.name} (${sortedTextLabels.join(", ")})`;
+              }
 
               console.log(`Found phyloref ${wrappedPhyloref.label}, assigned label '${textLabelText}' to ${data['@id']} from textLabels: `, textLabels);
 
