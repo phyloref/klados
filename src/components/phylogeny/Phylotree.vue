@@ -161,7 +161,9 @@ export default {
       const newickStr = this.tree.getNewick((node) => {
         // Is the resolved node for this phyloref? If so, let's make an annotation.
         if (has(node, "data") && has(node.data, "@id")) {
-          // We collect annotations by type -- note that we can have multiple phylorefs on each node.
+          // We collect annotations by key -- so you can have as many phyloref:actual/phyloref:expected/etc. annotations
+          // on this node as you like. We then combine them at the end (so that `phyloref:actual = ['#A', '#B']`
+          // becomes `phyloref:actual="#A||#B"`.
           const annotations = {
             "phyloref:actual": [],
             "phyloref:actualLabel": [],
@@ -171,7 +173,7 @@ export default {
           const data = node.data;
 
           this.phylorefs.forEach((phyloref) => {
-            // Is this node one of the resolved nodes for this phyloreference?
+            // Is this node one of the resolved nodes for this phyloreference? If so, pull out the @id and label.
             if (
               this.$store.getters
                 .getResolvedNodesForPhylogeny(this.phylogeny, phyloref)
@@ -185,12 +187,13 @@ export default {
                 annotations["phyloref:actualLabel"].push(phyloref["label"]);
               }
 
-              // We don't know what to call this phyloref, but nevertheless we tag it so we know there's _something_ here.
+              // We don't know what to call this phyloref, but nevertheless we'll tag it with an empty string so we
+              // know there's _something_ here.
               if (!has(phyloref, "@id") && !has(phyloref, "label"))
                 annotations["phyloref:actual"].push("");
             }
 
-            // Is this node one of the expected nodes for this phyloreference?
+            // Is this node one of the expected nodes for this phyloreference? If so, pull out the @id and label.
             if (
               this.selectedNodeLabel &&
               this.selectedNodeLabel.toLowerCase() === data.name.toLowerCase()
@@ -203,7 +206,8 @@ export default {
                 annotations["phyloref:expectedLabel"].push(phyloref["label"]);
               }
 
-              // We don't know what to call this phyloref, but nevertheless we tag it so we know there's _something_ here.
+              // We don't know what to call this phyloref, but nevertheless we'll tag it with an empty string so we
+              // know there's _something_ here.
               if (!has(phyloref, "@id") && !has(phyloref, "label"))
                 annotations["phyloref:expected"].push("");
             }
