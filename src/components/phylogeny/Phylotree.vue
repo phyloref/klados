@@ -53,7 +53,12 @@ export default {
   props: {
     phylogeny: Object, // The phylogeny to render.
     phylorefs: {
-      // The phyloreferences to highlight.
+      // The phyloreferences to highlight as an array of dictionaries.
+      // In the future we might use this to build a sophisticated interface allowing several phyloreferences to
+      // be displayed at once, but for now mainly used for two purposes:
+      //  1. Distinguishing when we need to highlight a single phyloreference and when we need to highlight multiple.
+      //  2. When highlighting multiple, we always provide the list of all phyloreferences in the current Phyx file,
+      //     but in the future it might be useful to highlight only a subset of phyloreferences for some reason.
       type: Array,
       default: [],
     },
