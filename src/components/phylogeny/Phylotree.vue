@@ -77,6 +77,8 @@ export default {
     supportTreeViewer: {
       // TreeViewer (https://treeviewer.org/) is a fairly recent phylogenetic tree viewing software that
       // has a slightly different idea about how annotations should be formatted in NEXUS files.
+      // Given its newness, we're not going to support it at present, but at some point we might want to
+      // support it -- in which case this boolean flag will allow you to turn on and off TreeViewer support.
       type: Boolean,
       default: false,
     }
