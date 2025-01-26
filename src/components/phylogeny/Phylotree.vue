@@ -220,30 +220,26 @@ export default {
             return '"' + str.replaceAll('"', "'") + '"';
           };
 
+          // FigTree allows multiple annotations on a single node, but will only display the last one.
+          // So we combine annotations with the same name, with the values double-pipe-delimited.
+          const annotationList = [];
+
+          for (const [key, value] of Object.entries(annotations)) {
+            if (value.length > 0) {
+              annotationList.push(`${key.replaceAll(':', '.')}=${convertToNexusAnnotationValue(value.join("||"))}`);
+            }
+          }
+
           // There are three differences between TreeViewer and other Nexus tools:
           //  - Nexus wants annotation comments to start with '&', but that confuses TreeViewer.
-          //  - Nexus allows us to have multiple annotations with the same label, but TreeViewer doesn't, so we
-          //    combine annotations for TreeViewer (separated by '||').
           //  - Nexus allows ':' in the annotation names, while TreeViewer doesn't, so we change them into '.'s.
           if (this.supportTreeViewer) {
-            const annotationList = [];
-
-            for (const [key, value] of Object.entries(annotations)) {
-              if (value.length > 0) {
-                annotationList.push(`${key.replaceAll(':', '.')}=${convertToNexusAnnotationValue(value.join("||"))}`);
-              }
-            }
-
             if (annotationList.length > 0) {
               return `[${annotationList.join(",")}]`;
             } else {
               return undefined;
             }
           } else {
-            const annotationList = Object.entries(annotations).flatMap(entry => {
-              return entry[1].map(value => `"${entry[0]}"=${convertToNexusAnnotationValue(value)}`)
-            });
-
             if (annotationList.length > 0) {
               return `[&${annotationList.join(",")}]`;
             } else {
