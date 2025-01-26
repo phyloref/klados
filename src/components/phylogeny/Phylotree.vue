@@ -42,8 +42,6 @@ import jQuery from "jquery";
 import { PhylogenyWrapper, PhylorefWrapper } from "@phyloref/phyx";
 import { addCustomMenu } from "phylotree/src/render/menus";
 import { saveAs } from "filesaver.js-npm";
-import { text } from "@fortawesome/fontawesome-svg-core";
-import convert from "lodash/fp/convert";
 
 /*
  * Note that this requires the Phylotree Javascript to be loaded in the HTML
@@ -121,15 +119,6 @@ export default {
     tree() {
       // Set up Phylotree.
       return new phylotree(this.parsedNewick.json);
-
-      /*
-      , {
-            'internal-names': false,
-            transitions: false,
-            'left-right-spacing': 'fit-to-size',
-            'top-bottom-spacing': 'fixed-step',
-          }
-       */
     },
   },
   watch: {
@@ -485,8 +474,6 @@ export default {
 
               const textLabels = [];
               textLabels.push(data.name);
-
-
 
               // TODO: we should get all the alternate labels for this node.
               console.log("tunits = ", wrappedPhylogeny.getTaxonomicUnitsForNodeLabel(data.name));
