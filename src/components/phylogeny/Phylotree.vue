@@ -226,7 +226,9 @@ export default {
 
           for (const [key, value] of Object.entries(annotations)) {
             if (value.length > 0) {
-              annotationList.push(`${key.replaceAll(':', '.')}=${convertToNexusAnnotationValue(value.join("||"))}`);
+              // TreeViewer doesn't support ':' in key names, so instead we replace them with '.'.
+              const keyToUse = (!this.supportTreeViewer ? key : key.replace(":", "."));
+              annotationList.push(`${keyToUse}=${convertToNexusAnnotationValue(value.join("||"))}`);
             }
           }
 
