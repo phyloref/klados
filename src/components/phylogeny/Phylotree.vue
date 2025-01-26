@@ -329,6 +329,10 @@ export default {
       // duplicates. Since this is a local variable, it should be wiped every time redrawTree() is called.)
       const pinningNodeChildrenIRIs = new Set();
 
+      // Store the phylorefs that resolves to each node ID. The exact order in which this dictionary gets filled
+      // depends on how phylotree.js draws the tree.
+      const phylorefsByNodeId = {};
+
       // Resize the tree to the size of the container.
       const container = jQuery(`#phylogeny${this.phylogenyIndex}`);
       const width = container.innerWidth();
@@ -350,9 +354,6 @@ export default {
           // - element: The D3 element of the node being styled
           // - data: The data associated with the node being styled
           const data = node.data;
-
-          // Store the phylorefs that resolves to each node ID.
-          const phylorefsByNodeId = {};
 
           // Wrap the phylogeny so we can call methods on it.
           const wrappedPhylogeny = new PhylogenyWrapper(this.phylogeny || {});
