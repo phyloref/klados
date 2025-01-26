@@ -266,11 +266,25 @@ export default {
           url: 'examples/fisher_et_al_2007.json',
           title: 'Fisher et al, 2007',
         },
-	{
-	  url: 'examples/testudinata_phylonym.json',
-	  title: 'Testudinata from Phylonym',
-	},
+        {
+          url: "examples/testudinata_phylonym.json",
+          title: "Testudinata from Phylonym",
+        },
       ];
+    },
+    wrappedPhyx() {
+      return new PhyxWrapper(
+        this.$store.state.phyx.currentPhyx,
+        newickParser
+      );
+    },
+    wrappedPhyxAsJSONLD() {
+      try {
+        return this.wrappedPhyx.asJSONLD();
+      } catch (err) {
+        alert(`Could not convert Phyx to JSON-LD: ${err}`);
+        return undefined;
+      }
     },
     ...mapGetters([
       'phyxTitle',
@@ -405,8 +419,9 @@ export default {
     downloadAsJSONLD() {
       // Exports the PHYX file as an OWL/JSON-LD file, which can be opened in
       // Protege or converted into OWL/XML or other formats.
-      const wrapped = new PhyxWrapper(this.$store.state.phyx.currentPhyx);
-      const content = [JSON.stringify([wrapped.asJSONLD()], undefined, 4)];
+      const jsonld = this.wrappedPhyxAsJSONLD;
+      if (!jsonld) return;
+      const content = [JSON.stringify([jsonld], undefined, 4)];
 
       // Save to local hard drive.
       const jsonldFile = new File(content, `${this.downloadFilenameForPhyx}.jsonld`, { type: 'application/json;charset=utf-8' });
@@ -416,15 +431,19 @@ export default {
     downloadAsNQuads() {
       // Exports the PHYX file as an OWL/N-Quads file, which can be opened in
       // Protege or converted into other RDF formats.
-      const wrapped = new PhyxWrapper(this.$store.state.phyx.currentPhyx);
+      const wrapped = this.wrappedPhyx;
 
       // TODO: we need a baseIRI here because of https://github.com/phyloref/phyx.js/issues/113
       // Once that is fixed in phyx.js, we can remove it here.
-      wrapped.toRDF('https://example.phyloref.org/phyx#').then((content) => {
-        // Save to local hard drive.
-        const nqFile = new File([content], `${this.downloadFilenameForPhyx}.owl`, { type: 'application/n-quads;charset=utf-8' });
-        saveAs(nqFile, `${this.downloadFilenameForPhyx}.owl`);
-      });
+      try {
+        wrapped.toRDF('https://example.org/phyx#').then((content) => {
+          // Save to local hard drive.
+          const nqFile = new File([content], `${this.downloadFilenameForPhyx}.owl`, {type: 'application/n-quads;charset=utf-8'});
+          saveAs(nqFile, `${this.downloadFilenameForPhyx}.owl`);
+        });
+      } catch (err) {
+        alert(`Could not convert phylogeny to ontology: ${err}`);
+      }
     },
 
     reasonOverPhyloreferences() {
@@ -445,13 +464,15 @@ export default {
       const outerThis = this;
       Vue.nextTick(() => {
         // Prepare JSON-LD file for submission.
-        const jsonld = JSON.stringify([new PhyxWrapper(
-          outerThis.$store.state.phyx.currentPhyx,
-          newickParser,
-        ).asJSONLD()]);
+        const jsonld = outerThis.wrappedPhyxAsJSONLD;
+        if (!jsonld) {
+          outerThis.reasoningInProgress = false;
+          return;
+        }
+        const jsonldAsStr = JSON.stringify([jsonld]);
 
         // To improve upload speed, let's Gzip the file before upload.
-        const jsonldGzipped = pako.gzip(jsonld);
+        const jsonldGzipped = pako.gzip(jsonldAsStr);
 
         // Prepare request for submission.
         const query = $.param({

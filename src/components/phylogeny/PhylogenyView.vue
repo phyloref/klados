@@ -290,9 +290,13 @@ export default {
 
       // Look for an unbalanced Newick string.
       let parenLevels = 0;
+      let singleQuoteCount = 0;
+      let doubleQuoteCount = 0;
       for (let x = 0; x < newickTrimmed.length; x += 1) {
         if (newickTrimmed[x] === '(') parenLevels += 1;
         if (newickTrimmed[x] === ')') parenLevels -= 1;
+        if (newickTrimmed[x] === '\'') singleQuoteCount += 1;
+        if (newickTrimmed[x] === '"') doubleQuoteCount += 1;
       }
 
       if (parenLevels !== 0) {
@@ -302,6 +306,24 @@ export default {
             parenLevels > 0
               ? `You have ${parenLevels} too many open parentheses`
             : `You have ${-parenLevels} too few open parentheses`,
+        });
+      }
+
+      if (singleQuoteCount % 2 > 0) {
+        errors.push({
+          title: "Unbalanced single quotes (') in Newick string",
+          message:
+            `Every single quote should be closed by another single quote, but this Newick string has ` +
+            `${singleQuoteCount} single quotes. Try doubling the single quote to escape it.`,
+        });
+      }
+
+      if (doubleQuoteCount % 2 > 0) {
+        errors.push({
+          title: 'Unbalanced double quotes (") in Newick string',
+          message:
+            `Every double quote should be closed by another double quote, but this Newick string has ` +
+            `${doubleQuoteCount} double quotes. Try doubling the double quote to escape it.`,
         });
       }
 
@@ -381,7 +403,7 @@ export default {
         nodeLabel,
         tunit: TaxonomicUnitWrapper.fromLabel(
           "",
-          this.$store.getters.getDefaultNomenCodeURI
+          this.$store.getters.getDefaultNomenCodeIRI
         ),
       });
     },

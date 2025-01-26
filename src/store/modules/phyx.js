@@ -19,7 +19,7 @@ import {
   OPEN_TREE_INDUCED_SUBTREE_URL,
 
   COOKIE_EXPIRY,
-  COOKIE_ALLOWED, COOKIE_DEFAULT_NOMEN_CODE_URI, COOKIE_CURATOR_NAME, COOKIE_CURATOR_EMAIL, COOKIE_CURATOR_ORCID,
+  COOKIE_ALLOWED, COOKIE_DEFAULT_NOMEN_CODE_IRI, COOKIE_CURATOR_NAME, COOKIE_CURATOR_EMAIL, COOKIE_CURATOR_ORCID,
 } from '@/config';
 
 // Shared code for reading and writing cookies.
@@ -61,11 +61,11 @@ export default {
     loadedPhyxChanged(state) {
       return !isEqual(state.currentPhyx, state.loadedPhyx);
     },
-    getDefaultNomenCodeURI(state) {
+    getDefaultNomenCodeIRI(state) {
       // If no default nomenclatural code is set in the Phyx file, we will attempt to look up that information
       // using a cookie.
       return state.currentPhyx.defaultNomenclaturalCodeIRI
-          || getKladosCookie(COOKIE_DEFAULT_NOMEN_CODE_URI, TaxonNameWrapper.UNKNOWN_CODE);
+          || getKladosCookie(COOKIE_DEFAULT_NOMEN_CODE_IRI, TaxonNameWrapper.UNKNOWN_CODE);
     },
     getDownloadFilenameForPhyx(state) {
       // Return a filename to be used to name downloads of this Phyx document.
@@ -174,15 +174,15 @@ export default {
 
       state.currentPhyx.phylogenies.splice(indexOf, 1);
     },
-    setDefaultNomenCodeURI(state, payload) {
-      if (!has(payload, 'defaultNomenclaturalCodeURI')) {
-        throw new Error('No default nomenclatural code URI provided to setDefaultNomenCodeURI');
+    setDefaultNomenCodeIRI(state, payload) {
+      if (!has(payload, 'defaultNomenclaturalCodeIRI')) {
+        throw new Error('No default nomenclatural code IRI provided to setDefaultNomenCodeIRI');
       }
 
       // Overwrite the current default nomenclatural code cookie.
-      setKladosCookie(COOKIE_DEFAULT_NOMEN_CODE_URI, payload.defaultNomenclaturalCodeURI);
+      setKladosCookie(COOKIE_DEFAULT_NOMEN_CODE_IRI, payload.defaultNomenclaturalCodeIRI);
 
-      Vue.set(state.currentPhyx, 'defaultNomenclaturalCodeURI', payload.defaultNomenclaturalCodeURI);
+      Vue.set(state.currentPhyx, 'defaultNomenclaturalCodeIRI', payload.defaultNomenclaturalCodeIRI);
     },
     duplicatePhyloref(state, payload) {
       if (!has(payload, 'phyloref')) {
@@ -266,10 +266,10 @@ export default {
       if (taxonConceptNames.length === 0) {
         // If no taxon names are used in any phyloreferences -- if they use non-taxon-name
         // identifiers or if there are no phyloreferences, say -- we create a new phylogeny
-        // named "Open Tree of Life" with a description that tells the user what happened.
+        // named "Open Tree of Life" with curator notes that tells the user what happened.
         createOTTPhylogenyWithCitation({
           label: 'Open Tree of Life',
-          description: 'Attempt to load Open Tree of Life tree failed: no taxon name specifiers present.',
+          curatorNotes: 'Attempt to load Open Tree of Life tree failed: no taxon name specifiers present.',
           newick: '()',
         });
         return;
@@ -311,7 +311,7 @@ export default {
               // We use that to create a new phylogeny labeled "Open Tree of Life".
               createOTTPhylogenyWithCitation({
                 label: 'Open Tree of Life',
-                description: `This phylogeny was generated from the Open Tree of Life based on the following studies: ${innerData.supporting_studies}`,
+                curatorNotes: `This phylogeny was generated from the Open Tree of Life based on the following studies: ${innerData.supporting_studies}`,
                 newick: innerData.newick,
               });
             },
@@ -333,10 +333,10 @@ export default {
 
               if (knownOttIds.length === 0) {
                 // It may turn out that ALL the OTT IDs are filtered out, in which case we should produce
-                // a phylogeny for the user with a description that explains what happened.
+                // a phylogeny for the user with curator notes that explains what happened.
                 createOTTPhylogenyWithCitation({
                   label: 'Open Tree of Life',
-                  description: 'Attempt to load Open Tree of Life tree failed, as none of the Open Tree taxonomy IDs'
+                  curatorNotes: 'Attempt to load Open Tree of Life tree failed, as none of the Open Tree taxonomy IDs'
                       + ` were present on the synthetic tree: ${JSON.stringify(unknownOttIdReasons, undefined, 4)}`,
                   newick: '()',
                 });
@@ -355,7 +355,7 @@ export default {
                     // If we get an induced phylogeny as a Newick string, create a phylogeny with that Newick string.
                     createOTTPhylogenyWithCitation({
                       label: 'Open Tree of Life',
-                      description: `This phylogeny was generated from the Open Tree of Life based on the following studies: ${innerData.supporting_studies}`,
+                      curatorNotes: `This phylogeny was generated from the Open Tree of Life based on the following studies: ${innerData.supporting_studies}`,
                       newick: innerData.newick,
                     });
                   },

@@ -573,7 +573,7 @@ export default {
     },
     computedPhylorefType() {
       // Return the type of phyloreference based on internal/external specifier structure.
-      return this.$store.getters.getPhylorefType(this.selectedPhyloref);
+      return this.$store.getters.getPhylorefTypeDescription(this.selectedPhyloref);
     },
     phylorefURI() {
       // Get the base URI of this phyloreference.
@@ -648,14 +648,18 @@ export default {
     },
     getNodeLabels(phylogeny, nodeType) {
       // Return a list of node labels in a particular phylogeny.
-      return new PhylogenyWrapper(phylogeny).getNodeLabels(nodeType).sort();
+      try {
+        return new PhylogenyWrapper(phylogeny).getNodeLabels(nodeType).sort();
+      } catch {
+        return [];
+      }
     },
     getExpectedNodeLabel(phylogeny) {
       // Return the node label we expect this phyloref to resolve to on the
       // specified phylogeny.
       return this.$store.getters.getExpectedNodeLabel(
-        this.selectedPhyloref,
-        phylogeny,
+          this.selectedPhyloref,
+          phylogeny,
       );
     },
     getSpecifierLabel(specifier) {
