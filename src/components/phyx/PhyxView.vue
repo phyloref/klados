@@ -323,25 +323,30 @@
               :phylogeny="phylogeny"
               :phylorefs="phylorefs"
           />
-            <table class="table table-bordered mt-2">
-              <thead>
-              <tr>
-                <th>Phylogeny Node</th>
-                <th>Phyloreferences</th>
-              </tr>
-              </thead>
-              <tbody>
-                <template v-for="phyloref in phylorefs">
-                  <tr v-for="phylogenyNodeLabel in getNodeLabelsResolvedByPhyloref(phyloref, phylogeny)">
-                    <td>{{ phylogenyNodeLabel }}</td>
-                    <td><a
-                        href="javascript: void(0)"
-                        @click="$store.commit('changeDisplay', { phyloref })"
-                    >{{ getPhylorefLabel(phyloref) }}</a></td>
-                  </tr>
-                </template>
-              </tbody>
-            </table>
+          <table class="table table-bordered mt-2">
+            <thead>
+            <tr>
+              <th>Phylogeny Node</th>
+              <th>Resolved Phyloreferences</th>
+            </tr>
+            </thead>
+            <tbody>
+              <template v-if="getPhylorefsResolvedForPhylogeny(phylogeny).length === 0">
+                <tr>
+                  <td colspan="2"><em>No phyloreferences have resolved on this phylogeny.</em></td>
+                </tr>
+              </template>
+              <template v-for="phyloref in phylorefs">
+                <tr v-for="phylogenyNodeLabel in getNodeLabelsResolvedByPhyloref(phyloref, phylogeny)">
+                  <td>{{ phylogenyNodeLabel }}</td>
+                  <td><a
+                      href="javascript: void(0)"
+                      @click="$store.commit('changeDisplay', { phyloref })"
+                  >{{ getPhylorefLabel(phyloref) }}</a></td>
+                </tr>
+              </template>
+            </tbody>
+          </table>
         </div>
       </div>
     </template>
@@ -414,6 +419,17 @@ export default {
     }),
   },
   methods: {
+    getPhylorefsResolvedForPhylogeny(phylogeny) {
+      if (!this.phylorefs || this.phylorefs.length === 0) return [];
+      if (!phylogeny) return [];
+      return this.phylorefs.filter((phyloref) =>
+        this.$store.getters.getResolvedNodesForPhylogeny(
+          phylogeny,
+          phyloref,
+          false
+        ).length > 0
+      );
+    },
     getPhylogenyLabel(phylogeny) {
       const phylogeny_label = phylogeny.label;
       if (!phylogeny_label) {
