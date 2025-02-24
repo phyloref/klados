@@ -84,6 +84,17 @@ export default {
       // support it -- in which case this boolean flag will allow you to turn on and off TreeViewer support.
       type: Boolean,
       default: false,
+    },
+    nodeCircleSizeDefault: {
+      // The radius of normal phylogeny nodes.
+      // I think this is in pixels?
+      type: Number,
+      default: 3,
+    },
+    nodeCircleSizeForPhylorefPinningNode: {
+      // The radius of nodes where we have pinned one or more phylorefs.
+      type: Number,
+      default: 4,
     }
   },
   data() {
@@ -338,6 +349,9 @@ export default {
       const width = container.innerWidth();
       const height = container.innerHeight();
 
+      // Store the nodeCircleSizeForPhylorefNode.
+      const nodeCircleSizeForPhylorefNode = this.nodeCircleSizeForPhylorefNode;
+
       const tree = this.tree;
       const display = tree.render({
         "left-right-spacing": "fit-to-size",
@@ -349,6 +363,7 @@ export default {
         width: width,
         height: height,
         size: [2, 2],
+        "node_circle_size": () => this.nodeCircleSizeDefault,
         "node-styler": (element, node) => {
           // Instructions used to style nodes in Phylotree
           // - element: The D3 element of the node being styled
@@ -463,10 +478,11 @@ export default {
 
               // If there is no circle, add one.
               if (element.select("circle").empty()) {
-                element.append("circle").attr("cx", -3).attr("r", 4);
+                //
+                element.append("circle").attr("cx", -3).attr("r", nodeCircleSizeForPhylorefNode);
               } else {
-                // Make the pinning node circle larger (slightly larger than its usual size of 3).
-                element.select("circle").attr("r", 4);
+                // Make the pinning node circle a different size (controlled by a parameter).
+                element.select("circle").attr("r", nodeCircleSizeForPhylorefNode);
               }
 
               // Set its id to 'current_pinning_node_phylogeny{{phylogenyIndex}}'
