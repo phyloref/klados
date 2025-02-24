@@ -450,7 +450,9 @@ export default {
                 .includes(data["@id"])
             ) {
               // We found another pinning node!
-              if(!(data["@id"] in phylorefsByNodeId)) phylorefsByNodeId[data["@id"]] = new Set();
+              if(!(data["@id"] in phylorefsByNodeId)) {
+                phylorefsByNodeId[data["@id"]] = new Set();
+              }
               phylorefsByNodeId[data["@id"]].add(phyloref);
               this.recurseNodes(data, (node) =>
                 pinningNodeChildrenIRIs.add(node["@id"])
