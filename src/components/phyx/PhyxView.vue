@@ -101,10 +101,10 @@
           <tbody>
             <tr v-if="phylorefs.length === 0" class="bg-white">
               <td :colspan="4 + phylogenies.length">
-                <Center><em>No phyloreferences in this file</em></Center>
+                <center><em>No phyloreferences in this file</em></center>
               </td>
             </tr>
-            <tr v-for="(phyloref, phylorefIndex) of phylorefs">
+            <tr v-for="phyloref of phylorefs">
               <td>
                 <button
                   type="button"
@@ -308,6 +308,48 @@
         </div>
       </div>
     </div>
+
+    <!-- Display each phylogeny with all resolved phylorefs -->
+    <template v-for="(phylogeny, phylogenyIndex) of phylogenies">
+      <div
+          class="card mt-2"
+      >
+        <h5 class="card-header">
+          {{ getPhylogenyLabel(phylogeny) }}
+        </h5>
+        <div class="card-body">
+          <Phylotree
+              :phylogeny-index="String(phylogenyIndex)"
+              :phylogeny="phylogeny"
+              :phylorefs="phylorefs"
+          />
+          <table class="table table-bordered mt-2">
+            <thead>
+            <tr>
+              <th>Phylogeny Node</th>
+              <th>Resolved Phyloreferences</th>
+            </tr>
+            </thead>
+            <tbody>
+              <template v-if="getPhylorefsResolvedForPhylogeny(phylogeny).length === 0">
+                <tr>
+                  <td colspan="2"><em>No phyloreferences have resolved on this phylogeny.</em></td>
+                </tr>
+              </template>
+              <template v-for="phyloref in phylorefs">
+                <tr v-for="phylogenyNodeLabel in getNodeLabelsResolvedByPhyloref(phyloref, phylogeny)">
+                  <td>{{ phylogenyNodeLabel }}</td>
+                  <td><a
+                      href="javascript: void(0)"
+                      @click="$store.commit('changeDisplay', { phyloref })"
+                  >{{ getPhylorefLabel(phyloref) }}</a></td>
+                </tr>
+              </template>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -333,10 +375,12 @@ import {
   TaxonomicUnitWrapper,
 } from "@phyloref/phyx";
 import { newickParser } from "phylotree";
+import Phylotree from "@/components/phylogeny/Phylotree.vue";
 
 export default {
   name: "PhyxView",
   components: {
+    Phylotree,
     BIconTrash,
   },
   computed: {
@@ -375,6 +419,17 @@ export default {
     }),
   },
   methods: {
+    getPhylorefsResolvedForPhylogeny(phylogeny) {
+      if (!this.phylorefs || this.phylorefs.length === 0) return [];
+      if (!phylogeny) return [];
+      return this.phylorefs.filter((phyloref) =>
+        this.$store.getters.getResolvedNodesForPhylogeny(
+          phylogeny,
+          phyloref,
+          false
+        ).length > 0
+      );
+    },
     getPhylogenyLabel(phylogeny) {
       const phylogeny_label = phylogeny.label;
       if (!phylogeny_label) {
