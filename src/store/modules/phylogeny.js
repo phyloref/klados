@@ -181,7 +181,8 @@ export default {
       }
     },
     /**
-     * Set phylogeny properties.
+     * Set phylogeny properties. This previously supported changing the `newick` string as well, but please use the
+     * setPhylogenyNewick action to do that now.
      */
     setPhylogenyProps(state, payload) {
       if (!has(payload, "phylogeny")) {
@@ -203,7 +204,7 @@ export default {
       }
     },
     /**
-     * Set phylogeny properties. (Do not call this directly, but use the setPhylogenyNewick action instead.
+     * Set phylogeny properties. (Do not call this directly, but use the setPhylogenyNewick action instead).
      */
     setPhylogenyNewickInternal(state, payload) {
       if (!has(payload, "rootState")) {
@@ -222,6 +223,18 @@ export default {
     },
   },
   actions: {
+    /**
+     * Set the Newick string of a phylogeny. Because we need to reset the reasoning results when we do this,
+     * we need to put this in an action, rather than a mutation, so that we can pass in the rootState which contains
+     * all the Vuex data, including resolution information.
+     *
+     * (The other alternative would be to create a namespaced module for the methods that need to reset the reasoning
+     * results, but this is probably cleaner).
+     *
+     * @param commit A method to execute a mutation.
+     * @param rootState The root state of this Vuex store, i.e. consisting of the global state in index.js and all of its states.
+     * @param payload The remaining payload for this change (should include a `newick` key with the new Newick string).
+     */
     setPhylogenyNewick({commit, rootState}, payload) {
       commit('setPhylogenyNewickInternal', {
         rootState,
