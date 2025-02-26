@@ -11,6 +11,18 @@ function areTUnitsIdentical(tunit1, tunit2) {
   return isEqual(tunit1, tunit2);
 }
 
+/**
+ * Delete the currently calculated reasoning results if a phylogeny changes.
+ *
+ * This isn't really necessary, but putting it in its own method will make it easier to find all the
+ * places where we do this in the future.
+ *
+ * @param state The application state passed to mutators.
+ */
+function resetReasoningResults(state) {
+  state.reasoningResults = {};
+}
+
 export default {
   getters: {
     getExplicitTaxonomicUnitsForPhylogenyNode: () => (phylogeny, nodeLabel) => {
@@ -157,8 +169,12 @@ export default {
 
       // Delete or replace?
       if (has(payload, "delete")) {
+        // Delete the resolution information.
+        resetReasoningResults(state);
         tunits.splice(index, 1);
       } else if (has(payload, "tunit_new")) {
+        // Delete the resolution information.
+        resetReasoningResults(state);
         tunits.splice(index, 1, payload.tunit_new);
       } else {
         console.error(
@@ -183,6 +199,8 @@ export default {
         Vue.set(payload.phylogeny, "curatorNotes", payload.curatorNotes);
       }
       if (has(payload, "newick")) {
+        // Delete the resolution information.
+        resetReasoningResults(state);
         Vue.set(payload.phylogeny, "newick", payload.newick);
       }
       if (has(payload, "@id")) {
