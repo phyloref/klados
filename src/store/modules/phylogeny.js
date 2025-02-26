@@ -25,7 +25,6 @@ function resetReasoningResults(rootState) {
 }
 
 export default {
-  namespaced: true,
   getters: {
     getExplicitTaxonomicUnitsForPhylogenyNode: () => (phylogeny, nodeLabel) => {
       // Return any "explicit" taxonomic units for a phylogeny node, i.e. those with representsTaxonomicUnits
@@ -97,7 +96,7 @@ export default {
     /**
      * Replace or delete a taxonomic unit from a phylogeny node.
      */
-    replaceTUnitForPhylogenyNode(state, payload, rootState) {
+    replaceTUnitForPhylogenyNode(state, payload) {
       if (!has(payload, "phylogeny")) {
         throw new Error(
           'replaceTUnitForPhylogenyNode needs a phylogeny to modify using the "phylogeny" argument'
@@ -171,12 +170,8 @@ export default {
 
       // Delete or replace?
       if (has(payload, "delete")) {
-        // Delete the resolution information.
-        resetReasoningResults(rootState);
         tunits.splice(index, 1);
       } else if (has(payload, "tunit_new")) {
-        // Delete the resolution information.
-        resetReasoningResults(rootState);
         tunits.splice(index, 1, payload.tunit_new);
       } else {
         console.error(
@@ -188,7 +183,7 @@ export default {
     /**
      * Set phylogeny properties.
      */
-    setPhylogenyProps(state, payload, rootState) {
+    setPhylogenyProps(state, payload) {
       if (!has(payload, "phylogeny")) {
         throw new Error(
           'setPhylogenyProps needs a phylogeny to modify using the "phylogeny" argument'
@@ -201,16 +196,35 @@ export default {
         Vue.set(payload.phylogeny, "curatorNotes", payload.curatorNotes);
       }
       if (has(payload, "newick")) {
-        // Delete the resolution information.
-        resetReasoningResults(rootState);
-        Vue.set(payload.phylogeny, "newick", payload.newick);
+        throw new Error(`setPhylogenyProps() can no longer be used to change the phylogeny's newick string. Use the setPhylogenyNewick action instead.`)
       }
       if (has(payload, "@id")) {
         Vue.set(payload.phylogeny, "@id", payload["@id"]);
       }
     },
+    /**
+     * Set phylogeny properties. (Do not call this directly, but use the setPhylogenyNewick action instead.
+     */
+    setPhylogenyNewickInternal(state, payload, rootState) {
+      if (!rootState) {
+        throw new Error(`setPhylogenyNewickInternal() requires a rootState argument.`)
+      }
+      if (!has(payload, "phylogeny")) {
+        throw new Error(
+            'setPhylogenyProps needs a phylogeny to modify using the "phylogeny" argument'
+        );
+      }
+      if (has(payload, "newick")) {
+        // Delete the resolution information.
+        resetReasoningResults(rootState);
+        Vue.set(payload.phylogeny, "newick", payload.newick);
+      }
+    },
   },
   actions: {
+    setPhylogenyNewick({commit, rootState}, payload) {
+      commit('setPhylogenyNewickInternal', payload, rootState);
+    },
     changePhylogenyId(context, payload) {
       // When changing a phylogeny ID, care needs to be taken to ensure that:
       //  (1) duplicate phylogeny IDs are not created within the same file, and
