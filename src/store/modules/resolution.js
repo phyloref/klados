@@ -89,9 +89,13 @@ export default {
       }
 
       // Is there a node on the phylogeny with the same label as this phyloreference?
-      const allNodeLabels = new PhylogenyWrapper(phylogeny).getNodeLabels();
-      if (phyloref.label && allNodeLabels.includes(phyloref.label)) {
-        return phyloref.label;
+      try {
+        const allNodeLabels = new PhylogenyWrapper(phylogeny).getNodeLabels();
+        if (phyloref.label && allNodeLabels.includes(phyloref.label)) {
+          return phyloref.label;
+        }
+      } catch {
+        return undefined;
       }
 
       // No expected node labels!
