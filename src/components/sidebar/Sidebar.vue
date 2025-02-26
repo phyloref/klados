@@ -328,6 +328,13 @@ export default {
 
       $.getJSON(url)
         .done((data) => {
+          // TODO: validate that `data` is a Phyx file.
+
+          // Klados tends to fail in odd ways unless both the `phylorefs` and `phylogenies` keys are present in the
+          // input data, so let's add them if they're missing.
+          if (!has(data, 'phylorefs')) data.phylorefs = [];
+          if (!has(data, 'phylogenies')) data.phylogenies = [];
+
           this.$store.commit('setCurrentPhyx', data);
           this.$store.commit('setLoadedPhyx', data);
           // Reset the display.
