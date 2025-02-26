@@ -349,8 +349,8 @@ export default {
       const width = container.innerWidth();
       const height = container.innerHeight();
 
-      // Store the nodeCircleSizeForPhylorefNode.
-      const nodeCircleSizeForPhylorefNode = this.nodeCircleSizeForPhylorefNode;
+      // Store the nodeCircleSizeForPhylorefPinningNode.
+      const nodeCircleSizeForPhylorefPinningNode = this.nodeCircleSizeForPhylorefPinningNode;
 
       const tree = this.tree;
       const display = tree.render({
@@ -479,10 +479,10 @@ export default {
               // If there is no circle, add one.
               if (element.select("circle").empty()) {
                 //
-                element.append("circle").attr("cx", -3).attr("r", nodeCircleSizeForPhylorefNode);
+                element.append("circle").attr("cx", -3).attr("r", nodeCircleSizeForPhylorefPinningNode);
               } else {
                 // Make the pinning node circle a different size (controlled by a parameter).
-                element.select("circle").attr("r", nodeCircleSizeForPhylorefNode);
+                element.select("circle").attr("r", nodeCircleSizeForPhylorefPinningNode);
               }
 
               // Set its id to 'current_pinning_node_phylogeny{{phylogenyIndex}}'
