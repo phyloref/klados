@@ -17,13 +17,15 @@ function areTUnitsIdentical(tunit1, tunit2) {
  * This isn't really necessary, but putting it in its own method will make it easier to find all the
  * places where we do this in the future.
  *
- * @param state The application state passed to mutators.
+ * @param rootState The application state passed to mutators.
  */
-function resetReasoningResults(state) {
-  state.reasoningResults = {};
+function resetReasoningResults(rootState) {
+  console.log("Resetting reasoning results ", rootState.reasoningResults, " in the state ", rootState);
+  rootState.reasoningResults = {};
 }
 
 export default {
+  namespaced: true,
   getters: {
     getExplicitTaxonomicUnitsForPhylogenyNode: () => (phylogeny, nodeLabel) => {
       // Return any "explicit" taxonomic units for a phylogeny node, i.e. those with representsTaxonomicUnits
@@ -95,7 +97,7 @@ export default {
     /**
      * Replace or delete a taxonomic unit from a phylogeny node.
      */
-    replaceTUnitForPhylogenyNode(state, payload) {
+    replaceTUnitForPhylogenyNode(state, payload, rootState) {
       if (!has(payload, "phylogeny")) {
         throw new Error(
           'replaceTUnitForPhylogenyNode needs a phylogeny to modify using the "phylogeny" argument'
@@ -170,11 +172,11 @@ export default {
       // Delete or replace?
       if (has(payload, "delete")) {
         // Delete the resolution information.
-        resetReasoningResults(state);
+        resetReasoningResults(rootState);
         tunits.splice(index, 1);
       } else if (has(payload, "tunit_new")) {
         // Delete the resolution information.
-        resetReasoningResults(state);
+        resetReasoningResults(rootState);
         tunits.splice(index, 1, payload.tunit_new);
       } else {
         console.error(
@@ -186,7 +188,7 @@ export default {
     /**
      * Set phylogeny properties.
      */
-    setPhylogenyProps(state, payload) {
+    setPhylogenyProps(state, payload, rootState) {
       if (!has(payload, "phylogeny")) {
         throw new Error(
           'setPhylogenyProps needs a phylogeny to modify using the "phylogeny" argument'
@@ -200,7 +202,7 @@ export default {
       }
       if (has(payload, "newick")) {
         // Delete the resolution information.
-        resetReasoningResults(state);
+        resetReasoningResults(rootState);
         Vue.set(payload.phylogeny, "newick", payload.newick);
       }
       if (has(payload, "@id")) {

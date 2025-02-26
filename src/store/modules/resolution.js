@@ -10,8 +10,6 @@ import { PhyxWrapper, PhylogenyWrapper } from '@phyloref/phyx';
 
 export default {
   state: {
-    // The reasoning results returned by JPhyloRef.
-    reasoningResults: undefined,
   },
   getters: {
     // TODO: the following base URIs need to be in this form because that's how they are rendered in the Phyx file.

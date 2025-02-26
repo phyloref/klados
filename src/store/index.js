@@ -17,6 +17,11 @@ const debug = import.meta.env.PROD;
 export default new Vuex.Store({
   state: {
     CURATION_TOOL_VERSION: '0.1',
+    // The reasoning results returned by JPhyloRef.
+    // We need to store this globally so that two modules can access and edit it:
+    //  - resolution needs it to store and retrieve resolution information.
+    //  - phylogeny needs it so we can reset reasoning results if a phylogeny changes.
+    reasoningResults: undefined,
   },
   modules: {
     phylogeny, phyloref, phyx, ui, citations, resolution,
