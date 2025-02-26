@@ -429,7 +429,7 @@ export default {
                 // in the phylogeny object.
                 const updatedNewickString = this.tree.getNewick();
                 console.log("updatedNewickString", updatedNewickString);
-                this.$store.commit("setPhylogenyNewick", {
+                this.$store.dispatch("setPhylogenyNewick", {
                   phylogeny: this.phylogeny,
                   newick: updatedNewickString,
                 });

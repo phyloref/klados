@@ -20,8 +20,8 @@ function areTUnitsIdentical(tunit1, tunit2) {
  * @param rootState The application state passed to mutators.
  */
 function resetReasoningResults(rootState) {
-  console.log("Resetting reasoning results ", rootState.reasoningResults, " in the state ", rootState);
-  rootState.reasoningResults = {};
+  console.log("Resetting reasoning results ", rootState.resolution.reasoningResults, " in the state ", rootState);
+  Vue.set(rootState.resolution, 'reasoningResults', undefined);
 }
 
 export default {
@@ -205,9 +205,9 @@ export default {
     /**
      * Set phylogeny properties. (Do not call this directly, but use the setPhylogenyNewick action instead.
      */
-    setPhylogenyNewickInternal(state, payload, rootState) {
-      if (!rootState) {
-        throw new Error(`setPhylogenyNewickInternal() requires a rootState argument.`)
+    setPhylogenyNewickInternal(state, payload) {
+      if (!has(payload, "rootState")) {
+        throw new Error(`setPhylogenyNewickInternal() requires a rootState in the payload.`)
       }
       if (!has(payload, "phylogeny")) {
         throw new Error(
@@ -216,14 +216,17 @@ export default {
       }
       if (has(payload, "newick")) {
         // Delete the resolution information.
-        resetReasoningResults(rootState);
+        resetReasoningResults(payload.rootState);
         Vue.set(payload.phylogeny, "newick", payload.newick);
       }
     },
   },
   actions: {
     setPhylogenyNewick({commit, rootState}, payload) {
-      commit('setPhylogenyNewickInternal', payload, rootState);
+      commit('setPhylogenyNewickInternal', {
+        rootState,
+        ...payload
+      });
     },
     changePhylogenyId(context, payload) {
       // When changing a phylogeny ID, care needs to be taken to ensure that:
