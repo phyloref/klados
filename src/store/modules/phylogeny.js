@@ -212,7 +212,7 @@ export default {
       }
       if (!has(payload, "phylogeny")) {
         throw new Error(
-            'setPhylogenyProps needs a phylogeny to modify using the "phylogeny" argument'
+            'setPhylogenyNewickInternal needs a phylogeny to modify using the "phylogeny" argument'
         );
       }
       if (has(payload, "newick")) {
