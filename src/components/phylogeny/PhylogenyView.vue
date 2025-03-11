@@ -68,7 +68,7 @@
                 v-model.trim="phylogenyCuratorNotes"
                 type="text"
                 class="form-control"
-                placeholder="Enter curator notes for this phylogeny, such as any differences from its published form."
+                placeholder="Enter curator notes for this phylogeny, such as curatorial decisions, amendments, and so on."
               />
             </div>
           </div>
