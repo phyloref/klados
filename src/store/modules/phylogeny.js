@@ -11,6 +11,19 @@ function areTUnitsIdentical(tunit1, tunit2) {
   return isEqual(tunit1, tunit2);
 }
 
+/**
+ * Delete the currently calculated reasoning results if a phylogeny changes.
+ *
+ * This isn't really necessary, but putting it in its own method will make it easier to find all the
+ * places where we do this in the future.
+ *
+ * @param rootState The application state passed to mutators.
+ */
+function resetReasoningResults(rootState) {
+  console.log("Resetting reasoning results ", rootState.resolution.reasoningResults, " in the state ", rootState);
+  Vue.set(rootState.resolution, 'reasoningResults', undefined);
+}
+
 export default {
   getters: {
     getExplicitTaxonomicUnitsForPhylogenyNode: () => (phylogeny, nodeLabel) => {
@@ -168,7 +181,8 @@ export default {
       }
     },
     /**
-     * Set phylogeny properties.
+     * Set phylogeny properties. This previously supported changing the `newick` string as well, but please use the
+     * setPhylogenyNewick action to do that now.
      */
     setPhylogenyProps(state, payload) {
       if (!has(payload, "phylogeny")) {
@@ -183,14 +197,50 @@ export default {
         Vue.set(payload.phylogeny, "curatorNotes", payload.curatorNotes);
       }
       if (has(payload, "newick")) {
-        Vue.set(payload.phylogeny, "newick", payload.newick);
+        throw new Error(`setPhylogenyProps() can no longer be used to change the phylogeny's newick string. Use the setPhylogenyNewick action instead.`)
       }
       if (has(payload, "@id")) {
         Vue.set(payload.phylogeny, "@id", payload["@id"]);
       }
     },
+    /**
+     * Set phylogeny properties. (Do not call this directly, but use the setPhylogenyNewick action instead).
+     */
+    setPhylogenyNewickInternal(state, payload) {
+      if (!has(payload, "rootState")) {
+        throw new Error(`setPhylogenyNewickInternal() requires a rootState in the payload.`)
+      }
+      if (!has(payload, "phylogeny")) {
+        throw new Error(
+            'setPhylogenyNewickInternal needs a phylogeny to modify using the "phylogeny" argument'
+        );
+      }
+      if (has(payload, "newick")) {
+        // Delete the resolution information.
+        resetReasoningResults(payload.rootState);
+        Vue.set(payload.phylogeny, "newick", payload.newick);
+      }
+    },
   },
   actions: {
+    /**
+     * Set the Newick string of a phylogeny. Because we need to reset the reasoning results when we do this,
+     * we need to put this in an action, rather than a mutation, so that we can pass in the rootState which contains
+     * all the Vuex data, including resolution information.
+     *
+     * (The other alternative would be to create a namespaced module for the methods that need to reset the reasoning
+     * results, but this is probably cleaner).
+     *
+     * @param commit A method to execute a mutation.
+     * @param rootState The root state of this Vuex store, i.e. consisting of the global state in index.js and all of its states.
+     * @param payload The remaining payload for this change (should include a `newick` key with the new Newick string).
+     */
+    setPhylogenyNewick({commit, rootState}, payload) {
+      commit('setPhylogenyNewickInternal', {
+        rootState,
+        ...payload
+      });
+    },
     changePhylogenyId(context, payload) {
       // When changing a phylogeny ID, care needs to be taken to ensure that:
       //  (1) duplicate phylogeny IDs are not created within the same file, and

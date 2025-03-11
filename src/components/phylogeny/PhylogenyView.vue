@@ -263,7 +263,7 @@ export default {
     },
     phylogenyNewick: {
       get() { return this.selectedPhylogeny.newick || '()'; },
-      set(newick) { this.$store.commit('setPhylogenyProps', { phylogeny: this.selectedPhylogeny, newick }); },
+      set(newick) { this.$store.dispatch('setPhylogenyNewick', { phylogeny: this.selectedPhylogeny, newick }); },
     },
     phylogenyNewickErrors() {
       // Given a Newick string, return a list of errors found in parsing this
