@@ -42,7 +42,7 @@
           <Citation
             label="Name published in"
             :object="selectedPhyloref"
-            citation-key="dwc:namePublishedIn"
+            citation-key="namePublishedIn"
           />
 
           <!-- Phyloreference clade definition -->
