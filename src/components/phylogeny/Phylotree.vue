@@ -676,13 +676,16 @@ export default {
 /* Node label for an internal specifier */
 .internal-specifier-node text {
   font-weight: bolder;
-  fill: rgb(0, 24, 168) !important;
+  fill: rgb(0, 33, 165) !important;
+    /* previously, we used: rgb(0, 24, 168) !important; */
 }
 
 /* Node label for an external specifier */
 .external-specifier-node text {
   font-weight: bolder;
-  fill: rgb(0, 24, 168) !important;
+  fill: rgb(196, 2, 52) !important;
+    /* UF color: rgb(250, 70, 22) !important; */
+    /* previously, we used: rgb(0, 24, 168) !important; */
 }
 
 /* Node label for a terminal node without taxonomic units */
@@ -692,7 +695,8 @@ export default {
 /* The selected internal label on a phylogeny, whether determined to be the pinning node or not. */
 .selected-internal-label {
   font-size: 12pt !important;
-  fill: rgb(0, 24, 168);
+  fill: rgb(0, 33, 165) !important;
+  /* previously, we used: rgb(0, 24, 168) !important; */
 }
 
 /*
