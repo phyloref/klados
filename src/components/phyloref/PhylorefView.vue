@@ -691,6 +691,9 @@ export default {
     getResolvedNodeLabels(phylogeny) {
       // Return the list of nodes on a particular phylogeny that this phyloreference
       // has been determined to resolve on by JPhyloRef.
+      //
+      // TODO: this is duplicated from getNodeLabelsResolvedByPhyloref() in PhyxView,
+      // so at some point it should be consolidated into a single location.
       const resolvedNodes = this.$store.getters.getResolvedNodesForPhylogeny(phylogeny, this.selectedPhyloref);
 
       return resolvedNodes
