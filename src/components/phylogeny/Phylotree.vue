@@ -430,6 +430,20 @@ export default {
             // Clear any existing menu items.
             node.menu_items = [];
 
+            // Add a custom menu items to display the node label and ID.
+            addCustomMenu(
+              node,
+              (node) => "Node ID: " + (node.data['@id'] || "(none)"),
+              () => false,
+              (node) => true,
+            );
+            addCustomMenu(
+              node,
+              (node) => "Node label: " + (node.data.name || "(none)"),
+              () => false,
+              (node) => true,
+            );
+
             // Add a custom menu item to allow us to rename this node.
             // console.log("node", node);
             addCustomMenu(
