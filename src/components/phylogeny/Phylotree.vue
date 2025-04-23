@@ -98,8 +98,8 @@ export default {
       type: Number,
       default: 4,
     },
-    addNodeNameAsTitle: {
-      // Should we display the name of every node as a "title" on the node circle?
+    addNodeIDAsTitle: {
+      // Should we display the ID of every node as hover text on the node circle?
       type: Boolean,
       default: true,
     },
@@ -380,11 +380,11 @@ export default {
           // Wrap the phylogeny so we can call methods on it.
           const wrappedPhylogeny = new PhylogenyWrapper(this.phylogeny || {});
 
-          // Add a title with the node of this phylogeny node.
-          if (this.addNodeNameAsTitle) {
+          // Add a title with the ID of this phylogeny node.
+          if (this.addNodeIDAsTitle && data['@id']) {
             element.select("circle")
               .append("title")
-              .text(data.name || data['@id']);
+              .text(data['@id']);
           }
 
           // Wrap the phyloref is there is one.
