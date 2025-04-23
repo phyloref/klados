@@ -18,6 +18,24 @@
 
       <div class="card-body">
         <form>
+          <!-- Phyloreference ID -->
+          <div class="form-group row">
+            <label
+              for="phyloref-id"
+              class="col-form-label col-md-2"
+            >
+              Phyloref ID (preferably a <a href="https://en.wikipedia.org/wiki/Uniform_Resource_Identifier">URI</a>)
+            </label>
+            <div class="col-md-10">
+              <input
+                id="phyloref-id"
+                v-model="selectedPhylorefID"
+                type="text"
+                class="form-control"
+              >
+            </div>
+          </div>
+
           <!-- Phyloreference label -->
           <div class="form-group row">
             <label
@@ -559,6 +577,10 @@ export default {
     /*
      * The following properties allow you to get or set phyloref label, clade definition or curator comments.
      */
+    selectedPhylorefID: {
+      get() { return this.selectedPhyloref['@id']; },
+      set(id) { this.$store.commit('setPhylorefProps', { phyloref: this.selectedPhyloref, '@id': id }); },
+    },
     selectedPhylorefLabel: {
       get() { return this.selectedPhyloref.label; },
       set(label) { this.$store.commit('setPhylorefProps', { phyloref: this.selectedPhyloref, label }); },
