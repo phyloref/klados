@@ -241,6 +241,12 @@ export default {
       // or a local identifier like #phylogeny1.
       get() { return this.$store.getters.getPhylogenyId(this.selectedPhylogeny); },
       set(id) {
+        // Phylogeny IDs are required, so fail if it is blank!
+        if (!id || (id.trim() === "")) {
+          alert("Phylogeny ID cannot be blank.");
+          return false;
+        }
+
         // Is there any other phyloref in this file with that identifier? If so, raise an error.
         if ((this.currentPhyx.phylogenies || [])
           // Don't compare it to itself.
