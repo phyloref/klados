@@ -95,7 +95,12 @@ export default {
       // The radius of nodes where we have pinned one or more phylorefs.
       type: Number,
       default: 4,
-    }
+    },
+    addNodeNameAsTitle: {
+      // Should we display the name of every node as a "title" on the node circle?
+      type: Boolean,
+      default: true,
+    },
   },
   data() {
     return {
@@ -372,6 +377,13 @@ export default {
 
           // Wrap the phylogeny so we can call methods on it.
           const wrappedPhylogeny = new PhylogenyWrapper(this.phylogeny || {});
+
+          // Add a title with the node of this phylogeny node.
+          if (this.addNodeNameAsTitle) {
+            element.select("circle")
+              .append("title")
+              .text(data.name || data['@id']);
+          }
 
           // Wrap the phyloref is there is one.
           this.phylorefs.forEach((phyloref) => {
