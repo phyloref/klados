@@ -63,15 +63,21 @@
                     "representsTaxonomicUnits": [
                         {
                             "@type": "http://rs.tdwg.org/dwc/terms/Occurrence",
-                            "occurrenceID": "::Mishler 7/24/98 (5)"
+                            "basisOfRecord": "PreservedSpecimen",
+                            "occurrenceID": "::Mishler 7/24/98 (5)",
+                            "institutionCode": "",
+                            "collectionCode": "",
+                            "catalogNumber": "Mishler 7/24/98 (5)"
                         },
                         {
                             "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
                             "hasName": {
                                 "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
-                                "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICBN",
                                 "label": "Arthrocormus schimperi",
-                                "nameComplete": "Arthrocormus schimperi"
+                                "nameComplete": "Arthrocormus schimperi",
+                                "genusPart": "Arthrocormus",
+                                "specificEpithet": "schimperi",
+                                "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICBN"
                             }
                         }
                     ]
@@ -80,45 +86,53 @@
                     "representsTaxonomicUnits": [
                         {
                             "@type": "http://rs.tdwg.org/dwc/terms/Occurrence",
-                            "occurrenceID": "::Wall 2527, Fiji (uc)"
+                            "basisOfRecord": "PreservedSpecimen",
+                            "occurrenceID": "::Wall 2527, Fiji (uc)",
+                            "institutionCode": "",
+                            "collectionCode": "",
+                            "catalogNumber": "Wall 2527, Fiji (uc)"
                         },
                         {
                             "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
                             "hasName": {
                                 "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
-                                "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICBN",
                                 "label": "Exodictyon incrassatum",
-                                "nameComplete": "Exodictyon incrassatum"
+                                "nameComplete": "Exodictyon incrassatum",
+                                "genusPart": "Exodictyon",
+                                "specificEpithet": "incrassatum",
+                                "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICBN"
                             }
                         },
-                        {
-                            "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                            "hasName": {
-                                "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
-                                "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICBN",
-                                "label": "Exodictyon",
-                                "nameComplete": "Exodictyon"
-                            }
-                        }
+                        {}
                     ]
                 },
                 "Exostratum blumii 243": {
                     "representsTaxonomicUnits": [
                         {
                             "@type": "http://rs.tdwg.org/dwc/terms/Occurrence",
-                            "occurrenceID": "::Mishler 7/26/98(1)"
+                            "basisOfRecord": "PreservedSpecimen",
+                            "occurrenceID": "::Mishler 7/26/98(1)",
+                            "institutionCode": "",
+                            "collectionCode": "",
+                            "catalogNumber": "Mishler 7/26/98(1)"
                         },
                         {
                             "@type": "http://rs.tdwg.org/dwc/terms/Occurrence",
-                            "occurrenceID": "::Mishler 7/24/98(3)"
+                            "basisOfRecord": "PreservedSpecimen",
+                            "occurrenceID": "::Mishler 7/24/98(3)",
+                            "institutionCode": "",
+                            "collectionCode": "",
+                            "catalogNumber": "Mishler 7/24/98(3)"
                         },
                         {
                             "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
                             "hasName": {
                                 "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
-                                "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICBN",
                                 "label": "Exostratum blumii",
-                                "nameComplete": "Exostratum blumii"
+                                "nameComplete": "Exostratum blumii",
+                                "genusPart": "Exostratum",
+                                "specificEpithet": "blumii",
+                                "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICBN"
                             }
                         }
                     ]
@@ -127,19 +141,29 @@
                     "representsTaxonomicUnits": [
                         {
                             "@type": "http://rs.tdwg.org/dwc/terms/Occurrence",
-                            "occurrenceID": "::Mishler 7/26/98(1)"
+                            "basisOfRecord": "PreservedSpecimen",
+                            "occurrenceID": "::Mishler 7/26/98(1)",
+                            "institutionCode": "",
+                            "collectionCode": "",
+                            "catalogNumber": "Mishler 7/26/98(1)"
                         },
                         {
                             "@type": "http://rs.tdwg.org/dwc/terms/Occurrence",
-                            "occurrenceID": "::Mishler 7/24/98(3)"
+                            "basisOfRecord": "PreservedSpecimen",
+                            "occurrenceID": "::Mishler 7/24/98(3)",
+                            "institutionCode": "",
+                            "collectionCode": "",
+                            "catalogNumber": "Mishler 7/24/98(3)"
                         },
                         {
                             "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
                             "hasName": {
                                 "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
-                                "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICBN",
                                 "label": "Exostratum blumii",
-                                "nameComplete": "Exostratum blumii"
+                                "nameComplete": "Exostratum blumii",
+                                "genusPart": "Exostratum",
+                                "specificEpithet": "blumii",
+                                "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICBN"
                             }
                         }
                     ]
@@ -150,18 +174,22 @@
                             "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
                             "hasName": {
                                 "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
-                                "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICBN",
                                 "label": "Mitthyridium fasciculatum",
-                                "nameComplete": "Mitthyridium fasciculatum"
+                                "nameComplete": "Mitthyridium fasciculatum",
+                                "genusPart": "Mitthyridium",
+                                "specificEpithet": "fasciculatum",
+                                "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICBN"
                             }
                         },
                         {
                             "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
                             "hasName": {
                                 "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
-                                "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICBN",
                                 "label": "Syrrhopodon fasciculatum",
-                                "nameComplete": "Syrrhopodon fasciculatum"
+                                "nameComplete": "Syrrhopodon fasciculatum",
+                                "genusPart": "Syrrhopodon",
+                                "specificEpithet": "fasciculatum",
+                                "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICBN"
                             }
                         }
                     ]
@@ -174,6 +202,8 @@
                                 "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
                                 "label": "Codonoblepharum undulatum",
                                 "nameComplete": "Codonoblepharum undulatum",
+                                "genusPart": "Codonoblepharum",
+                                "specificEpithet": "undulatum",
                                 "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICBN"
                             }
                         }
@@ -187,6 +217,8 @@
                                 "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
                                 "label": "Weissia ciliata",
                                 "nameComplete": "Weissia ciliata",
+                                "genusPart": "Weissia",
+                                "specificEpithet": "ciliata",
                                 "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICBN"
                             }
                         }
