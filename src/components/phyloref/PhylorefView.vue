@@ -371,7 +371,7 @@
                     :href="'#current_expected_label_phylogeny_' + phylogenyIndex"
                     title="Click here to jump to the expected label"
                     role="button"
-                  >Go to node</a>
+                  >Scroll to node</a>
                 </div>
 
                 <!-- Display the matching node(s) -->
