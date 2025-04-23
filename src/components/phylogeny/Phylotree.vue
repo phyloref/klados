@@ -16,16 +16,18 @@
     <div v-else class="phylotreeContainer">
       <div :id="'phylogeny' + phylogenyIndex" class="col-md-12 phylogeny" />
       <ResizeObserver @notify="redrawTree" />
-      <button
-        type="button"
-        class="btn btn-primary"
-        @click="exportAsNexus()"
-        data-toggle="tooltip"
-        data-placement="bottom"
-        title="Download Nexus file with annotations of where phyloreferences resolve"
-      >
-        Download as Nexus
-      </button>
+      <b-btn-group class="my-2">
+        <button
+          type="button"
+          class="btn btn-primary"
+          @click="exportAsNexus()"
+          data-toggle="tooltip"
+          data-placement="bottom"
+          title="Download Nexus file with annotations of where phyloreferences resolve"
+        >
+          Download as Nexus
+        </button>
+      </b-btn-group>
     </div>
   </div>
 </template>
