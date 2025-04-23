@@ -216,11 +216,11 @@
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
                     "hasName": {
                         "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
-                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICBN",
                         "label": "Leucophanes octoblepharoides",
                         "nameComplete": "Leucophanes octoblepharoides",
                         "genusPart": "Leucophanes",
-                        "specificEpithet": "octoblepharoides"
+                        "specificEpithet": "octoblepharoides",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICBN"
                     },
                     "label": "Type: Leucophanes octoblepharoides Brid., Bryol. Univ. 1: 763. (1826)"
                 }
@@ -251,7 +251,8 @@
                         "label": "Calymperes lonchophyllum",
                         "nameComplete": "Calymperes lonchophyllum",
                         "genusPart": "Calymperes",
-                        "specificEpithet": "lonchophyllum"
+                        "specificEpithet": "lonchophyllum",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICBN"
                     },
                     "label": "Type: Calymperes lonchophyllum Schwägr., Tab. Exhib. Calyptr. Opercul. (3). 1814 (1813)."
                 },
@@ -262,7 +263,8 @@
                         "label": "Syrrhopodon mauritianus",
                         "nameComplete": "Syrrhopodon mauritianus",
                         "genusPart": "Syrrhopodon",
-                        "specificEpithet": "mauritianus"
+                        "specificEpithet": "mauritianus",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICBN"
                     },
                     "label": "Type: Syrrhopodon mauritianus Müll. Hal. ex Ångstr., Öfv. Förh. Kongl. Svenska Vet.-Akad. 33(4): 54. (1876)"
                 }
@@ -275,7 +277,8 @@
                         "label": "Syrrhopodon croceus",
                         "nameComplete": "Syrrhopodon croceus",
                         "genusPart": "Syrrhopodon",
-                        "specificEpithet": "croceus"
+                        "specificEpithet": "croceus",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICBN"
                     },
                     "label": "Type: Syrrhopodon croceus Mitt., J. Proc. Linn. Soc., Bot. Suppl. 1: 41. (1859)"
                 }
@@ -292,7 +295,8 @@
                         "label": "Syrrhopodon croceus",
                         "nameComplete": "Syrrhopodon croceus",
                         "genusPart": "Syrrhopodon",
-                        "specificEpithet": "croceus"
+                        "specificEpithet": "croceus",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICBN"
                     },
                     "label": "Type: Syrrhopodon croceus Mitt., J. Proc. Linn. Soc., Bot. Suppl. 1: 41. (1859)"
                 },
@@ -300,11 +304,11 @@
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
                     "hasName": {
                         "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
-                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICBN",
                         "label": "Leucophanes octoblepharoides",
                         "nameComplete": "Leucophanes octoblepharoides",
                         "genusPart": "Leucophanes",
-                        "specificEpithet": "octoblepharoides"
+                        "specificEpithet": "octoblepharoides",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICBN"
                     },
                     "label": "Type: Leucophanes octoblepharoides Brid., Bryol. Univ. 1: 763. (1826)"
                 }
@@ -317,7 +321,8 @@
                         "label": "Syrrhopodon mauritianus",
                         "nameComplete": "Syrrhopodon mauritianus",
                         "genusPart": "Syrrhopodon",
-                        "specificEpithet": "mauritianus"
+                        "specificEpithet": "mauritianus",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICBN"
                     },
                     "label": "Type: Syrrhopodon mauritianus Müll. Hal. ex Ångstr., Öfv. Förh. Kongl. Svenska Vet.-Akad. 33(4): 54. (1876)"
                 }
@@ -508,11 +513,11 @@
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
                     "hasName": {
                         "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
-                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICBN",
                         "label": "Arthrocormus schimperi",
                         "nameComplete": "Arthrocormus schimperi",
                         "genusPart": "Arthrocormus",
-                        "specificEpithet": "schimperi"
+                        "specificEpithet": "schimperi",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICBN"
                     },
                     "label": "Type: Arthrocormus schimperi (Dozy & Molk.) Dozy & Molk. (= Mielichhoferia schimperi Dozy & Molk.), Musci Frond. Ined. Archip. Ind. 75. (1846)"
                 },
@@ -531,11 +536,11 @@
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
                     "hasName": {
                         "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
-                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICBN",
                         "label": "Exostratum blumii",
                         "nameComplete": "Exostratum blumii",
                         "genusPart": "Exostratum",
-                        "specificEpithet": "blumii"
+                        "specificEpithet": "blumii",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICBN"
                     },
                     "label": "Type: Exostratum blumii (Nees ex Hampe) L. Ellis, Lindbergia 11: 22. (1985)"
                 }
@@ -557,7 +562,8 @@
                         "label": "Exostratum blumii",
                         "nameComplete": "Exostratum blumii",
                         "genusPart": "Exostratum",
-                        "specificEpithet": "blumii"
+                        "specificEpithet": "blumii",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICBN"
                     },
                     "label": "Type: Exostratum blumii (Nees ex Hampe) L. Ellis, Lindbergia 11: 22. (1985)"
                 },
@@ -576,11 +582,11 @@
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
                     "hasName": {
                         "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
-                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICBN",
                         "label": "Arthrocormus schimperi",
                         "nameComplete": "Arthrocormus schimperi",
                         "genusPart": "Arthrocormus",
-                        "specificEpithet": "schimperi"
+                        "specificEpithet": "schimperi",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICBN"
                     },
                     "label": "Type: Arthrocormus schimperi (Dozy & Molk.) Dozy & Molk. (= Mielichhoferia schimperi Dozy & Molk.), Musci Frond. Ined. Archip. Ind. 75. (1846)"
                 }
@@ -591,14 +597,6 @@
             "definition": "nomen cladi conversum, Exodictyon Cardot, Rev. Bryol. Lichénol. 26: 6. (1899), excl. parte, emend Ellis in Lindbergia 11: 16 (1985)\n\nStem-based definition:\n\ninternal specifier: Type: Exodictyon Cardot, Rev. Bryol. Lichénol. 26: 6. (1899), excl. parte, emend Ellis in Lindbergia 11: 16 (1985)\ninternal specifier: Wall 2527, Fiji (uc)\nexternal specifier: Type: Leucophanes octoblepharoides Brid., Bryol. Univ. 1: 763. (1826)\nIncluded terminal clade:\n\nincrassatum",
             "internalSpecifiers": [
                 {
-                    "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
-                    "hasName": {
-                        "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
-                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICBN",
-                        "label": "Exodictyon",
-                        "nameComplete": "Exodictyon",
-                        "genusPart": "Exodictyon"
-                    },
                     "label": "Type: Exodictyon Cardot, Rev. Bryol. Lichénol. 26: 6. (1899), excl. parte, emend Ellis in Lindbergia 11: 16 (1985)"
                 },
                 {
@@ -619,7 +617,8 @@
                         "label": "Leucophanes octoblepharoides",
                         "nameComplete": "Leucophanes octoblepharoides",
                         "genusPart": "Leucophanes",
-                        "specificEpithet": "octoblepharoides"
+                        "specificEpithet": "octoblepharoides",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICBN"
                     },
                     "label": "Type: Leucophanes octoblepharoides Brid., Bryol. Univ. 1: 763. (1826)"
                 }
@@ -641,7 +640,8 @@
                         "label": "Leucophanes octoblepharoides",
                         "nameComplete": "Leucophanes octoblepharoides",
                         "genusPart": "Leucophanes",
-                        "specificEpithet": "octoblepharoides"
+                        "specificEpithet": "octoblepharoides",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICBN"
                     },
                     "label": "Type: Leucophanes octoblepharoides Brid., Bryol. Univ. 1: 763. (1826)"
                 },
@@ -649,11 +649,11 @@
                     "@type": "http://rs.tdwg.org/ontology/voc/TaxonConcept#TaxonConcept",
                     "hasName": {
                         "@type": "http://rs.tdwg.org/ontology/voc/TaxonName#TaxonName",
-                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICBN",
                         "label": "Leucophanes seychellarum",
                         "nameComplete": "Leucophanes seychellarum",
                         "genusPart": "Leucophanes",
-                        "specificEpithet": "seychellarum"
+                        "specificEpithet": "seychellarum",
+                        "nomenclaturalCode": "http://rs.tdwg.org/ontology/voc/TaxonName#ICBN"
                     },
                     "label": "Type: Leucophanes seychellarum Besch., Ann. Sci. Nat., Bot., VI, 9: 337. (1880)"
                 }
