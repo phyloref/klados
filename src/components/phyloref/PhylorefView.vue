@@ -593,6 +593,13 @@ export default {
           return false;
         }
 
+        // If any part of the Phyx file references this phyloref, we would need
+        // to update those references as well -- this is needed for phylogenies,
+        // which uses this.$store.dispatch('changePhylogenyId').
+        //
+        // However, as of right now, there shouldn't be any references to this
+        // phyloref anywhere else in the Phyx file, so we can just set it as a
+        // property.
         this.$store.commit('setPhylorefProps', { phyloref: this.selectedPhyloref, '@id': id });
       },
     },
