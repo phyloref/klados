@@ -18,12 +18,12 @@
               for="phylogenyId"
               class="col-md-2 col-form-label"
             >
-              Identifier
+              Phylogeny ID (should be a <a target="_blank" href="https://en.wikipedia.org/wiki/Uniform_Resource_Identifier">URI</a>)
             </label>
             <div class="col-md-10">
               <input
                 id="phylogenyId"
-                v-model="phylogenyId"
+                v-model.lazy="phylogenyId"
                 type="text"
                 class="form-control"
                 :class="{'border-danger': phylogenyIdError}"
@@ -241,6 +241,18 @@ export default {
       // or a local identifier like #phylogeny1.
       get() { return this.$store.getters.getPhylogenyId(this.selectedPhylogeny); },
       set(id) {
+        // Is there any other phyloref in this file with that identifier? If so, raise an error.
+        if ((this.currentPhyx.phylogenies || [])
+          // Don't compare it to itself.
+          .filter(phylogeny => phylogeny !== this.selectedPhylogeny)
+          // Check if the ID is identical to another phyloref.
+          .filter(phylogeny => phylogeny['@id'] === id)
+          // Did we find any?
+          .length > 0) {
+          alert("Could not set phylogeny ID to " + id + ": already used by another phylogeny.");
+          return false;
+        }
+
         try {
           this.$store.dispatch('changePhylogenyId', { phylogeny: this.selectedPhylogeny, phylogenyId: id });
         } catch (err) {

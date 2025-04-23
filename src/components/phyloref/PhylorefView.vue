@@ -24,13 +24,14 @@
               for="phyloref-id"
               class="col-form-label col-md-2"
             >
-              Phyloref ID (preferably a <a href="https://en.wikipedia.org/wiki/Uniform_Resource_Identifier">URI</a>)
+              Phyloref ID (should be a <a target="_blank" href="https://en.wikipedia.org/wiki/Uniform_Resource_Identifier">URI</a>)
             </label>
             <div class="col-md-10">
               <input
                 id="phyloref-id"
-                v-model="selectedPhylorefID"
+                v-model.lazy="selectedPhylorefID"
                 type="text"
+                placeholder="A global or local identifier for this phyloreference, e.g. 'http://doi.org/10.13/49#12' or '#phyloref1'"
                 class="form-control"
               >
             </div>
@@ -579,7 +580,21 @@ export default {
      */
     selectedPhylorefID: {
       get() { return this.selectedPhyloref['@id']; },
-      set(id) { this.$store.commit('setPhylorefProps', { phyloref: this.selectedPhyloref, '@id': id }); },
+      set(id) {
+        // Is there any other phyloref in this file with that identifier? If so, raise an error.
+        if ((this.currentPhyx.phylorefs || [])
+          // Don't compare it to itself.
+          .filter(phyloref => phyloref !== this.selectedPhyloref)
+          // Check if the ID is identical to another phyloref.
+          .filter(phyloref => phyloref['@id'] === id)
+          // Did we find any?
+          .length > 0) {
+          alert("Could not set phyloref ID to " + id + ": already used by another phyloref.");
+          return false;
+        }
+
+        this.$store.commit('setPhylorefProps', { phyloref: this.selectedPhyloref, '@id': id });
+      },
     },
     selectedPhylorefLabel: {
       get() { return this.selectedPhyloref.label; },
