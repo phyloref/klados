@@ -216,7 +216,7 @@
         }
       ],
       "expectedResolution": {
-        "#phylogeny0": {
+        "https://doi.org/10.1146/annurev.earth.31.100901.141308#fig1": {
           "nodeLabel": "Alligator mississippiensis"
         }
       }
@@ -295,7 +295,7 @@
         }
       ],
       "expectedResolution": {
-        "#phylogeny0": {
+        "https://doi.org/10.1146/annurev.earth.31.100901.141308#fig1": {
           "nodeLabel": "Caiman crocodilus"
         }
       }
@@ -348,7 +348,7 @@
         }
       ],
       "expectedResolution": {
-        "#phylogeny0": {
+        "https://doi.org/10.1146/annurev.earth.31.100901.141308#fig1": {
           "nodeLabel": "Crocodylidae"
         }
       }
@@ -513,7 +513,7 @@
         }
       ],
       "expectedResolution": {
-        "#phylogeny0": {
+        "https://doi.org/10.1146/annurev.earth.31.100901.141308#fig1": {
           "nodeLabel": "Diplocynodon ratelii",
           "description": "Only representative of the Diplocynodontinae clade in this phylogeny."
         }
