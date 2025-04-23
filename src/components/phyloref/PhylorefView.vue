@@ -457,7 +457,7 @@
                     :href="'#current_pinning_node_phylogeny_' + phylogenyIndex"
                     title="Click here to jump to this node"
                     role="button"
-                  >Go to node</a>
+                  >Scroll to node</a>
                 </div>
 
                 <!-- Display the matching node(s) -->
