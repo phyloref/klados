@@ -430,7 +430,7 @@ export default {
             // Clear any existing menu items.
             node.menu_items = [];
 
-            // Add a custom menu items to display the node label and ID.
+            // Add custom menu items to display the node label and ID.
             addCustomMenu(
               node,
               (node) => "Node ID: " + (node.data['@id'] || "(none)"),
