@@ -390,7 +390,7 @@
                     :href="'#current_expected_label_phylogeny_' + phylogenyIndex"
                     title="Click here to jump to the expected label"
                     role="button"
-                  >Go to node</a>
+                  >Scroll to node</a>
                 </div>
 
                 <!-- Display the matching node(s) -->
@@ -476,7 +476,7 @@
                     :href="'#current_pinning_node_phylogeny_' + phylogenyIndex"
                     title="Click here to jump to this node"
                     role="button"
-                  >Go to node</a>
+                  >Scroll to node</a>
                 </div>
 
                 <!-- Display the matching node(s) -->
@@ -489,7 +489,7 @@
                   >
                 </template>
                 <template v-else>
-                  <template v-if="getResolvedNodes(phylogeny).length === 0">
+                  <template v-if="getResolvedNodeLabels(phylogeny).length === 0">
                     <!-- We matched no nodes -->
                     <input
                       readonly
@@ -498,22 +498,22 @@
                       :value="'No nodes could be resolved'"
                     >
                   </template>
-                  <template v-if="getResolvedNodes(phylogeny).length === 1">
+                  <template v-if="getResolvedNodeLabels(phylogeny).length === 1">
                     <!-- We matched exactly one node -->
                     <input
                       readonly
                       type="text"
                       class="form-control"
-                      :value="getResolvedNodes(phylogeny)[0]"
+                      :value="getResolvedNodeLabels(phylogeny)[0]"
                     >
                   </template>
-                  <template v-if="getResolvedNodes(phylogeny).length > 1">
+                  <template v-if="getResolvedNodeLabels(phylogeny).length > 1">
                     <!-- We matched more than one node -->
                     <input
                       readonly
                       type="text"
                       class="form-control"
-                      :value="getResolvedNodes(phylogeny).length + ' nodes matched: ' + getResolvedNodes(phylogeny).join(', ')"
+                      :value="getResolvedNodeLabels(phylogeny).length + ' nodes matched: ' + getResolvedNodeLabels(phylogeny).join(', ')"
                     >
                   </template>
                 </template>
@@ -556,6 +556,7 @@ import ModifiedCard from '../cards/ModifiedCard.vue';
 import Phylotree from '../phylogeny/Phylotree.vue';
 import Citation from '../citations/Citation.vue';
 import Specifier from '../specifiers/Specifier.vue';
+import { newickParser } from "phylotree";
 
 export default {
   name: 'PhylorefView',
@@ -706,14 +707,49 @@ export default {
           phylogeny,
       );
     },
-    getSpecifierLabel(specifier) {
-      // Return the specifier label of a particular specifier.
-      return PhylorefWrapper.getSpecifierLabel(specifier);
+    getNodesById(phylogeny, nodeId) {
+      // Return all node labels with this nodeId in this phylogeny.
+      let parsed;
+      try {
+        parsed = new PhylogenyWrapper(phylogeny).getParsedNewickWithIRIs(
+          this.$store.getters.getPhylogenyId(phylogeny),
+          newickParser,
+        );
+      } catch {
+        return [];
+      }
+
+      function searchNode(node, results = []) {
+        if (has(node, "@id") && node["@id"] === nodeId) {
+          results.push(node);
+        }
+        if (has(node, "children")) {
+          node.children.forEach((child) => searchNode(child, results));
+        }
+        return results;
+      }
+
+      if (!has(parsed, "json")) return [];
+      return searchNode(parsed.json);
     },
-    getResolvedNodes(phylogeny, flagReturnShortURIs = true) {
+    getResolvedNodeLabels(phylogeny) {
       // Return the list of nodes on a particular phylogeny that this phyloreference
       // has been determined to resolve on by JPhyloRef.
-      return this.$store.getters.getResolvedNodesForPhylogeny(phylogeny, this.selectedPhyloref, flagReturnShortURIs);
+      //
+      // TODO: this is duplicated from getNodeLabelsResolvedByPhyloref() in PhyxView,
+      // so at some point it should be consolidated into a single location.
+      const resolvedNodes = this.$store.getters.getResolvedNodesForPhylogeny(phylogeny, this.selectedPhyloref);
+
+      return resolvedNodes
+        .map((nodeId) => this.getNodesById(phylogeny, nodeId))
+        .reduce((a, b) => a.concat(b), [])
+        .map(
+          (node) =>
+            (has(node, "@id") ? node["@id"] : "(no ID)") +
+            ' ("' +
+            (node.name || "unlabelled") +
+            '")'
+        );
     },
     deleteThisPhyloref() {
       // Delete this phyloreference, and unset the selected phyloref so we return to the summary page.
