@@ -23,7 +23,21 @@
           type="file"
           class="d-none"
           @change="loadPhyxFromFileInputById('#file-input')"
+        />
+
+        <a
+          class="list-group-item list-group-item-action"
+          href="javascript: void(0)"
+          onclick="$('#file-input-concat').trigger('click')"
         >
+          Concatenate local JSON file
+        </a>
+        <input
+          id="file-input-concat"
+          type="file"
+          class="d-none"
+          @change="concatPhyxFromFileInputById('#file-input-concat')"
+        />
 
         <a
           class="list-group-item list-group-item-action"
@@ -394,6 +408,78 @@ export default {
 
         this.$store.commit('setCurrentPhyx', phyx);
         this.$store.commit('setLoadedPhyx', phyx);
+
+        // Reset the display.
+        this.$store.commit('changeDisplay', {});
+      });
+      fr.readAsText(file);
+    },
+
+    concatPhyxFromFileInputById(fileInputId) {
+      //
+      // Concatenate a JSON file from the local file system using FileReader. fileInput
+      // needs to be an HTML element representing an <input type="file"> in which
+      // the user has selected the local file they wish to load.
+      //
+      // This code is based on https://stackoverflow.com/a/21446426/27310
+
+      if (typeof window.FileReader !== 'function') {
+        alert('The FileReader API is not supported on this browser.');
+        return;
+      }
+
+      const $fileInput = $(fileInputId);
+      if (!$fileInput) {
+        alert('Programmer error: No file input element specified.');
+        return;
+      }
+
+      if (!$fileInput.prop('files')) {
+        alert('File input element found, but files property missing: try another browser?');
+        return;
+      }
+
+      if (!$fileInput.prop('files')[0]) {
+        alert('Please select a file before attempting to load it.');
+        return;
+      }
+
+      const currentPhyx = this.$store.state.phyx.currentPhyx;
+
+      const [file] = $fileInput.prop('files');
+      const fr = new FileReader();
+      fr.onload = ((e) => {
+        const lines = e.target.result;
+        const newPhyx = JSON.parse(lines);
+
+        const phylorefsToAdd = newPhyx.phylorefs || [];
+        const phylogeniesToAdd = newPhyx.phylogenies || [];
+
+        // Step 1. Make sure we don't have any phylorefs in common.
+        const currentPhylorefIds = (currentPhyx.phylorefs || []).map(phyloref => phyloref['@id']);
+        const phylorefIdsToAdd = phylorefsToAdd.map(phyloref => phyloref['@id']);
+        const phylorefIdsInCommon = currentPhylorefIds.filter(phylorefId => phylorefIdsToAdd.includes(phylorefId));
+        if (phylorefIdsInCommon.length > 0) {
+          alert('Cannot concatenate Phyx files -- the following phyloref IDs are present in the current file: ' + phylorefIdsInCommon.join(', '));
+          return;
+        }
+
+        // Step 2. Make sure we don't have any phylogenies in common.
+        const currentPhylogenyIds = (currentPhyx.phylogenies || []).map(phylogeny => phylogeny['@id']);
+        const phylogenyIdsToAdd = phylogeniesToAdd.map(phylogeny => phylogeny['@id']);
+        const phylogenyIdsInCommon = currentPhylogenyIds.filter(phylogenyId => phylogenyIdsToAdd.includes(phylogenyId));
+        if (phylogenyIdsInCommon.length > 0) {
+          alert('Cannot concatenate Phyx files -- the following phylogeny IDs are present in the current file: ' + phylogenyIdsInCommon.join(', '));
+          return;
+        }
+
+        // Step 3. It's safe to add the phylorefs!
+        currentPhyx.phylorefs = (currentPhyx.phylorefs || []).concat(phylorefsToAdd);
+
+        // Step 4. It's safe to add the phylorefs!
+        currentPhyx.phylogenies = (currentPhyx.phylogenies || []).concat(phylogeniesToAdd);
+
+        this.$store.commit('setCurrentPhyx', currentPhyx);
 
         // Reset the display.
         this.$store.commit('changeDisplay', {});
