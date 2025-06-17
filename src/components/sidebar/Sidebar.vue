@@ -239,7 +239,7 @@
  */
 
 import Vue from 'vue';
-import { has } from 'lodash';
+import { has, cloneDeep } from 'lodash';
 import { Buffer } from "buffer";
 import { newickParser } from "phylotree";
 import { mapState, mapGetters } from 'vuex';
@@ -444,7 +444,7 @@ export default {
         return;
       }
 
-      const currentPhyx = this.$store.state.phyx.currentPhyx;
+      const currentPhyx = cloneDeep(this.$store.state.phyx.currentPhyx);
 
       const [file] = $fileInput.prop('files');
       const fr = new FileReader();
@@ -476,7 +476,7 @@ export default {
         // Step 3. It's safe to add the phylorefs!
         currentPhyx.phylorefs = (currentPhyx.phylorefs || []).concat(phylorefsToAdd);
 
-        // Step 4. It's safe to add the phylorefs!
+        // Step 4. It's safe to add the phylogenies!
         currentPhyx.phylogenies = (currentPhyx.phylogenies || []).concat(phylogeniesToAdd);
 
         this.$store.commit('setCurrentPhyx', currentPhyx);
