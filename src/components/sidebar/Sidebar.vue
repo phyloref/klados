@@ -436,14 +436,24 @@ export default {
     },
 
     downloadAsNQuads() {
-      // Exports the PHYX file as an OWL/N-Quads file, which can be opened in
+      // Exports the Phyx file as an OWL/N-Quads file, which can be opened in
       // Protege or converted into other RDF formats.
+      //
+      // Note that (1) IRIs in n-Quads files can only be written as absolute
+      // IRIs (see https://www.w3.org/TR/n-quads/#sec-iri) and (2) Protege
+      // cannot load an n-Quads file where phylorefs/phylogeny nodes are
+      // expressed as blank nodes, so for maximum downstream reusability, we
+      // set a baseIRI of `http://example.org/phyx#`. Any absolute IRIs in the
+      // Phyx file will not be transformed.
+      //
+      // You can see details about
+      // this issue at https://github.com/phyloref/klados/issues/231 and
+      // https://github.com/phyloref/phyx.js/issues/113
+      //
       const wrapped = this.wrappedPhyx;
 
-      // TODO: we need a baseIRI here because of https://github.com/phyloref/phyx.js/issues/113
-      // Once that is fixed in phyx.js, we can remove it here.
       try {
-        wrapped.toRDF('https://example.org/phyx#').then((content) => {
+        wrapped.toRDF("http://example.org/phyx#").then((content) => {
           // Save to local hard drive.
           const nqFile = new File([content], `${this.downloadFilenameForPhyx}.owl`, {type: 'application/n-quads;charset=utf-8'});
           saveAs(nqFile, `${this.downloadFilenameForPhyx}.owl`);
