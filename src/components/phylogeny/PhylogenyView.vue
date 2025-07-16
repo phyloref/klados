@@ -171,14 +171,14 @@
         hover
         :items="taxonomicUnitsTable"
         :fields="['node_label', 'node_type', 'additional_taxonomic_units']"
-        :primary-key="node_label"
+        primary-key="node_label"
         show-empty
       >
-        <template #empty="scope">
-          <h4>No labels found in this phylogeny.</h4>
+        <template #empty>
+          <span>No labels found in this phylogeny.</span>
         </template>
-        <template #emptyfiltered="scope">
-          <h4>No labels found after filtering.</h4>
+        <template #emptyfiltered>
+          <span>No labels found after filtering.</span>
         </template>
 
         <template #cell(additional_taxonomic_units)="row">
