@@ -139,7 +139,7 @@
         Phylogeny visualization
       </h5>
       <div class="card-body">
-        <Phylotree
+        <PhyloTree
           :phylogeny="selectedPhylogeny"
         />
       </div>
@@ -218,13 +218,13 @@ import { parse as parseNewick } from 'newick-js';
 
 import {PhylogenyWrapper, TaxonomicUnitWrapper} from '@phyloref/phyx';
 import ModifiedCard from '../cards/ModifiedCard.vue';
-import Phylotree from './Phylotree.vue';
+import PhyloTree from './PhyloTree.vue';
 import Citation from '../citations/Citation.vue';
 import Specifier from "@/components/specifiers/Specifier.vue";
 
 export default {
   name: 'PhylogenyView',
-  components: {Specifier, ModifiedCard, Phylotree, Citation },
+  components: {Specifier, ModifiedCard, PhyloTree, Citation },
   data() {
     return {
       // Errors in the phylogenyId field.

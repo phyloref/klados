@@ -49,7 +49,7 @@ import { saveAs } from "filesaver.js-npm";
  */
 
 export default {
-  name: "Phylotree",
+  name: "PhyloTree",
   props: {
     phylogeny: Object, // The phylogeny to render.
     phylorefs: {
