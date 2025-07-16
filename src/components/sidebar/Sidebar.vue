@@ -279,12 +279,7 @@ export default {
       );
     },
     wrappedPhyxAsJSONLD() {
-      try {
-        return this.wrappedPhyx.asJSONLD();
-      } catch (err) {
-        alert(`Could not convert Phyx to JSON-LD: ${err}`);
-        return undefined;
-      }
+      return this.wrappedPhyx.asJSONLD();
     },
     ...mapGetters([
       'phyxTitle',

@@ -332,7 +332,7 @@
           {{ getPhylogenyLabel(phylogeny) }}
         </h5>
         <div class="card-body">
-          <Phylotree
+          <PhyloTree
               :phylogeny-index="String(phylogenyIndex)"
               :phylogeny="phylogeny"
               :phylorefs="phylorefs"
@@ -389,12 +389,12 @@ import {
   TaxonomicUnitWrapper,
 } from "@phyloref/phyx";
 import { newickParser } from "phylotree";
-import Phylotree from "@/components/phylogeny/Phylotree.vue";
+import PhyloTree from "@/components/phylogeny/PhyloTree.vue";
 
 export default {
   name: "PhyxView",
   components: {
-    Phylotree,
+    PhyloTree,
     BIconTrash,
   },
   computed: {
