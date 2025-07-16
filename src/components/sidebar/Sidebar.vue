@@ -279,7 +279,12 @@ export default {
       );
     },
     wrappedPhyxAsJSONLD() {
-      return this.wrappedPhyx.asJSONLD();
+      try {
+        return this.wrappedPhyx.asJSONLD();
+      } catch (err) {
+        alert(`Could not convert phylogeny to ontology: ${err}`);
+        throw err;
+      }
     },
     ...mapGetters([
       'phyxTitle',
