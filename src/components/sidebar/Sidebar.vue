@@ -552,16 +552,24 @@ export default {
       // Disable "Reason" buttons so they can't be reused.
       this.reasoningInProgress = true;
 
+      // Convert to JSONLD for export.
+      let jsonld;
+      try {
+        jsonld = this.wrappedPhyx.asJSONLD();
+      } catch (err) {
+        alert(`Could not convert phylogeny to ontology: ${err}`);
+        this.reasoningInProgress = false;
+        return;
+      }
+      if (!jsonld) {
+        this.reasoningInProgress = false;
+        return;
+      }
+
       // Make sure that the Reason button is updated before we convert the Phyx
       // file into JSON-LD.
       const outerThis = this;
       Vue.nextTick(() => {
-        // Prepare JSON-LD file for submission.
-        const jsonld = outerThis.wrappedPhyxAsJSONLD;
-        if (!jsonld) {
-          outerThis.reasoningInProgress = false;
-          return;
-        }
         const jsonldAsStr = JSON.stringify([jsonld]);
 
         // To improve upload speed, let's Gzip the file before upload.
