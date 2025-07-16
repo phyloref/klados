@@ -62,7 +62,7 @@ export default {
       //  2. When highlighting multiple, we always provide the list of all phyloreferences in the current Phyx file,
       //     but in the future it might be useful to highlight only a subset of phyloreferences for some reason.
       type: Array,
-      default: [],
+      default: () => [],
     },
     spacingX: {
       // Spacing in the X axis in pixels.
