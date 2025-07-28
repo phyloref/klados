@@ -120,6 +120,10 @@ export default {
       // Replace the current Phyx file using an object. This method does NOT
       // update the loaded Phyx file, so these changes are treated as changes
       // made since the file was last loaded.
+      //
+      // If we deep-copy an existing Phyx file and try to set it as the currentPhyx,
+      // we run into some weird issues in the UI. We can eliminate this by
+      // stringifying the Phyx and then reloading it as a JSON object.
       Vue.set(state, 'currentPhyx', JSON.parse(JSON.stringify(phyx)));
     },
     setLoadedPhyx(state, phyx) {
