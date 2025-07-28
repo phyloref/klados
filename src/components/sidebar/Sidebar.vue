@@ -239,7 +239,7 @@
  */
 
 import Vue from 'vue';
-import { has } from 'lodash';
+import { cloneDeep, has } from "lodash";
 import { Buffer } from "buffer";
 import { newickParser } from "phylotree";
 import { mapState, mapGetters } from 'vuex';
@@ -445,7 +445,7 @@ export default {
       }
 
       // Let's copy the current Phyx document so that we can modify it without modifying the original.
-      const currentPhyx = JSON.parse(JSON.stringify(this.$store.state.phyx.currentPhyx));
+      const currentPhyx = cloneDeep(this.$store.state.phyx.currentPhyx));
 
       // Load the new Phyx document that we need to concatenate into currentPhyx.
       const [file] = $fileInput.prop('files');
