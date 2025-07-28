@@ -445,7 +445,7 @@ export default {
       }
 
       // Let's copy the current Phyx document so that we can modify it without modifying the original.
-      const currentPhyx = cloneDeep(this.$store.state.phyx.currentPhyx));
+      const currentPhyx = cloneDeep(this.$store.state.phyx.currentPhyx);
 
       // Load the new Phyx document that we need to concatenate into currentPhyx.
       const [file] = $fileInput.prop('files');
