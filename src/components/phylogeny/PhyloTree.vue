@@ -16,16 +16,18 @@
     <div v-else class="phylotreeContainer">
       <div :id="'phylogeny' + phylogenyIndex" class="col-md-12 phylogeny" />
       <ResizeObserver @notify="redrawTree" />
-      <button
-        type="button"
-        class="btn btn-primary"
-        @click="exportAsNexus()"
-        data-toggle="tooltip"
-        data-placement="bottom"
-        title="Download Nexus file with annotations of where phyloreferences resolve"
-      >
-        Download as Nexus
-      </button>
+      <b-btn-group class="my-2">
+        <button
+          type="button"
+          class="btn btn-primary"
+          @click="exportAsNexus()"
+          data-toggle="tooltip"
+          data-placement="bottom"
+          title="Download Nexus file with annotations of where phyloreferences resolve"
+        >
+          Download as Nexus
+        </button>
+      </b-btn-group>
     </div>
   </div>
 </template>
@@ -95,7 +97,12 @@ export default {
       // The radius of nodes where we have pinned one or more phylorefs.
       type: Number,
       default: 4,
-    }
+    },
+    addNodeIDAsTitle: {
+      // Should we display the ID of every node as hover text on the node circle?
+      type: Boolean,
+      default: true,
+    },
   },
   data() {
     return {
@@ -373,6 +380,13 @@ export default {
           // Wrap the phylogeny so we can call methods on it.
           const wrappedPhylogeny = new PhylogenyWrapper(this.phylogeny || {});
 
+          // Add a title with the ID of this phylogeny node.
+          if (this.addNodeIDAsTitle && data['@id']) {
+            element.select("circle")
+              .append("title")
+              .text(data['@id']);
+          }
+
           // Wrap the phyloref is there is one.
           this.phylorefs.forEach((phyloref) => {
             const wrappedPhyloref = new PhylorefWrapper(phyloref || {});
@@ -415,6 +429,20 @@ export default {
 
             // Clear any existing menu items.
             node.menu_items = [];
+
+            // Add custom menu items to display the node label and ID.
+            addCustomMenu(
+              node,
+              (node) => "Node ID: " + (node.data['@id'] || "(none)"),
+              () => false,
+              (node) => true,
+            );
+            addCustomMenu(
+              node,
+              (node) => "Node label: " + (node.data.name || "(none)"),
+              () => false,
+              (node) => true,
+            );
 
             // Add a custom menu item to allow us to rename this node.
             // console.log("node", node);
@@ -676,13 +704,16 @@ export default {
 /* Node label for an internal specifier */
 .internal-specifier-node text {
   font-weight: bolder;
-  fill: rgb(0, 24, 168) !important;
+  fill: rgb(0, 33, 165) !important;
+    /* previously, we used: rgb(0, 24, 168) !important; */
 }
 
 /* Node label for an external specifier */
 .external-specifier-node text {
   font-weight: bolder;
-  fill: rgb(0, 24, 168) !important;
+  fill: rgb(196, 2, 52) !important;
+    /* UF color: rgb(250, 70, 22) !important; */
+    /* previously, we used: rgb(0, 24, 168) !important; */
 }
 
 /* Node label for a terminal node without taxonomic units */
@@ -692,7 +723,8 @@ export default {
 /* The selected internal label on a phylogeny, whether determined to be the pinning node or not. */
 .selected-internal-label {
   font-size: 12pt !important;
-  fill: rgb(0, 24, 168);
+  fill: rgb(0, 33, 165) !important;
+  /* previously, we used: rgb(0, 24, 168) !important; */
 }
 
 /*
