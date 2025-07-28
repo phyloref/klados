@@ -239,7 +239,7 @@
  */
 
 import Vue from 'vue';
-import { has, cloneDeep } from 'lodash';
+import { has } from 'lodash';
 import { Buffer } from "buffer";
 import { newickParser } from "phylotree";
 import { mapState, mapGetters } from 'vuex';
@@ -444,18 +444,24 @@ export default {
         return;
       }
 
-      const currentPhyx = cloneDeep(this.$store.state.phyx.currentPhyx);
+      // Let's copy the current Phyx document so that we can modify it without modifying the original.
+      const currentPhyx = JSON.parse(JSON.stringify(this.$store.state.phyx.currentPhyx));
 
+      // Load the new Phyx document that we need to concatenate into currentPhyx.
       const [file] = $fileInput.prop('files');
       const fr = new FileReader();
       fr.onload = ((e) => {
+        // Load the newPhyx document as a JSON object.
         const lines = e.target.result;
         const newPhyx = JSON.parse(lines);
 
+        // We don't need to fully combine the two Phyx files: just take the
+        // phylorefs and the phylogenies from the new file and add them to the
+        // current file.
         const phylorefsToAdd = newPhyx.phylorefs || [];
         const phylogeniesToAdd = newPhyx.phylogenies || [];
 
-        // Step 1. Make sure we don't have any phylorefs in common.
+        // Step 1. Make sure we don't have any phylorefs with the same @id.
         const currentPhylorefIds = (currentPhyx.phylorefs || []).map(phyloref => phyloref['@id']);
         const phylorefIdsToAdd = phylorefsToAdd.map(phyloref => phyloref['@id']);
         const phylorefIdsInCommon = currentPhylorefIds.filter(phylorefId => phylorefIdsToAdd.includes(phylorefId));
@@ -464,7 +470,7 @@ export default {
           return;
         }
 
-        // Step 2. Make sure we don't have any phylogenies in common.
+        // Step 2. Make sure we don't have any phylogenies with the same @id.
         const currentPhylogenyIds = (currentPhyx.phylogenies || []).map(phylogeny => phylogeny['@id']);
         const phylogenyIdsToAdd = phylogeniesToAdd.map(phylogeny => phylogeny['@id']);
         const phylogenyIdsInCommon = currentPhylogenyIds.filter(phylogenyId => phylogenyIdsToAdd.includes(phylogenyId));
@@ -473,13 +479,11 @@ export default {
           return;
         }
 
-        // Step 3. It's safe to add the phylorefs!
+        // Step 3. It's safe to add the phylorefs and phylogenies!
         currentPhyx.phylorefs = (currentPhyx.phylorefs || []).concat(phylorefsToAdd);
-
-        // Step 4. It's safe to add the phylogenies!
         currentPhyx.phylogenies = (currentPhyx.phylogenies || []).concat(phylogeniesToAdd);
 
-        // Step 5. Replace the current Phyx. Note that this leaves the loaded Phyx
+        // Step 4. Replace the current Phyx. Note that this leaves the loaded Phyx
         // object unchanged (we can change that using commit `setLoadedPhyx'), so
         // all the "Please save this file" warnings will appear in the UI.
         this.$store.commit('setCurrentPhyx', currentPhyx);
@@ -487,6 +491,8 @@ export default {
         // Reset the display.
         this.$store.commit('changeDisplay', {});
       });
+
+      // Activate reading the file.
       fr.readAsText(file);
     },
 
