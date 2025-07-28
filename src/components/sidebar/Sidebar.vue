@@ -479,6 +479,9 @@ export default {
         // Step 4. It's safe to add the phylogenies!
         currentPhyx.phylogenies = (currentPhyx.phylogenies || []).concat(phylogeniesToAdd);
 
+        // Step 5. Replace the current Phyx. Note that this leaves the loaded Phyx
+        // object unchanged (we can change that using commit `setLoadedPhyx'), so
+        // all the "Please save this file" warnings will appear in the UI.
         this.$store.commit('setCurrentPhyx', currentPhyx);
 
         // Reset the display.
