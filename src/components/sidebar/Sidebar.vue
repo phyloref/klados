@@ -251,7 +251,7 @@ import {
   JPHYLOREF_SUBMISSION_URL,
 } from '@/config';
 
-import { PhyxWrapper, PhylorefWrapper, TaxonomicUnitWrapper } from '@phyloref/phyx';
+import { PhyxWrapper, PhylorefWrapper, TaxonomicUnitWrapper, TaxonNameWrapper } from "@phyloref/phyx";
 
 import ModifiedIcon from '../icons/ModifiedIcon.vue';
 
@@ -445,7 +445,8 @@ export default {
       }
 
       // Let's copy the current Phyx document so that we can modify it without modifying the original.
-      const currentPhyx = cloneDeep(this.$store.state.phyx.currentPhyx);
+      const outerStore = this.$store;
+      const currentPhyx = cloneDeep(outerStore.state.phyx.currentPhyx);
 
       // Load the new Phyx document that we need to concatenate into currentPhyx.
       const [file] = $fileInput.prop('files');
@@ -455,6 +456,23 @@ export default {
         const lines = e.target.result;
         const newPhyx = JSON.parse(lines);
 
+        // Before we do anything else, lets check if the two Phyx files have
+        // different nomenclatural codes.
+        const currentNomenclaturalCode = currentPhyx['defaultNomenclaturalCodeIRI'];
+        const newNomenclaturalCode = newPhyx['defaultNomenclaturalCodeIRI'];
+
+        if (currentNomenclaturalCode && newNomenclaturalCode && currentNomenclaturalCode !== newNomenclaturalCode) {
+          const currentNomenInfo = TaxonNameWrapper.getNomenCodeDetails(currentNomenclaturalCode);
+          const newNomenInfo = TaxonNameWrapper.getNomenCodeDetails(newNomenclaturalCode);
+
+          if (!window.confirm(
+            'The Phyx file you can concatenating has a different default nomenclatural code (' +
+            (newNomenInfo['title'] || newNomenclaturalCode) +
+            `) than the current Phyx file (${currentNomenInfo['title'] || currentNomenclaturalCode}). ` +
+            'Are you sure you wish to concatenate them?'
+          )) return;
+        }
+
         // We don't need to fully combine the two Phyx files: just take the
         // phylorefs and the phylogenies from the new file and add them to the
         // current file.
@@ -462,7 +480,8 @@ export default {
         const phylogeniesToAdd = newPhyx.phylogenies || [];
 
         // Step 1. Make sure we don't have any phylorefs with the same @id.
-        const currentPhylorefIds = (currentPhyx.phylorefs || []).map(phyloref => phyloref['@id']);
+        const currentPhylorefIds = (currentPhyx.phylorefs || [])
+          .map(phyloref => phyloref['@id'] || outerStore.getters.getPhylorefId(phyloref));
         const phylorefIdsToAdd = phylorefsToAdd.map(phyloref => phyloref['@id']);
         const phylorefIdsInCommon = currentPhylorefIds.filter(phylorefId => phylorefIdsToAdd.includes(phylorefId));
         if (phylorefIdsInCommon.length > 0) {
@@ -471,7 +490,8 @@ export default {
         }
 
         // Step 2. Make sure we don't have any phylogenies with the same @id.
-        const currentPhylogenyIds = (currentPhyx.phylogenies || []).map(phylogeny => phylogeny['@id']);
+        const currentPhylogenyIds = (currentPhyx.phylogenies || [])
+          .map(phylogeny => phylogeny['@id'] || outerStore.getters.getPhylogenyId(phylogeny));
         const phylogenyIdsToAdd = phylogeniesToAdd.map(phylogeny => phylogeny['@id']);
         const phylogenyIdsInCommon = currentPhylogenyIds.filter(phylogenyId => phylogenyIdsToAdd.includes(phylogenyId));
         if (phylogenyIdsInCommon.length > 0) {
