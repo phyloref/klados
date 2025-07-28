@@ -466,7 +466,7 @@ export default {
           const newNomenInfo = TaxonNameWrapper.getNomenCodeDetails(newNomenclaturalCode);
 
           if (!window.confirm(
-            'The Phyx file you can concatenating has a different default nomenclatural code (' +
+            'The Phyx file you are concatenating has a different default nomenclatural code (' +
             (newNomenInfo['title'] || newNomenclaturalCode) +
             `) than the current Phyx file (${currentNomenInfo['title'] || currentNomenclaturalCode}). ` +
             'Are you sure you wish to concatenate them?'
