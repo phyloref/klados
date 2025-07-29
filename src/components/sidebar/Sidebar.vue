@@ -251,7 +251,7 @@ import {
   JPHYLOREF_SUBMISSION_URL,
 } from '@/config';
 
-import { PhyxWrapper, PhylorefWrapper, TaxonomicUnitWrapper, TaxonNameWrapper } from "@phyloref/phyx";
+import { PhyxWrapper, PhylorefWrapper, TaxonomicUnitWrapper, TaxonNameWrapper } from '@phyloref/phyx';
 
 import ModifiedIcon from '../icons/ModifiedIcon.vue';
 
