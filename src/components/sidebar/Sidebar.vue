@@ -492,7 +492,7 @@ export default {
         // Step 2. Make sure we don't have any phylogenies with the same @id.
         const currentPhylogenyIds = (currentPhyx.phylogenies || [])
           .map(phylogeny => phylogeny['@id'] || outerStore.getters.getPhylogenyId(phylogeny));
-        const phylogenyIdsToAdd = phylogeniesToAdd.map(phylogeny => phylogeny['@id']);
+        const phylogenyIdsToAdd = phylogeniesToAdd.map(phylogeny => phylogeny['@id'] || outerStore.getters.getPhylogenyId(phylogeny));
         const phylogenyIdsInCommon = currentPhylogenyIds.filter(phylogenyId => phylogenyIdsToAdd.includes(phylogenyId));
         if (phylogenyIdsInCommon.length > 0) {
           alert('Cannot concatenate Phyx files -- the following phylogeny IDs are present in the current file: ' + phylogenyIdsInCommon.join(', '));
