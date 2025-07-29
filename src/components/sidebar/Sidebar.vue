@@ -239,7 +239,7 @@
  */
 
 import Vue from 'vue';
-import { cloneDeep, has } from "lodash";
+import { cloneDeep, has } from 'lodash';
 import { Buffer } from "buffer";
 import { newickParser } from "phylotree";
 import { mapState, mapGetters } from 'vuex';
