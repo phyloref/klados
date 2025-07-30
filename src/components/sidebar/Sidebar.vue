@@ -495,7 +495,7 @@ export default {
         const phylogenyIdsToAdd = phylogeniesToAdd.map(phylogeny => phylogeny['@id'] || outerStore.getters.getPhylogenyId(phylogeny));
         const phylogenyIdsInCommon = currentPhylogenyIds.filter(phylogenyId => phylogenyIdsToAdd.includes(phylogenyId));
         if (phylogenyIdsInCommon.length > 0) {
-          alert('Cannot concatenate Phyx files -- the following phylogeny IDs are present in the current file: ' + phylogenyIdsInCommon.join(', '));
+          alert('Cannot concatenate Phyx files -- the following phylogeny IDs are already present in the current file: ' + phylogenyIdsInCommon.join(', '));
           return;
         }
 
