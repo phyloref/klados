@@ -23,7 +23,21 @@
           type="file"
           class="d-none"
           @change="loadPhyxFromFileInputById('#file-input')"
+        />
+
+        <a
+          class="list-group-item list-group-item-action"
+          href="javascript: void(0)"
+          onclick="$('#file-input-append').trigger('click')"
         >
+          Append local JSON file
+        </a>
+        <input
+          id="file-input-append"
+          type="file"
+          class="d-none"
+          @change="appendPhyxFromFileInputById('#file-input-append')"
+        />
 
         <a
           class="list-group-item list-group-item-action"
@@ -225,7 +239,7 @@
  */
 
 import Vue from 'vue';
-import { has } from 'lodash';
+import { cloneDeep, has } from 'lodash';
 import { Buffer } from "buffer";
 import { newickParser } from "phylotree";
 import { mapState, mapGetters } from 'vuex';
@@ -237,7 +251,7 @@ import {
   JPHYLOREF_SUBMISSION_URL,
 } from '@/config';
 
-import { PhyxWrapper, PhylorefWrapper, TaxonomicUnitWrapper } from '@phyloref/phyx';
+import { PhyxWrapper, PhylorefWrapper, TaxonomicUnitWrapper, TaxonNameWrapper } from '@phyloref/phyx';
 
 import ModifiedIcon from '../icons/ModifiedIcon.vue';
 
@@ -401,6 +415,108 @@ export default {
       fr.readAsText(file);
     },
 
+    appendPhyxFromFileInputById(fileInputId) {
+      //
+      // Append a JSON file from the local file system to the current Phyx file.
+      // fileInput needs to be an HTML element representing an
+      // <input type="file"> in which the user has selected the local file they
+      // wish to load, which we load using FileReader.
+      //
+      // This code is based on https://stackoverflow.com/a/21446426/27310
+
+      if (typeof window.FileReader !== 'function') {
+        alert('The FileReader API is not supported on this browser.');
+        return;
+      }
+
+      const $fileInput = $(fileInputId);
+      if (!$fileInput) {
+        alert('Programmer error: No file input element specified.');
+        return;
+      }
+
+      if (!$fileInput.prop('files')) {
+        alert('File input element found, but files property missing: try another browser?');
+        return;
+      }
+
+      if (!$fileInput.prop('files')[0]) {
+        alert('Please select a file before attempting to load it.');
+        return;
+      }
+
+      // Let's copy the current Phyx document so that we can modify it without modifying the original.
+      const outerStore = this.$store;
+      const currentPhyx = cloneDeep(outerStore.state.phyx.currentPhyx);
+
+      // Load the new Phyx document that we need to append into currentPhyx.
+      const [file] = $fileInput.prop('files');
+      const fr = new FileReader();
+      fr.onload = ((e) => {
+        // Load the newPhyx document as a JSON object.
+        const lines = e.target.result;
+        const newPhyx = JSON.parse(lines);
+
+        // Before we do anything else, lets check if the two Phyx files have
+        // different nomenclatural codes.
+        const currentNomenclaturalCode = currentPhyx['defaultNomenclaturalCodeIRI'];
+        const newNomenclaturalCode = newPhyx['defaultNomenclaturalCodeIRI'];
+
+        if (currentNomenclaturalCode && newNomenclaturalCode && currentNomenclaturalCode !== newNomenclaturalCode) {
+          const currentNomenInfo = TaxonNameWrapper.getNomenCodeDetails(currentNomenclaturalCode);
+          const newNomenInfo = TaxonNameWrapper.getNomenCodeDetails(newNomenclaturalCode);
+
+          if (!window.confirm(
+            'The Phyx file you wish to append has a different default nomenclatural code (' +
+            (newNomenInfo['title'] || newNomenclaturalCode) +
+            `) than the current Phyx file (${currentNomenInfo['title'] || currentNomenclaturalCode}). ` +
+            'Are you sure you wish to append it?'
+          )) return;
+        }
+
+        // We don't need to fully combine the two Phyx files: just take the
+        // phylorefs and the phylogenies from the new file and add them to the
+        // current file.
+        const phylorefsToAdd = newPhyx.phylorefs || [];
+        const phylogeniesToAdd = newPhyx.phylogenies || [];
+
+        // Step 1. Make sure we don't have any phylorefs with the same @id.
+        const currentPhylorefIds = (currentPhyx.phylorefs || [])
+          .map(phyloref => phyloref['@id'] || outerStore.getters.getPhylorefId(phyloref));
+        const phylorefIdsToAdd = phylorefsToAdd.map(phyloref => phyloref['@id'] || outerStore.getters.getPhylorefId(phyloref));
+        const phylorefIdsInCommon = currentPhylorefIds.filter(phylorefId => phylorefIdsToAdd.includes(phylorefId));
+        if (phylorefIdsInCommon.length > 0) {
+          alert('Cannot append Phyx files -- the following phyloref IDs are already present in the current file: ' + phylorefIdsInCommon.join(', '));
+          return;
+        }
+
+        // Step 2. Make sure we don't have any phylogenies with the same @id.
+        const currentPhylogenyIds = (currentPhyx.phylogenies || [])
+          .map(phylogeny => phylogeny['@id'] || outerStore.getters.getPhylogenyId(phylogeny));
+        const phylogenyIdsToAdd = phylogeniesToAdd.map(phylogeny => phylogeny['@id'] || outerStore.getters.getPhylogenyId(phylogeny));
+        const phylogenyIdsInCommon = currentPhylogenyIds.filter(phylogenyId => phylogenyIdsToAdd.includes(phylogenyId));
+        if (phylogenyIdsInCommon.length > 0) {
+          alert('Cannot append Phyx files -- the following phylogeny IDs are already present in the current file: ' + phylogenyIdsInCommon.join(', '));
+          return;
+        }
+
+        // Step 3. It's safe to add the phylorefs and phylogenies!
+        currentPhyx.phylorefs = (currentPhyx.phylorefs || []).concat(phylorefsToAdd);
+        currentPhyx.phylogenies = (currentPhyx.phylogenies || []).concat(phylogeniesToAdd);
+
+        // Step 4. Replace the current Phyx. Note that this leaves the loaded Phyx
+        // object unchanged (we can change that using commit `setLoadedPhyx'), so
+        // all the "Please save this file" warnings will appear in the UI.
+        this.$store.commit('setCurrentPhyx', currentPhyx);
+
+        // Reset the display.
+        this.$store.commit('changeDisplay', {});
+      });
+
+      // Activate reading the file.
+      fr.readAsText(file);
+    },
+
     downloadAsJSON() {
       // Provide the JSON file as a download to the browser.
       const content = [JSON.stringify(this.$store.state.phyx.currentPhyx, undefined, 4)];
@@ -476,16 +592,24 @@ export default {
       // Disable "Reason" buttons so they can't be reused.
       this.reasoningInProgress = true;
 
+      // Convert to JSONLD for export.
+      let jsonld;
+      try {
+        jsonld = this.wrappedPhyx.asJSONLD();
+      } catch (err) {
+        alert(`Could not convert phylogeny to ontology: ${err}`);
+        this.reasoningInProgress = false;
+        return;
+      }
+      if (!jsonld) {
+        this.reasoningInProgress = false;
+        return;
+      }
+
       // Make sure that the Reason button is updated before we convert the Phyx
       // file into JSON-LD.
       const outerThis = this;
       Vue.nextTick(() => {
-        // Prepare JSON-LD file for submission.
-        const jsonld = outerThis.wrappedPhyxAsJSONLD;
-        if (!jsonld) {
-          outerThis.reasoningInProgress = false;
-          return;
-        }
         const jsonldAsStr = JSON.stringify([jsonld]);
 
         // To improve upload speed, let's Gzip the file before upload.
