@@ -282,8 +282,8 @@ export default {
       try {
         return this.wrappedPhyx.asJSONLD();
       } catch (err) {
-        alert(`Could not convert Phyx to JSON-LD: ${err}`);
-        return undefined;
+        alert(`Could not convert phylogeny to ontology: ${err}`);
+        throw err;
       }
     },
     ...mapGetters([

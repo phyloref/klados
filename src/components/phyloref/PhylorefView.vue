@@ -524,7 +524,7 @@
             <div
               class="card mt-4 p-2"
             >
-              <Phylotree
+              <PhyloTree
                 :phylogeny-index="String(phylogenyIndex)"
                 :phylogeny="phylogeny"
                 :phylorefs="[selectedPhyloref]"
@@ -553,7 +553,7 @@ import {
 } from 'bootstrap-vue';
 
 import ModifiedCard from '../cards/ModifiedCard.vue';
-import Phylotree from '../phylogeny/Phylotree.vue';
+import PhyloTree from '../phylogeny/PhyloTree.vue';
 import Citation from '../citations/Citation.vue';
 import Specifier from '../specifiers/Specifier.vue';
 import { newickParser } from "phylotree";
@@ -562,7 +562,7 @@ export default {
   name: 'PhylorefView',
   components: {
     ModifiedCard,
-    Phylotree,
+    PhyloTree,
     Citation,
     Specifier,
     BIconSquare,

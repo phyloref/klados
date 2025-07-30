@@ -139,7 +139,7 @@
         Phylogeny visualization
       </h5>
       <div class="card-body">
-        <Phylotree
+        <PhyloTree
           :phylogeny="selectedPhylogeny"
         />
       </div>
@@ -171,14 +171,14 @@
         hover
         :items="taxonomicUnitsTable"
         :fields="['node_label', 'node_type', 'additional_taxonomic_units']"
-        :primary-key="node_label"
+        primary-key="node_label"
         show-empty
       >
-        <template #empty="scope">
-          <h4>No labels found in this phylogeny.</h4>
+        <template #empty>
+          <span>No labels found in this phylogeny.</span>
         </template>
-        <template #emptyfiltered="scope">
-          <h4>No labels found after filtering.</h4>
+        <template #emptyfiltered>
+          <span>No labels found after filtering.</span>
         </template>
 
         <template #cell(additional_taxonomic_units)="row">
@@ -218,13 +218,13 @@ import { parse as parseNewick } from 'newick-js';
 
 import {PhylogenyWrapper, TaxonomicUnitWrapper} from '@phyloref/phyx';
 import ModifiedCard from '../cards/ModifiedCard.vue';
-import Phylotree from './Phylotree.vue';
+import PhyloTree from './PhyloTree.vue';
 import Citation from '../citations/Citation.vue';
 import Specifier from "@/components/specifiers/Specifier.vue";
 
 export default {
   name: 'PhylogenyView',
-  components: {Specifier, ModifiedCard, Phylotree, Citation },
+  components: {Specifier, ModifiedCard, PhyloTree, Citation },
   data() {
     return {
       // Errors in the phylogenyId field.
