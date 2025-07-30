@@ -24,7 +24,7 @@
     {
       "newick": "(Parasuchia,(rauisuchians,Aetosauria,(sphenosuchians,(protosuchians,(mesosuchians,(Hylaeochampsa,Aegyptosuchus,Stomatosuchus,(Allodaposuchus,('Gavialis gangeticus',(('Diplocynodon ratelii',('Alligator mississippiensis','Caiman crocodilus')Alligatoridae)Alligatoroidea,('Tomistoma schlegelii',('Osteolaemus tetraspis','Crocodylus niloticus')Crocodylinae)Crocodylidae)Brevirostres)Crocodylia))Eusuchia)Mesoeucrocodylia)Crocodyliformes)Crocodylomorpha))root;",
       "label": "Fig 1 from Brochu 2003",
-      "@id": "#phylogeny0",
+      "@id": "https://doi.org/10.1146/annurev.earth.31.100901.141308#fig1",
       "source": {
         "type": "article",
         "title": "Phylogenetic approaches toward crocodylian history",
@@ -216,7 +216,7 @@
         }
       ],
       "expectedResolution": {
-        "#phylogeny0": {
+        "https://doi.org/10.1146/annurev.earth.31.100901.141308#fig1": {
           "nodeLabel": "Alligator mississippiensis"
         }
       }
@@ -295,7 +295,7 @@
         }
       ],
       "expectedResolution": {
-        "#phylogeny0": {
+        "https://doi.org/10.1146/annurev.earth.31.100901.141308#fig1": {
           "nodeLabel": "Caiman crocodilus"
         }
       }
@@ -348,7 +348,7 @@
         }
       ],
       "expectedResolution": {
-        "#phylogeny0": {
+        "https://doi.org/10.1146/annurev.earth.31.100901.141308#fig1": {
           "nodeLabel": "Crocodylidae"
         }
       }
@@ -513,7 +513,7 @@
         }
       ],
       "expectedResolution": {
-        "#phylogeny0": {
+        "https://doi.org/10.1146/annurev.earth.31.100901.141308#fig1": {
           "nodeLabel": "Diplocynodon ratelii",
           "description": "Only representative of the Diplocynodontinae clade in this phylogeny."
         }
