@@ -28,15 +28,15 @@
         <a
           class="list-group-item list-group-item-action"
           href="javascript: void(0)"
-          onclick="$('#file-input-concat').trigger('click')"
+          onclick="$('#file-input-append').trigger('click')"
         >
-          Concatenate local JSON file
+          Append local JSON file
         </a>
         <input
-          id="file-input-concat"
+          id="file-input-append"
           type="file"
           class="d-none"
-          @change="concatPhyxFromFileInputById('#file-input-concat')"
+          @change="appendPhyxFromFileInputById('#file-input-append')"
         />
 
         <a
@@ -415,11 +415,12 @@ export default {
       fr.readAsText(file);
     },
 
-    concatPhyxFromFileInputById(fileInputId) {
+    appendPhyxFromFileInputById(fileInputId) {
       //
-      // Concatenate a JSON file from the local file system using FileReader. fileInput
-      // needs to be an HTML element representing an <input type="file"> in which
-      // the user has selected the local file they wish to load.
+      // Append a JSON file from the local file system to the current Phyx file.
+      // fileInput needs to be an HTML element representing an
+      // <input type="file"> in which the user has selected the local file they
+      // wish to load, which we load using FileReader.
       //
       // This code is based on https://stackoverflow.com/a/21446426/27310
 
@@ -448,7 +449,7 @@ export default {
       const outerStore = this.$store;
       const currentPhyx = cloneDeep(outerStore.state.phyx.currentPhyx);
 
-      // Load the new Phyx document that we need to concatenate into currentPhyx.
+      // Load the new Phyx document that we need to append into currentPhyx.
       const [file] = $fileInput.prop('files');
       const fr = new FileReader();
       fr.onload = ((e) => {
@@ -466,10 +467,10 @@ export default {
           const newNomenInfo = TaxonNameWrapper.getNomenCodeDetails(newNomenclaturalCode);
 
           if (!window.confirm(
-            'The Phyx file you are concatenating has a different default nomenclatural code (' +
+            'The Phyx file you wish to append has a different default nomenclatural code (' +
             (newNomenInfo['title'] || newNomenclaturalCode) +
             `) than the current Phyx file (${currentNomenInfo['title'] || currentNomenclaturalCode}). ` +
-            'Are you sure you wish to concatenate them?'
+            'Are you sure you wish to append it?'
           )) return;
         }
 
@@ -485,7 +486,7 @@ export default {
         const phylorefIdsToAdd = phylorefsToAdd.map(phyloref => phyloref['@id'] || outerStore.getters.getPhylorefId(phyloref));
         const phylorefIdsInCommon = currentPhylorefIds.filter(phylorefId => phylorefIdsToAdd.includes(phylorefId));
         if (phylorefIdsInCommon.length > 0) {
-          alert('Cannot concatenate Phyx files -- the following phyloref IDs are already present in the current file: ' + phylorefIdsInCommon.join(', '));
+          alert('Cannot append Phyx files -- the following phyloref IDs are already present in the current file: ' + phylorefIdsInCommon.join(', '));
           return;
         }
 
@@ -495,7 +496,7 @@ export default {
         const phylogenyIdsToAdd = phylogeniesToAdd.map(phylogeny => phylogeny['@id'] || outerStore.getters.getPhylogenyId(phylogeny));
         const phylogenyIdsInCommon = currentPhylogenyIds.filter(phylogenyId => phylogenyIdsToAdd.includes(phylogenyId));
         if (phylogenyIdsInCommon.length > 0) {
-          alert('Cannot concatenate Phyx files -- the following phylogeny IDs are already present in the current file: ' + phylogenyIdsInCommon.join(', '));
+          alert('Cannot append Phyx files -- the following phylogeny IDs are already present in the current file: ' + phylogenyIdsInCommon.join(', '));
           return;
         }
 
