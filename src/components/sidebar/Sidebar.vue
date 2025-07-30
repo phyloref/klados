@@ -485,7 +485,7 @@ export default {
         const phylorefIdsToAdd = phylorefsToAdd.map(phyloref => phyloref['@id'] || outerStore.getters.getPhylorefId(phyloref));
         const phylorefIdsInCommon = currentPhylorefIds.filter(phylorefId => phylorefIdsToAdd.includes(phylorefId));
         if (phylorefIdsInCommon.length > 0) {
-          alert('Cannot concatenate Phyx files -- the following phyloref IDs are present in the current file: ' + phylorefIdsInCommon.join(', '));
+          alert('Cannot concatenate Phyx files -- the following phyloref IDs are already present in the current file: ' + phylorefIdsInCommon.join(', '));
           return;
         }
 
