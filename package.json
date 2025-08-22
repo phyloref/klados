@@ -27,7 +27,7 @@
     "lodash": "^4.17.19",
     "newick-js": "^1.2.1",
     "pako": "^2.1.0",
-    "phylotree": "^2.0.1",
+    "phylotree": "^2.1.7",
     "popper.js": "^1.16.1",
     "vue": "^2.7.16",
     "vue-cookies": "^1.8.1",
