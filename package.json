@@ -1,6 +1,6 @@
 {
   "name": "klados",
-  "version": "0.5.1",
+  "version": "0.7.0",
   "private": true,
   "scripts": {
     "dev": "vite",
@@ -17,7 +17,7 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.29",
     "@fortawesome/free-solid-svg-icons": "^5.13.1",
     "@fortawesome/vue-fontawesome": "^0.1.10",
-    "@phyloref/phyx": "^1.0.1",
+    "@phyloref/phyx": "^1.2.0",
     "bootstrap": "^4.5.0",
     "bootstrap-vue": "^2.15.0",
     "buffer": "^6.0.3",
@@ -28,16 +28,16 @@
     "lodash": "^4.17.19",
     "newick-js": "^1.2.1",
     "pako": "^2.1.0",
-    "phylotree": "^2.0.1",
+    "phylotree": "^2.4.0",
     "popper.js": "^1.16.1",
-    "vue": "^2.7.7",
+    "vue": "^2.7.16",
     "vue-cookies": "^1.8.1",
     "vue-resize": "^0.4.5",
     "vuex": "^3.5.1"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.1.0",
-    "@vitejs/plugin-legacy": "^2.0.0",
+    "@vitejs/plugin-legacy": "^6.0.2",
     "@vitejs/plugin-vue2": "^1.1.2",
     "@vue/eslint-config-prettier": "^7.0.0",
     "eslint": "^8.5.0",
@@ -46,6 +46,6 @@
     "prettier": "^2.5.1",
     "selenium-side-runner": "^4.0.13",
     "terser": "^5.14.2",
-    "vite": "^3.0.2"
+    "vite": "^6.2.3"
   }
 }

@@ -246,12 +246,26 @@
           </button>
 
           <button
+            id="export-as-csv-button"
             class="btn btn-secondary"
             href="javascript:;"
             @click="exportAsCSV()"
           >
             Export as CSV
           </button>
+          <b-popover
+            target="export-as-csv-button"
+            triggers="hover"
+            placement="bottom"
+          >
+            <!-- <template #title>Popover Title</template> -->
+            The CSV export format is
+            <a
+              target="documentation"
+              href="https://github.com/phyloref/klados/blob/master/docs/ExportFormats.md#summary-table-csv-export"
+              >documented</a
+            >.
+          </b-popover>
         </div>
       </div>
     </div>
@@ -318,7 +332,7 @@
           {{ getPhylogenyLabel(phylogeny) }}
         </h5>
         <div class="card-body">
-          <Phylotree
+          <PhyloTree
               :phylogeny-index="String(phylogenyIndex)"
               :phylogeny="phylogeny"
               :phylorefs="phylorefs"
@@ -375,12 +389,12 @@ import {
   TaxonomicUnitWrapper,
 } from "@phyloref/phyx";
 import { newickParser } from "phylotree";
-import Phylotree from "@/components/phylogeny/Phylotree.vue";
+import PhyloTree from "@/components/phylogeny/PhyloTree.vue";
 
 export default {
   name: "PhyxView",
   components: {
-    Phylotree,
+    PhyloTree,
     BIconTrash,
   },
   computed: {

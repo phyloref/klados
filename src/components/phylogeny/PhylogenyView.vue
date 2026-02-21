@@ -18,12 +18,12 @@
               for="phylogenyId"
               class="col-md-2 col-form-label"
             >
-              Identifier
+              Phylogeny ID (should be a <a target="_blank" href="https://en.wikipedia.org/wiki/Uniform_Resource_Identifier">URI</a>)
             </label>
             <div class="col-md-10">
               <input
                 id="phylogenyId"
-                v-model="phylogenyId"
+                v-model.lazy="phylogenyId"
                 type="text"
                 class="form-control"
                 :class="{'border-danger': phylogenyIdError}"
@@ -68,7 +68,7 @@
                 v-model.trim="phylogenyCuratorNotes"
                 type="text"
                 class="form-control"
-                placeholder="Enter curator notes for this phylogeny, such as any differences from its published form."
+                placeholder="Enter curator notes for this phylogeny, such as curatorial decisions, amendments, and so on."
               />
             </div>
           </div>
@@ -139,7 +139,7 @@
         Phylogeny visualization
       </h5>
       <div class="card-body">
-        <Phylotree
+        <PhyloTree
           :phylogeny="selectedPhylogeny"
         />
       </div>
@@ -171,14 +171,14 @@
         hover
         :items="taxonomicUnitsTable"
         :fields="['node_label', 'node_type', 'additional_taxonomic_units']"
-        :primary-key="node_label"
+        primary-key="node_label"
         show-empty
       >
-        <template #empty="scope">
-          <h4>No labels found in this phylogeny.</h4>
+        <template #empty>
+          <span>No labels found in this phylogeny.</span>
         </template>
-        <template #emptyfiltered="scope">
-          <h4>No labels found after filtering.</h4>
+        <template #emptyfiltered>
+          <span>No labels found after filtering.</span>
         </template>
 
         <template #cell(additional_taxonomic_units)="row">
@@ -218,13 +218,13 @@ import { parse as parseNewick } from 'newick-js';
 
 import {PhylogenyWrapper, TaxonomicUnitWrapper} from '@phyloref/phyx';
 import ModifiedCard from '../cards/ModifiedCard.vue';
-import Phylotree from './Phylotree.vue';
+import PhyloTree from './PhyloTree.vue';
 import Citation from '../citations/Citation.vue';
 import Specifier from "@/components/specifiers/Specifier.vue";
 
 export default {
   name: 'PhylogenyView',
-  components: {Specifier, ModifiedCard, Phylotree, Citation },
+  components: {Specifier, ModifiedCard, PhyloTree, Citation },
   data() {
     return {
       // Errors in the phylogenyId field.
@@ -241,6 +241,24 @@ export default {
       // or a local identifier like #phylogeny1.
       get() { return this.$store.getters.getPhylogenyId(this.selectedPhylogeny); },
       set(id) {
+        // Phylogeny IDs are required, so fail if it is blank!
+        if (!id || (id.trim() === "")) {
+          alert("Phylogeny ID cannot be blank.");
+          return false;
+        }
+
+        // Is there any other phyloref in this file with that identifier? If so, raise an error.
+        if ((this.currentPhyx.phylogenies || [])
+          // Don't compare it to itself.
+          .filter(phylogeny => phylogeny !== this.selectedPhylogeny)
+          // Check if the ID is identical to another phyloref.
+          .filter(phylogeny => phylogeny['@id'] === id)
+          // Did we find any?
+          .length > 0) {
+          alert("Could not set phylogeny ID to " + id + ": already used by another phylogeny.");
+          return false;
+        }
+
         try {
           this.$store.dispatch('changePhylogenyId', { phylogeny: this.selectedPhylogeny, phylogenyId: id });
         } catch (err) {
@@ -263,7 +281,7 @@ export default {
     },
     phylogenyNewick: {
       get() { return this.selectedPhylogeny.newick || '()'; },
-      set(newick) { this.$store.commit('setPhylogenyProps', { phylogeny: this.selectedPhylogeny, newick }); },
+      set(newick) { this.$store.dispatch('setPhylogenyNewick', { phylogeny: this.selectedPhylogeny, newick }); },
     },
     phylogenyNewickErrors() {
       // Given a Newick string, return a list of errors found in parsing this

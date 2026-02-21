@@ -16,16 +16,18 @@
     <div v-else class="phylotreeContainer">
       <div :id="'phylogeny' + phylogenyIndex" class="col-md-12 phylogeny" />
       <ResizeObserver @notify="redrawTree" />
-      <button
-        type="button"
-        class="btn btn-primary"
-        @click="exportAsNexus()"
-        data-toggle="tooltip"
-        data-placement="bottom"
-        title="Download Nexus file with annotations of where phyloreferences resolve"
-      >
-        Download as Nexus
-      </button>
+      <b-btn-group class="my-2">
+        <button
+          type="button"
+          class="btn btn-primary"
+          @click="exportAsNexus()"
+          data-toggle="tooltip"
+          data-placement="bottom"
+          title="Download Nexus file with annotations of where phyloreferences resolve"
+        >
+          Download as Nexus
+        </button>
+      </b-btn-group>
     </div>
   </div>
 </template>
@@ -49,7 +51,7 @@ import { saveAs } from "filesaver.js-npm";
  */
 
 export default {
-  name: "Phylotree",
+  name: "PhyloTree",
   props: {
     phylogeny: Object, // The phylogeny to render.
     phylorefs: {
@@ -60,7 +62,7 @@ export default {
       //  2. When highlighting multiple, we always provide the list of all phyloreferences in the current Phyx file,
       //     but in the future it might be useful to highlight only a subset of phyloreferences for some reason.
       type: Array,
-      default: [],
+      default: () => [],
     },
     spacingX: {
       // Spacing in the X axis in pixels.
@@ -84,7 +86,23 @@ export default {
       // support it -- in which case this boolean flag will allow you to turn on and off TreeViewer support.
       type: Boolean,
       default: false,
-    }
+    },
+    nodeCircleSizeDefault: {
+      // The radius of normal phylogeny nodes.
+      // I think this is in pixels?
+      type: Number,
+      default: 3,
+    },
+    nodeCircleSizeForPhylorefPinningNode: {
+      // The radius of nodes where we have pinned one or more phylorefs.
+      type: Number,
+      default: 4,
+    },
+    addNodeIDAsTitle: {
+      // Should we display the ID of every node as hover text on the node circle?
+      type: Boolean,
+      default: true,
+    },
   },
   data() {
     return {
@@ -338,6 +356,9 @@ export default {
       const width = container.innerWidth();
       const height = container.innerHeight();
 
+      // Store the nodeCircleSizeForPhylorefPinningNode.
+      const nodeCircleSizeForPhylorefPinningNode = this.nodeCircleSizeForPhylorefPinningNode;
+
       const tree = this.tree;
       const display = tree.render({
         "left-right-spacing": "fit-to-size",
@@ -349,6 +370,7 @@ export default {
         width: width,
         height: height,
         size: [2, 2],
+        "node_circle_size": () => this.nodeCircleSizeDefault,
         "node-styler": (element, node) => {
           // Instructions used to style nodes in Phylotree
           // - element: The D3 element of the node being styled
@@ -357,6 +379,13 @@ export default {
 
           // Wrap the phylogeny so we can call methods on it.
           const wrappedPhylogeny = new PhylogenyWrapper(this.phylogeny || {});
+
+          // Add a title with the ID of this phylogeny node.
+          if (this.addNodeIDAsTitle && data['@id']) {
+            element.select("circle")
+              .append("title")
+              .text(data['@id']);
+          }
 
           // Wrap the phyloref is there is one.
           this.phylorefs.forEach((phyloref) => {
@@ -401,6 +430,20 @@ export default {
             // Clear any existing menu items.
             node.menu_items = [];
 
+            // Add custom menu items to display the node label and ID.
+            addCustomMenu(
+              node,
+              (node) => "Node ID: " + (node.data['@id'] || "(none)"),
+              () => false,
+              (node) => true,
+            );
+            addCustomMenu(
+              node,
+              (node) => "Node label: " + (node.data.name || "(none)"),
+              () => false,
+              (node) => true,
+            );
+
             // Add a custom menu item to allow us to rename this node.
             // console.log("node", node);
             addCustomMenu(
@@ -429,7 +472,7 @@ export default {
                 // in the phylogeny object.
                 const updatedNewickString = this.tree.getNewick();
                 console.log("updatedNewickString", updatedNewickString);
-                this.$store.commit("setPhylogenyProps", {
+                this.$store.dispatch("setPhylogenyNewick", {
                   phylogeny: this.phylogeny,
                   newick: updatedNewickString,
                 });
@@ -463,10 +506,11 @@ export default {
 
               // If there is no circle, add one.
               if (element.select("circle").empty()) {
-                element.append("circle").attr("cx", -3).attr("r", 4);
+                //
+                element.append("circle").attr("cx", -3).attr("r", nodeCircleSizeForPhylorefPinningNode);
               } else {
-                // Make the pinning node circle larger (slightly larger than its usual size of 3).
-                element.select("circle").attr("r", 4);
+                // Make the pinning node circle a different size (controlled by a parameter).
+                element.select("circle").attr("r", nodeCircleSizeForPhylorefPinningNode);
               }
 
               // Set its id to 'current_pinning_node_phylogeny{{phylogenyIndex}}'
@@ -660,13 +704,16 @@ export default {
 /* Node label for an internal specifier */
 .internal-specifier-node text {
   font-weight: bolder;
-  fill: rgb(0, 24, 168) !important;
+  fill: rgb(0, 33, 165) !important;
+    /* previously, we used: rgb(0, 24, 168) !important; */
 }
 
 /* Node label for an external specifier */
 .external-specifier-node text {
   font-weight: bolder;
-  fill: rgb(0, 24, 168) !important;
+  fill: rgb(196, 2, 52) !important;
+    /* UF color: rgb(250, 70, 22) !important; */
+    /* previously, we used: rgb(0, 24, 168) !important; */
 }
 
 /* Node label for a terminal node without taxonomic units */
@@ -676,7 +723,8 @@ export default {
 /* The selected internal label on a phylogeny, whether determined to be the pinning node or not. */
 .selected-internal-label {
   font-size: 12pt !important;
-  fill: rgb(0, 24, 168);
+  fill: rgb(0, 33, 165) !important;
+  /* previously, we used: rgb(0, 24, 168) !important; */
 }
 
 /*

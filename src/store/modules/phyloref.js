@@ -84,6 +84,9 @@ export default {
       if (has(payload, 'deleteFields')) {
         payload.deleteFields.forEach(fieldName => Vue.delete(payload.phyloref, fieldName));
       }
+      if (has(payload, '@id')) {
+        Vue.set(payload.phyloref, '@id', payload['@id']);
+      }
       if (has(payload, 'label')) {
         Vue.set(payload.phyloref, 'label', payload.label);
       }
