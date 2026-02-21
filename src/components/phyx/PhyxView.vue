@@ -60,9 +60,7 @@
                   })
                 "
               >
-                <option v-for="nomenCode of nomenCodes" :value="nomenCode.iri">
-                  {{ nomenCode.label }}
-                </option>
+                <option v-for="nomenCode of nomenCodes" :value="nomenCode.iri">{{ nomenCode.label }}</option>
               </select>
             </div>
           </div>
