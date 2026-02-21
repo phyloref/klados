@@ -1976,83 +1976,12 @@
           "value": ""
         },
         {
-          "id": "9e40d30d-e015-4770-ad76-fa727bae23f1",
           "comment": "",
-          "command": "click",
-          "target": "css=.m-0 > em",
-          "targets": [
-            [
-              "css=.m-0 > em",
-              "css:finder"
-            ],
-            [
-              "xpath=//div[@id='sidebar-wrapper']/div[2]/div/a[2]/em",
-              "xpath:idRelative"
-            ],
-            [
-              "xpath=//a[2]/em",
-              "xpath:position"
-            ],
-            [
-              "xpath=//em[contains(.,'Summary')]",
-              "xpath:innerText"
-            ]
-          ],
-          "value": ""
-        },
-        {
-          "id": "4c3f2826-7dda-4819-93e6-e13180ca0aef",
-          "comment": "",
-          "command": "click",
-          "target": "css=.card:nth-child(2) > .card-body a",
-          "targets": [
-            [
-              "css=.card:nth-child(2) > .card-body a",
-              "css:finder"
-            ],
-            [
-              "xpath=//a[contains(text(),'Mammalia')]",
-              "xpath:link"
-            ],
-            [
-              "xpath=//div[@id='page-content-wrapper']/div/div[2]/div/table/tbody/tr/td[2]/a",
-              "xpath:idRelative"
-            ],
-            [
-              "xpath=(//a[contains(@href, 'javascript: void(0)')])[21]",
-              "xpath:href"
-            ],
-            [
-              "xpath=//td[2]/a",
-              "xpath:position"
-            ]
-          ],
-          "value": ""
-        },
-        {
-          "id": "1afbae08-5a94-4d42-9444-9c787a0dc9c8",
-          "comment": "",
-          "command": "click",
-          "target": "css=.card-body > .form-group:nth-child(3) > .col-form-label:nth-child(1)",
-          "targets": [
-            [
-              "css=.card-body > .form-group:nth-child(3) > .col-form-label:nth-child(1)",
-              "css:finder"
-            ],
-            [
-              "xpath=//div[@id='page-content-wrapper']/div/div[4]/div/div[3]/label",
-              "xpath:idRelative"
-            ],
-            [
-              "xpath=//div/div[3]/label",
-              "xpath:position"
-            ],
-            [
-              "xpath=//label[contains(.,'Expected nodes')]",
-              "xpath:innerText"
-            ]
-          ],
-          "value": ""
+          "command": "waitForText",
+          "target": "css=.start-reasoning > span",
+          "targets": [],
+          "value": "Resolve against phylogenies",
+          "id": "52931d12-0300-4048-9a95-2847258093dd"
         },
         {
           "id": "2f1dd158-0449-4b71-9d19-e8dde8bf0884",
@@ -2409,75 +2338,12 @@
           "value": ""
         },
         {
-          "id": "48c30bfb-5b09-41e5-8633-1c572a774bc2",
           "comment": "",
-          "command": "click",
-          "target": "css=.mt-2 form .col-md-10",
-          "targets": [
-            [
-              "css=.mt-2 form .col-md-10",
-              "css:finder"
-            ],
-            [
-              "xpath=//div[@id='page-content-wrapper']/div/div[3]/div/form/div/div",
-              "xpath:idRelative"
-            ],
-            [
-              "xpath=//div[3]/div/form/div/div",
-              "xpath:position"
-            ]
-          ],
-          "value": ""
-        },
-        {
-          "id": "63677966-e189-4b21-82c9-c92183bc5406",
-          "comment": "",
-          "command": "click",
+          "command": "waitForText",
           "target": "css=.start-reasoning > span",
-          "targets": [
-            [
-              "css=.start-reasoning > span",
-              "css:finder"
-            ],
-            [
-              "xpath=//div[@id='sidebar-wrapper']/div/div/a[11]/span",
-              "xpath:idRelative"
-            ],
-            [
-              "xpath=//span",
-              "xpath:position"
-            ],
-            [
-              "xpath=//span[contains(.,'Resolve against phylogenies')]",
-              "xpath:innerText"
-            ]
-          ],
-          "value": ""
-        },
-        {
-          "id": "0ffffaa1-a4b3-4525-9433-ae39dc9dbb6c",
-          "comment": "",
-          "command": "click",
-          "target": "css=.m-0 > em",
-          "targets": [
-            [
-              "css=.m-0 > em",
-              "css:finder"
-            ],
-            [
-              "xpath=//div[@id='sidebar-wrapper']/div[2]/div/a[2]/em",
-              "xpath:idRelative"
-            ],
-            [
-              "xpath=//a[2]/em",
-              "xpath:position"
-            ],
-            [
-              "xpath=//em[contains(.,'Summary')]",
-              "xpath:innerText"
-            ]
-          ],
-          "value": ""
+          "targets": [],
+          "value": "Resolve against phylogenies",
+          "id": "750a7d96-4439-475a-b10d-b46fcc80ac4a"
         },
         {
           "id": "22b26dae-d0ba-4452-a930-036f9393a4cd",
@@ -2635,6 +2501,14 @@
             ]
           ],
           "value": ""
+        },
+        {
+          "comment": "",
+          "command": "waitForText",
+          "target": "css=.start-reasoning > span",
+          "targets": [],
+          "value": "Resolve against phylogenies",
+          "id": "d250a05c-22fd-44f1-8848-8d1385ed559f"
         },
         {
           "id": "5ee381b8-abd5-4861-b517-a5a5ab00fbe1",
