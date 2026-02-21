@@ -387,6 +387,59 @@ export default {
               .text(data['@id']);
           }
 
+          // Clear any existing menu items.
+          node["menu_items"] = [];
+
+          // Add custom menu items to display the node label and ID.
+          addCustomMenu(
+            node,
+            (node) => "Node ID: " + (node.data['@id'] || "(none)"),
+            () => false,
+            (node) => true,
+          );
+          addCustomMenu(
+            node,
+            (node) => "Node label: " + (node.data.name || "(none)"),
+            () => false,
+            (node) => true,
+          );
+
+          // Add a custom menu item to allow us to rename this node.
+          // console.log("node", node);
+          addCustomMenu(
+            node,
+            (node) => "Rename this node",
+            () => {
+              const node = data;
+              const existingName = node.name || "(none)";
+              const newName = window.prompt(
+                `Rename node named '${existingName}' to:`
+              );
+              if (newName === null) {
+                // This means the user clicked "Cancel", so don't do anything.
+              } else if (!newName || newName === "undefined") {
+                // Apparently IE7 and IE8 will return the string 'undefined' if the user doesn't
+                // enter anything.
+                //
+                // Remove the current label.
+                node.name = "";
+              } else {
+                // Set the new label.
+                node.name = newName;
+              }
+
+              // Export the entire phylogeny as a Newick string, and store that
+              // in the phylogeny object.
+              const updatedNewickString = this.tree.getNewick();
+              console.log("updatedNewickString", updatedNewickString);
+              this.$store.dispatch("setPhylogenyNewick", {
+                phylogeny: this.phylogeny,
+                newick: updatedNewickString,
+              });
+            },
+            (node) => true // We can replace this with a condition that indicates whether this node should be displayed.
+          );
+
           // Wrap the phyloref is there is one.
           this.phylorefs.forEach((phyloref) => {
             const wrappedPhyloref = new PhylorefWrapper(phyloref || {});
@@ -426,59 +479,6 @@ export default {
                 }
               } else if (!textLabel.empty()) textLabel.remove();
             }
-
-            // Clear any existing menu items.
-            node["menu_items"] = [];
-
-            // Add custom menu items to display the node label and ID.
-            addCustomMenu(
-              node,
-              (node) => "Node ID: " + (node.data['@id'] || "(none)"),
-              () => false,
-              (node) => true,
-            );
-            addCustomMenu(
-              node,
-              (node) => "Node label: " + (node.data.name || "(none)"),
-              () => false,
-              (node) => true,
-            );
-
-            // Add a custom menu item to allow us to rename this node.
-            // console.log("node", node);
-            addCustomMenu(
-              node,
-              (node) => "Rename this node",
-              () => {
-                const node = data;
-                const existingName = node.name || "(none)";
-                const newName = window.prompt(
-                  `Rename node named '${existingName}' to:`
-                );
-                if (newName === null) {
-                  // This means the user clicked "Cancel", so don't do anything.
-                } else if (!newName || newName === "undefined") {
-                  // Apparently IE7 and IE8 will return the string 'undefined' if the user doesn't
-                  // enter anything.
-                  //
-                  // Remove the current label.
-                  node.name = "";
-                } else {
-                  // Set the new label.
-                  node.name = newName;
-                }
-
-                // Export the entire phylogeny as a Newick string, and store that
-                // in the phylogeny object.
-                const updatedNewickString = this.tree.getNewick();
-                console.log("updatedNewickString", updatedNewickString);
-                this.$store.dispatch("setPhylogenyNewick", {
-                  phylogeny: this.phylogeny,
-                  newick: updatedNewickString,
-                });
-              },
-              (node) => true // We can replace this with a condition that indicates whether this node should be displayed.
-            );
 
             // If the internal label has the same IRI as the currently selected
             // phyloreference's reasoned node, further mark or label it as the resolved node.
