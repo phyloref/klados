@@ -280,7 +280,7 @@ export default {
       set(curatorNotes) { this.$store.commit('setPhylogenyProps', { phylogeny: this.selectedPhylogeny, curatorNotes }); },
     },
     phylogenyNewick: {
-      get() { return this.selectedPhylogeny.newick || '()'; },
+      get() { return this.selectedPhylogeny.newick ?? ''; },
       set(newick) { this.$store.dispatch('setPhylogenyNewick', { phylogeny: this.selectedPhylogeny, newick }); },
     },
     phylogenyNewickErrors() {
