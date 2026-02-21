@@ -428,7 +428,7 @@ export default {
             }
 
             // Clear any existing menu items.
-            node.menu_items = [];
+            node["menu_items"] = [];
 
             // Add custom menu items to display the node label and ID.
             addCustomMenu(
