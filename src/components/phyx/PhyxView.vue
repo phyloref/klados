@@ -102,7 +102,7 @@
                 <center><em>No phyloreferences in this file</em></center>
               </td>
             </tr>
-            <tr v-for="phyloref of phylorefs">
+            <tr v-for="(phyloref, phylorefIndex) of phylorefs">
               <td>
                 <button
                   type="button"
@@ -123,7 +123,7 @@
               <td>{{ $store.getters.getPhylorefTypeDescription(phyloref) }}</td>
               <td>{{ (phyloref.internalSpecifiers || []).length }}</td>
               <td>{{ (phyloref.externalSpecifiers || []).length }}</td>
-              <td v-for="(phylogeny, phylogenyIndex) of phylogenies">
+              <td v-for="(phylogeny, phylogenyIndex) of phylogenies" :data-testid="`phyloref-result-${phylorefIndex}-phylogeny-${phylogenyIndex}`">
                 <template
                   v-if="!getPhylorefExpectedNodeLabel(phyloref, phylogeny)"
                 >

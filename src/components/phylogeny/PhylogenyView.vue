@@ -92,6 +92,7 @@
                 v-model.lazy="phylogenyNewick"
                 rows="5"
                 class="form-control"
+                data-testid="phylogeny-newick"
                 placeholder="Enter Newick string for phylogeny here"
               />
             </div>
