@@ -13,7 +13,7 @@ There is no test runner configured in package.json. The `.spec.js` files use Jes
 
 ## Architecture
 
-Klados is a Vue 2 single-page application for authoring and curating **phyloreferences** — OWL 2 ontology definitions of monophyletic groups in JSON-LD (Phyx format). Users load/create Phyx files, define phyloreferences with specifiers, and test them against phylogenies via the JPhyloRef reasoner backend.
+Klados is a Vue 2 single-page application for authoring and curating **phyloreferences** — OWL 2 ontology definitions of monophyletic groups in JSON-LD ([Phyx](https://github.com/phyloref/phyx.js) format). Users load/create Phyx files containing phyloreferences, define phyloreferences with specifiers, and test them against phylogenies via the JPhyloRef reasoner backend.
 
 **Three main views** controlled by `store/modules/ui.js` (`display` state):
 - `PhyxView` — top-level Phyx file metadata and management
