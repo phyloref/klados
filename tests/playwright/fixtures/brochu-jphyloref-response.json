@@ -1,0 +1,22 @@
+{
+  "phylorefs": {
+    "#Alligatoridae": [
+      "https://doi.org/10.1146/annurev.earth.31.100901.141308#fig1_node22"
+    ],
+    "#Alligatorinae": [
+      "https://doi.org/10.1146/annurev.earth.31.100901.141308#fig1_node23"
+    ],
+    "#Caimaninae": [
+      "https://doi.org/10.1146/annurev.earth.31.100901.141308#fig1_node24"
+    ],
+    "#Crocodyloidae": [
+      "https://doi.org/10.1146/annurev.earth.31.100901.141308#fig1_node25"
+    ],
+    "#Crocodylidae": [
+      "https://doi.org/10.1146/annurev.earth.31.100901.141308#fig1_node25"
+    ],
+    "#Diplocynodontinae": [
+      "https://doi.org/10.1146/annurev.earth.31.100901.141308#fig1_node21"
+    ]
+  }
+}
