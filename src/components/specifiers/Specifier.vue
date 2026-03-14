@@ -94,7 +94,7 @@
           class="btn btn-danger"
           @click="deleteSpecifier()"
         >
-          <b-icon-trash></b-icon-trash>
+          <i class="bi bi-trash"></i>
         </button>
       </div>
     </div>
@@ -393,7 +393,6 @@
  * - `phylogeny` and `nodeLabel` when the taxonomic unit to be edited is part of a phylogeny.
  */
 
-import { BIconTrash } from 'bootstrap-vue';
 import {
   PhylorefWrapper,
   TaxonomicUnitWrapper,
@@ -407,10 +406,7 @@ import {
 
 export default {
   name: 'Specifier',
-  components: {
-    /* A "trash" icon for deleting this specifier. */
-    BIconTrash,
-  },
+  components: {},
   props: {
     /* The specifier to display and edit. */
     remoteSpecifier: {

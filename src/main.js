@@ -1,22 +1,16 @@
 // Import Vue.
-import Vue from 'vue';
+import { createApp, configureCompat } from '@vue/compat';
 
-// Import VueCookies (https://www.npmjs.com/package/vue-cookies)
-import VueCookies from 'vue-cookies';
+// Configure Vue 2 compat mode before app creation.
+configureCompat({ MODE: 2 });
 
 // Import Phylotree CSS file.
 import 'phylotree/dist/phylotree.css';
 
 // Import Bootstrap.
 import 'bootstrap';
-import BootstrapVue from 'bootstrap-vue';
-
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap-vue/dist/bootstrap-vue.min.css';
-
-// Use vue-resize to track when phylogenies are resized.
-import VueResize from 'vue-resize';
-import 'vue-resize/dist/vue-resize.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 
 // Import the main Vue file.
 import App from './App.vue';
@@ -32,19 +26,7 @@ window.$ = jQuery;
 import { Buffer } from 'buffer';
 globalThis.Buffer = Buffer;
 
-// Load configuration from the 'src/config.js' file included with the source.
-// Vue.prototype.$config = require('./config.js');
-
-// Add additional features to Vue.
-Vue.use(BootstrapVue);
-Vue.use(VueResize);
-Vue.use(VueCookies);
-
-// Turn off the Vue production tip on the console on Vue startup.
-Vue.config.productionTip = false;
-
-// Set up Vue object.
-export default new Vue({
-  store,
-  render: (h) => h(App),
-}).$mount('#app');
+// Set up Vue app.
+const app = createApp(App);
+app.use(store);
+app.mount('#app');

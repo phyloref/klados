@@ -2,7 +2,6 @@
  * Store module for modifying phyloreferences.
  */
 
-import Vue from 'vue';
 import {PhylorefWrapper, TaxonConceptWrapper} from '@phyloref/phyx';
 import { has, keys, cloneDeep } from 'lodash';
 
@@ -82,30 +81,30 @@ export default {
         throw new Error('setPhylorefProps needs a phyloref to modify using the "phyloref" argument');
       }
       if (has(payload, 'deleteFields')) {
-        payload.deleteFields.forEach(fieldName => Vue.delete(payload.phyloref, fieldName));
+        payload.deleteFields.forEach(fieldName => delete payload.phyloref[fieldName]);
       }
       if (has(payload, '@id')) {
-        Vue.set(payload.phyloref, '@id', payload['@id']);
+        payload.phyloref['@id'] = payload['@id'];
       }
       if (has(payload, 'label')) {
-        Vue.set(payload.phyloref, 'label', payload.label);
+        payload.phyloref['label'] = payload.label;
       }
       if (has(payload, 'definition')) {
-        Vue.set(payload.phyloref, 'definition', payload.definition);
+        payload.phyloref['definition'] = payload.definition;
       }
       if (has(payload, 'curatorNotes')) {
-        Vue.set(payload.phyloref, 'curatorNotes', payload.curatorNotes);
+        payload.phyloref['curatorNotes'] = payload.curatorNotes;
       }
       if (has(payload, 'apomorphy')) {
-        Vue.set(payload.phyloref, 'apomorphy', payload.apomorphy);
+        payload.phyloref['apomorphy'] = payload.apomorphy;
       }
       if (has(payload, 'expectedResolution')) {
         if (!has(payload, 'phylogenyId')) {
           throw new Error('setPhylorefProps used to set expectedResolution needs a phylogeny ID to set using the "phylogenyId" argument');
         }
 
-        if (!has(payload.phyloref, 'expectedResolution')) Vue.set(payload.phyloref, 'expectedResolution', {});
-        Vue.set(payload.phyloref.expectedResolution, payload.phylogenyId, payload.expectedResolution);
+        if (!has(payload.phyloref, 'expectedResolution')) payload.phyloref['expectedResolution'] = {};
+        payload.phyloref.expectedResolution[payload.phylogenyId] = payload.expectedResolution;
       }
     },
 
@@ -117,7 +116,7 @@ export default {
       }
 
       if (!has(payload.phyloref, 'externalSpecifiers')) {
-        Vue.set(payload.phyloref, 'externalSpecifiers', []);
+        payload.phyloref['externalSpecifiers'] = [];
       }
 
       payload.phyloref.externalSpecifiers.push(createEmptySpecifier(this.getters.getDefaultNomenCodeIRI));
@@ -132,7 +131,7 @@ export default {
       }
 
       if (!has(payload.phyloref, 'internalSpecifiers')) {
-        Vue.set(payload.phyloref, 'internalSpecifiers', []);
+        payload.phyloref['internalSpecifiers'] = [];
       }
 
       payload.phyloref.internalSpecifiers.push(createEmptySpecifier(this.getters.getDefaultNomenCodeIRI));
@@ -168,10 +167,10 @@ export default {
       const props = payload.props;
 
       // Delete all existing keys in this specifier.
-      keys(specifier).forEach(key => Vue.delete(specifier, key));
+      keys(specifier).forEach(key => delete specifier[key]);
 
       // Add all new keys from the payload.
-      keys(props).forEach(key => Vue.set(specifier, key, cloneDeep(props[key])));
+      keys(props).forEach(key => { specifier[key] = cloneDeep(props[key]); });
     },
 
     setSpecifierType(state, payload) {
@@ -208,13 +207,13 @@ export default {
         if (has(payload.phyloref, 'internalSpecifiers')) {
           payload.phyloref.internalSpecifiers.push(payload.specifier);
         } else {
-          Vue.set(payload.phyloref, 'internalSpecifiers', [payload.specifier]);
+          payload.phyloref['internalSpecifiers'] = [payload.specifier];
         }
       } else if (payload.specifierType === 'External') {
         if (has(payload.phyloref, 'externalSpecifiers')) {
           payload.phyloref.externalSpecifiers.push(payload.specifier);
         } else {
-          Vue.set(payload.phyloref, 'externalSpecifiers', [payload.specifier]);
+          payload.phyloref['externalSpecifiers'] = [payload.specifier];
         }
       } else {
         throw new Error(`Unknown specifier type: ${payload.specifierType}`);
@@ -232,10 +231,10 @@ export default {
       }
 
       if (has(payload, 'scientificName')) {
-        Vue.set(payload.specifierPart, 'scientificName', payload.scientificName);
+        payload.specifierPart['scientificName'] = payload.scientificName;
       }
       if (has(payload, 'occurrenceID')) {
-        Vue.set(payload.specifierPart, 'occurrenceID', payload.occurrenceID);
+        payload.specifierPart['occurrenceID'] = payload.occurrenceID;
       }
     },
 
@@ -246,7 +245,7 @@ export default {
       }
 
       if (!has(payload.specifier, 'externalReferences')) {
-        Vue.set(payload.specifier, 'externalReferences', []);
+        payload.specifier['externalReferences'] = [];
       }
 
       if (has(payload, 'fromExternalReference')) {
@@ -273,7 +272,7 @@ export default {
       // Add external reference (if one is provided).
       if (has(payload, 'externalReference')) {
         if (!has(payload.specifier, 'externalReferences')) {
-          Vue.set(payload.specifier, 'externalReferences', []);
+          payload.specifier['externalReferences'] = [];
         }
 
         payload.specifier.externalReferences.push(payload.externalReference);
@@ -282,7 +281,7 @@ export default {
       // Add specimen (if one is provided).
       if (has(payload, 'specimen')) {
         if (!has(payload.specifier, 'includesSpecimens')) {
-          Vue.set(payload.specifier, 'includesSpecimens', []);
+          payload.specifier['includesSpecimens'] = [];
         }
 
         payload.specifier.includesSpecimens.push(payload.specimen);
@@ -291,7 +290,7 @@ export default {
       // Add scientific name (if one is provided).
       if (has(payload, 'scientificName')) {
         if (!has(payload.specifier, 'scientificNames')) {
-          Vue.set(payload.specifier, 'scientificNames', []);
+          payload.specifier['scientificNames'] = [];
         }
 
         payload.specifier.scientificNames.push(payload.scientificName);
@@ -305,7 +304,7 @@ export default {
         throw new Error('deleteFromSpecifier needs a specifier to modify using the "specifier" argument');
       }
       if (has(payload, 'scientificName')) {
-        if (!has(payload.specifier, 'scientificNames')) Vue.set(payload.specifier, 'scientificNames', []);
+        if (!has(payload.specifier, 'scientificNames')) payload.specifier['scientificNames'] = [];
         if (payload.specifier.scientificNames.includes(payload.scientificName)) {
           payload.specifier.scientificNames.splice(
             payload.specifier.scientificNames.indexOf(payload.scientificName),
@@ -314,7 +313,7 @@ export default {
         }
       }
       if (has(payload, 'specimen')) {
-        if (!has(payload.specifier, 'includesSpecimens')) Vue.set(payload.specifier, 'includesSpecimens', []);
+        if (!has(payload.specifier, 'includesSpecimens')) payload.specifier['includesSpecimens'] = [];
         if (payload.specifier.includesSpecimens.includes(payload.specimen)) {
           payload.specifier.includesSpecimens.splice(
             payload.specifier.includesSpecimens.indexOf(payload.specimen),
@@ -323,7 +322,7 @@ export default {
         }
       }
       if (has(payload, 'externalReference')) {
-        if (!has(payload.specifier, 'externalReferences')) Vue.set(payload.specifier, 'externalReferences', []);
+        if (!has(payload.specifier, 'externalReferences')) payload.specifier['externalReferences'] = [];
         if (payload.specifier.externalReferences.includes(payload.externalReference)) {
           payload.specifier.externalReferences.splice(
             payload.specifier.externalReferences.indexOf(payload.externalReference),

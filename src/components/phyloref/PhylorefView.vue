@@ -168,7 +168,7 @@
               data-testid="add-internal-specifier"
               @click="$store.commit('addInternalSpecifier', { phyloref: selectedPhyloref })"
             >
-              <b-icon-plus-square />
+              <i class="bi bi-plus-square"></i>
             </button>
             <h5>Internal specifiers</h5>
           </div>
@@ -200,7 +200,7 @@
               data-testid="add-external-specifier"
               @click="$store.commit('addExternalSpecifier', { phyloref: selectedPhyloref })"
             >
-              <b-icon-plus-square />
+              <i class="bi bi-plus-square"></i>
             </button>
             <h5>External specifiers</h5>
           </div>
@@ -233,7 +233,7 @@
                 href="javascript:;"
                 @click="hasApomorphy = !hasApomorphy"
               >
-                <b-icon-check-square />
+                <i class="bi bi-check-square"></i>
               </button>
               <button
                 v-if="!hasApomorphy"
@@ -241,7 +241,7 @@
                 href="javascript:;"
                 @click="hasApomorphy = !hasApomorphy"
               >
-                <b-icon-square />
+                <i class="bi bi-square"></i>
               </button>
               Apomorphy
             </h5>
@@ -546,13 +546,9 @@
  * A view for displaying a phyloreference and how it resolves on all phylogenies.
  */
 
-import Vue from 'vue';
 import { mapState } from 'vuex';
 import { has, cloneDeep } from 'lodash';
 import { PhylogenyWrapper, PhylorefWrapper } from '@phyloref/phyx';
-import {
-  BIconSquare, BIconCheck, BIconCheckSquare, BIconPlusSquare,
-} from 'bootstrap-vue';
 
 import ModifiedCard from '../cards/ModifiedCard.vue';
 import PhyloTree from '../phylogeny/PhyloTree.vue';
@@ -567,10 +563,6 @@ export default {
     PhyloTree,
     Citation,
     Specifier,
-    BIconSquare,
-    BIconCheck,
-    BIconCheckSquare,
-    BIconPlusSquare,
   },
   data() {
     return {
