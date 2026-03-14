@@ -48,7 +48,7 @@
               href="javascript:;"
               @click="deleteCitation(citationIndex)"
             >
-              <b-icon icon="trash" />
+              <i class="bi bi-trash"></i>
             </a>
           </div>
         </div>
@@ -500,18 +500,13 @@
  * Displays a citation as a textfield/expanded field.
  */
 
-import Vue from 'vue';
-import { BIcon, BIconTrash } from 'bootstrap-vue';
 import {
   has, isEmpty, isEqual, cloneDeep, pickBy,
 } from 'lodash';
 
 export default {
   name: 'Citation',
-  components: {
-    BIcon,
-    BIconTrash,
-  },
+  components: {},
   props: {
     label: { /* The label for this citation */
       type: String,
@@ -563,7 +558,7 @@ export default {
         if (Array.isArray(this.object[this.citationKey])) {
           this.object[this.citationKey].splice(index, 1);
         } else {
-          Vue.delete(this.object, this.citationKey);
+          delete this.object[this.citationKey];
         }
       }
     },

@@ -3,7 +3,6 @@
  * of phyloreferences from JPhyloRef.
  */
 
-import Vue from 'vue';
 import { has, cloneDeep } from 'lodash';
 
 import { PhyxWrapper, PhylogenyWrapper } from '@phyloref/phyx';
@@ -105,7 +104,7 @@ export default {
   mutations: {
     setReasoningResults(state, payload) {
       // Sets the "reasoning results" -- the results of reasoning returned by JPhyloRef.
-      Vue.set(state, 'reasoningResults', payload);
+      state['reasoningResults'] = payload;
     },
   },
   actions: {

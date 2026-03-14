@@ -15,7 +15,6 @@
  * https://github.com/phyloref/clade-ontology/issues/69).
  */
 
-import Vue from 'vue';
 import { has, isEmpty, isString } from 'lodash';
 import { CitationWrapper } from '@phyloref/phyx';
 
@@ -60,7 +59,7 @@ class CitationModel {
 
   set authors(authors) {
     // Set the list of authors (as author objects).
-    Vue.set(this.citation, 'authors', authors);
+    this.citation['authors'] = authors;
   }
 
   get authorsAsStrings() {
@@ -71,7 +70,7 @@ class CitationModel {
   set authorsAsStrings(authorsAsStrings) {
     // Set a list of author names.
     // TODO parse names back into first and last name (https://github.com/phyloref/curation-tool/issues/145)
-    Vue.set(this.citation, 'authors', authorsAsStrings.filter(isNonEmptyString).map(name => ({ name })));
+    this.citation['authors'] = authorsAsStrings.filter(isNonEmptyString).map(name => ({ name }));
   }
 
   get editorsAsStrings() {
@@ -83,7 +82,7 @@ class CitationModel {
   set editorsAsStrings(editors) {
     // Set a list of editor names.
     // TODO parse names back into first and last name (https://github.com/phyloref/curation-tool/issues/145)
-    Vue.set(this.citation, 'editors', editors.filter(isNonEmptyString).map(name => ({ name })));
+    this.citation['editors'] = editors.filter(isNonEmptyString).map(name => ({ name }));
   }
 
   get seriesEditorsAsStrings() {
@@ -95,7 +94,7 @@ class CitationModel {
   set seriesEditorsAsStrings(editors) {
     // Set a list of series editor names.
     // TODO parse names back into first and last name (https://github.com/phyloref/curation-tool/issues/145)
-    Vue.set(this.citation, 'series_editors', editors.filter(isNonEmptyString).map(name => ({ name })));
+    this.citation['series_editors'] = editors.filter(isNonEmptyString).map(name => ({ name }));
   }
 
   get identifiers() {
@@ -118,7 +117,7 @@ class CitationModel {
 
   set identifiers(identifiers) {
     // Set the list of identifiers for this citation.
-    Vue.set(this.citation, 'identifier', identifiers);
+    this.citation['identifier'] = identifiers;
   }
 
   get doisAsStrings() {
@@ -187,7 +186,7 @@ class CitationModel {
 
   set urlsAsStrings(urls) {
     // Set the list of URLs in this citation.
-    Vue.set(this.citation, 'link', urls.filter(isNonEmptyString).map(url => ({ url })));
+    this.citation['link'] = urls.filter(isNonEmptyString).map(url => ({ url }));
   }
 
   get firstURL() {
@@ -223,7 +222,7 @@ class CitationModel {
     // Return the journal of this citation. If one doesn't exist, create it and
     // return it.
     if (has(this.citation, 'journal')) return this.citation.journal;
-    Vue.set(this.citation, 'journal', {});
+    this.citation['journal'] = {};
     return this.citation.journal;
   }
 }
@@ -237,11 +236,7 @@ export default {
     // Update the value of a citation, using object-citationKey so we can change
     // it anywhere in the Vuex state.
     setCitations(state, payload) {
-      Vue.set(
-        payload.object,
-        payload.citationKey,
-        payload.citations,
-      );
+      payload.object[payload.citationKey] = payload.citations;
     },
   },
 };

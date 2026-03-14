@@ -109,7 +109,7 @@
                   class="btn btn-sm btn-danger"
                   @click="deletePhyloref(phyloref)"
                 >
-                  <b-icon-trash></b-icon-trash>
+                  <i class="bi bi-trash"></i>
                 </button>
               </td>
               <td>
@@ -247,23 +247,11 @@
             id="export-as-csv-button"
             class="btn btn-secondary"
             href="javascript:;"
+            title="The CSV export format is documented at https://github.com/phyloref/klados/blob/master/docs/ExportFormats.md#summary-table-csv-export"
             @click="exportAsCSV()"
           >
             Export as CSV
           </button>
-          <b-popover
-            target="export-as-csv-button"
-            triggers="hover"
-            placement="bottom"
-          >
-            <!-- <template #title>Popover Title</template> -->
-            The CSV export format is
-            <a
-              target="documentation"
-              href="https://github.com/phyloref/klados/blob/master/docs/ExportFormats.md#summary-table-csv-export"
-              >documented</a
-            >.
-          </b-popover>
         </div>
       </div>
     </div>
@@ -290,7 +278,7 @@
                   class="btn btn-sm btn-danger"
                   @click="deletePhylogeny(phylogeny)"
                 >
-                  <b-icon-trash></b-icon-trash>
+                  <i class="bi bi-trash"></i>
                 </button>
               </td>
               <td>
@@ -379,7 +367,6 @@ import { stringify } from "csv-stringify/browser/esm";
 import { mapState } from "vuex";
 import { has, max, range } from "lodash";
 import { saveAs } from "filesaver.js-npm";
-import { BIconTrash } from "bootstrap-vue";
 import {
   PhylorefWrapper,
   PhylogenyWrapper,
@@ -393,7 +380,6 @@ export default {
   name: "PhyxView",
   components: {
     PhyloTree,
-    BIconTrash,
   },
   computed: {
     nomenCodes: () => TaxonNameWrapper.getNomenclaturalCodes(),

@@ -48,6 +48,7 @@ import AdvancedOptionsModal from './components/modals/AdvancedOptionsModal.vue';
 
 // Load some configuration options.
 import {COOKIE_ALLOWED, COOKIE_CURATOR_NAME, COOKIE_CURATOR_EMAIL, COOKIE_CURATOR_ORCID} from "@/config";
+import { cookies } from "@/cookies";
 
 export default {
   name: 'App',
@@ -82,17 +83,17 @@ export default {
     // modules/phyx.js.
     //
     // Three of them need to be set on the default empty Phyx file here:
-    if (this.$cookies.get(COOKIE_ALLOWED) === 'true') {
-      if (this.$cookies.get(COOKIE_CURATOR_NAME)) {
-        this.$store.commit('setCurator', {name: this.$cookies.get(COOKIE_CURATOR_NAME)});
+    if (cookies.get(COOKIE_ALLOWED) === 'true') {
+      if (cookies.get(COOKIE_CURATOR_NAME)) {
+        this.$store.commit('setCurator', {name: cookies.get(COOKIE_CURATOR_NAME)});
       }
 
-      if (this.$cookies.get(COOKIE_CURATOR_EMAIL)) {
-        this.$store.commit('setCurator', {email: this.$cookies.get(COOKIE_CURATOR_EMAIL)});
+      if (cookies.get(COOKIE_CURATOR_EMAIL)) {
+        this.$store.commit('setCurator', {email: cookies.get(COOKIE_CURATOR_EMAIL)});
       }
 
-      if (this.$cookies.get(COOKIE_CURATOR_ORCID)) {
-        this.$store.commit('setCurator', {orcid: this.$cookies.get(COOKIE_CURATOR_ORCID)});
+      if (cookies.get(COOKIE_CURATOR_ORCID)) {
+        this.$store.commit('setCurator', {orcid: cookies.get(COOKIE_CURATOR_ORCID)});
       }
     }
 

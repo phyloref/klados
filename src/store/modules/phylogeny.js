@@ -2,7 +2,6 @@
  * Store module for modifying phylogenies.
  */
 
-import Vue from 'vue';
 import { has, findIndex, isEqual, keys, cloneDeep } from 'lodash';
 import {PhylogenyWrapper, TaxonomicUnitWrapper} from "@phyloref/phyx";
 
@@ -21,7 +20,7 @@ function areTUnitsIdentical(tunit1, tunit2) {
  */
 function resetReasoningResults(rootState) {
   console.log("Resetting reasoning results ", rootState.resolution.reasoningResults, " in the state ", rootState);
-  Vue.set(rootState.resolution, 'reasoningResults', undefined);
+  rootState.resolution['reasoningResults'] = undefined;
 }
 
 export default {
@@ -74,21 +73,13 @@ export default {
 
       // If there is no additionalNodeProperties or representsTaxonomicUnits, set them up now.
       if (!has(payload.phylogeny, "additionalNodeProperties"))
-        Vue.set(payload.phylogeny, "additionalNodeProperties", {});
+        payload.phylogeny["additionalNodeProperties"] = {};
 
       if (!has(payload.phylogeny.additionalNodeProperties, payload.nodeLabel))
-        Vue.set(
-          payload.phylogeny.additionalNodeProperties,
-          payload.nodeLabel,
-          {}
-        );
+        payload.phylogeny.additionalNodeProperties[payload.nodeLabel] = {};
 
       if (!has(payload.phylogeny.additionalNodeProperties[payload.nodeLabel], "representsTaxonomicUnits"))
-        Vue.set(
-          payload.phylogeny.additionalNodeProperties[payload.nodeLabel],
-          "representsTaxonomicUnits",
-          []
-        );
+        payload.phylogeny.additionalNodeProperties[payload.nodeLabel]["representsTaxonomicUnits"] = [];
 
       // Now we can append the new taxonomic unit to it.
       payload.phylogeny.additionalNodeProperties[payload.nodeLabel].representsTaxonomicUnits.push(tunitToBeAdded);
@@ -191,16 +182,16 @@ export default {
         );
       }
       if (has(payload, "label")) {
-        Vue.set(payload.phylogeny, "label", payload.label);
+        payload.phylogeny["label"] = payload.label;
       }
       if (has(payload, "curatorNotes")) {
-        Vue.set(payload.phylogeny, "curatorNotes", payload.curatorNotes);
+        payload.phylogeny["curatorNotes"] = payload.curatorNotes;
       }
       if (has(payload, "newick")) {
         throw new Error(`setPhylogenyProps() can no longer be used to change the phylogeny's newick string. Use the setPhylogenyNewick action instead.`)
       }
       if (has(payload, "@id")) {
-        Vue.set(payload.phylogeny, "@id", payload["@id"]);
+        payload.phylogeny["@id"] = payload["@id"];
       }
     },
     /**
@@ -218,7 +209,7 @@ export default {
       if (has(payload, "newick")) {
         // Delete the resolution information.
         resetReasoningResults(payload.rootState);
-        Vue.set(payload.phylogeny, "newick", payload.newick);
+        payload.phylogeny["newick"] = payload.newick;
       }
     },
   },

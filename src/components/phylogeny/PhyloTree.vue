@@ -15,8 +15,7 @@
     </template>
     <div v-else class="phylotreeContainer">
       <div :id="'phylogeny' + phylogenyIndex" class="col-md-12 phylogeny" />
-      <ResizeObserver @notify="redrawTree" />
-      <b-btn-group class="my-2">
+      <div class="btn-group my-2">
         <button
           type="button"
           class="btn btn-primary"
@@ -27,7 +26,7 @@
         >
           Download as Nexus
         </button>
-      </b-btn-group>
+      </div>
     </div>
   </div>
 </template>
@@ -167,8 +166,13 @@ export default {
     },
   },
   mounted() {
+    this._resizeObserver = new ResizeObserver(() => this.redrawTree());
+    this._resizeObserver.observe(this.$el);
     // Redraw the tree when this component is loaded for the first time.
     this.redrawTree();
+  },
+  beforeUnmount() {
+    this._resizeObserver?.disconnect();
   },
   methods: {
     exportAsNexus() {

@@ -167,43 +167,46 @@
       </b-table-simple>
       -->
 
-      <b-table
-        striped
-        hover
-        :items="taxonomicUnitsTable"
-        :fields="['node_label', 'node_type', 'additional_taxonomic_units']"
-        primary-key="node_label"
-        show-empty
-      >
-        <template #empty>
-          <span>No labels found in this phylogeny.</span>
-        </template>
-        <template #emptyfiltered>
-          <span>No labels found after filtering.</span>
-        </template>
-
-        <template #cell(additional_taxonomic_units)="row">
-          {{row.item.additional_taxonomic_units}} taxonomic units <b-button variant="primary" @click="addTUnitForNodeLabel(row.item.node_label)" class="float-right" size="sm">Add</b-button>
-        </template>
-
-        <template #row-details="row">
-          <b-card>
-            <b-row
-              v-for="(tunit, index) in getExplicitTUnitsForLabel(row.item.node_label)"
-              :key="row.item.node_label"
-              class="mb-12"
-            >
-              <Specifier
-                :key="'tunit_' + row.item.node_label + '_' + index"
-                :phylogeny="selectedPhylogeny"
-                :node-label="row.item.node_label"
-                :remote-specifier="tunit"
-                :remote-specifier-id="'tunit_' + row.item.node_label + '_' + index"
-              />
-            </b-row>
-          </b-card>
-        </template>
-      </b-table>
+      <p v-if="taxonomicUnitsTable.length === 0"><em>No labels found in this phylogeny.</em></p>
+      <table v-else class="table table-striped table-hover">
+        <thead>
+          <tr>
+            <th>node_label</th>
+            <th>node_type</th>
+            <th>additional_taxonomic_units</th>
+          </tr>
+        </thead>
+        <tbody>
+          <template v-for="row in taxonomicUnitsTable" :key="row.node_label">
+            <tr>
+              <td>{{ row.node_label }}</td>
+              <td>{{ row.node_type }}</td>
+              <td>
+                {{ row.additional_taxonomic_units }} taxonomic units
+                <button class="btn btn-primary btn-sm float-right" @click="addTUnitForNodeLabel(row.node_label)">Add</button>
+              </td>
+            </tr>
+            <tr v-if="row._showDetails">
+              <td colspan="3">
+                <div class="card"><div class="card-body">
+                  <div
+                    v-for="(tunit, index) in getExplicitTUnitsForLabel(row.node_label)"
+                    :key="row.node_label + '_' + index"
+                    class="row mb-2"
+                  >
+                    <Specifier
+                      :phylogeny="selectedPhylogeny"
+                      :node-label="row.node_label"
+                      :remote-specifier="tunit"
+                      :remote-specifier-id="'tunit_' + row.node_label + '_' + index"
+                    />
+                  </div>
+                </div></div>
+              </td>
+            </tr>
+          </template>
+        </tbody>
+      </table>
     </div>
   </div>
 </template>

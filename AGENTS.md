@@ -13,7 +13,7 @@ There is no test runner configured in package.json. The `.spec.js` files use Jes
 
 ## Architecture
 
-Klados is a Vue 2 single-page application for authoring and curating **phyloreferences** — OWL 2 ontology definitions of monophyletic groups in JSON-LD ([Phyx](https://github.com/phyloref/phyx.js) format). Users load/create Phyx files containing phyloreferences, define phyloreferences with specifiers, and test them against phylogenies via the JPhyloRef reasoner backend.
+Klados is a Vue 3 single-page application (migrated from Vue 2; using `@vue/compat` MODE: 2 as a transition shim) for authoring and curating **phyloreferences** — OWL 2 ontology definitions of monophyletic groups in JSON-LD ([Phyx](https://github.com/phyloref/phyx.js) format). Users load/create Phyx files containing phyloreferences, define phyloreferences with specifiers, and test them against phylogenies via the JPhyloRef reasoner backend.
 
 **Three main views** controlled by `store/modules/ui.js` (`display` state):
 - `PhyxView` — top-level Phyx file metadata and management
@@ -30,11 +30,21 @@ Klados is a Vue 2 single-page application for authoring and curating **phylorefe
 
 **Key dependencies:**
 - `@phyloref/phyx` — Phyx format classes and utilities (the data model)
-- `phylotree` — D3-based phylogenetic tree visualization
-- `bootstrap-vue` + Bootstrap 4 — UI components
+- `phylotree` — D3-based phylogenetic tree visualization (requires jQuery; `window.$ = jQuery` is set in main.js)
+- Bootstrap 4 + `bootstrap-icons` — UI styling and icons (icons rendered as `<i class="bi bi-*">`)
+- `@vue/compat` — Vue 3 migration build shim (MODE: 2); see `FUTURE.md` for removal plan
+- `vuex@4` — state management (Vuex 4 used with `createStore`; Pinia migration deferred)
 - `pako` — gzip compression for POST payloads to JPhyloRef
+- `src/cookies.js` — lightweight native cookie helper (replaced `vue-cookies` which was Vue 2-only)
 
 ## Important Configuration
+
+**Vue 3 migration notes:**
+- `@vue/compat` with `MODE: 2` is active — browser console deprecation warnings are expected and acceptable during this transition period
+- All `Vue.set(obj, key, val)` → `obj[key] = val` (Vue 3 proxy reactivity handles this natively)
+- `bootstrap-vue` was removed; Bootstrap Icons CSS is imported in `main.js`; icon tags use `<i class="bi bi-*">`
+- `PhyloTree.vue` uses a native `ResizeObserver` (replaces the removed `vue-resize` component)
+- Deferred migration work is tracked in `FUTURE.md`
 
 `src/config.js` defines:
 - JPhyloRef reasoner endpoint: `https://reasoner.phyloref.org/reason`
