@@ -1,0 +1,7 @@
+capabilities:
+  browserName: "firefox"
+  "moz:firefoxOptions":
+    prefs:
+      "network.proxy.type": 0
+      "privacy.trackingprotection.enabled": false
+      "privacy.trackingprotection.pbmode.enabled": false

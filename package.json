@@ -6,7 +6,11 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview --port 4173",
-    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
+    "selenium": "selenium-side-runner",
+    "test": "playwright test",
+    "test:ui": "playwright test --ui",
+    "test:headed": "playwright test --headed"
   },
   "repository": {
     "type": "git",
@@ -27,7 +31,7 @@
     "lodash": "^4.17.19",
     "newick-js": "^1.2.1",
     "pako": "^2.1.0",
-    "phylotree": "^2.4.0",
+    "phylotree": "^2.5.0",
     "popper.js": "^1.16.1",
     "vue": "^2.7.16",
     "vue-cookies": "^1.8.1",
@@ -35,13 +39,16 @@
     "vuex": "^3.5.1"
   },
   "devDependencies": {
+    "@playwright/test": "^1.58.2",
     "@rushstack/eslint-patch": "^1.1.0",
     "@vitejs/plugin-legacy": "^6.0.2",
     "@vitejs/plugin-vue2": "^1.1.2",
     "@vue/eslint-config-prettier": "^7.0.0",
     "eslint": "^8.5.0",
     "eslint-plugin-vue": "^9.0.0",
+    "geckodriver": "^5.0.0",
     "prettier": "^2.5.1",
+    "selenium-side-runner": "^4.0.13",
     "terser": "^5.14.2",
     "vite": "^6.2.3"
   }
