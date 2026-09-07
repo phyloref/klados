@@ -714,7 +714,7 @@ export default {
       // Step 1. Create a `result` taxonomic unit. Unlike the loading code, we strictly write this out by type, so
       // if you loaded a taxonomic unit with both Specimen and Taxon information, we ONLY write out EITHER the Specimen
       // or Taxon information, based on which one is chosen in the UI.
-      let result = {};
+      let result;
       switch (this.specifierClass) {
         case 'Taxon':
           // Set up a taxonomic unit for this taxon.

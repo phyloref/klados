@@ -501,7 +501,6 @@
  * Displays a citation as a textfield/expanded field.
  */
 
-import Vue from 'vue';
 import { BIcon } from 'bootstrap-vue';
 import {
   has, isEmpty, isEqual, cloneDeep, pickBy,
@@ -558,12 +557,20 @@ export default {
   methods: {
     deleteCitation(index) {
       // Remove the citation at a particular index from the input citations.
-      if (confirm('Are you sure you wish to delete this citation?')) {
-        if (Array.isArray(this.object[this.citationKey])) {
-          this.object[this.citationKey].splice(index, 1);
-        } else {
-          Vue.delete(this.object, this.citationKey);
-        }
+      if (!confirm('Are you sure you wish to delete this citation?')) return;
+
+      // Edit our own copy and let the citations watcher commit it, which is the
+      // path every other edit in this component takes. Writing through
+      // this.object would mutate a prop and bypass the store entirely.
+      this.citations.splice(index, 1);
+
+      // updateCitations() deliberately ignores an empty list, so removing the
+      // last citation has to clear the key itself.
+      if (isEmpty(this.citations)) {
+        this.$store.commit('deleteCitations', {
+          object: this.object,
+          citationKey: this.citationKey,
+        });
       }
     },
     getCitationsFromProps() {
