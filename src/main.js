@@ -12,9 +12,6 @@ import 'bootstrap';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-// Use vue-resize to track when phylogenies are resized.
-import VueResize from 'vue-resize';
-import 'vue-resize/dist/vue-resize.css';
 
 // Import the main Vue file.
 import App from './App.vue';
@@ -34,7 +31,6 @@ globalThis.Buffer = Buffer;
 // Vue.prototype.$config = require('./config.js');
 
 // Add additional features to Vue.
-Vue.use(VueResize);
 Vue.use(VueCookies);
 
 // Turn off the Vue production tip on the console on Vue startup.
