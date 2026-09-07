@@ -12,6 +12,11 @@ nothing about what to test next. This file tracks behaviours instead.
 Keep it current: when you add a test, move the row. When you add a feature,
 add a row.
 
+When adding a test, check it fails for the right reason before trusting it. The
+integration tests here were each verified by breaking the behaviour they cover
+and confirming the failure — a test that has never failed has not been shown to
+test anything.
+
 ## The suites
 
 | Suite | Location | Runs with | What it is for |
@@ -47,6 +52,10 @@ service, and nothing verifies that Klados still works against the real ones.
 | Save to JSON and read the file back | `save-load` |
 | Load a Phyx file from local disk | `save-load` |
 | Delete a citation, and its absence from the saved file | `citations` |
+| Specifiers as taxon, specimen and external reference | `specifier-types` |
+| Delete a specifier | `specifier-types` |
+| Add and edit a taxonomic unit on a phylogeny node | `taxonomic-units` |
+| `b-table` row details on the phylogeny view | `taxonomic-units` |
 | Modified-state indicators | `ModifiedCard.spec.js`, `ModifiedIcon.spec.js` |
 
 ## Not covered
@@ -58,14 +67,13 @@ drive the order things get written in.
 The recurring reason for a **High** rating is `Vue.set` and `Vue.delete`, which
 Vue 3 removes because its reactivity no longer needs them. There are 51 calls
 across `src/`, 23 of them in `src/store/modules/phyloref.js` alone. Every one is
-a place where a reactivity bug can hide behind code that still looks correct,
-and most of them are in behaviours nothing currently tests.
+a place where a reactivity bug can hide behind code that still looks correct:
+replacing a `Vue.set` with a plain assignment compiles, runs, and silently stops
+updating the view. The heaviest of these paths are now covered, and the rows
+below are what remain.
 
 | Behaviour | Why it matters | Vue 3 risk |
 | --- | --- | --- |
-| Taxonomic units on phylogeny nodes (`addTaxonomicUnitToPhylogenyNode`, `replaceTUnitForPhylogenyNode`) | Core curation workflow, entirely untested. Mutates nested objects through `Vue.set` | **High** — `Vue.set` is removed in Vue 3 |
-| Specifier types other than taxon name (specimen, external reference) | Two of the three specifier kinds are never exercised | **High** — `Vue.set`, and `v-model` on components |
-| Delete a specifier | Deletion paths are where reactivity bugs surface, as #405 showed for citations | **High** — `Vue.delete` is removed in Vue 3 |
 | Add and edit a citation | Only deletion is covered; the whole editing form is untested | **High** — same reactivity path |
 | Delete or duplicate a phyloreference or phylogeny | Destructive and unguarded | **High** — `Vue.delete` |
 | Setting expected resolution | Asserted on when loaded from a file, never actually set by a test | Medium |
@@ -76,24 +84,23 @@ and most of them are in behaviours nothing currently tests.
 | Newick parse error reporting | Error paths are the least exercised by hand | Medium — `v-for` over errors |
 | Create a phylogeny from Open Tree of Life | Depends on a live external API; currently mocked out entirely | Low |
 | Real JPhyloRef reasoner | Everything is mocked; nothing catches a backend contract change | Low — unrelated to Vue |
-| `b-table` row details on the phylogeny view | Uses bootstrap-vue components that have no direct Vue 3 equivalent | **High** — bootstrap-vue 2 is Vue 2 only |
 
 ## Suggested order
 
-1. **Specifier editing across all three types, including deletion.** The largest
-   untested surface, and it sits directly on the `Vue.set`/`Vue.delete` calls
-   that Vue 3 removes. Write this before the migration, not during it.
-2. **Taxonomic units on phylogeny nodes.** Same reactivity risk, and it is a
-   workflow a curator uses constantly.
-3. **Citation add and edit.** Deletion is covered; the form is not.
-4. **Delete and duplicate a phyloreference or phylogeny.** Cheap to write and
-   destructive if wrong.
-5. **The `b-table` row details on the phylogeny view.** Not because the
-   behaviour is complex, but because it is the clearest bootstrap-vue dependency
-   in the app, and whatever replaces bootstrap-vue has to keep it working.
+The three highest-risk gaps — specifier kinds and deletion, taxonomic units on
+phylogeny nodes, and the `b-table` row details — are now covered, so the Vue 3
+branch has something underneath it. What is left, in order:
 
-Items 1, 2 and 5 are the ones worth having in place *before* the Vue 3 branch
-starts. The rest can follow it.
+1. **Citation add and edit.** Deletion is covered; the form is not.
+2. **Delete and duplicate a phyloreference or phylogeny.** Cheap to write and
+   destructive if wrong.
+3. **Setting expected resolution.** Asserted on when loaded from a file, never
+   set by a test.
+4. **Apomorphy-based definitions.** A whole definition type with no coverage.
+
+None of these need to block the Vue 3 branch, but 1 and 2 sit on the same
+`Vue.set`/`Vue.delete` paths, so they are worth doing early if the migration
+turns up reactivity bugs.
 
 ## Known gaps in how we test, not what we test
 

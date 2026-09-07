@@ -181,6 +181,7 @@
             <div
               v-for="(specifier, index) of selectedPhyloref.internalSpecifiers"
               :key="`internal-${index}`"
+              :data-testid="`internal-specifier-${index}`"
               class="form-row input-group"
             >
               <SpecifierEditor
@@ -214,6 +215,7 @@
             <div
               v-for="(specifier, index) of selectedPhyloref.externalSpecifiers"
               :key="`external-${index}`"
+              :data-testid="`external-specifier-${index}`"
               class="form-row input-group"
             >
               <SpecifierEditor

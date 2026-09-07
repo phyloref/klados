@@ -183,7 +183,7 @@
         </template>
 
         <template #cell(additional_taxonomic_units)="row">
-          {{row.item.additional_taxonomic_units}} taxonomic units <b-button variant="primary" @click="addTUnitForNodeLabel(row.item.node_label)" class="float-right" size="sm">Add</b-button>
+          {{row.item.additional_taxonomic_units}} taxonomic units <b-button :data-testid="`add-tunit-${row.item.node_label}`" variant="primary" @click="addTUnitForNodeLabel(row.item.node_label)" class="float-right" size="sm">Add</b-button>
         </template>
 
         <template #row-details="row">
