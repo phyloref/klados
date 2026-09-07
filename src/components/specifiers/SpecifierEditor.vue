@@ -199,7 +199,7 @@
                 class="form-control"
               >
                 <option
-                  v-for="(nomenCode, nomenCodeIndex) of nomenCodes"
+                  v-for="nomenCode of nomenCodes"
                   :key="nomenCode.iri"
                   :value="nomenCode.iri"
                 >
@@ -403,12 +403,10 @@ import {
   TaxonNameWrapper,
   SpecimenWrapper,
 } from '@phyloref/phyx';
-import {
-  has, isEqual, cloneDeep, uniqueId,
-} from 'lodash';
+import { has, uniqueId } from 'lodash';
 
 export default {
-  name: 'Specifier',
+  name: 'SpecifierEditor',
   components: {
     /* A "trash" icon for deleting this specifier. */
     BIconTrash,
@@ -716,7 +714,7 @@ export default {
       // Step 1. Create a `result` taxonomic unit. Unlike the loading code, we strictly write this out by type, so
       // if you loaded a taxonomic unit with both Specimen and Taxon information, we ONLY write out EITHER the Specimen
       // or Taxon information, based on which one is chosen in the UI.
-      let result = {};
+      let result;
       switch (this.specifierClass) {
         case 'Taxon':
           // Set up a taxonomic unit for this taxon.

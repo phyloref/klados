@@ -60,7 +60,7 @@
                   })
                 "
               >
-                <option v-for="nomenCode of nomenCodes" :value="nomenCode.iri">
+                <option v-for="nomenCode of nomenCodes" :key="nomenCode.iri" :value="nomenCode.iri">
                   {{ nomenCode.label }}
                 </option>
               </select>
@@ -94,7 +94,7 @@
             <th>Type</th>
             <th>Internal specifiers</th>
             <th>External specifiers</th>
-            <th v-for="(phylogeny, phylogenyIndex) of phylogenies">
+            <th v-for="(phylogeny, phylogenyIndex) of phylogenies" :key="phylogenyIndex">
               {{ getPhylogenyLabel(phylogeny) }}
             </th>
           </thead>
@@ -104,7 +104,7 @@
                 <center><em>No phyloreferences in this file</em></center>
               </td>
             </tr>
-            <tr v-for="phyloref of phylorefs">
+            <tr v-for="(phyloref, phylorefIndex) of phylorefs" :key="phylorefIndex">
               <td>
                 <button
                   type="button"
@@ -125,7 +125,7 @@
               <td>{{ $store.getters.getPhylorefTypeDescription(phyloref) }}</td>
               <td>{{ (phyloref.internalSpecifiers || []).length }}</td>
               <td>{{ (phyloref.externalSpecifiers || []).length }}</td>
-              <td v-for="(phylogeny, phylogenyIndex) of phylogenies">
+              <td v-for="(phylogeny, phylogenyIndex) of phylogenies" :key="phylogenyIndex">
                 <template
                   v-if="!getPhylorefExpectedNodeLabel(phyloref, phylogeny)"
                 >
@@ -285,7 +285,7 @@
                 <Center><em>No phylogenies in this file</em></Center>
               </td>
             </tr>
-            <tr v-for="(phylogeny, phylogenyIndex) of phylogenies">
+            <tr v-for="(phylogeny, phylogenyIndex) of phylogenies" :key="phylogenyIndex">
               <td>
                 <button
                   type="button"
@@ -326,6 +326,7 @@
     <!-- Display each phylogeny with all resolved phylorefs -->
     <template v-for="(phylogeny, phylogenyIndex) of phylogenies">
       <div
+          :key="phylogenyIndex"
           class="card mt-2"
       >
         <h5 class="card-header">
@@ -350,8 +351,8 @@
                   <td colspan="2"><em>No phyloreferences have resolved on this phylogeny.</em></td>
                 </tr>
               </template>
-              <template v-for="phyloref in phylorefs">
-                <tr v-for="phylogenyNodeLabel in getNodeLabelsResolvedByPhyloref(phyloref, phylogeny)">
+              <template v-for="(phyloref, phylorefIndex) in phylorefs">
+                <tr v-for="phylogenyNodeLabel in getNodeLabelsResolvedByPhyloref(phyloref, phylogeny)" :key="`${phylorefIndex}-${phylogenyNodeLabel}`">
                   <td>{{ phylogenyNodeLabel }}</td>
                   <td><a
                       href="javascript: void(0)"

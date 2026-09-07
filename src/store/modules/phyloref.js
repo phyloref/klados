@@ -3,7 +3,7 @@
  */
 
 import Vue from 'vue';
-import {PhylorefWrapper, TaxonConceptWrapper} from '@phyloref/phyx';
+import { PhylorefWrapper } from '@phyloref/phyx';
 import { has, keys, cloneDeep } from 'lodash';
 
 function createEmptySpecifier(nomenCodeIRI) {

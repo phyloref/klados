@@ -58,7 +58,7 @@
           <!-- TODO add definition authors here -->
 
           <!-- Pre-existing definition source -->
-          <Citation
+          <CitationEditor
             label="Name published in"
             :object="selectedPhyloref"
             citation-key="namePublishedIn"
@@ -84,7 +84,7 @@
           </div>
 
           <!-- Phyloref definition source -->
-          <Citation
+          <CitationEditor
             label="Definition published in"
             :object="selectedPhyloref"
             citation-key="definitionSource"
@@ -179,9 +179,10 @@
             </template>
             <div
               v-for="(specifier, index) of selectedPhyloref.internalSpecifiers"
+              :key="`internal-${index}`"
               class="form-row input-group"
             >
-              <Specifier
+              <SpecifierEditor
                 :key="'internal' + index"
                 :phyloref="selectedPhyloref"
                 :remote-specifier="specifier"
@@ -210,9 +211,10 @@
             </template>
             <div
               v-for="(specifier, index) of selectedPhyloref.externalSpecifiers"
+              :key="`external-${index}`"
               class="form-row input-group"
             >
-              <Specifier
+              <SpecifierEditor
                 :key="'external' + index"
                 :phyloref="selectedPhyloref"
                 :remote-specifier="specifier"
@@ -339,7 +341,7 @@
     -->
     <template v-for="(phylogeny, phylogenyIndex) of currentPhyx.phylogenies">
       <template v-if="selectedPhylogeny === undefined || selectedPhylogeny === phylogeny">
-        <div class="card mt-2">
+        <div :key="phylogenyIndex" class="card mt-2">
           <h5 class="card-header">
             Expected and actual resolution <span v-if="display.phylogeny">
               of {{ phyloref.label || 'unlabeled phyloreference' }}
@@ -347,7 +349,7 @@
           </h5>
           <div class="card-body">
             <!-- Reference phylogeny information -->
-            <Citation
+            <CitationEditor
               label="Reference phylogeny"
               :object="phylogeny"
               citation-key="primaryPhylogenyCitation"
@@ -436,6 +438,7 @@
                     </a>
                     <a
                       v-for="nodeLabel of getNodeLabels(phylogeny, 'internal')"
+                      :key="nodeLabel"
                       class="dropdown-item"
                       :class="{active: getExpectedNodeLabel(phylogeny) === nodeLabel}"
                       href="#selected-phyloref"
@@ -449,6 +452,7 @@
                     </a>
                     <a
                       v-for="nodeLabel of getNodeLabels(phylogeny, 'terminal')"
+                      :key="nodeLabel"
                       class="dropdown-item"
                       :class="{active: getExpectedNodeLabel(phylogeny) === nodeLabel}"
                       href="#selected-phyloref"
@@ -544,18 +548,17 @@
  * A view for displaying a phyloreference and how it resolves on all phylogenies.
  */
 
-import Vue from 'vue';
 import { mapState } from 'vuex';
-import { has, cloneDeep } from 'lodash';
-import { PhylogenyWrapper, PhylorefWrapper } from '@phyloref/phyx';
+import { has } from 'lodash';
+import { PhylogenyWrapper } from '@phyloref/phyx';
 import {
-  BIconSquare, BIconCheck, BIconCheckSquare, BIconPlusSquare,
+  BIconSquare, BIconCheckSquare, BIconPlusSquare,
 } from 'bootstrap-vue';
 
 import ModifiedCard from '../cards/ModifiedCard.vue';
 import PhyloTree from '../phylogeny/PhyloTree.vue';
-import Citation from '../citations/Citation.vue';
-import Specifier from '../specifiers/Specifier.vue';
+import CitationEditor from '../citations/CitationEditor.vue';
+import SpecifierEditor from '../specifiers/SpecifierEditor.vue';
 import { newickParser } from "phylotree";
 
 export default {
@@ -563,10 +566,9 @@ export default {
   components: {
     ModifiedCard,
     PhyloTree,
-    Citation,
-    Specifier,
+    CitationEditor,
+    SpecifierEditor,
     BIconSquare,
-    BIconCheck,
     BIconCheckSquare,
     BIconPlusSquare,
   },
