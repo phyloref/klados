@@ -90,6 +90,7 @@
             <div class="col-md-10 input-group">
               <textarea
                 v-model.lazy="phylogenyNewick"
+                data-testid="phylogeny-newick"
                 rows="5"
                 class="form-control"
                 placeholder="Enter Newick string for phylogeny here"
@@ -280,7 +281,7 @@ export default {
       set(curatorNotes) { this.$store.commit('setPhylogenyProps', { phylogeny: this.selectedPhylogeny, curatorNotes }); },
     },
     phylogenyNewick: {
-      get() { return this.selectedPhylogeny.newick || '()'; },
+      get() { return this.selectedPhylogeny.newick ?? ''; },
       set(newick) { this.$store.dispatch('setPhylogenyNewick', { phylogeny: this.selectedPhylogeny, newick }); },
     },
     phylogenyNewickErrors() {
