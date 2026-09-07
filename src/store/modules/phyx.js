@@ -284,7 +284,6 @@ export default {
 
       // The following method sometimes returns a Promise and sometimes returns nothing,
       // so it's not a consistent return.
-      // eslint-disable-next-line consistent-return
       return jQuery.ajax({
         type: 'POST',
         url: OPEN_TREE_TNRS_MATCH_NAMES_URL,
