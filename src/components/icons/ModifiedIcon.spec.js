@@ -1,14 +1,14 @@
 import { mount } from '@vue/test-utils';
-import ModifiedIcon from './ModifiedIcon';
+import ModifiedIcon from './ModifiedIcon.vue';
 
 describe('ModifiedIcon', () => {
   test('should be accessible as a Vue instance', () => {
     const wrapper = mount(ModifiedIcon);
-    expect(wrapper.isVueInstance()).toBeTruthy();
+    expect(wrapper.vm).toBeTruthy();
   });
   test('is initially invisible', () => {
     const wrapper = mount(ModifiedIcon);
-    expect(wrapper.contains('div')).toBeFalsy();
+    expect(wrapper.find('div').exists()).toBeFalsy();
   });
   test('remains invisible if the comparison values provided are identical', () => {
     const wrapper = mount(ModifiedIcon, {
@@ -17,7 +17,7 @@ describe('ModifiedIcon', () => {
         compareTo: { key: 'test1' },
       },
     });
-    expect(wrapper.contains('div')).toBeFalsy();
+    expect(wrapper.find('div').exists()).toBeFalsy();
   });
   test('becomes visible if the comparison values provided are different', () => {
     const wrapper = mount(ModifiedIcon, {
@@ -26,7 +26,7 @@ describe('ModifiedIcon', () => {
         compareTo: { key: 'test2' },
       },
     });
-    expect(wrapper.contains('div')).toBeTruthy();
+    expect(wrapper.find('div').exists()).toBeTruthy();
   });
   test('becomes visible if one of the comparison values is undefined', () => {
     const wrapper = mount(ModifiedIcon, {
@@ -35,6 +35,6 @@ describe('ModifiedIcon', () => {
         compareTo: undefined,
       },
     });
-    expect(wrapper.contains('div')).toBeTruthy();
+    expect(wrapper.find('div').exists()).toBeTruthy();
   });
 });

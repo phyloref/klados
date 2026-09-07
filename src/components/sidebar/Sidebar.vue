@@ -245,7 +245,7 @@ import { newickParser } from "phylotree";
 import { mapState, mapGetters } from 'vuex';
 import { saveAs } from 'filesaver.js-npm';
 import CryptoJS from 'crypto-js';
-import pako from 'pako';
+import { gzip } from 'pako';
 import {
   JPHYLOREF_X_HUB_SIGNATURE_SECRET,
   JPHYLOREF_SUBMISSION_URL,
@@ -613,7 +613,7 @@ export default {
         const jsonldAsStr = JSON.stringify([jsonld]);
 
         // To improve upload speed, let's Gzip the file before upload.
-        const jsonldGzipped = pako.gzip(jsonldAsStr);
+        const jsonldGzipped = gzip(jsonldAsStr);
 
         // Prepare request for submission.
         const query = $.param({
