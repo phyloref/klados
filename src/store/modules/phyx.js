@@ -5,7 +5,6 @@
  * server.
  */
 
-import Vue from 'vue';
 import jQuery from 'jquery';
 import { TaxonNameWrapper, PhylorefWrapper, TaxonConceptWrapper } from '@phyloref/phyx';
 import { has, cloneDeep, isEqual } from 'lodash';
@@ -123,7 +122,7 @@ export default {
       // If we deep-copy an existing Phyx file and try to set it as the currentPhyx,
       // we run into some weird issues in the UI. We can eliminate this by
       // stringifying the Phyx and then reloading it as a JSON object.
-      Vue.set(state, 'currentPhyx', JSON.parse(JSON.stringify(phyx)));
+      state.currentPhyx = JSON.parse(JSON.stringify(phyx));
     },
     setLoadedPhyx(state, phyx) {
       // Replace the current loaded Phyx file using an object. This also updates
@@ -135,9 +134,9 @@ export default {
         // A common error is using the same object as the current Phyx and the
         // loaded Phyx. In that case, we deep-copy loaded Phyx so that modifying
         // one won't automatically modify the other.
-        Vue.set(state, 'loadedPhyx', JSON.parse(JSON.stringify(state.currentPhyx)));
+        state.loadedPhyx = JSON.parse(JSON.stringify(state.currentPhyx));
       } else {
-        Vue.set(state, 'loadedPhyx', phyx);
+        state.loadedPhyx = phyx;
       }
     },
     createEmptyPhyloref(state) {
@@ -147,7 +146,7 @@ export default {
     createEmptyPhylogeny(state) {
       // Create a new, empty phylogeny.
       if (!has(state.currentPhyx, 'phylogenies')) {
-        Vue.set(state.currentPhyx, 'phylogenies', []);
+        state.currentPhyx.phylogenies = [];
       }
       state.currentPhyx.phylogenies.push({});
     },
@@ -185,7 +184,7 @@ export default {
       // Overwrite the current default nomenclatural code cookie.
       setKladosCookie(COOKIE_DEFAULT_NOMEN_CODE_IRI, payload.defaultNomenclaturalCodeIRI);
 
-      Vue.set(state.currentPhyx, 'defaultNomenclaturalCodeIRI', payload.defaultNomenclaturalCodeIRI);
+      state.currentPhyx.defaultNomenclaturalCodeIRI = payload.defaultNomenclaturalCodeIRI;
     },
     duplicatePhyloref(state, payload) {
       if (!has(payload, 'phyloref')) {
@@ -200,15 +199,15 @@ export default {
       // Set the curator name, e-mail address or (eventually) ORCID.
       if (has(payload, 'name')) {
         setKladosCookie(COOKIE_CURATOR_NAME, payload.name);
-        Vue.set(state.currentPhyx, 'curator', payload.name);
+        state.currentPhyx.curator = payload.name;
       }
       if (has(payload, 'email')) {
         setKladosCookie(COOKIE_CURATOR_EMAIL, payload.email);
-        Vue.set(state.currentPhyx, 'curatorEmail', payload.email);
+        state.currentPhyx.curatorEmail = payload.email;
       }
       if (has(payload, 'orcid')) {
         setKladosCookie(COOKIE_CURATOR_ORCID, payload.orcid);
-        Vue.set(state.currentPhyx, 'curatorORCID', payload.orcid);
+        state.currentPhyx.curatorORCID = payload.orcid;
       }
     },
   },

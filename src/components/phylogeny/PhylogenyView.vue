@@ -125,8 +125,8 @@
         Errors occurred while parsing Newick string
       </h5>
       <div class="card-body">
-        <template v-for="(error, errorIndex) of phylogenyNewickErrors">
-          <p :key="errorIndex"><strong>{{ error.title }}.</strong> {{ error.message }}</p>
+        <template v-for="(error, errorIndex) of phylogenyNewickErrors" :key="errorIndex">
+          <p><strong>{{ error.title }}.</strong> {{ error.message }}</p>
         </template>
       </div>
     </div>
@@ -167,8 +167,8 @@
           <tr v-if="taxonomicUnitsTable.length === 0">
             <td colspan="3">No labels found in this phylogeny.</td>
           </tr>
-          <template v-for="row in taxonomicUnitsTable">
-            <tr :key="row.node_label">
+          <template v-for="row in taxonomicUnitsTable" :key="row.node_label">
+            <tr>
               <td>{{ row.node_label }}</td>
               <td>{{ row.node_type }}</td>
               <td>
@@ -183,10 +183,7 @@
                 </button>
               </td>
             </tr>
-            <tr
-              v-if="row._showDetails"
-              :key="`${row.node_label}-details`"
-            >
+            <tr v-if="row._showDetails">
               <td colspan="3">
                 <div class="card">
                   <div class="card-body">

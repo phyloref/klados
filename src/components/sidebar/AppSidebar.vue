@@ -138,9 +138,8 @@
         >
           <em>Summary</em>
         </a>
-        <template v-for="(phyloref, phylorefIndex) of phylorefs">
+        <template v-for="(phyloref, phylorefIndex) of phylorefs" :key="`phyloref-${phylorefIndex}`">
           <a
-            :key="`phyloref-${phylorefIndex}`"
             :data-testid="`sidebar-phyloref-${phylorefIndex}`"
             href="javascript: void(0)"
             class="h6 border-top border-bottom-0 m-0 border-dark list-group-item list-group-item-action"
@@ -251,7 +250,7 @@
  *  - A list of all phylogenies and a button to add more phylogenies.
  */
 
-import Vue from 'vue';
+import { nextTick } from 'vue';
 import { cloneDeep, has } from 'lodash';
 import { Buffer } from "buffer";
 import { newickParser } from "phylotree";
@@ -332,7 +331,14 @@ export default {
       // Get the label for a particular specifier.
       // TODO: We need to include verbatimSpecifier first because of
       // https://github.com/phyloref/phyx.js/issues/14
-      return specifier.verbatimSpecifier || new TaxonomicUnitWrapper(specifier).label || 'Undefined specifier';
+      // cloneDeep() before handing the specifier to the wrapper. The wrapper reads
+      // the object with lodash has()/get(), which test hasOwnProperty and so are
+      // invisible to Vue 3's reactive proxy -- this label would never update.
+      // Cloning reads every property through the proxy, which registers the
+      // dependency, and hands the wrapper a plain object besides.
+      return specifier.verbatimSpecifier
+        || new TaxonomicUnitWrapper(cloneDeep(specifier)).label
+        || 'Undefined specifier';
     },
 
     promptAndSetDict(message, dict, key) {
@@ -340,7 +346,7 @@ export default {
       // to provide a new value for that dictionary and key. If one is provided,
       // we replace it.
       const response = window.prompt(message, dict[key]);
-      if (response !== undefined && response !== null) Vue.set(dict, key, response);
+      if (response !== undefined && response !== null) dict[key] = response;
     },
 
     loadPhyxFromURL(url) {
@@ -472,8 +478,8 @@ export default {
 
         // Before we do anything else, lets check if the two Phyx files have
         // different nomenclatural codes.
-        const currentNomenclaturalCode = currentPhyx['defaultNomenclaturalCodeIRI'];
-        const newNomenclaturalCode = newPhyx['defaultNomenclaturalCodeIRI'];
+        const currentNomenclaturalCode = currentPhyx.defaultNomenclaturalCodeIRI;
+        const newNomenclaturalCode = newPhyx.defaultNomenclaturalCodeIRI;
 
         if (currentNomenclaturalCode && newNomenclaturalCode && currentNomenclaturalCode !== newNomenclaturalCode) {
           const currentNomenInfo = TaxonNameWrapper.getNomenCodeDetails(currentNomenclaturalCode);
@@ -481,8 +487,8 @@ export default {
 
           if (!window.confirm(
             'The Phyx file you wish to append has a different default nomenclatural code (' +
-            (newNomenInfo['title'] || newNomenclaturalCode) +
-            `) than the current Phyx file (${currentNomenInfo['title'] || currentNomenclaturalCode}). ` +
+            (newNomenInfo.title || newNomenclaturalCode) +
+            `) than the current Phyx file (${currentNomenInfo.title || currentNomenclaturalCode}). ` +
             'Are you sure you wish to append it?'
           )) return;
         }
@@ -622,7 +628,7 @@ export default {
       // Make sure that the Reason button is updated before we convert the Phyx
       // file into JSON-LD.
       const outerThis = this;
-      Vue.nextTick(() => {
+      nextTick(() => {
         const jsonldAsStr = JSON.stringify([jsonld]);
 
         // To improve upload speed, let's Gzip the file before upload.

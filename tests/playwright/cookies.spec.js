@@ -14,7 +14,6 @@ test.describe('Curator cookies', () => {
     mockedPage: page,
   }) => {
     const name = page.locator('#curator-name');
-    const email = page.locator('#curator-email');
     const allowCookies = page.getByTestId('allow-cookies');
 
     // Without consent, nothing is stored.

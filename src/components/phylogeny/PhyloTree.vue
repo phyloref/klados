@@ -175,8 +175,8 @@ export default {
     this.resizeObserver = new ResizeObserver(() => this.redrawTree());
     this.resizeObserver.observe(this.$el);
   },
-  beforeDestroy() {
-    // Stop observing, so the callback cannot fire against a destroyed component.
+  beforeUnmount() {
+    // Stop observing, so the callback cannot fire against an unmounted component.
     if (this.resizeObserver) this.resizeObserver.disconnect();
   },
   methods: {

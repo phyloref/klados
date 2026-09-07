@@ -343,9 +343,9 @@
         - display all phylogenies when looking up a phyloreference or specifiers
         - display only the selected phylogeny when it's selected
     -->
-    <template v-for="(phylogeny, phylogenyIndex) of currentPhyx.phylogenies">
+    <template v-for="(phylogeny, phylogenyIndex) of currentPhyx.phylogenies" :key="phylogenyIndex">
       <template v-if="selectedPhylogeny === undefined || selectedPhylogeny === phylogeny">
-        <div :key="phylogenyIndex" class="card mt-2">
+        <div class="card mt-2">
           <h5 class="card-header">
             Expected and actual resolution <span v-if="display.phylogeny">
               of {{ phyloref.label || 'unlabeled phyloreference' }}

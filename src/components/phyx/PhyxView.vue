@@ -102,7 +102,7 @@
           <tbody>
             <tr v-if="phylorefs.length === 0" class="bg-white">
               <td :colspan="4 + phylogenies.length">
-                <center><em>No phyloreferences in this file</em></center>
+                <div class="text-center"><em>No phyloreferences in this file</em></div>
               </td>
             </tr>
             <tr v-for="(phyloref, phylorefIndex) of phylorefs" :key="phylorefIndex">
@@ -283,7 +283,7 @@
           <tbody>
             <tr v-if="phylogenies.length === 0" class="bg-white">
               <td :colspan="3">
-                <Center><em>No phylogenies in this file</em></Center>
+                <div class="text-center"><em>No phylogenies in this file</em></div>
               </td>
             </tr>
             <tr v-for="(phylogeny, phylogenyIndex) of phylogenies" :key="phylogenyIndex">
@@ -325,11 +325,8 @@
     </div>
 
     <!-- Display each phylogeny with all resolved phylorefs -->
-    <template v-for="(phylogeny, phylogenyIndex) of phylogenies">
-      <div
-          :key="phylogenyIndex"
-          class="card mt-2"
-      >
+    <template v-for="(phylogeny, phylogenyIndex) of phylogenies" :key="phylogenyIndex">
+      <div class="card mt-2">
         <h5 class="card-header">
           {{ getPhylogenyLabel(phylogeny) }}
         </h5>
@@ -352,8 +349,8 @@
                   <td colspan="2"><em>No phyloreferences have resolved on this phylogeny.</em></td>
                 </tr>
               </template>
-              <template v-for="(phyloref, phylorefIndex) in phylorefs">
-                <tr v-for="phylogenyNodeLabel in getNodeLabelsResolvedByPhyloref(phyloref, phylogeny)" :key="`${phylorefIndex}-${phylogenyNodeLabel}`">
+              <template v-for="(phyloref, phylorefIndex) in phylorefs" :key="phylorefIndex">
+                <tr v-for="phylogenyNodeLabel in getNodeLabelsResolvedByPhyloref(phyloref, phylogeny)" :key="phylogenyNodeLabel">
                   <td>{{ phylogenyNodeLabel }}</td>
                   <td><a
                       href="javascript: void(0)"

@@ -1,5 +1,5 @@
 // Import Vue.
-import Vue from 'vue';
+import { createApp } from 'vue';
 
 // Import Phylotree CSS file.
 import 'phylotree/dist/phylotree.css';
@@ -24,16 +24,7 @@ window.$ = jQuery;
 import { Buffer } from 'buffer';
 globalThis.Buffer = Buffer;
 
-// Load configuration from the 'src/config.js' file included with the source.
-// Vue.prototype.$config = require('./config.js');
-
-// Add additional features to Vue.
-
-// Turn off the Vue production tip on the console on Vue startup.
-Vue.config.productionTip = false;
-
-// Set up Vue object.
-export default new Vue({
-  store,
-  render: (h) => h(App),
-}).$mount('#app');
+// Set up the Vue application.
+export default createApp(App)
+  .use(store)
+  .mount('#app');
