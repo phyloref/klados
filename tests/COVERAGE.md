@@ -106,4 +106,8 @@ turns up reactivity bugs.
 - No test runs against the real JPhyloRef backend. `test-backend.yml` pings it
   twice a day, which catches an outage but not a contract change.
 - The integration suite runs on chromium and firefox. There is no webkit run.
+- CI runs the integration tests against the dev server, not the production
+  build. The two differ in ways that matter: Vuex `strict` mode is on only in
+  production, and only the production bundle is minified. Running them against
+  `npm run preview` is a one-line config change and worth adding.
 - Nothing tests accessibility, keyboard navigation, or screen reader output.
