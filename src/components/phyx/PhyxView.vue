@@ -87,14 +87,16 @@
       <div class="card-body p-0">
         <table class="table table-hover table-flush">
           <thead>
-            <th>&nbsp;</th>
-            <th>Phyloreference</th>
-            <th>Type</th>
-            <th>Internal specifiers</th>
-            <th>External specifiers</th>
-            <th v-for="(phylogeny, phylogenyIndex) of phylogenies" :key="phylogenyIndex">
-              {{ getPhylogenyLabel(phylogeny) }}
-            </th>
+            <tr>
+              <th>&nbsp;</th>
+              <th>Phyloreference</th>
+              <th>Type</th>
+              <th>Internal specifiers</th>
+              <th>External specifiers</th>
+              <th v-for="(phylogeny, phylogenyIndex) of phylogenies" :key="phylogenyIndex">
+                {{ getPhylogenyLabel(phylogeny) }}
+              </th>
+            </tr>
           </thead>
           <tbody>
             <tr v-if="phylorefs.length === 0" class="bg-white">
@@ -277,9 +279,11 @@
       <div class="card-body p-0">
         <table class="table table-hover table-flush">
           <thead>
-            <th>&nbsp;</th>
-            <th>Phylogeny</th>
-            <th>Curator notes</th>
+            <tr>
+              <th>&nbsp;</th>
+              <th>Phylogeny</th>
+              <th>Curator notes</th>
+            </tr>
           </thead>
           <tbody>
             <tr v-if="phylogenies.length === 0" class="bg-white">
