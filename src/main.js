@@ -1,9 +1,6 @@
 // Import Vue.
 import Vue from 'vue';
 
-// Import VueCookies (https://www.npmjs.com/package/vue-cookies)
-import VueCookies from 'vue-cookies';
-
 // Import Phylotree CSS file.
 import 'phylotree/dist/phylotree.css';
 
@@ -31,7 +28,6 @@ globalThis.Buffer = Buffer;
 // Vue.prototype.$config = require('./config.js');
 
 // Add additional features to Vue.
-Vue.use(VueCookies);
 
 // Turn off the Vue production tip on the console on Vue startup.
 Vue.config.productionTip = false;

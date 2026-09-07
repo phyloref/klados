@@ -71,6 +71,7 @@
             <div class="col-md-10">
               <input
                 type="checkbox"
+                data-testid="allow-cookies"
                 :checked="cookieCheckbox"
                 @click="$store.commit('toggleCookieAllowed')"
               />

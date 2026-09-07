@@ -16,28 +16,29 @@ import {
   OPEN_TREE_TNRS_MATCH_NAMES_URL,
   OPEN_TREE_INDUCED_SUBTREE_URL,
 
-  COOKIE_EXPIRY,
+  COOKIE_EXPIRY_DAYS,
   COOKIE_ALLOWED, COOKIE_DEFAULT_NOMEN_CODE_IRI, COOKIE_CURATOR_NAME, COOKIE_CURATOR_EMAIL, COOKIE_CURATOR_ORCID,
 } from '@/config';
+import * as cookies from '@/cookies';
 
 // Shared code for reading and writing cookies.
 
 /** Check whether we are allowed to store cookies on this users' browser.
  * We determine this based on whether the COOKIE_ALLOWED cookie is set. */
 function checkCookieAllowed() {
-  return (Vue.$cookies.get(COOKIE_ALLOWED) === 'true');
+  return (cookies.get(COOKIE_ALLOWED) === 'true');
 }
 
 /** Get a cookie from the browser (if we're allowed to). */
 function getKladosCookie(keyName, valueIfNotSet = undefined) {
-  if (checkCookieAllowed()) return Vue.$cookies.get(keyName) || valueIfNotSet;
+  if (checkCookieAllowed()) return cookies.get(keyName) || valueIfNotSet;
   return valueIfNotSet;
 }
 
 /** Set a cookie on the browser (if we're allowed to). */
-function setKladosCookie(keyName, value, expiry = COOKIE_EXPIRY) {
+function setKladosCookie(keyName, value, expiry = COOKIE_EXPIRY_DAYS) {
   // Only set the cookie if we are allowed (the COOKIE_ALLOWED is set).
-  if (checkCookieAllowed()) Vue.$cookies.set(keyName, value, expiry);
+  if (checkCookieAllowed()) cookies.set(keyName, value, expiry);
 }
 
 export default {
@@ -102,11 +103,11 @@ export default {
     toggleCookieAllowed(state) {
       if (checkCookieAllowed()) {
         // Cookie allowed! Toggle it by deleting all Klados cookies.
-        Vue.$cookies.keys().forEach(key => Vue.$cookies.remove(key));
+        cookies.keys().forEach(key => cookies.remove(key));
       } else {
         // Cookie not allowed! Toggle it to cookie allowed. We don't use setKladosCookie() because
         // it includes a check for COOKIE_ALLOWED; instead, we set it directly.
-        Vue.$cookies.set(COOKIE_ALLOWED, 'true', COOKIE_EXPIRY);
+        cookies.set(COOKIE_ALLOWED, 'true', COOKIE_EXPIRY_DAYS);
 
         // Then, save all current curator information.
         setKladosCookie(COOKIE_CURATOR_NAME, state.currentPhyx.curator || '');
