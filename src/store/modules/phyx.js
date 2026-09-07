@@ -8,9 +8,7 @@
 import Vue from 'vue';
 import jQuery from 'jquery';
 import { TaxonNameWrapper, PhylorefWrapper, TaxonConceptWrapper } from '@phyloref/phyx';
-import {
-  has, cloneDeep, isEqual, keys,
-} from 'lodash';
+import { has, cloneDeep, isEqual } from 'lodash';
 
 // Get some configuration settings.
 import {

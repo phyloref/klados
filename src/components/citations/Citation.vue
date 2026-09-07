@@ -501,7 +501,7 @@
  */
 
 import Vue from 'vue';
-import { BIcon, BIconTrash } from 'bootstrap-vue';
+import { BIcon } from 'bootstrap-vue';
 import {
   has, isEmpty, isEqual, cloneDeep, pickBy,
 } from 'lodash';
@@ -510,7 +510,6 @@ export default {
   name: 'Citation',
   components: {
     BIcon,
-    BIconTrash,
   },
   props: {
     label: { /* The label for this citation */

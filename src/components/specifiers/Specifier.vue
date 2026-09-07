@@ -403,9 +403,7 @@ import {
   TaxonNameWrapper,
   SpecimenWrapper,
 } from '@phyloref/phyx';
-import {
-  has, isEqual, cloneDeep, uniqueId,
-} from 'lodash';
+import { has, uniqueId } from 'lodash';
 
 export default {
   name: 'Specifier',

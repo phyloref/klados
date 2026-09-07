@@ -544,12 +544,11 @@
  * A view for displaying a phyloreference and how it resolves on all phylogenies.
  */
 
-import Vue from 'vue';
 import { mapState } from 'vuex';
-import { has, cloneDeep } from 'lodash';
-import { PhylogenyWrapper, PhylorefWrapper } from '@phyloref/phyx';
+import { has } from 'lodash';
+import { PhylogenyWrapper } from '@phyloref/phyx';
 import {
-  BIconSquare, BIconCheck, BIconCheckSquare, BIconPlusSquare,
+  BIconSquare, BIconCheckSquare, BIconPlusSquare,
 } from 'bootstrap-vue';
 
 import ModifiedCard from '../cards/ModifiedCard.vue';
@@ -566,7 +565,6 @@ export default {
     Citation,
     Specifier,
     BIconSquare,
-    BIconCheck,
     BIconCheckSquare,
     BIconPlusSquare,
   },

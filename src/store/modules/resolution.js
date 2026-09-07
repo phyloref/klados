@@ -6,7 +6,7 @@
 import Vue from 'vue';
 import { has, cloneDeep } from 'lodash';
 
-import { PhyxWrapper, PhylogenyWrapper } from '@phyloref/phyx';
+import { PhylogenyWrapper } from '@phyloref/phyx';
 
 export default {
   state: {

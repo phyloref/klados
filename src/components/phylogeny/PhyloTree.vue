@@ -435,20 +435,20 @@ export default {
               node,
               (node) => "Node ID: " + (node.data['@id'] || "(none)"),
               () => false,
-              (node) => true,
+              () => true,
             );
             addCustomMenu(
               node,
               (node) => "Node label: " + (node.data.name || "(none)"),
               () => false,
-              (node) => true,
+              () => true,
             );
 
             // Add a custom menu item to allow us to rename this node.
             // console.log("node", node);
             addCustomMenu(
               node,
-              (node) => "Rename this node",
+              () => "Rename this node",
               () => {
                 const node = data;
                 const existingName = node.name || "(none)";
@@ -477,7 +477,7 @@ export default {
                   newick: updatedNewickString,
                 });
               },
-              (node) => true // We can replace this with a condition that indicates whether this node should be displayed.
+              () => true // We can replace this with a condition that indicates whether this node should be displayed.
             );
 
             // If the internal label has the same IRI as the currently selected
