@@ -7,10 +7,9 @@ npm run dev       # Start Vite dev server (http://localhost:5173/klados/)
 npm run build     # Production build to dist/ (deployed to the gh-pages branch on release)
 npm run preview   # Preview production build on port 4173
 npm run lint      # ESLint with auto-fix (Vue + Prettier)
+npm run lint:check # ESLint without --fix; this is what CI runs
 npm run test      # Vitest (jsdom) over the co-located .spec.js files
 ```
-
-`npm run lint` currently reports pre-existing errors (unused imports, missing `v-for` keys); it is not yet clean.
 
 ## Architecture
 
@@ -46,7 +45,7 @@ Klados is a Vue 2 single-page application for authoring and curating **phylorefe
 
 ## Deployment
 
-- `.github/workflows/build-and-test.yml` builds and tests every pull request and every push to `master`. It does not yet run `npm run lint`, because lint is not clean.
+- `.github/workflows/build-and-test.yml` lints, builds and tests every pull request and every push to `master`. Lint is clean; keep it that way.
 - `.github/workflows/deploy-to-github-pages.yml` triggers on release and deploys `dist/` to the `gh-pages` branch.
 - `.github/workflows/test-backend.yml` pings the JPhyloRef backend twice daily to monitor availability.
 

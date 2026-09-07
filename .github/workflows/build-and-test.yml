@@ -1,12 +1,8 @@
 name: Build and test
 
-# This workflow builds Klados and runs its test suite. It exists so that a
-# dependency upgrade that breaks the build or the tests is caught on the pull
-# request rather than at release time.
-#
-# The lint step is deliberately absent: `npm run lint` currently reports
-# pre-existing errors, so it cannot gate anything yet. Add it here once those
-# are cleared.
+# This workflow lints, builds and tests Klados. It exists so that a change that
+# breaks any of the three is caught on the pull request rather than at release
+# time.
 
 on:
   push:
@@ -32,6 +28,10 @@ jobs:
       # actually being tested.
       - name: Install dependencies
         run: npm ci
+
+      # lint:check rather than lint, which would rewrite files with --fix.
+      - name: Lint
+        run: npm run lint:check
 
       - name: Build
         run: npm run build
