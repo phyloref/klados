@@ -12,4 +12,8 @@ export default defineConfig({
     }
   },
   base: '/klados/',
+  test: {
+    globals: true,
+    environment: 'jsdom',
+  },
 })
