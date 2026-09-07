@@ -69,6 +69,7 @@
         <a
           class="list-group-item list-group-item-action"
           href="javascript: void(0)"
+          data-testid="sidebar-save"
           @click="downloadAsJSON()"
         >
           Save
