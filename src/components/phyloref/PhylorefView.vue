@@ -165,6 +165,7 @@
             <button
               class="btn btn-secondary btn-sm float-right"
               href="javascript:;"
+              data-testid="add-internal-specifier"
               @click="$store.commit('addInternalSpecifier', { phyloref: selectedPhyloref })"
             >
               <b-icon-plus-square />
@@ -197,6 +198,7 @@
             <button
               class="btn btn-secondary btn-sm float-right"
               href="javascript:;"
+              data-testid="add-external-specifier"
               @click="$store.commit('addExternalSpecifier', { phyloref: selectedPhyloref })"
             >
               <b-icon-plus-square />

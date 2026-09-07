@@ -42,6 +42,7 @@
         <a
           class="list-group-item list-group-item-action"
           href="javascript: void(0)"
+          data-testid="sidebar-read-example-file"
           onclick="$('.phyx-examples').toggleClass('d-none')"
         >
           Read an example file
@@ -50,6 +51,7 @@
         <a
           v-for="example of examplePHYXURLs"
           :key="example.url"
+          :data-testid="`sidebar-example-${example.title.replace(/\s+/g, '-').toLowerCase()}`"
           href="javascript: void(0)"
           class="list-group-item list-group-item-action phyx-examples d-none small"
           @click="loadPhyxFromURL(example.url)"
@@ -96,6 +98,7 @@
         <a
           class="list-group-item list-group-item-action start-reasoning"
           href="javascript: void(0)"
+          data-testid="sidebar-resolve-phylogenies"
           @click="reasonOverPhyloreferences()"
         >
           <span v-if="reasoningInProgress">
@@ -137,6 +140,7 @@
         <template v-for="(phyloref, phylorefIndex) of phylorefs">
           <a
             :key="`phyloref-${phylorefIndex}`"
+            :data-testid="`sidebar-phyloref-${phylorefIndex}`"
             href="javascript: void(0)"
             class="h6 border-top border-bottom-0 m-0 border-dark list-group-item list-group-item-action"
             :class="{active: selectedPhyloref === phyloref}"
@@ -183,6 +187,7 @@
         <a
           class="border-top border-dark list-group-item list-group-item-action"
           href="javascript: void(0)"
+          data-testid="sidebar-add-phyloref"
           @click="$store.commit('createEmptyPhyloref')"
         >
           <em>Add phyloreference</em>
@@ -202,6 +207,7 @@
         <a
           v-for="(phylogeny, phylogenyIndex) of phylogenies"
           :key="phylogenyIndex"
+          :data-testid="`sidebar-phylogeny-${phylogenyIndex}`"
           href="javascript: void(0)"
           class="h6 border-top m-0 list-group-item list-group-item-action"
           :class="{active: selectedPhylogeny === phylogeny}"
@@ -219,6 +225,7 @@
         <a
           class="border-dark border-top border-bottom-0 list-group-item list-group-item-action"
           href="javascript: void(0)"
+          data-testid="sidebar-add-phylogeny"
           @click="$store.commit('createEmptyPhylogeny')"
         >
           <em>Add phylogeny</em>

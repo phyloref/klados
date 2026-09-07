@@ -202,9 +202,7 @@
                   v-for="nomenCode of nomenCodes"
                   :key="nomenCode.iri"
                   :value="nomenCode.iri"
-                >
-                  {{ nomenCode.label }}
-                </option>
+                >{{ nomenCode.label }}</option>
               </select>
             </div>
           </div>

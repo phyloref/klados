@@ -60,9 +60,7 @@
                   })
                 "
               >
-                <option v-for="nomenCode of nomenCodes" :key="nomenCode.iri" :value="nomenCode.iri">
-                  {{ nomenCode.label }}
-                </option>
+                <option v-for="nomenCode of nomenCodes" :key="nomenCode.iri" :value="nomenCode.iri">{{ nomenCode.label }}</option>
               </select>
             </div>
           </div>
@@ -125,7 +123,11 @@
               <td>{{ $store.getters.getPhylorefTypeDescription(phyloref) }}</td>
               <td>{{ (phyloref.internalSpecifiers || []).length }}</td>
               <td>{{ (phyloref.externalSpecifiers || []).length }}</td>
-              <td v-for="(phylogeny, phylogenyIndex) of phylogenies" :key="phylogenyIndex">
+              <td
+                v-for="(phylogeny, phylogenyIndex) of phylogenies"
+                :key="phylogenyIndex"
+                :data-testid="`phyloref-result-${phylorefIndex}-phylogeny-${phylogenyIndex}`"
+              >
                 <template
                   v-if="!getPhylorefExpectedNodeLabel(phyloref, phylogeny)"
                 >
