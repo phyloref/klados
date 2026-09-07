@@ -15,5 +15,8 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'jsdom',
+    // Unit tests only. tests/playwright holds .spec.js files too, but those are
+    // end-to-end tests driven by Playwright, which has its own runner.
+    include: ['src/**/*.spec.js'],
   },
 })
