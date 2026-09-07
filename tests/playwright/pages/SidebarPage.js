@@ -8,6 +8,26 @@ class SidebarPage {
     this.resolveButton = page.getByTestId('sidebar-resolve-phylogenies');
     this.addPhylogenyLink = page.getByTestId('sidebar-add-phylogeny');
     this.addPhylorefLink = page.getByTestId('sidebar-add-phyloref');
+    this.saveLink = page.getByTestId('sidebar-save');
+    this.fileInput = page.locator('#file-input');
+  }
+
+  /**
+   * Clicks Save and returns the path of the downloaded Phyx file.
+   */
+  async saveToFile() {
+    const [download] = await Promise.all([
+      this.page.waitForEvent('download'),
+      this.saveLink.click(),
+    ]);
+    return download.path();
+  }
+
+  /**
+   * Loads a Phyx file from disk through the hidden file input.
+   */
+  async loadFromFile(filePath) {
+    await this.fileInput.setInputFiles(filePath);
   }
 
   async clickReadExampleFile() {
