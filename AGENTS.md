@@ -57,4 +57,6 @@ There are two suites, and they both use `.spec.js`, so Vitest's `include` is pin
 
 **Unit tests** are co-located with components (e.g. `src/components/cards/ModifiedCard.spec.js`). They run under Vitest (config in `vite.config.js`, `globals: true` so `describe`/`test`/`expect` need no import) and use `mount()` from `@vue/test-utils` v1 — v2 is Vue 3 only. Import components with the explicit `.vue` extension.
 
+`tests/COVERAGE.md` tracks what the two suites do and do not cover, and which tests are worth writing next. Update it when you add a test or a feature.
+
 **Integration tests** live in `tests/playwright/`, drive a real browser against `npm run dev`, and are the suite that matters most when changing the framework, since they assert on rendered behaviour rather than on Vue internals. Page objects are in `tests/playwright/pages/`; locate elements with `data-testid` rather than CSS classes or positions. The shared fixture in `tests/playwright/fixtures/index.js` mocks the JPhyloRef reasoner and aborts Open Tree of Life requests, so the suite never depends on an external service.
