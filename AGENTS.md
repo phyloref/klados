@@ -4,12 +4,13 @@
 
 ```bash
 npm run dev       # Start Vite dev server (http://localhost:5173/klados/)
-npm run build     # Production build to dist/ (also deploys to docs/ for GitHub Pages)
+npm run build     # Production build to dist/ (deployed to the gh-pages branch on release)
 npm run preview   # Preview production build on port 4173
 npm run lint      # ESLint with auto-fix (Vue + Prettier)
+npm run test      # Vitest (jsdom) over the co-located .spec.js files
 ```
 
-There is no test runner configured in package.json. The `.spec.js` files use Jest + `@vue/test-utils`, but Jest must be invoked manually if installed.
+`npm run lint` currently reports pre-existing errors (unused imports, missing `v-for` keys); it is not yet clean.
 
 ## Architecture
 
@@ -50,4 +51,4 @@ Klados is a Vue 2 single-page application for authoring and curating **phylorefe
 
 ## Test File Conventions
 
-Spec files are co-located with components (e.g., `src/components/cards/ModifiedCard.spec.js`). Tests use `mount()` from `@vue/test-utils` and assert on Vue instance properties and rendered HTML.
+Spec files are co-located with components (e.g., `src/components/cards/ModifiedCard.spec.js`). Tests run under Vitest (config in `vite.config.js`, `globals: true` so `describe`/`test`/`expect` need no import) and use `mount()` from `@vue/test-utils` v1 — v2 is Vue 3 only. Import components with the explicit `.vue` extension.

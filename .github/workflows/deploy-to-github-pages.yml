@@ -7,7 +7,7 @@ name: Deploy to GitHub Pages
 #
 # This workflow will:
 #   - Check out the code that is being published.
-#   - Build the HTML and JS using Vue CLI.
+#   - Build the HTML and JS using Vite.
 #   - Deploy that code to the gh-pages branch using an SSH deploy
 #     key. This key is stored as an encrypted secret in the repository.
 
@@ -25,11 +25,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           persist-credentials: false
-        
-      - name: Build Vue page in /docs
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Build
         run: |
           npm install
           VITE_APP_VERSION=$GITHUB_REF_NAME npm run build
