@@ -261,7 +261,7 @@ import { PhyxWrapper, TaxonomicUnitWrapper, TaxonNameWrapper } from '@phyloref/p
 import ModifiedIcon from '../icons/ModifiedIcon.vue';
 
 export default {
-  name: 'Sidebar',
+  name: 'AppSidebar',
   components: {
     ModifiedIcon,
   },

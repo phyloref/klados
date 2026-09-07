@@ -507,7 +507,7 @@ import {
 } from 'lodash';
 
 export default {
-  name: 'Citation',
+  name: 'CitationEditor',
   components: {
     BIcon,
   },

@@ -58,7 +58,7 @@
           <!-- TODO add definition authors here -->
 
           <!-- Pre-existing definition source -->
-          <Citation
+          <CitationEditor
             label="Name published in"
             :object="selectedPhyloref"
             citation-key="namePublishedIn"
@@ -84,7 +84,7 @@
           </div>
 
           <!-- Phyloref definition source -->
-          <Citation
+          <CitationEditor
             label="Definition published in"
             :object="selectedPhyloref"
             citation-key="definitionSource"
@@ -182,7 +182,7 @@
               :key="`internal-${index}`"
               class="form-row input-group"
             >
-              <Specifier
+              <SpecifierEditor
                 :key="'internal' + index"
                 :phyloref="selectedPhyloref"
                 :remote-specifier="specifier"
@@ -214,7 +214,7 @@
               :key="`external-${index}`"
               class="form-row input-group"
             >
-              <Specifier
+              <SpecifierEditor
                 :key="'external' + index"
                 :phyloref="selectedPhyloref"
                 :remote-specifier="specifier"
@@ -349,7 +349,7 @@
           </h5>
           <div class="card-body">
             <!-- Reference phylogeny information -->
-            <Citation
+            <CitationEditor
               label="Reference phylogeny"
               :object="phylogeny"
               citation-key="primaryPhylogenyCitation"
@@ -557,8 +557,8 @@ import {
 
 import ModifiedCard from '../cards/ModifiedCard.vue';
 import PhyloTree from '../phylogeny/PhyloTree.vue';
-import Citation from '../citations/Citation.vue';
-import Specifier from '../specifiers/Specifier.vue';
+import CitationEditor from '../citations/CitationEditor.vue';
+import SpecifierEditor from '../specifiers/SpecifierEditor.vue';
 import { newickParser } from "phylotree";
 
 export default {
@@ -566,8 +566,8 @@ export default {
   components: {
     ModifiedCard,
     PhyloTree,
-    Citation,
-    Specifier,
+    CitationEditor,
+    SpecifierEditor,
     BIconSquare,
     BIconCheckSquare,
     BIconPlusSquare,

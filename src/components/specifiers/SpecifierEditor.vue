@@ -406,7 +406,7 @@ import {
 import { has, uniqueId } from 'lodash';
 
 export default {
-  name: 'Specifier',
+  name: 'SpecifierEditor',
   components: {
     /* A "trash" icon for deleting this specifier. */
     BIconTrash,
