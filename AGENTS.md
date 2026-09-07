@@ -46,8 +46,9 @@ Klados is a Vue 2 single-page application for authoring and curating **phylorefe
 
 ## Deployment
 
-- GitHub Actions workflow (`.github/workflows/deploy-to-github-pages.yml`) triggers on release and deploys to `gh-pages` branch.
-- A second workflow (`.github/workflows/test-backend.yml`) pings the JPhyloRef backend twice daily to monitor availability.
+- `.github/workflows/build-and-test.yml` builds and tests every pull request and every push to `master`. It does not yet run `npm run lint`, because lint is not clean.
+- `.github/workflows/deploy-to-github-pages.yml` triggers on release and deploys `dist/` to the `gh-pages` branch.
+- `.github/workflows/test-backend.yml` pings the JPhyloRef backend twice daily to monitor availability.
 
 ## Test File Conventions
 
