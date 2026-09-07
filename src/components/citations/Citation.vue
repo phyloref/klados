@@ -14,7 +14,7 @@
         </a>
       </template>
       <template v-for="(citation, citationIndex) of citations">
-        <div class="input-group">
+        <div class="input-group" :key="`citation-${citationIndex}`">
           <input
             type="text"
             readonly
@@ -53,6 +53,7 @@
           </div>
         </div>
         <div
+          :key="`citation-body-${citationIndex}`"
           v-if="citationsExpanded.includes(citationIndex)"
           class="card mt-1"
         >

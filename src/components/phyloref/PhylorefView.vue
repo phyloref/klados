@@ -179,6 +179,7 @@
             </template>
             <div
               v-for="(specifier, index) of selectedPhyloref.internalSpecifiers"
+              :key="`internal-${index}`"
               class="form-row input-group"
             >
               <Specifier
@@ -210,6 +211,7 @@
             </template>
             <div
               v-for="(specifier, index) of selectedPhyloref.externalSpecifiers"
+              :key="`external-${index}`"
               class="form-row input-group"
             >
               <Specifier
@@ -339,7 +341,7 @@
     -->
     <template v-for="(phylogeny, phylogenyIndex) of currentPhyx.phylogenies">
       <template v-if="selectedPhylogeny === undefined || selectedPhylogeny === phylogeny">
-        <div class="card mt-2">
+        <div :key="phylogenyIndex" class="card mt-2">
           <h5 class="card-header">
             Expected and actual resolution <span v-if="display.phylogeny">
               of {{ phyloref.label || 'unlabeled phyloreference' }}
@@ -436,6 +438,7 @@
                     </a>
                     <a
                       v-for="nodeLabel of getNodeLabels(phylogeny, 'internal')"
+                      :key="nodeLabel"
                       class="dropdown-item"
                       :class="{active: getExpectedNodeLabel(phylogeny) === nodeLabel}"
                       href="#selected-phyloref"
@@ -449,6 +452,7 @@
                     </a>
                     <a
                       v-for="nodeLabel of getNodeLabels(phylogeny, 'terminal')"
+                      :key="nodeLabel"
                       class="dropdown-item"
                       :class="{active: getExpectedNodeLabel(phylogeny) === nodeLabel}"
                       href="#selected-phyloref"

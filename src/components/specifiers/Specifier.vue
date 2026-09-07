@@ -199,7 +199,7 @@
                 class="form-control"
               >
                 <option
-                  v-for="(nomenCode, nomenCodeIndex) of nomenCodes"
+                  v-for="nomenCode of nomenCodes"
                   :key="nomenCode.iri"
                   :value="nomenCode.iri"
                 >

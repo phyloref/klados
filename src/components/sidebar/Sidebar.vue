@@ -49,6 +49,7 @@
 
         <a
           v-for="example of examplePHYXURLs"
+          :key="example.url"
           href="javascript: void(0)"
           class="list-group-item list-group-item-action phyx-examples d-none small"
           @click="loadPhyxFromURL(example.url)"
@@ -135,6 +136,7 @@
         </a>
         <template v-for="(phyloref, phylorefIndex) of phylorefs">
           <a
+            :key="`phyloref-${phylorefIndex}`"
             href="javascript: void(0)"
             class="h6 border-top border-bottom-0 m-0 border-dark list-group-item list-group-item-action"
             :class="{active: selectedPhyloref === phyloref}"
@@ -159,6 +161,7 @@
           <template v-if="selectedPhyloref === phyloref">
             <a
               v-for="(specifier, specifierIndex) of phyloref.internalSpecifiers"
+              :key="`internal-${specifierIndex}`"
               href="javascript: void(0)"
               class="list-group-item list-group-item-action"
             >
@@ -167,6 +170,7 @@
 
             <a
               v-for="(specifier, specifierIndex) of phyloref.externalSpecifiers"
+              :key="`external-${specifierIndex}`"
               href="javascript: void(0)"
               class="list-group-item list-group-item-action"
             >
@@ -197,6 +201,7 @@
         </a>
         <a
           v-for="(phylogeny, phylogenyIndex) of phylogenies"
+          :key="phylogenyIndex"
           href="javascript: void(0)"
           class="h6 border-top m-0 list-group-item list-group-item-action"
           :class="{active: selectedPhylogeny === phylogeny}"

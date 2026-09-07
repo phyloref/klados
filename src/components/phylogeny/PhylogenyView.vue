@@ -125,7 +125,7 @@
       </h5>
       <div class="card-body">
         <template v-for="(error, errorIndex) of phylogenyNewickErrors">
-          <p><strong>{{ error.title }}.</strong> {{ error.message }}</p>
+          <p :key="errorIndex"><strong>{{ error.title }}.</strong> {{ error.message }}</p>
         </template>
       </div>
     </div>
@@ -189,7 +189,7 @@
           <b-card>
             <b-row
               v-for="(tunit, index) in getExplicitTUnitsForLabel(row.item.node_label)"
-              :key="row.item.node_label"
+              :key="`${row.item.node_label}-${index}`"
               class="mb-12"
             >
               <Specifier
