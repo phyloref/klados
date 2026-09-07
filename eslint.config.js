@@ -9,8 +9,13 @@ export default [
   ...pluginVue.configs['flat/vue2-essential'],
   {
     languageOptions: {
-      globals: { ...globals.browser, ...globals.node },
+      // main.js assigns window.$ = jQuery, so $ is a genuine global here.
+      globals: { ...globals.browser, ...globals.node, ...globals.jquery },
     },
+  },
+  {
+    files: ['**/*.spec.js'],
+    languageOptions: { globals: globals.vitest },
   },
   skipFormatting,
 ];
