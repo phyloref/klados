@@ -6,7 +6,7 @@ import globals from 'globals';
 export default [
   { ignores: ['dist/**', 'docs/**', 'coverage/**', 'public/**'] },
   js.configs.recommended,
-  ...pluginVue.configs['flat/vue2-essential'],
+  ...pluginVue.configs['flat/essential'],
   {
     languageOptions: {
       // main.js assigns window.$ = jQuery, so $ is a genuine global here.

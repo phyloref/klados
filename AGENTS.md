@@ -29,6 +29,25 @@ Klados is a Vue 2 single-page application for authoring and curating **phylorefe
 - `citations.js` — citation/reference management
 - `ui.js` — which view to display (`phyloref`, `phylogeny`, or `phyx`)
 
+## Reactivity: a trap specific to this codebase
+
+Vue 3 tracks a dependency only on properties a render or computed actually
+*reads through the reactive proxy*. Two idioms common in this codebase read
+around it, so a value updates in the store but never on screen — with no error:
+
+- **`lodash.has()`** tests `hasOwnProperty`, which the proxy does not trap. Code
+  shaped like `if (has(obj, 'k') && has(obj.k, 'j')) return obj.k.j;` registers
+  no dependency at all. Read the path instead: `obj?.k?.j ?? fallback`.
+- **`@phyloref/phyx` wrappers** (`TaxonomicUnitWrapper`, `PhylorefWrapper`, …)
+  read their argument with `has()` and `get()` internally, so passing reactive
+  state straight into one tracks nothing. `cloneDeep()` the argument first: that
+  reads every property through the proxy, registering the dependency, and hands
+  the wrapper a plain object.
+
+Vue 2 hid both of these, because `Vue.set` notified every watcher that had
+touched the object at all. Nothing in the compiler or the linter catches them —
+only a test that asserts the screen updated.
+
 **Key dependencies:**
 - `@phyloref/phyx` — Phyx format classes and utilities (the data model)
 - `phylotree` — D3-based phylogenetic tree visualization

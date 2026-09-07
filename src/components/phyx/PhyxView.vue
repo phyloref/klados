@@ -71,6 +71,7 @@
             <div class="col-md-10">
               <input
                 type="checkbox"
+                data-testid="allow-cookies"
                 :checked="cookieCheckbox"
                 @click="$store.commit('toggleCookieAllowed')"
               />
@@ -87,19 +88,21 @@
       <div class="card-body p-0">
         <table class="table table-hover table-flush">
           <thead>
-            <th>&nbsp;</th>
-            <th>Phyloreference</th>
-            <th>Type</th>
-            <th>Internal specifiers</th>
-            <th>External specifiers</th>
-            <th v-for="(phylogeny, phylogenyIndex) of phylogenies" :key="phylogenyIndex">
-              {{ getPhylogenyLabel(phylogeny) }}
-            </th>
+            <tr>
+              <th>&nbsp;</th>
+              <th>Phyloreference</th>
+              <th>Type</th>
+              <th>Internal specifiers</th>
+              <th>External specifiers</th>
+              <th v-for="(phylogeny, phylogenyIndex) of phylogenies" :key="phylogenyIndex">
+                {{ getPhylogenyLabel(phylogeny) }}
+              </th>
+            </tr>
           </thead>
           <tbody>
             <tr v-if="phylorefs.length === 0" class="bg-white">
               <td :colspan="4 + phylogenies.length">
-                <center><em>No phyloreferences in this file</em></center>
+                <div class="text-center"><em>No phyloreferences in this file</em></div>
               </td>
             </tr>
             <tr v-for="(phyloref, phylorefIndex) of phylorefs" :key="phylorefIndex">
@@ -109,7 +112,7 @@
                   class="btn btn-sm btn-danger"
                   @click="deletePhyloref(phyloref)"
                 >
-                  <b-icon-trash></b-icon-trash>
+                  <FontAwesomeIcon icon="trash" />
                 </button>
               </td>
               <td>
@@ -255,20 +258,14 @@
           >
             Export as CSV
           </button>
-          <b-popover
-            target="export-as-csv-button"
-            triggers="hover"
-            placement="bottom"
-          >
-            <!-- <template #title>Popover Title</template> -->
-            The CSV export format is
-            <a
-              target="documentation"
-              href="https://github.com/phyloref/klados/blob/master/docs/ExportFormats.md#summary-table-csv-export"
-              >documented</a
-            >.
-          </b-popover>
         </div>
+        <small class="form-text text-muted">
+          The CSV export format is
+          <a
+            target="documentation"
+            href="https://github.com/phyloref/klados/blob/master/docs/ExportFormats.md#summary-table-csv-export"
+          >documented</a>.
+        </small>
       </div>
     </div>
 
@@ -277,14 +274,16 @@
       <div class="card-body p-0">
         <table class="table table-hover table-flush">
           <thead>
-            <th>&nbsp;</th>
-            <th>Phylogeny</th>
-            <th>Curator notes</th>
+            <tr>
+              <th>&nbsp;</th>
+              <th>Phylogeny</th>
+              <th>Curator notes</th>
+            </tr>
           </thead>
           <tbody>
             <tr v-if="phylogenies.length === 0" class="bg-white">
               <td :colspan="3">
-                <Center><em>No phylogenies in this file</em></Center>
+                <div class="text-center"><em>No phylogenies in this file</em></div>
               </td>
             </tr>
             <tr v-for="(phylogeny, phylogenyIndex) of phylogenies" :key="phylogenyIndex">
@@ -294,7 +293,7 @@
                   class="btn btn-sm btn-danger"
                   @click="deletePhylogeny(phylogeny)"
                 >
-                  <b-icon-trash></b-icon-trash>
+                  <FontAwesomeIcon icon="trash" />
                 </button>
               </td>
               <td>
@@ -326,11 +325,8 @@
     </div>
 
     <!-- Display each phylogeny with all resolved phylorefs -->
-    <template v-for="(phylogeny, phylogenyIndex) of phylogenies">
-      <div
-          :key="phylogenyIndex"
-          class="card mt-2"
-      >
+    <template v-for="(phylogeny, phylogenyIndex) of phylogenies" :key="phylogenyIndex">
+      <div class="card mt-2">
         <h5 class="card-header">
           {{ getPhylogenyLabel(phylogeny) }}
         </h5>
@@ -353,8 +349,8 @@
                   <td colspan="2"><em>No phyloreferences have resolved on this phylogeny.</em></td>
                 </tr>
               </template>
-              <template v-for="(phyloref, phylorefIndex) in phylorefs">
-                <tr v-for="phylogenyNodeLabel in getNodeLabelsResolvedByPhyloref(phyloref, phylogeny)" :key="`${phylorefIndex}-${phylogenyNodeLabel}`">
+              <template v-for="(phyloref, phylorefIndex) in phylorefs" :key="phylorefIndex">
+                <tr v-for="phylogenyNodeLabel in getNodeLabelsResolvedByPhyloref(phyloref, phylogeny)" :key="phylogenyNodeLabel">
                   <td>{{ phylogenyNodeLabel }}</td>
                   <td><a
                       href="javascript: void(0)"
@@ -384,7 +380,11 @@ import { stringify } from "csv-stringify/browser/esm";
 import { mapState } from "vuex";
 import { has, max, range } from "lodash";
 import { saveAs } from "filesaver.js-npm";
-import { BIconTrash } from "bootstrap-vue";
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+
+library.add(faTrash);
 import {
   PhylorefWrapper,
   PhylogenyWrapper,
@@ -398,7 +398,7 @@ export default {
   name: "PhyxView",
   components: {
     PhyloTree,
-    BIconTrash,
+    FontAwesomeIcon,
   },
   computed: {
     nomenCodes: () => TaxonNameWrapper.getNomenclaturalCodes(),

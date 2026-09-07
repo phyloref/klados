@@ -64,13 +64,12 @@ Ranked by what would hurt most if it broke. The Vue 3 column is the risk that
 *this specific behaviour* breaks during the migration, which is what should
 drive the order things get written in.
 
-The recurring reason for a **High** rating is `Vue.set` and `Vue.delete`, which
-Vue 3 removes because its reactivity no longer needs them. There are 51 calls
-across `src/`, 23 of them in `src/store/modules/phyloref.js` alone. Every one is
-a place where a reactivity bug can hide behind code that still looks correct:
-replacing a `Vue.set` with a plain assignment compiles, runs, and silently stops
-updating the view. The heaviest of these paths are now covered, and the rows
-below are what remain.
+These ratings were written before the Vue 3 migration and are kept because the
+reasoning still holds for anything untested: a reactivity bug shows up as a
+value that changes in the store but never on screen, with no error anywhere. The
+migration hit exactly two such bugs, both in covered paths, and both were caught
+by the tests rather than by the compiler. See the reactivity section of
+AGENTS.md for the two idioms that cause them.
 
 | Behaviour | Why it matters | Vue 3 risk |
 | --- | --- | --- |
@@ -107,4 +106,8 @@ turns up reactivity bugs.
 - No test runs against the real JPhyloRef backend. `test-backend.yml` pings it
   twice a day, which catches an outage but not a contract change.
 - The integration suite runs on chromium and firefox. There is no webkit run.
+- CI runs the integration tests against the dev server, not the production
+  build. The two differ in ways that matter: Vuex `strict` mode is on only in
+  production, and only the production bundle is minified. Running them against
+  `npm run preview` is a one-line config change and worth adding.
 - Nothing tests accessibility, keyboard navigation, or screen reader output.
