@@ -90,6 +90,7 @@
             <div class="col-md-10 input-group">
               <textarea
                 v-model.lazy="phylogenyNewick"
+                data-testid="phylogeny-newick"
                 rows="5"
                 class="form-control"
                 placeholder="Enter Newick string for phylogeny here"
@@ -182,7 +183,7 @@
         </template>
 
         <template #cell(additional_taxonomic_units)="row">
-          {{row.item.additional_taxonomic_units}} taxonomic units <b-button variant="primary" @click="addTUnitForNodeLabel(row.item.node_label)" class="float-right" size="sm">Add</b-button>
+          {{row.item.additional_taxonomic_units}} taxonomic units <b-button :data-testid="`add-tunit-${row.item.node_label}`" variant="primary" @click="addTUnitForNodeLabel(row.item.node_label)" class="float-right" size="sm">Add</b-button>
         </template>
 
         <template #row-details="row">
@@ -280,7 +281,7 @@ export default {
       set(curatorNotes) { this.$store.commit('setPhylogenyProps', { phylogeny: this.selectedPhylogeny, curatorNotes }); },
     },
     phylogenyNewick: {
-      get() { return this.selectedPhylogeny.newick || '()'; },
+      get() { return this.selectedPhylogeny.newick ?? ''; },
       set(newick) { this.$store.dispatch('setPhylogenyNewick', { phylogeny: this.selectedPhylogeny, newick }); },
     },
     phylogenyNewickErrors() {

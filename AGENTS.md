@@ -8,7 +8,8 @@ npm run build     # Production build to dist/ (deployed to the gh-pages branch o
 npm run preview   # Preview production build on port 4173
 npm run lint      # ESLint with auto-fix (Vue + Prettier)
 npm run lint:check # ESLint without --fix; this is what CI runs
-npm run test      # Vitest (jsdom) over the co-located .spec.js files
+npm run test      # Vitest (jsdom) over the co-located .spec.js files in src/
+npm run test:e2e  # Playwright integration tests in tests/playwright/
 ```
 
 ## Architecture
@@ -45,10 +46,17 @@ Klados is a Vue 2 single-page application for authoring and curating **phylorefe
 
 ## Deployment
 
-- `.github/workflows/build-and-test.yml` lints, builds and tests every pull request and every push to `master`. Lint is clean; keep it that way.
+- `.github/workflows/build-and-test.yml` lints, builds and unit-tests every pull request and every push to `master`. Lint is clean; keep it that way.
+- `.github/workflows/playwright-tests.yml` runs the integration tests on the same triggers, in its own workflow because it has to download browsers first.
 - `.github/workflows/deploy-to-github-pages.yml` triggers on release and deploys `dist/` to the `gh-pages` branch.
 - `.github/workflows/test-backend.yml` pings the JPhyloRef backend twice daily to monitor availability.
 
 ## Test File Conventions
 
-Spec files are co-located with components (e.g., `src/components/cards/ModifiedCard.spec.js`). Tests run under Vitest (config in `vite.config.js`, `globals: true` so `describe`/`test`/`expect` need no import) and use `mount()` from `@vue/test-utils` v1 — v2 is Vue 3 only. Import components with the explicit `.vue` extension.
+There are two suites, and they both use `.spec.js`, so Vitest's `include` is pinned to `src/` to keep them apart.
+
+**Unit tests** are co-located with components (e.g. `src/components/cards/ModifiedCard.spec.js`). They run under Vitest (config in `vite.config.js`, `globals: true` so `describe`/`test`/`expect` need no import) and use `mount()` from `@vue/test-utils` v1 — v2 is Vue 3 only. Import components with the explicit `.vue` extension.
+
+`tests/COVERAGE.md` tracks what the two suites do and do not cover, and which tests are worth writing next. Update it when you add a test or a feature.
+
+**Integration tests** live in `tests/playwright/`, drive a real browser against `npm run dev`, and are the suite that matters most when changing the framework, since they assert on rendered behaviour rather than on Vue internals. Page objects are in `tests/playwright/pages/`; locate elements with `data-testid` rather than CSS classes or positions. The shared fixture in `tests/playwright/fixtures/index.js` mocks the JPhyloRef reasoner and aborts Open Tree of Life requests, so the suite never depends on an external service.

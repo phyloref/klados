@@ -8,6 +8,7 @@
         <a
           class="form-control-plaintext"
           href="javascript:;"
+          :data-testid="`citation-add-${citationKey}`"
           @click="citations.push({})"
         >
           Add citation
@@ -19,6 +20,7 @@
             type="text"
             readonly
             class="form-control hand-cursor"
+            :data-testid="`citation-summary-${citationKey}-${citationIndex}`"
             :value="wrappedCitation(citation).toString() || 'Empty citation, click to enter'"
             @click="toggleCitationExpanded(citationIndex)"
           >
@@ -46,6 +48,7 @@
             <a
               class="btn btn-danger"
               href="javascript:;"
+              :data-testid="`citation-delete-${citationKey}-${citationIndex}`"
               @click="deleteCitation(citationIndex)"
             >
               <b-icon icon="trash" />
