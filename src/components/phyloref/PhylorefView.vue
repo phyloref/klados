@@ -168,7 +168,7 @@
               data-testid="add-internal-specifier"
               @click="$store.commit('addInternalSpecifier', { phyloref: selectedPhyloref })"
             >
-              <b-icon-plus-square />
+              <FontAwesomeIcon icon="plus-square" />
             </button>
             <h5>Internal specifiers</h5>
           </div>
@@ -202,7 +202,7 @@
               data-testid="add-external-specifier"
               @click="$store.commit('addExternalSpecifier', { phyloref: selectedPhyloref })"
             >
-              <b-icon-plus-square />
+              <FontAwesomeIcon icon="plus-square" />
             </button>
             <h5>External specifiers</h5>
           </div>
@@ -237,7 +237,7 @@
                 href="javascript:;"
                 @click="hasApomorphy = !hasApomorphy"
               >
-                <b-icon-check-square />
+                <FontAwesomeIcon icon="check-square" />
               </button>
               <button
                 v-if="!hasApomorphy"
@@ -245,7 +245,7 @@
                 href="javascript:;"
                 @click="hasApomorphy = !hasApomorphy"
               >
-                <b-icon-square />
+                <FontAwesomeIcon icon="square" />
               </button>
               Apomorphy
             </h5>
@@ -555,9 +555,11 @@
 import { mapState } from 'vuex';
 import { has } from 'lodash';
 import { PhylogenyWrapper } from '@phyloref/phyx';
-import {
-  BIconSquare, BIconCheckSquare, BIconPlusSquare,
-} from 'bootstrap-vue';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faSquare, faCheckSquare, faPlusSquare } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+
+library.add(faSquare, faCheckSquare, faPlusSquare);
 
 import ModifiedCard from '../cards/ModifiedCard.vue';
 import PhyloTree from '../phylogeny/PhyloTree.vue';
@@ -572,9 +574,7 @@ export default {
     PhyloTree,
     CitationEditor,
     SpecifierEditor,
-    BIconSquare,
-    BIconCheckSquare,
-    BIconPlusSquare,
+    FontAwesomeIcon,
   },
   data() {
     return {

@@ -111,7 +111,7 @@
                   class="btn btn-sm btn-danger"
                   @click="deletePhyloref(phyloref)"
                 >
-                  <b-icon-trash></b-icon-trash>
+                  <FontAwesomeIcon icon="trash" />
                 </button>
               </td>
               <td>
@@ -257,20 +257,14 @@
           >
             Export as CSV
           </button>
-          <b-popover
-            target="export-as-csv-button"
-            triggers="hover"
-            placement="bottom"
-          >
-            <!-- <template #title>Popover Title</template> -->
-            The CSV export format is
-            <a
-              target="documentation"
-              href="https://github.com/phyloref/klados/blob/master/docs/ExportFormats.md#summary-table-csv-export"
-              >documented</a
-            >.
-          </b-popover>
         </div>
+        <small class="form-text text-muted">
+          The CSV export format is
+          <a
+            target="documentation"
+            href="https://github.com/phyloref/klados/blob/master/docs/ExportFormats.md#summary-table-csv-export"
+          >documented</a>.
+        </small>
       </div>
     </div>
 
@@ -298,7 +292,7 @@
                   class="btn btn-sm btn-danger"
                   @click="deletePhylogeny(phylogeny)"
                 >
-                  <b-icon-trash></b-icon-trash>
+                  <FontAwesomeIcon icon="trash" />
                 </button>
               </td>
               <td>
@@ -388,7 +382,11 @@ import { stringify } from "csv-stringify/browser/esm";
 import { mapState } from "vuex";
 import { has, max, range } from "lodash";
 import { saveAs } from "filesaver.js-npm";
-import { BIconTrash } from "bootstrap-vue";
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+
+library.add(faTrash);
 import {
   PhylorefWrapper,
   PhylogenyWrapper,
@@ -402,7 +400,7 @@ export default {
   name: "PhyxView",
   components: {
     PhyloTree,
-    BIconTrash,
+    FontAwesomeIcon,
   },
   computed: {
     nomenCodes: () => TaxonNameWrapper.getNomenclaturalCodes(),

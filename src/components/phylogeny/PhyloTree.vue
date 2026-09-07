@@ -16,7 +16,7 @@
     <div v-else class="phylotreeContainer">
       <div :id="'phylogeny' + phylogenyIndex" class="col-md-12 phylogeny" />
       <ResizeObserver @notify="redrawTree" />
-      <b-btn-group class="my-2">
+      <div class="btn-group my-2" role="group">
         <button
           type="button"
           class="btn btn-primary"
@@ -27,7 +27,7 @@
         >
           Download as Nexus
         </button>
-      </b-btn-group>
+      </div>
     </div>
   </div>
 </template>

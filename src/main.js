@@ -9,10 +9,8 @@ import 'phylotree/dist/phylotree.css';
 
 // Import Bootstrap.
 import 'bootstrap';
-import BootstrapVue from 'bootstrap-vue';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap-vue/dist/bootstrap-vue.min.css';
 
 // Use vue-resize to track when phylogenies are resized.
 import VueResize from 'vue-resize';
@@ -36,7 +34,6 @@ globalThis.Buffer = Buffer;
 // Vue.prototype.$config = require('./config.js');
 
 // Add additional features to Vue.
-Vue.use(BootstrapVue);
 Vue.use(VueResize);
 Vue.use(VueCookies);
 
