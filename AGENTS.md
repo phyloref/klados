@@ -13,6 +13,8 @@ npm run test      # Vitest (jsdom) over the co-located .spec.js files
 
 The code is not Prettier-formatted, and nothing enforces formatting: `eslint.config.mjs` uses `skip-formatting`, which turns off ESLint's style rules. `.prettierrc.json` sets single quotes and ES5 trailing commas, the Prettier options closest to the existing style, so an editor's format-on-save doesn't also swap every quote. Prettier still rewraps most files (long lines, leading `||`), so don't run `prettier --write` over whole files that a change doesn't otherwise touch.
 
+The `engines.node` range in `package.json` is the narrowest `engines.node` range among the locked dependencies (currently jsdom's). npm only warns (`EBADENGINE`) when a dependency rejects the running Node, so a looser range lets `npm run test` or `npm run lint` fail on a Node that `package.json` claims to support. `engines.spec.js` fails when a dependency upgrade makes the range too wide, and lists the packages that reject it. Narrow the range to match them.
+
 ## Architecture
 
 Klados is a Vue 2 single-page application for authoring and curating **phyloreferences** — OWL 2 ontology definitions of monophyletic groups in JSON-LD ([Phyx](https://github.com/phyloref/phyx.js) format). Users load/create Phyx files containing phyloreferences, define phyloreferences with specifiers, and test them against phylogenies via the JPhyloRef reasoner backend.
