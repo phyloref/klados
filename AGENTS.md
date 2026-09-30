@@ -52,6 +52,12 @@ Vue 2 hid both of these, because `Vue.set` notified every watcher that had
 touched the object at all. Nothing in the compiler or the linter catches them —
 only a test that asserts the screen updated.
 
+This only matters where Vue is tracking: templates, computed properties, Vuex
+getters, and methods a template calls. `has()` is fine in mutations, actions,
+event handlers, the D3 drawing code in `PhyloTree`, and on objects built fresh
+rather than taken from the store (a parsed Newick tree, a request payload).
+#413 sorted every call in the codebase this way.
+
 **Key dependencies:**
 - `@phyloref/phyx` — Phyx format classes and utilities (the data model)
 - `phylotree` — D3-based phylogenetic tree visualization
