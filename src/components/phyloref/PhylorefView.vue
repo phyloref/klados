@@ -235,6 +235,8 @@
                 v-if="hasApomorphy"
                 data-testid="apomorphy-toggle-on"
                 class="btn btn-secondary btn-sm float-right"
+                aria-label="Remove apomorphy"
+                title="Remove apomorphy"
                 href="javascript:;"
                 @click="hasApomorphy = !hasApomorphy"
               >
@@ -244,6 +246,8 @@
                 v-if="!hasApomorphy"
                 data-testid="apomorphy-toggle-off"
                 class="btn btn-secondary btn-sm float-right"
+                aria-label="Add apomorphy"
+                title="Add apomorphy"
                 href="javascript:;"
                 @click="hasApomorphy = !hasApomorphy"
               >

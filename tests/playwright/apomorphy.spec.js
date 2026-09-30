@@ -38,8 +38,10 @@ test.describe('Apomorphy', () => {
       'Invalid definition (single internal specifier cannot be resolved)'
     );
 
-    // A new phyloreference has no apomorphy.
+    // A new phyloreference has no apomorphy. The toggle holds only an icon, so
+    // its accessible name is what tells a screen reader what it does.
     await expect(toggleOff).toBeVisible();
+    await expect(toggleOff).toHaveAccessibleName('Add apomorphy');
     await expect(toggleOn).toHaveCount(0);
     await expect(noApomorphy).toBeVisible();
     await expect(definition).toHaveCount(0);
@@ -47,6 +49,7 @@ test.describe('Apomorphy', () => {
     // Turning it on shows the fields and flips the toggle.
     await toggleOff.click();
     await expect(toggleOn).toBeVisible();
+    await expect(toggleOn).toHaveAccessibleName('Remove apomorphy');
     await expect(toggleOff).toHaveCount(0);
     await expect(noApomorphy).toHaveCount(0);
     await expect(definition).toBeVisible();
