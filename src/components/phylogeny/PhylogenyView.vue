@@ -215,7 +215,6 @@
  * This view displays a phylogeny and changes its title or Newick string.
  */
 
-import { has } from 'lodash';
 import { mapState } from 'vuex';
 import { parse as parseNewick } from 'newick-js';
 
@@ -296,7 +295,10 @@ export default {
       //
       // We try to order errors from most helpful ('Unbalanced parentheses in
       // Newick string') to least helpful ('Error parsing phylogeny').
-      if (!has(this.selectedPhylogeny, 'newick')) return [];
+      // A plain property read, not lodash has(): a new phylogeny has no `newick`
+      // key, and Vue 3 only re-runs this once it is added if the read is tracked
+      // (see "Reactivity" in AGENTS.md).
+      if (this.selectedPhylogeny.newick === undefined) return [];
       const newickTrimmed = this.selectedPhylogeny.newick.trim();
       const errors = [];
 
