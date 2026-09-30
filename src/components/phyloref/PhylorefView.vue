@@ -438,7 +438,7 @@
                     </a>
                     <a
                       v-for="nodeLabel of getNodeLabels(phylogeny, 'internal')"
-                      :key="nodeLabel"
+                      :key="`internal-${nodeLabel}`"
                       class="dropdown-item"
                       :class="{active: getExpectedNodeLabel(phylogeny) === nodeLabel}"
                       href="#selected-phyloref"
@@ -452,7 +452,7 @@
                     </a>
                     <a
                       v-for="nodeLabel of getNodeLabels(phylogeny, 'terminal')"
-                      :key="nodeLabel"
+                      :key="`terminal-${nodeLabel}`"
                       class="dropdown-item"
                       :class="{active: getExpectedNodeLabel(phylogeny) === nodeLabel}"
                       href="#selected-phyloref"
