@@ -53,6 +53,10 @@ test.describe('Basic demo — Brochu 2003', () => {
     await sidebar.clickPhyloref(0);
     // The phyloref view shows the expected label in #current_expected_label_phylogeny_0.
     await expect(page.locator('#current_expected_label_phylogeny_0')).toContainText('Alligatoridae');
+    // The expected and resolved node fields are found by their labels, as a
+    // screen reader would announce them.
+    await expect(page.getByLabel('Expected nodes')).toHaveValue('Alligatoridae');
+    await expect(page.getByLabel('Actual resolved nodes')).toHaveValue(/\("Alligatoridae"\)$/);
 
     // Navigate to Crocodylidae (phyloref index 4) and check expected node.
     await sidebar.clickPhyloref(4);

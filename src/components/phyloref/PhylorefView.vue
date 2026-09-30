@@ -388,7 +388,7 @@
             <div class="form-group row">
               <!-- Node(s) this phyloreference is expected to resolve to -->
               <label
-                for="expected-nodes"
+                :for="'expected-nodes-' + phylogenyIndex"
                 class="col-form-label col-md-2"
               >
                 Expected nodes
@@ -409,6 +409,7 @@
                 <template v-if="!getExpectedNodeLabel(phylogeny)">
                   <!-- We matched no nodes -->
                   <input
+                    :id="'expected-nodes-' + phylogenyIndex"
                     readonly
                     type="text"
                     class="form-control"
@@ -419,6 +420,7 @@
                 <template v-if="getExpectedNodeLabel(phylogeny)">
                   <!-- We matched exactly one node -->
                   <input
+                    :id="'expected-nodes-' + phylogenyIndex"
                     readonly
                     type="text"
                     class="form-control"
@@ -429,7 +431,7 @@
                 <!-- Display a dropdown menu that allows the modified label to be changed. -->
                 <div class="input-group-append">
                   <button
-                    id="expected-nodes-dropdown"
+                    :id="'expected-nodes-dropdown-' + phylogenyIndex"
                     type="button"
                     class="btn btn-outline-secondary dropdown-toggle"
                     data-toggle="dropdown"
@@ -440,7 +442,7 @@
                   </button>
                   <div
                     class="dropdown-menu dropright"
-                    aria-labelledby="expected-nodes-dropdown"
+                    :aria-labelledby="'expected-nodes-dropdown-' + phylogenyIndex"
                     style="height: 30em; overflow: visible scroll;"
                   >
                     <a class="dropdown-header">
@@ -476,7 +478,7 @@
 
               <!-- Node(s) this phyloreference actually resolved to -->
               <label
-                for="actual-nodes"
+                :for="'actual-nodes-' + phylogenyIndex"
                 class="col-form-label col-md-2 pb-2"
               >
                 Actual resolved nodes
@@ -496,6 +498,7 @@
                 <!-- Display the matching node(s) -->
                 <template v-if="!$store.state.resolution.reasoningResults">
                   <input
+                    :id="'actual-nodes-' + phylogenyIndex"
                     readonly
                     type="text"
                     class="form-control"
@@ -506,6 +509,7 @@
                   <template v-if="getResolvedNodeLabels(phylogeny).length === 0">
                     <!-- We matched no nodes -->
                     <input
+                      :id="'actual-nodes-' + phylogenyIndex"
                       readonly
                       type="text"
                       class="form-control"
@@ -515,6 +519,7 @@
                   <template v-if="getResolvedNodeLabels(phylogeny).length === 1">
                     <!-- We matched exactly one node -->
                     <input
+                      :id="'actual-nodes-' + phylogenyIndex"
                       readonly
                       type="text"
                       class="form-control"
@@ -524,6 +529,7 @@
                   <template v-if="getResolvedNodeLabels(phylogeny).length > 1">
                     <!-- We matched more than one node -->
                     <input
+                      :id="'actual-nodes-' + phylogenyIndex"
                       readonly
                       type="text"
                       class="form-control"
