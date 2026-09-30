@@ -412,6 +412,7 @@
                     readonly
                     type="text"
                     class="form-control"
+                    :data-testid="'expected-node-label-' + phylogenyIndex"
                     :value="'No node labeled \'' + selectedPhylorefLabel + '\' found in phylogeny'"
                   >
                 </template>
@@ -422,6 +423,7 @@
                     readonly
                     type="text"
                     class="form-control"
+                    :data-testid="'expected-node-label-' + phylogenyIndex"
                     :value="getExpectedNodeLabel(phylogeny)"
                   >
                 </template>
@@ -430,6 +432,7 @@
                 <div class="input-group-append">
                   <button
                     id="expected-nodes-dropdown"
+                    :data-testid="'expected-nodes-change-' + phylogenyIndex"
                     type="button"
                     class="btn btn-outline-secondary dropdown-toggle"
                     data-toggle="dropdown"
@@ -440,6 +443,7 @@
                   </button>
                   <div
                     class="dropdown-menu dropright"
+                    :data-testid="'expected-nodes-menu-' + phylogenyIndex"
                     aria-labelledby="expected-nodes-dropdown"
                     style="height: 30em; overflow: visible scroll;"
                   >
