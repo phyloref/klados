@@ -106,7 +106,8 @@ turns up reactivity bugs.
   twice a day, which catches an outage but not a contract change.
 - The integration suite runs on chromium and firefox. There is no webkit run.
 - CI runs the integration tests against the dev server, not the production
-  build. The two differ in ways that matter: Vuex `strict` mode is on only in
-  production, and only the production bundle is minified. Running them against
-  `npm run preview` is a one-line config change and worth adding.
+  build, and only the production bundle is minified. Running them against
+  `npm run preview` is a one-line config change and worth adding. It would not
+  exercise Vuex `strict` mode: that is on only in production, where Vuex compiles
+  its check out (see `src/store/index.js`).
 - Nothing tests accessibility, keyboard navigation, or screen reader output.
