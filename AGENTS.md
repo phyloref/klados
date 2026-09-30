@@ -6,10 +6,12 @@
 npm run dev       # Start Vite dev server (http://localhost:5173/klados/)
 npm run build     # Production build to dist/ (deployed to the gh-pages branch on release)
 npm run preview   # Preview production build on port 4173
-npm run lint      # ESLint with auto-fix (Vue + Prettier)
+npm run lint      # ESLint with auto-fix (Vue rules; no formatting)
 npm run lint:check # ESLint without --fix; this is what CI runs
 npm run test      # Vitest (jsdom) over the co-located .spec.js files
 ```
+
+The code is not Prettier-formatted, and nothing enforces formatting: `eslint.config.mjs` uses `skip-formatting`, which turns off ESLint's style rules. `.prettierrc.json` sets single quotes and ES5 trailing commas, the Prettier options closest to the existing style, so an editor's format-on-save doesn't also swap every quote. Prettier still rewraps most files (long lines, leading `||`), so don't run `prettier --write` over whole files that a change doesn't otherwise touch.
 
 ## Architecture
 
