@@ -6,7 +6,7 @@
 npm run dev       # Start Vite dev server (http://localhost:5173/klados/)
 npm run build     # Production build to dist/ (deployed to the gh-pages branch on release)
 npm run preview   # Preview production build on port 4173
-npm run lint      # ESLint with auto-fix (Vue + Prettier)
+npm run lint      # ESLint with auto-fix (Vue rules; no formatting)
 npm run test      # Vitest (jsdom) over the co-located .spec.js files
 ```
 
