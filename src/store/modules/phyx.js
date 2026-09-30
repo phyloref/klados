@@ -77,8 +77,9 @@ export default {
 
       // Determine all phyloref labels in this document. Non-Latin characters will be replaced with '_' to avoid
       // creating filenames using non-ASCII Unicode characters. As per the UI, unlabeled phylorefs will be referred
-      // to as 'Phyloref 1', 'Phyloref 2', and so on.
-      const phylorefLabels = state.currentPhyx.phylorefs.map((p, index) => (has(p, 'label') ? p.label.replaceAll(/\W/g, '_') : `Phyloref_${index + 1}`));
+      // to as 'Phyloref 1', 'Phyloref 2', and so on. The label is read directly rather than tested with
+      // lodash has(), so that Vue 3 notices it being added (see "Reactivity" in AGENTS.md).
+      const phylorefLabels = state.currentPhyx.phylorefs.map((p, index) => (p.label !== undefined ? p.label.replaceAll(/\W/g, '_') : `Phyloref_${index + 1}`));
 
       // Construct a download filename depending on the number of phylorefs, which is in the form:
       // - Phyloref_1
