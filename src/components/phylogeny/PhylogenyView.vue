@@ -362,11 +362,11 @@ export default {
     },
     terminalLabelsSorted() {
       // Return a list of terminal (i.e. leaf node) labels sorted alphabetically.
-      return new PhylogenyWrapper(this.selectedPhylogeny).getNodeLabels('terminal').sort();
+      return this.getSortedNodeLabels('terminal');
     },
     internalLabelsSorted() {
       // Return a list of internal (i.e. non-leaf node) labels sorted alphabetically.
-      return new PhylogenyWrapper(this.selectedPhylogeny).getNodeLabels('internal').sort();
+      return this.getSortedNodeLabels('internal');
     },
     taxonomicUnitsTable() {
       // Create a table of taxonomic units and their additional taxonomic units found in this phylogeny.
@@ -398,6 +398,17 @@ export default {
     }),
   },
   methods: {
+    getSortedNodeLabels(nodeType) {
+      // getNodeLabels() parses the Newick string and throws if it can't. An
+      // exception here would abort rendering the whole view, including the
+      // panel that explains what is wrong with the string, so treat an
+      // unparseable phylogeny as having no labels.
+      try {
+        return new PhylogenyWrapper(this.selectedPhylogeny).getNodeLabels(nodeType).sort();
+      } catch {
+        return [];
+      }
+    },
     deleteThisPhylogeny() {
       // Delete this phylogeny, and unset the selected phylogeny so we return to the summary page.
       if (confirm('Are you sure you wish to delete this phylogeny? This cannot be undone!')) {
