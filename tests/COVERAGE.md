@@ -44,6 +44,8 @@ service, and nothing verifies that Klados still works against the real ones.
 | Navigate between phyloreferences and phylogenies | `basic-demo`, `save-load` |
 | Add a phylogeny | `editing` |
 | Enter a Newick string and render the tree | `editing` |
+| Newick parse errors on a new phylogeny, and clearing them | `newick-errors` |
+| Set an expected node for the first time, and save it | `expected-resolution` |
 | Rename an internal node from the context menu | `editing` |
 | Add a phyloreference and edit its label | `editing`, `save-load` |
 | Add internal specifiers and fill in a taxon name | `editing` |
@@ -76,11 +78,9 @@ AGENTS.md for the two idioms that cause them.
 | --- | --- | --- |
 | Add and edit a citation | Only deletion is covered; the whole editing form is untested | **High** — same reactivity path |
 | Delete or duplicate a phyloreference or phylogeny | Destructive and unguarded | **High** — `Vue.delete` |
-| Setting expected resolution | Asserted on when loaded from a file, never actually set by a test | Medium |
 | Export as JSON-LD, export as ontology | The formats other tools consume; a silent change breaks downstream users | Low — plain serialisation |
 | Append a local JSON file | Merge semantics are easy to get wrong and have no test | Low |
 | Curator name, email, ORCID; default nomenclatural code | Written to cookies, so they persist wrongly if broken | Medium — cookie plugin |
-| Newick parse error reporting | Error paths are the least exercised by hand | Medium — `v-for` over errors |
 | Create a phylogeny from Open Tree of Life | Depends on a live external API; currently mocked out entirely | Low |
 | Real JPhyloRef reasoner | Everything is mocked; nothing catches a backend contract change | Low — unrelated to Vue |
 
@@ -93,8 +93,6 @@ branch has something underneath it. What is left, in order:
 1. **Citation add and edit.** Deletion is covered; the form is not.
 2. **Delete and duplicate a phyloreference or phylogeny.** Cheap to write and
    destructive if wrong.
-3. **Setting expected resolution.** Asserted on when loaded from a file, never
-   set by a test.
 
 None of these need to block the Vue 3 branch, but 1 and 2 sit on the same
 `Vue.set`/`Vue.delete` paths, so they are worth doing early if the migration

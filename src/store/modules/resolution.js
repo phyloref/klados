@@ -69,21 +69,17 @@ export default {
     },
     getExpectedResolution: (state, getters) => (phyloref, phylogeny) => {
       // Return the expected resolution information for a particular phyloref on
-      // a particular phylogeny.
-      if (!has(phyloref, 'expectedResolution')) return {};
-
-      const phylogenyId = getters.getPhylogenyId(phylogeny);
-      if (has(phyloref.expectedResolution, phylogenyId)) {
-        return phyloref.expectedResolution[phylogenyId];
-      }
-
-      return {};
+      // a particular phylogeny. Plain property reads, not lodash has(): a
+      // phyloref starts with no `expectedResolution`, and Vue 3 only re-runs
+      // whatever called this once it is added if the read is tracked (see
+      // "Reactivity" in AGENTS.md).
+      return phyloref.expectedResolution?.[getters.getPhylogenyId(phylogeny)] ?? {};
     },
     getExpectedNodeLabel: (state, getters) => (phyloref, phylogeny) => {
       // Return a list of nodes that this phyloreference is expected to resolve to.
       const expectedResolution = getters.getExpectedResolution(phyloref, phylogeny);
 
-      if (has(expectedResolution, 'nodeLabel')) {
+      if (expectedResolution.nodeLabel !== undefined) {
         return expectedResolution.nodeLabel;
       }
 
