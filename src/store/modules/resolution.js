@@ -22,15 +22,17 @@ export default {
     // Return a base URI for a given phyloreference.
     getBaseURIForPhyloref: (state, getters, rootState) => phyloref => `#phyloref${rootState.phyx.currentPhyx.phylorefs.indexOf(phyloref)}`,
     // Return the identifier for a given phylogeny. We will use getBaseURIForPhylogeny()
-    // unless one has already been set.
+    // unless one has already been set. The getters in this module read properties
+    // directly rather than testing them with lodash has(), so that Vue 3 tracks a
+    // key being added (see "Reactivity" in AGENTS.md).
     getPhylogenyId: (state, getters) => (phylogeny) => {
-      if (has(phylogeny, '@id')) return phylogeny['@id'];
+      if (phylogeny['@id'] !== undefined) return phylogeny['@id'];
       return getters.getBaseURIForPhylogeny(phylogeny);
     },
     // Return the identifier for a given phyloref. We will use getBaseURIForPhyloref()
     // unless one has already been set.
     getPhylorefId: (state, getters) => (phyloref) => {
-      if (has(phyloref, '@id')) return phyloref['@id'];
+      if (phyloref['@id'] !== undefined) return phyloref['@id'];
       return getters.getBaseURIForPhyloref(phyloref);
     },
     getResolvedNodesForPhylogeny: (state, getters) => (
@@ -45,13 +47,8 @@ export default {
 
       // Do we have reasoning results for this phyloreference?
       const phylorefURI = getters.getPhylorefId(phyloref);
-      if (
-        !has(state.reasoningResults, 'phylorefs')
-         || !has(state.reasoningResults.phylorefs, phylorefURI)
-      ) return [];
-
-      // Identify the resolved nodes.
-      const nodesResolved = state.reasoningResults.phylorefs[phylorefURI];
+      const nodesResolved = state.reasoningResults?.phylorefs?.[phylorefURI];
+      if (nodesResolved === undefined) return [];
       const phylogenyURI = getters.getPhylogenyId(phylogeny);
 
       // We look for the phylogeny URI (e.g. "#phylogeny1") in the node resolved

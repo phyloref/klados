@@ -464,14 +464,10 @@ export default {
       );
     },
     hasReasoningResults(phyloref) {
-      if (!has(this.$store.state.resolution.reasoningResults, "phylorefs"))
-        return false;
-
+      // A plain property read, not lodash has(), so that Vue 3 tracks it (see
+      // "Reactivity" in AGENTS.md).
       const phylorefURI = this.$store.getters.getPhylorefId(phyloref);
-      return has(
-        this.$store.state.resolution.reasoningResults.phylorefs,
-        phylorefURI
-      );
+      return this.$store.state.resolution.reasoningResults?.phylorefs?.[phylorefURI] !== undefined;
     },
     getPhylorefExpectedNodeLabel(phyloref, phylogeny) {
       // Return a list of nodes that a phyloreference is expected to resolve to.
