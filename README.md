@@ -41,6 +41,10 @@ npm run test
 npm run lint
 ```
 
+ESLint checks for code problems but not formatting, and Prettier is not
+run on this codebase. `.prettierrc.json` only keeps editors that format on
+save close to the existing style. See [AGENTS.md](AGENTS.md#commands).
+
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
