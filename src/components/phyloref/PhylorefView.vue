@@ -233,6 +233,7 @@
             <h5>
               <button
                 v-if="hasApomorphy"
+                data-testid="apomorphy-toggle-on"
                 class="btn btn-secondary btn-sm float-right"
                 href="javascript:;"
                 @click="hasApomorphy = !hasApomorphy"
@@ -241,6 +242,7 @@
               </button>
               <button
                 v-if="!hasApomorphy"
+                data-testid="apomorphy-toggle-off"
                 class="btn btn-secondary btn-sm float-right"
                 href="javascript:;"
                 @click="hasApomorphy = !hasApomorphy"
