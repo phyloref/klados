@@ -12,6 +12,8 @@ npm run test      # Vitest (jsdom) over the co-located .spec.js files
 
 `npm run lint` currently reports pre-existing errors (unused imports, missing `v-for` keys); it is not yet clean.
 
+The `engines.node` range in `package.json` is the narrowest `engines.node` range among the locked dependencies (currently jsdom's). npm only warns (`EBADENGINE`) when a dependency rejects the running Node, so a looser range lets `npm run test` or `npm run lint` fail on a Node that `package.json` claims to support. When upgrading dependencies, re-check the `engines.node` ranges in `package-lock.json` and narrow this one to match.
+
 ## Architecture
 
 Klados is a Vue 2 single-page application for authoring and curating **phyloreferences** — OWL 2 ontology definitions of monophyletic groups in JSON-LD ([Phyx](https://github.com/phyloref/phyx.js) format). Users load/create Phyx files containing phyloreferences, define phyloreferences with specifiers, and test them against phylogenies via the JPhyloRef reasoner backend.
