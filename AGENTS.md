@@ -12,7 +12,9 @@ npm run test      # Vitest (jsdom) over the co-located .spec.js files in src/
 npm run test:e2e  # Playwright integration tests in tests/playwright/
 ```
 
-The code is not Prettier-formatted, and nothing enforces formatting: `eslint.config.mjs` uses `skip-formatting`, which turns off ESLint's style rules. `.prettierrc.json` sets single quotes and ES5 trailing commas, the Prettier options closest to the existing style, so an editor's format-on-save doesn't also swap every quote. Prettier still rewraps most files (long lines, leading `||`), so don't run `prettier --write` over whole files that a change doesn't otherwise touch.
+ESLint and Prettier do different jobs here, and only ESLint runs. ESLint catches code problems (unused variables, missing `:key`s, mutated props) and is enforced in CI. It does not check formatting: `eslint.config.mjs` uses `skip-formatting`, which turns off ESLint's style rules on the assumption that a formatter owns style. Prettier is that formatter, but no script or CI step runs it, and the code is not Prettier-formatted, so nothing enforces formatting.
+
+`.prettierrc.json` exists only for editors that run Prettier on save. Without it Prettier 3 defaults to double quotes, so a format-on-save swapped every quote in the file. It sets single quotes and ES5 trailing commas, the options closest to the existing style. Don't delete it while Prettier isn't enforced. Prettier still rewraps most files (long lines, leading `||`), so don't run `prettier --write` over whole files that a change doesn't otherwise touch. Adopting Prettier properly means a one-off reformat commit listed in `.git-blame-ignore-revs` plus a `prettier --check` step in CI, as its own PR.
 
 The `engines.node` range in `package.json` is the narrowest `engines.node` range among the locked dependencies (currently jsdom's). npm only warns (`EBADENGINE`) when a dependency rejects the running Node, so a looser range lets `npm run test` or `npm run lint` fail on a Node that `package.json` claims to support. `engines.spec.js` fails when a dependency upgrade makes the range too wide, and lists the packages that reject it. Narrow the range to match them.
 
