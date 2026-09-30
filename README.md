@@ -20,16 +20,22 @@ npm install
 
 ### Compiles and hot-reloads for development
 ```
-npm run serve
+npm run dev
 ```
+
+This serves Klados at http://localhost:5173/klados/.
 
 ### Compiles and minifies for production
 ```
 npm run build
 ```
 
-This will store compiled files into the `docs/` folder, allowing it to be
-immediately published on Github Pages.
+This writes the compiled site into `dist/`, with asset paths under
+`/klados/` (the `base` in `vite.config.js`) so it can be served from
+GitHub Pages. Publishing a release runs
+`.github/workflows/deploy-to-github-pages.yml`, which builds the site
+and deploys `dist/` to the `gh-pages` branch. `npm run preview` serves
+the built site locally.
 
 ### Run your tests
 ```
@@ -41,8 +47,12 @@ npm run test
 npm run lint
 ```
 
+ESLint checks for code problems but not formatting, and Prettier is not
+run on this codebase. `.prettierrc.json` only keeps editors that format on
+save close to the existing style. See [AGENTS.md](AGENTS.md#commands).
+
 ### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+See the [Vite configuration reference](https://vite.dev/config/).
 
   [phyloreferences]: http://phyloref.org
   [Phyx format]: https://github.com/phyloref/phyx.js/wiki/Phyx-format
