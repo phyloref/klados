@@ -37,7 +37,7 @@
  * the expecting and reasoned clade for a particular phyloreference.
  */
 
-import { uniqueId, has } from "lodash";
+import { uniqueId, has, cloneDeep } from "lodash";
 import { phylotree, newickParser } from "phylotree";
 import jQuery from "jquery";
 import { PhylogenyWrapper, PhylorefWrapper } from "@phyloref/phyx";
@@ -121,7 +121,9 @@ export default {
     },
     parsedNewick() {
       try {
-        return new PhylogenyWrapper(this.phylogeny).getParsedNewickWithIRIs(
+        // cloneDeep() so that Vue 3 tracks everything the wrapper reads, including
+        // its internal has() checks (see "Reactivity" in AGENTS.md).
+        return new PhylogenyWrapper(cloneDeep(this.phylogeny)).getParsedNewickWithIRIs(
           this.$store.getters.getPhylogenyId(this.phylogeny),
           newickParser
         );
