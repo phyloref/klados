@@ -15,7 +15,7 @@
  * https://github.com/phyloref/clade-ontology/issues/69).
  */
 
-import { has, isEmpty, isString } from 'lodash';
+import { isEmpty, isString } from 'lodash';
 import { CitationWrapper } from '@phyloref/phyx';
 
 function isNonEmptyString(str) {
@@ -28,6 +28,10 @@ function isNonEmptyString(str) {
 
 class CitationModel {
   // Wraps a Citation in a Phyx document. Should be moved to phyx.js.
+  //
+  // CitationEditor's template reads these getters, so they test fields by reading
+  // them (`this.citation.editors === undefined`) rather than with lodash has(),
+  // which Vue 3 does not track (see "Reactivity" in AGENTS.md).
 
   constructor(citation) {
     // Store the citation we're wrapping.
@@ -44,7 +48,7 @@ class CitationModel {
     // Return a list of authors (as author objects) for this citation.
     const citation = this.citation;
 
-    if (has(citation, 'authors')) {
+    if (citation.authors !== undefined) {
       // Is there more than one author?
       if (Array.isArray(citation.authors)) {
         return citation.authors;
@@ -75,7 +79,7 @@ class CitationModel {
 
   get editorsAsStrings() {
     // Return a list of editor names.
-    if (!has(this.citation, 'editors')) return [];
+    if (this.citation.editors === undefined) return [];
     return this.citation.editors.map(editor => CitationWrapper.getAgentName(editor));
   }
 
@@ -87,7 +91,7 @@ class CitationModel {
 
   get seriesEditorsAsStrings() {
     // Return a list of series editor names.
-    if (!has(this.citation, 'series_editors')) return [];
+    if (this.citation.series_editors === undefined) return [];
     return this.citation.series_editors.map(editor => CitationWrapper.getAgentName(editor));
   }
 
@@ -101,7 +105,7 @@ class CitationModel {
     // Returns a list of identifiers for this citation.
     const citation = this.citation;
 
-    if (has(citation, 'identifier')) {
+    if (citation.identifier !== undefined) {
       // Are there more than one identifier?
       if (Array.isArray(citation.identifier)) {
         return citation.identifier;
@@ -123,14 +127,14 @@ class CitationModel {
   get doisAsStrings() {
     // Return a list of DOIs for this citation.
     return this.identifiers
-      .filter(id => has(id, 'type') && id.type === 'doi' && has(id, 'id') && !isEmpty(id.id))
+      .filter(id => id.type === 'doi' && !isEmpty(id.id))
       .map(id => id.id);
   }
 
   set doisAsStrings(dois) {
     this.identifiers = this.identifiers
       // Remove all current DOIs while leaving other identifiers untouched.
-      .filter(id => has(id, 'type') && id.type !== 'doi')
+      .filter(id => id.type !== undefined && id.type !== 'doi')
       // Replace them with the provided DOIs.
       .concat(dois.filter(isNonEmptyString).map(doi => ({ type: 'doi', id: doi })));
   }
@@ -138,7 +142,7 @@ class CitationModel {
   get isbns() {
     // Return a list of ISBNs for this citation.
     return this.identifiers.map((identifier) => {
-      if (has(identifier, 'type') && identifier.type === 'isbn' && has(identifier, 'id') && !isEmpty(identifier.id)) {
+      if (identifier.type === 'isbn' && !isEmpty(identifier.id)) {
         return [identifier.id];
       }
 
@@ -149,14 +153,14 @@ class CitationModel {
   set isbns(isbns) {
     // Set a list of ISBNs for this citation.
     this.identifiers = this.identifiers
-      .filter(identifier => has(identifier, 'type') && identifier.type !== 'isbn')
+      .filter(identifier => identifier.type !== undefined && identifier.type !== 'isbn')
       .concat(isbns.filter(isNonEmptyString).map(isbn => ({ type: 'isbn', id: isbn })));
   }
 
   get issns() {
     // Return a list of ISSNs for this citation.
     return this.identifiers.map((identifier) => {
-      if (has(identifier, 'type') && identifier.type === 'issn' && has(identifier, 'id') && !isEmpty(identifier.id)) {
+      if (identifier.type === 'issn' && !isEmpty(identifier.id)) {
         return [identifier.id];
       }
 
@@ -167,7 +171,7 @@ class CitationModel {
   set issns(issns) {
     // Set a list of ISSNs for this citation.
     this.identifiers = this.identifiers
-      .filter(identifier => has(identifier, 'type') && identifier.type !== 'issn')
+      .filter(identifier => identifier.type !== undefined && identifier.type !== 'issn')
       .concat(issns.filter(isNonEmptyString).map(issn => ({ type: 'issn', id: issn })));
   }
 
@@ -180,7 +184,7 @@ class CitationModel {
 
   get urlsAsStrings() {
     // Return a list of URLs in this citation.
-    if (has(this.citation, 'link')) return this.citation.link.map(link => link.url);
+    if (this.citation.link !== undefined) return this.citation.link.map(link => link.url);
     return [];
   }
 
@@ -207,7 +211,7 @@ class CitationModel {
     if (this.issns.length > 0) return `https://www.worldcat.org/search?q=n2%3A${encodeURI(this.issns[0])}`;
 
     // If all else fails, try title searches.
-    if (has(this.citation, 'type') && has(this.citation, 'title')) {
+    if (this.citation.type !== undefined && this.citation.title !== undefined) {
       // We should check articles against CrossRef.
       if (this.citation.type === 'article') return `https://search.crossref.org/?q=${encodeURI(this.citation.title)}`;
 
@@ -221,7 +225,7 @@ class CitationModel {
   get journal() {
     // Return the journal of this citation. If one doesn't exist, create it and
     // return it.
-    if (has(this.citation, 'journal')) return this.citation.journal;
+    if (this.citation.journal !== undefined) return this.citation.journal;
     this.citation.journal = {};
     return this.citation.journal;
   }
