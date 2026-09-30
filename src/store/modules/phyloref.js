@@ -70,8 +70,11 @@ export default {
       return 'Invalid definition (must have at least one internal specifier)';
     },
 
-    /** Returns true if a particular phyloref should be considered an apomorphy-based phyloref. */
-    isApomorphyBasedPhyloref: () => phyloref => has(phyloref, 'apomorphy') && has(phyloref.apomorphy, 'definition'),
+    /**
+     * Returns true if a particular phyloref should be considered an apomorphy-based phyloref.
+     * A plain property read, not lodash has(), so that Vue 3 tracks it (see "Reactivity" in AGENTS.md).
+     */
+    isApomorphyBasedPhyloref: () => phyloref => phyloref.apomorphy?.definition !== undefined,
   },
   mutations: {
     setPhylorefProps(state, payload) {

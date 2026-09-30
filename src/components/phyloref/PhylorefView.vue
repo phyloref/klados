@@ -641,8 +641,9 @@ export default {
     },
     hasApomorphy: {
       get() {
-        // Return true if this phyloref includes an apomorphy.
-        return has(this.selectedPhyloref, 'apomorphy');
+        // Return true if this phyloref includes an apomorphy. A plain property read, not
+        // lodash has(), so that Vue 3 tracks it (see "Reactivity" in AGENTS.md).
+        return this.selectedPhyloref.apomorphy !== undefined;
         // return this.$store.getters.isApomorphyBasedPhyloref(this.selectedPhyloref);
       },
       set(flag) {
