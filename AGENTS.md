@@ -65,7 +65,7 @@ only a test that asserts the screen updated.
 - Open Tree of Life TNRS and induced-subtree API endpoints
 - Cookie settings (30-day expiry) for curator name and nomenclatural code
 
-**Base path** is `/klados/` (set in `vite.config.js`) for GitHub Pages deployment. The `VITE_APP_VERSION` env variable is injected from the git tag during CI builds.
+**Base path** is `/klados/` (set in `vite.config.mjs`) for GitHub Pages deployment. The `VITE_APP_VERSION` env variable is injected from the git tag during CI builds.
 
 ## Deployment
 
@@ -78,7 +78,7 @@ only a test that asserts the screen updated.
 
 There are two suites, and they both use `.spec.js`, so Vitest's `include` is pinned to `src/` to keep them apart.
 
-**Unit tests** are co-located with components (e.g. `src/components/cards/ModifiedCard.spec.js`). They run under Vitest (config in `vite.config.js`, `globals: true` so `describe`/`test`/`expect` need no import) and use `mount()` from `@vue/test-utils` v1 — v2 is Vue 3 only. Import components with the explicit `.vue` extension.
+**Unit tests** are co-located with components (e.g. `src/components/cards/ModifiedCard.spec.js`). They run under Vitest (config in `vite.config.mjs`, `globals: true` so `describe`/`test`/`expect` need no import) and use `mount()` from `@vue/test-utils` v1 — v2 is Vue 3 only. Import components with the explicit `.vue` extension.
 
 `tests/COVERAGE.md` tracks what the two suites do and do not cover, and which tests are worth writing next. Update it when you add a test or a feature.
 
