@@ -54,6 +54,8 @@ service, and nothing verifies that Klados still works against the real ones.
 | Save to JSON and read the file back | `save-load` |
 | Load a Phyx file from local disk | `save-load` |
 | Delete a citation, and its absence from the saved file | `citations` |
+| Add a citation and fill in authors, title, year and editors | `citation-editing` |
+| Download filename after labelling a new phyloreference | `download-filename` |
 | Specifiers as taxon, specimen and external reference | `specifier-types` |
 | Delete a specifier | `specifier-types` |
 | Add and edit a taxonomic unit on a phylogeny node | `taxonomic-units` |
@@ -76,7 +78,7 @@ AGENTS.md for the two idioms that cause them.
 
 | Behaviour | Why it matters | Vue 3 risk |
 | --- | --- | --- |
-| Add and edit a citation | Only deletion is covered; the whole editing form is untested | **High** — same reactivity path |
+| Citation identifiers, journal, publisher and URLs | Only authors, title, year and editors are exercised | Medium — same reactivity path |
 | Delete or duplicate a phyloreference or phylogeny | Destructive and unguarded | **High** — `Vue.delete` |
 | Export as JSON-LD, export as ontology | The formats other tools consume; a silent change breaks downstream users | Low — plain serialisation |
 | Append a local JSON file | Merge semantics are easy to get wrong and have no test | Low |
@@ -88,15 +90,10 @@ AGENTS.md for the two idioms that cause them.
 
 The three highest-risk gaps — specifier kinds and deletion, taxonomic units on
 phylogeny nodes, and the `b-table` row details — are now covered, so the Vue 3
-branch has something underneath it. What is left, in order:
-
-1. **Citation add and edit.** Deletion is covered; the form is not.
-2. **Delete and duplicate a phyloreference or phylogeny.** Cheap to write and
-   destructive if wrong.
-
-None of these need to block the Vue 3 branch, but 1 and 2 sit on the same
-`Vue.set`/`Vue.delete` paths, so they are worth doing early if the migration
-turns up reactivity bugs.
+branch has something underneath it. What is left first:
+**deleting and duplicating a phyloreference or phylogeny**. It is cheap to write,
+destructive if wrong, and sits on the same `Vue.set`/`Vue.delete` paths the
+migration rewrote.
 
 ## Known gaps in how we test, not what we test
 
