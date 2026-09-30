@@ -18,8 +18,8 @@ export const OPEN_TREE_TNRS_MATCH_NAMES_URL = 'https://api.opentreeoflife.org/v3
 // (https://github.com/OpenTreeOfLife/germinator/wiki/Synthetic-tree-API-v3#induced_subtree)
 export const OPEN_TREE_INDUCED_SUBTREE_URL = 'https://api.opentreeoflife.org/v3/tree_of_life/induced_subtree';
 
-// The default cookie expiry setting (see https://www.npmjs.com/package/vue-cookies for formats)
-export const COOKIE_EXPIRY = '30d'; // Expire cookies in 30 days
+// How long cookies set by Klados last, in days.
+export const COOKIE_EXPIRY_DAYS = 30;
 
 // Cookie names to use for:
 // - the 'allowed' cookie -- if set to 'true', this means that the user has granted us permission

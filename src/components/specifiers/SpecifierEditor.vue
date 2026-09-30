@@ -97,7 +97,7 @@
           data-testid="specifier-delete"
           @click="deleteSpecifier()"
         >
-          <b-icon-trash></b-icon-trash>
+          <FontAwesomeIcon icon="trash" />
         </button>
       </div>
     </div>
@@ -396,7 +396,11 @@
  * - `phylogeny` and `nodeLabel` when the taxonomic unit to be edited is part of a phylogeny.
  */
 
-import { BIconTrash } from 'bootstrap-vue';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+
+library.add(faTrash);
 import {
   PhylorefWrapper,
   TaxonomicUnitWrapper,
@@ -410,7 +414,7 @@ export default {
   name: 'SpecifierEditor',
   components: {
     /* A "trash" icon for deleting this specifier. */
-    BIconTrash,
+    FontAwesomeIcon,
   },
   props: {
     /* The specifier to display and edit. */

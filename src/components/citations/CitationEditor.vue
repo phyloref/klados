@@ -14,8 +14,8 @@
           Add citation
         </a>
       </template>
-      <template v-for="(citation, citationIndex) of citations">
-        <div class="input-group" :key="`citation-${citationIndex}`">
+      <template v-for="(citation, citationIndex) of citations" :key="citationIndex">
+        <div class="input-group">
           <input
             type="text"
             readonly
@@ -51,12 +51,11 @@
               :data-testid="`citation-delete-${citationKey}-${citationIndex}`"
               @click="deleteCitation(citationIndex)"
             >
-              <b-icon icon="trash" />
+              <FontAwesomeIcon icon="trash" />
             </a>
           </div>
         </div>
         <div
-          :key="`citation-body-${citationIndex}`"
           v-if="citationsExpanded.includes(citationIndex)"
           class="card mt-1"
         >
@@ -504,7 +503,11 @@
  * Displays a citation as a textfield/expanded field.
  */
 
-import { BIcon } from 'bootstrap-vue';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+
+library.add(faTrash);
 import {
   has, isEmpty, isEqual, cloneDeep, pickBy,
 } from 'lodash';
@@ -512,7 +515,7 @@ import {
 export default {
   name: 'CitationEditor',
   components: {
-    BIcon,
+    FontAwesomeIcon,
   },
   props: {
     label: { /* The label for this citation */

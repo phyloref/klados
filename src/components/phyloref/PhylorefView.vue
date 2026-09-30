@@ -168,7 +168,7 @@
               data-testid="add-internal-specifier"
               @click="$store.commit('addInternalSpecifier', { phyloref: selectedPhyloref })"
             >
-              <b-icon-plus-square />
+              <FontAwesomeIcon icon="plus-square" />
             </button>
             <h5>Internal specifiers</h5>
           </div>
@@ -202,7 +202,7 @@
               data-testid="add-external-specifier"
               @click="$store.commit('addExternalSpecifier', { phyloref: selectedPhyloref })"
             >
-              <b-icon-plus-square />
+              <FontAwesomeIcon icon="plus-square" />
             </button>
             <h5>External specifiers</h5>
           </div>
@@ -240,7 +240,7 @@
                 href="javascript:;"
                 @click="hasApomorphy = !hasApomorphy"
               >
-                <b-icon-check-square />
+                <FontAwesomeIcon icon="check-square" />
               </button>
               <button
                 v-if="!hasApomorphy"
@@ -251,7 +251,7 @@
                 href="javascript:;"
                 @click="hasApomorphy = !hasApomorphy"
               >
-                <b-icon-square />
+                <FontAwesomeIcon icon="square" />
               </button>
               Apomorphy
             </h5>
@@ -349,9 +349,9 @@
         - display all phylogenies when looking up a phyloreference or specifiers
         - display only the selected phylogeny when it's selected
     -->
-    <template v-for="(phylogeny, phylogenyIndex) of currentPhyx.phylogenies">
+    <template v-for="(phylogeny, phylogenyIndex) of currentPhyx.phylogenies" :key="phylogenyIndex">
       <template v-if="selectedPhylogeny === undefined || selectedPhylogeny === phylogeny">
-        <div :key="phylogenyIndex" class="card mt-2">
+        <div class="card mt-2">
           <h5 class="card-header">
             Expected and actual resolution <span v-if="display.phylogeny">
               of {{ phyloref.label || 'unlabeled phyloreference' }}
@@ -413,6 +413,7 @@
                     readonly
                     type="text"
                     class="form-control"
+                    :data-testid="'expected-node-label-' + phylogenyIndex"
                     :value="'No node labeled \'' + selectedPhylorefLabel + '\' found in phylogeny'"
                   >
                 </template>
@@ -424,6 +425,7 @@
                     readonly
                     type="text"
                     class="form-control"
+                    :data-testid="'expected-node-label-' + phylogenyIndex"
                     :value="getExpectedNodeLabel(phylogeny)"
                   >
                 </template>
@@ -432,6 +434,7 @@
                 <div class="input-group-append">
                   <button
                     :id="'expected-nodes-dropdown-' + phylogenyIndex"
+                    :data-testid="'expected-nodes-change-' + phylogenyIndex"
                     type="button"
                     class="btn btn-outline-secondary dropdown-toggle"
                     data-toggle="dropdown"
@@ -442,6 +445,7 @@
                   </button>
                   <div
                     class="dropdown-menu dropright"
+                    :data-testid="'expected-nodes-menu-' + phylogenyIndex"
                     :aria-labelledby="'expected-nodes-dropdown-' + phylogenyIndex"
                     style="height: 30em; overflow: visible scroll;"
                   >
@@ -567,9 +571,11 @@
 import { mapState } from 'vuex';
 import { has } from 'lodash';
 import { PhylogenyWrapper } from '@phyloref/phyx';
-import {
-  BIconSquare, BIconCheckSquare, BIconPlusSquare,
-} from 'bootstrap-vue';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faSquare, faCheckSquare, faPlusSquare } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+
+library.add(faSquare, faCheckSquare, faPlusSquare);
 
 import ModifiedCard from '../cards/ModifiedCard.vue';
 import PhyloTree from '../phylogeny/PhyloTree.vue';
@@ -584,9 +590,7 @@ export default {
     PhyloTree,
     CitationEditor,
     SpecifierEditor,
-    BIconSquare,
-    BIconCheckSquare,
-    BIconPlusSquare,
+    FontAwesomeIcon,
   },
   data() {
     return {
@@ -651,8 +655,9 @@ export default {
     },
     hasApomorphy: {
       get() {
-        // Return true if this phyloref includes an apomorphy.
-        return has(this.selectedPhyloref, 'apomorphy');
+        // Return true if this phyloref includes an apomorphy. A plain property read, not
+        // lodash has(), so that Vue 3 tracks it (see "Reactivity" in AGENTS.md).
+        return this.selectedPhyloref.apomorphy !== undefined;
         // return this.$store.getters.isApomorphyBasedPhyloref(this.selectedPhyloref);
       },
       set(flag) {

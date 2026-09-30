@@ -44,6 +44,8 @@ service, and nothing verifies that Klados still works against the real ones.
 | Navigate between phyloreferences and phylogenies | `basic-demo`, `save-load` |
 | Add a phylogeny | `editing` |
 | Enter a Newick string and render the tree | `editing` |
+| Newick parse errors on a new phylogeny, and clearing them | `newick-errors` |
+| Set an expected node for the first time, and save it | `expected-resolution` |
 | Rename an internal node from the context menu | `editing` |
 | Add a phyloreference and edit its label | `editing`, `save-load` |
 | Add internal specifiers and fill in a taxon name | `editing` |
@@ -52,6 +54,8 @@ service, and nothing verifies that Klados still works against the real ones.
 | Save to JSON and read the file back | `save-load` |
 | Load a Phyx file from local disk | `save-load` |
 | Delete a citation, and its absence from the saved file | `citations` |
+| Add a citation and fill in authors, title, year and editors | `citation-editing` |
+| Download filename after labelling a new phyloreference | `download-filename` |
 | Specifiers as taxon, specimen and external reference | `specifier-types` |
 | Delete a specifier | `specifier-types` |
 | Add and edit a taxonomic unit on a phylogeny node | `taxonomic-units` |
@@ -65,23 +69,20 @@ Ranked by what would hurt most if it broke. The Vue 3 column is the risk that
 *this specific behaviour* breaks during the migration, which is what should
 drive the order things get written in.
 
-The recurring reason for a **High** rating is `Vue.set` and `Vue.delete`, which
-Vue 3 removes because its reactivity no longer needs them. There are 51 calls
-across `src/`, 23 of them in `src/store/modules/phyloref.js` alone. Every one is
-a place where a reactivity bug can hide behind code that still looks correct:
-replacing a `Vue.set` with a plain assignment compiles, runs, and silently stops
-updating the view. The heaviest of these paths are now covered, and the rows
-below are what remain.
+These ratings were written before the Vue 3 migration and are kept because the
+reasoning still holds for anything untested: a reactivity bug shows up as a
+value that changes in the store but never on screen, with no error anywhere. The
+migration hit exactly two such bugs, both in covered paths, and both were caught
+by the tests rather than by the compiler. See the reactivity section of
+AGENTS.md for the two idioms that cause them.
 
 | Behaviour | Why it matters | Vue 3 risk |
 | --- | --- | --- |
-| Add and edit a citation | Only deletion is covered; the whole editing form is untested | **High** — same reactivity path |
+| Citation identifiers, journal, publisher and URLs | Only authors, title, year and editors are exercised | Medium — same reactivity path |
 | Delete or duplicate a phyloreference or phylogeny | Destructive and unguarded | **High** — `Vue.delete` |
-| Setting expected resolution | Asserted on when loaded from a file, never actually set by a test | Medium |
 | Export as JSON-LD, export as ontology | The formats other tools consume; a silent change breaks downstream users | Low — plain serialisation |
 | Append a local JSON file | Merge semantics are easy to get wrong and have no test | Low |
 | Curator name, email, ORCID; default nomenclatural code | Written to cookies, so they persist wrongly if broken | Medium — cookie plugin |
-| Newick parse error reporting | Error paths are the least exercised by hand | Medium — `v-for` over errors |
 | Create a phylogeny from Open Tree of Life | Depends on a live external API; currently mocked out entirely | Low |
 | Real JPhyloRef reasoner | Everything is mocked; nothing catches a backend contract change | Low — unrelated to Vue |
 
@@ -89,21 +90,19 @@ below are what remain.
 
 The three highest-risk gaps — specifier kinds and deletion, taxonomic units on
 phylogeny nodes, and the `b-table` row details — are now covered, so the Vue 3
-branch has something underneath it. What is left, in order:
-
-1. **Citation add and edit.** Deletion is covered; the form is not.
-2. **Delete and duplicate a phyloreference or phylogeny.** Cheap to write and
-   destructive if wrong.
-3. **Setting expected resolution.** Asserted on when loaded from a file, never
-   set by a test.
-
-None of these need to block the Vue 3 branch, but 1 and 2 sit on the same
-`Vue.set`/`Vue.delete` paths, so they are worth doing early if the migration
-turns up reactivity bugs.
+branch has something underneath it. What is left first:
+**deleting and duplicating a phyloreference or phylogeny**. It is cheap to write,
+destructive if wrong, and sits on the same `Vue.set`/`Vue.delete` paths the
+migration rewrote.
 
 ## Known gaps in how we test, not what we test
 
 - No test runs against the real JPhyloRef backend. `test-backend.yml` pings it
   twice a day, which catches an outage but not a contract change.
 - The integration suite runs on chromium and firefox. There is no webkit run.
+- CI runs the integration tests against the dev server, not the production
+  build, and only the production bundle is minified. Running them against
+  `npm run preview` is a one-line config change and worth adding. It would not
+  exercise Vuex `strict` mode: that is on only in production, where Vuex compiles
+  its check out (see `src/store/index.js`).
 - Nothing tests accessibility, keyboard navigation, or screen reader output.

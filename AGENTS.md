@@ -35,6 +35,31 @@ Klados is a Vue 2 single-page application for authoring and curating **phylorefe
 - `citations.js` — citation/reference management
 - `ui.js` — which view to display (`phyloref`, `phylogeny`, or `phyx`)
 
+## Reactivity: a trap specific to this codebase
+
+Vue 3 tracks a dependency only on properties a render or computed actually
+*reads through the reactive proxy*. Two idioms common in this codebase read
+around it, so a value updates in the store but never on screen — with no error:
+
+- **`lodash.has()`** tests `hasOwnProperty`, which the proxy does not trap. Code
+  shaped like `if (has(obj, 'k') && has(obj.k, 'j')) return obj.k.j;` registers
+  no dependency at all. Read the path instead: `obj?.k?.j ?? fallback`.
+- **`@phyloref/phyx` wrappers** (`TaxonomicUnitWrapper`, `PhylorefWrapper`, …)
+  read their argument with `has()` and `get()` internally, so passing reactive
+  state straight into one tracks nothing. `cloneDeep()` the argument first: that
+  reads every property through the proxy, registering the dependency, and hands
+  the wrapper a plain object.
+
+Vue 2 hid both of these, because `Vue.set` notified every watcher that had
+touched the object at all. Nothing in the compiler or the linter catches them —
+only a test that asserts the screen updated.
+
+This only matters where Vue is tracking: templates, computed properties, Vuex
+getters, and methods a template calls. `has()` is fine in mutations, actions,
+event handlers, the D3 drawing code in `PhyloTree`, and on objects built fresh
+rather than taken from the store (a parsed Newick tree, a request payload).
+#413 sorted every call in the codebase this way.
+
 **Key dependencies:**
 - `@phyloref/phyx` — Phyx format classes and utilities (the data model)
 - `phylotree` — D3-based phylogenetic tree visualization
@@ -48,7 +73,7 @@ Klados is a Vue 2 single-page application for authoring and curating **phylorefe
 - Open Tree of Life TNRS and induced-subtree API endpoints
 - Cookie settings (30-day expiry) for curator name and nomenclatural code
 
-**Base path** is `/klados/` (set in `vite.config.js`) for GitHub Pages deployment. The `VITE_APP_VERSION` env variable is injected from the git tag during CI builds.
+**Base path** is `/klados/` (set in `vite.config.mjs`) for GitHub Pages deployment. The `VITE_APP_VERSION` env variable is injected from the git tag during CI builds.
 
 ## Deployment
 
@@ -61,7 +86,7 @@ Klados is a Vue 2 single-page application for authoring and curating **phylorefe
 
 There are two suites, and they both use `.spec.js`, so Vitest's `include` is pinned to `src/` to keep them apart.
 
-**Unit tests** are co-located with components (e.g. `src/components/cards/ModifiedCard.spec.js`). They run under Vitest (config in `vite.config.js`, `globals: true` so `describe`/`test`/`expect` need no import) and use `mount()` from `@vue/test-utils` v1 — v2 is Vue 3 only. Import components with the explicit `.vue` extension.
+**Unit tests** are co-located with components (e.g. `src/components/cards/ModifiedCard.spec.js`). They run under Vitest (config in `vite.config.mjs`, `globals: true` so `describe`/`test`/`expect` need no import) and use `mount()` from `@vue/test-utils` v2. Import components with the explicit `.vue` extension.
 
 `tests/COVERAGE.md` tracks what the two suites do and do not cover, and which tests are worth writing next. Update it when you add a test or a feature.
 
