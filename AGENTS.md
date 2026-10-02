@@ -54,6 +54,7 @@ Klados is a Vue 2 single-page application for authoring and curating **phylorefe
 - `.github/workflows/build-and-test.yml` lints, builds and tests every pull request and every push to `master`. Lint is clean; keep it that way.
 - `.github/workflows/deploy-to-github-pages.yml` triggers on release and deploys `dist/` to the `gh-pages` branch.
 - `.github/workflows/test-backend.yml` pings the JPhyloRef backend twice daily to monitor availability.
+- `.github/dependabot.yml` groups Dependabot's npm security updates into one PR, leaving major-version bumps in PRs of their own. It also turns off version updates. To get a combined PR's branch up to date, comment `@dependabot rebase` on it, or `@dependabot recreate` if it has conflicts.
 
 ## Test File Conventions
 
