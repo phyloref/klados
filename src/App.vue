@@ -2,7 +2,7 @@
   <div id="app">
     <TopNavigationBar :version="version" />
     <div id="wrapper">
-      <Sidebar />
+      <AppSidebar />
       <div id="page-content-wrapper">
         <template v-if="display.phyloref">
           <PhylorefView
@@ -35,7 +35,7 @@ import { mapState } from 'vuex';
 
 // Navigation controls.
 import TopNavigationBar from './components/TopNavigationBar.vue';
-import Sidebar from './components/sidebar/Sidebar.vue';
+import AppSidebar from './components/sidebar/AppSidebar.vue';
 
 // At any point, one of these views will be displayed.
 import PhylogenyView from './components/phylogeny/PhylogenyView.vue';
@@ -53,7 +53,7 @@ export default {
   name: 'App',
   components: {
     TopNavigationBar,
-    Sidebar,
+    AppSidebar,
     PhyxView,
     PhylogenyView,
     PhylorefView,

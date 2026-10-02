@@ -7,10 +7,13 @@ npm run dev       # Start Vite dev server (http://localhost:5173/klados/)
 npm run build     # Production build to dist/ (deployed to the gh-pages branch on release)
 npm run preview   # Preview production build on port 4173
 npm run lint      # ESLint with auto-fix (Vue rules; no formatting)
+npm run lint:check # ESLint without --fix; this is what CI runs
 npm run test      # Vitest (jsdom) over the co-located .spec.js files
 ```
 
-`npm run lint` currently reports pre-existing errors (unused imports, missing `v-for` keys); it is not yet clean.
+ESLint and Prettier do different jobs here, and only ESLint runs. ESLint catches code problems (unused variables, missing `:key`s, mutated props) and is enforced in CI. It does not check formatting: `eslint.config.mjs` uses `skip-formatting`, which turns off ESLint's style rules on the assumption that a formatter owns style. Prettier is that formatter, but no script or CI step runs it, and the code is not Prettier-formatted, so nothing enforces formatting.
+
+`.prettierrc.json` exists only for editors that run Prettier on save. Without it Prettier 3 defaults to double quotes, so a format-on-save swapped every quote in the file. It sets single quotes and ES5 trailing commas, the options closest to the existing style. Don't delete it while Prettier isn't enforced. Prettier still rewraps most files (long lines, leading `||`), so don't run `prettier --write` over whole files that a change doesn't otherwise touch. Adopting Prettier properly means a one-off reformat commit listed in `.git-blame-ignore-revs` plus a `prettier --check` step in CI, as its own PR.
 
 The `engines.node` range in `package.json` is the narrowest `engines.node` range among the locked dependencies (currently jsdom's). npm only warns (`EBADENGINE`) when a dependency rejects the running Node, so a looser range lets `npm run test` or `npm run lint` fail on a Node that `package.json` claims to support. `engines.spec.js` fails when a dependency upgrade makes the range too wide, and lists the packages that reject it. Narrow the range to match them.
 
@@ -48,7 +51,7 @@ Klados is a Vue 2 single-page application for authoring and curating **phylorefe
 
 ## Deployment
 
-- `.github/workflows/build-and-test.yml` builds and tests every pull request and every push to `master`. It does not yet run `npm run lint`, because lint is not clean.
+- `.github/workflows/build-and-test.yml` lints, builds and tests every pull request and every push to `master`. Lint is clean; keep it that way.
 - `.github/workflows/deploy-to-github-pages.yml` triggers on release and deploys `dist/` to the `gh-pages` branch.
 - `.github/workflows/test-backend.yml` pings the JPhyloRef backend twice daily to monitor availability.
 

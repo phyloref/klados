@@ -10,6 +10,7 @@
     "build": "vite build",
     "preview": "vite preview --port 4173",
     "lint": "eslint . --fix",
+    "lint:check": "eslint .",
     "test": "vitest run"
   },
   "repository": {

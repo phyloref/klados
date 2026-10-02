@@ -74,7 +74,7 @@
           </div>
 
           <!-- Source -->
-          <Citation
+          <CitationEditor
             label="Source"
             :object="selectedPhylogeny"
             citation-key="source"
@@ -125,7 +125,7 @@
       </h5>
       <div class="card-body">
         <template v-for="(error, errorIndex) of phylogenyNewickErrors">
-          <p><strong>{{ error.title }}.</strong> {{ error.message }}</p>
+          <p :key="errorIndex"><strong>{{ error.title }}.</strong> {{ error.message }}</p>
         </template>
       </div>
     </div>
@@ -189,10 +189,10 @@
           <b-card>
             <b-row
               v-for="(tunit, index) in getExplicitTUnitsForLabel(row.item.node_label)"
-              :key="row.item.node_label"
+              :key="`${row.item.node_label}-${index}`"
               class="mb-12"
             >
-              <Specifier
+              <SpecifierEditor
                 :key="'tunit_' + row.item.node_label + '_' + index"
                 :phylogeny="selectedPhylogeny"
                 :node-label="row.item.node_label"
@@ -219,12 +219,12 @@ import { parse as parseNewick } from 'newick-js';
 import {PhylogenyWrapper, TaxonomicUnitWrapper} from '@phyloref/phyx';
 import ModifiedCard from '../cards/ModifiedCard.vue';
 import PhyloTree from './PhyloTree.vue';
-import Citation from '../citations/Citation.vue';
-import Specifier from "@/components/specifiers/Specifier.vue";
+import CitationEditor from '../citations/CitationEditor.vue';
+import SpecifierEditor from "@/components/specifiers/SpecifierEditor.vue";
 
 export default {
   name: 'PhylogenyView',
-  components: {Specifier, ModifiedCard, PhyloTree, Citation },
+  components: {SpecifierEditor, ModifiedCard, PhyloTree, CitationEditor },
   data() {
     return {
       // Errors in the phylogenyId field.

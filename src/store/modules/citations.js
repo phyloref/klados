@@ -243,5 +243,10 @@ export default {
         payload.citations,
       );
     },
+    // Remove a citation key entirely. Deleting the last citation should leave
+    // the key out of the exported Phyx file rather than writing an empty array.
+    deleteCitations(state, payload) {
+      Vue.delete(payload.object, payload.citationKey);
+    },
   },
 };

@@ -3,8 +3,8 @@
  */
 
 import Vue from 'vue';
-import { has, findIndex, isEqual, keys, cloneDeep } from 'lodash';
-import {PhylogenyWrapper, TaxonomicUnitWrapper} from "@phyloref/phyx";
+import { has, findIndex, isEqual } from 'lodash';
+import { TaxonomicUnitWrapper } from '@phyloref/phyx';
 
 function areTUnitsIdentical(tunit1, tunit2) {
   // A helper function for comparing two taxonomic units.

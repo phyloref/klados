@@ -39,7 +39,7 @@ jobs:
           npm install
           VITE_APP_VERSION=$GITHUB_REF_NAME npm run build
           
-      - name: Deploy /docs to branch gh-pages
+      - name: Deploy dist/ to branch gh-pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           BRANCH: gh-pages
