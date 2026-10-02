@@ -19,9 +19,9 @@ updates:
         patterns:
           - '*'
         # Major bumps stay in their own PRs. The fix for some advisories is a
-        # new major version (Vue 3, Bootstrap 5) that Klados can't adopt without
-        # a migration, and one of those in the group would block every other
-        # fix in it from being merged.
+        # new major version (Bootstrap 4 -> 5, say) that needs a migration
+        # before it can merge, and one of those in the group would hold up
+        # every other fix in it.
         update-types:
           - minor
           - patch
