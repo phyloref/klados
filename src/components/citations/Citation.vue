@@ -558,7 +558,6 @@ export default {
   methods: {
     deleteCitation(index) {
       // Remove the citation at a particular index from the input citations.
-      // eslint-disable-next-line no-restricted-globals
       if (confirm('Are you sure you wish to delete this citation?')) {
         if (Array.isArray(this.object[this.citationKey])) {
           this.object[this.citationKey].splice(index, 1);

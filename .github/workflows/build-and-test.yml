@@ -1,0 +1,40 @@
+name: Build and test
+
+# This workflow builds Klados and runs its test suite. It exists so that a
+# dependency upgrade that breaks the build or the tests is caught on the pull
+# request rather than at release time.
+#
+# The lint step is deliberately absent: `npm run lint` currently reports
+# pre-existing errors, so it cannot gate anything yet. Add it here once those
+# are cleared.
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      # Keep this in step with the version used to deploy to GitHub Pages,
+      # and with the `engines` field in package.json.
+      - name: Set up Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      # `npm ci` rather than `npm install`, so that the lockfile is what is
+      # actually being tested.
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Test
+        run: npm run test

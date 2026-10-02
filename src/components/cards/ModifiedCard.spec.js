@@ -1,40 +1,26 @@
 import { mount } from '@vue/test-utils';
-import ModifiedCard from './ModifiedCard';
+import ModifiedCard from './ModifiedCard.vue';
+
+// Mounts a ModifiedCard with these props and reports whether it rendered the card.
+function rendersCard(propsData) {
+  return mount(ModifiedCard, { propsData }).find('div').exists();
+}
 
 describe('ModifiedCard', () => {
   test('should be accessible as a Vue instance', () => {
     const wrapper = mount(ModifiedCard);
-    expect(wrapper.isVueInstance()).toBeTruthy();
+    expect(wrapper.vm).toBeTruthy();
   });
   test('is initially invisible', () => {
-    const wrapper = mount(ModifiedCard);
-    expect(wrapper.contains('div')).toBeFalsy();
+    expect(rendersCard()).toBe(false);
   });
   test('remains invisible if the comparison values provided are identical', () => {
-    const wrapper = mount(ModifiedCard, {
-      propsData: {
-        compare: { key: 'test1' },
-        compareTo: { key: 'test1' },
-      },
-    });
-    expect(wrapper.contains('div')).toBeFalsy();
+    expect(rendersCard({ compare: { key: 'test1' }, compareTo: { key: 'test1' } })).toBe(false);
   });
   test('becomes visible if the comparison values provided are different', () => {
-    const wrapper = mount(ModifiedCard, {
-      propsData: {
-        compare: { key: 'test1' },
-        compareTo: { key: 'test2' },
-      },
-    });
-    expect(wrapper.contains('div')).toBeTruthy();
+    expect(rendersCard({ compare: { key: 'test1' }, compareTo: { key: 'test2' } })).toBe(true);
   });
   test('becomes visible if one of the comparison value is undefined', () => {
-    const wrapper = mount(ModifiedCard, {
-      propsData: {
-        compare: { key: 'test1' },
-        compareTo: undefined,
-      },
-    });
-    expect(wrapper.contains('div')).toBeTruthy();
+    expect(rendersCard({ compare: { key: 'test1' }, compareTo: undefined })).toBe(true);
   });
 });

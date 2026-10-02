@@ -4,12 +4,15 @@
 
 ```bash
 npm run dev       # Start Vite dev server (http://localhost:5173/klados/)
-npm run build     # Production build to dist/ (also deploys to docs/ for GitHub Pages)
+npm run build     # Production build to dist/ (deployed to the gh-pages branch on release)
 npm run preview   # Preview production build on port 4173
-npm run lint      # ESLint with auto-fix (Vue + Prettier)
+npm run lint      # ESLint with auto-fix (Vue rules; no formatting)
+npm run test      # Vitest (jsdom) over the co-located .spec.js files
 ```
 
-There is no test runner configured in package.json. The `.spec.js` files use Jest + `@vue/test-utils`, but Jest must be invoked manually if installed.
+`npm run lint` currently reports pre-existing errors (unused imports, missing `v-for` keys); it is not yet clean.
+
+The `engines.node` range in `package.json` is the narrowest `engines.node` range among the locked dependencies (currently jsdom's). npm only warns (`EBADENGINE`) when a dependency rejects the running Node, so a looser range lets `npm run test` or `npm run lint` fail on a Node that `package.json` claims to support. `engines.spec.js` fails when a dependency upgrade makes the range too wide, and lists the packages that reject it. Narrow the range to match them.
 
 ## Architecture
 
@@ -45,9 +48,10 @@ Klados is a Vue 2 single-page application for authoring and curating **phylorefe
 
 ## Deployment
 
-- GitHub Actions workflow (`.github/workflows/deploy-to-github-pages.yml`) triggers on release and deploys to `gh-pages` branch.
-- A second workflow (`.github/workflows/test-backend.yml`) pings the JPhyloRef backend twice daily to monitor availability.
+- `.github/workflows/build-and-test.yml` builds and tests every pull request and every push to `master`. It does not yet run `npm run lint`, because lint is not clean.
+- `.github/workflows/deploy-to-github-pages.yml` triggers on release and deploys `dist/` to the `gh-pages` branch.
+- `.github/workflows/test-backend.yml` pings the JPhyloRef backend twice daily to monitor availability.
 
 ## Test File Conventions
 
-Spec files are co-located with components (e.g., `src/components/cards/ModifiedCard.spec.js`). Tests use `mount()` from `@vue/test-utils` and assert on Vue instance properties and rendered HTML.
+Spec files are co-located with components (e.g., `src/components/cards/ModifiedCard.spec.js`). Tests run under Vitest (config in `vite.config.js`, `globals: true` so `describe`/`test`/`expect` need no import) and use `mount()` from `@vue/test-utils` v1 — v2 is Vue 3 only. Import components with the explicit `.vue` extension.

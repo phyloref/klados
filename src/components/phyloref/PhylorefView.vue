@@ -652,7 +652,6 @@ export default {
           // Make sure an 'apomorphy' field doesn't exist.
           // While this component is being displayed, we can store a previously set apomorphy so
           // that the user can "undo" deleting an apomorphy without losing information.
-          // eslint-disable-next-line no-lonely-if
           if (has(this.selectedPhyloref, 'apomorphy')) {
             this.previousApomorphy = this.selectedPhyloref.apomorphy;
             this.$store.commit('setPhylorefProps', {
