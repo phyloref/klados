@@ -1,0 +1,27 @@
+# Dependabot security updates are switched on in the repository settings, and
+# this file only changes how they arrive: as one grouped pull request instead of
+# one per package. Most of them bump packages we only depend on indirectly, so
+# a dozen separate PRs, each needing its own rebase, was more noise than signal.
+#
+# Options: https://docs.github.com/en/code-security/dependabot/working-with-dependabot/dependabot-options-reference
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    # Zero turns off version updates (routine "a newer release exists" PRs)
+    # without affecting security updates, which this limit doesn't apply to.
+    open-pull-requests-limit: 0
+    groups:
+      npm-security:
+        applies-to: security-updates
+        patterns:
+          - '*'
+        # Major bumps stay in their own PRs. The fix for some advisories is a
+        # new major version (Vue 3, Bootstrap 5) that Klados can't adopt without
+        # a migration, and one of those in the group would block every other
+        # fix in it from being merged.
+        update-types:
+          - minor
+          - patch
