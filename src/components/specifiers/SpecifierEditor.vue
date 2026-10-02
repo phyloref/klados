@@ -77,12 +77,14 @@
         readonly
         type="text"
         class="form-control"
+        data-testid="specifier-label"
       >
       <!-- The "Edit/Collapse" button can be used to edit this specifier. -->
       <div class="input-group-append">
         <button
           class="btn btn-outline-secondary"
           :class="{active: expand}"
+          data-testid="specifier-toggle"
           @click="expand = !expand"
         >
           {{ (expand) ? 'Collapse' : 'Edit' }}
@@ -92,6 +94,7 @@
       <div class="input-group-append">
         <button
           class="btn btn-danger"
+          data-testid="specifier-delete"
           @click="deleteSpecifier()"
         >
           <b-icon-trash></b-icon-trash>
@@ -202,9 +205,7 @@
                   v-for="nomenCode of nomenCodes"
                   :key="nomenCode.iri"
                   :value="nomenCode.iri"
-                >
-                  {{ nomenCode.label }}
-                </option>
+                >{{ nomenCode.label }}</option>
               </select>
             </div>
           </div>
@@ -304,13 +305,13 @@
           <div class="form-group row">
             <label
               class="col-form-label col-md-2"
-              for="collection-code"
+              for="institution-code"
             >
               Institution code
             </label>
             <div class="col-md-10 input-group">
               <input
-                id="collection-code"
+                id="institution-code"
                 readonly
                 class="form-control"
                 :value="wrappedSpecimen.institutionCode"

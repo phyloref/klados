@@ -1,0 +1,48 @@
+name: Integration tests
+
+# End-to-end tests that drive the built app in a real browser. These are kept
+# apart from build-and-test.yml because they have to download browsers first,
+# which makes them slower than the lint/build/unit-test signal.
+#
+# The JPhyloRef reasoner and the Open Tree of Life APIs are mocked in
+# tests/playwright/fixtures, so these tests do not depend on either service
+# being up.
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+jobs:
+  playwright:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      # Keep in step with build-and-test.yml and the engines field.
+      - name: Set up Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install browsers
+        run: npx playwright install --with-deps chromium firefox
+
+      - name: Run integration tests
+        run: npm run test:e2e
+        env:
+          CI: true
+
+      - name: Upload report
+        uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
